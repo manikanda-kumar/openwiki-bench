@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8544124ca228fe6687ed9473275298819199079a655463d5e30aec26ff0ec50f",
+  "claims": [
+    {
+      "id": "claim_f95f3baafaa046e38b64bdf33db168bc",
+      "statement": "The control plane Cloudflare Worker coordinates session work through fetch, scheduled, and queue handlers and re-exports SessionDO, rather than executing agent code itself.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L32-L89",
+          "version": "repo-lines-v1:sha256:40f48f8bfb6b01795245af3ab4ca5ffec55bb50d96a5f5bbe8dddfb6d800ad3c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzMjdiNmMyNmNjYTI4MDRiMjY2YTc3YTJhNGYxMTU1NTBkOTNiNmUyYzI3MjI4MmJiMGJjZjY0OWQ1Y2MzMDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZDA4NzFiYmMyN2I0ZmFhY2E4NjY2YTE1YTdmNjZmNjc3NjVlNmMwZjA3Y2NjZmM4MDQ4ODA2NWI2NjVkMGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZWNhOWFmY2U1ZjIwMzVkOTdjYjgwNGEwNjI4MmE0YTEyMjM5ZWM1YTI0YWJiNmFlZmVlNzAzZTQ4YjhjODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d16b821e50d04f4984ef1dc9e523f4dc",
+      "statement": "WebSocket upgrades are accepted only on /sessions/:id/ws: the Worker checks SessionIndexStore.exists in D1 and forwards known sessions to the Session Durable Object, returning 404 for unknown sessions and 400 for any other WebSocket path.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L36-L147",
+          "version": "repo-lines-v1:sha256:acd0d0dcdb143fe44cc10ee320948fd301aa90ca76c50661b03f4952a70835a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3MGQ2ODIwNjgxNzc5M2MyMzgyZmExNmIzYmZlNTk2ZmZlNmZmZmJkMGZmMmVmYjg0NjU5YjgzMzRjYTQ2OWY3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0YzBlNzczNzQxMDE0NDhkZmM1NTU0MzBlYzJhZTJmMmQyYjI5N2I3ZTYwMjI2ZjYwMGQ2YTUxOGMxMmY3ZmI5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5MzZkOWYxYzU0YjcxNTk0Mjk4MjU4OTNmZWE5NzRjNzIyYWE0YzRhMGZmMjJiOTMwMGY3ZWNlY2FkM2U2NzIzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_268b60b90b0b4340b33e6593dc5e9886",
+      "statement": "HTTP API requests are handled by the router, which refuses to serve when the D1 binding is missing (503) and injects an instrumented ctx.db so route handlers do not read env.DB directly.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L376-L417",
+          "version": "repo-lines-v1:sha256:760f6089c9154a786d9ff3d8a29e1a0b7e14b0a16799a62136d050fcda3202ca:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNDkzMjFjMTE1NWZhZTI1ODU0NmFiMGEwODA5ZGQ4ODQ0YmRlYWIwMzEyMDQ5YzE3NmIxNmEwNDI1ZWVlZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzZWNjMDYzM2UwMzM1NjdkNjBiMzZkODllODAzNmJlZmVhOGM5OTJlZjRlNGM0N2QwNDQ5MzJhMjVkYTNlMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhODU1NDAzYTk0NDVlYTJhZGM2NmRmMWU3NzVkNTIyMjM1ZGU3MmQzZmRmNzNlMjYxN2Y1ZmE3NDcxYzZlYzQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/shared.ts#L25-L33",
+          "version": "repo-lines-v1:sha256:b4c34ab133788d1a29af4a26d102b534774e1d09f1b9a4215317f74540319b32:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjhiYmFiYWM1OGJjOGM0NTNjZWYxYmRmOGViODE1NGQ3NjQxMDJjY2NhMzI1YmUxMzZkMDRiMGFhZjgxMzU4YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY0YjA2NGFjMGVhMDcyMGQ5MzkyMTBhYzMzYzU2ZmMyYzc3N2EwYTc4M2YyYjUxYjhhMDJkZDUyOWNjNDVmNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzJkMTg5ZTFhMjBhMThlNTU1N2IzMDVkN2ViODQwMzQ3MjYzZTI2M2NiY2YwMWYxNTc4NDgwYzFmNWNhNzhmMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmQxMzg5NWUyOTdjN2E2MTJjMzBiNjNlYTU4ZDUzZDEzYTI1YWU4ODNlNzg0Mjg4OTZlN2IxNDg0YTA3ZTY5MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb0ef2fe52a6424f88c2a0d8d3f26535",
+      "statement": "Sandbox Bearer tokens are verified by posting to the session Durable Object's /internal/verify-sandbox-token path; the central authenticate() function does not assemble sandbox principals because they need the session id from the path and a Durable Object round-trip.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/authenticate.ts#L1-L10",
+          "version": "repo-lines-v1:sha256:2927b5d905ea7d03c6f551da70f790142f72b2efdbae858b04ee1f8b94fa807a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2ZTNkNmEzOWFiZDVmNWE0NmZiYTdjMGM3YmI5YzQ3OWJiYmE2NmE0YzQzYzI5MGYzZDU2MmJhYmQ1MDdiOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzMzc3ZDg2ZTA2MjY4MTRmMzRjODFhZjAzZmJlMzYwYjk1MzY4OGY5YzA1MGYwNmEyNWI0ZGQ2ZGQxNGYzOTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L160-L211",
+          "version": "repo-lines-v1:sha256:6e37b60b8a3b639a3d17d021dae16c2140a7fb262349239a2584f83d6a3eac78:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4MGQzYzAxYTY0OTcwNzAzOWNkN2M2NDBjMTdmYjE5NDEwMzM2M2ZhOTlkOTBhODgwOWUyNjkzZGI0NTI2YjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyNTA5YWE2ZWVmNmZhMjcwM2UwYmY1ODlkMjdkZWJhODNkYjAwMGVkMTk4ZDgwNDZjNzY2YTA4MjdiNDhjMzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ed019fd02d174fb4b7379144a5cefa54",
+      "statement": "After authentication, the router returns HTTP 501 when a route's supportedScmProviders does not include the deployment SCM_PROVIDER, and HTTP 500 when SCM provider configuration is invalid.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L118-L157",
+          "version": "repo-lines-v1:sha256:520177089377869e0d777b3d9af3ceb8a492ccc8065d7d1f1d3afde1595c5ddb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3OWQ5M2FiYTY1M2U0ZjIxMDZkOTRhN2QzYzU3ZjNjMjMxZTM4YjJkZWE4MTE5Y2IwNjIzNjcyNzM3M2RkMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0NjFlNDc1ZTBhMDk3NDQzOTRiY2EyMDBiNWEyNzFhY2Q4NjkyYjkwYzIxNzBhOWJjZWQ2NzFlZDJhZDY1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5fd038b93a144afe9170dc8ee011754b",
+      "statement": "initializeSession writes the D1 session index first and only then initializes the Durable Object, so D1 failures are caught before sandbox warming starts.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L80-L148",
+          "version": "repo-lines-v1:sha256:9f26f20b2ea29a2f2a3a31b05f221c707ab076f4fd5cae284a81eeeae6ba7891:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyZTNkNGE0YWI2ZjUxOTgwYTdhNDlhZjQ3N2ExYmEyOGI4MjhjYjYwYjI4NDIzYTUyZWVhNTQ2MzZlMGU3ZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1MDg0NDcxYjhiZGUyNzU3MDIxYzc1ZGZmNTEyMzAyNTZjYzMxYzM0MzIxYTBlMWNhZTkxOGNkNjI2YmQ0MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5OGJiMmMxNDlhMzlhYzM4YTI0MDcwMWUwYjdlMWU5OWZkNzNhZWU5ZTI5N2JlOTY0YTc4OWMyNTU2NjBmZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c8f4a4f01607411d885754590efd572b",
+      "statement": "The Worker scheduled handler dispatches three cron expressions: IMAGE_BUILD_SCHEDULER_CRON (7,37 * * * *) for image-build maintenance, ABANDONED_DRAFT_SWEEP_CRON (23 * * * *) for unprompted warm sessions, and * * * * * for Scheduler.tick plus autofix queue health.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/scheduler.ts#L22-L22",
+          "version": "repo-lines-v1:sha256:bf444b13a2d1db4170faa2c97149df1a89ff7d02c95f3550a48a91ef084d1cf1:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmY0NDRiMTNhMmQxZGI0MTcwZmFhMmM5NzE0OWRmMWE4OWZmN2QwMmM5NWYzNTUwYTQ4YTkxZWYwODRkMWNmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmY0NDRiMTNhMmQxZGI0MTcwZmFhMmM5NzE0OWRmMWE4OWZmN2QwMmM5NWYzNTUwYTQ4YTkxZWYwODRkMWNmMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzRlYmUyOThkNjAzMDA0MThhNDAwNTY1MDg3OTE1ZmI4NzY4NDNkNDNjNmRlNTY5ZjNmNTBiZjhkZjViOWZjZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTM4NTFiMWI3NDRmZTUxNDk3MzhmZWRmYmY2ODhhMDI4OTI3MWU4MDM5MjM5ZDE3NjQyNTUwYWIzNWU2MWNjYiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L49-L79",
+          "version": "repo-lines-v1:sha256:ae8fdef967706c9c299c701cb439838ae8fc9caa4d15698196e4a80966f7b4e9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGNhOTljYTMzODFiYWMyMDk5YTlkM2Q3NGUwOTk3Y2M4NTgxNTE2Y2MzZjcyNDljNDA1YjZkMGI5NTRiMzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmNTU4MTJmNmI2ZmE5YmIwMDA3YWU1MWFiN2M3Nzg5NjI2MTZiODUxYTEwMzFjYTA2MjgyYTczZGY4N2I1MWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlMTk5ZDFkZDFhMzVhYzMwMzUwYzg4NDExZGQ2NWU3Y2JhNjExNzBkNGQ2NzJkNzMxZTNkZDA4NzFmMTAyOGQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L73-L78",
+          "version": "repo-lines-v1:sha256:6475fd5763688101f46d9c9fe86082bb4e42016e515f3aef9dc8d6abf0d8d1cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTY4MWVmYjExMTcyOGQ3YjhkODc1NTI3ZjhmZGQ5MGRiNGU2YWM2ZGY3ZjcyZmYyMjkwOGNkNTFmMDQyNjkyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQ5NzlhMTU0MTQ5Yzk5MGVmMDllZDExM2I4MWExNjZhMTlhZDI5MzU4ZDJmZDZhNTY0Mjg2OGMwN2E1YmU4NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzc5MjllOTFlMGY5OWMzZTgyNWRlNjliNDM1ZmI2NDg0ZDFiMGExZGYyZjQ2NTYxYWJmMWEyOWYwNDE4OGI4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjJiNzkzYjRlNjBjMWU5OGU0NzIzZDVjNTA4MzhjZGY0YTcxODcyYjAyNDNjMWFkMjU0NGVlMzYwMDJiNTY5OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d939a05d911436591806cf57dc4ee9d",
+      "statement": "Queue batches whose names start with open-inspect-github-autofix- are consumed as GitHub autofix envelopes; every other queue is treated as image-build finalization.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L82-L89",
+          "version": "repo-lines-v1:sha256:2e320735662cd43928bf1ad72b8eb527d08e75a1a810ea6dee86b3fa556ba5bc:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMwODdiMmUwMGY3NTlkNDRkZjQyMzM0MzhmYzRjMWE0YWJkMDUxYTA4MDEzYTI4Zjk0YThlYTlhYjhlOTJmYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAzNWUwYjU1NTA3ZTA0ZTdmN2E4MDNmZDY1MjY0YWEwYmQ3YzIxOWMwYmQ2NDUwYzEwZWFkMjg0YTA0YWU0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWVlY2E5YWZjZTVmMjAzNWQ5N2NiODA0YTA2MjgyYTRhMTIyMzllYzVhMjRhYmI2YWVmZWU3MDNlNDhiOGM4MiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/queue-routing.ts#L1-L3",
+          "version": "repo-lines-v1:sha256:b1074926ad41208d630d207df661f58779d146633c70598b8975011d212bdedf:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjAyN2QwMDA3YzQ5MTg3NjEyMmU3ODYxODE0ZTdlZDVjNDRiZjU0OWE4ZmUyNWNjNzU3YzgyNzAxMjNhNjJhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3ac8ec36a6b44e00b2d9ea585275c439",
+      "statement": "The global D1 SqlDatabase port used by control-plane stores is a different engine from per-session Durable Object SqlStorage and is intentionally not unified with it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/sql-database.ts#L1-L21",
+          "version": "repo-lines-v1:sha256:a15c87aac78b72b9da269e3b97cec80d00ead8f6d717b81a3651b4746e958dfc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MmE0MjkzODJiMmUxNDcxOGUwZTM3YjA1NzBhOGExNzAyOTkxZmNkODQ5OGNkODQwNjBhOGJmNGYwNTAxN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjNTlhODk0ODYwY2M2ZGRlMmVkNTA0YmY0ZDBlNzQ2OTU4ZDc1NTc0MjNmZTRmNGQ4MGFlZWRiYThhN2FmYTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_181569ec3fd04b23b6d17f8cd7be4859",
+      "statement": "Token and repo-secret encryption keys are fail-closed: they must be present, strict-base64, and decode to 32 bytes for AES-256, otherwise first touch throws instead of writing plaintext.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/env-validation.ts#L1-L57",
+          "version": "repo-lines-v1:sha256:5f175e28e3502b235f593b80620b87e40c7f998b197df9d20efd9b05632c9f44:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxZTdmNzkwZjBhNTE0M2NmNTZjNjVjZTkxY2VhYmVlOTk0NDBkYTg2ZTkxMzIyZWRkNzBjOGFkNTQ4MzBmNzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T14:40:34.741Z"
+  }
+}

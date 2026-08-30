@@ -1,0 +1,710 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c85ec9bf12ed3b5a5834b015e0be21e6ae46bc018450f064d9954637249d3e9e",
+  "claims": [
+    {
+      "id": "claim_736218b993d442febb2fffd1a8fcc7e4",
+      "statement": "BootMode (fresh / snapshot_restore / repo_image / build) is derived from process env in runtime_config.py: IMAGE_BUILD_MODE=true → build, RESTORED_FROM_SNAPSHOT=true → snapshot_restore, FROM_REPO_IMAGE=true → repo_image, otherwise fresh; the supervisor stamps OPENINSPECT_BOOT_MODE into the environment so hooks and child processes branch on it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/runtime_config.py#L15-L29",
+          "version": "repo-lines-v1:sha256:b1bb09e9c29082fcde6c2fab0ad81cf24b3d60a7b44160c88a65bc7682c8cbcf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhOGVhODAwNjY3MjFmZTUwNzYyM2UwNWZiM2Y0ZDNiMjU2NDI0NTE2ZDYwN2Q5NDM1MGJmNjcyZTlmYTAyODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4MTMyNmZhOWEwNTlmMjBiNDM2YzczNDVhNjY0NTk1MzNjZTcyZDliNzE1MDEzMjY2ODU3ZDYxMGZiNTM4ZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1OWU3NGE0YzJhMjk2ZDVkNzBjOTllY2FjZjY1NDFmNzQ2MDlkZjUwMDdmYTJhZDlmZDViNWEwN2E5NGQ2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NjQzYTE2YmFiOWYzNzIzZTkxNDk0MzgzOWYyNjZjNzU0OGU0NWJlNDUxMjA5MzVjOTQwOGM4Nzk5ZGFkNTIifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L355-L376",
+          "version": "repo-lines-v1:sha256:d9e94e20d1b02ec95f0040c8b75e343c204e4f888d7dd59d818e418c5831ca30:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNGI5MjQyNWM3YzQwYzJjNjBmYmUxZDRhNDA5YTlkYjUzNDYyYzkyYTk5ZmRjYzUwYzQ0ZTNlY2JjNjNkNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYmZlMWRjNTYzMjc4MDViZTFmZWFiOWQ1NDBmMzAyNTY2N2VhNzFjOTExYTU0NGU5NGYwMDUwMjQxODgzNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNTdmNWE3OTVjM2VjMDBkNDMzYmM5OGJiZGNmMDllZDVmNjBjZjc1OTQ4ODkxN2NkMGZjY2YxNDY5NzU4NjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c434f9454e6a419b8b7d45b4c814af21",
+      "statement": "entrypoint.py is the composition root: it consumes process secrets, builds RuntimeConfig, and composes RepositoryBoot, ManagedSkillsMaterializer, OpenCodeServer, AgentBridgeProcess, CodeServer, WebTerminal, and BrowserDesktop into one SandboxSupervisor; SIGTERM/SIGINT are routed into a supervisor-owned asyncio shutdown event.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/entrypoint.py#L31-L110",
+          "version": "repo-lines-v1:sha256:ce0288f2a4e2c8c636dc5cec1c9e739fcb3a6896be3028b9c92cbeb5913b306d:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxN2YzZWM3YjM3YzdlZjIxOTQyNzAxMTA3ODJiN2FkMDA3MjQyMjMxMWZlYzU4NDdmM2Q5ZTI2MTNkMTBiMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzMGViODFhYjY1MjYyZGM3NzhjMzcyY2FjOTRiOTIwMDRjZDNkYzEyYjJiNDVhNjU3MDRjOTY3ZWRmMzJiYjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzMjBiZmQ0MDM2NjZiYmFlMjA3NzEyYjk3MmE2YjFlNzRiZmQxMDc1OWQ5NTVlNDM0YjcyY2NlMTIwMjYxMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a82e56275704f31925c034a58c71532",
+      "statement": "SandboxSupervisor.run() boots in strict order: prepare tunnel environment, start VNC desktop (best-effort), repository boot (manifest write -> credential config -> git sync -> setup/start hooks -> workspace manifest), managed-skills materialization, code-server, web terminal, OpenCode server, then the bridge subprocess, followed by monitor_processes().",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L380-L450",
+          "version": "repo-lines-v1:sha256:3428034086c98e9010db7b97d816cece0f299e66d3b6cd35e4743f3425346268:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NzU1Y2UwYzA1MWEwZjA1NWUzYzc4NjY1OTgzYzRmMjQ2MDY5OWY3YWRjNTBjYmJhZDVkMGNkY2JlOTVmNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkYzAzZTc3YjE0MzY1MzM2MmI4YmFlZjUzZDM2NTc1YzIzZGNlOGNkZDY0ZDZmYTViODNjOGQ5NDMwZGE4ZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNTdmNWE3OTVjM2VjMDBkNDMzYmM5OGJiZGNmMDllZDVmNjBjZjc1OTQ4ODkxN2NkMGZjY2YxNDY5NzU4NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0ZWMyNTA4YWIzYTA0NWIyNTYzOGZjODUzNGVkYTcxNWY3ZjNhOGE4MDM4M2Q5MzBmMGRlY2FhMmI3OTBmY2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc1dda2e0d134dbdb47f6d0b5e5f07c4",
+      "statement": "The supervisor applies an explicit per-component restart policy with max 5 restarts and 2^n backoff capped at 60 s (monitor_processes); exceeding the cap for OpenCode or the bridge reports a fatal sandbox error, while code-server/terminal/VNC caps degrade to warnings; a bridge exit code of 0 is treated as graceful and shuts the whole sandbox down.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L138-L304",
+          "version": "repo-lines-v1:sha256:2aeb212dac14061519cf40715efaee60df9337bba2c6f43c53fd6ad6d34cbd16:eyJzZWxlY3RlZExpbmVDb3VudCI6MTY3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxYWMyM2Q2NTMxMDczOWI3MzQzZTQ3MzlmOWRmMTQzZTE0MDMxYTlhODJlNzE0YzYyNWIxMDAzYjY5M2FkNDU4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI3MWJkNTliYWYxMDk4YWU5NmZkNzg2NGYzNmU4ODIyYzUxMTFhZTBmZDcwZjZhYjgyNjM2ZmVlMmU4NWY0YWI0IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5ZjFlN2ZjNzkyZTEzNWM4Nzg1ZDAwYTUyMmQ1ZTU3YmI0MjhlZDk3OTgwNDlmNTRjNmRkMzUzYzg0NDcwMTM4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyYzUzN2FjZGYzYTI3OGIyNjEyN2MxMTdlNTJhODE5N2QxZWI3M2FlYmY1ZmY4ZGJkN2E3MDk1Mzk2NjZhNTg3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_483ff5e1be41405eba19b714ec748b97",
+      "statement": "Fatal supervisor errors are POSTed to /sessions/{session_id}/sandbox-error with the sandbox token (Authorization Bearer + X-Sandbox-ID), retried up to 3 times with 2^n backoff, message truncated to 1000 chars.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L76-L110",
+          "version": "repo-lines-v1:sha256:e57ab5268aabfd1b67177468e3aa17eee2a1cd65065e5ed12c046299bc5af111:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwNTQwZDExYzE5YWE4ZjU5YzBlNzJlOGQzYjVhMWRmZjhjYWJhNzc5NmFjZjczNjg4MDhiZTdkYjFiNWYyNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OTNhNDNhYTljZmQyZDEwYjY0NmU2OWQyYmU1MjViZDFhMDcwMGIzY2Y1NTg3ZWQ3N2JiOGQ2ZmI5OWM1M2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMDI1MWFmMmFmZWE4YzI4YzcyZGZhZDMxMjA2OTAyYmZkYjg1OWFmNDYyMWQxNjQyNGU4MjNlMTgzMDU1NDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhZjBhOTA2OWI4OTExMzQzMGM0ZjM5ZTZiZmMwMjcwMmJhNDI1YjhjMzBmMjhkYTliMTBhZWU2YTU4ODQzM2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b89b1e166b3e49bfa666c3a888f831c7",
+      "statement": "Shutdown stops services in reverse start order: bridge, web terminal, code-server, browser desktop, then OpenCode; a pending desktop restart task is cancelled first.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L478-L489",
+          "version": "repo-lines-v1:sha256:1f61f14ca2bcbb88e9f6580514fb4827079d1f4ba2821408666bc857cad8b08c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MTk1YTJhNzUyNGQ4ZTc4N2Y5M2U3ZjM4YTFkNjk0MGU3OGIzODAyZjQwYWE0OTM3NjM1YjNlYWVlOWQxYTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNmJkM2UzNTA2NmNhNGY1NjkxN2Y5ZjE2MWM5YTliZmQ1NTQ4OTlhMWQzY2Q2YzcxY2U5ZTdhOGU5Y2E1MGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDFjMzAyMjU4Y2ViY2ZjZDllN2Y1NzRlMmIwM2ViZjM5NTY2OTMwMWI0OWFmYmI1ZWExYjRlNGEwYWRiNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe702bdea2fd47f2b4ea94ecacc89fbb",
+      "statement": "The agent bridge runs as its own subprocess (python -m sandbox_runtime.bridge) spawned by AgentBridgeProcess with sandbox-id/session-id/control-plane URL/token/opencode-port arguments, so a bridge crash cannot take down OpenCode and vice versa.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/agent_bridge_process.py#L26-L67",
+          "version": "repo-lines-v1:sha256:d1f700b9a3946988e962598fc487c818d927732c1bb1a89cdaacfc3284a93d6c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNmRmYmI3NmM1ZmNjNGJjZDM3MjU4OTUzNThjZThiY2VhYjVjYjVlYjEyNjMwNzZlYzljYWExNjdlZWMwMzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMDM0ODFjNTdkMGYwZGMwZjc2Y2QyY2M4YjM2MDRjNGU4Mjk2ZGE0MTIyYWRkMTllODE3NDVkYzdlMzMxYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxNmU4MDFjYTYzNGRiMzZjZmJlNjJjNTBhMmRmOGU0NDgzOGY1MzU1Y2VmZDIwNjZkYWE2MDQwY2IwYzc3MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmNzIyYjE2MmM2MDQ1MDZmZGIxNjA0N2UxZTI1NjNmYzRiY2Q4OWI3ZTI0NzVhYjljYThkZDU0NTFiNzRkNmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d86cde927014d24abe5fb7d0d6279cd",
+      "statement": "The bridge connects to wss://{control_plane}/sessions/{session_id}/ws?type=sandbox with Authorization: Bearer {sandbox_token} and X-Sandbox-ID headers; it sends a heartbeat event every 30 s and reconnects with exponential backoff (base 2 s, cap 60 s).",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L282-L286",
+          "version": "repo-lines-v1:sha256:5d47bcc82ef65a07a68d3033313bcf7a3cf401592e8971d3c90c21adf7ab83a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjNkMDBjZjI3MDk2NGQ0NGExM2RmYWM4NzUyYjA5ZmNjNDM1YjBmMTliMzE2YWJjZjgxYTdhYTY0YmIxMjJkNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTFjYjA1NDg2NjQxNjJhOGExZTY2M2FjMGU0ZWYyYzg4ZjA3MWYyZTQ2ZjU4MGRhYzNhMDA5MmEzY2FjNjExYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmExN2JmNmE0ZGQ1MWY1ODA2YmJkZjg4NDYwZGFkYTg2ZGY4NDVhZmNmYzEyNGJmMzc2YmJlMGEzODFmNDViYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODA0Zjg3YjM1Y2EyNTc4MDU3ZDA2OWU4YWQ0N2RiMmYyNmJmYWM3NGY3ZWYxYzdiYTBmOTA3Zjk0YmVmMjZkMiJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L320-L380",
+          "version": "repo-lines-v1:sha256:bda174f65cb1498e3defaeaf5178e241536103eee8be257b35701141d66e8cf8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlN2ZlZDNhNzRkNzhhYmZkZDAzZjA0N2Y1ZGZiMmFlMjcxMzFhNDhjZGVlNjA5OTQ2ZjhhZGM2MTE0MDc5NGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxNjZhZDdmZjA1MDE5MjVlN2Q4Yzk0NjM4ZGRiZDMwNWQ5OTdhZmRmNTZiYjJiNzY1M2JmMjhiNWUxMGZjYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzYTlkNjc1ZGZmYzcyNTRhYjMyNjAyMGMxNWVhMjBmMGZmOGZjMDM0NTMzZmI1ZDZjZDk2Y2FhODZlN2ExOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1ZTNlNDgxYmU2YjYzNTY2NjNjMTUzN2ExNTI4MmQzNDcyMjMyMTk2OTdiNmM1YjkyOWFjOTQ4NWIwOTgxNDEifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L465-L476",
+          "version": "repo-lines-v1:sha256:2f66f96f69c18ebdd5688bb391d1197dcdd3bec9b370245bdc7c84f4c36cc864:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMjFhMTk4ZGFlZWZhYWY1YTY1MDQ2YzQwM2I5YWYwOGQxM2NlZjRkYmNkNjFjZjcwNDM3NzVkNWJhNzM4YjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4ZGYyMDRkNTQwMGJhNWU1Njk5OGUwYWQyMmI5ZDRmMjRkOTIzMjliMDA5MGFkOTE5MjBiYTZmY2EzZjI4NjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhN2Q0ZGZmMDdlYTcxYzNkY2Q1ZWRjMGRmYmM3N2EwNzBkMGI4YTM2YWFlNzllMGI4MTg2YmM0Y2NjNjM2MDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNDkwZGI2MmY0MGExOWZhYjNiMzNiNzVkYWY5NjNmYmYyYjY3ZDZmNmVjMjZlZDlhZThmZjhjM2ZiMmFjMGIifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L546-L559",
+          "version": "repo-lines-v1:sha256:433439c42a3b2b482c244d5bb034b1b6b1406b8f480fe154382a2f8fe149be9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxZjZmYzBhMWFmZjg4OWNhMmM5NGE5MTY1YjIwYzZhMzI0MjNlOTVhY2JlNGM4NTJkNGVlNmZlZTA2YjM5OTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMDM0ODFjNTdkMGYwZGMwZjc2Y2QyY2M4YjM2MDRjNGU4Mjk2ZGE0MTIyYWRkMTllODE3NDVkYzdlMzMxYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwNjVlOGZmZDdjNjYzMmRlNzZhYzBlOTQ3ODA4NmUyMDY3NDI2M2NmZmQyMTZlMTI4MDUyYTgwY2QwZDJkZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiNzBiZmJkYmZiOTU5ZTA3ZmU4NWQyZTU4ZjNjMzI2Y2U2OTVjZDgzMDkxMjNhMGEzNTBhMzBmMjEwYjYxZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_94c5e7fef0234ff4a2cd3bd112fb9eb4",
+      "statement": "Bridge connection errors matching HTTP 401/403/404/410 raise SessionTerminatedError and are not retried (the session is invalid or terminated); the bridge exits gracefully so the control plane can restore the session from a snapshot on the next prompt.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L344-L359",
+          "version": "repo-lines-v1:sha256:45d0da6173d95592bb1b52b00b7d021763d3d32768650a06b639e8782d0a2646:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YjdhNGYwODBiN2YwZGY3YjY4NWI2N2RiZjQxNTY4MzAzNTI2MTMyNTE1YmM2NzA4NTg3YjhmY2Q3ZGQ3ZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiYmIyYzZjYjg3YThiMTZjZmM0MjYyNTA3ZTdlYmJiODc5YzhkMzViNzU1NWVkYTZmNWY0YjA0YWI3Y2U5N2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxMjVlNWExOTkxOThjOWFlNTQ0YjdjYzlmZTZkY2RjMTFiNTZjNWRhOTUyN2ZjYTRjZjU0YjIzNzE1M2VkZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyMmUyYjdmZDc1NTRkMjY5MWYxOGY5YTc4ZmM2MzQ1MjdkMjVhMDJlM2IyM2YzZDkwNmI4ZmFhOWIwMzRlY2YifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L437-L456",
+          "version": "repo-lines-v1:sha256:0779c90e7f8da620b78848261158a35fdda2c9034ab9db8d3ff339fea17af99b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0NjIwYzE0Y2UyMDcwMGM5Yzk0MmEwMDRlYzZhMmRhYzc4YjVjOTI3NzdhNjAyNzNjMmQ1NjEwYTI2NmEzZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzMxNDBiYjAwOTZkMjc0NGVjZDMxZTczNTQzNGYyZjk5OGMxMTA3ZjRmMWIwNTQ1NjUyY2EzMjc2YzhmZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMWM4NDkyYzdjZTcyMTJkNThlYjRjNDQ1Y2JjYThmOGVhYTMwODBlMTM3ZmMzNGNiODk4NDkyN2UyOTFjNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlZjdkMGJlZjZhYzliYWYyMmRlNGE5YWQ5YzI5N2IxY2FmOTdhMTExZDFmYzIwNTMzYTRlZDNlYmY5NTdhNWQifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L538-L544",
+          "version": "repo-lines-v1:sha256:74dd3bcd9bb04d6a2975598adb5ccee79dc6512604c9e39b1e3bd655b7c28813:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjIxMWU1ZTQ5ZmNhOGU5ZWFkMTg2NTQ3YTRmMWM3ZDI2Yzk5ZjFlN2NlODY0Zjg1Nzc5ZmI1YjQ0ZjI1ODMxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI5YzUyNDQzNGMwMDlhYWYwZDdmZTllMmZmZTcyMmIxNzBjZjhlYjFjOGMxNTc1ZTRlM2JkNTFlOTI2YzcxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTM5ZTZmMTVjOWNkYzc5ZDIyZGZiN2Q4NDQzNjVhNzI2Njc1NzgxYjVkNTFlZDgzMGZjNmJhNzE4MDMxMWQzZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDNlNGZmZjFmZGYxY2EyNzNkNzdjMmU3YzIxZGU4MmE4Njk3YjdlMTc3ZmUyNjI5N2MyYTdhMTNjZThjNThkMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a2f1c1060474689a15fdf6e4c977d97",
+      "statement": "On connect the bridge sends a ready event carrying sandboxId, the persisted opencodeSessionId, the image-baked SANDBOX_VERSION runtime version (stamped onto snapshots for compatibility), and the repo manifest positions with repoOwner/repoName/baseSha for each repository that has a base sha.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L288-L309",
+          "version": "repo-lines-v1:sha256:793ea1190af91d5beafa0fc0271473567757d9d2dd642b61bd05d89235e49fa3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2Y2I0NWZmMWYyODQ0YTkzOTU5YmVhYzVlZGE1YjA4ZmM1NzI0ODI3MzJkNGFkYzQwZTM1ODVlODhmZGE2YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlMTA2MWM3ZTM2NGRlOTFkZTM4ZjU0ZDMzMGQ1YzI5Y2NhMTdkNGUyNjQzOTU2OGU3Y2Y5YzA5YWU3ZjFkOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlMzA4MTU3Y2Y4NjI3MGQxNmQzOTAwNjRkYTQwODg1MjBjYjliZTViYmExNmZhYTlkZWJmODYxNDczOTI4MmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_71c2e787a300410fae5c5332c9e03aa9",
+      "statement": "Supervisor boot warnings are queued to /tmp/oi-boot-warnings.jsonl (JSONL {scope, message, repoOwner?, repoName?}) because the supervisor has no control-plane event channel; the bridge drains the file exactly once after the WebSocket handshake into warning sandbox events, so reconnects never replay it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/boot_warnings.py#L12-L33",
+          "version": "repo-lines-v1:sha256:710b264daa640725bf59df8b37350ffd930deb9c9322b467bff07b59a68ab261:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYzYzZGY0NWE0ZDhjMTA2MDY0MTE1ZDhlYTNlOTZmOTVhMjRmN2ZhMjBhZjY1MTgxZTQ2ODIzMDY5MWY4MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1MjBmNWVhNmRmNmFlZWJiZDQ1ZTEyNTkwMmQxOGE0OGNlNmQwZjhhOWNkNThlN2FjMjFlYjI2NWYyN2U5MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkZWU1Mzk2YjVmN2FhOGZhODNjNDdiN2U1M2E3MzM4YTY0NDRiZDRmY2Q4MzNiMmRjODEyZmVmYjE5ODc3ZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3YWU2ZGFiNTVkYTFkZTBhZjNmNmY0NmU3MTY0OWI5ZWJjYzk4NjU5MDc1ODMxYjI0ZmZkNTdiMDkxOWYzMzYifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L561-L588",
+          "version": "repo-lines-v1:sha256:f0f4ae915c865b0f4aca4eaf15920043dffff2684d5326a425a4fb01deb1bc13:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMWY1M2M3MzE2NDU5MGRiZjEyODFjYWM4ODc2YjUwN2Y2ZTI2YzY5ZjA3MjFkMTUwOTdhNmNhNjZlNDdhZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NmE1NDkyODhjYTEwMWEwMWI2Y2M5Mjg2OGU4MTE1YTk4ODY3ZDZiZTM2NWMwZjIzOWE2ODkxYjA1MGNkMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkYjBkOTI1M2M1MmMxYWMxMTRmYjMxMTlkOWIyNjcwNTk4NWZjYThhNzNkOTE0MDQwZTkwMzJlYzNmMjdlMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3OGZlMjg3MWVhNmNjM2I2NmZkYzY5ZDkzZWMyNDNiNTQ5NGYyYjVmOTdiM2IxYjA3YTJjOGFjYTZhMGU5ZjUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/constants.py#L56-L59",
+          "version": "repo-lines-v1:sha256:2acfa47e39df9a527ad2d84fd89f71ba9a7f671131846a4cf8979fb385037b3c:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVlYmNiNGZiY2UzZGRhYWM0ZWZhYWY1ZmRmMTQ4Yzc0YTMwYmUyMTk5YWVlODkzNzI5MDdlZWNjNGU4M2QyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWFkYmU2NjRlNzNkNDdjOGZiZjRhOTNkYjI5MjMwZDdjZTUzZmNhMTVjNGI0MmE5YWI3Yjk3YzJkY2I5ZmU4NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzlkYzlkMDRlYWY0MDczMzRmZGM4NGIyYTZhMDU3MGNkMTgxYjdmOGE4OTJlOTViYWIwZmNjNzYxYWY3ZjE2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjBjMGM3YjljY2FiN2FmYTI2MTNjNWYzOTkzYmViYTNhOGI4OWM1NTdiNTNiZTQ5MDE1ZWZlMGJmODM1YmYzZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e834b453df5a4139b79eae033054a185",
+      "statement": "Prompt commands run as background tasks NOT tracked in the per-connection background-task set, so a prompt survives WebSocket disconnects while the bridge reconnects; on completion the task's done-callback emits execution_complete (success or error) and requests an idle diff refresh.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L598-L673",
+          "version": "repo-lines-v1:sha256:a2df22337bb06bfeb2c6dbb56e7a1f202517abed8ed95482851296474a5dd43f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyNTI5ZWJkZjIzYzYwNDc2M2Q1MTkzNTIzMmJmM2M5NmRiOTdmMmY2NjAzNjY4ZDM4Njg5MzVlODBkYmY0ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNjZkOTczOGEzN2MzZmExOThmNThiOGMxZmQzODRjNjVkODI2MjliYzgwOGU4MmQ0YmIyOGMwNWZjNTdkYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlY2JjNWJhYzFkZjRkOTE3NzY5NzU5OWNiOTY5MTU0ZWY2ZjQwNmRkMGUwNDE1MDRhNWU5NjMwNTM5MGVjYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2YjZhYzBjODhmNDkxMmEyNzJlMWYxZDdmYTJhMzhiMzY3YWRmZDVhMmVkOWVkZTc0MGI2NDA4MTRjMTAyNzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3070018bd4ae45f9981abb646b69a944",
+      "statement": "Prompt duration is budgeted to leave snapshot headroom: prompt_max_duration_seconds = sandbox_timeout_seconds minus min(900 s, 25% of the timeout), where the sandbox timeout defaults to 7200 s and is overridable via SANDBOX_TIMEOUT_SECONDS; the SSE inactivity timeout default is 120 s clamped to [5, 3600] via BRIDGE_SSE_INACTIVITY_TIMEOUT.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L167-L229",
+          "version": "repo-lines-v1:sha256:093cb6cb7a3d691ebda5354a9b2f8b1ad022cef0e1158da8dd2508cd52629867:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjOTgzMGVhN2QxYzFmZTY4YzkwNzBhYmViMzUzMmExZjgzMGJjNThhOWZmNGVlZGIxZTVhY2M4MjAwODljZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2NTFkOGExMTJhNWRjNmQ5ZDJlNDVhMDI1ZDcwZGNmM2FjOGNiZmM4N2U0OWY1ZDI0MDljZjNhYmJiNWE2OTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5NTJlYWUxNmIzNDQzYWM3Y2U1OWJjNmZhNjQyZjBjZDYzNjk0ZDZkMTA5M2I5MDA2MWVjMDlmMTFlZTlkMmUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/constants.py#L8-L12",
+          "version": "repo-lines-v1:sha256:ebfc979a0f7dfc77b2777f440080ed871cc464fe57b3629ffb5ea80f451b0689:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE0MDJkZjE2NGE2OTk1OGRkODcyM2NlNmVlY2VmOWI0MzhhNWNmNzYzODQxNmQzNzI4MTFhZmNlNzZjOTJhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWUxOTEyOGJmODE0OTdmZGQwNmJiZWJhOTVjYmQ5YThiNWJkZWI1NDNkMThkYWZhNDQyYWUyMmFlMmJkNzQzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2ZiMDNlOTEwMWMyNjExMmIwZTlkNGIyNTNlNWNjOTkyMzVmODA1ZGQwY2MxNTMyOTc5NjU2YTc2NDAwYjFlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDMyOTBkYzY0Y2VhNzkzYmExNmE4OGQ2MTk2MmNkZTAzMWYzMTEyZDRjYjA3OGVlYjRmYzkxYzc1NDViZTQ3MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4de8edcf3159444da86d6aeaf3f87410",
+      "statement": "Sandbox events are delivered through BufferedEventForwarder: while no connection is bound (or a send fails) events buffer (max 1000, evicting non-critical events first); critical event types (execution_complete, error, snapshot_ready, push_complete, push_error) carry a deterministic ackId ({type}:{messageId}, else {type}:{random}) and stay pending until the control plane sends an ack command, so they are re-sent on reconnect; bind() recovers the backlog under one lock so a concurrent drain and bind never both walk the buffer.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/event_forwarder.py#L18-L34",
+          "version": "repo-lines-v1:sha256:8c1d78367e94327ab81a3ef7673d8a01db47a9c03dda2c9791968c480a461d38:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkOWIxZjZlNGMwMWU4OTlhMGNjNzYxMmQzNWY3OWJhYjM0NjE5YmNlZDRlODI2ZTgxMGUzMzRhYWZjNzBjZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNzMyY2Q5NzljYTNjYTk2ZjE4MTNhYThiNzlmN2NlZTZiMjRlNDZhYmY3ZjkzZTYxYTA2MzE5NjY4ZTE3ZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4ODIzOGRlNjI4YjFjYmQyY2I3NThlMGYyYTBlNWMwNzQwZDMwZTIxNmUyNmVlODA1ZTllZWFiMDgwODkyYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0NmRkZDZiN2IxNmUwOTEzYjg4MjlmZGEwMjc2MGFlOWRkMTI1OTA3YzMzZDVlNWYyYWY4MWE3NDUwMmI0NGIifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/event_forwarder.py#L249-L284",
+          "version": "repo-lines-v1:sha256:2a67844418c92aa3396db84c4040e9e772c28e2f4ae682384aca55089f7d98c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZjUyM2M2N2Q5OTJkOThjOTE2ODc5NjY3MWVhYTRmMmFlNjQ0NDdlMTFlZWNiZmRkNDMwYmEwNmRlZDBkMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOGRlYjNlN2I5M2ZlYTIwOTMxNjIyMzliYzg4MzVkZWQyNDEwNDc1OThlMzIzNTMzYjBkNmY5NGZmZjQwYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyZjMwYjcwNTM0ZjkyYmUzMWZkNDRlZjA3NGI2YzQ3MmZjMWJlYWEwNTAzMzVhOTg5YWVhYjk5NDQwMWEzOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/event_forwarder.py#L83-L146",
+          "version": "repo-lines-v1:sha256:14a06568ab16ef803f59238d2c7a6f2435c9c2f6315691ce5a3f86fa10bdb7eb:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMTIyMTI5NmJjZWUwYzk3Mzc5MjdmY2MyYzUzYzgxZmNjYzIyZGIzODczM2JmMDMxZWQwOTNmOWY3NTcyYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZjlkN2UxMjg2MThmNGMwNzI3NTc1NzBjMzg0MjAxODM2NWFhMTM4YTM2ZjY0YjYyMmUwOGNjMTk0YjY4YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkNjc1MDVmYTI5MTUxZTUwYjZmMDYwNjE1NWEyMGI3NWQ0NGFiYzFiZTZkMjhlZDZhOTVkNGFkOWI5ZjYwYjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_64934c94e1c14173ab3f399d1e3545d1",
+      "statement": "The push command normalizes the provider's pushSpec into PushRequest (missing fields become \"\"/False), validates structure (both or neither of repoOwner/repoName, branch, refspec, push_url), resolves the checkout through the supervisor-written repo manifest (a spec-named member is matched and its path used verbatim so crafted names cannot select a checkout outside the session; identity-less specs use the sole /workspace clone), runs git push as an argument array capped at 300 s (terminate then kill after 5 s grace), redacts credential-bearing URLs from stderr, and funnels every failure into a single push_error emitter that includes branchName even when empty.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L79-L133",
+          "version": "repo-lines-v1:sha256:b7254b0d3d3429d56ab5e832ee85c5dbec2290215daeccde1d999c47ae299fb2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2OWExMzk3NWMyNTZlYzgzMjBlMjAxNjA4M2M5NmRmNjM3Y2EzZDM1YmViZGUyMzE0YmVlM2E0NzExYjU2Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkOTZhNDJmY2FkMjEwNTg5YTM5NGU1NTc3MTZhZjAxYjM2Y2IyOWVlMTRiNDYyNDk4NmUyNjBkN2I1YmRhMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwODgwMzAxNGI0NjRhNmFiYWExZGZlOGZiOWJiYjgzYTAwNzRmOTY0NmJjNDlhOWQzMTc5ZGViMmZkZjAxYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3YzRjMGI5Yjk0ZjkwZTE5MDdkZDdkNWZiMTFmMjI3YThiNWY0M2Y5YWJiYWJkMmY3YjFmMmFkYWUzNjc1MTMifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L844-L1051",
+          "version": "repo-lines-v1:sha256:33727807d73ccdb5f1011bf830b1ed259e1301c0af3649cf278f1730b272af0d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjA4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiY2EzY2U5YjA5MTM1NGVmNDI0ZGU1ZDExZTJkYWNmOGEzOGM4MGQ5Y2RkN2VlZGMyN2UxMTY2M2MzOTM4NWZjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1OTA5YTUzYTYxOGQwMjhlMWQzMDAwYzBhN2FiY2VlY2JlNWZiMzdmNGU1MTFlZmU0NjY0M2ZhZDZlNjY4NzJmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlZjNlODIyNGNkODdkMTVjMTQxYTU5NDU0YTk3NGU1NTEzZDJjMDkwYzBlMDk2ZDc5YmIxNjA5YTNmOGU1MzZlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhMTA4NTJhM2ZmYjllZGU3ZjJlNzhkOWExNGQ1YmFlODliNzdmNWYyMDI1N2Y2MmJkZGQyNjQ3ZjQyOWM2MmQxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_152f04dd2e06480c93795269fd47d685",
+      "statement": "The git credential helper implements git's credential protocol and mints fresh short-lived SCM credentials on every get from the control plane endpoint /sessions/{session_id}/scm-credentials; it refuses to serve credentials unless protocol is https and the requested host equals the configured VCS_HOST (default github.com), so a malicious submodule URL or git ls-remote against an attacker host cannot exfiltrate the installation token.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L123-L149",
+          "version": "repo-lines-v1:sha256:9088f6ba108e425eee6744ea0172f9b1e4229ab76649f14ac54165279ac6f96d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiYzNmZWEzNDI3ZDEwMTk5MzZmZTRjYjRmODAzMjk2YTgzMmE5ZWQ1ZGIyNmQ0NDM2NDZiMGEyMGI1NTNjYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1NmEwYjMwMTI3YmJiZjE1NTE0ZGVhMjNhMTlkYTQ3ZWQ5OTRkMjdkODAwOTA3NWM3MDRiYTQ5NzAzMjkzMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkMjI1YzEwNjg1YzQ4OGE3OTc4ZTc4NmVhYTA1ZDAzNDQxMWVkOGJhMDZjMGQ0YzE0NmNjMDhhM2RkMTRlMDQifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L191-L211",
+          "version": "repo-lines-v1:sha256:f4fc01a151f4e3ba81d19398954e3c716920888150c88748f5cb7f62d75863e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwZWNkNjczMmQ1ODExMDIzMGM1OTE5MTBmMmNkM2U2ZmQxNDQwZDkwZjRjMzY5Yzk2NTIxY2MyYjk1MjFkYmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjZjYxNjViYjAzM2JlNTRhMjE1OGY4YjBlNTcyZDg2ZjJjNTU5ODQzNTRkYjI3NDNmZWNhOWNhMjIzYjVkMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlZmE0OGZkYTliODQ0YjNjZjY4Yjc4NjBjYzZiOTE2NGUwNTVjMjU1ZDBkNTE3ZmQ1N2I3MzVkNjM3MDA3MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZjk4ODAxNTVmZjdmM2UyMTZlZDhmNmUyNTQzNzIwNTk3YzUxNTJiNjA4ZTk5YzBhYzg3NmNkN2YyMjM3MjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef72f8ac25ef453086ad739d646d3765",
+      "statement": "A successful credential-helper response is cached to /run/oi/scm-creds.json (mode 0600, atomic write, advisory flock serializing concurrent first-boot get calls) and reused only while more than 5 minutes of TTL remain; the cache is never a fallback for a failed refresh — a control-plane rejection exits non-zero because stale tokens silently authenticating are worse than visible failures.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L15-L24",
+          "version": "repo-lines-v1:sha256:2e0744d25d57ae09797634740f3fda9ca643cae766e55397facfd11cbb5e4ece:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiY2RjNTY0ZjgwZDkxYmMyODZlZGU2Yzk5ZGZiMGVkNTc1YWM1ZDE4OTNhYThiYzY4NTMwMWRiMTE2OTE2ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzMDNlY2RkNGE0ZDEwZjE5YzczZmQ0MmZkMTI0MzdmZDMzNTRhODI2ODE2MDVkYTUyNTVhOTdhMzkwNjhkYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0ZTdkZjZjNWU2YmI1Y2I4Y2M2MmZjYWY0ZWZiMjZiMGM0ZTg3NGVmNTRhN2JmMTQ3YjM2OTA5ODhiMGY0OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1YjZlODcwNmI0MzA0N2YyYTZkYjY3ZjEzMjYzODU5NTYwNGU2N2YzNjk2Njg3NmNlMDE1OGYwMDUzZTZiZDEifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L152-L176",
+          "version": "repo-lines-v1:sha256:832e28a0c0e102ee00aea53f7c0eae13e128f6318006a7a60fe98b1819437d3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1MGMzOWRmNjViNjg4YTEzNWMwOGJmZTkwZDI5ZGIxZGIwMmUzY2ZhM2Q0ZjJlNzIzMTA1ODE5ZGM1NGYwOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjNGZmMGMxMTYwYzUxZDU2ZTFiZjA1NGI3M2E3YWE0MzMwMDg1MmE1Zjc5ZjE4MDQ2OWE4YzA0NDg1OGVlYmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NDE5Y2RhOTk1Yzg3NDdiOWM5YzM1M2VmMjM3ZWMyNGEzZTFlYWJmMTQ2NWRhYzdlMWM1ZDA1Mzg4MjMwOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2MzM0YzUzNzExYTEzNGI3M2EyMmFkYjlmZjFmODI3N2I1NmJkODdkNTdlZWJmYWE0MGM3NDg4ZGY0N2UxNTIifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L214-L255",
+          "version": "repo-lines-v1:sha256:f4e618bd9652f2695f1c68ffd0837ff25ea81920022d8245b0954d3ba383e30a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5ZjQ3OWM1ZDYwZDVhYjg2NzJiYmY0MDc1ZTEyYWQ4ZjhlMmZlZDkxY2VjMmJhN2FhMWY4MzM4N2M5ZjkzZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjMjc1MDNkNmViNTdiZTc2ZjY0N2JiNDkxY2FiYWUyNzVlZmRjNDljNWNlYjE0MTFmZDI4MmY3ZmU0YjU0NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3NTE1NzZhMjc3NDdlYWMxZWZlYWU4MzNmMTA5YzE4Y2M3NjRjYjNhNDZiMzc3NDE2OTAyNmQ3NjE1YmJiMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNzQ4YjAyZWFlZWM3MGFlMDUzYzU1ODYyY2JiYjMzZDdjZTQ3MmZmNjkxMzIxOTRjNmRiMmFiNWJmYzY2NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3059d0cb90de44b58400fb11d6475ca5",
+      "statement": "The credential helper falls back to the injected VCS_CLONE_TOKEN env (username x-access-token unless VCS_CLONE_USERNAME set, 1-hour TTL) only when no control-plane context exists at all; partial control-plane context refuses the fallback.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L214-L235",
+          "version": "repo-lines-v1:sha256:c0d13d2f203ba8f88ec1661b314d3ae3b202f5a56eae8ade2cc762fbba409464:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5ZjQ3OWM1ZDYwZDVhYjg2NzJiYmY0MDc1ZTEyYWQ4ZjhlMmZlZDkxY2VjMmJhN2FhMWY4MzM4N2M5ZjkzZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmYWViYjAyNjFlNjk5ZThjYTYyMjlkMzNjYjJkMzlkM2FlZTI4MDJkODBkMzk3ODg3NzhlZWM1YjI3MTYzZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3NTE1NzZhMjc3NDdlYWMxZWZlYWU4MzNmMTA5YzE4Y2M3NjRjYjNhNDZiMzc3NDE2OTAyNmQ3NjE1YmJiMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyNDdlYTFhOTZjYzlhOWVlOWNjZjNiOWVjZTI0YzJiNDRkY2Q1ZWUxMzY0MDk4ZWQzMTdiZTA0ZjczYTY3YTYifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L74-L120",
+          "version": "repo-lines-v1:sha256:3a4be06e4a4203c8537eb10146d6a1b9f0554d0d96f72c6f187cc1de0995189f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwNTIxMTllMTAyYmQxNGJjMDZmZDBlYjQ3NDE0YWZiNDMwZDQ0NTA0OGRjMzcwZTdhMjIyMGM4ZDA3NGJkOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2NDUwMTc4NGFkNzlkMzlhMzdhZjg4NjYyNDBlZmM0MDBmNjA3ODBkZTc2Y2Y4ZTU5YjIwNjdlZTk0ZDRkMGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyZjJkZTViZGMwYTY3OTM4YTYzMDMzMjc5OGEyMjYxNjk4MTc2MDI3YjMyMGMzZTZiNzE5NjY5NDRjMjdjYjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ff60e1e76c54dc3be42048da7a272f7",
+      "statement": "The credential helper's gh-token action prints a fresh token for the gh wrapper only when the environment has no genuine user token (GH_TOKEN always wins, then GITHUB_TOKEN/GITHUB_APP_TOKEN, with OI_GITHUB_TOKEN_IS_FALLBACK=1 marking the expiring system fallback); a failed mint prints nothing and exits 0 so gh falls through to its existing env, and non-github deployments never touch gh's own auth.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py#L270-L312",
+          "version": "repo-lines-v1:sha256:65e2e85249d871d5320a6d78e3c488bb07123205b84870afa02dbd498f7801c7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4YmY3ZTFjZTJkY2NmMzk0ZmY1N2IwZjQyOTZlNjgyZDA0MzY1NjczZWZkMzAxZTA4ODQ5OGI5MTUzMjdiMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTViYTNmNzk5MWQzNzE0MmVhMjlhZDlmNDcwYmI0MDAzZmFlMTllY2FmYTQ3N2VmZGY5NTdiMmRlOWNhYzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0MTU3NzZhOTlmMTQxNTY1OWRlMjZlYjRkYjI2MTg2M2ZhMTIxOTY2NjBjOTU3ODUzYTYzMTMxOWJmZDliODYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2997aec8d0f947e495502e549cdad439",
+      "statement": "GitSigningRuntime fetches the session commit-signing configuration from GET /sessions/{id}/commit-signing and applies it per repository with local git config: enabled -> gpg.format=ssh, gpg.ssh.program=<oi-git-sign>, user.signingkey=key::<ed25519 key>, commit.gpgsign=true plus committer/author identity; disabled -> signing keys unset and identity defaulted to OpenInspect <open-inspect@noreply.github.com> unless the prompt supplied an attributed user.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/git_signing.py#L126-L240",
+          "version": "repo-lines-v1:sha256:f1cbb56d3a12ae5644ba5777613daf20b69bf41c6f0af345b4b031dd9b707b64:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2NWIxODI2NTkwMjY2MmJhYjAxZWZlMzI5YTk2MWJjMDBiNzMxOGRiN2ZlYWVlMjNhYzFkOWM5MTc4YWQ5MTI5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkNmYwMjA2NDUyOWQ3NDJkY2E5MmM3NzQ0MTEzYjA1NjU0ODUwMTYwMTNiMjNiZmU0YWUzZGVlNjFmMjZhYzZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjYjNhMjYxYzMzOGM4N2QyZTQ5YjhkODdlZTI1ZTJlOTlhZTk4OWE5NWVjNmZkMmZhMjNiNDBkZmYyNjk0NWVkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_6b60e422d3c14abf98f12f85091a6ea1",
+      "statement": "Git signing configuration fetch errors are retryable only for HTTP 408/429/5xx and transport errors; a non-retryable GitSigningError stops the bridge run loop (it never degrades silently), and GitSigningError messages never include secret configuration values.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L350-L359",
+          "version": "repo-lines-v1:sha256:120206cb805f7ac14746ae427d26f1031ec6491b90c2c3c00e45f8f2919a83bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4YzRkOWYxMmMwZWVmYzE0ZTZmODM0ZjU3MTI0YTY4ZGRjNzMwZDE3ODkyM2QwNGYxMDZhMGMwMWExNDllMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiYmIyYzZjYjg3YThiMTZjZmM0MjYyNTA3ZTdlYmJiODc5YzhkMzViNzU1NWVkYTZmNWY0YjA0YWI3Y2U5N2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUxMTIxYTZkYWNmNTEzMDg1MjkxMzhmZTAxNWI4ODhjYjgyYzU0MDk3ODU0MzFiZjZjNzEyMjNlNjMzNjBkMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyMmUyYjdmZDc1NTRkMjY5MWYxOGY5YTc4ZmM2MzQ1MjdkMjVhMDJlM2IyM2YzZDkwNmI4ZmFhOWIwMzRlY2YifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/git_signing.py#L143-L156",
+          "version": "repo-lines-v1:sha256:1b24c384c35b32467ab1b6697bb7d6d5ea37139c75f1eef0ff039917391f97c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MzA1NTFhZGI5MWM1YzcxNWZhOGVmNmUzZDBkYjY3MjBjMWNkNGUyYmMzYTkzMDY5MjdjYTkwZDFiYzcxN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlMzIzMzIxMDcyZjM1NDJlMmExNzQ3YzBjNTAzNzY4ZTFlYWRmZTQ2Yzk4MTA4MmU1YzNlYmI1NThiZjA1MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkYzJkYmI1OGNmMzE1YjViOWYxMDVhZTI2NjEyMDI5MDgzYmMwODQ4OTY1N2YwMGUzNmU3YmQ2OGY0ZDZjYmMifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/git_signing.py#L34-L47",
+          "version": "repo-lines-v1:sha256:740ba533fa0a33c3624e64616c4ee8d3001ef9075145abe1fe40e44d8a7d0d95:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkZjBkZDJkMTQyMDIzYjZlYmVmMGJkZGMwMjJhOGJkN2I1NWMxZjNhZDg2ODFmNWUzZDljNGVmYTUxNmEwZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1MDA2ODkwOWNmMDhiZjMyNGMwZjRhZGQxNDk0MTQ2NmY2OTdiM2IwZTVkMTExOGUyY2U0MGMyYjNjM2JkNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4NzZlODViY2RjODFmNzM5YWNjMzVhM2Y5Y2ZmZjZmMWFhMzJkMmE2MjE0Nzk4YThjODg0YzlhMGEzYjQ5NjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d4ed211d7394468a8b5306306dbcf349",
+      "statement": "oi-git-sign (git_signer.py) is the stateless gpg.ssh.program: it intercepts git's -Y sign -n git -f invocation, reads the bounded commit payload and Ed25519 public key, POSTs them to /sessions/{id}/commit-signing with the SHA256 blob fingerprint, validates the armored SSH SIGNATURE response, and atomically writes the .sig file; any other ssh-keygen invocation is exec'd through to the stock /usr/bin/ssh-keygen.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/git_signer.py#L191-L201",
+          "version": "repo-lines-v1:sha256:2892f965d1afd4b45eebd4223332635991a1664a479eafc6c88c1c087b34f305:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwYmM1MTI2NWRhM2M0OTRiZGQyOTQwOGMwZTE3NzY2NWJmZWFkNmZkMjc5MzZmMDU5ZDJjNTU3YjE5YTNjZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5YTM0YzA4OWE3YzQ4MTcwMjU3Mzk2NzFjZGU1ZDc5NzhmYmE0MmZmMzFmOTNjZmU4MThkZmUzZTk0ZDdhNTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjMDRmYzFlZmNhM2ZjM2VlNDRmYzBmZDkwODUxMjRjMTYxZjJmOGIxMTIxYWJmNGQ0ZDc2MzMwZmZkMGViM2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/git_signer.py#L32-L70",
+          "version": "repo-lines-v1:sha256:bf670a7ff8689b644c68ceeccbd7bc40acaec11c8101a643411241c95217b757:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlMThhNzJhNWFiOWVjMGFkNDBhYjk3MDBiYjA4NDFhZmE0YjU2YjIzNjc5YmYyNTNhYmZkOTQ3Njc2YmI5ZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmOWZiMWQyY2I4NWIxNjgxYjhmMDNiODJlNTBiNDBlZTcwOTJiMjE0ZGEzNjgyZmFjMmVlYTEwYmIzZDJmZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNDBkYmZmMzMzNzBmNzNjMWVmMzkxMGEzYWNkMjg2NjQ0NGI2OTBlODkwYWRmNmFiNTc3ZDg4NTQ0MzA0NDcifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/git_signer.py#L72-L119",
+          "version": "repo-lines-v1:sha256:ac7912cd923e6a2f97a9551f8ac0c3ad1ce3391b370d150b672488d228d1ae50:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxNjQwMDY5YThiZDVlNTFmNTVjMjNiMDhjMGVkOGMyMzQ1Y2I5ZTM3MjVjZjZkMDAyYTkyZmJmNTI3MWE1NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5YzU5ODVhMzU0MTk5NWIyMTMwYjQ2YTk3MDg2YjljZDE3YjVkZWY3NGZmNGY1ODBjNjlhMmY1Njg1MWQ3ZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmY2E0ZmM0OGQ1MjEwNDMzNGM3MGMwZTRlYWI1MWQwMWQ2ZTQ0MDc4NDk5MDk3Y2NhNWQ2NzJmNDc4M2ViYTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe27b2da38b643cd9c12752a2af2d42f",
+      "statement": "OpenCodeServer.start() prepares the filesystem (workspace assembly, tools, deps, skills, bin scripts, oauth sentinels, auth proxy plugins, git excludes) then spawns `opencode serve --port 4096 --hostname 0.0.0.0 --print-logs` with OPENCODE_CONFIG_CONTENT (model \"provider/model\", permission allow-all, MCP config), OPENCODE_CLIENT=serve (disables OpenCode's blocking question tool which would hang the headless run), cwd = repo for single-repo sessions or /workspace otherwise, and waits for /global/health with a 30 s timeout.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/opencode_server.py#L480-L600",
+          "version": "repo-lines-v1:sha256:464752196311dd4d4c03304acb809435df4f991e0189e0e9990e8a6c64cca48c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5MjYyZWVlMmU0ZTJmMDI0ZDUzYzYzZTI2Njk2MTBmMDkzMzkyNDBkZDExM2EzMGQ0YjlhODBlOTJlMmEzNWY4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiMjBmNjgyZGJmODBlN2QwOGJlMWEyMmJkYWEzNjc3NWU4NDAyMmI3OWYyOTUzMzUyOWMwMjJlOTFkOThmNDUwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzMDhkMzVkNGNiOWRjZTg5MzlmOGE2MTQyODRkYTM5ODI2MWUxNjEwNGI1YjZkYTI4N2NlM2I5NWNhYzNmM2I5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2MDlkZDFhNjBlM2MxZTg5YWUzYzA4YjdmNWIwNDMyNzJmZWJkNjU4Yjc0YTQzNzdlOTYwMWNjNGQ5OWEzZDUyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_5297d146ffd64d009c2f66cad22f8201",
+      "statement": "For multi-repo sessions OpenCodeServer merges member .opencode/ trees into /workspace/.opencode in position order with last-write-wins (warning naming both members), skipping node_modules and __pycache__; the merged tree is rebuilt from scratch on every boot so removed members do not survive snapshot restores, while node_modules is preserved as image-managed state.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/opencode_server.py#L67-L127",
+          "version": "repo-lines-v1:sha256:43aa55c5a24483d80ed373e501ad04447b586a464e6faa7424f219681583cec2:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkY2JhY2YyZmNmZjg3ZTA4ZjAxMGI2MTQ1NjMzMjI4ZTg1NDQ5YjYxYzZkODE1NWJiNzUyYWYyYTBlNWYzZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwODZkYjYyN2Y3YjI2NmI5NmJiMzhhMDZlZmM3MjYxNmEyODFiNGJkOWUyOTM2NTEwZTQ0N2MzNTYzNTMyZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4YzgxZTc3ODJmZmFjOTJkMDNiZDcxODM1NWVhZjQ3OTA2YmY0NjBlMDZjNjg2Y2JiOWQwMWEwZDI2YTIxODcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bbd2f68280b94652afbe3fe5ac297f91",
+      "statement": "Agent tools: bundled .js tool plugins from /app/sandbox_runtime/tools (and the legacy inspect-plugin.js mapped to create-pull-request.js) are copied into .opencode/tool/; tools gated on env vars (slack-notify.js requires AGENT_SLACK_NOTIFY_ENABLED=true) and tools requiring a repository are skipped when inappropriate; pre-staged plugin dependency trees (package.json/package-lock.json/node_modules from /app/opencode-deps) are copied so OpenCode's Npm.install() skips the blocking arborist reify(), and the global-config seed only touches a pristine dir.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/opencode_server.py#L129-L242",
+          "version": "repo-lines-v1:sha256:9e43511bbd1c999ac47651138e034c04e5e6260657e03a5300772b2ee1a03fc4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3NDY1MGYxN2VlOTFiYWI3ODQ2MDYwMGY2ODQ0NTQ5OGM3ZGZlOTA2ZTE0YjBhNWEyZGMxODMwMWQ4MWVjMWI5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1OTA5YTUzYTYxOGQwMjhlMWQzMDAwYzBhN2FiY2VlY2JlNWZiMzdmNGU1MTFlZmU0NjY0M2ZhZDZlNjY4NzJmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjNTQ0YTBhYmM2NzBkNTIxN2ExNTU4NTM5ZDk5ZTg5MGFjYjY0NGU4ODUxMGQ2MzM3ZDk3MDMxZGUxMTRiNjlhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhMmZjNGYzNWQ0Njc4YTFlYjQzNjFmZGU1MDQ2Zjc0YzVkMzA2M2JlOWYwODUyNTYyNmMyOGE2N2IyMmE0ZGE1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b32d602e86744232a41f8d6efa21bb6c",
+      "statement": "Bundled skills from /app/sandbox_runtime/skills are copied into .opencode/skills with symlinks preserved, and standalone bin/ CLIs are installed into ${OPENINSPECT_BIN_INSTALL_DIR} (default /usr/local/bin) chmod 0755 — deliberately not .opencode/tool/, because OpenCode would import() them during tool discovery and execute module-level code.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/opencode_server.py#L262-L320",
+          "version": "repo-lines-v1:sha256:7b4c44c7654c5616ccf888af858df556549fad18347ad68944851e97ea4c838b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwYWU5ZWZmZGUxODMxYmJlMGU2NDIwNWM0MTdlMGFmMmI2YmM4NWQwZTg5MTRiZjhlNDRkOWQzNDdiMjMwNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkYzIwZWVjYmI3NTg2ZTRiZWY2ZTdkMWNjZGZlODM4YzI2ZWFiY2QzM2U4NDY3YTc5M2RiYzE0ZWU3MDBhMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxZTI4YTg2ZjhjNTIzMjNmZDQ1N2YwZDU2MTU4YzU3ZWJiYjAwNjRiNmQwYTYzY2IzMDRiZjBlMGY3YTBjMWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5Y2VkZmU2MDVmZDExOTFlMWY3ODljNmFlZmYwMGI3YWMxM2E2NGFhMDIwN2JiOGRhYWZkZGM1MzFlMmNmMzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9c5d59c3fb184480bdf9fc7f829e6511",
+      "statement": "Every runtime-installed path (tools, skills, plugins) is recorded in a managed info/exclude block (markers # BEGIN/END Open-Inspect runtime assets) via install_runtime_git_excludes so diff capture and git status ignore runtime-owned files; the reconciliation is atomic, keeps user entries untouched, and retains paths that still exist.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/git_excludes.py#L43-L121",
+          "version": "repo-lines-v1:sha256:f2aed8efe1eb9f7a8062637c62aca205faec6aa3bc759ca46095ae0c4df4bdfd:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5MWRiYmFmMTYwNjkwYmNiODE0ZDhkZTBkY2ZjZThkNjY4ZjdjNzc0MzUwNzU4ZDIzYjNjZWUyNTEzYWVlNzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0ZmVkNDJmNGEyOTdkMjYxYzFlMDIwYzNiOTdjNzRlNTcxMzNkZDFkZGZiYThkNzAyYTNjMDQzNTFlNWE4ZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2MDg2NzVkYmViM2MxZjkzMDk1ZWU0ZWU2YmExZDcxOWUwM2MwM2NhNzg2NGEwNjUwYmM0N2FiODQzZjMyNGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_160e0a5a8dcf4dd081873e9ebec0e9bd",
+      "statement": "When OPENAI_OAUTH_MANAGED or XAI_OAUTH_MANAGED is set, the OpenCode server writes auth.json placeholder entries with refresh \"managed-by-control-plane\" (temp-file write at mode 0600, atomic rename) and deploys codex-auth-plugin.js / xai-auth-plugin.js plus the shared provider-token-broker.js into .opencode/plugins/.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/opencode_server.py#L322-L383",
+          "version": "repo-lines-v1:sha256:f6bf3a37e92f5e63079499532efec6ef7c2a10c093bc39c3928285f2a1fd7e2b:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMWI1MDE3MjNmZWUwNDViMmI5MjY3NmJiYmMxYTVkMTMwYTUzMDFiMWRjYjVkOTIwMDlkNTYxYWY2ZTBhMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNjczODc4OWNmZDAwOGNkMWRlODFkZjYzNTc2Y2ExODMzNzc3NTNmY2QzMDM0NzllNTU5MDZiMTAyYzNhZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlM2ZkOGVmOGRjYjVlZmUxYmI1Y2YyMTVhOTIzNmRiYjZjZmIxMmYzZGY0ZGY3OWM2MTJlMzhkYWRlNDQ4NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3NDQ1YmZhZDBiMTQ0YTU4OTc5NDMxMzcxZjYzNGY0ZjU2ZjQ5YWQ1MzQ2MmFkYjQzMDE2MzA2Y2VjOTZhYzQifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/opencode_server.py#L503-L523",
+          "version": "repo-lines-v1:sha256:a228f30d750986810645e0edb0edbafa41760dc5c67af30b4961cf46684f8f55:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NDRlZGYyYzY3ZjExNzNjOGU4OTFhNTM2YTgzMzhjNmZjODQyOGY3MmExZGFkMzE4MjA0ZmY4YzE2ZDg1MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMTIzMzczYzM3ZWUzNWZkNjU5NmJlNTE3ZmI0ODJjN2QxNzdhN2IxYWExY2Y1OTk4ZDUxMDJlYzFkYzMxZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4ZDZkN2JhNTI1OThlYzQzZTE4MzgzNTJiZDg3YTVlMjM0YTc0MjgyYmI1ZjNhNTRmY2Y1N2ZlMTg3NzgwOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNDM0MDA2NjYyYTU2YjJiNzE3ZTBhNDg2OGNkMTIxZmViZTJkYjUwYTFmMmEzMDM4ZmUyOTA3N2UwNzRiZjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f2c4481fc65474996f03faed9cdab2c",
+      "statement": "The supervisor derives the ordered repository list once from SESSION_CONFIG in repo_config.py, validating owner/name as safe namespace/path segments and rejecting duplicates (checkout paths derive from repo_name, so names must be unique), then writes REPO_MANIFEST_FILE_PATH (/tmp/oi-repo-manifest.json) before any child starts; every other consumer — bridge push targeting, the JS create-pull-request tool, and the diff refresh worker — reads that manifest, giving the /workspace checkout layout exactly one authority.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repo_config.py#L1-L9",
+          "version": "repo-lines-v1:sha256:8a280b827d9ed1cdb878ab7c22c1a7962ce340640966b6997c2a6c0d7137a9b9:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY1YTRmZDQ1NTI0M2JiZjM0MjNmYmQ1YzQwYmVlZWYzZTNmYTQ5NDljNmVkMDVlNGMyYWEzMGVjODQ2ODgxMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMwM2VjZGQ0YTRkMTBmMTljNzNmZDQyZmQxMjQzN2ZkMzM1NGE4MjY4MTYwNWRhNTI1NWE5N2EzOTA2OGRiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjEzMzdhYTVmNTFiZTc4ZTQxOTAzYjRlMTdmMjNkNmRhNmQ3ZjMyNmFjY2ZmZTZlMWExN2FmNzEyYWQzYjJjOSJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repo_config.py#L85-L176",
+          "version": "repo-lines-v1:sha256:fb3593944ee562c144face8ac2c3bd5a2e1c84bf789461e2da2226a114add645:eyJzZWxlY3RlZExpbmVDb3VudCI6OTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2MjU1NzMxODA0OTE3YzllODk1NDcwMjUxYTQ3NzkzN2E1NDUyYWUxZjE1Y2U0MGZhODhkMGM3NTM2ZDhmMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZWUxOTMyODRlODJmYjc2YWY0ZjRmNTgzZTQzZjA1MDdiNWYxMzJiMTY0ZTZkMzUyM2JhZmI5NGMwYzdiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2NjA1MTI2ZGZkZDU1MTQyY2QxNGZmZjAzNjYwNzgwZjYxMmI5YTZiOTk2MzExNTFjOGUwZDNhOTBiY2I1YmQifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_boot.py#L85-L89",
+          "version": "repo-lines-v1:sha256:aab514e5d266a02cb44068081089088866785ffc37b459cb053c71923c16642f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDExZTZmNWUyMGRkZmJmZGU3OWEyMjI4NGExYzllNzExMTIxNTQ5NzE0NTRiNjlhY2FlZTAyYWM1ZTA1NDFmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJmMWY4OTQwYTczMTc5ZWY3OTAzNDlkMmY1NzZiYzkzYWM5MGQ1NjQ2Njg5MzQzZDJkZDI5NWZmMDkyNzIwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjc2OTM5MGU2MWY3OTFjMTgyNDI2ODdmYjAyM2M3NDg2YWJlOWU0NjgxY2FiYjkwNWI5NDBjYjRjNTRiNTU0ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTY3OWFjOWZjZGEyYjVhNTQ0NzI2ZDk2MjA1OTM2YjQwMmIxMzdmYmVjMmZiZDJhY2I2ZGI3ODIwMWYwNzc0ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e80ffafc5b9346edb1b522f890c90d2f",
+      "statement": "RepositorySynchronizer clones with --depth 100 --branch <branch>, resets origin to a plain https://{vcs_host}/{owner}/{name}.git URL, fetches the branch, and checks out origin/<branch> with -B; git subprocesses run with start_new_session=True and are killed by process group on timeout (clone 300 s, fetch 120 s), and git stderr is redacted of embedded credentials.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_sync.py#L202-L278",
+          "version": "repo-lines-v1:sha256:0f96217659f3a4cb1f4128c008fd9da3618af90e672584aecb809e7ffcac5b51:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzOGI4YzJiNDFlYTllM2JkZDA1ZGI1OWQ2ZGQ5N2NiNDdkNThiN2E4NjFjYjY2MzJmMWFjMmQ5MWQ1ZGUzODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMDQyNGJkZTNhZDkxZmY4ZGFlYTgxYTRhYTUwNGIyZmU5ZDM3OTIzZjU5Mzc5MTUyZDU0M2Q3YjRkZWFmNzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxYWFiYjE2ZjY0OGEwZDU3NGY5YTgzMjAzZDE0NmM0ODE2MTQ2OTZjMjE1MGU2Y2E2NjNlNzcxOTJhMWM2OTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0ZGM5MzUzMzY1YzYwYjA4MzlhOWEzMDgwYzU2MTI1ZDRhYWQzMTZiMGU2ZDAzY2E1YWQ0OWIxYmZjY2Y1NmUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_sync.py#L352-L370",
+          "version": "repo-lines-v1:sha256:0666cda188efb1d06df3fd0dfc9d842896a70755c8fdefd5e81adc22a96e4425:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyODcyMjE3Y2NjMmM3YzFkYTY5ZmFhNTU0ZjUwN2Q0ZTZiOTAyMzFhYjkxN2U0ZmM3Y2E0ZTc1N2NlYzU2ZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMWUxYTNjYTAzZjA4OTE4OTgzNTNmOTI3MDYxZTg1YjMzMWY5MzMzN2YzNmZiZDU4NDQwOTcwMjY4NWI2MGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViNTA4NWI1OTYyNDJkOTExNTllMGEzMmQ5YzgwMGI3YWY0N2Y0NTA0ODE1ZGI5OTAxODVmMDhiOTEyMjRlOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_sync.py#L87-L142",
+          "version": "repo-lines-v1:sha256:edabdf3ecd90a6f939fc79432def96c67da7802a83a8d8b28427738e1b7736e8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmNTU5NTlhZTBiMzg3NjQ3NjE5NWRkYzFlNDU2ZGZlYjdkNWNiMDAwYWMwOWExOWQ4OTgzOGY4ODY5MmZjNjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMDQyNGJkZTNhZDkxZmY4ZGFlYTgxYTRhYTUwNGIyZmU5ZDM3OTIzZjU5Mzc5MTUyZDU0M2Q3YjRkZWFmNzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmNGEzYTQwYzkxZDg3M2JlMzY0MzFjYzVhMDNhZmE5OWY1ZDQwYjJhZjFmODVjNWM3MzhiYzczOTg5MmZlNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhNDNiMmM4ZjEyYWQ4NDRmMGNiZTBmYTQyOWU3ZTc4ZjUzZTZhZjA5NDQyYWIxY2E5ZTExNmJjNGI0MjViZWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f8c1f600e9a46f387830df98da8613a",
+      "statement": "Repository sync preserves the checked-out working tree on snapshot_restore boots (only resetting origin and fetching the branch), and resolve_session_diff_baselines keeps supplied base_sha values immutable and discovers the HEAD baseline only on non-restore boots (discover_missing=False on snapshot_restore).",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_baseline.py#L14-L28",
+          "version": "repo-lines-v1:sha256:dfbdbf73c6f54f1e096b729bde59a178d21f2a10cc8b1c299df580f5ca85dec2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ZGZjODNjZDcyZTExNGZiOTFjMGU0YTczNzQxYTFkYThhYThlOTM5MDcwNDc0MDY0NDJlMmZkN2QyYzViNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiNDQ3YTlkMDRlZTAwZWYwNmI3YmNhZGM4MWU1MmExNWMyNjgzNTk4OGE0ZDNjMzViNjBhYzgzMTMyMzMxZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkZWU1Mzk2YjVmN2FhOGZhODNjNDdiN2U1M2E3MzM4YTY0NDRiZDRmY2Q4MzNiMmRjODEyZmVmYjE5ODc3ZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_sync.py#L280-L312",
+          "version": "repo-lines-v1:sha256:d7df4d59a94baa06c707b53cad005064c810e28e5eb028de49fe5d2e47d245e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiM2E3ODlkYWNiNzI4N2I4OGYzZWM1NTc5MmNiZGM2Zjg3NzRjZWQ1M2I3YTNmN2MzY2VhM2E1ODc0ZDBkYzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmMTFlYTExZWYwMWUyZTk2OWU1ZjRjNjI3MmYzZGI2NmRlNWY4ZTU0ZDFjYWFhNGFmZWYyZDIwYmJhMmVmMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmMWU3ZmM3OTJlMTM1Yzg3ODVkMDBhNTIyZDVlNTdiYjQyOGVkOTc5ODA0OWY1NGM2ZGQzNTNjODQ0NzAxMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjMGI1ZTQ0NmU5ZmZkMWE1NTRkZDY2ZDIwMjc0YmIxZjAyOTAxMzQ4Mjg0NWM3MTAwYTM2YWFjY2Y4ZGU4ODAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b7f5cf6f77246c09e959b34b3aae7b7",
+      "statement": "Git sync failures are fatal for fresh/build boots (raising RuntimeError) and degrade to boot warnings for snapshot_restore/repo_image boots ('the checkout may be stale'); setup.sh failures are fatal only in build mode and warnings otherwise; a primary-repo start.sh failure aborts the boot while member-repo start failures are warnings.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_boot.py#L149-L238",
+          "version": "repo-lines-v1:sha256:a3706820168c3d38d27967fe14495380791439d7dc15738919d54d6e421070d2:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhNjhkMjJjNTkzMjRjMzI1Y2Q4Y2YwMWVmOTU2NWVhZWFmYTE1NTQ2ZThmM2E5ZWZkOTZlZmZlYTIxNzZmNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMDM0ODFjNTdkMGYwZGMwZjc2Y2QyY2M4YjM2MDRjNGU4Mjk2ZGE0MTIyYWRkMTllODE3NDVkYzdlMzMxYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmZDI1ZTY3MTI2MzkzYWNjNmQ4ZDM1YzkwMDg3Nzc0N2IyODEzYjFkODMyZjI1NGJjMDA3NmEwZjkzYWQ3ZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgwZmE4MzRkNGQ4ZWIyMTZmZTUxYjc5MjY4MWZkNjJkZjAxYzZkOWM0OTAwZDgzYWZhYjQ0NTdlMzkwYmQ1N2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c4170fd9d6d4013ace6b1093966941e",
+      "statement": "Per-repo hooks run .openinspect/setup.sh (fresh/build only, SETUP_TIMEOUT_SECONDS default 300) and .openinspect/start.sh (all non-build modes, START_TIMEOUT_SECONDS default 120) via bash with OPENINSPECT_BOOT_MODE in the environment, own process group, and a 50-line output tail on failure; timeout kills the process group.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_hooks.py#L15-L129",
+          "version": "repo-lines-v1:sha256:0fe70da1fc346e8d2315ee34cab3d003d49a4b79b348e6ae0426233180c3a9f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyN2IwZGM5MThmMDQyMTliMzQzMmNjMjM2YmEyODU0NTdlMmFkN2IyOWY4ZjlkYjA2YzU1M2UzZmM1NWU1ODM3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MzUwMGFjYjYyOWJmY2YwYTEzODA4MWM1NDA3ODZiYzg4MWEzY2E4NjMzNDIyODk0ZTVhNTYwNzVhMjljOTBmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZGVlNTM5NmI1ZjdhYThmYTgzYzQ3YjdlNTNhNzMzOGE2NDQ0YmQ0ZmNkODMzYjJkYzgxMmZlZmIxOTg3N2Q3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyYTRhNmZjYzVlMDQxNWMyNTY2NzRmZmVhMTg0YWNjM2U0NDQ1NjE1ZDNmYjliNTk1NzAwNmZmZmQ5YWFlNzZjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_19aaab80ecf942aabe6ef14d1df58cfb",
+      "statement": "TunnelEnvironment reads EXPECTED_TUNNEL_PORTS, clears stale /workspace/.tunnels.env files whose TUNNEL_SANDBOX_ID does not match the current sandbox (snapshot/image leftovers with dead URLs), and waits up to TUNNEL_WAIT_TIMEOUT_SECONDS (default 30) for the fresh tunnel URLs before start.sh runs.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/tunnel_environment.py#L39-L97",
+          "version": "repo-lines-v1:sha256:7177ed93ccb86a3b6cce1f668297ddd3ba4af527eefa5252c9bcbbb5afb0a650:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjMzkyOWJjYzQ2NTI3NzJhNTc3NWQ2NGFlYWRmNTQyODlkMzQzNWE5MjZkZGI3M2VmYWVhOTkxZGJkYjQ5ODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjZmRiZjgyMmIxMDEyMGZkNzVmMTFhZDVmMGMzNGIxZTQ1YTQ0Zjc0NjEzZTFjNDlmOTUyNDA1MGVjNTZmNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_31d2f4b991c846e1bae238db4b192a3f",
+      "statement": "Diff capture compares each checkout against an immutable base_sha and runs git strictly with argument arrays (GIT_LITERAL_PATHSPECS=1, GIT_CONFIG_NOSYSTEM=1, GIT_TERMINAL_PROMPT=0, bounded stdout, 20 s command timeout) — repository paths and filenames are never interpolated into a shell command.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L1-L7",
+          "version": "repo-lines-v1:sha256:14fdf10ba451d8d2592b1d2506e47f31610d41ed7bd60c3929fefc6ac3da3a56:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzY0NTBjZjNhM2Y5MTlkMGJkYjY1NzU5NzRiYzVhYmY2ZDc4YzMyODVjODgzMmY2ZDEzYzFlZGE4OGRmYzAyYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMwM2VjZGQ0YTRkMTBmMTljNzNmZDQyZmQxMjQzN2ZkMzM1NGE4MjY4MTYwNWRhNTI1NWE5N2EzOTA2OGRiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTViNmU4NzA2YjQzMDQ3ZjJhNmRiNjdmMTMyNjM4NTk1NjA0ZTY3ZjM2OTY2ODc2Y2UwMTU4ZjAwNTNlNmJkMSJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L212-L275",
+          "version": "repo-lines-v1:sha256:3b9e6b2b531109156142c7e1c9e800582ab88aa205f2496aef12fa49951e7e3c:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjNzJjYjM0MTM5MWY4NjZjMGYwYWUzYzM2MTQ1NjE0YmJiNWU1ZDVhYjgwNWQ4NzNhMTJmNWM1N2JjYjhlMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkNzQ4YzRiZmQyNmZiMjAxMzgyZjkwZGUwYjQxYjRlMGViMzE3NjRkNDdkMGQyYWQwNDY1ZTZkZWZkMGY0MWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5ZjkzMDgzYzE5NzEyMWI5ODI3MDBiYThhZmFiZDE3MjJjZjFkM2U3NDA0NTA5ZTgwZWZhMjcyNDdmNjJmMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxZThmYWViNWM4ZjE0N2M3NWViZGRhZTM3YTFkZTc5MzBkNDlhNWY0ZDkyZWFjNDYwNGRmMTI5YTZlZGNjN2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2cb60d7f540e46cc98c3d51e81890d4a",
+      "statement": "Session diff capture produces one bounded bundle (version 1) across all session repositories: tracked changes via git diff --raw -z plus numstat, unmerged paths via --diff-filter=U, untracked files via ls-files --others --exclude-standard filtered by the runtime git-excludes block; per-file render states are renderable / metadata_only / too_large / binary, binary files carry null line counts, submodule entries carry old/new SHAs (all-zero dirty placeholders resolved to the checked-out HEAD), renames/copies normalize to RENAMED, and a staged-deletion plus untracked-file overlay collapses to one MODIFIED record.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L324-L490",
+          "version": "repo-lines-v1:sha256:36781f4d54cf83f0f4dc7c32261d1b83dbd55be59b0cbd201aa68d6d9a200a08:eyJzZWxlY3RlZExpbmVDb3VudCI6MTY3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkNDBmOTEzOGQ2ZTZiMWExYmJkNzFlYjUxZWNjOGM4MzJlM2VkYzJjM2U2MWFjMzljODAxZTFjZGFiYmQwMGIxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwZTM5MjI4YjJiYTkxOThjMjJhY2EzZGU5YjAxMjliOTZlMDllZWYyNmFmOGU4OTdkYWVhOWYyNTdiNDNiZGUyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlZTUwMzExNzBiNmVmMGNkNWM0Mjg1M2FiOGExZTA4NTkwY2FkMGY5OTI5NzBmOTg2ZWRkNTA2ZjE0MzQzMjRmIn0"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L40-L109",
+          "version": "repo-lines-v1:sha256:d748afcd329386e26ee9144e607258f00fd3cfbd403103010cfd72464feff9ad:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MWU4YmU4MTc2ZGExNDM2MWUzNTdmOGY0ZDczOGIxYjA2MzM3OWFmYzNmN2Q5ZmU4MWRjMDc2YmFiNTcwYTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxNDc2OTVjNDIyNzc4MjZkNmJkOTg5NTFhNGEwN2FkZTNiZTQzN2QxNTk2NTBkOGIwZWE4NzBiNzI5ZGJhODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZjU5NjQ0MjIwNTY0MzcyYzM2MmIzMzU4YWQxYzJlY2I1MGIyYWRlZDlmYjFiYTdmNDY3NjI4ODlmYTRiMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3M2MxZmQ0NTM1ZDQ0MzhlZmQyYjYxOTc2YzQ0MTYwZTFmYmRhYjY0YTIzNmQyZGNiMDA3ZmE2NjFlYjJiMWEifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L554-L577",
+          "version": "repo-lines-v1:sha256:9eacdc639b0f689dd111985d7204484a9a0ad382974a9f13f42c744364feac35:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1NmViZTAwZWI3MzJjNDhhZTM2YTZkODI4NDIwMGFmZDcwZjQxYzNiZWRjNTk5NGYzMmZiZGVmZjI3NmVkOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2OWRhNGYxZjExMWYyN2UxMDIwNTQxZDE3MTJiODczYWU4ZTg2NDY5NGNiNDA2NzkzNGNkMDFjYTk3NmM5MTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmZWUzNGU3Njg0YmFjZGU5ZDMwNzk5NmI0ZjhhODI1ZTY0YTVhYmQ0Y2I4MDI0ZWEwYzQ4ZGM4NWVhZjFiZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwY2UzZjI0YWI0N2MyZjVhOWQzMzdmMzc3ZWQ4NTczZmE1NjU4NDA3NjQwMmYxYWYwNTRhM2RlZDYxOTQ2MmYifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L724-L836",
+          "version": "repo-lines-v1:sha256:9d545279ec37e58bace0c097b3fe2ef68a308a76bb7e820204de8c0185f0db6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxNDAwZGY1MzYyMjA0MTdkYjBkZmRiNzUxM2M1Zjc2MThhZDk4MmZmZmFjOGQ3NDg2NWNjYWRiNDgzZmI2MjI4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzMGMxZjE4OGYxNDJlZDdhODI0NjgwYjIwNzE3MmM1NTE5YmM2MTRhNDhmZGE3Y2YxNjdlZGI4ZGRmNzk5NTZjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4Y2M0YTdkMWNjNzk2YWJhM2U0NjcyMzMyN2Y1MTdlOWY4MTE5ODJkMjUwZjA3MDI5ODZlNGI1NzY0YWQ5NTg5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5Y2RiMzBjNGZiNGRiMTk5YjRlMTUwNDc4NzU2MWEzZjczNTUwZTBlOTliNGNiODNjYTJjNzVhNGU2ZGU2NDZjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_deeaad2b3a9549a2806c44accfa14355",
+      "statement": "Diff capture applies resource ceilings (1000 files, 512 KiB per patch, 1 MiB total capture, 8 MB metadata, 20 s per command) and bounds the encoded bundle to the 1.5 MiB wire limit by shedding patches largest-first (state -> too_large), then trailing metadata records (marked truncated); a bundle that still exceeds the limit raises DiffCaptureError, and a repository that fails capture becomes an 'unavailable' upload entry with a bounded error string so the bundle still uploads atomically.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L24-L37",
+          "version": "repo-lines-v1:sha256:6163ebef1c17e5a9eac0d9afde3dc7c931e8d048e443afdb50f397b27bd20e98:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNDM3YjMyODY1MDZkNDNhYjM3NTA3ZGE2NDBiYzcwZTA3MWViNWYxYjRiMTg3NDVlNWRkMzQ4NmFhMTliNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4MjUzZWVlZmNmNzExY2ZiMmM0ODU2MzRiODA4YmU3NDM1ZWRhNTY2NDRkYzJlNzlmOTM3OWY1MzVkZjA3ZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyNzNmMTk5MTM0YTVlZTIxMmZiNWVhMmQzODA5YmViMzM2OGQ2MzkxYjIxYWU4ZjNkYmUyY2E5M2ExOTRiY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxNzAyYTQ4ZDk2NjY3NTcwYzA1ZWEwYTk1Mjg0MmFhY2U5NzUyYzQ1NjVlZTk3NDdmYWY1MTlhMmNjNGM5MTgifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_collector.py#L839-L972",
+          "version": "repo-lines-v1:sha256:65f333c9a126241b4de60b1a55d871f905620cedf5c95ddf6436c40825d61f24:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhMTA0YzBmNjJiNzAyMjFmOWIzYTUwNzk1NzFkODFmNTU4NDhlMGIxNzI2NThlZTBmZmUwOTE3ZjQ5MGZlMjQ2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5MjE0MzYzYzIzNmI2OTdjNmNhYmVhMGU2YTc2YjUxYTc4Y2U4ZmRiODllNDIyZDllZWYyYjE4YzU0ZjM1ZTY2IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4Y2M0YTdkMWNjNzk2YWJhM2U0NjcyMzMyN2Y1MTdlOWY4MTE5ODJkMjUwZjA3MDI5ODZlNGI1NzY0YWQ5NTg5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjOTMwNjYzODg2NTljODMxODE5MTc1ZDUxZGJmYWU2YmE4YTU0NTU0YmZiNmUyZWEyYmU2ZjEwODhmNzEwZTFmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_c41e39c3c9fc41f0a5c97d3dd2ca7750",
+      "statement": "SessionDiffRefreshWorker coalesces terminal executions into one eventual idle-time checkout refresh: prompt_started() increments an activity generation and holds an idle gate, requests settle only when idle and not superseded by a newer generation/activity (stale attempts are discarded and retried against the current checkout), failure reports go to POST /sessions/{id}/diff/failure, and a 404 from either diff endpoint marks the feature unsupported for the rest of the sandbox's life; the bridge closes the worker with a 5 s bound at shutdown.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L263-L271",
+          "version": "repo-lines-v1:sha256:99413fa87c91256db2f40b2bc77a0653b2318535e696a7fff3e6841b5e2ac495:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQwMzg0ZmFhY2M4MDdmODQ0YThkNjJiZjZmNWMxNTJkMTIyODY1NTVlY2Y5NmMzNzcxYmIxNjY1YWIyNTE4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwOWE1M2E2MThkMDI4ZTFkMzAwMGMwYTdhYmNlZWNiZTVmYjM3ZjRlNTExZWZlNDY2NDNmYWQ2ZTY2ODcyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2ExYTI0OGFkZjZiYzIyNTc5YWNhM2NhZmQ3MGIzMjYxNjUyYzYzYWI3MzdmYWQxMTVjZWJlNjlmOWMyOWRlNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGVlYjI3YjkzMzdjMzIxMjM1Yzg0MGVmZDg3ODIzMzgxZmFkNTVlZjRmYjhlNTE2OWZkMGJmOWEzOTQ3YzdmNSJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L382-L390",
+          "version": "repo-lines-v1:sha256:6a45c41816af47c37b0c940e95c849c9b7fec1cf3d7e359b51ea86c31faec3be:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzcyNzZkNTI3YzNkOTA2YWRjOWE1ZWQ1YmMyMThmNmEwNWM3YTlmODEwOTgwMDhmNTVjYWZjYzNmZmIwNGZjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUwMzJlOTY0ZDA5MzIzNTFlNWQxODUyNjkyODFiMTcxYTNhMDliMDhiMjg2ZTY2MWVhNDcwMzIzYzgyZWI0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmNmMTAxMWY4ZGQ4OThmZjE1MjljZTk1MTgxNDZiMDI1MTlkYWE4YzU5MmZiZjMyNDY0NTZiMmE3YjQ2ZmM4MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTAwNDgyNTlhYzYyNGYzMmMxZjNlZTBjMjcyZmM4ODkyOTk5ZDI3ZDQzYWNmYjUxM2EyNmM3YmM1YzRhOWE4YSJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/diff_capture.py#L126-L300",
+          "version": "repo-lines-v1:sha256:3ff5b491579a3653aa292bb1ae2d7cb1ea50958f119017588680b4270086acf0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTc1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5YzhkNjQ5YWYyNThiM2U5NmI2ZDM0NGVmOThmOTdkZWIwMGMzZDNiMWY0NTM0NjE2ZDdmYzg3MTM3YmYxNTgxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4YmViN2ZlNDUzZjg0M2RjMGMxYWRiM2VmYzFmOGE3OTIwOTVkMWMxZDM5M2VhNWFhMDUxYWQ2OTRlNjI2NWQ4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjZDI5NzNiOWRhMTBmNDg0NjRkMGJmNTZlNWUwZDBhMDQ0ODg2YzM1YjAyYTBiZjI3ZWYwMjI5Nzc0NWUyY2IzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5ZjQ4MDVmMDY4NWVjZGFhNGZjZjc3MTk2NmYzN2EyN2NlOGUzZTg4ZTYwMWUxMDhmNTU2NmMyOTZhOTFhOWY1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_cef92947329d4e08ad892804b9fbbf64",
+      "statement": "ManagedSkillsMaterializer fetches the session skills installation from GET /sessions/{id}/sandbox-skills (paginated 50/page with nextCursor), validates every byte locally and independently of the control plane — schema version 1, safe paths (no .., absolute, backslash, or control chars; depth <= 10, <= 240 bytes), SHA-256 per file, sizeBytes must equal UTF-8 content length, SKILL.md required with a frontmatter name matching the skill name, executables only under scripts/, 5 MiB aggregate session cap — and terminates a paged fetch that promises more but delivers nothing.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/managed_skills.py#L229-L373",
+          "version": "repo-lines-v1:sha256:ff3dd8c28840cfaff1429f985a37e2adf206589dba0cb08ec5196e225ff554bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzYjY1YzFjYjkwMmIxNjQyOGNiMTcyZWRiOTExM2YxMzEyNGMwZmZlNmFjZmEwNmU2MWRjN2FkMjk4YTUzZGI4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiNjk1NmE0YmQxYTBmY2YwYmRmZWE0YjFkZDlmNWI0OGIzMTRlZWY0NzA0M2RhODVjMDkzMWVmN2JmZDA3MTdhIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZDNjMWY1Zjc5YjJmMzE0MjhmMzdlYzY2ODIyNzliZTY5YWEwZmIyMWNiZTQ5YzE1MjBkMTgwYjU1NGJhM2VmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJmNWNjMzZjMWQ1MTg4YmFhOGZhZTgzMjM4Mjg2NGU3OGU2OWNkMGJmY2Y2ZmQwZDBiMTg3M2YzOTFmNjg3ZGFhIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_79d163f33ecd418a8674cc33689e72b6",
+      "statement": "Managed skills deploy into the platform-owned global skills directory via a crash-recoverable journaled swap: skills are staged into .managed-skills-staging, the durable journal is written before moving the current tree (destination -> backup -> staging -> destination) with fsync discipline, an interrupted swap is repaired on next boot, and a failure part-way through a paged fetch leaves the previous installation in place.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/managed_skills.py#L411-L423",
+          "version": "repo-lines-v1:sha256:6dd6d535dcf29e5d29c664d5429d4bd7f584d13c7b2a0270cc991a1b62fa813a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyODgyYjZjZjU4ZmMwZTk1MjIxMmQ5MTM0MTA3ODAxODYxNDM0NjhhZGVlN2Q2YjllYTFlNzJiNGMxM2Y2MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5ZWI1NTMxYjk5ZmE3ZjFhNWM5Nzg1ZDc3MmI0ZDkwZDkzNjU0OWI3OWE3MzVhMDVjMDI2N2IwNDA1OTdiNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5MTU2MzU4N2ZlMzZiYmJlYmJjYThkZWRiNjgwNGY1MjJlNTgzNDVkYjJmZDZjMWFlMmNhODA4OTUxMDg3OTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzYWQ4NjBlMjViMWRhYWRjYTY2YjdmMGUzNWYzYjA1Njk1NmM1ZDFjYzUyN2UzZjgzNTBhN2QyYmIyMzUwNDYifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/managed_skills.py#L524-L590",
+          "version": "repo-lines-v1:sha256:aa65339210502ae7bdde0778d096ff6a198b9b5bc2da5bae59ffdb2db9cefd27:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4OGEwYzMzZWFjMTNkMmUyZDQ0YWU5ZWI1YTQxN2JkMjhlN2NiZWMxOGE1YjFiZDljMTE2NGFkZmI0NjIyYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiNWQyNWJiN2E4ZGZkMzliNTBiOGIwNWVkNWExMzgxNGE0MGRiNWI1OTc3MmQ4Y2E5NGI4ZjYyMzYyMDNhMTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2NGM5Y2NkM2Y1ODg3NzkyYzBkNWJlMTljNDIzOGY0YjY3ZTQxMjc1NmQ4ODA3N2Q5MTcxOGY0NmIxNzc4ZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFlMjJlYmQ5ZTRlNWM1MDhjNmY3MGExYWFjNTc5NDFkMjI0M2I2ZDY4MTM4M2I3NTg5NDI4NTljMDFlYjRhMGQifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/managed_skills.py#L620-L654",
+          "version": "repo-lines-v1:sha256:fae41b42fd985c999e2fb418f9e437b4c06974f4202b2fdcba1e8c104adfb7bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MzhlNGUzMTg1NjMzMzRlOTZmODIzOGQzYTg0ZmRiMzIzNWY5YzVmODNjZTc2NTA2NjFiMzg3ZWQzMDA3NzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODdlNWRlNmZmNjJiY2FkZGUzMzk2OWE1YzM3OWZlNmE4NjkyMDFiOTBjOTQwYzM2OTkwMDNmZjllNWVmYmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkOTFjNjRjNjZmYWU0NTlkYWRmNDNhODc0YmZkOTIzZGM2Y2E3YzA4ZTBhYzFlNWM0YzJhMDA5MmZjZWI3ZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxOTU2MGM5NWYwNDQyYTg4ZDIyODEyNjY1ZTcwNjg0ZDAxMjg3Y2ViZDU1NWE1OGQ0N2IyNjk5ODNhODJlNjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7cc4644eafa49688ae32364c1c7c8bb",
+      "statement": "Managed skill names shadowed by an existing discovered skill (bundled skills, workspace or member-repo .opencode/skills/.claude/skills/.agents/skills, or the user's home discovery paths) are dropped with a logged warning rather than overriding the user's copy; materialization runs once at boot before OpenCode starts and never depends on control-plane availability after boot because OpenCode restarts reuse the tree.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/managed_skills.py#L448-L476",
+          "version": "repo-lines-v1:sha256:576b176760ec79f2d8269eada858f054cdab47024460c4b3928fae1f57133a21:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2YTQyM2Y0NDI0OTBjZTNiMWExMWYwNDM4ODRlZTA2ZDM1ZDE1MGMxODQ2OTFkYTQ5MjczNGJmNTg5ZDk3YTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhMDBiMTMzZTQ1MWZiZDc4OGQ1NDVlMDIxOTMyOTNiOTMxNTY2MjczZWIxNGU2MDllMjU3ZGZkN2M3N2NjNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjNTdhMTliOWNjYzVkZjJlYjc2ODVmZWU3NTdiNjE3MmVjZjUyMzc2ZDY2YTc1MGRlYjk1NWM0OGI4YjFjMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNTdjNzRkMmRkZDZlZGZkMmFmODQ2NDcxMjBhNGY0Nzg5MGJiOGRmOGU2NzNlMDcyMTY0Y2I2Zjc1YzdhZTgifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/managed_skills.py#L620-L654",
+          "version": "repo-lines-v1:sha256:fae41b42fd985c999e2fb418f9e437b4c06974f4202b2fdcba1e8c104adfb7bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MzhlNGUzMTg1NjMzMzRlOTZmODIzOGQzYTg0ZmRiMzIzNWY5YzVmODNjZTc2NTA2NjFiMzg3ZWQzMDA3NzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODdlNWRlNmZmNjJiY2FkZGUzMzk2OWE1YzM3OWZlNmE4NjkyMDFiOTBjOTQwYzM2OTkwMDNmZjllNWVmYmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkOTFjNjRjNjZmYWU0NTlkYWRmNDNhODc0YmZkOTIzZGM2Y2E3YzA4ZTBhYzFlNWM0YzJhMDA5MmZjZWI3ZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxOTU2MGM5NWYwNDQyYTg4ZDIyODEyNjY1ZTcwNjg0ZDAxMjg3Y2ViZDU1NWE1OGQ0N2IyNjk5ODNhODJlNjkifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L417-L435",
+          "version": "repo-lines-v1:sha256:4dbd69e2efcd83afd74a3624ca3f9fdb366cd1559266f56b2447483a77ced01e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjYTBlNjcwYzc2MjY3Mzg0ZmE3MTdlNWFmMGVmM2Y0MGYxOGUyNzI1ZjA1OWI2MWYwYzA4N2IyODQ1YTljOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxNjNhYmU0M2RmZjg2NTQ0YjMwZTYzZDc5YmI3YjI4OTBhYjZkMGYyZDJjOTEwZGFlMWQ0MzY4YjcyNjRkMDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViODg3YjQ0MzI2MzAzYTc3MzM0ZmQxZmFjMmUxMGRmZGVlNTAyMjdjMmVhZTBmMDVjYzViOTg5ZjEwOGM0ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkODJlMmFiYTI3OTYxNmZlNTFhMmJmMDM5YzMzZWViZTdkNjY0YmMwM2FmODdhMmExNjhkNWI5OTczYmFkOTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ab8480832344651be2dc7eee19d39e3",
+      "statement": "OpenCodePromptStream supplies its own OpenCode-compatible ascending message ID so assistant messages carry parentID pointing at this prompt's user message; MessageAttribution filters other sessions' noise via that parent chain, and after session compaction uses a creation-time fallback comparing time.created against the prompt start boundary — never message-ID ordering, because OpenCode IDs encode a 48-bit truncated timestamp and stop sorting monotonically every ~795 days.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/message_attribution.py#L56-L101",
+          "version": "repo-lines-v1:sha256:3cfbfd4d7ce060e0782689402638c32869f1a5b637ada582fc3f46731e77a0cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwYzYxZTU3NjMwZTBjOGNjODAwODVjODg3MzRhMmIxYWRjNTFkMTliM2VmZjUxYzc2OGNmN2VmYWVlZTk5ZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhkNGUwZWVkNjdjOWYxMjFmOWQyZjZhNWQ2OTc4YzZlNWE5ZWY2ODU2NGIwMmYyNmZlZjdkNjEwM2VhMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlMDlmZDYxYjAxYjFiZjk2NzgyYjA2YWYyMjQ4M2U4Y2UwNTIxNmI3YWRhYmEwZmJlMjY1NmNkNDQ5YTE0MDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/opencode_identifier.py#L10-L29",
+          "version": "repo-lines-v1:sha256:10fd05c48aa1fd1be021b828c1a5f3489da642e261b579de23768dac1664a92e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2MzRmZGVmOWJiOTlkNWU5YjMzY2ZiNWY2ZDEwOTNiYjZkMWRjNmJjNDg4OGMyODAyZmE3YzM0ZDEwMDViMTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZmNkMTQ5NGRjNTZkNTFlNDM5ODUzMTQ5ZGY0YzJmYjQ2ZmNkZThhNWQ5NmIwMTE1ZDUyNWRjZjE0MzgxMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkOGJkOTRiMjE2NDFmYTYwNjUzZDJlMjMyYjE2YWFmMWIwOGRlNDNkODQyNWFlYTczNjUxYzJkNjA0NTMwOWMifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/prompt_stream.py#L183-L212",
+          "version": "repo-lines-v1:sha256:0acbe126468187d14f1903b1d97b107364390fb979bb0b777ac8bd232fdc968f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlM2M3YjJjYjdlMWQ4MjhmNjc1OTg0ZDRmYzQ3MTZmMjlhZjU0NzllZjlhMWJmNzlkMTliYWQ1Mzg2OTEzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyMDExMzM0MjdjMGI4Y2E1ZWQ4NjhlOGQwZDZiYjgxMTExNzE0YTdhYjY4MjM4ODIwYzYxNzg3YTEyMjVlNTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExMzI0OGQxNjI1YmM4MDRhNjQxYWYwZTZkZjg5YThjNWQ5Yjg1ZWM2YjQ1NDI0MThjZTg3YTdjOTYzMTk5NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUyZmM2ZjA2OTE0NDNlOThkY2I1ZmQ2YTU0ZGEyYzIwZTMwNTY3M2ZmOTA1YWQwNDI5N2E3YmY2YzFkMTljMjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_818fe4d0a4324eb192b8767bdb609030",
+      "statement": "Child sessions (task sub-tasks) are correlated via ChildActivityCorrelator from session.created events and task-tool metadata (including task_id resume); their text tokens are suppressed and non-text events forwarded with isSubtask=true plus childSessionId/taskCallId, and pending child activity is bounded (2000) with corrupt-correlation errors queued for later attribution.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/child_activity.py#L36-L143",
+          "version": "repo-lines-v1:sha256:2cd4d21a0e08f1cb3efde9d9adf70446226fc3efc6dd8f8a31d8a5db8c29e6ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1NzMxYTEzNzQ5YjAxMWQ5MjcwODYxMWJhMWI4MTk0Zjc2ZmFmMjUxNDkzZWVmNjVkMGQ2YzUxZTJlMDE1N2NiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwZDRkZDViNzU4ZWQ1ZTU0NTdmMDg3MjFjMmM2ODViNzhiZGZjNWI0NzAyZTE2MGZmZWVlMzQ2YzViZmU0ZmM1IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2YzFmMDJmZDdlYzFkNDYyYzBjYjgxOGI5NDhmZmU0ZjcxNWIyYzJjNDMyNjMwYzIzMmRmZTM0ZDQyNzQzZmE5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJmYjI4MzIwYzdjMzNkYjhhMGIxOTk2MTQxNGU0OGMyMTVjYWFkZTQ5NGQxMzJmNDZkNzE2OTQyMWVmYTllY2UyIn0"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/prompt_stream.py#L379-L511",
+          "version": "repo-lines-v1:sha256:a96fc2485af440a2ab5be7b99cce053caafe8a8d1056a6784f86134307a6cbd6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5YTliY2M4ZmYyZTE1MTU0MzIxZGJlMWUyMDE4YjE3NjI2NTMwNWY4ZDViMmU3ZjE2YjA5ZTJhNmEwYTdkODI3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhNzM0NTAzYzFkOTU2NTg4YmI3NjkxNDY3ZTZiYThiMzE4NzZkMTAwZmFhNzg1ZmE1NjE3YjBmNzQ4ZmQ1Mjg5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlMjQ2ZTE3ZWE0M2RmNjgyMWM4M2Q0NjdjY2JiZGYwNjkxMzMxNDliODYwZTkzYTVmODBjM2JjZmFlYmEzN2RmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3MGUyNGE5MmQyMThiYWZmMDRhMzI3YmE5MDdhYWJjZWU0YzFmZWI3ZTlhMzE4YWU1MDc4OGZiYmM3OGYzZjZkIn0"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/prompt_stream.py#L616-L693",
+          "version": "repo-lines-v1:sha256:bf1f1e60aa30d52a6c4b72e8901fc59f9448c8c671eee5338f6782058ccc9d4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1NDAzZGJhNmQ3MmIyYWIxYjA3NGEwMmE2YjhjNjA2ZjkyNWYyOWQ5NjBlODc5MjRjMDM4ZTY4ZTZmNTZkMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3MzQ1MDNjMWQ5NTY1ODhiYjc2OTE0NjdlNmJhOGIzMTg3NmQxMDBmYWE3ODVmYTU2MTdiMGY3NDhmZDUyODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2YjIzNmM1NmMxMGE3ZTc2ZWJkYzNiZjg0NzhjYTliYzc4YjQ3MGM4YWFiZDVkNWI2MmE2NTc3MmNhNjA1YjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2OTAxMjc2NzVmZjAyYWU2ZTVmOTNmOGU4NmMxNTg3NmNiM2UwOWRlNWFhZTM5NmFlNDhlNTFkODczMTIyMDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb7a17664da24350b8376a9e7bee6df7",
+      "statement": "Prompt request bodies translate reasoning_effort per provider: Anthropic adaptive-thinking models (e.g. claude-sonnet-4-6/5, claude-opus-4-6..5) get thinking {type: adaptive} plus outputConfig.effort, other Anthropic models a fixed budgetTokens (16000 high, 31999 max), OpenAI reasoningEffort/reasoningSummary, and xAI a variant; a model without a provider prefix defaults to anthropic.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/prompt_stream.py#L42-L62",
+          "version": "repo-lines-v1:sha256:4acaff057a80841ef7d14c392b783f0183b163c682d5603694f923328c3bb417:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NzliYjEyNzE5YTNhNTliMWFmNjQ2NGUxNzM2NDljN2M2ZTg5MjM2OGJlNTJiNDA4YzQ1MWUzYzM4MWY4OTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZmJhMDUyN2MzOTUzYzRiNmUwZTViNTczOWJhODM2MTJmODA1M2JjZGM5NDY2NzMwMTkzY2QxZDU5MGI0MDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExMGVmOTBjNDBkNGM0ZGUxNjQwZWQxOTliNzdlOTZiZDdmMDE1YjBkZjA0Nzg5OGRiYzQ4NDU1ZDgyODI5NDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5MmVlNTVhM2NhOWViMzU2ZTc3NjBkMjkyMWFlNGRhNjMwZWRiMDljNjFmNjdlYzIzNmJjOTViNjNkYjFiYzUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/prompt_stream.py#L821-L885",
+          "version": "repo-lines-v1:sha256:10e19d42279b856def17ab070e29e346b23f488565d822cc3ff56d72ee26a9fb:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4MDVlYjljZGFkYjE4MDIyNDkwNTAwZjNkZWYzYjRmNjc1ODFlOWYxMTQ4NzQ4ZmVkYzc2NTExNzk1YmM1MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkZTM3YzFjYTc1YzhjYjc4ZTNjNWZiNjkzMTgzNWMwYmM5MGJiNTg5ZDRhOGY5OTM4OWJiY2NkMTEwNmJmNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4YTUzNDEzNzcyZDExNmQyM2JjZGUwZWU1NmRiOTRkZGZkOGExYTMwZjVhYjQyNWY3YzM0ZDU2ZDI5OTVkZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYzRhYzRkYTliY2E0MGE3ODI0NWUzN2QwODlkNmRmNjExNzk0OGUxMDFkNjlhNTRhNjQ3NTdkZDQzNGYwYTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_552b30c4fb654531ae1dc6a6de9a6f9d",
+      "statement": "Session image attachments are validated and hydrated with bounded network concurrency: at most 6 per message, MIME allowed image/png/jpeg/gif/webp, max 10 MiB per image, concurrency 2, downloaded base64-encoded as inline data: URLs in OpenCode file parts; invalid or unfetchable attachments surface a non-fatal media warning to the user timeline.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/attachment_processor.py#L20-L22",
+          "version": "repo-lines-v1:sha256:dc37c1beb90831eb4d3ba5d1499f0cfff16c2a8163bf0e6152dbba2fc15445f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTgxNDk3ZjRmMGEzNmU1MDg2NjljZWI2YmE4YjYwZWRjNzMwYzQzZTU3NjM1ZGFhOTgwODljY2ExNWVhYzA4YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWFiMjE2YTdlOTlkYWM4NjU1MDAwOGIwZGVmNzVkNTY4MmRiZTczODExYzU2ZjJkYjljOWRkNjE1ZTg5ZGRmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE2YWQ4MjhkNTk4MTgwODNjMjMzMjExOTJmMTUyODAxZDA0NmY0YzQyNzFkMTRmZTIwY2UwNDExMDgzMjRiMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzkzZDBhMTI5MTc5YmRlNWY2ZDk0MTE1Yzg5Y2FmN2ZmNzMyYmM4YzdhMjg0MTc0OGRmY2E1NDZlNjc2MmMyNSJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/attachment_processor.py#L46-L198",
+          "version": "repo-lines-v1:sha256:a11affe7d7d6f312f70dbc2cc968d73cc0f30a50e72a5fb328de962582443d18:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwOTcyOGIyYTcxODAyMzI0NjIwYmZhMGY3ZWRlMGJkZTY2OWE4OTc3ODIxOTcxYTZiNDg0ZWY5YmE1NzBhZDhmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkY2QyODk4OWVkZTk3MGIxMjEwMWE2YWYzYmQzNTUzNzZlMGE2MWFkYTkzNjJhMjAyYjJiZGVhZmI1NmNkNWM4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjZTEyNWIzNmY2MmVkMDEzYmZiNzM0ZmE5ODk3MDE5Y2QxNzVlM2FiODNlMzNiMDM4MTU1M2U4NDc5NDA4ZDNlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ad8f6415acae463ebc9794b61d8064ec",
+      "statement": "Repo-image build mode reports completion through RepoImageBuildCallback to the control-plane callback URLs with retries (3 attempts, 2^n backoff, 30 s timeout); a partially configured callback environment (some but not all OI_REPO_IMAGE_* vars) aborts the build with a nonzero exit rather than running with completion reporting silently disabled, which would wedge the control-plane row in 'building'.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repo_image_callback.py#L27-L95",
+          "version": "repo-lines-v1:sha256:bfc37dd531e46294764a2ec46993ba810848400f6fa8b6476312bfef27a666e6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNWQ1NzZhZjVhY2NkYzE4ZmQyN2RjNjkwZmZhYzQ3MDdjZGIyZDBhZmM4NTNiZDFjMmQ1MWEwZDQzOTYyMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyNjE2NWRlMGM5MzE3ZTRlZTJhODM2ODRkNzZiYzMxNmNiYTU5YTJmMjFlNzVlOTg1ZDVkZWQwMGEwZDMzZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNjE3YWUyOGZiNDBhNDQ1ODRiNWJiNGFhNDhlNTc5OThjMzllNDI3NTlmODFhNzE5OTgxNjAxMjlhYWYwY2EifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repo_image_callback.py#L97-L171",
+          "version": "repo-lines-v1:sha256:e8a8c840f3fddf693b061e02010df8b35bd92631b168322dbc73520b941ca78c:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNjIyNjc2MzFiNmZhZDc4ZjllN2U0NDMwYTM5NGU2OGM1ZTZmMjU3OGE4MjY1ZTVhMTEzYWIwMmEzNTdhZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4ODJiMGRjNWUyMjRlNmY5YTdiMzIzZGI4ZDQ0ZGQ3Yzc4OWUwM2YzZmQ3YTA2Y2I5ZWU5ZmY1MjU1ODBjNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86631c114b4140609e3c8ba75138d594",
+      "statement": "Modal's image-build launch protocol (modal_image_build_start.py) runs only when IMAGE_BUILD_MODE=true: after the provider binds the session it reads one 64-hex callback token line on stdin, builds the provider-neutral RepoImageBuildCallback from env, and runs the supervisor with it; a shutdown while waiting cancels cleanly.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/modal_image_build_start.py#L113-L151",
+          "version": "repo-lines-v1:sha256:11ad8108a80dda5014e6320fabe092eb11d467b1a0e7a84d6689607bf5edad64:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NTllYzMxM2FmN2RlMDM1MjkwZDI5NWFmNjU1NzhlNGQ5Y2NiMzY4OThlNWMyNmNkNGI3ZTRjZTNkOGVkNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmMzViNTdmNjBhNTBhZmNlMzQ5ODU3N2I3NjJhMTVlZjg1Mzg0ZGI0MGJmOGI0YzMyMWViMzczNzk3ZTg2YTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmZmYxZmUwOWYyMjQzZGM4NjQxNDEwNTBlYTIxMmY0MmYzOTgyYTNiNThiZmUxYTFmYzVjM2Y0ZmQ2ZmM5MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMzJmNGUzY2U2MGJiOTg1MjZkNDYxZWM1NzcxNTI1ZGRjNDVlY2UzZWU5ZTdmOWZjNzQwZjkzMmFhZmJhYmUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/modal_image_build_start.py#L19-L24",
+          "version": "repo-lines-v1:sha256:f3175b17c855c1c8121c9acc463053700e169ba116e62cac4ecf46a2b07d677f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjhiNWE0NWJiYTBlYmE1Mjc5ODhhZTQ0MjkzNGI1MTQ3NzBiOTFhYjc2NjAxOTc1N2EzYWMwMWE4ZWNjOWNmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U0NjUyODkyODU3NTc0NGY3NTE2NzVmMDYzMTRjMDJlZWNiZDAxNTBkYzlkYjEzYmU5NTZkMGZmMjgxMzA5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDE4ZmU4ZGUwNzI1NzFmZjQ0N2VlNzA1MTliOTllZjNmMTgxYzVhNWE0ZTgyYjRkNDYyM2YzZmMzMDVmMzdmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGFmZDQxYTYwMjVmODI0ODI0NDhlYjEyN2JkODI1NjhmN2U5ZmUzYTUzMTAzOGNiMWRiZTk1YTE5ZWJhNzU1NiJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/modal_image_build_start.py#L40-L101",
+          "version": "repo-lines-v1:sha256:1340454e604010f622b3a4d9f4476289d838d4bef08acba5843dc29c4345310d:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2ODIyOTY2YTQ1MmQxMmY4YWU5YjNjMTM0MmM5YjQ5NDljMGVhOTU1ZmQwODU0NWZhN2MzNWM1NGI1MjIxNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZmZlMDk1NWFjZDFhMTk4YTg0M2NhNzkyM2Q4OTI1YWYwYTA4NzQzNDhhZTVlZDNhNmI2MzY5NzkyYTcxYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNDU5OTFjOWI3MmNhZTQxNTQ3ZDJkMDE1ZTM1ZDI0NjBkZGMyNTFiYmIzMDYyMjAwODQxNzBlY2QxOTI5MjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4513c49bc4a048a7b070e535a5c4c773",
+      "statement": "Auxiliary services are best-effort and gated by env: code-server starts when CODE_SERVER_PASSWORD is set (port CODE_SERVER_PORT default 8080), the web terminal (ttyd on localhost:7681 + Bun proxy on TTYD_PROXY_PORT default 7680) starts when TERMINAL_ENABLED is set, and the browser desktop (Xvfb + fluxbox + x11vnc localhost:5900 + websockify noVNC default 6080) starts when VNC_PASSWORD is set; the VNC password is stored in /tmp/oi-vnc-password in VNC's fixed-key TripleDES format at mode 0600 with O_NOFOLLOW, and the supervisor turns their start/restart failures into warnings while OpenCode and the bridge are load-bearing.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/browser_desktop.py#L29-L110",
+          "version": "repo-lines-v1:sha256:84937fb4c0cdbec273fb9dc0e2113505e246fdfef82ba5f8e675ffc115e9326d:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGMxODk2NTM5OTI3MWY4YjQxMzdjNTMwMmRjNDM3OGI3YTdlODliM2NiODQ3MmY3YTljZTVkNzU4MzE2ZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkNjFmMjFlMmEyMGM1YTFmODM4YjdkYTI5YjBmMDU0OTRmMmVhNzRiYzU0NzU1MjNkZGIyMmU4OTk2YzA3MGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5M2I3MTFiY2NlZTZiYjhiM2NjNzhjMmMwZDJiZWI5NzQ4OTRkYTVhZmZlNzdhOGJiOTAzZWUyNzgyMTk1NDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmYmQ4OWVmMGJkMTIzNDg3N2E5NmMzZDczMjZlMzkwOWE2ODI4MDFiYzdjMzdmMzE3NDE1YWQ3OWE4NmVjZWIifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/code_server.py#L19-L71",
+          "version": "repo-lines-v1:sha256:fa9074676f251f7f0bf7d884cfa78075251862f8e7f3cb04cad2d79b648d5117:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNWY2OTM0N2YxYTU0ZjkwZDdhZDg4ZGQ2Yzc3OWJjYmMwZjE1MmYxMjFlOWIzMDRjMzlhMDhiM2UwODA4MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkZjcwMjMzNjU0MWMxNjRkOWFiNTM2ZWMwNTFhNDJiMDg0YTEyM2Q1NGE0ZmI1NjY3N2U3MzRkNGQ5ZDRiMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2MzMwOTc5YjY5MWFmYjBlNWNmMGFkYTZjZTk5ZmMyZjlkNGYzNjE3MGRiMWY3YWQ1Zjg0NWZiNGYwNTA1NTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxMDcxMTY3ZTAxYzg1MjM2ZTRkNzhkMWY0YTNkYjZmNDM0OWZjOWNkMWU2NWJmMWZkMjU1Mzg2MmQ4NGNhYTUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/constants.py#L14-L34",
+          "version": "repo-lines-v1:sha256:744a290a590eb21bd0b92ed9498f10e3adf818a41ec2dc9ba2f503c17315d246:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiMjUxNWY3MGEzYTI0ZWFiN2U2ODRmNmJjY2JhYWFlOTcwNTZiZWI5NThjYmYwYTc2MjM3YjlkYjcyMjQ1MTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczM2Q4NzRiMDE0OTkyMjdiYjQ2NDI2ZWYzODhmMDg3Njc1ZjYyMzcwMTQ0YmU4MzgwOGE0NTUzY2E4NGI1OWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiNzYyNzgzNGMxYjRmNzFkNzgxMDBmYWYwYzUyNDYyY2VhZWQ1MjUyNzY1YTI5MDUzZjkzYmNmNzIyOWQwZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzMWZjNjRjMzg5YzkzMzg2ZTAyM2UyZTQyYzNjY2JhMjZiZjdjNjIzNWVkODdhNjE0ZDk4MjZkYjdlMGQ0ZmUifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/web_terminal.py#L19-L108",
+          "version": "repo-lines-v1:sha256:4973cbb7409b57f5f8ff035747905cd9dbdaf4565db063d312fcbefcb728a6d8:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMzQ3YzhmZmQ2N2E4NjkyMmU3MTk3NjhiODI3MTAzYTU4MWQ5NTY0NTdhMDc0ODU5MmJjMzE0MjE3MDE1YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZWJjZTc5OTRhNTQ3Y2E1MmJkOTZkYjA4M2NkNDAwYWIwNjEzMWJhNzMyMzBlM2UxZmU5YjAzOWFkMTgxN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NzgwM2I1YTA3NjQ4ZjkyNWVlMTNlNmU3ZDI2Y2YxNGYxMTZlYTU1NTcxYmNjYWEzYjQzM2E3NjVhNTQ4MmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjOWIxYzAzYWI0NGIwNTRiODRiODdlNGYwOGVjNjdiMjBjMzFhNTIyZTg3NTg4NDgxNGNkZGU0ZjQyNDFlMzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a07680d570394ab8a7d55791eea730ff",
+      "statement": "All sandbox runtime processes emit structured single-line JSON logs to stdout (log_config.py: level/service/component/event/ts plus extra fields, exception type/message/stack truncated to 2000 chars); both the entrypoint and the bridge subprocess call configure_logging().",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/log_config.py#L53-L87",
+          "version": "repo-lines-v1:sha256:38645815fc5fcea5025cfe194d4fa9dc402afd2362cf94457839d991e6ca8338:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4YzdiNGFlNGY5MjRhNDI5MzZjZTJhZWZhM2UxNDRmZGQzMzVlMTFiMGYzNzU2NWYyZDM5NDE1MzJiZWI3ZWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5ZjkzMDgzYzE5NzEyMWI5ODI3MDBiYThhZmFiZDE3MjJjZjFkM2U3NDA0NTA5ZTgwZWZhMjcyNDdmNjJmMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2MmZjOTllMGI2NGIyODllNDRiMzEyMGVhYzk4NTAyOWVlZTFiMmIwMjYyMzFkMjliODUxNjY2ZjIxZDVjOTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5f9fc4bc2404ae58420d616aa96369d",
+      "statement": "RuntimeConfig.from_env reads the configuration from process environment only: SESSION_CONFIG (JSON session contract), CONTROL_PLANE_URL (must be HTTPS except loopback dev URLs), SANDBOX_AUTH_TOKEN, SANDBOX_ID, REPO_OWNER/REPO_NAME, VCS_HOST; the pydantic SessionConfig model round-trips config into SESSION_CONFIG and silently drops unknown keys, so new wire fields must be added to the model or they never reach the sandbox.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/runtime_config.py#L40-L131",
+          "version": "repo-lines-v1:sha256:65590957f503fb67a5a93ba0b0e527031b13e0096afefb3ca6ab2430a019f059:eyJzZWxlY3RlZExpbmVDb3VudCI6OTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5ODRmZWY1MzY4ZjRjNTY4NmVlODM4MDEyN2E4ZTdmNjRhZTIyYzBmNTNhNGJjM2MyNWI0MGFhODM2YWRhZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZWUxOTMyODRlODJmYjc2YWY0ZjRmNTgzZTQzZjA1MDdiNWYxMzJiMTY0ZTZkMzUyM2JhZmI5NGMwYzdiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZTQ1YjVkNDQ4OTNmODg0MzY0ODBlMjA1ZDlmOTlhYTlkYWJlOGIxNTU3Mzk5OTVlMmExZjU3MDUxZmUzNjYifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/types.py#L56-L79",
+          "version": "repo-lines-v1:sha256:f870d5a97c18a3f5bfd32469157b398f1f5122cb3ece7156d87d51c553e478de:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NjAzMGVjZjliMmIyZmY4YjAwZTE1YjdkZGUyNzVkY2UwNDQ3NzI1M2IxMjM2MjNjMTU3OTdiNmQwODY1ZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlODg1YTFiMzM4MTI2ZDMwZTg2YjNhYWMyYzg3ZDRlMmU3NTY2ODE3MTRmZmM1ZGJkODlmZTAyN2JhY2ViMTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0NDg3ODBlYTBhYTZiNDQ1OWRmNTE5OGM4YzZjNWYzN2EwMjRkNjNhYmQyMTY0MDVjNDgyMDViYzhlNjcxZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T05:37:27.905Z"
+  }
+}

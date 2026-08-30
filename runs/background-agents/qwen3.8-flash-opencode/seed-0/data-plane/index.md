@@ -1,0 +1,5 @@
+# Files
+
+- [Modal Data Plane (modal-infra)](modal-infra.md) - The Modal-hosted Python service — HMAC-authenticated FastAPI endpoints for sandbox create/restore/snapshot and build sessions, the launch-spec and tunnel plumbing, fail-closed control-plane host allowlist, the runtime-manifest-driven base image, and the deploy runbook.
+- [Sandbox Provider Abstraction](sandbox-providers.md) - The control-plane SandboxProvider interface and capability flags, per-backend configuration via the provider factory, transient/permanent error classification, REST client conventions, and the sandbox env-injection contract (SESSION_CONFIG, boot-mode scrubbing, brokered git credentials).
+- [Sandbox Runtime (Supervisor and Bridge)](sandbox-runtime.md) - The Python runtime baked into every Open-Inspect sandbox — boot-mode state machine, repository sync and setup/start hooks with fatal-vs-warn policy, OpenCode server management, the reconnecting WebSocket bridge with acked event delivery, and the brokered git credential helper.

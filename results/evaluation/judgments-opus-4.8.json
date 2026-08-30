@@ -1,0 +1,405 @@
+[
+  {
+    "task_id": "page_09742a2b679c43b3546d49f7",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: precise owner (the Next.js web client) with clean routing to adjacent topics — shared package for schemas/allowlists, control plane, sandbox provider — and no visible duplication of those pages' scope. Grounding: nearly every non-obvious claim cites specific files with line ranges (browser-api-fetch.ts, control-plane-transport.ts L51-78, browser-auth-proxy.ts:54-59, session-target.ts:12-16, browser-auth-routes.ts:8-15), and the prose ties citations to what they establish rather than name-dropping. Reasoning: strong causal model — explains why the BFF boundary means the browser 'physically cannot' reach off-origin, why exclusivity living in shared prevents invalid UI states, the connect-epoch preventing stale sockets, schema-validated first-paint ensuring one contract, and close-code semantics (4001/4002 end retries vs 4004 schema failure). These are real invariants and consequences, not restated signatures. Change usefulness: names exact files, the two platform-branch points, the signing boundary, and representative tests per behavior, so a developer knows where to touch and what to preserve; falls short of 4 because it gives no explicit change-ordering, migration/rollback guidance, or validation-step sequencing for a concrete modification. Style: excellent — layered headings, tight lists, progressive disclosure, minimal repetition. Correctness: internally consistent and plausibly accurate with careful hedging (e.g., 'production config is Terraform-generated'); no visible contradiction, but some specific numbers (82/88 tests, 8h sweep, backoff caps) are asserted with certainty and cannot be verified from the page alone, keeping it at 3 rather than 4."
+  },
+  {
+    "task_id": "page_1010416edca69ba3895c6084",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page has a precise owner (the SessionDO as the per-session isolation boundary and its SQLite store) with explicit boundaries against D1/Control Plane and clean routing to Sandbox Lifecycle, Realtime Protocol, and Security pages. Duplication is avoided by explicitly stating what lives in D1 vs the DO. Code grounding: Most claims cite concrete symbols and files (createSessionRuntime in components.ts, SCHEMA_SQL in schema.ts, PersistedAlarmDeadlineStore, SessionInternalPaths). However, several strong behavioral claims (e.g., 'throw leaves _runtime null so the next event retries', the alarm 'initialize without re-arming' semantics, the SQL invariants) are asserted without pointing to the specific line or check that establishes them, so evidence is specific-ish but not exhaustive. Reasoning depth: Strong causal modeling — explains why the runtime is published only after full construction, why provider factories run eagerly (fail-fast before state is written), how the single alarm slot is multiplexed, deadline reassertion to prevent starvation, and connection-loss vs termination distinctions. These are real invariants and failure-mode consequences, not restated signatures. Change usefulness: Names concrete files, the composition root, the internal path contract, and the test locations, plus invariants a change must preserve. Falls short of 4 because it doesn't give explicit dependency ordering for adding, say, a new table/service, nor rollback/debugging signals beyond the trace-id note. Style: Well-structured with tables, clear headings, progressive detail, and minimal repetition. Correctness: No internal contradiction found and it handles subtle cases (hibernation reconstruction, alarm-without-rehydrate, WebSocket loss semantics). Not scored 4 because some asserted invariants can't be verified from the page alone, leaving mild unverified certainty."
+  },
+  {
+    "task_id": "page_221766066cfbbb09f4f126e3",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy fit is excellent: the page owns the automation trigger/condition/run model cleanly, routes to adjacent topics (github-bot, slack-bot, sessions, scheduler) without duplicating them, and explicitly disclaims out-of-scope material (personal profiles, interactive sessions). Reasoning depth is the strongest axis — the page derives real invariants: why status is derived not stored (crash-window unrepresentability), why event overlap is per-concurrency-key vs whole-automation, why skips must not consume dedup slots, why advanceNextRunAt never rewinds, monotonic slot claiming via CAS, and the layered sweep/CAS accounting that prevents double-counting. These are genuine causal explanations of implementation constraints, not restatements. Change usefulness is solid: concrete constants (MAX_PER_TICK, TICK_CHILD_LAUNCH_BUDGET, thresholds), named functions (startInvocation, resolveAutomationRepositories, claimRunSession, runComplete), migration numbers (0030/0037/0059), and index names give reviewers real handles, though it stops short of naming test files or step-by-step validation. Code grounding is the main weakness: despite heavy use of specific identifiers, function names, and one design doc reference (MULTI_REPO_AUTOMATIONS.md), there are almost no file-path or line citations — claims are asserted with plausible internal names but a reader cannot verify most non-obvious statements against exact source locations, and the prose rarely distinguishes observed fact from inferred rationale. Correctness shows no internal contradictions and handles many edge cases carefully (childless skips, partial_failed, race between reply and session creation, D1 rollback-on-error semantics); minor tension exists in the limits table (Slack text 8 KB vs 'capped' in prose without a stated number earlier), but nothing invalidating. Style is clean and scannable with effective diagram, tables, and headings, though the density and length occasionally bury key invariants in long paragraphs."
+  },
+  {
+    "task_id": "page_2ae4055fd2c5f2d727cae72e",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy fit is excellent: the page owns exactly the in-sandbox Python runtime, cleanly routes to adjacent topics (session lifecycle, pre-built images, secrets, diffs) without duplicating them, and the four-responsibility framing gives a precise boundary. Code grounding is strong — nearly every non-obvious claim names a specific file/function (repo_config.parse_repositories, BufferedEventForwarder, GitSigningRuntime.refresh, diff_collector flags) and distinguishes design intent from mechanism; it falls short of 4 because citations are file/symbol names rather than exact locations and a reader cannot always verify claims (e.g. specific timeout defaults, the 795-day timestamp claim) against pinned evidence. Reasoning depth is the page's strength: it derives real invariants (prompt-not-tracked survives reconnect, cache-never-fallback, immutable baselines, manifest-single-authority prevents path escape, HMAC/host-restriction security consequences) and explains why each constraint exists rather than just what the code does. Change usefulness is high: concrete files, boot-mode branch behavior, restart policy table, failure funnels, and a targeted test map let a developer locate and validate a change safely. Style is clean and scannable with good tables and a diagram, though the density and occasional run-on parentheticals require careful reading. Correctness shows no internal contradiction and handles many edge cases explicitly (overlay collapse, binary numstat null, snapshot-restore baseline preservation); scored 3 rather than 4 because a few precise numeric/asserted details (budgetTokens 16000/31999, 795-day monotonicity, exact status-code retry sets) are stated with high certainty and cannot be independently confirmed from the page, leaving minor risk of imprecision."
+  },
+  {
+    "task_id": "page_2b7decfbe09b41aa0bd72e0d",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page has a precise owner (the control-plane Worker) with explicit boundaries — it repeatedly hands off to adjacent topics (automations, session runtime, autofix, terraform) without duplicating them, and deliberately excludes DO-internal SqlStorage and Autofix production. Clean routing. Code grounding: Most non-obvious claims cite concrete files, symbols, or constants (src/index.ts, router.ts, shared.ts, MAX_PER_TICK=25, ABANDONED_DRAFT_TTL_MS, imageBuildFinalizationJobSchema, ESLint no-restricted-syntax rule). Prose generally distinguishes design intent from mechanics. Some specifics (line 136-145, '~38 store call sites', 'roughly eight subrequests') are asserted with precision that reads as inference/memory rather than shown evidence, and a few claims (nonce reuse log, ASSERTION_RIGHTS mapping) are stated without pointing at what establishes them, keeping it short of a 4. Reasoning depth: Excellent — builds a causal model of the D1-authoritative/DO-live-state split, explains why the DB-missing check is at the boundary (so ctx.db is always present), why the sweep is a separate cron (subrequest budget), why signed bodies rehash from buffer (streaming impossible by construction), two-phase Terraform DO deploys, and fail-closed auth consequences. Change usefulness: Names concrete files, ownership boundaries, lint constraints on where env.DB may be read, deployment ordering, invariants to preserve, and a dedicated tests section mapping behaviors to suites. A reviewer could act safely. Style: Well-structured with two clarifying diagrams, scannable headings, and a strong invariants section; dense but appropriately so. Correctness: No clear contradiction found and it handles edge cases well (compensation on DO init failure, alarm not re-arming, PKCS#8 key requirement). Confidence in a few unverifiable specifics (exact line numbers, exact call-site counts) is stated with more certainty than the page demonstrates, which is minor imprecision rather than a material error."
+  },
+  {
+    "task_id": "page_2c687a180dd29cc2a1627ace",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page owns a precise, coherent domain (PR creation, SCM credentials, Autofix) with clear boundaries and routes to adjacent pages (github integration, sessions, sandbox-runtime) without duplicating them; the tri-partite ownership split (DO service, D1 store, webhook ingress) establishes a stable owner. Code grounding: Nearly every non-obvious claim cites a specific file/function (e.g., resolveHeadBranchForPr in source-control/branch-resolution.ts, snapshotToRecord, SessionPullRequestStore.getByIdentity, git_credential_helper.py); prose reasonably distinguishes fact from inference (e.g., '403 otherwise — the route is reachable with sandbox auth'). Falls short of 4 because some concrete constants and behaviors (CACHE_REFRESH_BUFFER_SECONDS=5min, MAX_DELIVERY_ATTEMPTS=5, the 24h cap default of 30) are asserted without per-claim citation and a reader cannot always verify what the cited code establishes versus what is inferred. Reasoning depth: Strong — derives real invariants and their rationale (monotonic providerUpdatedAt guard preventing out-of-order regression, authority-then-mirror ordering so a rejected snapshot never reaches the mirror, force-push safety only when head IS the checkout, best-effort D1 vs thrown-vs-rejected upsert distinction, cache-never-as-fallback security reasoning, scope-to-VCS_HOST exfiltration defense). This is a genuine causal model including concurrency (in-memory claim set) and security consequences. Change usefulness: Names concrete files, ordering of the creation steps, failure modes (403/409/500/502), and idempotency/state-machine boundaries; a developer could locate work. Below 4 because it lacks explicit test references, validation steps, and rollback/debugging signals beyond 'logged and swallowed.' Style: Well-structured with clear headings and ordered flows, but dense and long; some sections (one-open-PR walk semantics) require careful rereading. Correctness: No internal contradiction detected and it handles edge cases well (legacy rows, reopen clearing closedAt, missing-timestamp authority); scored 3 rather than 4 because several precise numeric/behavioral assertions carry unsupported certainty and cannot be independently confirmed from the page alone."
+  },
+  {
+    "task_id": "page_3a474d1a84186348ae97241f",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page owns a clear, precise scope (durable state across two databases) with explicit boundaries — it repeatedly delineates what D1 owns vs. what the DO owns, and routes runtime behavior to Control Plane Worker/Session DO pages without duplicating them. The DO-vs-D1 consistency section stays on the storage-shape topic. Code grounding: Nearly every claim ties to specific files (src/db/sql-database.ts, src/session/schema.ts, scoped-secrets.ts), migration numbers (0002, 0039/0040, 0055, 0063), and named SQL constants (DERIVED_INVOCATION_STATUS_SQL, MARK_STALE_IMAGE_BUILDS_SQL). Some quantitative claims are vaguer ('roughly 38 store call sites' is hedged appropriately; 'currently 0001-0070' is specific). A few assertions rely on cited constants without showing what the code establishes (e.g., the exact CHECK semantics), but the vast majority are traceable. Reasoning depth: Strong causal modeling throughout — why environment_id is FK-less (benign dangling provenance), why image_builds supersede rather than cascade (reaper needs artifacts), why status is derived not stored (removes crash-wedge class), why session creation writes D1 first (catch failure before sandbox spawn), the meta.changes correctness dependency, and atomic-batch invariants. It explains invariants, failure modes, and concurrency fences (exchange_state, finalization leases, CAS on cron slot). Change usefulness: The 'Operating the schema' section plus inline guidance (new table needs both migration AND store or it fails at runtime) gives concrete files, ordering, validation via integration tests, and rollback safety (idempotent guarded backfills, retry-safe atomic migrations). Style: Well-structured with a clear two-layer framing, an ER diagram, tables for DO schema, and progressive disclosure; concise and scannable. Correctness: No clear contradictions found and the page handles subtleties well (legacy fallback identity for PRs, cycle-safe backfill, fail-closed key validation). Minor unverifiable precision points (exact site counts, migration ranges) prevent a 4; nothing appears materially wrong but the density of specific numeric claims raises modest risk of drift."
+  },
+  {
+    "task_id": "page_5fcf7657a26c9678146b9290",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "As an overview/map page it has a precise owner: it explicitly defers deep-dives to related pages and routes readers there, with clear boundaries between the three tiers and adjacent topics (taxonomy_fit strong). Style is excellent — the diagrams, tables, and 'trace changes across boundaries' section are well-prioritized and answer likely questions quickly. Reasoning depth is good for an overview: it derives real invariants (lifecycle state persisted before WS close prevents reconnection, repo_owner containing '/', shared-built-first ordering, two-phase DO binding deploy, MAX_SPAWN_DEPTH/MAX_DESCENDANT_DEPTH admission via recursive CTE) rather than merely listing files. Change usefulness is strong: concrete package locations, build ordering, test conventions, and failure modes are named. The main weakness is code grounding: the page cites specific identifiers and file paths (e.g. provider.ts capabilities, entrypoint.py, service-auth-vectors.json, sig1) but does not tie non-obvious claims to concrete source evidence or distinguish quoted fact from inference — many technical assertions (heartbeat scheduling, restart max of 5, KV dedupe, eager provider construction) are stated authoritatively without traceable support, which is what keeps grounding at 2. Correctness shows no internal contradictions and handles several subtle edge cases well (brokered credentials vs. Daytona persistent resume, PR attribution fallback for Slack/Google users, per-repo PRs), so no material error was found, though the confident tone on unsupported specifics slightly limits it from a 4."
+  },
+  {
+    "task_id": "page_71d37f6db1edd100c3fab8bc",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "As an Architecture Overview page, this has a precise owner: it establishes the three-tier model, routes to every adjacent topic without duplicating their content, and stays at the orchestration level (taxonomy_fit 4). Code grounding is strong for an overview — specific file paths and line ranges back most non-obvious claims (index.ts handlers L33-47/L52-80/L82-89, bridge.py:282-286 for the reconnect URL, websocket.ts:6-42 for the message set), though some architectural assertions (per-session SQLite isolation scope, HMAC auth to modal-infra, the cron responsibilities) are cited only vaguely or by schema-file reference without showing the establishing code, so it falls short of 4. Reasoning depth is good: it derives real invariants (FIFO one-prompt-at-a-time queue, disconnect never stops a run, WS drop triggers reconnect+heartbeat not teardown, shared-must-build-first ordering, protocol drift failing loudly at Zod boundaries) rather than just listing files — but several of these are stated as facts and deferred to child pages rather than causally explained here. Change usefulness is solid for routing: it names concrete packages, the build-order constraint, and the provider/platform Terraform variables, but as an overview it offers few explicit validation steps or failure modes itself (appropriately deferring). Style is excellent — the tier structure, ASCII flow diagram, and package table answer the likely question fast and progressively reveal detail. Correctness shows no evident contradiction and the page appropriately hedges (e.g., 'Modal additionally runs...'), though the end-to-end flow diagram and some invariants rest on a single doc citation (HOW_IT_WORKS.md) rather than source, leaving minor unverified certainty."
+  },
+  {
+    "task_id": "page_7b08cf0cdc2b09ada4c32356",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page owns a clear domain (in-sandbox runtime + provider infra packages) with an explicit hard boundary at the top, and it routes to adjacent pages (boot modes, providers, protocol, spawn). However it overlaps heavily with several sibling pages the outline lists separately — Sandbox Boot Modes/Snapshots, Sandbox Provider Reference, Sandbox↔Control Plane Protocol, and the adding-a-provider recipe — reproducing much of their likely content (boot-mode fatal matrix, per-provider build details, bridge command dispatch). This is why it lands at 3 rather than 4: real material that belongs to those pages is duplicated here.\n\nCode grounding: Nearly every claim points to a concrete file, function, or constant (build_supervisor, monitor_processes, BootMode.from_env, validate_control_plane_url, _launch_sandbox, image_build_callback_env.json, runtime_manifest.json). The prose generally distinguishes fact from rationale ('the reason ... exists', 'load-bearing'). A few assertions carry precise numbers (MAX_RESTARTS=5, 48-bit counter wraparound, 2-22s reify) that read as strong but I cannot independently verify from the page alone; they are attributed but not shown, so 3 rather than 4.\n\nReasoning depth: Excellent. The page derives invariants (restarts must not re-materialize skills; bridge exit 0 means shutdown not restart; fail-closed SSRF guard; token-gate prevents callback before durable binding; cache never used as refresh fallback), explains ordering constraints (tunnel env before start.sh, boot phase sequence), and connects implementation choices to consequences (path hardcoding => silent no-tools boot; SESSION_CONFIG reserialization => new fields must be added to SessionConfig). This is a genuine causal model including security and concurrency reasoning.\n\nChange usefulness: Very high. It names exact ownership boundaries, the lint/CI globs a new provider must join, the shared version manifest that must be bumped in lockstep, and a targeted test table mapping files to invariants. A developer could safely add a provider or change the bridge protocol using this.\n\nStyle: Dense but well-organized with headings, two mermaid diagrams that clarify, and tables for restart policy and tests. It is on the long/heavy side and some paragraphs pack many facts per sentence, hurting scannability, so 3.\n\nCorrectness: No internal contradiction surfaced; the model is coherent. Some claims assert confident specifics (vendor-confirmed behaviors, exact timeout budgets) that cannot be cross-checked here, but nothing contradicts the page's own model. Minor imprecision keeps it at 3 rather than a 4, since it does not flag uncertainty on those externally-sourced numbers."
+  },
+  {
+    "task_id": "page_803a6b3055947ef5276c3501",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page has a precise, singular owner (testing across the monorepo) with clean routing to Control Plane, Shared Contracts, and Deployment, and no meaningful overlap with those topics. Code grounding: Nearly all claims point to concrete files (vitest.workspace.ts, vitest.integration.config.ts, cleanup.ts, helpers.ts, pyproject.toml, ci.yml) and specific functions (readD1Migrations, cleanD1Tables, initSession, queryDO). A few claims are stated without explicit evidence—e.g., the fail-closed outbound list of stubbed exceptions and the `--shard=1/2` fail-fast detail—which read as accurate but aren't tied to a shown line. Reasoning depth: Goes beyond layout to derive real consequences: shared must build first because packages import it at build time; per-file D1 isolation enables parallelism while within-file sharing forces cleanup or state leaks across sessions/users/automations; unit-vs-integration separation and why configs must not mix. These are meaningful invariants and failure modes, though it stops short of a deep causal model of the harness internals. Change usefulness: Strong—names exact files/configs, gives the build-shared-first ordering, cleanup requirements, migration workflow for D1 schema changes, per-package commands, and the failure signal (outbound stubs throw). A reviewer could act safely. Correctness: No internal contradictions detected and it handles subtle points (duration units, per-file vs within-file D1 scope). Some assertions (specific outbound stub exceptions) carry certainty without visible evidence, so not a clean 4, but nothing appears contradictory."
+  },
+  {
+    "task_id": "page_87d24f16eb3af8b8433e58f9",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page owns 'shared contracts and module boundaries' with a precise scope—shared as protocol source of truth, the enforcement mechanisms, and consumer boundaries. It routes cleanly to adjacent topics (correlation, service-auth, session DO) without duplicating them. Clear single owner. Code grounding: Nearly every non-obvious claim is tied to specific files and identifiers (e.g., `module-boundaries.test.ts`, `eslint.config.js` no-restricted-imports lists, `middleware.ts` matcher, `withCorsAndTraceHeaders`, the 4004 close code, `session/http/handlers/sandbox.handler.ts`). The prose distinguishes the ADR rule from current-code reality (e.g., 'In current code consumers import ... per-submodule paths rather than through a control-plane re-export layer'), which is careful fact/inference separation. Reasoning depth: Builds a genuine causal model—why shared must build first (file: dependency resolving dist), why hard gates vs. trend instruments matter, how an unhandled union member is caught by `satisfies never` exhaustiveness plus schema parse rejection, and why a 4004 close forces convergence on the authoritative snapshot rather than partial state. It explains the flat-config replacement trap and the composition-direction invariant with real consequences. Change usefulness: A developer could act on this—it names exact files to touch, the 'add in shared first' ordering, the ESLint bans that will fire, the contract tests that gate a PR, and the failure modes (INVALID_PROMPT/INVALID_MESSAGE, 400 'Invalid sandbox event', 4004). Correctness: No internal contradiction found and it handles subtle edge cases (back-compat root re-exports as a path rule not a surface rule, deliberate duplicate-export ignore, report-only vs hard gates). Not scored 4 because some claims carry strong specificity (e.g., '~40k of parse-level cases', 'always a fresh 8-char UUID slice') that read as precise assertions I cannot verify against source and which could be slightly off, leaving minor unverifiable certainty rather than any demonstrated error."
+  },
+  {
+    "task_id": "page_88dcb47c09ac9efb2df5eaec",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page owns the 'Image Prebuild' control-plane contract precisely, with explicit boundaries (control-plane fingerprint vs data plane) and clean routing to adjacent pages (Sandbox Providers/Lifecycle, Sessions). No visible duplication. Code grounding: Many specific identifiers and file paths are cited (ImageBuildWorkflow.triggerBuild, evaluateImageBuildForSpawn at image-selection.ts, image-builds.ts routes, queue names, cron string). However several strong claims lack pinpoint citations—e.g., computeRepositoriesFingerprint being SHA-256 over ordered triples, the NOT EXISTS insert for registerBuild, and 'stop not pause' E2B teardown are asserted without exact evidence anchors, so a minority of non-obvious details rest on assertion. Reasoning depth: Excellent causal model—derives why unversioned images must not become ready, why fingerprint uses session snapshot not live environment (prevents wrong artifact after edits), why secret rotation retires images, why spawn never blocks and fails closed on unparseable versions, and the D1 lease/fencing concurrency reasoning. Change usefulness: Clear extension seams (adapter + provider-factory + registry list), trigger guidance to keep concurrency in one place, invariants to preserve, and concrete focused tests per concern. Style: Well-structured, scannable tables and lists, progressive disclosure, minimal repetition. Correctness: Internally consistent and self-aware about edge cases (Daytona unsupported, ad-hoc multi-repo never prebuilt, branch mismatch misses). No obvious contradiction found, but some certainty (fingerprint hash composition, exact concurrency mechanism) is stated firmly without shown evidence, keeping it at 3 rather than 4."
+  },
+  {
+    "task_id": "page_8b20d8777ba601e74db2788c",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy fit is strong: this is explicitly the 'map' page, with clear routing to Control Plane, Sandbox Runtime, Web Client, Shared Contracts, etc., and it stays at the overview level without duplicating owned detail. Style is excellent — the tier diagram, package graph, state-location table, and numbered prompt flow answer likely questions fast and are well prioritized. Reasoning depth is good for an overview: it derives real consequences (state lives in control plane so cross-client handoff works; bridge reconnection with sandbox lifecycle authoritative; canonical subscribed snapshot; shared package is the single protocol source). Change usefulness reaches 3 via concrete guidance (new protocol variants belong in shared, control-plane re-exports; build order builds shared first; package boundaries). Code grounding is the weak axis: claims reference package paths (packages/web, sandbox-runtime) and identifiers (SERVICE_NAMES, SANDBOX_PROVIDER, ServerMessage, subscribed, x-trace-id) but there are no file/line citations proving these behaviors — the WebSocket fan-out, D1/R2/KV state split, and provider list are asserted rather than tied to specific source evidence, so much rests on trust. Correctness shows no internal contradiction and appropriately notes provider capability differences and single-tenant trust model; no material error surfaced, though the unverifiable specifics prevent a 4."
+  },
+  {
+    "task_id": "page_8ffaad9c1b581fa24d0b3ba7",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Clear ownership as the Deployment/CI-CD page: it covers Terraform composition, GitHub Actions workflows, and operator runbook, with routing to adjacent topics (Sandbox Lifecycle) rather than duplicating them. Grounding is dense and specific: exact file paths and line ranges (workers-control-plane.tf:214-216, main.tf:118-126, variables.tf:620-626), cron strings, and the test that pins deploy ordering (test_deploy.py:68-98). Reasoning depth is high: it derives *why* the two-phase DO procedure exists (Cloudflare rejects binding a not-yet-existing class; migration can't emit bindings), explains the inverse deletion hazard guarded by a precondition, and the NEXT_PUBLIC_ build-time inlining constraint. Change usefulness is strong: concrete files, ordering (apply false→true), failure modes (failed image build stops apply, lost encryption keys orphan rows), and verification steps. Style is scannable with a well-chosen workflow table and prioritized sections. Correctness: no contradiction found and it handles edge cases (Daytona outside the manifest sequence, provider-switch credential drain), but a few claims carry strong certainty that is hard to verify from the page alone (e.g., CACHE_BUSTER 'today equals' the manifest generation — a coupling stated as current fact) and the cron-to-code mapping is asserted confidently; minor imprecision rather than error, so a 3."
+  },
+  {
+    "task_id": "page_9012ef5313071b86474f0524",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page draws an explicit boundary ('the shell around' the SessionDO) and consistently routes per-session concerns to the Session Durable Object page while keeping edges, routing, D1 stores, crons, and queues here. Overlap with Automations/Image builds/Security pages is acknowledged and delegated, so ownership is precise. Code grounding: Nearly every claim names a specific file, function, symbol, or constant (src/index.ts, router.ts, routes/shared.ts, instrumented-d1.ts, ORIGINAL_STMT symbol, DERIVED_INVOCATION_STATUS_SQL, cron constants, Terraform paths). Prose distinguishes fact from inference in places (e.g., 'which is why the router passes the raw binding as the cache key'). It falls short of 4 because some quantitative claims are asserted without pointing to their exact source (e.g., '~38 call sites', 'MAX_PER_TICK (25)', 'launch concurrency of 4', '16 MiB body cap') — plausible but not independently verifiable from the page, and no line-level evidence is offered. Reasoning depth: Strong causal modeling throughout — the prefix-check rationale for autofix vs image-build queues, fail-closed admission on GitHub API unavailability, terminal-vs-none sandbox fallback preventing captured-signature exchange, non-refreshing session reads to avoid expiry extension, lease/fence idempotency under at-least-once delivery, CAS-guarded failure accounting admitting a single winner. These derive invariants, ordering, and security consequences rather than restating signatures. Change usefulness: Names concrete files, composition roots, the env.DB read-once rule with its ESLint enforcement, policy-table test as drift guard, and the integration/build test suites — a developer could locate ownership and validation steps for a change. Style: Well-structured with progressive disclosure, effective tables, and two clarifying sequence/flow diagrams; dense but scannable. Correctness: No internal contradiction found and the page handles many subtle edge cases explicitly. Minor concern: one cannot verify the numeric constants and the '~38 call sites' figure, and a couple of certainty claims (SCM gate 500 vs 501 semantics, exact cache-control values) rest on assertion; these are imprecisions rather than contradictions, so it lands at 3 rather than lower."
+  },
+  {
+    "task_id": "page_92ed6825c84d7e92a65258d0",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy fit is precise: the page owns the control-plane Worker entrypoints, router, and route policies, and cleanly routes adjacent concerns (session DO, authentication, automations) to sibling pages without duplicating them. Code grounding is exceptional — nearly every non-obvious claim ties to a specific file, symbol, or test (e.g. `isAutofixQueue` prefix match, `SESSION_ID_BINDING` reading `match.groups.id` asserted by `router.policy.test.ts`, the `no-restricted-syntax` selector `MemberExpression[property.name=\"DB\"]`), and it repeatedly distinguishes what a test pins versus inferred behavior. Reasoning depth builds a genuine causal model: why the WebSocket branch bypasses router policy and the consequences (no CORS/trace headers, DO-side admission), why SCM gating runs after auth (401 not 501 to avoid info disclosure), why the sandbox fallback only triggers on `failedScheme === 'none'`, and the AES key-length security invariant. Change usefulness is high: it names composition roots and their eslint exemptions, the cron/Terraform lock-step requirement, the policy-completeness test that fails on a policy-less route, and the env-validation failure modes. Style is well-organized with tables, two useful diagrams, and progressive disclosure. Correctness shows no evident contradiction and handles edge cases (503 guard before context has no correlation headers, LOG_LEVEL not honored on request path) with appropriate nuance. Scores capped short of certainty only because claims cannot be independently verified against the source from the page alone."
+  },
+  {
+    "task_id": "page_a2e7a967158fa3cf0cb7e7f5",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy fit is excellent: the page has one precise owner (packages/web as a control-plane client), explicitly distinguishes itself from being a session runtime, and routes to adjacent topics (Control Plane, Realtime Protocol, Security, Deployment) without duplication. Code grounding is strong: most claims cite specific files (client-auth-boundary-eslint.test.ts, control-plane-transport.ts, session/[id]/layout.tsx, next.config.ts, web-vercel.tf) and schema names (sessionSnapshotSchema, serverMessageSchema); it also references ADRs 0002/0003. Some claims remain vaguer (e.g. 'picks allowed body fields' lists fields but no file, backoff constants stated without a cited source), keeping it at 3 rather than 4. Reasoning depth reaches 3: it derives real consequences (build-time inlining of NEXT_PUBLIC_WS_URL requiring a rebuild, why identity headers are discarded, the pure-reducer projection boundary, secret-free snapshot invariant, distinct close codes 4001/4002). It stops short of a fully causal security model tying these together. Change usefulness is 3: concrete files, the BFF invariant to preserve (no raw fetch, browserApiFetch only), test locations, and failure modes are named; it lacks explicit dependency ordering for a change or rollback signals. Style is 4: cleanly sectioned, scannable, progressive detail, no filler. Correctness is 3: no evident contradiction and it handles subtle edges (build-time vs runtime env, backoff exceptions), though several precise numbers/behaviors are asserted with certainty without visible evidence, so not 4."
+  },
+  {
+    "task_id": "page_c1c8dfd3d74df52f31f3ee75",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page has a precise, well-bounded owner (realtime WebSocket protocol + snapshot hydration) and routes cleanly to Shared Contracts, Control Plane, and Web Client without duplicating them. Code grounding: Most claims cite specific files (websocket.ts, server-messages.ts, sandbox-events.ts) and named methods (completeClientSubscription, SessionSnapshotReader.handleSnapshot, SessionAccessReader), and ADR references anchor design decisions. Some non-obvious claims are less directly tied to evidence — e.g., the exact close codes (4001/4003/4009), the 24-hour token expiry, DEFAULT_REPLAY_LIMIT=500, and ws_client_mapping are stated as fact without file/line pointers, so a minority of important details rest on assertion rather than shown evidence. Reasoning depth: Strong causal model — the handoff invariant is explained mechanistically (non-async method, no await between snapshot read/send/registration, so a mutation is either in the snapshot or on the ordered stream afterward), and the security consequences (secrets off the snapshot, re-check on decrypt to prevent mid-flight credential leak, refusing dead-sandbox reconnect) are derived rather than restated. This is a precise invariant/failure/ordering analysis. Change usefulness: Names concrete modules (SessionWebSocketManager, SessionSandboxEventProcessor), endpoints, the ack contract ordering, and a failure-behavior table — a developer could locate and modify protocol handling. Falls short of 4 because it omits test locations, validation steps, and rollback/debugging guidance beyond close codes. Style: Excellent information design — tables for message types and failure modes, progressive disclosure, minimal repetition, answers likely questions quickly. Correctness: No internal contradictions detected and it handles subtle edge cases (hibernation identity recovery, unknown payloads dropped at parse, SSR being briefly stale but subscribed being authoritative). Not scored 4 because several precise numeric/code-value claims are asserted with certainty but cannot be verified from the page itself, leaving mild risk of imprecision."
+  },
+  {
+    "task_id": "page_c76d1c6e94cd98a6ccca48dc",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "This is explicitly a routing/index page, and it owns that role cleanly: it declares 'This page only routes' and points to every adjacent topic without duplicating their content, giving it excellent taxonomy fit and no overlap. Style is strong—task-oriented tables ('Job / Go to'), progressive disclosure by workflow (understand a session, follow a prompt, debug, deploy, extend), and it stops when complete. Code grounding is limited by design: most claims are pointers, but the few concrete technical assertions it does make (npm workspaces under packages/*, terraform/environments/production, terraform/d1/migrations/, package.json typecheck/build running @open-inspect/shared first, the 'losing the tab doesn't stop the turn' invariant) are stated without inline evidence beyond naming paths—reasonable for an index but not independently verifiable here. Reasoning depth is shallow because a quickstart intentionally defers invariants to linked pages; the one causal note (build shared first because typecheck/build depend on it) is useful but thin. Change usefulness is decent: it names concrete packages, the shared-types build-order caution, and routes new-provider/new-SCM work to specific pages plus ADR 0001, though it necessarily offloads real change procedures. No contradictions found and it correctly disambiguates tricky boundaries (ambient Slack automations vs Slack bot; docs/ how-tos vs wiki), supporting a solid correctness score."
+  },
+  {
+    "task_id": "page_cf1d92c78fef6dbb9549b75d",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page owns the Automation Engine (Scheduler) precisely, routing event ingress to github/slack bots without duplicating them and deferring Linear as reserved. Boundaries are explicit (control plane, request-driven, D1-backed). Grounding: nearly every non-obvious claim carries a specific file:line or migration citation (scheduler.ts line ranges, migrations 0030/0037, unique index definitions, test names), and the prose distinguishes derived vs stored state (invocation status derived via DERIVED_INVOCATION_STATUS_SQL). Reasoning: strong causal model — overlap guards, idempotent slot inserts with rollback-including-schedule-advance then monotonic re-advance, CAS on failure_counted_at for at-most-one-strike, dual sweeps for crash safety, and the snapshot-at-creation rationale for edit safety. These are genuine invariants and concurrency consequences, not restatement. Change usefulness: names concrete files, budgets/constants, and the tests that pin behavior, so a reviewer could locate changes; slightly short of full guidance on migration/rollback procedure beyond the warning and lacks explicit validation steps for adding a new trigger type. Correctness: internally consistent and careful with uncertainty (Linear reserved, timeout defaults, window not sliding); no contradiction surfaced, though a few claims (e.g., '15-type condition registry') can't be fully cross-checked from this page alone. Style: well-sectioned, scannable, tables/lists used appropriately, dense but not padded."
+  },
+  {
+    "task_id": "page_d0a7501154bfcd87bb00efde",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "This is a Quickstart/landing page and owns that role cleanly: system overview, package map, dev/deploy day-one, and task routing to adjacent pages without duplicating their detail (taxonomy 4). Style is excellent—scannable tables, prioritized commands, progressive disclosure (style 4). Change usefulness is strong for a hub page: concrete commands, build ordering (shared first), deploy gotchas with exact commands (two-phase DO, PKCS#8 conversion, Modal ordering), and precise routing for common tasks. Reasoning depth is good for this genre: it derives real consequences (why shared must build first, why PEM SEC1 fails, unit conventions, single-tenant trust implications). Code grounding is the weak axis—most claims cite only file paths as headers or point at other wiki pages rather than specific source evidence; concrete citations exist (`README.md:20-40`, `repositories.ts:172-205`) but many technical claims (sig1 auth, migration-prefix rule, ctx.db ESLint rule, WebSocket bridge behavior) are asserted without traceable evidence. Correctness appears sound with appropriate hedging and an honest broken-link annotation; no contradictions found, though several specifics are unverifiable from the page itself."
+  },
+  {
+    "task_id": "page_d5f1604ac94aae299ddb0add",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: cleanly owns 'Testing Conventions' with a stable boundary, cross-references adjacent topics (module boundaries in shared, web auth-boundary ESLint) without duplicating them. Code grounding: nearly every non-obvious claim ties to exact files/paths (vitest configs, apply-migrations.ts, cleanup.ts, helpers.ts, conftest.py, lint-complexity.mjs) and precisely names contracts like sig1 per-request signing and the 70-migration count; it distinguishes fact from convention. Reasoning depth: goes well beyond restating layout — explains WHY placeholders would fail (SCM route encrypts inline), why per-file D1 isolation forces cleanD1Tables in beforeEach, why the DO private-runtime seam surfaces as runtime TypeErrors, why isolate_runtime_file_paths exists (dogfooding overwrites live manifest), and why unit/integration credential material must match. These are genuine invariants and failure modes. Change usefulness: gives concrete commands, per-package layout table, ordering (build shared first), sharding, and an explicit pre-completion checklist with hazards to preserve — a reviewer could act on this directly. Style: strong hierarchy, a well-scoped table, bulleted mechanics, minimal repetition. Correctness: no self-contradiction found and it handles subtle edge cases carefully; docked one point only because several specific figures (70 migrations, 95+/60+ files, exact static-binding contents) assert high certainty that cannot be verified from the page alone and read as slightly stretched precision, though nothing appears internally inconsistent."
+  },
+  {
+    "task_id": "page_d9ddedeaea7ccb0c872daadd",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page has a precise owner (the control-plane Worker) with explicit boundaries against the Session DO and realtime protocol, and routes to adjacent topics (Automations, Image Prebuild, Security) without duplicating them. Clear demarcation of what it does NOT own (agent execution). Code grounding: Nearly all non-obvious claims tie to specific files/paths (index.ts, router.ts, session-runtime-proxy.ts, contracts.ts) and named constants (MAX_PER_TICK=25, ABANDONED_DRAFT_TTL_MS 8h, IMAGE_BUILD_SCHEDULER_CRON). A few claims lean on named functions without explaining what the code establishes (e.g., createSessionRuntimeClient 'stubs env.SESSION' is asserted, and the exact D1-first ordering invariant is stated as fact without pointing to the enforcing code). Prose generally distinguishes fact from inference. Reasoning depth: Strong—derives the D1-before-sandbox-warming ordering invariant, explains why sandbox token auth can't happen centrally (needs session id + DO round-trip), why abandoned-draft sweep exists (sandbox timeout only writes sandbox state), and cron offset rationale. Good causal model of fail-closed encryption. Change usefulness: Explicit extension seams with ordering and anti-patterns ('do not overload the autofix prefix'), concrete files, failure modes, and a focused-tests section mapping behaviors to test files. Style: Well-structured tables, scannable headings, minimal repetition, progressive detail. Correctness: No clear contradictions found; edge cases (unknown cron ignored, malformed queue jobs acked) handled. Minor unverifiable certainty around the 'invariant' ordering and the claim that autofix health 'does not consume queue messages' lower confidence slightly, but nothing appears materially wrong."
+  },
+  {
+    "task_id": "page_db090e3c4ab8138a19bc8134",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: The page has a precise owner — the SessionDO adapter and its composition root — with explicit boundaries (ESLint-enforced import rules, the internals test seam) and clean routing to adjacent pages (data-model, control-plane, lifecycle, streaming) without duplicating them. Code grounding: nearly every non-obvious claim is tied to a specific file, function, test, or config (e.g. `session/components.ts`, `alarm/scheduler.ts`, migration 42's partial unique index, `test/integration/session-components.test.ts` pinning the throw cases, the flat-config replacement hazard in `eslint.config.js`), and the prose consistently names the mechanism that establishes each claim rather than citing decoratively. Reasoning depth: the page builds a genuine causal model — why `_runtime` is published only after full construction (retry vs. half-init), why alarm delivery skips rehydration, why encryption keys validate eagerly while D1 projections degrade, why `completeClientSubscription` is non-async to make the no-await handoff structural, the two-layer hibernation identity model, and the single-alarm-slot earliest-deadline-wins coordination. These are derived invariants and failure behaviors, not restated signatures. Change usefulness: the Extension points, Configuration table, and failure-semantics sections give concrete change locations, ordering (add path + handler + route + test + router call), invariants to preserve, and debugging signals (404 vs dead DO, `do.request` line, close codes). Style: well-structured with effective tables, diagrams that clarify rather than decorate, and clear headings — but the density is very high, some sections (the WebSocket hub, alarms) run long and demand rereading, keeping it short of exceptional. Correctness: no contradictions found; the page repeatedly handles subtle edge cases (completed/failed being promptable, warming never persisted, empty-session-to-draft not being a bug, the tombstone ordering) with appropriate care and explicit uncertainty about post-hibernation ambiguity. Cannot fully verify against source, so held at 4 without penalty."
+  },
+  {
+    "task_id": "page_de29d3255497ed4419d2bc9f",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Clear ownership as the Testing Strategy page: it covers CI enforcement, per-package Vitest layout, control-plane workerd integration tests, Python pytest suites, boundary lint tooling, and a contributor decision table, with routing to adjacent topics (D1 migrations, DO layer, provider abstraction) without duplicating them. Nearly every non-obvious claim is tied to exact file:line evidence (e.g. `vitest.integration.config.ts:25-62`, `router.test-support.ts:1-25`, `conftest.py:13-26`, `eslint.config.js:133-151`), and the prose distinguishes fact from stated intent (e.g. 'an *intended* divergence ... asserted explicitly'). Reasoning depth is strong: it explains *why* the structural sql-storage port allows Node-side testing, why compatibilityDate is pinned to match production, why isolation is two-level (file-level D1 vs shared-within-file cleanup), and why the dogfooding fixture must redirect fixed paths to avoid clobbering the live session — genuine causal invariants, not restated names. Change usefulness is excellent: the final table maps changed area to exact commands including the build-first ordering and the cross-plane 'both suites' rule. Style is scannable with focused headings and a well-prioritized table. Correctness is high but not verifiable to 4 from this page alone: several precise counts (82 integration files, 16/~58 Python files, 60s/2s budgets, migration path) are asserted with certainty and cannot be cross-checked here, and 'the 13-line sql-storage.ts' is an oddly specific claim; no internal contradiction is present, so this rests at 3 pending source confirmation."
+  },
+  {
+    "task_id": "page_e6a7d42136885b26dbdeee43",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: The page has a precise, well-bounded owner — the persistence/storage layer across D1, DO SQLite, R2, KV, Queues — and explicitly routes overlapping detail to adjacent pages (Session DO, Automations, Secrets, Image Prebuild, Terraform). The ownership map at the top draws clear boundaries (e.g., 'the record lives in DO SQLite, R2 owns bytes'), and it distinguishes DO SQLite from the SqlDatabase port cleanly.\n\nCode grounding: Nearly every non-obvious claim points to a specific file, symbol, migration number, index name, SQL predicate, or config value (e.g., `sql-database.ts`, `DERIVED_INVOCATION_STATUS_SQL`, migration 0039/0040/0052/0059, `RECOVERABLE_IMAGE_FINALIZATIONS_SQL`, ESLint `no-restricted-syntax` rule with quoted message). It also distinguishes fact from inference and marks observability-only fields. The '~38 call sites' is an approximation but flagged as such.\n\nReasoning depth: Excellent causal modeling — index-first creation ordering and why compensation must precede sandbox spawn, the `updated_at` guard and why repair deliberately omits it, why `batch()` rolls back only on error and therefore every statement must self-guard, why the schedule advance uses CAS rather than monotonicity (the straddling-cron slot-skip argument), lease fencing under at-least-once delivery, and the two-phase R2/DO ordering asymmetry for media vs attachments. These derive real invariants and failure modes, not just mechanics.\n\nChange usefulness: Strong. It names concrete files, the two distinct migration ledgers and their scripts, the create-new-table/copy/drop/rename pattern for SQLite constraint tightening, the D1 100-parameter ceiling and chunking constants, index-shape pitfalls (migration 0024), and cites specific integration tests as verification (image-build-finalization-queue.test.ts, automation-invocations.test.ts, schema.test.ts). A developer could safely plan a schema or store change from this.\n\nStyle: Well-structured with tables, mermaid diagrams used purposefully, and clear headings, but it is extremely dense and long; some sections (finalization, automations) require rereading and pack many nested clauses into single paragraphs. Effective but not maximally scannable.\n\nCorrectness: No internal contradictions detected; the page carefully handles edge cases (childless-skip completedAt special case, quarantine-only-if-building, verbatim vs dropped migration asymmetry, optional queue binding degradation). Certainty is appropriately hedged where evidence is approximate."
+  },
+  {
+    "task_id": "page_e6c6e3f056f72ec8ea560e57",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: precise owner (D1 data model and migrations) with an explicit D1-vs-DO boundary and clean routing to Session DO and Auth/Secrets pages; no meaningful overlap. Code grounding: nearly every non-obvious claim carries a specific file+line or migration-number citation (d1-migrate.sh:9-35, d1.tf:14-33, eslint.config.js:133-151, session-index.ts:660-662, DERIVED_INVOCATION_STATUS_SQL), and the prose distinguishes fact (getVisibleForUser ignores the user arg) from projection semantics. Reasoning depth: derives real invariants — the two-PR silent-skip migration hazard, the sha256-trigger re-run behavior, the ESLint access-discipline contract, monotonic/CAS-guarded projection convergence, and revision-hash pinning meaning restores never pick up edits. Change usefulness: strong on where things live (stores in db/*.ts, migration naming, encryption-key ownership) and non-revertible migration warnings, but stops short of concrete step-by-step change ordering or naming validation tests/failure signals for adding a migration or table, keeping it at 3. Style: excellent — tables and grouped table-family sections make it scannable, rule-of-thumb framing answers the routing question fast. Correctness: internally consistent and careful (notes the deliberate 0046 gap, single-tenant visibility), but the '69 files ... versions 0001-0070 with 0046 missing' arithmetic and several dense migration-number attributions are hard to fully verify from the page alone and carry some unverified certainty; no outright contradiction found, so a solid 3."
+  },
+  {
+    "task_id": "page_e6f2c5a5d0c8700d6f28739d",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "As a quickstart/routing index page, this has a precise owner and scope: it maps task categories to wiki folders and orients readers to the repo layout without duplicating the target pages' content. Routing to adjacent topics is its explicit purpose, done well. Code grounding is strong for an index page — invariants and file assignments cite specific paths (src/index.ts, session/components.ts, sandbox/provider.ts, scoped-secrets.ts) and reference enforcement mechanisms (ESLint under src/routes, root build scripts, AGENTS.md conventions), though some claims (e.g., '70 numbered SQL files', 'AES-256-GCM', DEFAULT_SANDBOX_TIMEOUT_SECONDS=7200) are asserted rather than shown, appropriate for a hub but not fully verifiable here. Reasoning depth exceeds a mere link list: the invariants section derives real consequences (state-split authority, fail-fast eager construction, sandbox lifecycle persistence preventing reconnection, D1-before-DO ordering, repo_owner containing '/'), which are causal and non-obvious. Change usefulness is high — it names the canonical prompt/data flow to trace against, concrete composition points, authoritative files per domain, build order, and testing conventions, giving a reviewer real footing. Style is excellent: scannable tables, progressive disclosure, clear headings. Correctness shows no internal contradiction and handles subtleties (single-tenant no per-user gating, unit conventions, GitLab subgroup owners), but a few certainties (exact constant values, migration count) can't be corroborated from the page itself and could drift, keeping it at 3 rather than 4."
+  },
+  {
+    "task_id": "page_ea5a60dc32b7e9f9bb31d381",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page owns 'Managed Skills' precisely, distinguishing its territory from adjacent pages (Sandbox Runtime, Sessions, Secrets) and explicitly routing to them (child sessions copy parent manifest, D1 before sandbox). No duplication. Grounding: Nearly every non-obvious claim is tied to a named file and function (skills.ts, skill-profiles.ts, session-skills.ts, content-addressing.ts, git-import.ts, skill-resolution.ts, managed_skills.py) with specific mechanics; citations establish what they claim rather than being decorative. It also flags one claim as coming from 'task instructions' (SKILL_RESOLVER_VERSION/domain bump) which is honest about provenance. Reasoning: Strong causal modeling — why profiles are filters not overrides, why import digest differs from revision digest, why generation bumps force resolution retries, why manifest bound is bytes not count, why paging returns an extra row, why the loop has no page-count cap, why discovered skills win over managed. Invariants, failure modes, and concurrency (CAS, generation checks) are derived, not just listed. Change usefulness: Excellent — names exact files/ownership boundaries, the shared-limits mirroring requirement between two runtimes, dependency ordering (D1 before DO, materialize after repo boot before OpenCode), validation steps, and rollback/recovery (swap journal). A developer could safely modify serialization or add a limit. Correctness: No direct contradictions found and it handles many edge cases (legacy sessions, duplicate-content no-op, moving refs pinned). Slightly below top marks because a few assertions rest on stated-but-unverifiable certainty (e.g., the claimed exact D1 2 MB json_group_array cap rationale, and the confident 'never equal' import-vs-revision digest claim) that read as reasonable inference presented as fact; these are minor and not contradicted."
+  },
+  {
+    "task_id": "page_f470050624116219bf94e898",
+    "judge_id": "opus-4.8",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: The page maps cleanly to the 'GitHub Bot and Autofix' outline entry, with a precise owner (packages/github-bot) and explicit boundaries — it repeatedly disclaims cross-topic concerns (session DO, scheduler, control plane) and routes to them without duplicating (e.g., 'the session's own gh/credential path', 'feeds Scheduler.event()'). Strong routing without overlap. Code grounding: Nearly every non-obvious claim carries specific file+line evidence (index.ts:36-47, handlers.ts L255-309, session-target.ts:187-225, autofix-ingress.ts:26-96, migration 0070, workers-github.tf:5-16). Prose distinguishes design intent ('by design', 'is the reason') from mechanism. Citations are used to establish behavior, not decoratively. Reasoning depth: Excellent causal modeling — the two-state dedupe (processing→processed vs delete-on-failure) is explained as making redelivery the recovery mechanism rather than a suppression hole; fail-closed vs permissive-null config posture; out-of-order PR events never regressing state with D1 as authority; feedbackKey idempotency plus 24h attempt window; forwarding-independence rationale. These are genuine invariants and consequences, not restated signatures. Change usefulness: Names concrete files, the ingress ordering, failure modes, and an extensive test map, which supports safe changes. Falls short of 4 because it does not give explicit implementation ordering for a typical change or rollback/debug signals beyond the queue-health alert; a developer knows where to look but must infer the change sequence. Correctness: No internal contradiction detected and the page handles subtle edge cases well (self-review special case, self_comment loop guard, fail-open session target). Held at 3 rather than 4 because a few strong certainty claims (e.g., 'feedback loss is acceptable, redelivery isn't', exact backlog thresholds) rest on stated design intent that a blind reader cannot fully verify from the citations alone, and some line-precise claims cannot be independently confirmed. Style: Clear headings, effective bolding, and logical flow from ingress through the two consumer paths. Slightly dense — long compound sentences with inline citations require careful reading, and the config/failure section is a wall of clauses — preventing a 4."
+  }
+]

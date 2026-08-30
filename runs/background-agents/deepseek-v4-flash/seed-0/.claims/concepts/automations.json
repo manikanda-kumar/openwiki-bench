@@ -1,0 +1,516 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:133999445c1275fb52fa3c6bc3801bb0b1b1ac1b157332419e44305e6cd1a4e9",
+  "claims": [
+    {
+      "id": "claim_c572ca2d15de4993a87fbbce920afc59",
+      "statement": "Every firing of an automation — schedule tick, manual trigger, or event — records exactly one automation_invocations row plus one automation_runs child per target (repository or environment); there is no separate single-repo pipeline and no group-of-N special case, and a repo-less firing materializes one null-repository child.",
+      "evidence": [
+        {
+          "resource": "repo://docs/MULTI_REPO_AUTOMATIONS.md",
+          "version": "repo-file-v1:sha256:2933758a3fb40719a40d8123318d67d4c71e6fe64eb19fe8e81b8806556dfa10"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L854-L991",
+          "version": "repo-lines-v1:sha256:5cd064f92ed2cc9bff8bcee195f534ac8379c2b587e71f20ed975a5e48681811:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkZGY0Yzk4MzRhMWYwNDM3ZTllZDFmNTE3ODRkZmU5ZWI5MTVmN2VmMzBhZWE4NGE4ZmI1NTBmMzBkODQ4ZDFiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzYmY5YTY5ZDc0MjVmNDRiYjNlMDAxZDQ0MjhjYzUxNGQyMmQ4ZDUwNmZkZWQyMTgwNDMzMTFjNzU0MjliYWMyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0ZTY2OTlhNzBjMGJmY2NjZmNjNmY3M2FmMTkxMTBlYzM5OTJkOTBiNGMyY2JhZjQwYmQ4ZTE2YWI2MDMxOGYxIn0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L349-L399",
+          "version": "repo-lines-v1:sha256:ae7c5d3af85af0b02008283a06f71052802f3c4c0b9e37aece791f25dc29da20:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliYTgwMDJlOTJjN2Q3NTc4NDU1Y2U3YTE3YzBkOTY0YWY0NzMyMzRiOTNlNmNhMjhjOTdkN2FmMzQwYWNiNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwMmQyNTQ3YjRmZWNkZDEzZDI0ZmVhM2ZjYzVkZTM2ZDU3NWJhYTI5N2Y5Yjk4YTM5YTk2YjM1NDdjYmY2N2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyZmZjMmMxMjk0MDAxNTU0NjI3OGU5ZTViYmMxNjVkZjc3ZDAzN2ZmNDU3Mjc5NjYzZmE4YWJkZjJiODc1YmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwYzJlYjkxY2M5MzVhODU4MTVhZTIzZDIzNGRmNmJjMDhmZTUwYjczNzQ2NTUwZTYxYWZjMWYwOTFiNzI3ZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_024d699de72041cf86ab5392e4a38e80",
+      "statement": "Invocation status is derived from the child runs and never stored: no children means skipped; any starting/running child means starting until one leaves starting then running; all-terminal means skipped if all children skipped, completed if none failed, failed if none completed, else partial_failed. Completion time is likewise derived as the latest child completion once all children are terminal.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L243-L313",
+          "version": "repo-lines-v1:sha256:96d7f8928a93c1fa853e2822aee8b9755753f305681a2bb43f8bf89bac768d05:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNzY0OWY1OWEwNmUxOTU4NjJlYzJmMDdhYTk5MTQwZWY4ZTc1ODVlMjQ5NDliZDdhNGU4MThkMTc4ODgxODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNTQwZjU2ZTAzMjEwNDQ2M2E4YmRiNWM3Mjg2YzQ4NjU5YjE2NzFhZDJiZWViZWNmMjVjYWFiMTU5OGRlNjUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/automations.ts#L16-L30",
+          "version": "repo-lines-v1:sha256:47d979b2609c5471acf18025d64537da451612b0ffc435eaa317a160f118f51d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjMzNiZTNkMTY3NmMwNjk4OGRhMDBmMGI5ZTIxYjQ2OTA3NzU4N2UwOWVmYzkxYzAwNWZhYjE4ODU0YjE5MjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhNzMwYWM3MzExYzMwZTlhZDZiNTdmZTg5ZmVjNjRkZDlkYzY3NTQyODNmMWM4MDRiMWRhZGE3NThlMzVmNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjMDAzZDMwYzNlZmIxMzUwODNmNjYzNGQ0ZDA4OTJjMWMzNTFjOTk1YzA5M2RkN2QwODAyN2FhMjM1ZGY4YzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a7fc11aefbd446ea52abc8eed1226ba",
+      "statement": "Every run snapshots its target at firing time (repo_owner/repo_name/repo_id/base_branch, or environment_id); run history and the session-creation path read the snapshot, never the automation's live selection, so repository/environment selection edits are never blocked while runs are in flight and apply from the next firing.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/automation/session-target.ts#L36-L66",
+          "version": "repo-lines-v1:sha256:73aed179807a02811eb7c4733785a866c4116dfbc5789bf234b124896c4ab0ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NzdiMWU4YWQ1M2ZhM2U1NDFmMDdmMmU4ZDIzNzY3MWI3ZjcwMDFlZGM4NWFkNGRkMGNjNTg3YWEwNTI4MmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkYmU1NWI0MWFjY2UzZWViNmExNDE4NDEyMzc0NjViZTc4M2I0NzFhZWVkNTFmMjJlNzE5ZDcxZjE5ZjQwNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L82-L102",
+          "version": "repo-lines-v1:sha256:acc6b26eaff2aeee74c06b3f62b04c755d4b08f777843f4a67e52970fd439b4a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MWM3YTYxZjdmNmRlNWFmODgxNjdkMmUzMjU1ZDUyNTBlN2M0MDI4ZGJhZTA4YmU3NTE5YjY1YjZkYzg1MGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiZWQ2YjY2YjliZGU4NWEzNmE2NGU1MTQ2ZTNmYWJkNWE1NWU5ZTY2YmYzZDY2MzJmM2YxMWRkMGFiZDU5NjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzNTgxMjQyM2JjODEwNjQyNDBiYmI4OTEzOTQ2N2FlMGJjOGQ0ZmVhZTUxMjAzYWY4YTJhMjUyZWMzZTVmNDUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L871-L911",
+          "version": "repo-lines-v1:sha256:b612d3aa894b9d092b9436f2cb0cf176ccb0f7ee386726304002c76d82198eb4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwZmRmMjg0NDJmYjcwMTcyN2U5YmJlMzgyYWMyMGJkMmUwM2ZmZDM2NzhiOTc1NDI2MjM4M2M0ZjQ1MzIyYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1OTc2ZmVjZGU4YWMxYTRkOWY0MmFiMGVkNDNiODE5NzBkYjRlYzVmNTNjZTVlMWVjYWVkOTA3MTAyNzQ1YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhMTQwNmZlYTZkMTk1YjdiZjUwYmQxM2U3ZmE3YTQ0NDQ2Y2E1NDk3ZmY3MzFiNGM1NzcxMDY3ZjhkOWM2YmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ae4f187870e54bb59eae259586eda1ba",
+      "statement": "Automations live in a normalized automation_repositories table (with automation_environments sharing one combined target cap of MAX_AUTOMATION_REPOSITORIES = 10); repositories and environments count together, duplicates are rejected, and multi-target selections on non-schedule triggers plus repo-scoped triggers without exactly one repository are validation errors, not implementation limits.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L246-L274",
+          "version": "repo-lines-v1:sha256:e26ad7b8dec6c2f3eb1a0b25019f1d089c1c97497ace3a4cc41dcab490ad2982:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxMWRlMGVkOWEyMTZiMjMxMTc3OWEzMjllZDgzNTRlZTFiMzA4YWZmMzFkMzlmMzdiNDE0MGRhZTc1OWZlZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3NmNmODhjNjcxMGIxZmQ1MjRhOGRlMzdmOTUzNDU4MTkzZjBkODdlODUzOWY5ZWU3ZjAxZmQ3OTM2YjdiMzYifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/automations.ts#L32-L33",
+          "version": "repo-lines-v1:sha256:d1381f505d30b7cb5b660e0a792d7a535e2c6c58c6a60f9a7b0749f65c2258a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjNkZDljYTFkZWNkMmZiYzNmNmVkYTRjY2Y3NjdmYzdmOTJlN2EzMjgzZTc4Njc1ZjUxMjQ1ZDgyZjI4Zjg2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTA5Yjg5MmRmZWNjNWVkNTYyMWUyM2NlZTMyMjliNDdiZTM5ZGVmYzg4MThiNTYwNGQ3ZDk2OTZiYzcwODNiOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWM4M2ZkNjZkNjk4MDI3YzMwZGMwOWM4NmM4OTY1NmIwZTI0NDA1YWRlMzYyNWZhMDAwZTExMjNiY2EyZWU3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg0ZDU1NGE4ZTUzOTM1NDhiZGI1MTAxMmRlZjQ1NWJhMjhkMzk0ZWQwYTU2NTlhZjIyNGEwYWViODkwODQ1ZSJ9"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/repositories.ts#L4-L7",
+          "version": "repo-lines-v1:sha256:bff61529cf140b35e8891444c3c08490e85411a782341145261d01720bf487ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2NhNzBjYjAyZGZkNDAzNjk3NGRhYzdlMGIyZDhjNGU4MWQ4MmMxYmZiNGVlOGE1NjkzODMxOTc2ZGM3MTc3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU2ZDMxNzdlNWE1MTNmNjNjODU1MTVlOTAyYzVlY2QxMmNkMGQ3ODdlZDM3OTU5MzM0NjBmODM2MzRhMGFhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzAwYWMxZGE3YzQ0OTlhZjYyM2VlYTU4M2Q3YzNiNmZmODFhYWQyOGIwMzcyNDg4YmI1NDk0MDM5ZTIzZjQ4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWU3OWEwNzM3MjRhMDFjZjA3YjI4ODQ2YmU1ZjhhMzFhMDczZTc1MGIxY2NiZjk4Y2RmODExZjU1OTdmNDUzNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7845ceaba2614b32bb43e04632364429",
+      "statement": "The D1-backed scheduler tick caps work per invocation of the Worker scheduled() handler: MAX_PER_TICK=25 automations, TICK_CHILD_LAUNCH_BUDGET=50 child launches (each launch costs ~8 subrequests), and AUTOMATION_LAUNCH_CONCURRENCY=4 launch lanes; automations deferred past the budget stay overdue and are picked up next tick.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L52-L80",
+          "version": "repo-lines-v1:sha256:0f487175eabcdfddfad239dfab67d2dd21c62dea8ea217bc40578f76f261b865:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MDBhZDk2OTEwOTk0YTY2NmU0NzkxNWJlM2RkMjA4OWM2ZTQ3NDNmMzUyOGYxOGZlZmU0ZmMyYTc4ODY0NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4MzUyMWFhNzI2ZDcxNzIxNzBlNzY1NDJiZTQ1MGU1NmM1YmIwOWI0M2RjOGY0MzBjYTVhZjBhMGU0YzczNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYTYwMzA1OGJhYTQ5NDczMTI4YzRkMDU5ZDY1Y2RkNjkzYmRmNWQ3MWExOTY2NTJhOTZjZTI4MzUxYWM3MjEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L604-L693",
+          "version": "repo-lines-v1:sha256:15382a20d9495ff76b0904f73a7fd405572e12572f71368842220304fb4940ee:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlYTI3YmM2MzQ2Mzk4ZmM4YjMyOGEwNTgwZmEzZjExMGM4YWNlZjczOTFmZTQ5ZDJjMzZiYzZhNTdhNjg2YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiNzU2MDczZDQ4NDNlZjAwZTc5YjQ3ZDBkZDU4ZTdkYzNmMDJiZjJhMmIwZTM2MDgxNWY4N2ZiMDIwMjkwNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMTJjY2RkMGY1NzE3YmIwYjc0NmI2YzM0ZmM0ODljOWRmOTcyMGY5ZDFkNzA4NWUwZDA1ODQxMDczMTJkN2IifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L76-L97",
+          "version": "repo-lines-v1:sha256:21ebf6b5e38bc396d7d1258b75966738ad8f1bb7ee1f8b2e9689f4647e07abc6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxZDc2MGQ2NDg0ZWVjZjM1MTNjNGRhZmMxZjZmYTBiMzkyNjE1MmVhZjY0NzkxMjJmNGE1MzBjMWU0Mzc4ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzcwYWYyNzAxYTljMDFhZGQzZmFjNjY5YWMyNmY0MzZhOWZlMGM0ZmUwMTQ2NjMzM2RiOTI2NTA0N2M5NDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmM2M3MGIyZDI5ODUxZGNmZjI3YzYzZjNhNDU4Yzk5Y2Y5NmEyODhmMzdmNmRiYzc2YTgzMWM5YjM3OTMxNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkYjVmNGI2ZDM2MGVkZDZiMGRmYTM5ZWRkM2E0YTI1OTA2NjcxNGUwOWUxMDI0MTQzYTNjOWIxMzU2ZGI1OWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e50e1dc4d4a940a2acaec04c73f40f21",
+      "statement": "A schedule firing claims the cron slot (next_run_at) and advances the schedule in the same atomic D1 batch via a compare-and-set on the claimed slot; a UNIQUE violation on the idempotency index (automation_id, scheduled_at for source='schedule') rolls back the whole batch including the advance, and the losing firing re-advances monotonically so next_run_at is never rewound.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L548-L564",
+          "version": "repo-lines-v1:sha256:12a062c9dbb7422401561dac7708f2c777d60edd2cc1264bac143adf799bd442:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZWM4NWNmYzgwN2RmNjc1MGU5NDBkN2I5NmMwMzMxYmM0YTJlOGIxZjY3MzQ4YjQ1MDhjYzRjMjRiMGU3NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhMWMwZjJhZWNkNjg1MTdiNjQzNmRlMWRiMThiODY1NTUyNmRlZWM4M2U1YmU3YTQxNGYyZGU3ZDEzNTcwNmIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L884-L991",
+          "version": "repo-lines-v1:sha256:6970f78a769f4069d318f51eb1cf1f8d47b3801fcbf683bbcf496cd251f87005:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0ZjJhMmY5OTZmMDhlNjgwYmQyOTIxMzVhNmZhNDk3OGJkYTI2ZTYwMmQ4NGYzM2NiMWQ1OTQ3NzVkNDMwNGI1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiZWVlZmRkNTExM2Q5OTA1NmYxZTE5ZGUxYjdkNWJlZGU2ZTBhMzAxZjllOGY3YmU0ZWFkM2Y4ZjhkYTg2NmM4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0ZTY2OTlhNzBjMGJmY2NjZmNjNmY3M2FmMTkxMTBlYzM5OTJkOTBiNGMyY2JhZjQwYmQ4ZTE2YWI2MDMxOGYxIn0"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L88-L95",
+          "version": "repo-lines-v1:sha256:dcd67b1beaadc50e22a07d91538d88bd3649e24386c4d81016848355cb873b51:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI4ODhjY2M0OGI1ZTM5YWQ3MjE5Y2ZmMmE4MTg4ZTAyODQ4ZGJlM2QyNWY2MDQzODczY2Y5YWU3ZjhkYWE5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmY5Y2QxN2JjNzIzNDkyZjJhMTgxMzliNDZkYWUwZjNmOGZlNTRjM2RmMjhkNDYzNmU4NDg3NWE5OGIyOTE5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODY4MzMwOGIwMGUzYmUwMDYwOTM4ZGZhMTQwYWNlNzRmNzk1YjZhNzkzZWExZWU5ZDU4MzY5N2FiMWI3OTc3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDU5OTA3ODg2NWFhMWViMTgxMWU1MmM3N2JmNjVmMDZhZTgxYTUyNDk0MGYzYjE5MzlhNGJhOGQyYzM0NzQwNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_da31fb1ed2594ea8b4eb66af49ffe615",
+      "statement": "Overlap is scoped per source: schedule and manual firings block on any active run of the automation, while event firings block per concurrency key; a blocked schedule/event firing is recorded as a childless skipped invocation with reason concurrent_run_active (atomically with the schedule advance for schedule slots), a blocked manual firing returns 409 and records nothing, and a skip never stores the event trigger_key so it cannot consume the dedup slot.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L856-L882",
+          "version": "repo-lines-v1:sha256:9aa19580159f2df7090ae10f726b41180ad2efbdfea61bb2646f306bb3e5a2fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxMDkxYzdjYWVlMDBhYzJlYTIyOTdjYjZmMTMyNWEzYzQ3NWEwMWQwNzE2YTg0NDdjN2ZlMDkwYzYwMTUwMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyNzk1ZGU3YjQ0N2U3NTljMmRkNDllOTgzOWQxYWQ4ZjMwNjI0NDQwODVhYjUzNGRhZDg0MjkzODlhNDJiODUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L307-L338",
+          "version": "repo-lines-v1:sha256:aeca4d13191482982f35ce7b94d207d69987ec88c6ff0d11be306d5b2ac15d0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjYTg2NDNhZjc5ZWFhZjQ1MjZmNzc2ZWFiYzAzYzYzNzU4ZmJlMjllNmYyOTMwZDg2NDMyMWNjZGI0Yjg5MzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5Mzk5NWQzZjMyZmU5NTcxZTU3NWFmNTM4ZGI0ZTE3ZGZiMDc4ZWQ4ODU5NjNmOGQwNDU5YzEyMDljZWYyNDAifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L562-L600",
+          "version": "repo-lines-v1:sha256:66d43aee923c59b82516a9e7ae9c5eccc090e3d3b72d33cd417f76251ad9c38a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4NGU4Y2JiZmU1MjRjOTQ1MTUzYTM5OWM1ZTBkZTdmMDBjZGVmNTgxNTVmZDYzOTM5OGY1ZWE4MThiNGRhOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiNzU2MDczZDQ4NDNlZjAwZTc5YjQ3ZDBkZDU4ZTdkYzNmMDJiZjJhMmIwZTM2MDgxNWY4N2ZiMDIwMjkwNzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_438d46ffc788472b8f4e03c406872ed3",
+      "statement": "Event dedup and cron double-fire are enforced atomically by unique indexes: idx_invocations_trigger_key on (automation_id, trigger_key) and idx_invocations_idempotency on (automation_id, scheduled_at) for schedule-source rows; within one invocation each repository has at most one run (idx_runs_invocation_repo) and each environment at most one (idx_runs_invocation_environment), so a modeled retry is always a new invocation, never a second run.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1357-L1369",
+          "version": "repo-lines-v1:sha256:f285c49920fabf4764ba494d0c78ca89ca84eab2d7ec9f4fb08c68041d4b72f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L195-L201",
+          "version": "repo-lines-v1:sha256:a13c955f0fa62cdf856cf3dbb313fafd64bc6f9500171360cbf02843e78af1c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTRjNjA2YTU1ZGUyYWI3YmQ1MTNlODA5ZmY1Y2IwYTMxNzJhMWE1NDgxNTY1NmM2YjA4YjEyZDczODE3OGFjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTdhNWMwNDRhNzllM2EzNWRmNDBmZmQxODg0NjBjZTgzZmFhNmNlZTIwMDM2NTc0OTMzMTVhYjE3YjNlZWNhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L88-L100",
+          "version": "repo-lines-v1:sha256:29bcdebdfb40ea777852a3136a479ef093cec069558a6893234b055f9b0f0c61:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiODg4Y2NjNDhiNWUzOWFkNzIxOWNmZjJhODE4OGUwMjg0OGRiZTNkMjVmNjA0Mzg3M2NmOWFlN2Y4ZGFhOTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmOWY0NWEzZWRkMjZmMzZkMTQ0MTJlYzcyM2NkMDA4ZDliYTJlMDhiYTZlZGNmMzVjNzZiOWI3ZDk2NTU5YmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2ODMzMDhiMDBlM2JlMDA2MDkzOGRmYTE0MGFjZTc0Zjc5NWI2YTc5M2VhMWVlOWQ1ODM2OTdhYjFiNzk3N2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllZmVlNGQxNzAyZWFiZDA4YTJkZTY2ZGQyOTAyYjYzMGM5ZmVkOGU5YmNlYTA4MmViMmU2MGIyZmM3NzNjNTIifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0037_automation_environments.sql#L26-L30",
+          "version": "repo-lines-v1:sha256:bf799931408dd8994b1c2010611cc3966f11ffd84910613f9f3548f841b7713c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzMzQ2NjcxN2RiZmViZGI2ZWJjMDYzNzk4NjE4MGRmZThmYzQyZmJiYjkyMDlhNWI5MTJmNjJhMjRiMTJkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc2ZTVkMzM0MWY1NmFkMTU5NGNiNDg2YjYzMjZkZWExNmJjYzkxYjQyMjNmZGJkMjkxOGJhMzg0NTBlZTZhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTdkNGJjN2EzMjY1YzM5YmQ1NjhlM2VkNTkwY2RhZTNiYTRlNDRhZDk2ZTY5M2VlZTI1M2RkZjM0MzY3MzBiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_772844ab65bd407cb3fb5a1dde37286f",
+      "statement": "Inbound webhook automations authenticate POST /webhooks/automation/:id with Authorization: Bearer <api-key>; the 32-byte random key is stored only as a SHA-256 hash and compared timing-safe, payloads are capped at 64 KB, and errors map to 400/401/404/413/415.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/webhook-key.ts#L12-L28",
+          "version": "repo-lines-v1:sha256:d864ca45d6a90fb4fbf170530b056d7fb74a352e833e46af1e009c5e91df0b8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmNTMzMmRkOWRiZWVlMjBjMDQwNDYxYjNkNWU1ZmNlNWUzZjZmNjYyY2IwOTI4NTIzNzE1MDM1Nzk2MTBjYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4ZTVhYjdlYzg5YmU1ODEyYmY3Y2QwNDYyYzBhNTljNmVlMmUxY2ZlYjM5M2RhZTFlOTQ3MDgyMTQzNmY4MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMDEyYjM0ODdiOWVmZWJlZjNmZDVlZDNjMTExZGRmNjEwMGVjZmQ5YjE1NGJmMzgwZWFiYjVjMjVhY2EzMTAifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/automation-webhook.ts#L30-L88",
+          "version": "repo-lines-v1:sha256:51e1fde470aeabec578ca6320895d7ff24cc0aa0827df70b924a1b654a90afb3:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZDc4NTQ0ZDA2YTZlNjgwOGIyN2Q1MzA5MDZhY2E5NWZjOTJkYzBkNTI1ZDMwNDU3Nzk5NDUyMjRiYTg5YTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkYWFlMzYyNDBiMGMzY2QzYzI1ZWY3YzdlYmU4OTRkNTE5ZWZhN2U5MjVhOTY5NzM4MTA3ZWU5MDJiYTE4YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlOWRjNDQyOTA2ZTVlNTMwNjc3M2VhMDMyNzAxZThlY2RlNjI3MmRmNDIwNWYwNDcyZjQzOWE0MDA5MmNiODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_12e9feed610748dcb20726accc53565c",
+      "statement": "A webhook body's idempotencyKey string becomes both the trigger key and concurrency key (webhook:idem:<key>) so repeat deliveries deduplicate, while deliveries without one get a fresh random per-delivery key and may overlap; the key is stripped from the agent context block, and the context warns the payload is untrusted input data.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/triggers/webhook/context.ts#L5-L29",
+          "version": "repo-lines-v1:sha256:6bfafc883a7a18fc4aaba221de8ed26f76aea171cc43559e756a53d6bee9490c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2MGNhZTA3OGEyMDI2MDU4MTU2MDk1MjlmNTAyMmQwY2VhNDQxMzllOTdkZWVlMGYxNDJkZjA0Yzk5OTUzZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjYzdmZjg4Yzg1MmQxODhkOGZjZmEyNDhkZDk1MzNiMmQ3MGE0N2NjOTE3MDUzM2JiODlkZmI1NTY4MzVmZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhZTU4YWMxZTA2ZDBmMWQ2NDAxYmFlZmQ0MzZlMThkODgwNTcyNDhmM2NlYWE1NGJiYzBjOWJiY2RkNzdmZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/webhook/normalizer.ts#L12-L36",
+          "version": "repo-lines-v1:sha256:076356c1a99252c0552b61b71f9ca384d77201e01ecdbd90c2063004881f1ea3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OGExN2VmNTI3ZDZlMTE2MzYyZDE4YzkxNDEzNmUxOWRjNDhhNDIxNWFiMzE4NWEwNmEzMjY5NDA4YTQyYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3NDhiNGE4OWIxMDAwOTFhYzc1MzQzNGEyOTUxNmEyMTFkNTc4YjdlZDRiMjViZTFlZWYyODI3Y2FlMzlhZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmYmMyOGQ3MzFjNWI5ZjA0N2M2Nzc2YzM0Njg1ODhjZDA0YjJhMjc1MDJlODk5MWViODExNjFkYzM1ZWIzN2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5192d02fbbc94addac8abfff609a54d3",
+      "statement": "Sentry automations verify POST /webhooks/sentry/:id with an HMAC-SHA256 signature (sentry-hook-signature) computed over the raw body using the automation's Sentry client secret, which is stored encrypted with AES-256-GCM under REPO_SECRETS_ENCRYPTION_KEY and decrypted per request; payloads are capped at 256 KB, and the scheduler admits the event only for automations whose event_type matches the normalized event.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/webhook-key.ts#L30-L40",
+          "version": "repo-lines-v1:sha256:6dbcb4beee6303253c8645e0e4f310506c727e3f6601ef74de07b394dfd9b07b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YTNiNTQ4ZTg4NWEyN2IxYTliM2VkYTcxYjVkN2ExNjA0NmRjMWUzNmU3NWNmMzc0ZWUyMjBkODBkOWQ2NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlNmYyNDgzZWQzYmI5OWE0MDlmMTYzNTJhMDRiY2FhNDE2ZjA5MDVhYzI5ZWRkYTUxMGNjNmYxMTc1YzA0YmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyNzNkNTI1MDdiZTA1YjYwZmU5YzU3OWYyMGRkMjdhN2NjMzEyNmZlODA1ODBjZWQ4NjYzNmMzMGY1Njk4MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L869-L879",
+          "version": "repo-lines-v1:sha256:eeaacf5836e947cbfea3a206144982b046a58bfc33f7eee5f5e049d996f161b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhN2I4NGRmYWY4NGMxMzcwZjk1NDAxNDg3ZmM4ZDI5Yjk1ZWNlOGMwNjdmY2RkZjVlNDRkNjQ4OWJlOGQxNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhMmM0MzExN2FhMTI0OWY2MjZiYzNjN2YwYTY1ZDhlZDc5ZmFiYWYwZGI0NTgyMmU1OGM2ODZmMGI2NGNhZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNjM2ODUwMzYyNjk5ZmI4ZWEwZmNjMmU0YTFlMjA4MzYyYmMwMzVjNTcxNDk4MzE2MjEzYTRiNjA3NTUwOWUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/sentry.ts#L34-L120",
+          "version": "repo-lines-v1:sha256:c0eb16ba1a82cbce71669e0046869cecae1eedc47ac27fbd7cf703840cc26e64:eyJzZWxlY3RlZExpbmVDb3VudCI6ODcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmODMwMTcyMGJlYjBhZTM3NDczMDRmOGU3Yjk4M2U3N2Q1Nzk5NjVkYzQ0NGRjNjNjNzMyODZhMDAyZDJmMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyM2U2MjEyNTU3OGUxNmJiODI5OGNhZWRhNzBkNTczN2M0ZWVmNGYwYzEyMmRiOTU5OWJlNmQ2ZDcxZDJmNmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiYjcyMDM0YTVhYWI1MzJmZTFjMDRiODkxNzJiY2M5ZGIyZmYwMjc1ODczYTdmYzM5NDA0YmRmYTRiMmM2ZGUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/sentry/signature.ts#L7-L16",
+          "version": "repo-lines-v1:sha256:a0c08f12271882b76f20103fb148b18123c1d0c95dccdc54e5127dea3c7fb194:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjMzFmZDkwMzI2ZjIwZDcwYWQwYWQ2MDg4MjA1NzU1YzJkOThhYTZlMWMxYjI5ZGIxNTk3YjNhMjJkMzVhNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4N2NjNzE5N2IwOTU3YmQ0NWFmMGI5ZDhkODE0YWQ2OTc2MTQyYWZlNWZmOTY1YzAzYjRhMDZjNzgxMGNlMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f14db365ab5044ab8cf8bd537d6f5b22",
+      "statement": "GitHub and Slack event ingress are internal endpoints (/internal/github-event, /internal/slack-event) that authenticate the posting bot's service principal, validate the pre-normalized event envelope against automationEventSchema, and forward to the scheduler; the github route additionally piggybacks best-effort PR lifecycle tracking whose failure never affects automation matching.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/automation-event.ts#L111-L162",
+          "version": "repo-lines-v1:sha256:2e1d927a17dc821fe12c408a7cec42e24e14e863f6c149588f193f0ca3a14d28:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhNDExMGVmZDcyNjI4ODE5OWQzZjEyM2IzYTllOGRkZWVjNGYwNmQ3N2UyMjkyMGEyMDYwMTYyZWUxMGI5YTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhMDAxN2Q4YjE3MzUzMWJhZDRkOWQ0YmZlMWNhZTQ2OTE2MGJjNWJmOTY2MWYzMWI3M2U0N2E4ZTFhNDA0ZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/github.ts#L97-L130",
+          "version": "repo-lines-v1:sha256:82c4689195c7989dd5a2fde545ee494cbeaa55937077226185fa2ea42b6ab754:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxMmJjMjg3NjAxYTQ1MWMxYWViMTU4NGQ0MTg2NzgxOTUxNjIzOTcyZTI1MmEyMzlkOGUxMmY4YmE4ZTljOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmM2MxNjM4YTdhYTNhOTczMmY3YjkxMDMwOGY4MGM0NTJiMzdiMmE5MzhmYzRlYmYyYWNjNTdjNzlhNGI2NzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/slack.ts#L1-L17",
+          "version": "repo-lines-v1:sha256:bf4e3acc329ef3cffb163d3425ba9f3ece2573c5982a03b3ee5dbc88d572a9b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e68863c237274d408b96e630548ecade",
+      "statement": "GitHub candidate selection joins automation_repositories on (repo_owner, repo_name) with trigger_type 'github_event' and a matching event_type; each catalog event offers only the conditions its payload can answer, workflow-run dedup keys include the run attempt so each GitHub rerun is admitted once, and no GitHub payload carries a file list so path_glob is never offered.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1224-L1241",
+          "version": "repo-lines-v1:sha256:66ccf29386fffadf7aebcb432be9041c1a9ac3c06d1e55b69a4538b3211642f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxMTFkYTE4MTNhZTQxOGNiZTU0MjBkM2E5YjE0ZTVjYzgwZTEzODI5YTQyMzJmZDU2ZGZhMTYzYTMyNTAyZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3MTNmNDJlMmYzNDQxMGEzYTc0YWY5NDE5ZTMwNTMwNTcyYjYxMGY1NzQxOTY4MGE2YWE4ZGUyMTYzMDUzNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1ZDU3MzMwYjIzOGUzZThjYzcyNTNmMTUyMWM3MThiMDU1OGVjMWRmOTZmYjgzZGJiOGYyOTZjYzhjNzA5MGUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/github/conditions.ts#L50-L65",
+          "version": "repo-lines-v1:sha256:78b737f0acc80dd6761a30d2f9cc45100c3356f66a33653664ef2a624f6f1376:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzNzJlN2JjOGVjMTA0NDllMDRkZTk5NzU2YjYwNWIzYWM4Y2RmZDJiMGUzNjFjMDFmM2ZmZTEyZTlkYjhiM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NmVkMmE5MGE4NDM2ZTBmODg1OGVhYjg0YmFiYTg0NzlhY2IxMzkwMWEzYzI3YmJkNmVlOWY4OThhYTI4ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmN2QzZjBjMTIzNjNiM2IwMzUzODYyOTBhNjBlNWViY2NkYjllNTU2Njg5M2I4YTNiMzM1YjZmMjFjOGI2MjcifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/github/normalizer.ts#L276-L301",
+          "version": "repo-lines-v1:sha256:9c81109ab0de826d121d1e6e738c4e27aebc3c0b4b0eef8160d70b1d79f4c889:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhMTI2MGM2Mjk5Y2ExMWNmNjg4OTg2OWJlYzM5ZWFhM2M1MzI0OTdlMzA1NjUwZTY1Zjk5ODcwYjY4MGJkNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkOWZiMmQyODNlMDM3NTZlMDU4MTMxMGYzZWU0MTAxYjRmYmRkNTQyYWVmNTNhZWM0NzA3NDIyODE4NWI0M2IifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/github/webhook-types.ts#L45-L118",
+          "version": "repo-lines-v1:sha256:8aebe8bdc5dd753b5693787ec6204c00bb301f2bee71f55995cd7bae888413ec:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4Yzg5Y2Q5NDRiYzE2MWZhMjhhY2M5NjM1NmY5MzNmZDAyNjUyZTdmY2NlZWIyM2M2N2UzMzhlZGFhZWQyYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNDJmZjVjMDY4MzExNzBhNzQ2MWY4OWRhOTZlNGIxY2Y4YWJkM2U1YWFmYmQ5NzZiMDFmN2I4YWRkMTk3MWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NzJmYmQ1YjU2YTI2ZTc3MWQ4YTQ1ZGMwZTRiN2U2YmNmNGQxZDQ5MTZhM2U0MmIzMjEwNjAyNTJiZTc3MjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ODhjNmVhMjI3ZjUyNjg4ZTgxOTk1ODQ0ZTVlNTRiYjFiZmEyYjUxNzg2NGE5NWNlZWQ3ZmM1Y2ZhNmRmMDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_367741f5a77b4fb1b23f5ad94386e53e",
+      "statement": "The condition system is a central registry of per-source handlers (github, sentry, webhook, slack) plus shared label/actor and reserved linear handlers; each handler declares which sources it applies to, validates at create/update time (including event-type-aware GitHub validation), and evaluates at event time, and matchesConditions requires every condition on the automation to pass.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/triggers/conditions.ts#L18-L102",
+          "version": "repo-lines-v1:sha256:4c6bc7fe355ed79570850f03898423ba56634dfb4b65b2e814e4d7926b333072:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjODNmYTRlNWNjZTcyYTI3MzM5Y2FiY2ZjNzc4N2JiNTA4YmMwMWE0MTg4OWU3NTdiZGQ5MjNkZmMzZmRiZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4MTI5ZDg2MzVmMjM5NjIwMTE0MWFlYTkwNzJmYmUxNzY0NjY4MGY0ZGY2ODRlNTA5NjgyNjcyODZmODAyYzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/registry.ts#L15-L75",
+          "version": "repo-lines-v1:sha256:d917cca890ddf309406795f9b8f94fdbcea6cdb10ada85ab9049c2fc00a004db:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmODAxYTZmNmM2OTRjOWQ3MTczMmYzZDI0ODZhMzU4ODY3ZTU4MzRmZjFiY2U5OTM4YWQ0MzY3Yjc0OWY0ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhZmVkYzdhZjg1MDI0MmNhNTViYTRlOTY5NzVjMmI5OTVhZDJjMDNiNmYzZDFhODFmY2IyMmZjYzBhYWYyMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/types.ts#L40-L131",
+          "version": "repo-lines-v1:sha256:25284528d348421570d8621b20712335b49e4f2e58a4695342c8030bdca7f665:eyJzZWxlY3RlZExpbmVDb3VudCI6OTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYzE0ZDkyZTYxNTUwMTQ0NDg1YTY2MDJlNDYyYTUwYTVhYjkyNjI5NWI4ZjY3MGU5MTlmNjNmYjcyYmU2NjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZDFkMThjOTcwNTUyZmM0YTA3MmIwNjA0ZjNiNWM1NDBiZmY2NmU0ZGM5YWIzYjhiOTY5OWFiMjQyMjJjYjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1ZDVjMDNmNWUzYmM4NWNhMWY5YmE1NTEwNThiNDkzYTE0ODdlZjUzZjA2NjFjNDMzOGU2ZjRlYTg1YjY0OWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZTYyMTgxYWU2N2U5MzEyNTU5YzU3ODhiYWE0ZGY3ZWE3OTViODNiODc4YTk4NjM4ODYzMzM4ZjFhZDRmMGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53a812b86231451a8a4980ad9dddd7de",
+      "statement": "Webhook automations support only the jsonpath condition: filters with eq/neq/gt/gte/lt/lte/contains/exists over simple $.dot.notation paths, with all filters of all conditions required to match; array indexing, recursive descent, and full JSONPath expressions are rejected and resolved by a literal dot-path walker.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/triggers/webhook/conditions.ts#L9-L19",
+          "version": "repo-lines-v1:sha256:2c3b6471e5e7a77fb7d1443abb9598013297855250ae754a7e3c0b53533717fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NmM4YWIxMjAzZGIwMTE2ODE0ODBiYjU0ZDc4MzQyMTFmNGFmOWI4ZDY3ZWJhYTg0MzAwNzc1MjcwN2MwZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4ODE4Yjc1YWExNzJkYWM1MDNiZTQwM2E5MDI0NzI2YThkYTFlNDU4OTdhMmNjNmZlMzlmODJiNTkwNmU0NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4MzE2Yzg5MDk2Y2VhZWM4NjA4ZWZlNmE1Y2E5YWQ1Y2FkNjJhYTE5M2RiNGI5ZWI5YWE5NTM3MDg2ZTg4YTAifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/webhook/normalizer.ts#L42-L79",
+          "version": "repo-lines-v1:sha256:9681f0c1c5c27a230b2d4929d50c9ec605027cbbca9f2b567703222e38609fc7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4Y2RmMWZiYjMzY2Q1NGRjNjJlM2NhNzNkY2VjZjM3ODAwZjQyNGM1ZDViZTg0OWYxNWE5NzdmM2Y2NjQzZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmMmVjMGRlMjk0ZTc2MGNkZGRmZjkwMGQwNWU5YTBhYzUwNzBiOWFkY2U0M2MzZGIyZDYxNTQ2ZDMzNzk3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4YjBmYmFhY2U5Yzg5ZDU5Y2MxNjc4MTExZTc4MmYzMDExNDFjYzY3MTAwNmY5ZDcwMzdhZjFmOTA3MTg2ZmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aadf8a45a75d4109a73629eb09d6948f",
+      "statement": "Slack message automations require a slack_channel condition and offer optional text_match (contains/exact/regex with allowlisted i/m flags and 200-char pattern cap) and slack_actor filters; the watched-channel set is denormalized into automation_slack_channels in the same atomic D1 batch as the automation row, and the slack-bot polls the watched-channels endpoint to pre-filter messages before forwarding.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/slack-channel-store.ts#L20-L70",
+          "version": "repo-lines-v1:sha256:d24a5748ba41dd92eb598b59448441bae993eab1af51ec405ef56cff14c1b7f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlOWQ5MDk0ZTRjZDAyMTY4NmMzNmNlZjUyNTAxMWJhNWRmZTBiNWEzYzJiNzE2MWJiMTY0NTgyMzM3MDdkMTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzMzNhOGY2MThhNDdmYzQ5NWNlZGJhMWY2ODIzZmEyZjlmNDVkOGUzNTcyMTAyMjVmNmNhODRjMTZkZTI2NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L1312-L1320",
+          "version": "repo-lines-v1:sha256:4d6e5dcf0d39528787a845d97b2f186ff4f79826facf62fd046583aa056f59aa:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTI4ZjUyNDQwMWY2N2UwZDZlYzljZGIzMjQxOThmMDg1ZWMzNjZiNWI5ZDMyM2I3N2FlYTkxMmYxNzczZDU4YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDM5MjhmNjA0NmU4NDUzN2ExZDU0MjY0NGVkYzVjNjU1MjhmZDdjNDE3YWE0MDVhYjY2ZTUwZTAxMTA0ODY3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjRhNmY1MTJlMDE0NjU5ODY4MTNmNDYwMDNiZTg5MTExMjc2MjJjYmY1ODM2ZmFlMTlkNjBlY2E0Zjc3N2NjYiJ9"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/slack/conditions.ts#L48-L124",
+          "version": "repo-lines-v1:sha256:7928b6eb6cbe97dccb9863d5a9ac2d52afcf5bb5f44e17ac80bf338e2786284e:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzZDI3NDM2Mjk2YWVmYzE1MGI5ZWU0MjdiMDZmNzZkOWM2YzRlNjc1YmYxZDg2NmRhMGUyZDI0MjI4ZmEyZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyZDU3NWFiMjgwMmIzMjQ0NGI0Y2IzMWU3MmMyZmU1NTI0MWQwMjg3MTU2MDU0ZTFmNTJkMDlhNzgzZmVjMWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3YWZkN2QwMjdhZTk3NzljOTJkYzNlNGQ0ODM2MDYzNWM5MzkwMzc4OGY0ZjBlODc0YjIxMmRjNTQxNDM1ZmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0812874d3144634b06a2ea66f2d473f",
+      "statement": "Slack replies in a watched thread continue the same session for up to 7 days after the thread's first trigger (SLACK_THREAD_CONTINUITY_WINDOW_MS): the scheduler steers them as follow-up turns on the existing session regardless of conditions or run status, thread history is fetched lazily only after a run is admitted, and a reply racing the first trigger falls back to an ephemeral concurrent_run_active notice while replies after the window fork a fresh run.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1271-L1288",
+          "version": "repo-lines-v1:sha256:6b18947ce3b9b37e6ddd562639a44eb4248b4993c99bcc2e615b79dc3b3999ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5ZTMwZjEwYmIwMjVkM2NhOGE3ODllNWMxYmQzMTBlMGVmMGE0MGIwZWRkYTViZjIyYTY0NmVkZWU0YWE2YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlOGNiNWQ2NGU2Yzk5YzNkNTNmODE2ODYyODE4NTJkMGJlNzExYjliOTQzNWU1NzFiYjAwNmNhMjI4MzE3MDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwYWNkODI2OThlYjUzMzg2ZGZlZWY0MzljMjQ1ZjlhNjZiM2UwYmI4OWVjYmU2NTE0YWM1Yzk4MmM5M2ZhMmYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L112-L127",
+          "version": "repo-lines-v1:sha256:ae7e077f31726f2cfc378ec7e758c5e7f1c45c7ca573b6980c1d3959a32e3ac6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ZWE4MGVjMjlhNTk2NmE1OGQzM2Y1Y2VjN2NjNTE4M2JiZjNmZjNmMTQyODVmNTJlZjJmN2RmNWRmZjM0NjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2M2IyNGI5MWFkYzJiZjgyM2I5NzhiN2QzMDNkYWI0ZGI3N2E4MDhmMTNlNTI3NGZmMGU1OGFjNzA5YmNhYzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlM2E1MzBjYTI5MjliZDczMGFhOWQyY2QzZGFhMmUwYzg3OTFmMzc0YzU3YTk2NDhiY2RhMmE1ZWU0NWMzODUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1416-L1462",
+          "version": "repo-lines-v1:sha256:66391f8c67503a4d054b016d56a279b0bf2fc0fab4ea73d7b06b54186e09cbaf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyNDAyZmU1ODM5MTk5ZjVkNjlkZWEyNzhiYTAxY2Y1ZjAzMWFhOTMzMjI4NjRlMWU1ODgwMWM4OTgwYWM3YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4ZDZhMGE5ZjQxOTRhYzM2M2RlZmEwZGYxODNmODc0NDRiZDk3Y2MzOGIzNDE4OWE1MWY5NmM4NjNlN2Y2OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhNjVlNmFhNzhjOWJmNmIzMDIxZDMwYzcwMjU5YjdhYmI2NmYxNmI0ZTA3MjdmNGZmNDVhYTRhZGJmMDEyOTgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L918-L939",
+          "version": "repo-lines-v1:sha256:cbeb9864cec38264e36fbf2e6fae6ea3a7ff1dbe86481afb1b5885d33bcc553f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlMTczNTZhOGYxN2RiYjQ2MmU3YzM5ZDliY2JlN2RmMDQzN2VjYzU5OTBkOWY4MzRkNzJlODQxYzM5YWQ3NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5ZTgzMTQyNzlhODJiYWQwMzdiYjE3MDE3NDMzYWU3MTcyYzc4MDM2YmRjMWE2ZDVkYTVjY2VhM2EwYTcxMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0YmI0NGQ5ZWZkMmFkY2ZhZjE4ZTlkZWFmMjFiNDZkM2U5YTZkYzczN2UxYzc5OWRmNTllODNhODc5ZjE1YTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51bd8da00fa64a398d05fa2bb6ceb74a",
+      "statement": "Slack-triggered runs post the agent's final response into the triggering message's thread and clear the eyes reaction via the slack-bot's /callbacks/automation-complete endpoint on run completion, except when the entire final message is NO_REPLY or empty; a run that opened a pull request or produced artifacts always posts, and failed runs post a short failure notice.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1129-L1188",
+          "version": "repo-lines-v1:sha256:675425be98527446eb861ff2fc9e3df8464f45916c37943191c5d1f70ee51c00:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNWIxOWUyYjBkYzE2NmM0N2QyNTAxNjA1YjNjM2VjOGM1YTQ5ZWQ0NWEyMTcwMjllMzlmZjRhN2U5ZDI5YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxNTQ0M2I5NTA2ZmMxNDU3MTdhZjFlMGFlODk0NDdkZWFkNWEzZWQ5MmNmNThkYjRmYjJjMTc1ODc2MjNiMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzYTUxOTFkNDYzMGNjMTYzMzMzN2NiODAyNjg0Nzg5MGFhZTg5YzI4M2M1YjEwZTBiZDczNGYzNTU0NTY0OWEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/slack-completion.ts#L58-L95",
+          "version": "repo-lines-v1:sha256:ecd054e3b02add460776f660e612a6ce8325b838dee36581da3d5e7dbf690619:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkNjM2MjIzYTJhZDcxNzNiNzM2NzQ2NTU3YjdmNzRlMWZlZTU3YzZiZTBkMmFkNGIyNjc1OGRjOTkwOWMzODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e82eae952b14fc09601f61681183062",
+      "statement": "startInvocation is the single firing pipeline: per-source overlap check, concurrent SCM resolution that pre-fails inaccessible repositories without blocking siblings, provider-auth pinning resolved before admission as an immutable launch snapshot, an atomic self-guarded invocation+children insert with optional schedule advance, lazy prompt assembly only after admission, and concurrent child launch where each child claims its session atomically before initializeSession so the recovery sweep cannot terminalize a starting run mid-launch.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/automation/repository.ts#L28-L76",
+          "version": "repo-lines-v1:sha256:d57c10856e90e124a5a07b6e21ac4ebc39e2bf38f07bf64c93c76bc972478c24:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwNGU5NWEwNTg0MWE0MGYzOWVmNDVhODIyNTcyNWViZmQ5ODhiMzU3YTgwYzg5MzE2MGFmYWRhOTMwMzBmYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L314-L560",
+          "version": "repo-lines-v1:sha256:a9b3db153149afb3fba3d3c4c29af5c4b94c0d3d087b08de16a9c6bcab707435:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQ3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2NGNmMTM4NDVhYmY5OGZlMjA0NTRkZGM0YTY5ODk5YWQ1MDJjMGFjODI0NmE3NDZjOWY2MzRjNjRmZTJhNWQ0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4ZWY1NTIyYjdjZDI1Zjk1ZTYzZWM5MWE3YThiM2EyMDJlZDllMjEwMzgzODI4OTMwYjhmOWEwMDdlOWFkMDRmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4MDYzMGIwZGViNGZlZWRiZDBjM2FkY2FjNDg0YjM5OGRiZDcyZjRjNmE0NmJiYzI4MWIzNzg2YTcxMTdmOGI5In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_3361ee70b8264f26995bba8778992781",
+      "statement": "Automation provider routing is pinned per automation via automation_model_provider_auth; pins resolve through the unattended provider policy before admission and are marked selectionSource 'automation_pin', so selection edits after the guarded insert cannot change which account an admitted child uses.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-model-provider-auth.ts#L20-L35",
+          "version": "repo-lines-v1:sha256:5af6f69ab00bb4d217cfae28c2ebe8e635b9d23af3b24896b2215fc131dad091:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjYjA1NDhmNmE5NzcwYjkwNTVlMmM2ZGZmMDY5ZDAyMThjOWNiYmQ3YTRlMTU5ZjE3ZDc3NGIyYzBiZmU3YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlNGJjYzc3YTBiMTdkYWY5N2VjM2RmNzNlM2VmZGNjMTk0OWJkMzA1MWZjZDRlYTZkYTUzYWQ2ZTQwNGQyMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2ZjllMzZjMGNkMDYwODBlM2JkMjA0NTQwZjdhOTMzMjUyMWVjZTdmMjI4ZDY3YWJlNWMxMTg4NzY4MmJhMWQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L235-L248",
+          "version": "repo-lines-v1:sha256:e17d770be29a76cb6acae50d896b420bcfee7d2e52a1de46f87f414711d1c930:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiOGJiMWI3ZWNkOGYxNmNhNDAxZWZlYzA0MGI5MDE1YzNmNjdjYmMyMGM3ODUzMWYyOGVlZTMwNDUxYjNhNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlN2RhZjVkOWVlNTQ2YWE5ZTk1MDE4MjUwNjgyMmRiZmQ5YTNmNTVmNGYwZDg5NTQ5ODVjYTFhMjgzMWM1OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2NzY4MTk3MzExNWE1NTgwN2UxNzZiNWI1NmRjYzE1YzI0OTYzNTlkODdiOWJlODdmNWE0N2Q0ZTBhMTA0YjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c30d398dba704d8ea8c8cc3bbcf89d9e",
+      "statement": "Triggered sessions are ordinary sessions: the scheduler builds a SessionInitInput with title '[Auto] <name>', spawnSource 'automation', automationId/automationRunId provenance, the run's firing-time target snapshot, session-scoped integration settings, and all target-applicable shared skills, then calls initializeSession which writes the D1 session index before DO init; the scheduler replays the automation's stored created_by/user_id as session identity, made trustworthy by identity enforcement at creation.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L511-L516",
+          "version": "repo-lines-v1:sha256:b54d86ee067582eeffe256a891ef1b3a994a4fc5528fef4812cb475872739940:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDBkNjZjZjI4MDNjYzQyZDRmNWNmOGI5NmVjNDBkNDliZGYzYzZjZDVkY2NhN2Y4N2Q3N2MyNzkwZjMxZWFjMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDFhYzgyNTNkZDJiOWY1YjNjMzAwMzY1MTNjNzE1NzQ3ZWM5MmE3Y2U2ZWVjZjFiZDhhYjg0NjRkNmFhOTY4MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTdkMzQwYWU3ZjAwYWRlMDM3M2RkZjRmZTA1MGI1OTFhZWU1MTlhZmNkYTRiZjA2NjYwZWZlNzIwMjM4NDM4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWMzZmIwMDYxYTNiOWZiNDJlZDY4ODExMGE2MGI3MmQyYmQxYzRkNTEzYTNjZjhlYjQzNmI3YmNkOWY4Y2FkNyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1295-L1382",
+          "version": "repo-lines-v1:sha256:cecbe0696ee568d8c66af3a5ace17474f74afa33336441b6429a87a784f4c346:eyJzZWxlY3RlZExpbmVDb3VudCI6ODgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2YjE4NjY1YjBiODM3MTY3OTRlM2UwOTc3MzU2YzIwNzQyZDQzMWJjNDU3YTI5MzIzMjVkYzdjODQxNDU1YzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhZWRhODM2Yzk0NjlhMWRjNGY0NjM0ZDU2MWM4OTNkZDEzYTBjZmJjZDE4NTM3NGE0YjUxOTIxYThkNWZjYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5NjY5NmQzMGIyYzU5Yjk3MGU2YTdmYTM3NDNmNGJhNjlmN2Y0ZGQ4ODEyNGU4YTFjNjMzYjgzY2RkNjA0ODQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L88-L161",
+          "version": "repo-lines-v1:sha256:e7854c3dcd45eb1391d9d9529e39f7aa1c93fb012b9d1b3e8dae2ca92288ea0d:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkY2U2YjBkNTNlOTAxYWYzODFlZjdjYWY3NGYxMzk4OGEzY2JiMjdjZTA5NDkwYTcwYmQ5Y2FjMDg0ZmY0NzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwNDQ2OGM5MzQzN2ZmODQ4M2Q4MmM0NmEwZmJjZTk1NWY1NmVjYmRiYWUzZjg5MDEzOTM5N2E2N2QwNTg2ZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MTcyYzgxNmMwMjI5N2MzYzE5ZTQ2NDdmNGEwZmY1Zjc1ZjZiY2ZjZDVkOTMyZTEwZGE3YWQwOWViOWU1MGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c167d75ee0014650ada06b90c54ddcd6",
+      "statement": "Run completion flows from the session: CallbackNotificationService recognizes source==='automation' in the message's stored callback_context and calls Scheduler.runComplete; the run transitions starting|running to completed|failed under an SQL guard so a terminal run never transitions again, then invocation-level accounting and Slack completion fan-out run (the scheduler owns that fan-out because the message coordinates live on the invocation).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L749-L787",
+          "version": "repo-lines-v1:sha256:a0f53a779636cfac81a307d06bf2c91255cbd17a13cf2cd72e6915fd604bc477:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjNWUyNDMzMjdjODcxMzUzODUxMDM3MWMyM2NiNjJhYTIyODYwZjlkMGVmYWM5ZjEwMjE5NDlhZjA3Njc0YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxNDc1ZDBiNDcwMWMwMzdkYWQ1OWIzMjA2Mjg4ODc3YWVhZDUyMTU1NzcxOGY1NDdmYmI0ZTA0ZDkwNGMxMDQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1065-L1143",
+          "version": "repo-lines-v1:sha256:80679d28647ef4fe40b1fb64e28fc87fbc2ba5588c522398e8f7b502636f1f4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3OTA3N2YwOTc2NzQyMDMzZTlkZDBmM2U1NDcxOWYxY2EwYTc5NTY0ZTIwNWJhZTdhZTc5NGFhMTZjM2ZlZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NDhkYjQ5YTkzMDA3ZGY3NTJlOTk5Yjg5MjU0ZjUxNzIwNTJlYzZlNWE1ZjY2NzIwZGE4ODBmZDMxNDg4ZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjN2JkM2FmYzdlZGIwZDljODBjZjk1YmU2Yzg5ZDE4NzA1YzYwNzkzZTE3OTk5ZDRmNGJmNTYzZmI4NTM3ZWQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/callback-notification-service.ts#L176-L351",
+          "version": "repo-lines-v1:sha256:374c74323fa8dcc22e1041ad8e78f2f7a054d8a0bc7f5ff6e19189ffd958dca7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTc2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwYWM1ZWEwNTFiZjYwOGNjYzFiNmY1Y2VjMmE3NjE5MWRjYjRiN2RmMTJhMTM4ZGE5N2Y5NzRlZmNkNWZmOTA5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1MWM3YjYyZTkwNGFmNjNiNmIwZTQyMzRkZDZmMGUyODNiOWUyODZlODU4NTBmYzU5NjhkZjgyN2IzZTE5NThjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1ZTc0YjQyZDU0MDc5Yjc2ZWJjMDg1YmQwNGU5Y2JjYzQ3NzNmOGE0YzJlOThlZDAxYWVmNGRlZjkxNDFmZmI0In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_6ae6aa65a76948ca92034cc8f5c8c316",
+      "statement": "Cross-service callbacks use retryDelivery/deliverWithRetry (2 attempts, 1 s backoff, 10 s attempt timeout) with in-body HMAC signatures computed with the destination bot's own service secret; only callback-owning bots may attach a callbackContext to prompts, and the scheduler is the only automation caller of the completion path.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/service/callback-signing.ts#L11-L22",
+          "version": "repo-lines-v1:sha256:300717802124efb8837550497d063aa147ff2a665e53cb5319925a60f6c919a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyNGQ1ZGVhNmQ3YjNiM2EyNGRkMTg3NjA4ODU4MTFlNTI3ZjEwZTVmMTgyNGQxM2U1MzNkY2Y5YzFmNDk1MWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxNWFmMzRmMmE0MmE4OWZmMGVhYThmMzYyN2I1NjEzYzRlZjY1Yzk4YjZhOWRkYjVmZDg4ZTMwYzg4ZDU5ZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-prompt.ts#L78-L95",
+          "version": "repo-lines-v1:sha256:1ff601a77d6f2f93f5363a90a1fedefcf0b7f58b54cf9a84faaa36b2b5196671:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlYzkwODNjNDQ1NzYyMzQwZTlmNTdhZjdhY2E3YWVhMzNmNzc1MjZlN2Q4ZWU0YzIxOWY2M2MzNGM4ZWYwZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwZTNhY2ViY2VkZWNhZTc2YjBlODliNWYzYWJlMDVlNzhkOGIwZTM3MjEzYzA0N2U5MzRmYjg2NzQ0Y2ZhYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkZGUzZDQyNTFhYjgyMWQ1MDE5ZjdhOWRlNWI1MDI3YTU2MTI4NmEzNzg5MTM1MWU3NzA3NDNhNzJiNGEwYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0ZGM4MDVjOTJmMjg4ZjllZWFhNDlkZGE1ZmE3NTVkYjJlOGRjZGVhYzNlYjdkZjUxY2RmZGZiMTMxMDI0ZjUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/callback-delivery.ts#L17-L98",
+          "version": "repo-lines-v1:sha256:89cdf4598c04d60743be5f82152cd448edd056684c4cf84d95545f6c28c6d5d4:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlZGUwMTc1NTIyYzA0NTM5ZTU4NDk1NGRhZTU2YTM4NTRhMmY0MDAyOGY5M2ExMTNkMDdkMDMxYjBlNDFmZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlNTUyMGFiNGMyNGU3ZTk0ODkyOTliNjg2MzEzN2Y4ZmE5MDM5ZTYzN2NmZDkwNWZhNWM3MTM3NDg3MGRkYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_26afbb4861914a98b6fb62915cacfba7",
+      "statement": "Auto-pause stops future firings after AUTO_PAUSE_THRESHOLD=3 consecutive failures but never cancels in-flight children; each invocation applies at most one failure strike, CAS-guarded by failure_counted_at so concurrent callbacks, launch failures, and recovery sweeps cannot double-count, and the counter resets only when an invocation finishes with every child completed (partial_failed never resets).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1093-L1103",
+          "version": "repo-lines-v1:sha256:f2d4b66ec0c02c1b445325af0ae4744d0f5a755ef58f0a35c5ea4fe741c25562:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzN2RhNDA2YzlmODI2MjUyZWJjNjU4NjBkM2Q3OGZhOWRjNmQwN2M4YTQ0MjJmNTk4ZGVlZmQwYzE2NGY5NDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1MWY2MjU5ODUxZjc4NDRhZGUyMzFkNWJlNWNiNmRhZWQzNWMyNDUzNDg3ZmQxMDM0YWI3NGFiODAxODU0NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0MjU4ZjA2NDI3MmQ3ZTY0ZDlmY2E0YjAyMjAzY2U2ZjkzMjM2MGQ1NDdhMDdjNzJmZjg2NDlhYmMzMDJmMTkifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1321-L1354",
+          "version": "repo-lines-v1:sha256:8f4dbed8c90937895318655b7f3cdad99fcb3d6399bb7e3df7410271038e91f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZDFmZDYxYmY0ZWQ2N2QwZDFjNTVlMDFmZTVmMTY3NWZmNGIyM2YwMmZlOTAzYjk1ODgyOTZlOTBlZGNmN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxYzRhOWIxOTRlN2I4Y2FmYjUwZjc1ZTY0MDdiMmJhNjdhYzViMjNmOTk4ODhiZGE0Njc0YzM3ODY2N2M0OWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L261-L303",
+          "version": "repo-lines-v1:sha256:ee8cf3a852d335f0bf3335125b4af2d8334302ae9ff0aa423cff2ac3c60a5cc1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyYTJjOWQyOWEwN2VhN2Q4MTg5MDk0MTg0ZDY4MTdlNjQzNWMxMmE3NTdiY2E0NTNjNzBiZmIwY2UwNDMzYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjYTg2NDNhZjc5ZWFhZjQ1MjZmNzc2ZWFiYzAzYzYzNzU4ZmJlMjllNmYyOTMwZDg2NDMyMWNjZGI0Yjg5MzEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L99-L100",
+          "version": "repo-lines-v1:sha256:8e77c34be0536ad0267b4b748a71159c11ca18fa78273634ce7705c852a0e496:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIwYzcyNWRlNDc4MDI2ZjYzM2UzODc1N2I0OWQxOGNkZmJhYjkzZTRhMWZkMjNhYjY2OGM3ODdiZTc5MDQ3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMzZTAzMDEwZmU0MDdmNmYxY2VhNDUxYjUwYmM0Zjg2ZTMxNWVlOGQ5YmYzZTk5ZjVjYzMyNjA0YjNjZDdjMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmExYjg5ODExMGRiYjg1NTI2ZWY4YTVmNzA4YmZhYWI0NTNhNWQ2YmM2YzE0ZmY2YWRmZmIyMmNmZGYyOWM3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDA3ODQ2YmU5ZmRhMTE1Zjk2ZGE1YzAzMjY4NjRlNmNjMzgyNzYyNGRlOWIzYjkxNDhmODhmMDMwZjFmNWIzMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6feb2385bf5b4a7f88bf42643502c780",
+      "statement": "The per-tick recovery sweep fails orphaned starting runs older than 5 minutes (session_creation_timeout) and running runs older than EXECUTION_TIMEOUT_MS (default 90 minutes, env-overridable), then applies invocation accounting once per affected invocation; a bounded finalization sweep (24 h window, limit 50) closes crash windows by finding all-terminal invocations with uncounted failures and failing automations with missed resets, all through the same idempotent CAS-guarded helper.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1165-L1220",
+          "version": "repo-lines-v1:sha256:77b9b8bb1121f82d69b6c16dcf97a0770d40a8c21cd96047fdf78378588cc5e2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5MDRjZTAwM2I2ODBkZTBkYjRmMzcyMjYwZmFiODczNDY0NjA4NDY3YzRlNDU2YjY1ZGU2YTIwNmEzODQxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3MTNmNDJlMmYzNDQxMGEzYTc0YWY5NDE5ZTMwNTMwNTcyYjYxMGY1NzQxOTY4MGE2YWE4ZGUyMTYzMDUzNWIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L697-L853",
+          "version": "repo-lines-v1:sha256:bae2e7fee71c98714ef7437c7a44ecdd6846489b1ae6e2a0bc151d4af6fd4151:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2M2EzNTliNDE1ZDYxMDNlOTYzMzM0MGMwMDIyMjVlZTVmOTI5YmYwNTkxODA4MDVmMjg4YzZjNDRjNWVkN2ZlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1YzEyY2NkZDBmNTcxN2JiMGI3NDZiNmMzNGZjNDg5YzlkZjk3MjBmOWQxZDcwODVlMGQwNTg0MTA3MzEyZDdiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2ZjQyYjdkNTA3ZWYwN2M1OTViOWJiYWIzYzZjNmM2MTRmM2Y0YjE3NzllMzgxZDFlYjU3YTQxNmIxNmI4OWI4In0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L93-L110",
+          "version": "repo-lines-v1:sha256:c06fb16478e6ff5dc93d5903c6b9f517ffe8f50f9170d33797ed64cef3daeb48:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZWI5YWE1MjAxMDIyYTk0MDkzODRmZGRkZWQ2NzY4YjQzN2RmYmM4YjRhNDc4Mzc2YzAzODk5MjJhNThlNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NTgwNjA1M2IyNDkwMmRkZDIxZDcwYjhiNGU1MmQzYmJiZmE0ZDIyMWI1NmJkOTg4ZDQ1ZTAyOGVlOTU2NzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMGQ0NWQzNmNhOGI3Nzk4YTQ0ZGE0OGE5YTM0ZmJlNjg3MzhkZjRkN2Y4ZTdjZGJhMDY0NzhlM2I5NjcxOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmZGVkMmZlNzllYmZhMjBlOTRhZjM5NTBhZmU0NWMyMTlhODg2N2M4Zjg5NmNjM2RkOTcwNmY2NDdkZTA2MzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d0eac23688fe47ea9f9119fa9910f294",
+      "statement": "Manual Trigger Now (POST /automations/:id/trigger) starts a fresh invocation across the full target selection, returns 201 with {invocationId, runs} or 409 when an active invocation exists, never advances or delays next_run_at, works while the automation is paused, resets the failure counter on success, and counts one failure on failure.",
+      "evidence": [
+        {
+          "resource": "repo://docs/MULTI_REPO_AUTOMATIONS.md",
+          "version": "repo-file-v1:sha256:2933758a3fb40719a40d8123318d67d4c71e6fe64eb19fe8e81b8806556dfa10"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L1145-L1184",
+          "version": "repo-lines-v1:sha256:e1063b982ebf4eb1678075da81cb5a8ec6e00691bf2e3e25fe41ad3fab82f029:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1ZDM3MGI5ZTU3MTUyYjE2MjNmYjNmYTUyMGU4MDY3NDM1NzNlMWVkNmI3NTkxMzhmNzE2ZmUxODA4MmJhOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1NzMyNWY1ZGQ2NTkzNDQ3ODRhY2MyNmZkN2VhNzJlZTEwNTU3NzhkYjhiNGYwMTA4Y2Q3Yzk0YjRjYzhjMWYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1023-L1061",
+          "version": "repo-lines-v1:sha256:b13ebdb569abf8d10c42c3a3321aee403591002bb18ed27ed2fd3ac586335bd7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhNGIzZTZmOWEzZmFjNWZiMzYwYTA1MTc0MzIwZGZhOGY5MDRjZWY3ODlhYzg2NGZlMTQyMjBmYWZmNTAxNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1OGQ2MDlmOGI1ZjlmMDEyZjA3MDM5ZTgyYzA3ZDY0MjcxNmQyNjI3OTRiODJiZGIxMjliOGI3MTMwNWJiMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3NDhkYjQ5YTkzMDA3ZGY3NTJlOTk5Yjg5MjU0ZjUxNzIwNTJlYzZlNWE1ZjY2NzIwZGE4ODBmZDMxNDg4ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b8b3e88fa752451096863f69c960123d",
+      "statement": "Pause sets enabled=0 and clears next_run_at; resume reactivates, resets consecutive_failures, and recomputes next_run_at from the current moment for schedule triggers (null for event triggers); delete is a soft delete that stops future runs while preserving run history and created sessions.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L515-L546",
+          "version": "repo-lines-v1:sha256:8eaa9df305e8087f9d8d2e1b446bbf776e6d309ec20ce509cde53d65476acd8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxZDBlZDFhZDNlZjQ3MzAyMDJlOTM0NzhmNmQ2OWU3MzExZDc1MzZiMTY4ZGI0NTk3NzQ3ZmE2ZDQ2YjM1OGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4MGJhZGUwNjkwNTJjOWJiYmI0MzBlZTg0NjE5ZDUxNmVkOWRjNzQ1ZjVjNzFmOGViMjg3YzJlNjkyNmY0NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhOWFhNTMwMjMyNjgwNDFlMDkwODYxMmUyMGMwYjQzMzRkYWIzNjQ4MDJkYzEwYmFkZWQ5NzhhMDliMDUwZTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L1077-L1143",
+          "version": "repo-lines-v1:sha256:2729d49f9539813b7e056b126bc311de8ebdf710a4d1487e6c2a010bc6d94a09:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NTg3MDUyMTJlYjQ5NjE1NWEzNzQ2YjhiN2IxNzhmODA1NWQ4ZWQ5ZmI1YjljNzIzZjY5MjdmOTkxMWVmYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlMTBkYmI4ZGI4ZGFkYTNmMTNhZGY0NGUyY2I5NTg3YjI0NzdjYmU4NGM0NWU4OTcxODNlNTQyNGVjMTI5NTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZGU4ZmFmZWQ2NjQ3MTU4YTljOWE5YzM2YzEyNmM3ODhhOTBkZTUyZjgyZjFjOGMyNTNkYTVkMjc2NmFmNmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3f6924a22db4f0faaebc4afee1c539f",
+      "statement": "Migrations 0030/0031 backfill legacy automations and runs into automation_repositories and invocations of 1 (each legacy run becomes an invocation reusing the run's id, snapshotted from its session, with failure_counted_at pre-stamped to avoid re-counting), then drop the deprecated scalar repo_* and frozen firing-key columns via a child-table-staged rebuild that only passes on backfilled data — making the feature not code-revertible without a database restore.",
+      "evidence": [
+        {
+          "resource": "repo://docs/MULTI_REPO_AUTOMATIONS.md",
+          "version": "repo-file-v1:sha256:2933758a3fb40719a40d8123318d67d4c71e6fe64eb19fe8e81b8806556dfa10"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L121-L181",
+          "version": "repo-lines-v1:sha256:29a24001e2caa1de56f17bc0865c1c8afa80866f5284a80e6a330540c16c285d:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMzkzYTk1ZDJiM2Q3NDI0MDZiN2JjOTY5ZDE5ODkwZGZlZjBjYzE0ZGJmMjc3NGIxMjYxYjAzODE1ZGEyMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MzU4NDAzNDNlMWIxMTZjNDYzNjFmMTE1NzBjN2M3MzRmNTdiMWUzNDI0NDk3YWVhOWQ0NjJjMTc1MDlmZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMTM4ZWIzNmYzY2JhZjQ4YWI3MDM5YWEyMDMwNTdiNDhiYzM0MmJkODJjZWY1NzM5ZTk1MzY3N2VmMzdlMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NDc4MWZkOTA0MjVlMDU4MTUxOThkYjQ4YTEzYjE5MzAyODg5OWU4MDA2MWU4MGZkMzU4OTUxMTg0MzRlNDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb3d81511de5477cb535fcab7ac5f2c8",
+      "statement": "Automation validation limits are: name 200 characters, instructions 15,000 characters, minimum cron interval 15 minutes with 5-field expressions only, webhook payload 64 KB, Sentry payload 256 KB, at most 10 combined targets, and a default 90-minute run execution timeout.",
+      "evidence": [
+        {
+          "resource": "repo://docs/AUTOMATIONS.md",
+          "version": "repo-file-v1:sha256:333171c35a17f0d0416445bb185caf43ee4ff441e4093017346dab2cb359fc9b"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L72-L81",
+          "version": "repo-lines-v1:sha256:c121f305f2d73641ee29e01911df058e59e2bc4c82c9199fc2612f2b103122ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5MTg2NWYzY2NmNGZiYTcxODhjZTBhMTFlZTViYTNmZjAzOTRlZDlmYWRlN2MxYTIxZWI2NzE5ODI0NGNlYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZjg2MjM5ZGU5OWQ4NDM1MzJmYjYxZWFhM2YzNjUyMzIxNjE3NGY0M2Y0NjZiMDU0ZDQyNTY0NTI1NmFmYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhYzEyYTM2ODk5NzM3MzdhOTE1MzU3M2YxMGFiNDFjNTYyMWVlNGNkZDFlZDBjYTBjMjBhYzk3NWRjNzA4ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxZGM3MjJjNTY4NGE0MDcyM2M5NDBhMDUxOGMxNTg3MDQ4ZjBkMzM0YWM2NWU1YzZjZDMzZmFmMmRjZjAxOTMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L96-L97",
+          "version": "repo-lines-v1:sha256:f481e9f3d6d29b304c69c27dac4003bb7cd9ef91630b425ba728621d5257f9c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y2ZGZmNmM1NGM0YTEyNjI3MTRlMjEwYzUzOTc1YTlhZjk4NGEyNTRkN2M5NTJlMGUyZTQ2ZGIxN2Q2YmIxNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM3NzBhZjI3MDFhOWMwMWFkZDNmYWM2NjlhYzI2ZjQzNmE5ZmUwYzRmZTAxNDY2MzMzZGI5MjY1MDQ3Yzk0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmE3YThhYmFiNTkzNWFmZTcxM2E0OGI1YTM4NDFhMDBjYTM3YzNmN2I0NzdlNjZiY2IyNDM5YzkxY2I4Y2Q2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmRiNWY0YjZkMzYwZWRkNmIwZGZhMzllZGQzYTRhMjU5MDY2NzE0ZTA5ZTEwMjQxNDNhM2M5YjEzNTZkYjU5ZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T05:37:27.905Z"
+  }
+}

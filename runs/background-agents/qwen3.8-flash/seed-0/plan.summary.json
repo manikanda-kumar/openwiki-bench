@@ -1,0 +1,1146 @@
+{
+  "model": "qwen3.8-flash",
+  "phase": "generating",
+  "startedAt": "2026-08-29T05:37:27.900Z",
+  "runId": "2452ec9f-c788-4b4c-80bd-f20df266e6ef",
+  "lastUpdate": {
+    "updatedAt": "2026-08-29T05:37:27.905Z",
+    "command": "init",
+    "model": "qwen3.8-flash",
+    "status": "interrupted",
+    "language": "en"
+  },
+  "plan_page_count": 38,
+  "deletePages": [],
+  "statuses": {
+    "complete": 3,
+    "pending": 35
+  },
+  "pages": [
+    {
+      "path": "/openwiki/architecture/control-plane-worker.md",
+      "title": "Control Plane Worker: Entrypoint, Router, and Route Policies",
+      "purpose": "How the Cloudflare Worker is wired: fetch/cron/queue entrypoints, the router's declarative route model with authentication and SCM-provider policies, request context, and the composition roots where env.DB may be read.",
+      "status": "complete",
+      "seedPaths": [
+        "eslint.config.js",
+        "packages/control-plane/src/env-validation.ts",
+        "packages/control-plane/src/index.ts",
+        "packages/control-plane/src/router.ts",
+        "packages/control-plane/src/routes/shared.ts",
+        "packages/control-plane/src/types.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/session-durable-object.md",
+        "/openwiki/concepts/authentication-and-identity.md",
+        "/openwiki/concepts/automations-and-triggers.md",
+        "/openwiki/operations/observability-and-debugging.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md"
+      ],
+      "instructions": [
+        "Cover env-validation.ts failing loudly on malformed/short AES keys, and src/logger.ts correlation fields.",
+        "Document RequestContext: correlation ids, instrumented D1 handle (`db`), BackgroundTasks, principal/authentication provenance separation, and the CORS + x-request-id/x-trace-id header wrapper.",
+        "Explain `defineRoute`/RoutePolicy in src/routes/shared.ts: the RouteAuthentication union (public, handler-authenticated, web-service, user, user-or-service, sandbox with getSessionId binding, sandbox fallback) and `supportedScmProviders` gating that returns 501.",
+        "Include a Mermaid sequenceDiagram of a request through authenticate \u2192 policy enforcement \u2192 route handler \u2192 DO stub fetch.",
+        "Note the eslint guardrail: production code under src must not read `env.DB` directly \u2014 only composition roots (router.ts, the DO constructor, cron handlers), each with an inline disable and justification.",
+        "Walk through src/index.ts: WebSocket upgrade branch vs. API branch, the `scheduled()` cron dispatch table (image-build scheduler, abandoned-draft sweep, the `* * * * *` automation tick + autofix queue health check), and `queue()` routing between autofix and image-build finalization batches."
+      ]
+    },
+    {
+      "path": "/openwiki/architecture/data-model-and-persistence.md",
+      "title": "Data Model and Persistence: D1, DO SQLite, R2, KV, Queues",
+      "purpose": "Where state lives and why: the D1 shared index (sessions, repos, environments, secrets, image builds, automations, users/auth), per-session SQLite, R2 media, KV caches, and the Queue-backed finalization pattern.",
+      "status": "complete",
+      "seedPaths": [
+        "packages/control-plane/src/db/automation-store.ts",
+        "packages/control-plane/src/db/image-builds.ts",
+        "packages/control-plane/src/db/instrumented-d1.ts",
+        "packages/control-plane/src/db/session-index.ts",
+        "packages/control-plane/src/storage/object-storage.ts",
+        "packages/control-plane/wrangler.jsonc",
+        "terraform/d1"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/session-durable-object.md",
+        "/openwiki/concepts/automations-and-triggers.md",
+        "/openwiki/concepts/secrets-and-credential-encryption.md",
+        "/openwiki/operations/terraform-deployment.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md"
+      ],
+      "instructions": [
+        "Call out the derived-state invariant: automation invocation status is never stored, it is derived from child runs by a single shared SQL definition in db/automation-store.ts.",
+        "Document the notable D1 tables from control-plane README + db/: session index and session_repositories, environments/environment_repositories/environment_secrets, repo_metadata, repo/global/scoped secrets, image_builds (scope_kind/scope_id, fingerprints, callback-token hash, finalization lease), integration_settings/integration_repo_settings/integration_environment_settings, automations + automation_repositories + automation_environments + automation_invocations + automation_runs, user/identity tables.",
+        "Explain the request-scoped DB wrapper (instrumented-d1) and background task port, plus the queue-lease pattern used to move long provider work outside the request-lifetime durability window.",
+        "Give an ownership map: which facts live in D1 vs. the session DO SQLite vs. R2 vs. KV, and how the DO is the authoritative per-session store while D1 is the index/registry.",
+        "Include an erDiagram of the highest-value entities (session, session_repositories, environment, image_builds, automation, invocation, run).",
+        "List Cloudflare bindings from wrangler.jsonc / terraform (SESSION DO, DB D1, REPOS_CACHE KV, MEDIA_BUCKET R2, queues) and the migration workflow via scripts/d1-migrate.sh and terraform/d1/migrations."
+      ]
+    },
+    {
+      "path": "/openwiki/architecture/sandbox-data-plane.md",
+      "title": "Sandbox Data Plane: Provider Infra and In-Sandbox Runtime",
+      "purpose": "How a sandbox is built and what runs inside it: the sandbox-runtime Python package (supervisor, OpenCode server, agent bridge, tools, plugins, credential helper) and the per-vendor infra packages that package it into images/templates.",
+      "status": "complete",
+      "seedPaths": [
+        "packages/e2b-infra/build-template.py",
+        "packages/modal-infra/src/app.py",
+        "packages/modal-infra/src/sandbox/manager.py",
+        "packages/opencomputer-infra/src/build-template.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/bridge.py",
+        "packages/sandbox-runtime/src/sandbox_runtime/entrypoint.py",
+        "packages/sandbox-runtime/src/sandbox_runtime/supervisor.py"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/sandbox-boot-modes-and-snapshots.md",
+        "/openwiki/integrations/sandbox-providers.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/adding-a-sandbox-provider.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Cover modal-infra specifically: app.py Modal app + secrets, sandbox/manager.py lifecycle, sandbox/build_session.py tagged build sandboxes, images/, and web_api.py as the HTTP surface the control plane calls \u2014 including ALLOWED_CONTROL_PLANE_HOSTS validation.",
+        "Document the agent-facing JS tools (spawn-child, send-child-prompt, get-child-status, cancel-child, slack-notify, upload-media) and the OpenCode plugins (inspect-plugin, codex/xai auth plugins, provider-token-broker) as separate surfaces from the Python modules.",
+        "Emphasize the packaging relationship: modal-infra bundles sandbox_runtime source into its function image, and ruff/lint-staged scopes cover these Python packages.",
+        "Explain daytona-infra bootstrap/toolchain, e2b-infra build-template.py + e2b.Dockerfile, and opencomputer-infra build-template.ts as template-building packages, distinct from the runtime.",
+        "Include a Mermaid component diagram of the in-sandbox process tree (supervisor \u2192 opencode server \u2192 bridge \u2192 control plane).",
+        "Map sandbox-runtime/src/sandbox_runtime: entrypoint.py as CLI + composition root, supervisor.py ordering/restart policy (MAX_RESTARTS, backoff, fatal-error reporting), agent_bridge_process.py, opencode_server.py/opencode_client.py, prompt_stream.py, event_forwarder.py buffered forwarding, repository_boot/sync/hooks, tunnel_environment.py `.tunnels.env` boot ordering, code_server/web_terminal/browser_desktop."
+      ]
+    },
+    {
+      "path": "/openwiki/architecture/session-durable-object.md",
+      "title": "The Session Durable Object and Its Composition Root",
+      "purpose": "One session = one Durable Object with SQLite storage: the thin platform adapter, the eager collaborator graph built by createSessionRuntime, internal HTTP routes, alarms, WebSocket hub, and event/message state.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/session/alarm/scheduler.ts",
+        "packages/control-plane/src/session/components.ts",
+        "packages/control-plane/src/session/contracts.ts",
+        "packages/control-plane/src/session/durable-object.ts",
+        "packages/control-plane/src/session/schema.ts",
+        "packages/control-plane/src/session/websocket-manager.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/control-plane-worker.md",
+        "/openwiki/architecture/data-model-and-persistence.md",
+        "/openwiki/concepts/session-lifecycle.md",
+        "/openwiki/workflows/prompt-round-trip.md",
+        "/openwiki/workflows/websocket-streaming-and-reconnect.md"
+      ],
+      "instructions": [
+        "Cover the WebSocket hub and hibernation: websocket-manager.ts, ws_client_mapping table for reconnect recovery, connection-authenticator, presence/participant services, and event-stream/event-cursor replay.",
+        "Describe SessionDO as an adapter only: initSchema + createSessionRuntime + forwarding fetch/webSocket*/alarm; the runtime is rebuilt per activation and `_runtime` is published only after the graph is fully constructed.",
+        "Document src/session/contracts.ts SessionInternalPaths as the router\u2194DO path contract (drift-prevention), and the src/session/http dispatcher/handlers that serve them.",
+        "Explain the deliberate eager construction and the fail-fast posture: provider factories throw on misconfigured deployments so every session request fails at init instead of degrading mid-spawn.",
+        "Include a Mermaid stateDiagram for sandbox/session status transitions as implemented in session-status-service.ts and the alarm scheduler, plus a component diagram of the composition root.",
+        "Note the eslint rule that only durable-object.ts may import components.ts and only src/index.ts may import durable-object.ts.",
+        "Summarize session SQLite tables from schema.ts (session, participants, messages, events, artifacts, sandbox, ws_client_mapping) and the repositories in message/event/sandbox/participant-repository.ts."
+      ]
+    },
+    {
+      "path": "/openwiki/architecture/shared-contracts-and-boundaries.md",
+      "title": "Shared Contracts and Module Boundaries",
+      "purpose": "The rules that keep eleven packages coherent: @open-inspect/shared as protocol source of truth, import-boundary ESLint rules, knip, complexity linting, and the ADRs that encode them.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/adr/0002-shared-session-contracts-and-correlation-boundary.md",
+        "eslint.config.js",
+        "knip.json",
+        "packages/shared/src/index.ts",
+        "packages/shared/src/module-boundaries.test.ts",
+        "packages/shared/src/public-api.test.ts",
+        "packages/shared/src/types/index.ts",
+        "scripts/lint-complexity.mjs"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/architecture/system-overview.md",
+        "/openwiki/architecture/web-client-bff.md",
+        "/openwiki/integrations/service-auth-and-boundaries.md",
+        "/openwiki/testing/test-strategy.md"
+      ],
+      "instructions": [
+        "Cover module-boundaries/public-api/type-contracts tests as the executable enforcement of these rules.",
+        "Document the canonical correlation contract: trace_id/request_id/session_id/sandbox_id snake_case at every transport boundary and `x-trace-id`/`x-request-id` headers.",
+        "Include a small Mermaid flowchart showing shared \u2192 control-plane/web/bots dependency and where protocol drift is caught.",
+        "List shared's export surface (types/*, auth, service-auth, models, cron, triggers, completion/extractor, logger, cache-store, git, sign-in-provider, slack, pull-request-tool) and the per-submodule import paths that ESLint enforces instead of the root barrel for auth/service-auth names.",
+        "Summarize ADR 0002: ClientMessage/ServerMessage/SandboxEvent/SessionState defined in shared; new protocol variants are added in shared first; consumers normalize at boundaries rather than duplicating unions.",
+        "Summarize the composition/import bans in eslint.config.js (env.DB only at roots; components.ts only from durable-object.ts; durable-object.ts only from index.ts; web must use app-owned auth/transport seams) and the repo's knip + scripts/lint-complexity.mjs gates."
+      ]
+    },
+    {
+      "path": "/openwiki/architecture/system-overview.md",
+      "title": "System Overview: Three Tiers and the Package Graph",
+      "purpose": "The top-level map of Open-Inspect: control plane, data plane, web client, bots, shared contracts, and infra packages \u2014 with the dependency/build order and the boundaries between tiers.",
+      "status": "pending",
+      "seedPaths": [
+        "AGENTS.md",
+        "README.md",
+        "docs/HOW_IT_WORKS.md",
+        "package.json",
+        "packages/control-plane/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/control-plane-worker.md",
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/architecture/shared-contracts-and-boundaries.md",
+        "/openwiki/architecture/web-client-bff.md",
+        "/openwiki/concepts/authentication-and-identity.md"
+      ],
+      "instructions": [
+        "Cross-reference docs/HOW_IT_WORKS.md and packages/control-plane/README.md rather than duplicating their prose wholesale.",
+        "Document the tier split (web client / control plane / data plane) plus the three bot workers and the infra template packages, and where each one's code lives.",
+        "Explain the single-tenant trust boundary explicitly: one shared SCM App installation, brokered credentials, no per-repo authorization at session create.",
+        "Include a Mermaid flowchart of the tiers with the WebSocket chain (client \u2192 SessionDO \u2192 sandbox bridge \u2192 back) as the spine.",
+        "Show the package dependency direction: every TS consumer imports `@open-inspect/shared`, which must be built first."
+      ]
+    },
+    {
+      "path": "/openwiki/architecture/web-client-bff.md",
+      "title": "Web Client: Next.js BFF, Auth Proxy, and Session UI",
+      "purpose": "The Next.js 16 / React 19 client as a deliberately thin BFF: signed proxies to the control plane, app-owned auth seams, the session WebSocket transport + reducer, and the settings/session feature areas.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/web/README.md",
+        "packages/web/src/app/api",
+        "packages/web/src/hooks/use-session-socket.ts",
+        "packages/web/src/lib/browser-auth-proxy.ts",
+        "packages/web/src/lib/control-plane-transport.ts",
+        "packages/web/src/lib/session-socket/reducer.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/shared-contracts-and-boundaries.md",
+        "/openwiki/concepts/authentication-and-identity.md",
+        "/openwiki/integrations/service-auth-and-boundaries.md",
+        "/openwiki/testing/test-strategy.md",
+        "/openwiki/workflows/websocket-streaming-and-reconnect.md"
+      ],
+      "instructions": [
+        "Document the transport layer: control-plane-transport.ts, control-plane-json-proxy.ts, control-plane-query.ts, browser-api-fetch.ts, settings-proxy.ts, provider-account-proxy.ts, and the eslint bans on raw `fetch` and on `next-auth`/`lib/auth` imports in web code.",
+        "Explain the client session state pipeline: use-session-socket / use-session-transport + lib/session-socket reducer, event-log, artifact-metadata, swr-revalidation, and how SSR snapshot + live messages converge.",
+        "Include a Mermaid flowchart: browser \u2192 Next API route (signed) \u2192 control-plane router \u2192 SessionDO, and the separate WebSocket path.",
+        "Map the route surface (app/(app)/(sidebar), session/new, session/[id], settings, login, api/*) and where hooks and components own behavior.",
+        "State the architectural rule: the web app never stores OAuth provider secrets or admission policy; the control plane is the browser-auth authority and web proxies an allowlist of `/api/auth/*` signed with its `sig1` service credential."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/authentication-and-identity.md",
+      "title": "Authentication, Principals, and Identity",
+      "purpose": "Who a request is: Better Auth on the control plane, sign-in providers and admission, the principal/authentication-context split, user identity canonicalization and merging, and sandbox/service principals.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/README.md",
+        "packages/control-plane/src/auth/authenticate.ts",
+        "packages/control-plane/src/auth/identity-enforcement.ts",
+        "packages/control-plane/src/auth/principal.ts",
+        "packages/control-plane/src/auth/user",
+        "packages/control-plane/src/db/user-store.ts",
+        "packages/control-plane/src/routes/browser-auth.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/web-client-bff.md",
+        "/openwiki/concepts/secrets-and-credential-encryption.md",
+        "/openwiki/integrations/service-auth-and-boundaries.md",
+        "/openwiki/integrations/source-control-providers.md",
+        "/openwiki/operations/terraform-deployment.md"
+      ],
+      "instructions": [
+        "Cover identity enrichment and merging: user_scm_tokens, linked accounts resolved on demand (not used for browser-session auth), identity-claim exchange at sign-in, user-merge store and scripts/merge-split-users.ts.",
+        "Define the Principal kinds (user, sandbox, service) and the separate AuthenticationContext evidence, with canonical `users.id` as the application principal.",
+        "Document provider enablement and admission rules: complete GitHub or Google credential pairs enable a provider, partial pairs fail closed, Google requires email/domain admission (or explicit unsafe allow-all), GitHub may use usernames or `ALLOWED_GITHUB_ORGS`; `/internal/auth/sign-in-providers` exposes the enabled set.",
+        "Explain the authority split: control plane runs exact-pinned Better Auth against D1; web is a BFF forwarding the opaque session cookie; browser resource requests require both the signed `service:web` channel and the cookie.",
+        "Include a Mermaid sequenceDiagram of GitHub OAuth sign-in through the web proxy to the control plane and back to a browser session.",
+        "Warn that rotation of BROWSER_AUTH_SECRET signs everyone out and orphans stored OAuth credential columns \u2014 link to the secrets/rotation page."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/automations-and-triggers.md",
+      "title": "Automations, Triggers, and the Scheduler",
+      "purpose": "Unattended session launches: trigger kinds and condition gating, cron scheduling, invocation/run fan-out, dedupe and concurrency, auto-pause, and the scheduler's recovery sweep.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/AUTOMATIONS.md",
+        "packages/control-plane/src/db/automation-store.ts",
+        "packages/control-plane/src/routes/automations.ts",
+        "packages/control-plane/src/scheduler/scheduler.ts",
+        "packages/shared/src/cron.ts",
+        "packages/shared/src/triggers/conditions.ts",
+        "packages/shared/src/triggers/registry.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/data-model-and-persistence.md",
+        "/openwiki/concepts/environments-and-multi-repo.md",
+        "/openwiki/integrations/github-bot.md",
+        "/openwiki/integrations/inbound-webhooks.md",
+        "/openwiki/workflows/automation-firing-and-fanout.md"
+      ],
+      "instructions": [
+        "Cover dedup and concurrency controls: firing-scoped `trigger_key` UNIQUE per automation, `concurrency_key` overlap scopes, webhook API keys and rotation, and exactly-once failure accounting via `failure_counted_at` CAS with auto-pause after consecutive failures.",
+        "Describe the trigger registry in shared/src/triggers: schedule, github_event, linear_event, sentry, inbound webhook, slack; source definitions, normalization, condition types and JSONPath filters, and the registry/condition-dedupe helpers.",
+        "Document Scheduler.tick responsibilities: recovery sweep of orphaned/timed-out runs plus processing overdue automations, request-driven invocation from routes and SessionDO completion callbacks.",
+        "Explain invocation vs. run vs. session: one firing = one invocation, fan-out to one run per repository/environment target, snapshot-of-target at firing time, and derived invocation status rules (skipped/running/completed/failed/partial_failed).",
+        "Include a Mermaid stateDiagram for invocation/run lifecycle and a flowchart of the tick path.",
+        "Note multi-repo fan-out limits (\u226410 combined targets) and repo-scoped single-repo trigger constraints, linking docs/AUTOMATIONS.md and docs/MULTI_REPO_AUTOMATIONS.md."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/commit-attribution-and-pull-requests.md",
+      "title": "Commit Attribution, Signing, and Pull Requests",
+      "purpose": "How agent work becomes attributable commits and PRs: per-prompt git identity, signing (SSHSIG/ed25519), the multiple-PR-per-branch model, PR refresh/snapshots, and the manual-PR fallback.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/README.md",
+        "packages/control-plane/src/auth/sshsig.ts",
+        "packages/control-plane/src/routes/commit-signing.ts",
+        "packages/control-plane/src/session/identity.ts",
+        "packages/control-plane/src/session/pull-request-service.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/git_signing.py"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/authentication-and-identity.md",
+        "/openwiki/integrations/source-control-providers.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/child-sessions-and-fanout.md",
+        "/openwiki/workflows/pull-request-and-autofix.md"
+      ],
+      "instructions": [
+        "Cover PR creation authority: user OAuth token when present, shared App fallback returning a manual `pull/new` URL for Slack/Google-origin participants, and the provider abstraction boundary.",
+        "Describe the PR model from the control-plane README: one open PR per head branch per repository, force-push-and-reuse with `updated: true`, head-branch resolution falling back to `open-inspect/<session>`, merged/closed branches released, and the `{prNumber, prUrl, state, headBranch, baseBranch, updated}` response.",
+        "Document the signing chain: db/commit-signing + routes/commit-signing, auth/openssh-ed25519 and sshsig, and the sandbox-side git_signer/git_signing plus the `gh` wrapper.",
+        "Explain the identity contract: control plane resolves the prompting participant and sends an explicit `gitIdentity` mode (`attributed-user` with name/email, or `agent-only`) which the bridge parses without inference.",
+        "Include a Mermaid sequenceDiagram of prompt author \u2192 git identity \u2192 commit/sign \u2192 push \u2192 create-or-reuse PR.",
+        "Note artifact/PR snapshot projections and the pull-request-refresh path clients use."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/environments-and-multi-repo.md",
+      "title": "Environments and Multi-Repository Work",
+      "purpose": "The repository-set model: ordered repositories with per-repo base branches, environment-scoped secrets and integration overrides, prebuild scopes, and how bots route work into environments.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/HOW_IT_WORKS.md",
+        "packages/control-plane/src/db/environments.ts",
+        "packages/control-plane/src/image-builds/scope.ts",
+        "packages/control-plane/src/routes/environment-secrets.ts",
+        "packages/control-plane/src/routes/environments.ts",
+        "packages/control-plane/src/session/repository-target.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/secrets-and-credential-encryption.md",
+        "/openwiki/integrations/linear-bot.md",
+        "/openwiki/integrations/slack-bot.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Cover bot routing into environments: GitHub `defaultEnvironmentId`, Slack keyword routing rules/channel associations/LLM classifier, Linear team/project `environmentId` mappings.",
+        "Define an environment as an ordered 1\u201310 repository set (first = primary) with description, prebuild flag, and Slack channel associations, and contrast it with ad-hoc multi-repo selections.",
+        "Describe secret folding for environment-launched sessions (global + environment, not repository) and link to the secrets page.",
+        "Document the three-layer resolution chain global \u2192 primary-repo \u2192 environment for integration settings, and that only `sandbox` and `code-server` accept the environment layer.",
+        "Explain how image-build scopes unify `repo` and `environment` under one registry (scope_kind/scope_id, fingerprints) and how spawn matching uses the repository-set fingerprint.",
+        "Explain snapshot-at-create semantics: editing or deleting an environment never rewrites an existing session's workspace; the UI shows the deleted-source state.",
+        "Include an erDiagram for environments, environment_repositories, environment_secrets, and image_builds scope."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/managed-skills.md",
+      "title": "Managed Skills and Prompt-Time Skill Resolution",
+      "purpose": "Reusable agent instructions: skill definitions and content addressing, profiles, global/repo/environment assignments, session revision pinning, and materialization inside the sandbox.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/MANAGED_SKILLS.md",
+        "packages/control-plane/src/db/skills.ts",
+        "packages/control-plane/src/session/skill-resolution.ts",
+        "packages/control-plane/src/skills/content-addressing.ts",
+        "packages/control-plane/src/skills/git-import.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/managed_skills.py"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/data-model-and-persistence.md",
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/concepts/environments-and-multi-repo.md",
+        "/openwiki/integrations/slack-bot.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Cover git import of skills from repositories (skills/git-import.ts, skill-markdown parsing) and limits/validation.",
+        "Define the skill data model and content addressing (skills/content-addressing.ts, db/skills.ts, skill-profiles.ts) including revisions and why sessions pin exact revisions.",
+        "Document the sandbox side: managed_skills.py client + materializer writing into the OpenCode global skills directory, and prompt-time autocomplete in the web composer.",
+        "Explain assignment scopes and the resolution path at session init (session/skill-resolution.ts, routes/skills.ts, routes/session-skills.ts, session-skills store).",
+        "Include a Mermaid flowchart: skill authoring/import \u2192 assignment scopes \u2192 session resolution \u2192 pinned revisions \u2192 sandbox materialization.",
+        "Reference docs/MANAGED_SKILLS.md for user flow; keep this page focused on the code contract."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/model-providers-and-accounts.md",
+      "title": "Model Providers, Subscription Accounts, and Token Brokering",
+      "purpose": "How AI providers are configured, selected, and authenticated: model catalog and reasoning effort, provider accounts with encrypted credentials and defaults, device authorization, and the short-lived access broker sandboxes use.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/auth/model-provider-account-broker.ts",
+        "packages/control-plane/src/db/provider-account-credentials.ts",
+        "packages/control-plane/src/model-provider-accounts/service.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/plugins/provider-token-broker.js",
+        "packages/shared/src/models.ts",
+        "provider-accounts.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/web-client-bff.md",
+        "/openwiki/concepts/automations-and-triggers.md",
+        "/openwiki/concepts/secrets-and-credential-encryption.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Cover session-time selection precedence and legacy scoped OAuth coexistence (session/provider-account-resolution, selection-policy, automation-provider-selection).",
+        "Document adapter design in auth/model-provider-account-* (openai/xai adapters, device authorization, broker) and the refresh services (openai/xai token refresh, oauth-refresh-single-flight).",
+        "Explain the provider-accounts V1 concepts from provider-accounts.md: provider account, provider credential, provider default, session provider auth, automation provider auth; sessions store account references only, never credentials, and are pinned to their auth mode.",
+        "Include a Mermaid sequenceDiagram of device-authorization connect \u2192 encrypted store \u2192 session select \u2192 broker access token.",
+        "State the broker endpoint sandboxes use for short-lived access material and the plugins in sandbox-runtime that consume it.",
+        "Summarize shared/src/models.ts as the model catalog authority (providers, ids, defaults, validity) plus per-session reasoning-effort validation, and the AVAILABLE_MODELS/OPENAI_MODELS/GROK_MODELS docs as the user-facing view."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/sandbox-boot-modes-and-snapshots.md",
+      "title": "Sandbox Boot Modes, Snapshots, and Warming",
+      "purpose": "How a sandbox comes to exist and get to work fast: boot modes, prebuilt images, snapshots/restores, provider capabilities, lifecycle decision logic, circuit breakers, and proactive warming.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/IMAGE_PREBUILD.md",
+        "packages/control-plane/src/sandbox/lifecycle/decisions.ts",
+        "packages/control-plane/src/sandbox/lifecycle/image-selection.ts",
+        "packages/control-plane/src/sandbox/provider.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/repository_boot.py",
+        "packages/sandbox-runtime/src/sandbox_runtime/runtime_config.py",
+        "packages/web/src/lib/warm-session.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/concepts/session-lifecycle.md",
+        "/openwiki/integrations/sandbox-providers.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Cover the three warming layers: filesystem snapshots after prompts, prebuilt images rebuilt on a schedule, and typing-triggered proactive warming from the web client; plus the tunnel-URL wait protocol and `.tunnels.env`.",
+        "Define the four boot modes (`build`, `fresh`, `repo_image`, `snapshot_restore`) surfaced as OPENINSPECT_BOOT_MODE, and the repository hook contract: setup.sh skipped on prebuilt/snapshot restores and non-fatal for fresh sessions but fatal during image build; start.sh always runs on non-build boots and is strict on failure; SETUP/START timeout defaults.",
+        "Document lifecycle/decisions.ts as the pure decision layer (dead-sandbox deny-list, reconnect-blocked statuses, spawn circuit breaker) versus manager.ts side effects.",
+        "Explain provider capability flags (snapshots, restore, persistent resume, explicit stop, timeout enforcement) in sandbox/provider.ts and how image-selection + lifecycle decisions consult them.",
+        "Include a Mermaid flowchart of the boot-mode decision tree (snapshot? image? fingerprint/runtime-version floor? fresh?).",
+        "State the runtime compatibility floor (MIN_COMPATIBLE_RUNTIME_VERSION in image-builds/model.ts) as a hard gate on image reuse."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/secrets-and-credential-encryption.md",
+      "title": "Secrets, Credential Scopes, and Key Rotation",
+      "purpose": "The encrypted-at-rest surface: three independent key domains, global/repo/environment secret scoping and injection into sandboxes, secret validation, and what rotation actually invalidates.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/SECRETS.md",
+        "packages/control-plane/src/auth/crypto.ts",
+        "packages/control-plane/src/db/environment-secrets.ts",
+        "packages/control-plane/src/db/global-secrets.ts",
+        "packages/control-plane/src/db/repo-secrets.ts",
+        "packages/control-plane/src/db/secrets-validation.ts",
+        "packages/control-plane/src/sandbox/sandbox-env.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/data-model-and-persistence.md",
+        "/openwiki/concepts/authentication-and-identity.md",
+        "/openwiki/concepts/model-providers-and-accounts.md",
+        "/openwiki/integrations/source-control-providers.md",
+        "/openwiki/operations/terraform-deployment.md"
+      ],
+      "instructions": [
+        "Cover the sandbox-side consumption story: no long-lived GITHUB_TOKEN in fresh/prebuilt sandboxes, credential helper brokered short-lived credentials, and the snapshot/image-build fallback exceptions.",
+        "Document AES-256-GCM token crypto in auth/crypto.ts plus the strict base64/32-byte validation posture in env-validation.ts (no silent plaintext or AES-128 fallback).",
+        "Enumerate the key domains and never treat them as interchangeable: TOKEN_ENCRYPTION_KEY (user_scm_tokens), BROWSER_AUTH_SECRET (browser cookies + user_identities OAuth columns), PROVIDER_ACCOUNTS_ENCRYPTION_KEY (subscription account credentials), REPO_SECRETS_ENCRYPTION_KEY (repo/environment/global secrets).",
+        "Explain secret scoping and resolution for a session (global + repo or environment), bulk `.env` paste import, validation caps in secrets-validation.ts, and env injection at spawn time via user-env-resolver/sandbox-env.",
+        "For each, state exactly what breaks on rotation and the required migration procedure (including the provider-accounts dual-key decrypt/re-encrypt-and-verify dance and that sessions pinned to lost credentials are unrecoverable).",
+        "Reference docs/SECRETS.md and link to the source-control credential-helper page rather than duplicating token tables."
+      ]
+    },
+    {
+      "path": "/openwiki/concepts/session-lifecycle.md",
+      "title": "Sessions, Participants, and Status",
+      "purpose": "The session as the unit of work: creation inputs, targets, participants and multiplayer presence, status transitions, archiving/draft expiry, and title/cost projections.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/HOW_IT_WORKS.md",
+        "packages/control-plane/src/routes/session-create.ts",
+        "packages/control-plane/src/session/abandoned-draft-sweep.ts",
+        "packages/control-plane/src/session/message-queue.ts",
+        "packages/control-plane/src/session/participant-service.ts",
+        "packages/control-plane/src/session/session-status-service.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/session-durable-object.md",
+        "/openwiki/concepts/commit-attribution-and-pull-requests.md",
+        "/openwiki/concepts/sandbox-boot-modes-and-snapshots.md",
+        "/openwiki/workflows/prompt-round-trip.md",
+        "/openwiki/workflows/websocket-streaming-and-reconnect.md"
+      ],
+      "instructions": [
+        "Cover message queue semantics (durable queueing, MAX_UNFINISHED_PROMPTS, stop execution, terminal-message projection) at concept level, deferring the transport detail to the prompt round-trip workflow.",
+        "Define the four session targets (single repo, ad-hoc up-to-10 repositories, environment, no repository) and how exactly one input form is accepted at create (see create-session-input.ts, repository-target.ts, session-create.ts).",
+        "Document the status model and reconciliations in session-status-service.ts, archive/unarchive, draft sessions and the abandoned-draft sweep cron.",
+        "Explain participants and identity: participant-service/participant-repository, presence indicators, message attribution to the prompting user, public session id latching, and identity enforcement.",
+        "Include a Mermaid stateDiagram for session/draft/archive status and a short state table for sandbox status coupling."
+      ]
+    },
+    {
+      "path": "/openwiki/integrations/github-bot.md",
+      "title": "Integration: GitHub Bot",
+      "purpose": "GitHub webhooks as a session client: PR auto-review, @mention commands, delivery dedupe, session targeting, and the autofix feedback handoff.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/integrations/GITHUB.md",
+        "packages/github-bot/README.md",
+        "packages/github-bot/src/autofix-ingress.ts",
+        "packages/github-bot/src/handlers.ts",
+        "packages/github-bot/src/index.ts",
+        "packages/github-bot/src/prompts.ts",
+        "packages/github-bot/src/session-target.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/integrations/inbound-webhooks.md",
+        "/openwiki/integrations/service-auth-and-boundaries.md",
+        "/openwiki/integrations/slack-bot.md",
+        "/openwiki/integrations/source-control-providers.md",
+        "/openwiki/workflows/pull-request-and-autofix.md"
+      ],
+      "instructions": [
+        "Cover delivery dedupe via Cloudflare KV keyed by `X-GitHub-Delivery` and the best-effort (eventually consistent) caveat.",
+        "Describe session targeting: repository default, `defaultEnvironmentId` metadata override with the containment requirement, model selection, and acknowledgment reactions.",
+        "Document the webhook entry (verification, payload schemas), handler split by event, and the two capabilities (auto-review on PR open, comment-triggered actions).",
+        "Explain the translator-only design: no PR context fetching, no session reuse, the agent in the sandbox does GitHub interaction with `gh`, and results are posted from the sandbox.",
+        "Include a Mermaid sequenceDiagram of webhook \u2192 dedupe \u2192 session create \u2192 prompt \u2192 agent posts review, plus the autofix branch.",
+        "List the required GitHub App permissions/events and the two-phase Terraform service-binding deployment pattern.",
+        "Trace autofix ingress to the control-plane queue and per-repo configuration."
+      ]
+    },
+    {
+      "path": "/openwiki/integrations/inbound-webhooks.md",
+      "title": "Integration: Inbound Webhooks (GitHub, Sentry, Generic)",
+      "purpose": "The control plane's own webhook surface: GitHub PR lifecycle and workflow events, Sentry alerts, generic authenticated automation webhooks, and Slack event ingress \u2014 how payloads normalize, dedupe, and gate session creation.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/webhooks/automation-webhook.ts",
+        "packages/control-plane/src/webhooks/github.ts",
+        "packages/control-plane/src/webhooks/index.ts",
+        "packages/control-plane/src/webhooks/pull-request-lifecycle.ts",
+        "packages/control-plane/src/webhooks/sentry.ts",
+        "packages/shared/src/triggers/webhook"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/automations-and-triggers.md",
+        "/openwiki/integrations/github-bot.md",
+        "/openwiki/integrations/service-auth-and-boundaries.md",
+        "/openwiki/workflows/automation-firing-and-fanout.md",
+        "/openwiki/workflows/pull-request-and-autofix.md"
+      ],
+      "instructions": [
+        "Cover pull-request-lifecycle handling (status/label/merge reactions feeding session PR state) and how events reach the scheduler for fan-out.",
+        "Document failure semantics: rejected payloads, skipped invocations with skip_reason, and auto-pause after repeated failures.",
+        "Enumerate control-plane webhook routes and their auth modes (HMAC/secret verification, per-automation API keys with rotation, Sentry signature verification).",
+        "Explain normalization into `AutomationEvent` shapes via shared/src/triggers sources, condition evaluation (JSONPath filters, GitHub conclusion/workflow filters), and trigger-key dedupe.",
+        "Include a Mermaid flowchart from inbound payload \u2192 verify \u2192 normalize \u2192 conditions \u2192 invocation \u2192 runs."
+      ]
+    },
+    {
+      "path": "/openwiki/integrations/linear-bot.md",
+      "title": "Integration: Linear Bot",
+      "purpose": "Linear as a session client: webhook handling, issue-to-session target resolution, progress activities, and PR linking back to the issue.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/integrations/LINEAR.md",
+        "packages/linear-bot/src/callbacks.ts",
+        "packages/linear-bot/src/index.ts",
+        "packages/linear-bot/src/kv-store.ts",
+        "packages/linear-bot/src/target-resolution.ts",
+        "packages/linear-bot/src/webhook-handler.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/automations-and-triggers.md",
+        "/openwiki/concepts/environments-and-multi-repo.md",
+        "/openwiki/integrations/github-bot.md",
+        "/openwiki/integrations/service-auth-and-boundaries.md",
+        "/openwiki/integrations/slack-bot.md"
+      ],
+      "instructions": [
+        "Cover model resolution, plan/start callbacks, and completion/notification posts back into Linear with the resulting PR link.",
+        "Document webhook signature verification, event routing in webhook-handler.ts, and the state kept in KV (kv-store) for callbacks.",
+        "Explain target resolution: team/project mappings that may name a repository or an `environmentId`, cached resources, and the LLM classifier path for assignments/mentions.",
+        "Include a Mermaid sequenceDiagram: Linear webhook \u2192 target resolution \u2192 session create/prompt \u2192 callback \u2192 issue comment/activity + PR link.",
+        "Note the shared trigger types when Linear events feed automations, and the service-auth call to the control plane."
+      ]
+    },
+    {
+      "path": "/openwiki/integrations/sandbox-providers.md",
+      "title": "Sandbox Provider Reference",
+      "purpose": "Comparison of the supported sandbox backends and their capability differences, REST clients, settings, env vars, and image-build adapters.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/OPENCOMPUTER_PROVIDER.md",
+        "docs/VERCEL_SANDBOX_PROVIDER.md",
+        "packages/control-plane/src/sandbox/e2b-rest-client.ts",
+        "packages/control-plane/src/sandbox/opencomputer-rest-client.ts",
+        "packages/control-plane/src/sandbox/providers",
+        "packages/control-plane/src/sandbox/providers/vercel/provider.ts",
+        "packages/control-plane/src/sandbox/settings.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/concepts/sandbox-boot-modes-and-snapshots.md",
+        "/openwiki/operations/terraform-deployment.md",
+        "/openwiki/workflows/adding-a-sandbox-provider.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md"
+      ],
+      "instructions": [
+        "Document provider selection configuration (`SANDBOX_PROVIDER`, integration settings layers, per-repo/environment overrides) and required env/binding names per provider from the factories.",
+        "Give a capability matrix: snapshots, restore, persistent resume, explicit stop, timeout enforcement, tunnel/port support, and image-build path per provider (Modal, Daytona, E2B, OpenComputer, Vercel).",
+        "Link the provider docs and infra packages rather than reproducing setup steps.",
+        "Note where a provider is intentionally capability-limited and how lifecycle decisions degrade (deny-list reconnect semantics, image reuse floor).",
+        "Summarize each provider's client quirks worth knowing before editing: Modal function/sandbox split, Daytona resume semantics, E2B auto-pause/timeout defaults, OpenComputer template build, Vercel base snapshot bootstrapping."
+      ]
+    },
+    {
+      "path": "/openwiki/integrations/service-auth-and-boundaries.md",
+      "title": "Service-to-Service Authentication (sig1) and Callback Signing",
+      "purpose": "How the web client and bot workers authenticate to the control plane, and how sandboxes/builders call back: the sig1 signed-request format, per-service credentials, asserted actors, and single-use callback tokens.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/auth/service/callback-signing.ts",
+        "packages/control-plane/src/auth/service/request-authenticator.ts",
+        "packages/control-plane/src/image-builds/callback-auth.ts",
+        "packages/github-bot/src/internal-auth.ts",
+        "packages/shared/src/service-auth.ts",
+        "packages/shared/test-fixtures",
+        "packages/slack-bot/src/internal-auth.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/shared-contracts-and-boundaries.md",
+        "/openwiki/concepts/authentication-and-identity.md",
+        "/openwiki/integrations/github-bot.md",
+        "/openwiki/integrations/linear-bot.md",
+        "/openwiki/integrations/slack-bot.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md"
+      ],
+      "instructions": [
+        "Cover the bots' outbound side (each package's internal-auth.ts plus signedControlPlaneFetch) and how Terraform wires per-service secrets.",
+        "Document the control-plane verification side: auth/service/request-authenticator.ts, auth/service/config.ts, callback-signing.ts, and the RouteAuthentication kinds that accept service vs. user vs. sandbox principals.",
+        "Explain image-build callback auth: single-use bearer token minted at trigger time, only its HMAC hash stored, and the bound provider session id requirement.",
+        "Explain the sig1 format in shared/src/service-auth.ts: canonical request string binding method/path/query/body hash/asserted actor, SERVICE_NAMES, headers, timestamp/nonce grammar, verification failure ordering, and the golden vectors fixture that pins the layout (any change \u21d2 new format tag, never an edit).",
+        "Include a Mermaid sequenceDiagram of a bot request signed with sig1 and verified by the router.",
+        "Note sandbox auth tokens and WebSocket tokens as separate, session-scoped credential kinds; link to the secrets page for encryption-at-rest keys."
+      ]
+    },
+    {
+      "path": "/openwiki/integrations/slack-bot.md",
+      "title": "Integration: Slack Bot",
+      "purpose": "Slack as a session client: event and interaction handling, target clarification and environment routing, attachments, App Home preferences, and completion notifications back into threads.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/integrations/SLACK.md",
+        "packages/slack-bot/src/app.ts",
+        "packages/slack-bot/src/callbacks.ts",
+        "packages/slack-bot/src/classifier",
+        "packages/slack-bot/src/index.ts",
+        "packages/slack-bot/src/target-clarification.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/environments-and-multi-repo.md",
+        "/openwiki/integrations/github-bot.md",
+        "/openwiki/integrations/linear-bot.md",
+        "/openwiki/integrations/service-auth-and-boundaries.md",
+        "/openwiki/workflows/prompt-round-trip.md"
+      ],
+      "instructions": [
+        "Cover the callback and completion path: session completion notifications, activity status updates, slack-notify tool from the sandbox, and failure/notification semantics.",
+        "Describe the worker shape (Hono app, event/interaction/command routes) and its unidirectional service-bound/sig1-authenticated calls to the control plane.",
+        "Document prompt attachments (PNG/JPEG/WebP/GIF) intake, forwarding/edited messages, thread context, and per-user model/branch preferences via App Home.",
+        "Explain target selection: channel keyword routing rules, channel associations on environments, the LLM classifier over repositories and environments, and target-clarification prompts when ambiguous.",
+        "Include a Mermaid sequenceDiagram: Slack event \u2192 classifier \u2192 control-plane session create \u2192 prompt \u2192 completion reply.",
+        "Note dedupe/idempotency concerns and KV-backed state where used."
+      ]
+    },
+    {
+      "path": "/openwiki/integrations/source-control-providers.md",
+      "title": "Source Control Providers and Brokered Git Credentials",
+      "purpose": "The SCM abstraction: single-provider deployment model, provider interface surface, GitHub/GitLab implementations, and the sandbox git-credential helper that mints short-lived tokens.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/adr/0001-single-provider-scm-boundaries.md",
+        "docs/provider-contribution-checklist.md",
+        "packages/control-plane/src/auth/github-app.ts",
+        "packages/control-plane/src/session/scm-credentials-service.ts",
+        "packages/control-plane/src/source-control",
+        "packages/sandbox-runtime/src/sandbox_runtime/credentials/git_credential_helper.py"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/authentication-and-identity.md",
+        "/openwiki/concepts/commit-attribution-and-pull-requests.md",
+        "/openwiki/concepts/secrets-and-credential-encryption.md",
+        "/openwiki/workflows/adding-a-sandbox-provider.md",
+        "/openwiki/workflows/pull-request-and-autofix.md"
+      ],
+      "instructions": [
+        "Cover GitHub App token minting (github-app.ts), user OAuth tokens for PRs, and GitLab PAT requirements.",
+        "Document the credential helper flow: git in the sandbox calls the helper, helper hits `POST /sessions/:id/scm-credentials` with the sandbox token, response shape with `expires_at_epoch_ms`, and the 401/404/5xx failure meanings.",
+        "Include a Mermaid sequenceDiagram of a sandbox git fetch/push authenticated through the brokered helper.",
+        "Include the contribution checklist expectations verbatim in summary form (factory case, env resolver, no provider-specific logic in router/session/slack, tests, ADR/docs updates).",
+        "Map the SourceControlProvider interface responsibilities (repo listing/access, PR creation, push spec, manual PR URL, credential-helper auth, branch resolution) and where providers live.",
+        "State the ADR 0001 model: one provider per deployment selected by `SCM_PROVIDER`, no per-session provider state, unimplemented providers (bitbucket) return explicit 501 on non-public routes."
+      ]
+    },
+    {
+      "path": "/openwiki/operations/local-development.md",
+      "title": "Operations: Local Development and Day-to-Day Commands",
+      "purpose": "Getting a working loop on your machine: bootstrap, the three setup paths, per-package dev/test/build commands, formatting and hooks, and where local env files must point.",
+      "status": "pending",
+      "seedPaths": [
+        ".husky",
+        ".openinspect/setup.sh",
+        "CONTRIBUTING.md",
+        "docs/SETUP_GUIDE.md",
+        "package.json",
+        "packages/modal-infra/.env.example",
+        "packages/web/.env.example"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/web-client-bff.md",
+        "/openwiki/operations/observability-and-debugging.md",
+        "/openwiki/operations/terraform-deployment.md",
+        "/openwiki/quickstart.md",
+        "/openwiki/testing/test-strategy.md"
+      ],
+      "instructions": [
+        "Document `bash .openinspect/setup.sh` (npm install, build shared, husky hooks, optional Python venv) and why shared is built first.",
+        "Include a Mermaid flowchart of the local dev topology (web \u2192 local/workerd control plane \u2192 real or mocked providers).",
+        "Lay out SETUP_GUIDE paths A (web against a dev control plane), B (contribute code), C (deploy your own), including the origin-bound browser-auth caveat that a production control plane cannot authenticate a localhost web app.",
+        "List local prerequisites and env files (packages/web/.env.example, packages/modal-infra/.env.example, CONTROL_PLANE_URL/WS URL/SERVICE_AUTH_SECRET) without duplicating every variable.",
+        "Mention the contributor workflow expectations: conventional commit prefixes, PR checks, and which CI jobs run for which paths.",
+        "Provide the command matrix: build/lint/format/typecheck/knip at root, per-workspace vitest commands, control-plane integration tests, pytest + ruff for Python packages, wrangler/dev-server specifics per package."
+      ]
+    },
+    {
+      "path": "/openwiki/operations/observability-and-debugging.md",
+      "title": "Operations: Logs, Correlation, and Debugging Playbook",
+      "purpose": "How to find out what happened: the structured log envelope, canonical correlation fields and boundary conversion, the per-service event catalog, and the log-query tooling.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/DEBUGGING_PLAYBOOK.md",
+        "packages/control-plane/src/logger.ts",
+        "packages/modal-infra/src/log_config.py",
+        "packages/sandbox-runtime/src/sandbox_runtime/log_config.py",
+        "packages/shared/src/logger.ts",
+        "scripts/cf-logs.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/control-plane-worker.md",
+        "/openwiki/integrations/slack-bot.md",
+        "/openwiki/operations/terraform-deployment.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Describe scripts/cf-logs.ts usage (Workers Observability Telemetry API, required token/account env vars, --session/--json forms) and how to reproduce locally.",
+        "Document the common log envelope, level guidelines, and redaction rules from docs/DEBUGGING_PLAYBOOK.md, and the shared logger implementation each service reuses.",
+        "Explain correlation fields (trace_id, request_id, session_id, sandbox_id), camelCase\u2194snake_case boundary conversion points, and how to join logs across web, control plane, bots, modal-infra, and sandbox runtime.",
+        "Include a Mermaid flowchart of a triage decision path keyed by symptom.",
+        "Summarize the event catalog by component (router, image-builds, session-do, lifecycle-manager, provider clients; modal api/sandbox/supervisor/bridge/git; slack handler/attachments/callback/classifier) so a reader knows which event names to search.",
+        "Walk the debugging scenarios that matter most: missing Slack image, message X never answered, sandbox not connecting, spawn failure, snapshot restore failure, slow spawns \u2014 naming the first query for each."
+      ]
+    },
+    {
+      "path": "/openwiki/operations/terraform-deployment.md",
+      "title": "Operations: Terraform Deployment and Cloud Wiring",
+      "purpose": "How the system is deployed and configured: the production Terraform root module split, Cloudflare/Vercel/Modal/Daytona/E2B/OpenComputer wiring, D1 migrations, and the deploy CI workflow.",
+      "status": "pending",
+      "seedPaths": [
+        ".github/workflows/terraform.yml",
+        "scripts/d1-migrate.sh",
+        "terraform/README.md",
+        "terraform/environments/production/main.tf",
+        "terraform/environments/production/service-auth.tf",
+        "terraform/environments/production/terraform.tfvars.example",
+        "terraform/environments/production/workers-control-plane.tf"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/data-model-and-persistence.md",
+        "/openwiki/concepts/secrets-and-credential-encryption.md",
+        "/openwiki/operations/local-development.md",
+        "/openwiki/operations/observability-and-debugging.md",
+        "/openwiki/workflows/adding-a-sandbox-provider.md"
+      ],
+      "instructions": [
+        "Cover the two-phase worker pattern used for service bindings (deploy, then `enable_service_bindings = true`) for the bot workers, and web hosting options (Vercel vs OpenNext on Workers).",
+        "Describe the directory contract: modules/ per provider, environments/production split by concern (workers-*.tf per service, web-*, d1.tf, kv.tf, r2.tf, modal/daytona/e2b/opencomputer/vercel, checks.tf, moved.tf), R2 state backend.",
+        "Document the D1 migration path (terraform/d1/migrations + scripts/d1-migrate.sh) and the rule that integration tests apply the same migrations.",
+        "Explain how configuration reaches the workers: `terraform.tfvars` for secrets/env bindings, generated/persisted encryption keys, service-auth secrets per service, WEB_APP_URL exact-origin requirement, DO/D1/KV/R2/Queue bindings.",
+        "Include a Mermaid flowchart or dependency diagram of the deployed resources and their bindings.",
+        "Note what .github/workflows/terraform.yml and deploy-web.yml do, and the safe sequence for a schema + code change."
+      ]
+    },
+    {
+      "path": "/openwiki/sandbox-runtime-protocol.md",
+      "title": "Sandbox \u2194 Control Plane Protocol",
+      "purpose": "The contract between the in-sandbox bridge and the SessionDO: WebSocket connect/auth, commands down, events up, acks and buffering, reconnect semantics, and the auxiliary HTTP endpoints a sandbox may call.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/session/contracts.ts",
+        "packages/control-plane/src/session/sandbox-events/processor.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/bridge.py",
+        "packages/sandbox-runtime/src/sandbox_runtime/event_forwarder.py",
+        "packages/shared/src/types/sandbox-events.ts",
+        "packages/shared/src/types/websocket.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/architecture/shared-contracts-and-boundaries.md",
+        "/openwiki/integrations/sandbox-providers.md",
+        "/openwiki/workflows/prompt-round-trip.md",
+        "/openwiki/workflows/websocket-streaming-and-reconnect.md"
+      ],
+      "instructions": [
+        "Document the connect handshake: sandbox WebSocket token verification (`/internal/verify-sandbox-token`), the `sandbox` principal kind, and how the bridge authenticates each request with its session-scoped token.",
+        "Enumerate downlink commands (prompt, stop, snapshot, git identity per prompt author, tunnel urls, spawn context) and uplink SandboxEvent kinds via sandbox-events handlers in the control plane and event_forwarder/bridge on the sandbox side.",
+        "Explain the durability expectations: buffered event forwarder, acks, reconnection behavior, and that losing the sandbox WebSocket does not stop the sandbox (heartbeat check scheduled by the control plane).",
+        "Include a Mermaid sequenceDiagram of connect \u2192 subscribe \u2192 prompt \u2192 streamed events \u2192 ack \u2192 stop/snapshot.",
+        "Point out the wire-shape conversion boundary: control-plane camelCase domain types vs. the snake_case runtime payloads (e.g. baseBranch \u2192 branch in repository config)."
+      ]
+    },
+    {
+      "path": "/openwiki/testing/control-plane-integration-tests.md",
+      "title": "Testing: Control-Plane Integration Tests in workerd",
+      "purpose": "How to write and debug control-plane integration tests: the Miniflare pool, real D1 with Terraform migrations, shared-instance cleanup discipline, helpers, outbound-service stubs, and the Docker harness.",
+      "status": "pending",
+      "seedPaths": [
+        "AGENTS.md",
+        "packages/control-plane/Dockerfile.test",
+        "packages/control-plane/test/integration/apply-migrations.ts",
+        "packages/control-plane/test/integration/cleanup.ts",
+        "packages/control-plane/test/integration/helpers.ts",
+        "packages/control-plane/vitest.integration.config.ts",
+        "packages/control-plane/wrangler.jsonc"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/data-model-and-persistence.md",
+        "/openwiki/architecture/session-durable-object.md",
+        "/openwiki/operations/local-development.md",
+        "/openwiki/testing/integration-and-provider-tests.md",
+        "/openwiki/testing/test-strategy.md"
+      ],
+      "instructions": [
+        "Cover Dockerfile.test as the containerized harness and the typecheck triple-project setup (src, tsconfig.test.json, test/integration).",
+        "Describe outboundService stubbing rules for Modal/OpenAI/xAI endpoints and the `luxon` CJS alias trap that silently skips automations if broken.",
+        "Document the migration contract: D1 migrations are read from terraform/d1/migrations and applied via apply-migrations.ts, so schema changes land as migrations, not test fixtures.",
+        "Explain `vitest run --config vitest.integration.config.ts`: `cloudflareTest()` plugin, wrangler.jsonc bindings, pinned compatibilityDate/flags matching Terraform, and per-file isolated D1 storage with in-file sharing.",
+        "Include a Mermaid flowchart of a test run lifecycle from pool boot to migration apply to assertions.",
+        "State the cleanup discipline: shared D1 instance per file requires `cleanD1Tables()` (test/integration/cleanup.ts) in beforeEach/afterEach to avoid cross-test pollution.",
+        "Walk the helper API in test/integration/helpers.ts (initSession, queryDO, seedEvents) plus identity-seed and image-build helpers, and `session-do-access.ts` for reaching inside a DO."
+      ]
+    },
+    {
+      "path": "/openwiki/testing/integration-and-provider-tests.md",
+      "title": "Testing: Provider, Sandbox, and Bot Coverage Map",
+      "purpose": "Where the non-control-plane tests live and what they pin: sandbox provider clients and image-build adapters, sandbox-runtime Python suites, per-bot handler tests, and web client tests.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/sandbox/providers/e2b-provider.test.ts",
+        "packages/github-bot/test",
+        "packages/linear-bot/src/webhook-handler.test.ts",
+        "packages/modal-infra/tests",
+        "packages/sandbox-runtime/tests",
+        "packages/slack-bot/src/index.test.ts",
+        "packages/web/src/lib/session-socket/reducer.test.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/integrations/sandbox-providers.md",
+        "/openwiki/testing/control-plane-integration-tests.md",
+        "/openwiki/testing/test-strategy.md",
+        "/openwiki/workflows/adding-a-sandbox-provider.md"
+      ],
+      "instructions": [
+        "Cover bot test layout: slack-bot index.test.ts plus per-feature tests, linear-bot webhook-handler and callbacks tests with test-helpers, github-bot separate test/ directory.",
+        "Explain web test conventions (co-located .test.ts/.test.tsx with vitest + React testing patterns) and the boundary eslint tests that enforce auth/transport seams.",
+        "Give the change\u2192test map so a contributor knows the minimum suite to touch per edit.",
+        "Map sandbox provider test files (per-provider tests, provider-factory, lifecycle decisions/manager, image-build adapter tests) and what contract each guards (capabilities, create-bind-launch, error classification).",
+        "Note which suites require external mocks/stubs versus real runtime (workerd, pytest-asyncio).",
+        "Summarize sandbox-runtime Python coverage areas: bridge SSE/reconnect/push/ack, supervisor lifecycle and monitor, entrypoint build mode and tunnel URLs, git credential helper and signing, diff collector, prompt stream, tool installation, and the node .mjs tests for child-session tools."
+      ]
+    },
+    {
+      "path": "/openwiki/testing/test-strategy.md",
+      "title": "Testing Strategy: Vitest, workerd, and pytest",
+      "purpose": "How this repo tests itself: which suite lives where, the unit vs. integration split per package, runtimes and pools, and the CI gates that enforce them.",
+      "status": "pending",
+      "seedPaths": [
+        ".github/workflows/ci-python.yml",
+        ".github/workflows/ci.yml",
+        "AGENTS.md",
+        "packages/control-plane/vitest.config.ts",
+        "packages/modal-infra/tests",
+        "packages/sandbox-runtime/tests/conftest.py",
+        "vitest.workspace.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/architecture/shared-contracts-and-boundaries.md",
+        "/openwiki/operations/local-development.md",
+        "/openwiki/testing/control-plane-integration-tests.md",
+        "/openwiki/testing/integration-and-provider-tests.md"
+      ],
+      "instructions": [
+        "Cover non-test CI gates: eslint (with boundary rules), prettier check, knip, typecheck ordering (shared built first), and the custom complexity lint with its own test.",
+        "Document Python testing: pytest + pytest-asyncio, conftest/runtime_helpers for sandbox-runtime, and the node .mjs tests for the JS tools; plus `ruff` gates in ci-python.yml.",
+        "Explain the vitest workspace (`vitest.workspace.ts` + per-package configs) and how `npm test`/`test:integration`/`test:coverage` fan out across workspaces.",
+        "Give the test-location table: control-plane co-located `src/**/*.test.ts` (node env) vs. `test/integration/*.test.ts` (workerd), web/slack-bot/linear-bot co-located, github-bot separate `test/`, modal-infra and sandbox-runtime `tests/test_*.py`.",
+        "Include a Mermaid flowchart or table of suite \u2192 runtime \u2192 command \u2192 CI job.",
+        "Provide guidance on what to add when changing each area, and the principle of pure decision modules (lifecycle/decisions.ts) enabling dependency-free unit tests."
+      ]
+    },
+    {
+      "path": "/openwiki/workflows/adding-a-sandbox-provider.md",
+      "title": "Recipe: Adding or Changing a Sandbox Provider",
+      "purpose": "The full insertion path for sandbox backends \u2014 provider interface, REST client, capabilities, image-build adapter, infra/template package, Terraform wiring, docs, and the tests that must exist.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/E2B_SANDBOX_PROVIDER.md",
+        "packages/control-plane/src/image-builds/e2b-adapter.ts",
+        "packages/control-plane/src/sandbox/provider-factory.ts",
+        "packages/control-plane/src/sandbox/provider.ts",
+        "packages/control-plane/src/sandbox/providers/e2b-provider.ts",
+        "terraform/modules/e2b-infra"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/sandbox-data-plane.md",
+        "/openwiki/concepts/sandbox-boot-modes-and-snapshots.md",
+        "/openwiki/integrations/sandbox-providers.md",
+        "/openwiki/testing/integration-and-provider-tests.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md"
+      ],
+      "instructions": [
+        "Include a Mermaid flowchart of the provider selection path from settings to spawn.",
+        "Include the provider docs expectation (docs/E2B_SANDBOX_PROVIDER.md, OPENCOMPUTER_PROVIDER.md, VERCEL_SANDBOX_PROVIDER.md) and integration-settings layering for provider choice.",
+        "Lay out the checklist order: implement SandboxProvider + capabilities in src/sandbox/providers, a typed REST client in src/sandbox, register in provider-factory/provider-name, add an image-build adapter, then the infra package (template build) and Terraform module + variables.",
+        "List the required tests: provider + factory tests, lifecycle decision tests, integration coverage, and the sandbox-runtime side contract if env vars change.",
+        "Point at existing providers as the reference implementations (daytona, e2b, modal, opencomputer, vercel) and note which capability gaps each handles (persistent resume, explicit stop, snapshots).",
+        "State the shared conventions every provider must honor: create-bind-launch image-build contract, callback token auth, runtime manifest/version floor, tunnel/port resolution, env-var and secret injection surface, request deadlines and error classification."
+      ]
+    },
+    {
+      "path": "/openwiki/workflows/child-sessions-and-fanout.md",
+      "title": "Workflow: Child Sessions and Parallel Decomposition",
+      "purpose": "How an agent spawns and coordinates parallel child sessions in separate sandboxes: the tools, the auth relationship, depth/guardrail limits, and status/cancel/follow-up coordination.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/plans/task-activity-nesting.md",
+        "packages/control-plane/src/routes/session-child-spawn.ts",
+        "packages/control-plane/src/routes/session-children.ts",
+        "packages/control-plane/src/session/spawn-context.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/tools/send-child-prompt.js",
+        "packages/sandbox-runtime/src/sandbox_runtime/tools/spawn-child.js"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/environments-and-multi-repo.md",
+        "/openwiki/concepts/session-lifecycle.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/prompt-round-trip.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Cover limits and guardrails: depth caps, per-repo settings, and how children get their own branches/sandboxes and PRs.",
+        "Describe resumability rules: completed/failed children can resume with a compatible snapshot, cancelled children are terminal, archived children must be unarchived first.",
+        "Document the in-sandbox tools (spawn-child, send-child-prompt, get-child-status, cancel-child) and the control-plane routes they call, including how the parent's sandbox token is exchanged for a scoped child operation \u2014 never for the child's token.",
+        "Explain parent-child state in D1/DO: spawn context, child summary, parent-prompt path, relationship verified twice (D1 and child DO) and attribution of the queued prompt to the child owner with source `agent`.",
+        "Include a Mermaid diagram of the parent\u2194child session tree with the tool calls and DO-to-DO hops.",
+        "Note where child activity surfaces in the client timeline."
+      ]
+    },
+    {
+      "path": "/openwiki/workflows/image-prebuild-pipeline.md",
+      "title": "Workflow: Prebuilt Image Build and Queue Finalization",
+      "purpose": "The provider-neutral prebuild pipeline: trigger sources, dormant build-session binding, callback auth, durable acceptance in D1, Queue finalization (snapshot, artifact persist, supersede, cleanup), and stale recovery.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/db/image-builds.ts",
+        "packages/control-plane/src/image-builds/callback-auth.ts",
+        "packages/control-plane/src/image-builds/finalization-consumer.ts",
+        "packages/control-plane/src/image-builds/finalizer.ts",
+        "packages/control-plane/src/image-builds/scheduler.ts",
+        "packages/control-plane/src/image-builds/workflow.ts",
+        "packages/modal-infra/src/sandbox/build_session.py"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/data-model-and-persistence.md",
+        "/openwiki/concepts/sandbox-boot-modes-and-snapshots.md",
+        "/openwiki/integrations/sandbox-providers.md",
+        "/openwiki/operations/terraform-deployment.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md"
+      ],
+      "instructions": [
+        "Cover the consumption side: image lookup by scope + fingerprint, runtime-version floor, and the per-provider adapters (modal/daytona/e2b/opencomputer/vercel).",
+        "Document callback handling: `/image-builds/build-complete` and `/build-failed` public routes authenticated by single-use token (HMAC hash stored), the atomic D1 accept, then a small secret-free command onto the Cloudflare Queue.",
+        "Explain the consumer: lease the accepted row, snapshot/checkpoint the provider session, persist the artifact, transition to `ready`/`superseded`, idempotent provider-session cleanup, retries, and why this lives outside the request lifetime.",
+        "Explain the create \u2192 bind \u2192 launch contract every provider follows: control plane creates a dormant provider session, binds its opaque id to the `image_builds` row, then starts the runtime.",
+        "Include a Mermaid sequenceDiagram from trigger \u2192 build session \u2192 callbacks \u2192 queue \u2192 finalizer \u2192 D1 state, plus a status stateDiagram (building/ready/failed/superseded).",
+        "Trace trigger paths: schedule/`IMAGE_BUILD_SCHEDULER_CRON`, manual `trigger/repo|environment` routes, toggle-on, and rebuild-policy/fingerprint evaluation (repository set + SHAs) that decides whether a rebuild is needed."
+      ]
+    },
+    {
+      "path": "/openwiki/workflows/prompt-round-trip.md",
+      "title": "End-to-End: From Prompt to Streaming Events",
+      "purpose": "The canonical control and data flow: a prompt submitted from web, Slack, GitHub, Linear, or an automation travels through the DO queue to the sandbox and back as streamed events and artifacts.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/routes/session-prompt.ts",
+        "packages/control-plane/src/session/message-queue.ts",
+        "packages/control-plane/src/session/messenger.ts",
+        "packages/control-plane/src/session/sandbox-events/processor.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/prompt_stream.py",
+        "packages/web/src/lib/session-socket/reducer.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/commit-attribution-and-pull-requests.md",
+        "/openwiki/concepts/session-lifecycle.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/sandbox-boot-and-spawn.md",
+        "/openwiki/workflows/websocket-streaming-and-reconnect.md"
+      ],
+      "instructions": [
+        "Cover failure handling at each hop: enqueue contract validation, sandbox not runnable (spawn required), dead-sandbox deny-list, bridge reconnect, buffered event backpressure, session status reconciliation, callback delivery/retry.",
+        "Explain queueing and ordering guarantees, stop/cancel semantics, prompt attachments hydration, and the `prompt_queued` \u2192 status/event \u2192 terminal projection message sequence clients observe.",
+        "Include a Mermaid sequenceDiagram covering client, router, SessionDO, sandbox bridge, OpenCode, and the outbound notification path.",
+        "Note that correlation ids (trace_id/request_id/session_id/sandbox_id) must be carried across every hop.",
+        "Trace the path with real symbols: route (session-prompt.ts / enqueue contract) \u2192 SessionDO message-queue \u2192 lifecycle ensure-running sandbox \u2192 messenger/WebSocket downlink \u2192 bridge \u2192 OpenCode prompt stream \u2192 event_forwarder \u2192 sandbox-events processor handlers \u2192 event repository \u2192 websocket-manager broadcast \u2192 web reducer (and Slack/Linear completion callbacks)."
+      ]
+    },
+    {
+      "path": "/openwiki/workflows/pull-request-and-autofix.md",
+      "title": "Workflow: Creating PRs and Consuming Review Feedback (Autofix)",
+      "purpose": "From finished work to a merged change: PR creation through the SCM provider, push via brokered credentials, and the GitHub review-comment \u2192 queue \u2192 follow-up prompt autofix loop.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/autofix/handler.ts",
+        "packages/control-plane/src/autofix/service.ts",
+        "packages/control-plane/src/db/pr-autofix-feedback-store.ts",
+        "packages/control-plane/src/session/pull-request-service.ts",
+        "packages/github-bot/src/autofix-ingress.ts",
+        "packages/shared/src/types/github-autofix.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/commit-attribution-and-pull-requests.md",
+        "/openwiki/concepts/session-lifecycle.md",
+        "/openwiki/integrations/github-bot.md",
+        "/openwiki/integrations/source-control-providers.md",
+        "/openwiki/workflows/prompt-round-trip.md"
+      ],
+      "instructions": [
+        "Cover queue routing (isAutofixQueue vs. image-build finalization on the same worker), health checking, and dedupe/decision outcomes (received/queued/skipped/failed).",
+        "Document the autofix path end to end: github-bot ingress of review feedback \u2192 `AUTOFIX_QUEUE` \u2192 control-plane `queue()` handler \u2192 feedback receipt/decision store \u2192 follow-up prompt into the originating session \u2192 reply back to GitHub.",
+        "Explain per-branch PR reuse and force-push semantics, and how multiple repositories in one session produce one PR each.",
+        "Include a Mermaid sequenceDiagram of PR creation and a second diagram for the autofix feedback loop through the queue.",
+        "Note failure handling: provider errors, missing user OAuth token (manual PR URL), merged/closed branch release, and feedback attach-context race handling.",
+        "Trace PR creation: client/tool \u2192 `POST /sessions/:id/pr` or sandbox `create-pr` \u2192 SessionDO service \u2192 provider push spec + user token/App fallback \u2192 artifacts and PR snapshots broadcast to clients."
+      ]
+    },
+    {
+      "path": "/openwiki/workflows/sandbox-boot-and-spawn.md",
+      "title": "Workflow: Creating a Session and Spawning Its Sandbox",
+      "purpose": "Step-by-step spawn path: session initialization inputs, provider selection, image/snapshot decision, credential and secret injection, repository boot, runtime start, and readiness.",
+      "status": "pending",
+      "seedPaths": [
+        "packages/control-plane/src/sandbox/lifecycle/manager.ts",
+        "packages/control-plane/src/sandbox/provider-factory.ts",
+        "packages/control-plane/src/sandbox/sandbox-env.ts",
+        "packages/control-plane/src/session/initialize.ts",
+        "packages/control-plane/src/session/spawn-context.ts",
+        "packages/sandbox-runtime/src/sandbox_runtime/repository_boot.py"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/sandbox-boot-modes-and-snapshots.md",
+        "/openwiki/integrations/sandbox-providers.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/image-prebuild-pipeline.md",
+        "/openwiki/workflows/prompt-round-trip.md"
+      ],
+      "instructions": [
+        "Cover failure semantics: spawn circuit breaker, failed-but-reconnectable status, timeouts and deadlines (request-deadline), and how warnings reach the client (boot_warnings).",
+        "Document what is handed to the sandbox: repository configs in position order, resolved user/environment/repo secrets, tunnel port settings, skills, model/provider auth references, callback/control-plane URLs and the sandbox token.",
+        "Explain the decision points: which provider (SANDBOX_PROVIDER + integration settings layering), which image (repo vs environment scope, fingerprint + runtime-version floor), snapshot restore vs fresh clone, and warming shortcuts.",
+        "Include a Mermaid flowchart of the spawn decision tree and a sequenceDiagram of create \u2192 spawn \u2192 ready.",
+        "State the provider-capability differences this path must respect rather than assuming Modal behavior.",
+        "Walk from `POST /sessions` (and bot/automation equivalents) through initialize.ts \u2192 SessionDO creation \u2192 spawn-context \u2192 SandboxLifecycleManager \u2192 provider interface \u2192 runtime manifest/env construction."
+      ]
+    },
+    {
+      "path": "/openwiki/workflows/websocket-streaming-and-reconnect.md",
+      "title": "Workflow: WebSocket Subscribe, Reconnect, and Snapshot Handoff",
+      "purpose": "The real-time channel contract: token issuance, subscribe authentication, the canonical-snapshot-to-stream handoff invariant, presence, and hibernation recovery.",
+      "status": "pending",
+      "seedPaths": [
+        "docs/adr/0003-session-snapshot-handoff.md",
+        "packages/control-plane/README.md",
+        "packages/control-plane/src/session/connection-authenticator.ts",
+        "packages/control-plane/src/session/event-stream.ts",
+        "packages/control-plane/src/session/websocket-manager.ts",
+        "packages/control-plane/src/session/ws-client-mapping-repository.ts",
+        "packages/shared/src/types/server-messages.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/session-durable-object.md",
+        "/openwiki/architecture/web-client-bff.md",
+        "/openwiki/concepts/session-lifecycle.md",
+        "/openwiki/sandbox-runtime-protocol.md",
+        "/openwiki/workflows/prompt-round-trip.md"
+      ],
+      "instructions": [
+        "Cover presence sync/update/leave messages and the interaction with session_status/sandbox_status broadcasts.",
+        "Document ws-token issuance (routes/session-ws-token.ts) and connection-authenticator: what evidence a socket must present and how participants are attached.",
+        "Explain deliberately excluded data: sandbox credentials never ride snapshots or semantic messages; clients fetch them from `/sessions/:id/sandbox-access` and invalidate on `sandbox_access_changed`.",
+        "Explain hibernation and recovery: WebSocket Hibernation API usage, ws_client_mapping persistence, event replay from event-cursor/event-stream, and reconnect convergence behavior.",
+        "Include a Mermaid sequenceDiagram of subscribe \u2192 snapshot \u2192 live stream \u2192 disconnect \u2192 reconnect, and list the client \u2192 server and server \u2192 client message types as a table.",
+        "Note the ADR follow-up rules (no retained delta log without measured need; no async work between snapshot read and registration).",
+        "State the ADR 0003 handoff rule precisely and diagrammatically: finish auth + async enrichment, then final SQLite snapshot read, then send snapshot and register/persist the socket with no await between them."
+      ]
+    },
+    {
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart \u2014 Navigating the Open-Inspect Wiki",
+      "purpose": "Entry point and task-routing map for the whole wiki: what Open-Inspect is, the three-tier shape, which page to open for a given kind of change, and the repo-wide constraints that apply to almost every edit.",
+      "status": "pending",
+      "seedPaths": [
+        "AGENTS.md",
+        "README.md",
+        "docs/HOW_IT_WORKS.md",
+        "docs/SETUP_GUIDE.md",
+        "package.json"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/shared-contracts-and-boundaries.md",
+        "/openwiki/architecture/system-overview.md",
+        "/openwiki/operations/local-development.md",
+        "/openwiki/testing/test-strategy.md"
+      ],
+      "instructions": [
+        "Do not restate the whole architecture; route readers onward. Keep it navigable, not encyclopedic.",
+        "List the monorepo packages in one table with a one-line role each, linking to the architecture page for detail.",
+        "Open with a short 'what this system is' paragraph: a single-tenant background coding-agent platform \u2014 Cloudflare Workers control plane + Durable Object per session, Python sandbox data plane, Next.js BFF web client, Hono bot workers.",
+        "Provide a task-routing table mapping change intents (add a WebSocket message type, add a sandbox provider, change secrets handling, change automation triggers, touch D1 schema, edit the web session UI) to the specific wiki page that covers it.",
+        "State the non-negotiable repo constraints: `@open-inspect/shared` must be built first and is the protocol source of truth (ADR 0002); single-tenant security model \u2014 no per-user repository access validation; Node.js 22; `npm run build`/`typecheck`/`lint`/`test` are workspace-scoped."
+      ]
+    }
+  ],
+  "md_files": [
+    "architecture/control-plane-worker.md",
+    "architecture/data-model-and-persistence.md",
+    "architecture/sandbox-data-plane.md"
+  ],
+  "quickstart": false,
+  "actor": {
+    "producerActor": "openwiki/0.4.3",
+    "metadataModel": "qwen3.8-flash"
+  },
+  "sourceFingerprint": "sha256:17aff057cca2e2a973e896a5a264cbbd295b2468b3949c1163423719fba4aa16"
+}

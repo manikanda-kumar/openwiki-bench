@@ -1,0 +1,436 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a941fadca4fec79596213093c8a5970cae5ade491f415e9813127f12c05b223b",
+  "claims": [
+    {
+      "id": "claim_d603336667324c23b5068fe44d1b19e8",
+      "statement": "Each Open-Inspect session id maps 1:1 to a SessionDO Durable Object (env.SESSION.idFromName(sessionId)); the DO owns the session's authoritative aggregate in an embedded SQLite database (ctx.storage.sql), while the global D1 session index is a listing/query mirror projected from the DO.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L16-L32",
+          "version": "repo-lines-v1:sha256:90a8f02f88aa4a95bb65a83a14b1f6f44c0f712fd6acbf81139118a29cc4c04c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzMTVjMWY2NTZiN2E4NDNkMDkwMThmNDE1NWQzMDAwZDJjMDkxZWEyODFiM2Q4ZDcwNmVmMjI0OWIwM2EyOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1MjFhMzFkNjMwYWFmY2QwNWEwMDNmNzI0YjU0OGZkMDkyNGQyYzdlNGFlMmMxMmMyOTdkNWJiM2MyNmE2YmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5MzIxNDE4OWUwZTEyNDMzMTE5NWZmMzA5NWJmYzc0NDAyYmE2N2UyMTE3NTI5NzJiZDU1MTVlN2I5YmM3ZTQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L50-L84",
+          "version": "repo-lines-v1:sha256:dd1f3f5a2e7cdb1019c904bc6a29e17125cafc80c7993439118b210e3a15048e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YTJiOTE2MDRjN2VlZjc1ZGFkNTlhNDc3ZWQ1Y2ZiMTY3Mzg3MzkzNmQ2ZDBhOGVkYmNmMGMwYzRmNWZiMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1NjVmMzU3NDU4YWZhYzQ0ODlmODQ3ZTgzNzg2YTllYTU1OWIzNmQ2ZjJjZjExZWNiNmY4ZTEyYTE2MTMxNjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMTE0MzllMGYxZmNlNjg4ZDkxODA4MDM1ZjhiZjgyNTQxYzAyYzIxMTZmYjZjNjhlZmFmOGE0OTQzNzg1M2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aad6107be6f04025a0ea44884fe48cba",
+      "statement": "A session targets exactly one of four mutually exclusive modes: a single repository (scalar repoOwner+repoName), an ordered ad-hoc multi-repository list (up to 10), a saved environment (environmentId), or no repository; createSessionRequestSchema's hasExclusiveSessionTarget enforces that at most one mode is present.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/session-api.ts#L186-L253",
+          "version": "repo-lines-v1:sha256:429c83572bf55e92efe01373e79e96f3d5958df2d108525880972603028272fb:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxZDE4M2QzNjBjZjRiYjA4OTQzZWRlZjBkY2Y2ZDI5ODYyODNlMWJlMTA4NzJkMTIwYmQyMjkyZDQ2YTUzMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZWQwNTUxYmVhMzVhNTJlYmFjYzM0ZjZmZmVkZDJmZGE4ZjUyMmU5ZGFlZTAzMjYwZTdkNDA4NzMyMDg2MzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzODZmMWM5ZTFlNjM2OWNkOWY1ODJjYzFhZmQ1OGMzZGIwNzZiNzUxMmQ1YzA5ZjhlNWIzZjdkNjE3ZWY0MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3MWZkZDUzMWFkMmMwOGRhOTA0MzZmNWE1MGRjODA2NzIxNTRkOWFhZDgzY2ZhYjlkZDFhMWZkYmYyMDNiM2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_76ab61681bd244f088738c074bac9b2c",
+      "statement": "MAX_TARGET_REPOSITORIES = 10 bounds session and environment member lists; sessionRepositoriesInputSchema rejects empty lists, duplicate owner/name pairs, and duplicate repoName across owners because checkout paths are /workspace/{repoName}.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/repositories.ts#L113-L160",
+          "version": "repo-lines-v1:sha256:f15fa06a2a7cbc4e0d2918ddc5af9c7e787aa4809d1f5d65ca8cf575536e80ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5YzVlYjVjZjJlZmE5NTkyYjFmZDJjYjNlMTA1YjgzZjQzY2M2ZTc3MWQxNmUzOTQ4YzdhMTQwYWY2Y2I2NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzYzVjNDlmNTNiMzk0ZWI5M2U1NWU1NTU5YzM1NzMzZmM0M2I5N2E0MzdlNWYwNWE0ZjQyZjY3MWMxOTNlZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhNTAwMDFjMDU0ZjdmNGM4ZTk2NThhNjBjMWI3Mzc5MDRmM2Y3NWVkM2U0MDQxMjY4YWZlMjMwMTkxZjNhODAifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/repositories.ts#L3-L7",
+          "version": "repo-lines-v1:sha256:e3c6f6cc81ccce367f08d2a1715df34b8f493f1f6e1c84748f81288f156c6635:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQ3ODVhNTcwZGFmY2ViYTk0NmY3YzQ4ZTcxYjhkNWQ1MWJiMGIyZDEwZDZkMjljMGJjMjVkZDJjNjRlMDgyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU2ZDMxNzdlNWE1MTNmNjNjODU1MTVlOTAyYzVlY2QxMmNkMGQ3ODdlZDM3OTU5MzM0NjBmODM2MzRhMGFhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTI4YjBjYzA0NWQ3NTI2ZDFjZGIyMjU4ZGEwYTE2YTQ1YTBkNWFhOWI2NGU4ZDIyYWExZTRhNDlkNzg1ZWRmOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWU3OWEwNzM3MjRhMDFjZjA3YjI4ODQ2YmU1ZjhhMzFhMDczZTc1MGIxY2NiZjk4Y2RmODExZjU1OTdmNDUzNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd1bda7011a44ab3b80fc0ce72aa3d4a",
+      "statement": "In multi-repo sessions the first repository is the primary: it is mirrored into the scalar repo_owner/repo_name/base_branch columns in both stores (row-0-mirrors-scalars invariant), drives session-scoped settings and secret precedence, and initializeSession plus /internal/init both reject a repositories[0] that does not identity- and branch-equal the scalar mirror.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-init.handler.ts#L157-L179",
+          "version": "repo-lines-v1:sha256:ddb8354ed0ae6c1487acb32f024d5b82a6a50984b7f4bc3f440284ac29746fac:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NjY4NzFiNzhmYjA4NDc5ZDllZTU1NjQwYzE4ZWYwNzM2MTQ5Y2NmN2NmN2FkZWI4YWUxMDE0ODYxMGJhNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiMDk3ZDMxZGQ2MDU4OGIwNzlhYWQ2YjUzNWVjN2EyMzAyZDU1NzU1YTgzYmRjYjJhODRiYzRhOWYwN2E1OGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxNTgyMzc1NzMxNTBkZWY2Zjk3MjUzZmQ5NjczYzRiMTEwNGUxZmJmZDA0OTE0OWJkZjJmNTc1NDNhMzQ5YzAifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L112-L134",
+          "version": "repo-lines-v1:sha256:548a5c5bb327deac0c65e87d25c5d5447f60413c28e82163808e5d666d37b069:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNmYwNTZmYjJkZjc2MzBiZmU1NmRjNWFiYjkyYWUxMGIzN2I3Yzk2NWQ3YjQ2NWQwZGMxNjg3OGRiMTY5MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhMzdkZmNiMzM2YzUzOGVkM2I5MzAzZGEzOGQ3NDM0ZTUwNjkxMzhiOTAyYjgwMTA5YzAxNDdiYzZjMWNmOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2OTVhYmY4YTQ1NzllYjRmNDQzYWQ0MWUxNGIxMzU3YjdiMDI5MjQ1OTFhODUxMTFkY2M1OTQ3NjFiNDEzYTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkNjQ2ZDYzOThmOTc1ZTk5NGQ2ZTk0NGIzNjE0ODExOGFhMzY5MzY1NDE1NzEyNmExZjkxNThjZmYwZDA1ODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_03733d5623d343ea9a548be7fd59dd03",
+      "statement": "Repository context is a triple invariant: repoOwner, repoName, and repoId must be present together or all absent; no-repo sessions must not carry repoId, baseBranch, or any branch context. It is enforced by the DO session-table CHECK constraint, upsertSession, and initializeSession before any write.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L93-L107",
+          "version": "repo-lines-v1:sha256:70704ad7c95b6694095aae0508bf3039c8450716eb8f6be22fff7de8b120206c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlNzY4MWU3NmY3YmE4ZDNlNWU5YjVhMDk5ZjRmM2MzNTZmZDNmMzNmMmU5YWZmOGIyNjI2NzZkMDg0NmRmZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTg0MWE1OTE3Yjk3ZDVmYWZmMTYzZDdjODkzZTE3YmQyNjA4ZWQzODIyZjU2ODdhMTRhY2EwMmEwODY2M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhYWY5NWUzN2NmMDQxZjIyZTRmOTY1OWY0NjI5MGVhYmI4NDcwY2Y5MWI4NzhkNDAwMGU2ZDAyOTBhNDE5NmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhZTA3ZjU5MTEwOTY2OGIyNTNjMmVmODVkYWI2MzU4YzcwMzJmMzEzYzRlMzAyNzY5NTY5MzdmZjVhMzkyNjgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L77-L84",
+          "version": "repo-lines-v1:sha256:ee6219ae9768ef80c8c6d03b920726150b46fed719669c18d760626f5d045ed9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTczZDgyN2VkMjYwMDljNzllYjAyNWM3MTkzZDAyNzliYTgwNTFiNmU4OWQ0YTI0YTk3ZDczYmMwMGRlMWYzZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5NjdlYzFlZDM4MzZmOGViMTdhZmYxNzJiNWJmZWY3ZGU2MDQ4NWE0MzljNmNhMTFjNTkxZTE3NTU3MzlhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODVkOTRlZTY1YjU3MzBjNTk1NzA4ZDViZjYyZGNkZTliNjYyNmYxMzkzYzI4ZmRlZTI1M2Y2N2RhYjg4NDQ5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2YxMTQzOWUwZjFmY2U2ODhkOTE4MDgwMzVmOGJmODI1NDFjMDJjMjExNmZiNmM2OGVmYWY4YTQ5NDM3ODUzYyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-core-repository.ts#L64-L72",
+          "version": "repo-lines-v1:sha256:1ad58bba3dc2d214f0354c8559d38282fe491865c1c39b049f0b14098900fb39:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTRlYWMyYjM0OTk5MDRhYWUyZGM2ZDIzZWJmZWI1MDY0OGZjNDE3MzM5OTMyZWE5YTcxZDVlYmRiOWZjYWY4YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWFjNTFiMTNmNmQ0MmQxNTMwZjhkOGIzNGRmOTFiYzdlNDljOGVkZjIxNWE0YmNhZTgyODU2NWMwNmZmNGEwOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTA0Y2VmY2Q3NzI4N2IwZjU3ZDJhOGI1MDFkODBlOTczNzJkYzQyMmM0ZTYwNGM3MjBkNWJhZmJhMWQ5MjRkNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2e9dfab8d5a94a7fa009d1d55b8bef08",
+      "statement": "A repo owner may contain / (GitLab subgroups); only repo_name is a single path segment. parseRepositoryFullName splits on the last slash, and all repo-identity comparisons are case-insensitive (repoIdentityEquals / normalizeOptionalRepositoryPair).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/repository-target.ts#L13-L18",
+          "version": "repo-lines-v1:sha256:baf250370018bf290bf7b81c5d3f5d8d2a5de8d74e1f7c9b24f40b78b8afaa00:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI3MzE0MzIyMjg1MmQxOWI5ZTQ2ZDAxMTc0N2IzNWIyOTk5NTg1ZDJiODU4Y2UzY2U2YzAyNDViOTI0OTYyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmY0MWJmODJmY2QwZGFlMzUxNzNjYTQyZWQ5NzZjOWEyNjg5M2UyYTdhYjcyYWI0MjE0ZmRkMzFkNzk3MTJiMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU3ZGRjYTMyYmYyMjU3YWNkYzRlZDkwZmZkY2VlMTdiYjYxYWU4M2I5NjJhZTViY2VmNDI2NTY5MDExMDNjYSJ9"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/repositories.ts#L177-L187",
+          "version": "repo-lines-v1:sha256:e1f74e002d9da37cca4ebeb671bd208a06fd601dd181366ea3e8f7a282d680f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2NmExZDZhNDQ0NmRhODczYjRjOGNiZWI0OWE4MDJiZDhlNmMyNDVjMDI3NmQ2MDM0NjE0OTllZGNkMWM1NTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxMGZiM2U3M2VhMmE3MjE0Y2JjNDliODhhZTRlZjExMDViOWQyYTEzMmQ1NmUzM2YyYTBjYjk4MmU3NjY1ODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1YWQ4ODFhNDMyM2NmODU5YWFjODJlNzkyNjllODg5YWMwMGJmMmNhZDQ1M2QyZDFhNzM2OWQ0ZWQxZWM5OWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_db7c861b3e64470e87be78fa48416467",
+      "statement": "In multi-repo sessions each repository is cloned into its own /workspace/{repoName} directory; intermediate steps run per repository in position order, and pushes/PRs are per-repository — one session can produce PRs in several repositories, and the sidebar lists every member with its branch and PR.",
+      "evidence": [
+        {
+          "resource": "repo://docs/HOW_IT_WORKS.md#L59-L63",
+          "version": "repo-lines-v1:sha256:27558c8d7931f905e963ca3a9d9d14b558895de1e9c9daf734f043505cd200c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwMWU0NzlmNmQxNzFkZWUxMmJlYzFhYjYxZWZiMzM3NmM4OGFjYjFiODY3MDE0ZmRhMTc0MGUyZTA1MDA3YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTA3ZmNiOTE2M2ZiODJmYTQxYzVmOTliMjk3OTliZGQyZDcxZjQxN2FjMjNmYzc5NzA1MWExMjRiNzQyZWVjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDllMDYzOTRlZmQzNmYzOTM5YzMxYzU5MjlhNjkyOWUzZmVmOWJhMjAxMjFiMjVhNjk3OGVkNDIwNGQzNTYyOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE3NmFjNjdmZjg2Y2NjZjdkZmZmZGY3MTg3OWU0Y2E2YjU2MmZkNmE4NjgyZGY0MzA0ODg5YWM4ZTU0NDQ0ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fbc5a30d56244148af35c23b580c9e6a",
+      "statement": "initializeSession writes the D1 index first and initializes the DO second — an invariant so failures are caught before any sandbox is spawned; if the DO init then fails or times out, markSessionFailed compensates the D1 row to 'failed' so it never lists as a phantom 'created' session.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L209-L226",
+          "version": "repo-lines-v1:sha256:86d1334e752ead91170ad1901ed1553fbe046428df669468fdab742d67dd4fe6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwOThiMTAyNzVhZThlNzk2MmFiODFlNTMxY2YyNjU4YWU0OWY0OTU2YjU1YjVlYjdhMWVjYzdhZWNhNDE5NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkNTc2MDRmYWMzZTcwNmI0NjRlYjc1YTJhZGY0YzVkMjhkNGE3NmNkZjZlNzUyNTkxZWQyOWU4NjNjMjM0YjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyMmYwODNlODU3ZDI3ZjJlZDljNjdlZTY5ODcxMjE2NGJiYTgwMDhkMTFiMThlYmM4NGRiZWRjNjk0MTNmMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L80-L91",
+          "version": "repo-lines-v1:sha256:65b85c64395def55971c80342b54a5f5e95f626956b34a9cb66f87918798c332:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1Yjc1OGUzMjhiOTYyMjIyMWJiOGM3MTI5ZDEwZDE4MzE5MTQwZjlmN2U5ZWFiZTgyMmQyYjJmYTlhYTc5ZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1MDg0NDcxYjhiZGUyNzU3MDIxYzc1ZGZmNTEyMzAyNTZjYzMxYzM0MzIxYTBlMWNhZTkxOGNkNjI2YmQ0MTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiMzlhMDUzMzFkNzdiMjg4OTVjYTg0YmUyOGExMjFjMDc4YzI5MzEyNjNiN2ZkYzBlMGFjNzZmMmNjZTE0ZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b91df084e2364620b68cde1b56fc5f3f",
+      "statement": "The DO-side /internal/init handler writes the entire initial aggregate — session row, ordered member repository set, pending sandbox row (status pending, git_sync_status pending), and the owner participant — in one synchronous transaction, then schedules the warm sandbox spawn.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-init.handler.ts#L181-L251",
+          "version": "repo-lines-v1:sha256:ebf3d8703e7887710029a891c76075d40c91417ed6b617174bc570c845c151eb:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1ZDdiYmZmOTNhZDFiNTg1ZWM5ZTNjNjRjYjc1MWNlNDJmMjcwMjFhMDZkNWVlODM5ZDZjODFlMzU4N2IwZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiNjIxMGJkODI4YTEwOWZiNDYwOTBjNWI0OWVhMjUwMDBhNzVhYTQxNzRjMTM4YjkwNWQ4ZDljMzEwN2M0MjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmYTdmNDA4MWRlMzU1YzM5MmIwYzFkOTZjMTdiYzQ0MTg3ZDllOTlmZTMzMWFiN2FlYWI3NmNhZTc1Njg5ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNzM5YTA2YzFjYmIxMjQ0ZTMzNjNkMzhiY2Y5ZmE1MGNlODRmZWQzOTljMjE5M2EzYzdmMDhkNTk5MThiMmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e19fb11c85ea46299767cb66f2cd6988",
+      "statement": "SessionStatus and SandboxStatus describe different levels: SessionStatus ('created','active','completed','failed','archived','cancelled') is the durable conversation lifecycle independent of compute, while SandboxStatus ('pending','spawning','connecting','warming','ready','stale','snapshotting','stopped','failed') describes only the current sandbox incarnation; a session may be completed with a live sandbox or active with none, and the two vocabularies must never be conflated.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/sessions.ts#L6-L46",
+          "version": "repo-lines-v1:sha256:39770b175d81cf76f07aa82a2a831247a78f1f6313e4e01d4ec8f47ba92647f5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwYjBlNjZmZTQ3ZWJhMTI1YzA0ZWYyYzhmZWZmM2QyMTZmMDkxMTkxZTQxMmY2MDcyYTBlMWM3NTgyYTY3OGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMDA5Y2YwNTU5MTgyYmE4OTU3ZGYxNmY5MTFjNGUzMjRiMjY2OWZjNTQxZDI2NDk1MGQxZDUxY2FhNzM0YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY0NzRkMjU4YmM4Mjk3ZmQ3NDMyOGJlMmIwNjNiNTI4YTBmZGMwYzJhNGQyMWI3YjFiNDE3YjgxOGZjNDRkMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhNTE5NWUwMjdkZThjYjUzYTY5OWZlYzY3Mzk0ODFkYjRjNTdkMDVlNzllMWZmNWZmOGMyYWZkNTEyMDUxZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ed43ef05b158435fa80b772f42d4a79b",
+      "statement": "The DO session table is a singleton row (id = DO id) carrying the scalar repo mirror, opencode_session_id, model, reasoning_effort, status, parent_session_id, spawn_source, spawn_depth, code_server_enabled, vnc_enabled, total_cost, sandbox_settings JSON, environment_id provenance, and timestamps, with a CHECK that no-repo rows have no repo_id or base_branch.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L52-L84",
+          "version": "repo-lines-v1:sha256:b01516bf00d96505d9a375d5487aadf19788fe6f17fa589b27bd4e3fd795fc49:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmNGU1YTk5OWU3YWFjNGJiMDQ4NDBmN2FiYTlhOWU0OGUyMTFjOTNjNWZkYzBiYzIyYmYyYTNlYjNlYTAxOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3NzI1MjY4MmRiYjgwZWJiNTA3OWM1NmRhMGY5YzllMTlhMmEwMjczYmYyNzBhN2YyYzYwMDlkYTY5MzkzNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMTE0MzllMGYxZmNlNjg4ZDkxODA4MDM1ZjhiZjgyNTQxYzAyYzIxMTZmYjZjNjhlZmFmOGE0OTQzNzg1M2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c69eed674d9941c39959c1fd18ac88df",
+      "statement": "created becomes active when the first prompt is enqueued (never at creation); after an execution the status settles to active when prompts remain queued, otherwise completed/failed by outcome; settleFromMessageState derives the idle status from the latest terminal message and deliberately falls back to 'created' for a session with no messages at all so the abandoned-draft sweep can reclaim it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/message-queue.ts#L237-L237",
+          "version": "repo-lines-v1:sha256:1a10390f051f7eecc5ff769b616baf4ba9d35f4f93d4de9a05bbaccfaf8fafbf:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWExMDM5MGYwNTFmN2VlY2M1ZmY3NjliNjE2YmFmNGJhOWQzNWY0ZjkzZDRkZTlhMDViYmFjY2ZhZjhmYWZiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWExMDM5MGYwNTFmN2VlY2M1ZmY3NjliNjE2YmFmNGJhOWQzNWY0ZjkzZDRkZTlhMDViYmFjY2ZhZjhmYWZiZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmI3NjIwYzJjNjE3ZWJmMzExODgxNjI2NmVjZDY1MmFlOGZhY2YzZjEwYzMwMDQyMWYwMmJkZWI3NDljZDY1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTI0YzcwOTE4YTM2NTA0YjhmMzg3MTUwYWJiMGJlOWQzMDRhYzU3OGRiYWUxYjIzZWUyM2QxYTZlMjBhMjAzNiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L140-L175",
+          "version": "repo-lines-v1:sha256:1f08d767405da180d11129d3906e9fc4deeaf59de484ef0c027abd3c4d504aec:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlOGUzYjNmMmE5NGU2M2Q2ZjZkYTkxZGMzODRmNzVjMWEyYmQ1ZGU4YzFjYzU3NDExYTc4NDhjZjNlNjM3YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2NGIzMDMxN2E1M2RhMDI1YTNkYWEyOGFlMGYwMzQ4MWI3NWUwZTAyZWY5ZDY1MGY4MWU1M2Q3ODliNWU4MWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmYjg1MTQ3MWQxODkxMjNkNzI0Y2MxOGUwMzU4NjJkYWIxZWVhYzNhMTcyN2E0N2M3ZGFhNzk2YTA1NzYwODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c0619402a0f43909038771b9d845429",
+      "statement": "SessionStatusService is the single place every status transition fans out to its three projections — connected clients (broadcast), the D1 session index (status plus terminal metrics mirror), and the parent session's DO (child rollup) — and every public method is a transition on that one noun.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L1-L65",
+          "version": "repo-lines-v1:sha256:9b360ff7fbca75b81bc6889fc8dd20f72afef998a14c8bb3504c1816a65d78d2:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkMTZkZGNkYzRiYjhlZjFmNTA4MjdkN2RiNDk4YjQ1NmYwNWM5YWZjNWU4NGQzYmRiNWNlODZmMDNkOGNhYzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_19ce7844a33d4ffba96346b4eafe1620",
+      "statement": "D1 session status updates are monotonic: updateStatus applies only updated_at values greater than or equal to the stored one, protecting against out-of-order async writes, and repairIndexStatus re-projects a stale D1 mirror to the DO's current status without claiming new activity.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L770-L796",
+          "version": "repo-lines-v1:sha256:0705f14b3a0f571e3755a9e511a68a5c79d0252ecbafca596515b7cc291e9929:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyOWIzMjk0MWIwNWIxNWVhYjA4ZjQ1Yjg0M2M5MWMzZmNkMmJmODYyNGJjM2I4YzUxM2JmMjEyYWI0MDI4ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzI5MWIzMjIzMzBmZDM1ODZjMWY5ZGIxMWQzMDBlMDg2OGEzN2YwMDdiY2IwMGJlMmYxNGVjNDU1ZGIxM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZWM4NWNmYzgwN2RmNjc1MGU5NDBkN2I5NmMwMzMxYmM0YTJlOGIxZjY3MzQ4YjQ1MDhjYzRjMjRiMGU3NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a50a8d87ab6344b4a651de1285d04466",
+      "statement": "Cancellation atomically closes the local aggregate before publishing: the callback terminalizes unfinished messages synchronously so no request can observe cancelled status with unfinished messages or accept work between the two mutations.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L103-L114",
+          "version": "repo-lines-v1:sha256:77b06cc80409d51bc70527c3acf59ceafcb98d3196cc9f58dda1bb2ce07083fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjZjk2OTIzNDFlNDhmOGQ1NjY1MmEzMGExYjk5YWZiMDAwYTAyODc0MjE5ZDFiNzFmYWJiOWU3ODM1OWI4MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNGRkNTEzZDA2ZDgwMmNiN2QxNmMyZmYzMTczYjk1NzRkN2U4M2E4ZDE3Y2JiYTE4YTQ2ZWI5ZTEyYjUyNWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhZGRlODBkZTQ4YWY2ZDc0MTI3NzAzYzYwNDRlODZjZmIyM2JhY2QxNDkxZjkzYzIyNmNmMjA0Nzk0ZmQyY2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8656827e47684798a9e5893e927ed3c3",
+      "statement": "Archive requires a participant caller and rejects sessions with queued work (409) and cancelled sessions; unarchive is restoring, not starting — it settles the status from what the messages imply rather than asserting 'active'.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-lifecycle.handler.ts#L173-L188",
+          "version": "repo-lines-v1:sha256:f6e13ab7b98784f237bab0724b48bb97e2f4b4b9504dabd6fb7ab4382ed6189b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZDNlYmJhNTdmODRlMGY5MWNiZTY1N2E2ZTM5OGI5OWIzNGVlOGQxZjE3N2NlY2MzZjI1MGQ3MWI5YTU4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MjQzY2MzMGQxOTEzMzgyZTBkMTMzZDcyMjRlYTJlODRlM2I2NWZkNTFhYzVkZWQxMmZkYzVkNWE4OGJlYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyY2U1MjBmMjZmMDhjYjM0NDYzYjhmNTY0YjVjYmZmYzYwZWExNTUxYmI3ZWQ1OTY5ZGMxYWE2ZTY4NmFhMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-lifecycle.handler.ts#L243-L281",
+          "version": "repo-lines-v1:sha256:1582cbcb38e872d8a207981313be11a4e56a228c4b28ffa10c34ec35d7361f77:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjYmNlZjg1N2ViYWFmNDFiOWZhMzkwYzE3OTRhMzZlMWEwZjk2OWUxZTg4NTY2NDg2MGVlMmJlNTc1OTE4ZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNTdkNzZjMWMxZmY3MTUxZTljZGJmMDM1ZmY4YzA0YTg2ZGY4OGFmZGFlNWJmZWUwMDQ3ZTZhMGVmYzBmMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFlMTRiYWNkMjBkZTM5NzgzNmJlNzQ5OTRlYjY2NzRmNDVmZTcxYWUyYTliOGRkZjNkMTVlYmQ5ZjlhOTViY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fc4103f00dc243968387d6fa4e9d1e61",
+      "statement": "Warm sessions never prompted are retired by the abandoned-draft sweep (ABANDONED_DRAFT_TTL_MS = 8h, cron '23 * * * *', capped at 50 per tick): the D1 index selects created rows older than the TTL and asks each DO via /internal/expire-draft; a 404 lets the index retire the orphan row directly, and a session that moved on gets its stale index status repaired.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L26-L78",
+          "version": "repo-lines-v1:sha256:59a0904158613176deb11f026602c011b3879e506d60f47b8569e376be978c28:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNjYwMjJhZTExZDYzMWFiYTYwODEyNDliNmI1ODY5NzY3YTE5Mjg0YjU1MjNiMDY4YTcyNTUxZWM2MzJmZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkOTc5YTE1NDE0OWM5OTBlZjA5ZWQxMTNiODFhMTY2YTE5YWQyOTM1OGQyZmQ2YTU2NDI4NjhjMDdhNWJlODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyM2MxOWI2ZWZkN2U4MWNmNmI4MzIxMmM1OTkyNmJhNDAzZTBlZGRjOTVjOTJkOGU5YzgwY2YwYWFmNmMxODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyYjc5M2I0ZTYwYzFlOThlNDcyM2Q1YzUwODM4Y2RmNGE3MTg3MmIwMjQzYzFhZDI1NDRlZTM2MDAyYjU2OTkifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-lifecycle.handler.ts#L205-L241",
+          "version": "repo-lines-v1:sha256:9299ddaf89b71ec7348a451c4e4e3dff586dc1138d9c430ad8cc40061fee93c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMDIwMDI4ZDEyZDNmNGNiNGU4Y2M1ZGQ3MDc4MTVhZjA0MjA0YmI5NmRjOTg4ZjNjYzI3YTk4ZGNmZjY3N2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljY2ZiYjA3ZGJlYWJhMzFkMTE4ZDY1ZmEwMmQ4ZGU1OWIyMjBkMzg5NDUzNTgwYzBhMTNkOTcxMTcxZjg3YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0MzQ4OWQyNDA1NjVjY2U4ZTRiNDgwODVlNjQ0ZGQzYjM3YmQ3ODg4NDY3OGY1NzZjNTc4YTcyZDMzNzNlYmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0ab0ff42b254a7ca9c20b6c35656276",
+      "statement": "The shared predicates over SessionStatus are named for their questions: isSessionPromptable excludes only archived/cancelled; isTurnSettled (completed/failed/cancelled) governs metric sync and deliberately excludes archived; isSessionInactive (completed/failed/archived/cancelled) answers child-accounting and cancellability questions.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/session-activity.ts#L26-L67",
+          "version": "repo-lines-v1:sha256:35a409b5135eeccbea2fc780a681dfcef6d14a3654bc0c646dc573b3890dabfc:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5OTQ5NDU5OWU0N2E5NDQ0NDEyOGMxMTMzMzk1ZDFlNWY1YzAyZmYzM2Y1OGQ5NTYzNzZlNzEwODAxMGIzMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExYzQ2OTU5ZTc1MzkwNzBjMjVmY2M2OGMzOWQyODMwYmMyNDJiODJmY2E2NWNhOTliM2YyMzY4NGUyYzQ1NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1OWYwZmNmZmJlMWE2N2NiMmU1ZmNiNDYzZDQ3Y2UxMzYyZjIyOWEzMjk1ZWNlNjZiM2ZhYmE2ZDg3ODUyY2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b4f1a21266a46f5aeea44d49652b8e3",
+      "statement": "Participants are the session's membership and security boundary: the creator becomes the owner participant (role 'owner'), later joiners are 'member'; SCM credentials are stored AES-GCM-encrypted per participant, the WebSocket auth token is stored as a SHA-256 hash, and participant membership gates archive/unarchive and WebSocket subscription.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-init.handler.ts#L231-L246",
+          "version": "repo-lines-v1:sha256:46b3ef4fb8f7151e5646441007e17235a71fe50a4d6c0661ad5b7aee5f1ba05d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5ODk2NjM5ZGI0NGViNTcxNDE5ZGZjZGJiZGM2ZTljMzU3NzQzODM3MGYwMTlkOWYxNDgwMThkZjJkMGYxMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MmQ1NzEyZDkyYTUxYjJlZjMxNjU3MTA4MjNmMWUyZmIzOTczMThmYTMyZjdhMTlhOWE0YTNlMDA4ZWFhNmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4MjI2ZmIzNWYyNmE1MWJjYjcxNTE2YWZiYjk1MDlkMjA4YTUxMjkwNTQ1M2U2MjA1MTc2M2Q0MGMyZjA1NGMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L87-L105",
+          "version": "repo-lines-v1:sha256:81d735c03c58b41488401c6b2f6b723311ed2d96f8fffe02547f03e9cd12004b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MzNhODc5M2IyNTYxZmE0Y2ZhZDIwZTk1YWY2M2I4N2I0M2UxNjVmMDZiZmI3NmRkNzJkZjRjNWE2OTQ1ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkNjJmMzljMDg1MTMwY2U1YTc5YzA5NzJmZDdhNTI4MzYzYWJhMjI5MGM5Y2IyMWQwZjcwN2MzMmNlNWJhZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4YmU5NDE1MjdiNGU3MjExZTY4NTVmNTVkZmI5NmRlZmNhMzk5ZTViZjlkZWMzOTVmZTQzYjQzMmVkYmE2NWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef428e230e9543a0be627a7d1adcc1a2",
+      "statement": "Messages are both the prompt queue and history: at most one message may be 'processing' at a time (unique partial index), enqueueing a pending message transitions the session to active in the same DO turn, and messages carry idempotency keys (client_request_id, request_fingerprint) plus autofix feedback/PR keys.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L108-L129",
+          "version": "repo-lines-v1:sha256:efb9a8663fdd777dc1ad32cc3d043645d666855ed0b49566b8a5f42fe47de09f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkOWViMjIwMzU1NjFjMzMzM2ZlNTlkMGFmN2YwNzFkNTJkYzRkNjQyNWJkNTM3NmFiODEwMjUyZmJiNjI4OTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiODcwYmEyM2FiZWVkMzI5ZmVkZTRjYjEyM2M4M2VmYTUwODUwNGI2NGE4ZmFiOGYxNTEzMjgxMWZlNzg4ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhMWYwNWU3MzJjMWE3YzM3ZjRjMTU5YWMwYTk0Njc5NjY0MjY0YzY4ZThkN2I5NGRkZjExMTRkMzdkODMzOTYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L216-L228",
+          "version": "repo-lines-v1:sha256:b4a68c374e69210b62c202fa85d88f4fbc9893a000487d54fbe0f5817a4be1be:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzFlYjg0NGVlMjg5MDk0NWY2MDQ0OGY5NGUxNjkzMDI3MzNkYmU4ODU2ZmM2NDMyZTg2ODQ0NGFmNGRiNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxYTcyNWFmNjI1MzA2NDU1NzU2YTE3NTMyNjNmNWQzODgyNTEzNTc4OWY2NTljZjJkNDNmZDcxMjlhZTQxOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4NWQ1MjE1NTE2YzA1OWM3YmUwYWY0YzQ4ZTIwNGQzMjU3OGIwZThhNDc5MGRiYWE2MWMxNDJmZjFiM2M1YWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0YTEzYjJlZTMyN2VmNTA3NzdlNzYxN2RhODdkM2JmNmQ1NjE4ODAwYThlNTU1NmE3OTJhNjkyZTVhOTFmYWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c70498a1f394158891db6b37c2918a6",
+      "statement": "Events are the append-only agent timeline (tool calls, tokens, errors, git sync) with a monotonically assigned unique timeline_sequence for cursor paging; token and execution_complete events upsert by stable composite ids so re-delivery never duplicates.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/event-repository.ts#L60-L101",
+          "version": "repo-lines-v1:sha256:cc70166c865044da59d485545b91e81e49aba9bb0cad10210a3e192d80e746f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNDVmMDA5M2IwNzE3OTVmYjIxMTJlMWFkN2IyNDc5Y2M5NTEyYTQzZGUyMDBjYWQwNDhhM2MyZWE0MDAzOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMTI1YTY1ZTI0MmM1Mzg1YWMwYWY1NzhmNmUwNDRiYmEyOTE4MjY1MWFhZTc1N2RhMTE5ODc0OGE4NGJmOTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyOWI1ZjU2NjlkN2UwYWU5NTE3ZjBjZjViZDVhMmFlN2QyYTZmMDQ1MWJkMjI5ZjAxZjI1YTNhOTMxNzY2MWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_84dcfef5eb324b408ef2e15923b6e7aa",
+      "statement": "Artifacts (pr, screenshot, video, preview, branch) carry typed JSON metadata; PR artifacts are a live view of the D1 session_pull_requests record, and PR artifacts written before multi-repo support carry no repo identity and by construction belong to the session's primary.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/artifact-repository.ts#L25-L37",
+          "version": "repo-lines-v1:sha256:9e6e297398eec54c1693962cea9c2aae7a34e4b15e536a7e913d0b2c5f411f3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyYzQyY2IxZDExNDI4NjBmZmE0NmJkODU0NmJmZDgyMzlkN2M2ZWU4YzE0MDJjOGE0YjAyZmFiNGExMjU2ZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUxOTRkNTY2MTNmYmQwMTI2MDhhY2ZhYWJhYzBlMzc0NGRiYzI3NmJmZjA0MjhlZDJhMzgxMTMyNzgzYzc5ZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmZTA0MTcwZjNhMjdiMTEyM2MzNmNhNTc2ODhhMmVkYzc5NjRlZDA0NmVhYzQ2NjY3NWNmOTk3NTk1YzU2M2EifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/artifacts.ts#L3-L67",
+          "version": "repo-lines-v1:sha256:166a4f498c21ff101654fdba55f66d67fdf51a343d9656c6e74bb8bcdc820f4c:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5YTQzOThmZTQ2OWY3NGNjNGFhNjdmYzJkOTc2MWQ1ZTE5YTU1Y2Q1NjVjZDlmMmIyMGU3ODZkYzk3MDAyODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyOGIwY2MwNDVkNzUyNmQxY2RiMjI1OGRhMGExNmE0NWEwZDVhYTliNjRlOGQyMmFhMWU0YTQ5ZDc4NWVkZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmYmQ3Y2Q0ZTVmMjQwZjc3MDA1ZDdiZTJlN2Y5YjEwMGZkNDNmODQ4NTgxNDVmZTlkZGI0ZDAzMzRmOTJjY2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2afaaa40c42a435ca00062b2e8a58332",
+      "statement": "Lineage is recorded as parent_session_id, spawn_source ('user','agent','automation','github-bot','linear-bot','slack-bot'), and spawn_depth (0 for top-level); the D1 insert computes root_session_id as the parent's root when a parent_session_id is present, else the session itself.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L272-L299",
+          "version": "repo-lines-v1:sha256:6a345d189226055163182a2b380c4c63f2d0290abcbd206da301981c90a85073:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzEyODI2NTAyNDAzMzZlZmU4Mzc1NDAyMTlmODliY2UxM2NiNGY5ZmRhNzFhMWQ5NGNjNGMzMWNiMjM2NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlZjY5MDA3YTdlNzVjY2RiMmMxOWVmYTlkOTVjNDNiZjc4N2YzM2EyYjljODI2NWM0YTVjZTY0MmZlNmRiZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUzZTgwOGVjMGYzNWM5YWY1MTUzMTUxZGIzYjAzYjhjZDA4NjA4OGFhODlkZmE3YmQ5OTUxZDcxOWVmNDg3ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2ZmUyNGUwNmRiYjM2OTE5NjA5NGYzYTA5Yjk4ZWQxMzgyMTIyNmU4ZmNhNmQ3ZGM5NWJlNzA5ZWZjNzcyNWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_800ebb3b3dd74d77b583e49be3e4eb9c",
+      "statement": "Child spawning is prompt-driven and scalar in v1: /internal/spawn-context requires a processing message to resolve the prompt author and children inherit only the parent's primary repository (even for multi-repo parents); MAX_SPAWN_DEPTH = 2 and per-parent maxConcurrent/maxTotal child caps from resolved sandbox settings bound the tree.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-child-spawn.ts#L42-L119",
+          "version": "repo-lines-v1:sha256:aa101fe62ea5003d521730a51e7d2ce02ef589449f1e6e2c3d60549dd767354f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNjFkNmM3MTRkNmEzMGNkZGFjNjFhODdlNzhkMWM5YmM0NGMxNDcxZmQ2OWE3MmI3MTU5NmQwN2Q2Yjk2MjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4ZWQyOTRjZWQwZDg5YTdmNWVkYTA4ZDhiOGEzMWE0ZWQwMmM5MDg1NTQwN2E3Zjc1MjkzZjBkZjFkOWVmMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlODk5ODFiOTAzN2EwNGU1ZjZkOTcyZDIxNGU0MjM0NWU2ZGI1YWY5NjRjOTgwYWRlNjQzYmNkMTcwMmE1OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwZjY1ZTkxOWE0MDcxMmQyOTYyZGIzZGNhZDk5YzBmYjc5ZDcwZWQ5ZTMzZjQ1NDE5MjJkMWI4YmQ1NzdkNjUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/spawn-context.ts#L6-L36",
+          "version": "repo-lines-v1:sha256:154a71008b584d567ec3bc52efab07123cee323d35c53711c78b37d185f8cf7b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkMzIyOThjMzVjNGQ3YTUwZGVmYTBkZWM2MzBhNWZlZWNkMDViNzFkNjMwNzdhMGU1OGY1MGRhNTllZjliNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzMmY3NTM0ODQzYWYxZDg5NGQyY2VlMTA4YTI0YzcwYTMzNjE4MDY5ZDAxYWI0NGIwOGNiZTZmNDM1YTY1YmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7973d1dfea1347b6bc5fb1f66a22a3bc",
+      "statement": "Children inherit their parent's settings scope (primary repo plus environment overrides) and copy the parent's pinned managed-skill manifest (skillManifestSourceSessionId); child status/title changes notify the parent DO via /internal/child-session-update so its clients refresh in real time.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-child-spawn.ts#L69-L85",
+          "version": "repo-lines-v1:sha256:01c4dc326de31a8d7c1edcc888502ccba35157a445aac1acdf18eb88591d8f55:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNjUzZWYwMDBmZGYwY2U1NGFlNWQ5YjA5NjkwNjNjM2RkMGFjNmVkODliYzQwNjljODExMzlkOGIzMDRlMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkZDkwNjYyMGM1MjM1YzIzYWVjOWNjYTVjZmI1N2FjMTg1ZTg0NjA1YWUwYmFiN2QzYmFjNzM0ODMyZWJkYTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiMWFiYjQ2NmVmOTUyMWEzODhjMTcwOWE5YmI3NDA2NzU5YTcwOWFkNDdjZGUwNWFkZjcxY2NjYjYwMTE4NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwNmY0Nzk4YjdiZjU3MGEwODhkZGNkYTI3ZDM1YjU2NjYyODFmYTQxYmM1MjI1MjcxOGFiYzRkYzZlNTRhMTgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L181-L214",
+          "version": "repo-lines-v1:sha256:0bbcca71f2f7dc62f07f773940eba611f7aab6eaef8b9c4eccf2c053ffd59dd7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNjM5YjZiMmFlYWQ1NzA0NTJjYmE5YTkxYmQ1N2VkNDMyZjc1OTY4MGRhYjkwNTQwMGEzMTNiY2RlZjg4ZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkY2E1NTM4ODhlNGI5ZjhiMzAxM2FmNTllZDkyZjliMGZmMzdmYWMzZjAzN2FkYTFjZDg1YmIxMWIyNmJiYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyNjQ5NThkMzA1Nzg2YjA3MjMyYmE0M2Q0ODM1NmY4NmYyODJjNjUyZWZkM2QyODJhYjI4OWYzNDQyMzg1MWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d3a46443f334aefabdafcc91e1b02d1",
+      "statement": "SessionIndexStore.create batches the session row, ordered member rows, the resolved pinned skill manifest (or a verbatim copy of a parent's), and the complete immutable model-provider-auth snapshot into one D1 batch, so a partially initialized session can never appear in listings; the insert throws if the session row insert is skipped.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L272-L354",
+          "version": "repo-lines-v1:sha256:38fe99e52ddfd4357a2b40de18c738c81f13230f11a537d7e56491d4f409478c:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzEyODI2NTAyNDAzMzZlZmU4Mzc1NDAyMTlmODliY2UxM2NiNGY5ZmRhNzFhMWQ5NGNjNGMzMWNiMjM2NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUzZTgwOGVjMGYzNWM5YWY1MTUzMTUxZGIzYjAzYjhjZDA4NjA4OGFhODlkZmE3YmQ5OTUxZDcxOWVmNDg3ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzNjM4NDJmYmIxMTg5NWZiZDUyZGIzYThkZjk0NDZhYzQwZjZjOWQ4YzE1YTIyOWRjZTdlOGM4NDhmZDYwY2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4db183fe266040d8a724150ceec2d58a",
+      "statement": "Session list queries match a repository filter through the session_repositories membership table so a session is found through ANY member, with the scalar arm as the pre-feature fallback; excludeAutomationLineage backs the 'Mine' view by excluding automation runs and bot-initiated github-bot sessions; pages order by updated_at DESC and attach ordered members, PR summaries, and viewer read state via attachSessionListMetadata.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L536-L609",
+          "version": "repo-lines-v1:sha256:5ba69072d9cf35e41701a94dee55031fc784fcf0690a194d05e31ff8496759c7:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2YzEwMzRlYzgzOWI1ZjkwZjg5ZDM1MTc0N2IwYmI0ODk5MmJjZjk5MTA5MDVlNjhiNjg2OTI0NjY2ZTQ4N2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxYmU3MjU0Mjg5ODNlNzcyODE2NTAxZDkwZmJmODU5NmJhMDZhNzA3YmQxZGU3ZWQ4NmI0YjI1ZmFjZjAzYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlMGRiODUyMTYwMzM1NWI3NzZkMDQ1ZmVhM2QxNzhiOTIwOWRlOWE3Y2ZkMTI5NDI3ZGI3MTNhZDgxNmMxYWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb5e5691ed3f491da057313bffa8fdfc",
+      "statement": "The session inbox is a lineage-aware read model with categories needs_attention/in_progress/finished: a recursive CTE groups each root session with its descendant sessions into SessionInboxItem, ranked by the lineage's latest activity, with cursors keyed on (latest_updated_at, root_session_id).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-inbox-store.ts#L53-L110",
+          "version": "repo-lines-v1:sha256:f26b1b2c373099f7a8038a53543a2414811659eed99bb65bf0e0be77635e5c46:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NDc3ZWU1OTVhYmQ2NjM1NzJmNDY5ZTMzOGQ3Y2NlMmM1ZDQ5YWMwZDAxMzI1OWMxZTNmY2FiNWNhMTZmYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4MmM4ZDlhZDgzNWY1OTFkMTI0Y2ZjM2ZjNDFlNGYyNjA5MmQ5YTY2ZTVlZGJjMzc1MzYyNjkyYmZjMjEyNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0OGNjOWE1YjRiZjQxNTc1ZTUzZTMyODU1MDhlYTEzMzQ2M2NkODc4ZjI5OTUzNjQ3ZThjYzU1MmRkMzRiMzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_011c60615c864aefb2780fe6d38c18dd",
+      "statement": "Per-user read state is derived from the D1 sessions.latest_terminal_message_id column against session_read_states rows, so the unread badge works off the index mirror; the DO records the latest terminal message monotonic-guarded via recordLatestTerminalMessage.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L625-L657",
+          "version": "repo-lines-v1:sha256:c28d8dd661a73eba5e5d3198e85e7ef7f33ca0771c106e8476f43d24a419f772:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1OWFlYjcwYWIwNDViNmM0M2Y2ZWUxMTE2OWFkYjg0NzY4MmQ1MjAwMWQ4Y2MzMTExYzAxY2QxNDgyMzY0ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYjUwNmQ2ZDkxYmRiZTVkZjlkZTk3MDFlYjA4NTZjYWY2ZGVhYzNhNmY2YmJlMDQ5YjMzOTA5ZDRhNjlhYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1MDhmYTA1NWIxMmEzZDZmNTkzM2Q0MzNjYzViNmJhMWQ4NTNiNTIwNGUyMzg1NzdkNTQ1NzkwMzY1OGQxM2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2YjU4M2YxZjQzN2MzZjliNzA0NTQ0NzE1ODczY2UyOWNhNDc1MzMwNTZkYTc0NzNkMmNlZjBjN2ZmODY1Y2UifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L665-L730",
+          "version": "repo-lines-v1:sha256:09fe301737416ce3274ad031eedc703b959f728b5d111c4ca9e3e32c87eae0f6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzMzkyMmQxNjE4MTMzNDhlMzAxNzZmN2ExMmJlM2QyYzgzMjJiYzRjODU0YzBjYjMxNTYyNTdmZjVmYzQ5NzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3OWYwMGFiYjA1ZTVlZjBhZmI5ODUyN2Y4MWI3Mzk1NzJhNjRmNzFjNDg0ODNjYWM1N2E4MzA5OTBkNGU2MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3MzM4MzdjMmVlYTBkMjIxNzZkMmZkMmVjMDY2NzQ3YmY2NTc1MGQ3NTRiODdiYTE5N2Q4Y2U5ZGFjZGY3MGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e255ba60841b465c99d415bb332feb1b",
+      "statement": "Environment-launched sessions snapshot the environment's members at creation (resolveEnvironmentTarget feeds resolveSessionRepositories) and record sessions.environment_id as provenance, which is FK-less and benignly dangling after the environment is deleted; session-target secrets then come from global + environment only, never member repos.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-create.ts#L87-L98",
+          "version": "repo-lines-v1:sha256:ba2fa91a193bb23ebb9026a3c431fbddebb86487f5303bf1aefb08b17acf8759:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMmE4NTJlYTcwOTg1NDgxNTExMTY2ZDQ5NzllYTk1YWM2MGQyNjY5YzZkNDJlMjlkNjUyZTBiNDllZjgzMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1Y2Y5MWYyYzY0ZDRlN2I2ZDI4NDNjYzc5MTc3NjZlYzkyOWRhNzRmMzA3OGM2ZmI1MTM3ZjYzZDBmZmMxZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhMTQxNGZlMDdhYjAzM2Q3ODkwZjdkYzJiY2JmYmI5ZWZiNWY1NjliNDU1ZWQwMjI4NWNjN2NkYzIwZGNkN2QifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-target-secrets.ts#L65-L81",
+          "version": "repo-lines-v1:sha256:3a99abd65d047a02461172403da5b9f8cfbafbaf7651cb58f0df1abd361aa59e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmOGEyOTk1ODFlYjVkYWI4NWVhNTkzYTQzZDVlZjg2NzJhNjBiZDdkMzYxZTVjYjcxMGJkZjEwZjE5OTg0NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyYzI1NjMxOTNjZWViODM5MWZmNjI1YTExZmU3OGNjZTdlNThmMzhiN2ZkZWZkYWJmOWI4YzgyYjRiNmZlZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMDA0YjAzMGIzNGZhYWQ1OWY2MDAzZjg5MmJhYmQ0NzA1NjEwNjYxNTc4M2ZlYmEzMTk3OTI2MjRkYjZlNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhMGUyNDU2YzMwYzJjYzlmNzM2ZDQxOTY3OTY1NzU3YjFhMmVhNzU4ZTMzZDYxNjAyMThkMWVjZDc5ZmJlNTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_52a9068fc6674d41bbba257a7af1d799",
+      "statement": "Session repository lists are resolved all-or-nothing against the SCM provider (resolveSessionRepositories): a session boots one sandbox for the whole set, so a single unresolvable member fails the create, naming every failing repository and raising 400 for clean no-access or 500 for provider errors.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/repos/resolve.ts#L58-L72",
+          "version": "repo-lines-v1:sha256:b4912f6ac95f73bff01a9db58ef8912f88ddb2e56b91e97f95b4511987d08202:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2NmMwNTIzNDE3OGNiYmY5YTI5NTdiYjM3ZjNmMzIwNDIyOGE3NmFjYjM4MmM1NDVhOGI0ZWY4Y2IxNTM1YjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTBmMjg5MDI3OWFmMjcxZGY3ODZlMmYxMjkyYmRlMWIzYzc3MGYxNWEwZDE0YTc3YzI4MjZhYTAxMzk3MDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjNmI1OGM2NGM1MWJmZmZiOGRlZDA5M2U3MjNkZGI3NjQwYTc4OTNmODRiYjliMTUzOTMxMDgzYWFhOWY4MzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8726b50e4aa94790a5b6bd2143bd24cb",
+      "statement": "Session identity is read through the scalar mirror with a synthesized one-entry member list for pre-multi-repo sessions: buildSessionRepositories returns the stored session_repositories rows in position order, or a one-entry list built from the scalar columns when no rows exist; per-repo git state (branch_name, base_sha, current_sha) is written by push handling onto the member rows.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/repository-target.ts#L45-L72",
+          "version": "repo-lines-v1:sha256:4bffd500163e7d3c0c7e05580026e721e31aff59f37deeb265a444a642ed9f64:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlNWJlZjc1ZThhNjg4OTBhNmRjMTA2MzNjNzgyOWJjODgwZTQ0NWYwYzU4ODVjNGM4MTU1ZWY4YTQ3ODJiYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlOTcxMTVlNDliZDNhNDc2OTY0NDI5ZTcyYTBjMDY2Zjk1MmYwYTAzNzljYTU5OWExZWIwMDU1YTAzMjljYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjYzkxYjdmNzRlZDhiY2I4NDRkM2EyN2ZmZThlMWI0YTFhY2VhYjczNTRhZTQ4MDg4YWZjYmI3YjU0Y2Y3NDUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-core-repository.ts#L188-L199",
+          "version": "repo-lines-v1:sha256:f5f4528f9ac729b9f6c6889fa487125e0eabbd1de3dfa35c992552c14687d267:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ZTM0NzQyYTE5YmEwYjMwMDFjMmI2YmMxZjJiMGFkODA4OWE2MTJlYTYyYWU2MDI3NDU1YmU0YzE2YTZhYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNjFjZjNkZGI5ZDMzOTc0ZmM4YjUzZmViMTUyZWE4MGUzZDQ3NzFkZjRiN2Y1Y2Q3ZTU5OWFhNjk5N2Y4YWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjZWQyZDgxNmYzZjQ0ODRkNTBlMTkxMjNjYmM2YjY0Y2Y2MDNmNzM4NTc2OGVkOTE4YmI3YmFhOThlODMyMmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_359ea0fb3c394a0084b51374be27a179",
+      "statement": "A session is addressed publicly by its session_name when it has one, else its row id, else the Durable Object id; the latched resolver freezes on the first row-backed id because session_name is immutable after init.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/public-session-id.ts#L11-L40",
+          "version": "repo-lines-v1:sha256:ad8712223b87e19a1913c7bafcdd5783781f62539c5f7bb6f1c21b5c04b6926e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzMmJlNDY1Y2Q1MzNjZmZjMzU4YzVlN2M5OTE0Y2E2ZDMyYWQ1YmVkMGY3OGI1NzFiOTNkMjg5YjZkODA5MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5OWEwZjZmZTg5YThlNDhmMTgzYmY3MTU4NDA3MTMwZWZmNWMzOGU5ODc5MzQzZDA1M2RlODdlZWNhZjY5M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee88c44b1145423192e7eec08ed533f2",
+      "statement": "All internal DO routes (init, state, prompt, stop, archive, expire-draft, spawn-context, child-session-update, etc.) are constants in SessionInternalPaths imported by both the router-side runtime client and the DO route table, so the two sides cannot drift on path strings.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/contracts.ts#L15-L57",
+          "version": "repo-lines-v1:sha256:e05a98f52083a245a966c91cba648907a8856f02bcba8d6273094b3870ebad13:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2N2JiYjlmNmEzZGVkNjAzODkzZDExZWFhOTdhMDBiMzcwYzIzMzU4NTIyZDg3NTIyYTg4MjkwODc2MGM1MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NGVlOGE4ZDFhYTg0NTM5MWJjNjc5ZWI3MGNlN2Y0NmEzY2Q2ZmIyZDE2ZmNjYTY3ZmExNzhmNGY4YzFlMGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ODNkMjI1MTg2ZjFhZTA5ZWM1NDRlZGJiNTEwOGI4YWQ0NGU1MzI2NzE4ZDVmYjQ5MGFhZmI0ODNkMTE1ZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmZjVmOTU0ODhkOWVlN2U0YzliNjlkMTI2Nzk3Mjc0YmVjOWNkYTg5Y2M4MGI3OWZjODIwNzQ3ZjlhNTRiMGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a5cf790ab7047bd933b15e335e39489",
+      "statement": "Per-session feature flags (code_server_enabled, vnc_enabled) and the sandbox_settings JSON blob are resolved at creation from the primary member plus environment overrides and persisted on the session row; D1 mirrors total_cost, active_duration_ms (sum over completed messages), message_count, and pr_count via updateMetrics.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L780-L797",
+          "version": "repo-lines-v1:sha256:b650483bd928d58931563d88f50e1c59b1f6a56d48ebc434e77f3481a3a55037:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhOGJmOTFhNTE4YjgyNjY2NjAwZDQ1MDQ4NWY5ZjA1ZGVjYWFiNDkxN2M5Y2ZkMTc4ZDU5OWYxZTIwYzAzNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZWM4NWNmYzgwN2RmNjc1MGU5NDBkN2I5NmMwMzMxYmM0YTJlOGIxZjY3MzQ4YjQ1MDhjYzRjMjRiMGU3NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDI5Y2ZiMDYzNTQzODBlMjgxZTdjNWFkNTdiYTBlMjA4ZDhhZDQ1ZDQ4MTA0N2MzNDdlMjc0YTE1ZjM0Y2UifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L70-L73",
+          "version": "repo-lines-v1:sha256:ab89a7d242aa4e0714c3bdaf8dee0d1d1dbab3bbf20f3084d3d0892f8308e5ee:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTkwYjFjMDRkNDZlZGE3MDQ0ZDQzY2ZhNmNhNTA0ZTNkNDMzNmRjOTg3OGNmYjRlNGE3NzQzZGZmMTQzMDlhNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI4MWFiNTIxN2I3NDZhN2FmOWI3YmJiN2IwZDg1MzQ4MmZkOTNjMzAyNWU3MjEwOGE5ZTA0NjMxZDEwYWUxNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjVmNTdjYWFmMTNlMDQ1ZTVhMjlkMzgyN2IxNWYwNDU3MWQxYWIzMTMyNTFlMWU0YWJjOTgyMmYzNWM1NjkwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODVkOTRlZTY1YjU3MzBjNTk1NzA4ZDViZjYyZGNkZTliNjYyNmYxMzkzYzI4ZmRlZTI1M2Y2N2RhYjg4NDQ5NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T05:37:27.905Z"
+  }
+}

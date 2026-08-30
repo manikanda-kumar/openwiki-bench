@@ -1,0 +1,466 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8cc84b6240492e9efe419609f30a217e6473adcb5b4d652f1822b7be271536f1",
+  "claims": [
+    {
+      "id": "claim_49ddadb4c77c4d1a8f2d695c1f297deb",
+      "statement": "The slack-bot is a Cloudflare Worker whose default export wires a Hono fetch handler (health, events, interactions, callbacks, and internal thread-context routes) and a queue consumer: `queue` runs consumeSlackCompletions over SLACK_COMPLETION_QUEUE so completion replies are delivered asynchronously rather than in the callback response.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/app.ts",
+          "version": "repo-file-v1:sha256:ab94ec87531d386cbd4b99c6e2fa7b889a52900e1788e2e409ddedf4224768a8"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/completion/consumer.ts#L8-L36",
+          "version": "repo-lines-v1:sha256:5c647d76689db9d61858eddd81e2024fd3617bc2d4e4ba771a74b7943d29fd7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNjNmMDVlMDk2ZmQ3NWY4ZjVkNzg4NTEzYTMyOGNlYmY4N2UwZTQ3NTI4M2UxOTFmZGYwMjY1N2JlOWE2MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNjY4OWVmMDZiMjFlY2JjY2ViOGI4ZTg2ZDlmZjU1MWQzZTMyMzZmOTIwODgyYzEwZDljMzA2YTQ2OWIzMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/index.ts",
+          "version": "repo-file-v1:sha256:e0b1aa08ba3b5d49549c78aed7b41b1a47a691f6ca6553a49de8f4bbb3d4075e"
+        }
+      ]
+    },
+    {
+      "id": "claim_e2b2d19b9b5e4ae9bc7bc4a198266e3c",
+      "statement": "POST /events verifies the Slack signature (5-minute replay window), parses the payload against slackEventPayloadSchema, answers url_verification, dedupes Slack retries for one hour under KV key `event:<event_id>` (best-effort: a dedupe KV failure logs `process_without_deduplication` and processes anyway rather than 500-ing the original delivery), then runs the handler inside waitUntil and acks { ok: true } immediately.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/routes/events.ts#L13-L87",
+          "version": "repo-lines-v1:sha256:a579cba89e462b0a82cc747a925d6b993fbcd86e40f0861448e2e6dabe398b58:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OGI3N2FiMDdiYWM2NmU2MmQzZjFhNWZmNzFkMTcyNWZmYzg0ZjAzYTNlZDFkZjg1MDNiMGRhMDc2ZmU4OWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhMTk5NjIxZjcyNTcwMjk1YzRhY2EwYmEzNzQ3NjE4NGY1YjAzZTcxNjgzYWQ2MjNhMjFjM2ZmYTI0NDU4OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MjcyMDJiYmM3NzY4N2Y1ZjE4NTU5YmZkMmFhN2M0MzFhYmM0MDhhYWYzMWJmMmU0M2UzODhlYjFjMDE3ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_156b0f2dce5e443cb0a6bb8b956c8bd4",
+      "statement": "Slack event dispatch ignores bot-authored events, republishes App Home on app_home_opened (home tab), routes DM-dispatchable messages to handleDirectMessage, app_mention to handleAppMention (which strips the mention and recovers files/attachments from conversation history when the event omits them), and every other message event to handleChannelTrigger for watched-channel automations.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/events/dispatcher.ts#L15-L67",
+          "version": "repo-lines-v1:sha256:c4a8b2fefa9bec02e83c3aabe8bda9fafe5f159ec8740929e706de02d94337fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzA0MWVmZTNlN2FmOTc3NDliYzZkZmI2MzBiYmJjZGVlNGY0MjE4M2ViOGY3Yzk2ZTBiMWVhNzhmMTkwMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliOTAyYjljMTI2ZDY2MjRlMzRkMmViZGMyNDQwNWEwNjRhODg2YTcxNzFiOGFlYjEyNzI3MThiNDk3ZTJjYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/events/message-handler.ts#L348-L471",
+          "version": "repo-lines-v1:sha256:327564d63c3647126755a3c44aae3cca306c75cbcfd09d82f8221f1f172b0aa2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2ZjkzNGE4NTg4MmZmMDgwYmVmOGU1MGUwYTcwYjdmZmMzOTFmMDNmNTYyZTE0NWMxN2M0MjBhNDI5Y2VkMjgwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4ZjRlMzliZjQ4MDI1YzRmYjIzZDliOTA5ODgzNzIzMWM3OGJjYjIyN2M0ZGRkMjMxZmUwYTRhYWE4MjIxOGRjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb9c1f4d870d44dd95bf05568f38810e",
+      "statement": "isDmDispatchable accepts message events in im channels including the file_share subtype with no text when files or attachments are present; isChannelTriggerCandidate structurally pre-filters channel/group messages, dropping bot-authored messages and any message that @mentions the bot so a mention is never double-handled by the DM/mention and automation paths.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/dm-utils.ts#L20-L96",
+          "version": "repo-lines-v1:sha256:c5efecac3de03bef2c91bef1e24f54349d882383cac03ad7c73c653aa3796a92:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkOTc1M2E5ZjVkNDIwMjA4ZjU3ZWExMDAyZjg2YmUyNDU1ODljYmJmNjA5Y2E5ZTU3ZDAwODVmMDNiMGIyMjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwNjAwM2FkOGExNTE4MDQ0OGY4MWQ4YWIwNWI1YzdlMGExZGMyZTQwZWFmNThkYTZhYmNiMmU4MDQ5ZWU1ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f7b70ada5cc5444a88bf28bdcd533d04",
+      "statement": "POST /interactions verifies the Slack signature, parses the form-encoded payload JSON, and answers block_suggestion requests synchronously (target clarification picker via getTargetClarificationOptions, App Home repo-branch suggestions via the App Home route) while other block_actions are scheduled in waitUntil and the route acks { ok: true }; App Home interactions are routed through handleAppHomeInteractionRoute first and may run inline or backgrounded per action.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/routes/interactions.ts#L17-L111",
+          "version": "repo-lines-v1:sha256:79497be6ef7fa82d85b37042e8ce7b4519fecd3b70cad64a076bd2149839ade4:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NjMxNjc2OTFiMjE0MWM4ZGI3YWNhNDc3ZDNjZmY1MDEwYjRmZDcwOGI2NTY3YmIxMDhlODVmZWFhMGYzODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhMTk5NjIxZjcyNTcwMjk1YzRhY2EwYmEzNzQ3NjE4NGY1YjAzZTcxNjgzYWQ2MjNhMjFjM2ZmYTI0NDU4OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzYjkyNjQ3YTk5Y2U4ZTIwNzU4ZjMxZDAxNjg1NWJiYzY2MzY5M2JiYjNjZWQ5MmRhM2NlMTVjNzczZTViMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9de5c76c76224e2faa401216581a85c6",
+      "statement": "The target picker and quick-pick buttons share one selection action ID: SELECT_TARGET_ACTION_ID is the stable wire value \"select_repo\" (predating environments), quick-pick buttons mint per-button action_ids `select_repo_quick_pick:<index>` that baseActionId collapses back to the bare constant, and both route into handleTargetSelection.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/interactions/dispatcher.ts#L21-L38",
+          "version": "repo-lines-v1:sha256:caeb665453a3826116bd5acd22c1c3cb155544e36a598df28e11aac93677a8c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1NWQwMzFhOWZkYWUwZDI5ZmY4Nzg5MTM4Y2ZhMzhiNmE3M2E4Y2VlODBmYTA2ZjVkMDQ1ZDNhNGRkMTRmOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjYmZlZTg0NmUyMDdkNjU4ZGY2YjI4MDJkMzQzOGI1YmIwNDI5MzgxN2E5MDllZWRhMGIwMjRlMzQ3ODRkMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkMTg5N2YxMTYyZjUzYzMwMmU3MmYwYzcyNjdlZDFhZDc4ZGE2YzUwMmI0NmMxM2QwYTc0MDgyOTBmMjg2OTkifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/target-clarification.ts#L37-L60",
+          "version": "repo-lines-v1:sha256:16b2ed3e46e1e01f396006e020040580c9303f36f6891df5525c92aa0019ff7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyOGFhOThhN2FmNGRkYWQ5OTg3ZjBmNGQ1NmQxNTFlZDNiMDhjNDQ0NjkxOGY5MTcwYTU1NDY2OWFiMDUxYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyMjVjOTc3MWI4MDllYWNmNGNhMjI5YjIzNGEwZDBjZjdlOTBkZDg3OTQxNWQzNTdmOWIxMDRlMmQzZGZjNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1ZjU2YjJmODRjMGZiZmU4YzlmOGE5NzY0ZWJiYmU3OWVhZGZlNDYzOWJmZTlmY2M0YjViODU5ZDBlMmE3YmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_761ee914dc964fc8b4dbb70e8472d7fe",
+      "statement": "The target clarification message posts the classifier's reasoning, up to MAX_TARGET_QUICK_PICKS (5) one-click buttons for ranked alternatives (disambiguated with fullName or an environment tag when two targets share a display name), and a picker over every available target — static_select when the total fits under 100 options, external_select with min_query_length 0 otherwise.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/target-clarification.ts#L238-L321",
+          "version": "repo-lines-v1:sha256:4292a599a7ad4b05df6fc9c488eec8f0b9c8f7b7c2fb23f5eda02cfc2d9aa175:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMzY0M2IxNThhNzk2YjNjOWQ4ZDQ2ZTI5ZTQwMWRjZDA4NmIwZWE4Mjc3NmU2ZDMyZTgxNjJhNjA4Y2E5MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2MWIzYWJlMjQ4NGUwNjgwZGRiYTYwNTI5MjRjYTZjYzBmMWVjMGQ1M2MxM2VmODBiNGEyMzZmMTgyZTdlMWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f86668a43df4fc28755d0596e979ef0",
+      "statement": "Clarification and App Home repo suggestions are capped at MAX_REPO_SUGGESTION_OPTIONS (100, Slack's per-response ceiling) and filtered by filterReposByQuery — case-insensitive full-name substring, returning all repos for an empty query; the clarification picker returns the full list (replacing the old 5-item cap) and groups Environments then Repositories when environments exist.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/app-home/constants.ts#L1-L6",
+          "version": "repo-lines-v1:sha256:7b29e46c6d38a61db559e0eebdc1cd5509c64db18ff61c35eda7f8fa9fd088ca:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGIwODNlNmM0NTRmYTk2NDdkNjcyMjVkMTY4NTEzZTY4MjM1MjhiMGIzODMxZGUwMmRiN2ZiZTM2MWUxMThlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTU4YjM1ZTJhMGQ1NThiYzE4NDg5NGM1ZjFkZjYyNWQ4OGQwOTA2Njc4OGViMjZhNzMzZTdlMWY1MjA0ZWU5MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDI4NjI4YTA0ZmJiNzdjZmJiOTY1M2QzZDY1ZDYxYTYzMmZiY2JmMzVhNzZjOGIwNmFjOGZkODhjMzc5NjRiYiJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/repos.ts#L314-L320",
+          "version": "repo-lines-v1:sha256:ca4e8a1fe7824abf82474242e4e97c3da40568cc1726034a1d7be808b697d17f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGI2NDI1Y2Y3YTQzOWY2NDEzNDZkNjNmZWNiYTQ1ZDQ1NDE0MTNkZWVmZjI4NDU3MWE1MDdiN2ZmZDk0YzA5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTUzZTY5OTc2ZTlkMzc5MWZhZDU1NWIxNmM0MmU1ZDQzZGVhZDRlM2VlNDdlMjIzZWMxZTE3N2UyNTQzMjFlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTk2ODc4NjBkYzZhNTM1NjE2OTc5YzU4NDVlMTMyMmNkYzVkM2YxZDUwNjM4ZmY3NmU5YTM0ZDk3MjU1N2RjNyJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/target-clarification.ts#L172-L187",
+          "version": "repo-lines-v1:sha256:41af3a422690e8ddcaea10a2072b038cf86afdddb6663aecd8cd7b4b22d98a6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlOGIxN2RmNDgwYjc0ODE1Y2MyMTU2NzAzYTZiNDIwM2Y0ZTBhMTE1MWVkNzljMjM0NjIxYjFhY2M3YjYyMzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3ZmJlMzA2NjJhZWRmMDliNDcyNTNiMmNhOWEzMjIzOTY4Y2M0ZjQ0YmI0ZDZlZmNlNTk3MGFlMDIwYWQ1NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1MmMwM2Y5NTk5YThmNjA5YzlhYTZkYjc0MmYyYjEyM2Q2YmFhYzdhNTQwNDY0YWVkNDEwZjU0ZjAwZTkzZTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4727c00cc31f49e38e5ab5d4d898eb6d",
+      "statement": "When the classifier asks for clarification, the original request is persisted in KV under `pending:<channel>:<threadKey>` with a 1-hour TTL, storing message text, userId, thread context, and only the source-message locator ({ ts, threadTs }) for images; on selection handleTargetSelection re-resolves the target against the live lists, re-fetches images from Slack, and deletes the pending request after a successful launch — an expired request gets \"couldn't find your original request\" and a stale target gets \"no longer available\".",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/interactions/target-selection.ts#L25-L143",
+          "version": "repo-lines-v1:sha256:5c3aa6327a2a68257a437b239997e3b4cbe5c98450052b8afda00ccfdc3e307b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5MGM5MTI3MGY3ZTcxOTNlMzQ2Zjg5NzQwNTRhZjQ1Y2I5OTc2Njc2ZjYwZDQ4MDk1YTJhYjgyMTM5NDRiOTM1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5MjBiNzI2MGNkMzIxNzkwOWIzNWNiZjhmN2M0YzNhMGM1NjZjMDU4M2Q3YTEzMjZhMDZlZTU2NmFmNTQ2MDk3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/pending-requests/pending-request-store.ts#L5-L72",
+          "version": "repo-lines-v1:sha256:88234be7490691074d0d123bb5a791763d08c476d3079badc208f64ac4968e14:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzZmU1M2U3NTYyMWQ5ZGQ3ZjYzMWMxZTJiMjIwOTMyN2U0ODhmNWVlMDM2NGUxMWM4MTYxYjZkNDhkOTRhYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljZWZjZjJmYjU4MTFiMmM2NDcyNTAwOTYyNWRjMTU2YTY2N2QwYjk0YWRjOTgxMDNjN2M3NmZmOGYxOTdhMjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5MmE1YjY0MDYyZmEzNGE1NDVhMmIwNzQ0NTY5NTYyZDRkZjg2YWEyYjhkMzk5NTY4ZTg1MjM3OTU0NTg5YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_df8750ffffe5475d84805b2d0f4682c8",
+      "statement": "RepoClassifier.classify runs strict stages over one TargetCatalog: deterministic routing rules first (single match → high-confidence result; several distinct → clarification; unmatched → fall through), then channel associations (exactly one target → high-confidence; several targets including an environment → clarification; several repos only → fall through), then a single-repo shortcut when exactly one repo and zero environments exist, and finally LLM classification; an empty catalog short-circuits to clarification with \"no repositories or environments are currently available\".",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/index.ts#L339-L461",
+          "version": "repo-lines-v1:sha256:ea3079da9f7bc7e3fd135fb54aa58eb5578a063fca5750f56dc6e3857408e454:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiYTFiMzMzN2Y4YmFlYTU3OTJkYmU0Mjk0NzFiMDIyMDZjYmVhZTljYWFkYThkZDA4N2Q1YzNkMWZhZmVjNWVjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5YzdkZjk2ODRkMDU0ZDZhODhhODQ2NDRmODRjYWRjNWViNGI2NTQ1OThkMjdjMTEzMzNjNTNhZjZmMmNjM2U1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzNzkyOWU5MWUwZjk5YzNlODI1ZGU2OWI0MzVmYjY0ODRkMWIwYTFkZjJmNDY1NjFhYmYxYTI5ZjA0MTg4Yjg4In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_d4a678cbde1048d0af24e6956ab9b3e0",
+      "statement": "Routing-rule classification resolves matched keyword rules to launchable targets and skips rules whose target is not in the catalog (revoked repo access, deleted environment), so a rule never routes where the bot cannot launch; rules take precedence over channel associations and the single-repo shortcut so environment-targeted rules stay reachable in one-repo workspaces.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/index.ts#L256-L287",
+          "version": "repo-lines-v1:sha256:73242942d5ee0bd69422024ece0199876974b9ef91d7a320d232e9a8a5c141e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViYWQ0Nzk2YTM1ODQyZjM2MWQxNTlmNGU5NzBkMmQ3ZmRmN2ViN2Q4OTA3ZGJmZjMzMmExM2VhNGZiZmEzNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4YjU1NGQ3NjdlNTRhNTg1MDU0MzMzZTA5OTVmZWM2OTY3NTYxMjQyOTg1NmM1ZWU3MTA2YTNjNzhlMzYwNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNjFiYjAyNDBkYjFlYWU0Njc1MmE2ZDY1ZjMwNTY2N2QxODEwZjgwNWJkMThiNjIyODljN2ZhNDg1YjdlODQifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/routing.ts#L29-L55",
+          "version": "repo-lines-v1:sha256:2ca9d7d0cafc630f2916b066d90b6e30869bcd03ac72370c3f8cc63ad60e8bab:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjYjFjOTJhODM1MzYyMDM4ZWQ3NGM0NjJlYWI5NzU5Yzk2MWM4NTNjYWQxZjJhNDI2Nzc0OGUzZTZiOGZkNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2MjE0YzNkODJiZWU2MmVjZWYzNzJkM2RhMzcwYTQwOGU2NmI3MTBhOTkxMTQ1ZjE0ODk4M2Y2NTQ0ZDNmMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MjRmZmE0ODkzOTUwZDhiZDA5ZTE0MGM3ZGU3OWYxYzk5ZDhjM2QyYTdkN2NhNDlhY2Y4ZDJlNjc4ZTE4MzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a7bb982f91824f6882be2dcea3ea0d31",
+      "statement": "Channel-association classification resolves environments first then repos from the catalog; the association stage returns clarification when the channel maps to several targets including an environment because channel associations are not part of the LLM prompt signal, so a multi-target set with an environment is resolved deterministically rather than risked on the model.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/index.ts#L300-L334",
+          "version": "repo-lines-v1:sha256:6311c1e775552e294f1ca78b29de4cece0d85548c7b748b9cef15344e8c0db78:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlOThmMzU5NWQ2MGE0ZDM2MDRmZWFlZDdhNjU0OWYzNWVmY2YwMjJhMjQyNTE3OGIxMjllN2M3NDRlYjVlNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjMmZmNzdlNTU5ZjI4YjkxYmEyOWZhNThhZDc5ZGU4MDFlNzQ3NjkxZDg5ZjgwZjE5YTgyOTEzZTE0MTI1YmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2NzRlYTAwODJhZjRkYzhhZTAyMGY3YjllY2M2MTc5MzU4MDU3ZTc0ZTgxMDY0YjZkZGYzYzc2N2EyNjU4NGYifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/routing.ts#L62-L74",
+          "version": "repo-lines-v1:sha256:1c13fa00aee5e5688044a94e81530a72a21336f856a02eaa725189249639feca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5MGE2NGQ5NTdkMDZiNDhkNmQ0OGMyOWFkOTYwNGQ0YWI2ZmFjNzVhODRkYWMzNmI0NDRjNzIyZTMzMDFmOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5MDYxOTUyNTgzMjViNGJhMmM0ZDU1MWFhYTI5ODk4NWJjNDQ0YjRmZWE4MTdlMzY2ZWFlYzczOWNhMDA2ZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNjdhNmFlNzUxZGM4NzdhOTY3ZjQ2ZjJhYTVjNmE2Yzk0ZjQ2OGMzNTRkMTFiNTk4MTFkNWIwODY1NDAxM2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c6fe23fb92cd42569c6e6b523761d071",
+      "statement": "LLM classification uses the classify_target tool (targetId, confidence, reasoning, alternatives): Anthropic via forced tool use with an AbortSignal timeout, OpenAI via strict JSON-schema structured output driven from the same tool schema; needsClarification is true when no target, low confidence, or medium confidence with alternatives, and any failure — timeout, unbound provider key, unrecognized model prefix, invalid structured output — degrades to the picker with a \"could not classify\" message instead of failing the request.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/index.ts#L191-L245",
+          "version": "repo-lines-v1:sha256:85020f9836cf55ae1af54a8dd039989f9fc1ab123798b7ebbf68e21b2b09e1c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NzM5NTkxZjY2NmJiNThhYTQ1MzU0Njc3ZWI5MmE4N2FkZjJkYTdiMjYzNGUzODdiMGQ0N2ZlYjQyZWU4ZWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhM2MxMGNmMjRhM2U1MTY2MDViOGRjN2EyZDIwN2QxNmE5OWI5OWY1MTg2MTM0MDI0ZTFiNjQwNWRmYmQ3OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxMzM1Y2NmOGM5MTg1MTRhOTUwYzhjOWQwYTcxNjcxMjU4ZGQ3YWIwMzI0NDExYThlZmNjNzIyZmI5NTJjNzcifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/index.ts#L414-L460",
+          "version": "repo-lines-v1:sha256:42921b34a97079b53922b6d4e8c526c0e0eff62fa54d541d0410c886414b5f02:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMDhmMmQ1MmFkZGRjZDFjMmU5NjY2YzNiYzUzOTBjYTYwN2Q2OGY5ZDU2YWJmOWE4ZGY5MmJjNDk0ZjIwNmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMTUyN2YzNzMxYjZiNzhjMTVhMDQwZmU4OTc2N2VmMWRkNjgyMTkyMDQ4M2IwZTEzNWE4M2MwYzQyMDJlMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b8190a599b74491a021a9f83d37c30b",
+      "statement": "matchTargetId resolves LLM-returned ids deterministically against the catalog: an env_… id can only be an environment, otherwise repositories match on id/fullName first (the pre-environment behavior) and then environments by unique case-insensitive name, so a model that echoes an environment's name instead of its id still resolves.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/routing.ts#L84-L98",
+          "version": "repo-lines-v1:sha256:5b791f0d64a99a5374fd39d2b089862f03a2ac22d1b890a8facec9662fe0d1a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZDFmNTRlZjFmYTNmNjYzNjEzNDFkMmYwY2NiZGRjOTdlYTczMTBkYTA3Yzc5OWI2Mzk4YmIyYmIyYjQ1YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYTc4ZDBmOWY4YjNmMjczODk3YWRlNGVjZmU3ZWYzMWZmZDE0Nzk0ZjA1NjA5N2ZmNDM5YjUyZDViMTJmNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_99df82e7734b48bd8471848e2412ed09",
+      "statement": "The target catalog is fetched once per classification with repos and environments concurrently; environments fail open to an empty list so an environments outage degrades the catalog — and with it classification — to repository-only, while environments launched by id stay reachable when the repo fetch degrades to empty.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/catalog.ts#L24-L29",
+          "version": "repo-lines-v1:sha256:e4969616ff54831374cff7a67bef91cc56bc703a27a876dbe0a1435410de07ca:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ4YWJkMDFkMzJiOTMyMWZkMzcyNjQxMjgxOTE2OTQ2YmM1NWFlZjQzMzE1ZDcwNDM4MjliYjYwMzA0NDJiMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzU1ZTZiYmJiMTNmNzBlZmExODEwNDkyMzJjMTEzNjIxYmI3Zjg0YzQ2ODhiYWNkODFiMzVmODZkODI3MmMwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2U2MDdkOWJiNDdiY2QzMDI0YTUwNjM1OTI4NGZhNGI2YmQ1MmMwZTQyY2QzMjRmYTBiMWZmYWMxNzhhNjUyNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_76765bedd21c4cd287118b1beee9cc20",
+      "statement": "Repo catalog reads are cached in-memory (60-second TTL) then KV last-known-good (300 seconds), and the control-plane fetch on the classification path is bounded by REPOS_FETCH_TIMEOUT_MS (5 s) because the fetch sits on the critical path of every mention inside waitUntil: an unbounded cold control-plane cache could consume the whole background-task budget and drop the request after the \"Working on...\" ack but before a session exists.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/control-plane.ts#L14-L21",
+          "version": "repo-lines-v1:sha256:1fb232f670699373b2b92b484bb5020f4a3f8818c6577e808a99757b5fe0101c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmUyMjY1Zjk4OGQ1ZWQ3OGE4MzZjYTRlNTRjMDYwY2M1NGJhMmMzMTdmMjAyZDg2MTZlYTQzNjAxMzJjNTI2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDIwMTg5NTFkMGNlNDMwMDEzYzg2NTkyOTY0MTg1NzRmMjkwMWMyYTJiMmU1MDVjYmExOTM1OTVlNTY5MTE5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGYzNDQzMTMxMjU1NDU3MDg5NjE4ODQ5MDQ3Y2E5MWQyOTNlNWFiYmI0MTgxYTA5YjFmNWI0NDAzMTk0OGZhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjgwNWRhZTMxYWI3MDlmMzg1NzYzYzAyMzg0OTg0Yzg3Y2JjMTNiNjU5ZWExNDJjNDMzZmEyNjhjZjZmOThjYiJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/repos.ts#L107-L204",
+          "version": "repo-lines-v1:sha256:6fcb87e9f2515c0aa967ceea3a0511cfcc875b3d152b95252229296d17b1ee71:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhZGQ2NTlhNGZkOTQ0NmU5MDFhODViZjljNTllNGY3ZjUxZGNlMjgzNjNhMjAzYzBhMDk5MGUzMDc3YjFkZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjMzJiYTA0OTZkYmU3YzAxMjJiOWZmZGNiMDJiODJjNDZjN2ZiY2JkYjNlZDA0Y2EwYjA2MjkzYWI1YWRmMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxOGVmODM4ZmYzMzFhY2M3NmViZmZjNThmOTlhYjE0ZjZjZWZiY2MzN2NlNzI2MzAzODM5NWMyOWRiZmIzZmYifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/repos.ts#L53-L54",
+          "version": "repo-lines-v1:sha256:645caa449294dfa83ae1b6edad1ae91a063b74b3cb0ecbd7adecd091b8efc77b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRlMmEyYjlkNTU5OGExZjY2MjY5Mjk4MTAzNzM3ZjhjMWU0Mzg0YTQ1OTg5ZDg1ODg3MWMzYTM5ZGRhNDY1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjFhN2RiYjZhYTcxZjczM2Q2MDMxOWJiYWY5ODkzNTkxZDBhZDJkMGY3MmJhZmQ2YTVmYmVmYTQ5OWJkY2FjYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTY3NjQyZTA0MzQxYWM1YjY4MjRkNDczZGU0MzExZDM4Y2NhMWRiYWRiNmY5NzY5MmFkNTVhNjQ5Y2FlZDMwYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8819f1ff53f04944a7de18be456059f8",
+      "statement": "The watched-channels list used to pre-filter ambient channel messages is KV-backed with no in-memory tier and fails closed to an empty set, so a watch-list outage pauses triggers rather than forwarding every channel message to the control plane.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/classifier/repos.ts#L245-L307",
+          "version": "repo-lines-v1:sha256:59cce41f85c3fb4f35315b9b77138afbae98935caf145dfba2151b4e3b18b9af:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNjAyM2I4YjViMDU5MGNjNzI4ZTI4ZmM4MGU2ZGE1ZWEwYjg1MzY4ZGMyNmFjMjdiNjk3YjY5YTgxOGU3OTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3NWM4MmU5MjgyNjM3MWE4ZmUxNWU3NzBjMzA4ZTE5OGUxMmMwYzc4MzVlOTY4MDBmMDBjY2NjNmIwZWQ1ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI1ZmQ3MDM1ZDZmYTkwNGRiZmQ2MWYwYWEyYjJjMzI2NWUwZWQ3MDJjNGU5NTc4N2NlYzkzNTFiNTIyZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3bbb67649e547569aa36792bacd0e59",
+      "statement": "Thread-to-session continuity is a KV mapping `thread:<channel>:<threadTs>` with a 7-day TTL holding sessionId, repoId, repoFullName, model, reasoningEffort, createdAt, and lastPromptTs; advanceLastPromptTs re-reads the mapping and only writes when the new ts is strictly newer so out-of-order concurrent follow-ups never move the checkpoint backwards (a lost KV race only re-includes a few already-forwarded messages), and a stale session (prompt 404) clears the mapping so a dead session is never resurrected.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/sessions/thread-session-store.ts#L8-L105",
+          "version": "repo-lines-v1:sha256:8953370518dc06cce0b052a9403ea21e6c26fd50d26f736465433122d2db9c5f:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYmEwNjAwNmY2ZTM2YmRiMWU4YTcyMzBkMTVlNzY2Zjc1NmEzNDM4ZGYxN2ExMzcxZGQ4ZmFhYzQ0Y2U4NDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMjUxZDc5ZjczMjRjZWZiMWI5OTdhOWNjOWI0NzkzYjBmNDczZTEyY2EzODI2ODAzNzU4YTJiMmY2ODZhNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhZWFhMWJmNzAyMDM2MDM1NTcyNjMwNmZkZTQxMjMyNDQ1M2M5MTQ3ODdiN2E5OWU4OGUzNDlkYmM5NGY2OWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e078b663801d4ce4a044e166a4df6335",
+      "statement": "Follow-up prompts in an existing thread fetch the last 10 relevant thread messages via selectThreadWindow (excluding the current message, excluding bot messages, and only messages strictly after lastPromptTs), render them as \"[speaker]: text\" lines with resolved display names, and advance the checkpoint only when the interim fetch succeeded; a transient prompt failure preserves the mapping with a retry message, while a stale 404 clears it and relaunches the request against full thread history.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/events/message-handler.ts#L141-L340",
+          "version": "repo-lines-v1:sha256:7ebf1e2bfd7b1cdbc51a9ba063151e6257c6e79e4891dfd21a7735e29f3fba2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4YmZlMjU5Y2M3NzIwNGQ4NGNiZGYwNmRhMDNiMTU4MmZkYjU4NmRiOTQzNmZkNGRjM2Y0ZjhjZWIyNjEwOGQ0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNTZlZDMyYjYyYjY2MDlkNWFmZjU1Mzg4N2JkMWQ4M2I1YWQwOGY3MGQ4OWQ2NWMwMTM0ZTBmMTU0ODhhNDZmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkNTVhYmNhMTM3NmY2N2JmMWEwZGUxMjQ1Y2QyMzdlM2E1NTQzMDZjN2JlYTk5NDg4NjhmN2FmNTQ4OWFlMGE4In0"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/events/message-handler.ts#L55-L108",
+          "version": "repo-lines-v1:sha256:7eb6fc1e1350cbcd445bf7f4f8fc3aae1818d0fdc9b501b99b79c3ab48c662b9:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiNzM1MGIzNzYzZjZjNTgzNjU3ZWQ5OGNhMmQyMmU1ZmEzNWVmODExM2U1YjY4MGFhOWY3NDE4OGJlZDhkOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNmIxZGQzY2RjYzFmODY2YzA4ODc3OTUwZTI1MGJlNzg5NDIwNzE0NTc1NDk0OTk2NjRkZWE5MzdmN2JjOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5OWUzZTZlOWQ0MWQ2NDY2MDRlYTRjYWU2NzE2ZDNkZmM0ZjQ4YzE2NTQ4M2FmNGZjZTI2MTYxNGZmYjlkMTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a5d6c61e47154cbf9a6303bb7ab0adeb",
+      "statement": "startSessionAndSendPrompt downloads attached images before creating a session (an image-only request whose images are all lost never creates a session), resolves user preferences with per-repo branch override taking priority over the global branch (environments have no branch preference), creates the session via the control plane, and appends workspace sessionInstructions as an Additional Instructions section to the first prompt; the thread mapping is stored only after prompt delivery succeeds.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/sessions/session-launcher.ts#L41-L153",
+          "version": "repo-lines-v1:sha256:f0b8cdc1434e30f36bf5660b5149c27d5d492d870c22f07d8753cb598a143d73:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiOWE3YWFmZTkxNDhkMDA1OTFhMzBmZTkzNjFiZjE3NjdmMjg1OTE1M2Q1YjI5MDRiZmU0MTkzYmZlMzExOTNkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJjNDNhY2MxMTQ0MDUxYjA3NDVjYTFlNjFjMGU0ZDA3MmRmNTRlMDYxMWVmMGU4NGEyMWJmZmYyZjczNmE5YzU5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkN2M3NzczZjk0M2Q4NTNjNDA3MTg1NDU5MjY2NzIyODY0ZmZmMzU1MDQ4YmY0NWY5OTY0ZTIyZmI2Y2Y1NGI1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac38dba9f81747a8be00bbe55a68f6c3",
+      "statement": "deliverPrompt is the single sequencing point for attachment delivery: prepared images are uploaded first, the prompt is sent with { attachmentId, name } references, and drop notices are posted only once the prompt outcome is known; an image-only request that loses every image sends no prompt (surfacing \"stale\" instead when every upload failed with 404 so the caller retries on a fresh session).",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/sessions/prompt-delivery.ts#L48-L91",
+          "version": "repo-lines-v1:sha256:f4bdeb59bf3cbc34176a27076d0fec770002a86d1281fb2941174ddd73baa9ee:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4ZjlkZTY4ZmQ5Y2NlZTY3OWZiNTIxYmMwYjk0ZGQwZjc4NGE4OWEzMzNiNWM0NWJiYzFhMGQ2ZmY4ZTMxYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNTBhNzM3YWFmNjcxNDE5MTljZjRiNTU2OGJiMWFiZmI1ZDhiNGRmODE3Yjg3MzYzMDNjZGZiOTc1ZmM3NjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f997e3f44cdc4a068552b546f261eee8",
+      "statement": "Session creation and prompt bodies never carry identity fields — actorDisplayName and actorEmail are the only actor data in the body and actorUserId/spawnSource/slackUserId are omitted; identity travels exclusively in the signed actor assertion (X-OpenInspect-Actor: slack:<userId>) that the control plane enforces over verified callers.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/index.test.ts#L2349-L2356",
+          "version": "repo-lines-v1:sha256:16c88dff67942b8716d15b0f9d9ee9822f366d38a322e6cfc3d068fbef8724ba:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ3MWE4MzU5OTgxOWE1NDEyNWNlNjQ5ZDYzNjg1NTM2NGUzN2JiNjFmMjgzYWRhYjVmOWJmMTYwYjJlYWI3YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQ5OGY1MDljYjFlOWIxMGZhNzI4ZDE3NDJkMjhlMDc0YWI2NWYxMDYzNjIxYTBkM2VmYzRhMzI2MTVmOWRlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGY1MTg2M2EyNWE2YTdhNjQ3NjBlZGNjODRlNzFlNDdkZjYyNWQxMjE0ZmU5M2Y3Y2JlMWQyNWNkNjA4MmI2MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWRmODkzYTViMTZkNzRmNGI2MThiY2I4MmY3YTZlMjI5MmE0NTI1OTNlNWI1NTAyNjRjMGU5ZTM3ZTJhMzk4YyJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/sessions/control-plane-client.ts#L55-L72",
+          "version": "repo-lines-v1:sha256:324001e7801959de25c7db28709b7e25c3f8d509b44e3fa0548ab4f1596bc264:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5MTM2NGVmMTBkZDNkZWJlYzdiYWE3MWQxMmQzZjgwN2RkYTQxYTk5NmI0MzZjNjU2YTkyZmQzZWMyZWQ5ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwZDE4MDE5ZTQ4OGUyMzc3ZTQ3OWFkNDY3MTY0ZmYwOTk0ZTY1NGJjZDZhMTE1ZDVlYzYwMjI4MjJmOGUyNDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxZWY3ZWI3YTE0NzEzOWRmYzU2MjIzOGJkZjgzZGMxZjM5NDQ4M2RjYWQ0MWRlNjA0OWFjNzNkNDk5NGY5YjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3NWJmODQwZTAzY2VmZDI4NjQyY2EwZmNmZGY4ZDcxODYzNWE1ZWQ3YTdlMjUwODk2YWE0Y2IxMjI5MWJjODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_95de8699f9ae4127bbd16e01db765488",
+      "statement": "Inbound images are normalized once at event ingress into SlackImageAttachment and only Slack-hosted https URLs (slack.com / *.slack.com) ever receive the bot token: remote external files are skipped, downloads use redirect: \"manual\" so a redirect off Slack domains cannot carry the token, and per-message caps are MAX_SESSION_ATTACHMENTS_PER_MESSAGE (6 images) and SESSION_ATTACHMENT_IMAGE_MAX_BYTES (10 MiB) for supported MIME types PNG/JPEG/WebP/GIF; this path requires the files:read bot scope.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/session-attachments.ts#L3-L11",
+          "version": "repo-lines-v1:sha256:99fa618681b107b17b767f9b3fa005ea67e958bb56c3382dd4008adef3266043:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0YTlmZmY0YTQ1N2YzNzYzMjdkY2RhZmM4NmY4OWEyZTlkNmI4ODgwMmQ3ZDA1ZTQ0MWI0OTMzZWIwNTg1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmNkYzc2ZDEyZTUzMDRkMzA3OWVkYjVmODkwMDA3ZWEwNWYyMjZlNGQ5M2I2OTU2ODQ2MGNhZmFmODAwNzQ0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTI4YjBjYzA0NWQ3NTI2ZDFjZGIyMjU4ZGEwYTE2YTQ1YTBkNWFhOWI2NGU4ZDIyYWExZTRhNDlkNzg1ZWRmOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTAyYzQ2ZTdiM2EzMGRkMjA1ZjhlZTc4YTJmNDY1NDU4MDJjMWI0Njc5NzMyY2Y1MmNiZTMzZmIyNTViM2VmMyJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/attachments.ts#L91-L246",
+          "version": "repo-lines-v1:sha256:80e8b69143583543326dbfd5bad737458dd399b93aed0d023258146215965dab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1MDQ5MGQzZGJiZjNkY2EwODYyZDhkZDlmZDFkYWY3Y2VlZmRhYjUyZjZlYTAyODcwNDk3ODgwZDQ0NzRkNDUyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3OGM3YWU4Y2MzZDE2MjAwOTBhNzFlZTFkNDhiMzZjYjlkMjliMWY1ZjAxYjZiY2U5YmUzMjg4MjUyOTk1ODdkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3ZTg1YTRmYmYyM2Y3NGY2MDZjZjcxNTJkM2UxN2FmMDJmMTRkMTUzNDNlYzQ1ZDg3ZDM1NzYzMWYzZjYwYzRhIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_9ee70b99f1cc487cb68572e9ad213bc1",
+      "statement": "Forwarded (shared) Slack messages recover up to 10 shared messages per request, each body truncated at 4,000 characters, with author, source channel, permalink, channel id, and message ts quoted into the prompt and their image files flowing through the same attachment path as directly attached ones; link unfurls in the same attachments array are skipped.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/forwarded-messages.ts#L26-L105",
+          "version": "repo-lines-v1:sha256:1d0bd616ecf1b421ce39c084f70a3050a7cbffb2af2d1ee57aca0936fa0fe8e2:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5MzA2Y2ZkY2Q2OWQyYTJmNWMxMWE1Y2RkMGZjNDFkOTZkM2E2ZTM1ODYzNjg1MmQyYjQ1MzhiNGFhMzdjNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiM2RmN2ZjNjA1Zjk1YTY0MjIwZDRjYmQ4ZGQ5MjE0ZjQxYTBmOTJkNjE3NmJiZTY2ZmQ2ZWZmYTc2MTkzZjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwNjU3MzY4NTM2ZTI5MTM5NDgxYzNiNGU3NDEyNzJkM2M0ZDQ0OTllMzA4Y2MzYTA4NWNmNjMzMDcwYWFlOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b754ea673a814b388fc0b11a6e5cf434",
+      "statement": "Control-plane callbacks (/callbacks/complete, /callbacks/tool_call, /callbacks/automation-complete, /callbacks/automation-skip) verify an in-body HMAC signature signed with the bot's own SERVICE_AUTH_SECRET (verifyCallbackFromControlPlane), return 500 \"not configured\" when the secret is missing, and completions are enqueued to SLACK_COMPLETION_QUEUE with a fresh deliveryId — an enqueue failure returns 503; a /callbacks/complete context carrying automationId marks the job source \"automation\" so thread follow-ups on automations stay eligible to decline a reply.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/callbacks.ts#L93-L335",
+          "version": "repo-lines-v1:sha256:fe5edab0fdb1e5d6975ecf4727387f54ce1ff169d39ef9e88a06a12a7fa6485a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmZTFlZmY5YjYyMjM4MjAxMDBlNTVlZDMxMzY1MTJjMGEyMTU1NGI5NTg2OGE4ZDhmMzY2NzgwYjQzM2E2MTM3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmNmY1YjQwYjE1ODQ1N2QxNzg2NGYyMTc5MDc4NmRkNWEyZWNkYjY0YjY2YTY1MWY3ODhkNGUyNWNkMzMwM2QyIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJhYTUwYjBkODFmYjcxMWRkMTRhNmZmZGRlMmYyYWRlMzRiNTU2ZTY5ZWY5YjU3NTVjNzEzMTU4MGE1MDZlMmMzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlYWY4YzA2NTgyYjcxYzhlODhhYjcxNzkxNzViNDBiNTgzNGYwYjc5OTQzMjMzYWY1YThhNTBiNWUxMWI4MDk5In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_693661e41f0c45338a2aba0813200642",
+      "statement": "The completion queue consumer acks every message after processing because processing may already have produced Slack side effects and retrying can duplicate a completion; invalid job bodies are acked and logged rather than retried.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/completion/consumer.ts#L8-L36",
+          "version": "repo-lines-v1:sha256:5c647d76689db9d61858eddd81e2024fd3617bc2d4e4ba771a74b7943d29fd7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNjNmMDVlMDk2ZmQ3NWY4ZjVkNzg4NTEzYTMyOGNlYmY4N2UwZTQ3NTI4M2UxOTFmZGYwMjY1N2JlOWE2MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNjY4OWVmMDZiMjFlY2JjY2ViOGI4ZTg2ZDlmZjU1MWQzZTMyMzZmOTIwODgyYzEwZDljMzA2YTQ2OWIzMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2cf251e8593d412f9720952a1f74d884",
+      "statement": "Completion delivery posts an error message with a View Session button when the agent produced no text and no tool calls on a failed run; otherwise it posts Block Kit sections (text split into Slack-sized sections or \"_Agent completed._\", created artifacts with links, up to 5 key tool calls from Edit/Write/Bash, a status footer with model/repo/reasoning-effort, View Session, and Create PR when a manual-PR branch exists without a PR artifact) and always clears the 👀 reaction in a finally block.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/completion/blocks.ts#L34-L121",
+          "version": "repo-lines-v1:sha256:6c94bad0dd80f9963771b5391aec4de845c469b443935a8d0596c27d77ac9e90:eyJzZWxlY3RlZExpbmVDb3VudCI6ODgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmNDQ0ZTljZDJlYjJmM2VlZTQ1YjM3NzlhOGE2YjExOGUyNzc2YmM0ZDE4MjFhOTUwNWI4OGFhMDkzZDMyNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YjA1ODc5MjFiZWVhYmQ2MWFlYjc1M2I4ZDQzOGYzZDM1NTZiNzdmODdjNzE0NmJiMzIwZjVjYmIyNDQzMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5MjQ4YWNlYWYyNGI2NzI0ZDk5N2M4ODAxMDdiZGJjMmU4ZWRiNTMxZjZmYzA0MDIyZGU2MWM1MTE0OTdlMmMifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/completion/delivery.ts#L51-L186",
+          "version": "repo-lines-v1:sha256:cb0eedc94387769bc794bf2d990292f05991a2d02932c4fc0ff5da7ad6b1ee3f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1MjZkOTRiYjQyZmZmZGEzY2FiZGI2N2JlNjU5ZGEzN2ZjMzc0YjgyYmE4NWJmMTZkZDQ4ODVmMjdmOGQxMzQwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwZGE2MWUwZDAxY2QxYzc4YjA5YmM1OGNmYmYyMzU0ZTk5NDFjMDU1MzgzMTIwMDI5YTcyNjM1NGU4NjBkZGE4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1MDk3Y2UzYmYwOTFiOGUwOGE5ZjM5NDk3ZTg0ZDVkNmNjMjhkNWE0ODlhYzU4NGYwYzgwNDdhOTdmMGUwMGM2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_1251c117a09c4d3a8c47596af62daf19",
+      "statement": "An automation-sourced successful run that produced no artifacts and whose entire final message is empty or exactly NO_REPLY (tolerating a trailing period) declines to reply — nothing is posted and only the 👀 reaction clears — so triage automations stay quiet on chatter; interactive sessions never decline and a run that produced artifacts always posts.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/completion/delivery.ts#L17-L49",
+          "version": "repo-lines-v1:sha256:9ed5296854d001410bef828c3e9038b1bf3eaab239e1b57686138f9f92bdae4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4NjFiZWVmMTFmYWZiNDFkMjc1MTExNzA0YmMwY2NkZDczMGZjZWY0MzU3MjczMGI3Y2Y4ZjI1MjViNzNhZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjNGZlZmRiNmQwZWUxMTFiOTc1YzFhYzNhYmEzODkyY2IyYjNhNzZkNDUxZjE1MWQ4MDQzYmQzYjBmZWI3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1ODdhZWM4YzE1ZmJmNTc1OTU2MmFkY2I5MDc0YjM2NTVkNjY1MDM4YjhhYzdjZjNmOTQ3N2RlZjZmMTA0M2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_61d87b2d7b0446b9bdeef885b959289e",
+      "statement": "Generated media delivery is bounded to 5 files per completion, 10 MiB per file, and 25 MiB total; files beyond those limits are omitted and reported with a thread notice (\"N media artifacts are available in the session but could not be attached here\"), never failed, and delivery requires the files:write bot scope plus control-plane media fetch via signed calls.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/completion/media-upload.ts#L12-L14",
+          "version": "repo-lines-v1:sha256:5c0ba0cfa7427fc9c5dd9fe10dd91760aa45134a25608a0e9cf6dac6a4e3983d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFjOWM1MzA4YTdmNTc4MmIwMDcyZGYyMzZjYmE4M2NhMmFlOWRmY2ZlODI3MWI0NTBiMmYyMGEyMDAyYjZhMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDY5MDA2YzFiYjRkNmUzZDdlNDY1Y2VjMTljODRjMWZhNmUyYjFmMDdiMjNhYTM1ZTc3YmFiYTBlNTU2ODQ5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDdjY2Q3YjI3N2VhMDY5MThlZTRkOGI4MjBlYjU5M2JhNGVmNTE1NGNiNjAwMTllZDUyYWY4NjVlYzNmYWNjZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjcxY2I1OGI5M2JlZjVlNDI1MDdhYzhlMTU5ZjMyNzZiNWFlYjBmN2RiODQyMjRmZmM3YmJhNDI0NDMyZTVhMyJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/completion/media-upload.ts#L48-L203",
+          "version": "repo-lines-v1:sha256:0e6dfb4aaf01b68497fbd923251ac6b5019d9fb14e4f0a9e306e32f0e4c019f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2NWYwMDk1MjY2OTczZTcxZmM4MmFmNjY5YWNiZTcxZWM0NzAyOGVkMWY5ODI5NjRkY2RhOTUyNGYyNTNmNzQ3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiZDM1NmFlMTc3OTNlZWVhZmNmMTUwMmVhYjlhZmY2M2VhZmU2NWIwZDk1M2NlNzkzN2RjZTgzNGRhYzYyZmQwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyNGEzZGEwMzQyZDkzMTY1YWIzMzM2MGE2YTc4MDRlZjAwMWVhNzcxZDBjMWIzY2I5OTZhYzc3ZDRhYjgzMzQ4In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_15ce1a0c84584ebfad65253b0881cb41",
+      "statement": "Channel-message triggers run entirely inside the bot's ingress: bot identity (auth.test, cached in-process and KV, failing closed when unknown), structural candidacy and mention suppression, a watched-channel pre-filter, normalization with best-effort channel name/permalink, then a signed forward to the control plane /internal/slack-event which owns candidate selection, condition evaluation, and dedup; the bot adds a 👀 reaction when the control plane reports a new run (triggered) or a steered follow-up (steered).",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/channel-trigger.ts#L43-L186",
+          "version": "repo-lines-v1:sha256:f319e243baa1275c7de7fb2216685a7e1c5fa59d3bd1c1dc708688227fde153c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4NmRjNDdhYjQwNjAxZjExMTk3NjE2Yzg5Y2ZhNjRlMzYwNTBlZDdmOTZjYjU3NGQyZjQ2ODY1NDc5YjY0OTMyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNzQ2MGRlYzk4M2NjY2M2NzZiNjQ0N2I0OGNmMGMzYWJhZGVhMGI3MWJkOTU0M2Q3YmIxNGUxOTRkYzQzNGYxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b053506df88a4034a0d312cf639c9a14",
+      "statement": "The scheduler fetches a triggering message's thread only after a run is admitted, via HMAC-signed POST /internal/thread-context: up to 20 earlier messages (thread root preserved on long threads), each truncated to 1,024 characters, rendered as JSON records with discriminated speaker identity and every left angle bracket escaped so no Slack user can forge a speaker line, labelled untrusted data in the prompt; any failure answers 200 with an empty context because thread history is an enhancement and a run must still start without it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/routes/thread-context.ts#L28-L83",
+          "version": "repo-lines-v1:sha256:438e0e549e96e3c74fda7e04f3f2c3ba37608116fb1be3684c740a14e6b03b4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViNWNjZDUyYmJhYWUyZWI3NWMxYTEwNTZjOGRkZWUwZjU5YWZkMjI3NGQyNDEwNjk0Mzg3ZGYyYWZhMDcxMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0NjA4MjMzNDMzZTQ3OWVlOWRhMjMyNDA5MjJiYmZhNjBmMWE4YWUxOGMyYzVkYzQ0ZTVhZjIzYTI2YmM1YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/thread-context.ts#L28-L125",
+          "version": "repo-lines-v1:sha256:9826fb40b61fab8826d03108d588c72734f2eb60ee539050e16ec1a6aff98917:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzNDI2M2ZjNmZiOWMxNDU3YTI5NjRkZDEyNjI0NThmNDY2MDk3YzMxMDQ3YjdjMmI5ODk1OWU5ODA5MDE0ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhYmI1MzBkNGQ2ODk0YzkyZGFkZjMyMjQ0ZDgyZTI1ZmUxM2NmYjdjNWUxY2RjZmQ4Y2U5ZGExZDU5MjlmYmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhYjU1MGE1NmI2ZWE5ZDgwNDUxYzNlMTdhMzA2NmM0ZGM3ZGE4NDY3OWU5YTk3ZDI1MzI3MWNmY2U0OTA3ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjZmI2NGE4M2QwMzBjMDhmMzBkZjJiZjYwNjM5YjM4YmJlNTI4ZGYyYmRmYmIwNWI3ZThkYzliYjdmOTJmNDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_41b2f2f0ac9645ad88c3e5c23a5043e4",
+      "statement": "App Home (app_home_opened) republishes a per-user Home view with model selector, reasoning-effort selector, global branch override, and repo-specific branch overrides; repo picker suggestions are capped at 100 options, at most MAX_RENDERED_REPO_OVERRIDES (50) override rows render so the view stays under Slack's 100-block limit, and preferences persist in KV under user_prefs:<userId> and user_repo_branch:<userId>:<repoId>; branch priority at launch is repo-specific override → global override → repo default branch.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/app-home/constants.ts#L1-L6",
+          "version": "repo-lines-v1:sha256:7b29e46c6d38a61db559e0eebdc1cd5509c64db18ff61c35eda7f8fa9fd088ca:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGIwODNlNmM0NTRmYTk2NDdkNjcyMjVkMTY4NTEzZTY4MjM1MjhiMGIzODMxZGUwMmRiN2ZiZTM2MWUxMThlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTU4YjM1ZTJhMGQ1NThiYzE4NDg5NGM1ZjFkZjYyNWQ4OGQwOTA2Njc4OGViMjZhNzMzZTdlMWY1MjA0ZWU5MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDI4NjI4YTA0ZmJiNzdjZmJiOTY1M2QzZDY1ZDYxYTYzMmZiY2JmMzVhNzZjOGIwNmFjOGZkODhjMzc5NjRiYiJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/app-home/interactions.ts#L396-L426",
+          "version": "repo-lines-v1:sha256:62e2bc38ed10be349d5462e5f953d85c0d502392c6fd368bebef4bc8295f3e0c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0MTNlMWE5ZWE5OGQyMmE5OTRiMmJjOTBmZmIzNTU1NDMwZmNhODlhNDQzYmQyOWZkNWI4YTc5NTM1ZjI3ZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxNWEyNGU3MDM4M2MwYTMzNjhjNTUyMTk4YzAxOTYyNTU3OTc3MTA3YjZmYmJmZDFhMWZlOWIzYjVhMzJmNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/app-home/interactions.ts#L76-L92",
+          "version": "repo-lines-v1:sha256:e6cdd77ff4046e456cd437896d97cbc18434a7dc8df3cc32b98221775291881b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzODVjZjQyZGEwNmI2MmU2ZWZlMmNkZTM3YWNiNTEwM2I0M2QzMDJiNGQwMmUyOWJkMDE3ZjU2NzdjMzljMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwMTExNmRhZGQyYjRlNjJmMTM4YzI5Y2IyYzk4ZjE2MmZhMThiMmI3NDM3ZmJmYjhlYzliZDE3ODVjYjM2OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiZTE5ZGRhOGI4NmJiNmFhOGZjM2ExNGM4N2Y5ZDY5N2Q2MWFlNTlmY2Q3MWMwZWJjZjIyYWQ0NTQwMWEzY2IifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/app-home/view.ts#L204-L280",
+          "version": "repo-lines-v1:sha256:5d53efd0b2de05db79e13adf610ff22149915c68a007e2dc5d3379690dbc2b4b:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiZWIzOGM3MzI2OTQyNTJhODk0ZjM0ZDQ1NTE4M2RjZTIzMjRlNjUxMWVkM2Q5NjM0YTQxOTlkNGU0N2FkYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlZGUxZDU4MGRhOGQxNTQ5ODBhOTUzMTBmYjkyZWExYTFiYTYyMTBiOTk3ZmQ2Y2VmZTFhNDNjYTFmMjRlNjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_121a51bf0bb1478dafda5f08cced1a79",
+      "statement": "Agent-initiated Slack notifications are posted by the control plane's POST /sessions/:id/slack-notify using SLACK_BOT_TOKEN: it rejects the call when agent notifications are disabled for the repo or globally, sanitizes text (12,000-character raw cap, mentions policy, broadcast tokens always stripped, sections split to Slack limits), and records the session's spawn source and repo for audit; the sandbox installs the slack-notify tool only when AGENT_SLACK_NOTIFY_ENABLED is set in the sandbox environment at spawn, fixed for the sandbox lifetime.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/slack-notify.ts#L50-L131",
+          "version": "repo-lines-v1:sha256:a22f7f238245aa1e1550b79259099dbeb80a26c0c3ad4fdcf27927dd00c98947:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2Mzk3MjIxM2M4ZDNkMjExM2I5ZDg3MTI4NzJmNDg5OGRhYWNiMjBiMzA4NjZlNmI2YjA0NjMxN2RlMjZhNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhNWNkMWY3NjBhMTc2MTgyMzQ0ZDNhMmI5OTBmZGI0NmU4ZWE5NmI1ZmIxNTFiYjU0YWE3ODVlMjE3M2RhY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2ZDQ0MjMzZGQyZGZjYWJiYzk1N2FmYzAzNmIyOTM2NjMxYzdjZDY3YWViZTM3MGY3ZThkNmVmYjZhN2VmZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwOGMzNzI3Y2Y3MTdkOWI3MjU0ZmI1MDJkZGJhMTIyYzJiZGE5MTZmYjEzZGUyMDU5NWQ0NTcyZWU2ZjhiYjAifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/sandbox-env.ts#L319-L321",
+          "version": "repo-lines-v1:sha256:485d15a30304b54db5b38ebc857fdc5be3759fac65c9b9ed510260a132d7a65d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzA3ZTZiZDEwZjlmOGZiNjI4MGVmN2M1M2JjMGNhYWNiYTRlODg1ZDBiYjRjMjFhNDY0ODA2N2Q5OGM4ZWIxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzdkNzMzNTljN2U3NmFiYzc0M2RjYTQ3ODk5ZThhZTJlNjcxOGVlMzdjM2FlMjNjODFjYjVlYWE5MWJjMWYzNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjc5YTg2MTA4NDMwYzY2ZTA2YjM0NTY0NDgxZjZkMmIyZjg2ZGVkYjYwNDczODJmNDYyODQyYWNmZGRhZWYxMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d61d201f526455b8b797b8285392019",
+      "statement": "All outbound bot-to-control-plane calls are sig1-signed as \"slack-bot\" with the worker's own SERVICE_AUTH_SECRET through the CONTROL_PLANE service binding, and outbound Slack requests use the 10-second OUTBOUND_REQUEST_TIMEOUT_MS deadline.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/internal-auth.ts#L17-L23",
+          "version": "repo-lines-v1:sha256:39b179747259b4883b7468fe614b4bc50259e842e4c48443a194f9e30a14539e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjljMWQyODRiYTExN2ZmZGMyNGNlYjU1ZTRkNmFhMmYxOTQ1NzM1MmVmN2JkZTlkYjE0NTUzZDczNGQwZDBhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTI0OWRmYzNlNzA4ZmMwNjRiMDhlNTZhNTI5OTkzMzU0ZTRhYjJiMGFkYWU5NzFhZWU0ODc2YTk5ZTcxN2M4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/request-options.ts#L1-L2",
+          "version": "repo-lines-v1:sha256:67ee140b2510e22d14a466802047f192168305fae5ec622ba7e0972c5f555d02:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYzYThhYThiOWQzZDYzNWRhMWE5NDNjOTYxYzE1MWJhM2M2YjgzOTE3YTQ2YjJiYzY5ZDI1Mjc3NWE4ZmVmYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNkZjliNTNiODgxZDE5ZmFhZTNjYzBhZGEyNTYwZjJlMWFlZDI2Njk1ZDM5ODg2ZDVkNTJjMWQ1Y2NkMWE5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c44eda4b51654c659ff14213e5be49ec",
+      "statement": "The Slack app manifest enables App Home and agent view, bot events app_home_opened / app_mention / message.channels / message.groups / message.im, interactivity, and bot scopes assistant:write, app_mentions:read, channels:history, channels:read, chat:write, files:read, files:write, groups:history, groups:read, im:history, reactions:write, users:read, users:read.email; adding files:read or files:write to an existing app requires reinstalling the app per workspace.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/slack-app-manifest.yaml",
+          "version": "repo-file-v1:sha256:f08004495351d7645cdb17c3146b83f01d2fb01079d6df5a9d5d0ee13ca436cb"
+        }
+      ]
+    },
+    {
+      "id": "claim_7296565de5ff4541b99c7628919e4301",
+      "statement": "The bot sets the assistant-thread status \"Starting...\" (assistant.threads.setStatus with loading messages) before session creation for mentions, DMs, and target selection, and tool-call callbacks render a \"Working...\" status from the tool and its arguments with normalized, length-capped text.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/activity-status.ts#L227-L296",
+          "version": "repo-lines-v1:sha256:a354b5ae01a8d3055bf247ba962a3a0d39d5d80f0b641970c6d02d7a93b16aee:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNmIyOWFhOGQ1ZDhhNTI5OTNjMDc0Mzg3MzNlNzFiNDcxMTcxZTI0YWRjZDExZjUxOTZlNjA5ZjFhZjExYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/messages/blocks.ts#L6-L19",
+          "version": "repo-lines-v1:sha256:adbd5319513ae5c9473f989b283f69927bf7423ecab80a4898eff8876b35d0ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MzVhN2ViOGUwMzMwYWNhYjYwZmIwM2MxMTUwZmZlNmM1ZjUxOGU3NDU0ZmUzYWY2MWQwZGZlZjQ2ZGU5NjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZTlmYTJhMzkwMGRiYzc3ODU0M2I3MmQ2YzNiZmQ1YWMxYzFhYzczNGM5NTkzZmQyMmVjYjZmZTI1Nzc2Y2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyNDM3Yjk1OTllYjRiMTZhYjllOGE1MDQwNDU1NmI0OWVmNWRiZDM1NTcwMTA1MGU2MjM1NmI3OGY5MDczNmEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T05:37:27.905Z"
+  }
+}

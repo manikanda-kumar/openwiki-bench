@@ -1,0 +1,514 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:979ffc79502f57dc40b31abe5a7616519a65fbd115576dad128072c13c2001e3",
+  "claims": [
+    {
+      "id": "claim_296f957c99a24c4f979a9ada6fef6040",
+      "statement": "ADR 0002 establishes @open-inspect/shared as the single protocol source of truth: ClientMessage, ServerMessage, SandboxEvent, and SessionState are defined there (Zod schemas plus inferred types), new websocket/sandbox-event variants must be added in packages/shared first, feature packages may not keep parallel protocol definitions, and consumers normalize shared payloads at their own boundary instead of duplicating unions.",
+      "evidence": [
+        {
+          "resource": "repo://docs/adr/0002-shared-session-contracts-and-correlation-boundary.md#L16-L56",
+          "version": "repo-lines-v1:sha256:aede34f264975e21c744e9e6d145a04251c2b7a3688b20692e8665ac43a40190:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkM2RiYzRlN2U3Y2JlNWRkYzg5MWIwODA3MTJmNjM1MWM5NGI3MjhlYzhiZDg1NTZmNDYxMmIwNzBkMjdiNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZmVmYzA4NmUxNjBmNTFhZmRmNzI0YmI4NmU2MDEzZjVjY2RkNjdmNzQyMzhlY2ZmZTZkMmMzMTM0NzI5ZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1NWIyNDdlYTk4OGE2NjJkZWQ1NzQ1NDU3YjBkYzRkZTc3ZjM3N2I4ZDc4MzJjZGQwODEyMTY5NzNiNjNiMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/sandbox-events.ts#L38-L60",
+          "version": "repo-lines-v1:sha256:f93c0fa8cc4f55ee8f338aab195c0bcfebe16feb68da32eee0f72ba82fdc697f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzMGZiZTVmNmYwOGIzOGIyNTlhNjVlNjgyM2MxNmFkMWQwNzhlYjRmN2E4NTMzMWMxNjYxZGRlYzUxM2JkODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwZmZlZDgwYmU1OTRhYzk2ODkwYzE3NDZmZjdlMjY1NTBmMGJlZTM1ZGMwMjllMjAxMTJkMjhmZTE0ODAxZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyOWY0NTk0OWVmY2E4NmVkNGIxMzY5M2ViOThlZDQwMDNiYTEyMzk5MWFlNGY4M2VlNzk5MzgxOGQ5MWM1NjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3NDI5NjQ0YTFjNTAxN2U3NzkyZDlmMWI4NzA0N2JiMGY4YmIyNzE5Yzc3ODgwYzUyNWE0MWJmNDNkMzJkZjAifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/server-messages.ts#L17-L59",
+          "version": "repo-lines-v1:sha256:0bc6ca67831b8227bd322175ce250be12743afc342d64ac8d15bfe434245a272:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNjcyYWE1YTNkY2UxMzczMTg2Y2RiMGVmYTRmZDM4NjU3NzFiNGQ1Mjk0YWEzOTc4MWZjMzA5NDdkZGIyYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxZTk2ZjcyMzlkMzc2ZTI4YjJiNzAzMWQ3ZWFmNmVhYWE3Mzc5YjZmYzQxM2UwNTI0YzNjYTU0NGRhYzg3NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwZTg5NmZiNDkzMjg1NjZmNWI0MjdlYmU4ODUwYTUwMDM3ZDE4MzhkNWVjYWI5NGQ1YjEyNDc2Yzg0M2RjMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjZmM3OGFiNGJiOTBlOTYzNGExOTAyMjRkMTRhODU5NzFlNTE2YTNlYmRiOGU1ZjQzZWEwNDFiYTZhOTVlNDQifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/websocket.ts#L6-L42",
+          "version": "repo-lines-v1:sha256:78ea65154d8e731ce4d5846af6f020155292880652c23c2d2867c978088d8bb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhMDU4M2IyZGQxZGQ5MjNhY2Y5NGQ5YTBhMTk0NDFhYTRkN2RhNzZhNmVkOTBlNWY1Y2MxNzNkMzEyMWQzNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NDZlNzQyMmQzNTI2Yzc1M2U4YjAzZjZkMjU2YmVhZDhlZDc2YWRjNzg0YjYyMjg2ODM5NzI1YTZjNjg1ZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2OTViYzEzN2NiZmY0YjY1ODc4ODEwZGY3NDZjNTlmYjIyMzUyNmEwZjZhYmQ5NGVjZjZlMTllNmEyMWI1NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e88e08e227e541078269b004b68a438d",
+      "statement": "Consumers import protocol declarations and validators directly from shared per-submodule paths (for example @open-inspect/shared/types/websocket, .../server-messages, .../sandbox-events) rather than through a control-plane re-export layer, so both the shape and the parsing schema at each edge come from one place.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/sandbox.handler.ts#L7-L8",
+          "version": "repo-lines-v1:sha256:d6e9bef93d27f611c4a9b0b52abf5fc310322e26a03b89b566ac8529192659f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RlNzk4NTcxNzI4ZWNmZjYyZmE2M2FmYzU4ZjMwMzQwNGVlYzFkMjgyZDU4ZjljM2M5M2YxMDQyYTlmZjU1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg3ZTZiN2FmOTU5MzUyNWMzZGQyMjFmYjI3ZGM0MTE2YzcxYjkzOWQ5MGQxMDc2MDg3MzIwYjZmMzJkNjEyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VhOTFmZWM5NTkxYWY5NTIxOTdhNTUxMmYzZDc0NmU2OThhNGQxYTEzODU1NzAzMzAxZDU4NmI3YmU3MDZjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGFkODBkNDA2OGI3YTE2NGFmZDRkNWI4YmIwNGE4MmE0NmFlOTdkNjI3MWUxYjhmMjY2YjQwNGZkM2YxY2NmOCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/message-router.ts#L1-L5",
+          "version": "repo-lines-v1:sha256:bfe01ab5c0f0032ea86b9a202424b25158ba7b7902bdb1acdfe7231394d23ad1:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RlNzk4NTcxNzI4ZWNmZjYyZmE2M2FmYzU4ZjMwMzQwNGVlYzFkMjgyZDU4ZjljM2M5M2YxMDQyYTlmZjU1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTZkNTk2NDIxMDRkZDUwODI4ODlkNTA1NDViZTk3ODFmODdhYTMyZGNlZjg3Y2E5ZDg0ODhiZGIxZjBkNzQ4YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAyZDc1ZDk1ZTg1ZjFmYTU3YzVmM2I0ODMyM2FhNzllMmZjODk2ZTc3MjNhYjkzYTQ2MDkzYjM1NzJkYzYxMyJ9"
+        },
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L1-L14",
+          "version": "repo-lines-v1:sha256:cbbcae5fa3124900adffbbd2b175fc1df587057fa800818dcacec2cd36bf70ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1ZmYzZTg1ZDY3MTVhN2E5ZDBmNmMxYjMyZjMwY2Q4Y2IxNDRjYzc5YzhhYmFlOTUzZWExMzc4ODlmYWUyZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlNWQyYTNmNjIyODczMjk3Y2RiODRmZWZiZmE4NTVhNTNmYTRhNmZjZWVlYzQzMTkwYzFkNTZjNTA4ZDBjNjgifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/session-socket/reducer.ts#L1-L10",
+          "version": "repo-lines-v1:sha256:d23178a6ff999e69047279a6aaaeb11527a18c8eb8c959053829b4058eda3960:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5ZGRhYzExODhlOGYwOTIwMGFmZDE4NDdmNDg3MTI2MDlkZGI1ZjliNGIwMjVmOTU1Y2RkYTU5MGI4NWYxMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYzM0ZmZhNjNiMTFkNzFjMmExZDg2ZjM0YTg3NzY0OGIxYTcyMGQwNGEzOTBkYzFiODFjNjAyOGViN2EzN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxMTIzNjY0ZjEwNGQxYTBkMzY2NjdlNWYwYzFmMTcxMDdhZTBhMDg4Njk5OGU5YzgzYzVjNTEyZTkwYjNlNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_26822d6e6bc54cc3a540c503c9046db2",
+      "statement": "The shared package's public surface is a root re-export barrel over types, git, regex, auth, service-auth, http-body, models, cron, triggers, completion/extractor, logger, cache-store, app-name, user-id, browser-auth-routes, sign-in-provider, slack, and pull-request-tool, and package.json publishes every one of those as its own subpath plus one subpath per types/<file>; there is deliberately no './types' subpath, so the types barrel is reachable only through the root.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/package.json#L8-L185",
+          "version": "repo-lines-v1:sha256:e65cb72f79033f6e6af5aa24354d153cb6f892048fed694e7eab87fa25b91a1f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTc4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzYzA1YmI5ZjRhOGI5ODQ1MTBmODE1YTVmYzQwNzhkNzdjNWEyMGU5M2YzMzczZGM1ZGRlNGEzNDFkMWI0MGM4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ZDVjZDJmYjRmM2RmODg0NTE1MjU1YjM5NTIzZjJmOGI1NDcyYmVlYTlmNTY2ZmZjYTIwNGRiODAyNTYxMDQxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3NGY1MjNjMmRjNTM4MWI0OGY2MTAxNDg0MGFiYWFkNTM3NzM0ZGM0YzQ4ZDIwZjc4MzYwMzIwZmVhMmFlOTMyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjMzljNDA4YTZjODE1MDc1NTBmMWI5MDRlNjM1NWEyMjNjYTAxZWM0NjI3M2Y0ZjI3YjJkNmRmNWI2NzgzMmY1In0"
+        },
+        {
+          "resource": "repo://packages/shared/src/index.ts#L1-L22",
+          "version": "repo-lines-v1:sha256:b5447f7ce21417562ee6ccc4e72b116fb1ad4bb7eaba9d34eaf029deb7145644:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhZmYyOTRmN2I3ODY2YWI2NTlkYmI5M2RkOGM5ZGY3MjkwNDFhYzQ4NjMxYjU1Mjk2ZjQxMTJjYTk5NzFjZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b5450ea185841c1b2cc1bb02ce0fc2b",
+      "statement": "ESLint's repo-wide @typescript-eslint/no-restricted-imports rejects auth-owned names (TOKEN_VALIDITY_MS, timingSafeEqual, bytesToHex, computeHmacHex, generateInternalToken, verifyCallbackSignature, verifyCallbackFromControlPlane) and the full service-auth name set (SERVICE_HEADER, SERVICE_NAMES, ControlPlaneFetcher, buildServiceAuthHeaders, signedControlPlaneFetch, verifyServiceSignature, ...) when imported from '@open-inspect/shared', forcing them to be imported from @open-inspect/shared/auth and @open-inspect/shared/service-auth; the names remain root re-exports, so this is a path rule rather than a surface reduction.",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L75-L125",
+          "version": "repo-lines-v1:sha256:66d8be04c49990547f70f5f6884a1e0b57f88c39fa2848833ba40b44abfd0d96:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwZTZkNzg5MWNlOWFlZjkzYTU0MGJhZDQ4Nzc4MGUxM2E1MzRiMzg3ZTAyMThiODY2MDNlMGI0NTZlZTQzY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5NDE5MTE5Nzk5YTUwNDVmOWY5OTkxY2YxZjkxMGE0OGZjYmNlNDU4MmRlMDE3NmM4MzJhNjRhYmM3ZmYzNmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1ZWE5MzJjYmM3ZTM3YzQ3Yjc0NWQ3NWIxNTVkNWZiYmZjZDE5OWEwNGE1NjBlNzFlOWExNTg5NWVjMTg1NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2YTU0MWVkMGVhOWQ4NmFjZTRmMGE2MWQ0ZmUwZTYxNjBkZDAxYmNmOWE2YmFhNDRjNDYzMmEzMGY4M2IyYjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bdad192148c44674b5ed1417882ac730",
+      "statement": "In packages/control-plane/src, no-restricted-syntax forbids any property access named DB so production code must use the injected SqlDatabase; the only exemptions are the composition roots - router.ts (which also 503s the request when the binding is missing), the worker entrypoint's fetch/scheduled/queue handlers, the image-build finalization queue consumer, and the SessionDO constructor - each carrying a documented eslint-disable with a justification.",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L131-L151",
+          "version": "repo-lines-v1:sha256:b820b663940bf08c019747e1c40c1a9637d07c83799e564dfec7327dd375f6d6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MWM2NTVmNDBjNGIyYmFiYjFmOGMyODA2OGQwNjhhMWQyYjdjNDcxN2M1MjJhNWJlNjA3NmQ5OWY0YzFkZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjgxYTFjMWE1N2EzNjdmZDcwMzBkZGE3ZGIzNzMxYTMwMGE1ZjkwMDJlNmZkZTQ5MjJjNDg1NzllMTY4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxNjQzMWIwMjIyMDVlODk2YmVhYWExZWZjM2E0ZGFiNDlhYzMyMjFlM2EyZDkwYWVhN2EwZWIyOTdmZTQ0YmMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L36-L89",
+          "version": "repo-lines-v1:sha256:d6dceddc2332c7c165ceb407a623bfad6b29a1fd5a59a5d61a6a68cae25594e2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwZDY4MjA2ODE3NzkzYzIzODJmYTE2YjNiZmU1OTZmZmU2ZmZmYmQwZmYyZWZiODQ2NTliODMzNGNhNDY5ZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzNmQ5ZjFjNTRiNzE1OTQyOTgyNTg5M2ZlYTk3NGM3MjJhYTRjNGEwZmYyMmI5MzAwZjdlY2VjYWQzZTY3MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZWNhOWFmY2U1ZjIwMzVkOTdjYjgwNGEwNjI4MmE0YTEyMjM5ZWM1YTI0YWJiNmFlZmVlNzAzZTQ4YjhjODIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L386-L417",
+          "version": "repo-lines-v1:sha256:2b2d45d2aeeb959681cf4b73414351cc5aa7b9ad2fae0641e083db8d09895ac4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNWM3M2ZjNDNlMjY1N2QwYjdmNWE1MGZiZmZjZDBhOGM1Njc5M2RlYTIyNGFiZWU0NzZhZGVkNjhiNzVkNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwMjg5NmU0NzlkMDI5M2M0MTE2YzZhYzRjNWU1OTVlYWU4MTdiYmYxNTI1MzcwMDNhZDUyYTAxNjY4ZjhkNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhODU1NDAzYTk0NDVlYTJhZGM2NmRmMWU3NzVkNTIyMjM1ZGU3MmQzZmRmNzNlMjYxN2Y1ZmE3NDcxYzZlYzQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L27-L32",
+          "version": "repo-lines-v1:sha256:2ac7f7128921accde87eb710633ef66d5d0576b1d8314d91cc118d2002957229:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmExMWZmNTJiN2U2NTVhNTc1MjBhM2ZlNzI4OGMxZmZmNWMzMDdlNzg1NWMxYjExNzNjM2NhZWU3OTI4YzI5YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDdkMjEzNjhlMmQwNDAzYTc5YzJjNDE5MWQ0NTVmMWU4MTk5ODViOTZkNzgzNWNkZTZiNTgxOTQ0ODZlNTI1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTkzMjE0MTg5ZTBlMTI0MzMxMTk1ZmYzMDk1YmZjNzQ0MDJiYTY3ZTIxMTc1Mjk3MmJkNTUxNWU3YjliYzdlNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8c6ff78a6ba4eb5985795ceada05536",
+      "statement": "Two no-restricted-imports patterns fix the session composition direction: session/components.ts (the composition root) may only be imported by session/durable-object.ts, and session/durable-object.ts (the Cloudflare adapter) may only be imported by src/index.ts, so services receive dependencies as constructor inputs and nothing the factory builds can hold a reference back to the Durable Object. The config also documents a flat-config trap - a later block matching the same files replaces the earlier block's config for that rule - which is why src/index.ts re-declares the components.ts ban while being exempt from the durable-object ban.",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L153-L217",
+          "version": "repo-lines-v1:sha256:266d43759b41df58a2b4e2a74f85e190fcbca5448ff0fcaed8ff783b304c0cdc:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkOTlmNWQ0YTljYTE1OGIzYmM0OGQ1NWZiMjhkNjMyZGViOTgyZDAzNzkwYzI3NzY3Yzk0ZjhkYWU1NDQ2M2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjgxYTFjMWE1N2EzNjdmZDcwMzBkZGE3ZGIzNzMxYTMwMGE1ZjkwMDJlNmZkZTQ5MjJjNDg1NzllMTY4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MTZhYmU1ODMyZGQwOTA5ZmM2NjM4NjcxMGU2ZDY5NTlhNzViMWFjOWVlODYyZGQ3ZTc1YjdjNmM3MGY0ZjYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L29-L31",
+          "version": "repo-lines-v1:sha256:85d0871bbc27b4faaca8666a15a7f66f67765e6c0f07cccfc80488065b665d0d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk2OGE2OWU0ODcxMjc2NmFkOWNjYmUyMmQzNjNhMTAyNGYyOGIxYzhiODk0NDI0ZmI4MWQxM2UwMzI5NTcyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjZhODlhMTFjYTMwYmE2YTdjYTZjYTAzOWM4MTViZjliNTExZDVlMWM0YTY1M2E2OGVlMzJmNjI4ZTRjMTlmNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjA5YTExNWM5NzhkNDdjYWM3ZWJhYTEzZGJjMWJkOWQ3MjY1OTVmMzdjMmRjMGU4MTQ2MTZmOTNkYzc5OWY5MyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L1-L22",
+          "version": "repo-lines-v1:sha256:f09768585c809632dce9202a88b2e46290c2b68cdef27a6c0e94656b751ff897:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MmE0MjkzODJiMmUxNDcxOGUwZTM3YjA1NzBhOGExNzAyOTkxZmNkODQ5OGNkODQwNjBhOGJmNGYwNTAxN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwODFjMmRiNjNjNTE5MWNjZjYzYjQ5NjM1ZDYwNDhlNDQ5MmRiMzBmNTcwMWZjOTU0YzY0ODlmYTIzMDllZDIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:5b5b83483f389a7ae61bb9b2ebaa1e087605d9f68b1b64098b0f891f3854dd89:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4YmEwYjA5ZTI4NDlkMDU3MzQzZWIxYjk5ZjFmZDE5MDU4YzRiMDRkOTQwMzMzYWZjNzE5Mjg0YmQ5ZTAwYzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_05ea18bc5fd4462d92045015bd8d914c",
+      "statement": "packages/web is restricted to app-owned auth and transport seams: next-auth and next-auth/* are banned in favour of the browser authentication seams, lib/auth is banned in favour of getServerAuthSession from @/lib/server-auth-session, and the global fetch is banned everywhere in packages/web/src except lib/browser-api-fetch.ts and lib/control-plane-transport.ts (and tests), keeping OAuth/session protocol code on the control-plane side.",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L245-L290",
+          "version": "repo-lines-v1:sha256:70a3cb3b8300062ac6f7363378244bf91242cddb7a45a01f93d12b3ac0520f6a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4M2NkNTkwNzU1Y2RlY2Q2OTdiNTlkOGMzNzM2OWZkMDBmOWViMDYzMGZkMTA4ZTExMzlkMzZjYWU3Y2JmYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjgxYTFjMWE1N2EzNjdmZDcwMzBkZGE3ZGIzNzMxYTMwMGE1ZjkwMDJlNmZkZTQ5MjJjNDg1NzllMTY4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiNTEzMjRlOWU0ZTFlZGFjOTg5NzZmZTdhNDY4ZjJiMmY0YmFkMWIwMTc4NWIwYmUyMjlkOGVkNmExODdkMGYifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/browser-api-fetch.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:dbcfb04b8687eec2f96cb3b7f079e5267fa20f0344619a81a340f03aa350edb8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/control-plane-transport.ts#L1-L16",
+          "version": "repo-lines-v1:sha256:694e84e6391c23d89d77a0307669ce5b5a11e22e2b7bf1f6c6a37903154c7a1f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYmZlYzY4NDNiMzgwNGUxMTI0NDJiOTI1Njk0MGQxN2MxY2ZhMjQ5ZDU2MDc0ZGRhMDIxZDRkNTg3OTZmZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1Yjg1ZDNmN2Y1NWUxNDJjM2QzNjU3MWRjZmEzZDkwODMyZWQ0NzA2ZmRiYjEyODBmNTA3YTczNzRiNjRmNWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3a1d7bf87fab4cc8a4a9a3210e39fac2",
+      "statement": "The web import/transport bans are themselves under test: client-auth-boundary-eslint.test.ts and server-auth-boundary-eslint.test.ts instantiate ESLint against the repository root config and lint synthetic files at component, hook, library, route, and seam paths, asserting the rules fire exactly once for violations and zero times for the sanctioned seams - so a silent relaxation of eslint.config.js fails the web test suite.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/client-auth-boundary-eslint.test.ts#L1-L70",
+          "version": "repo-lines-v1:sha256:52d4f0c39d136b6d5b88aa47d5383e04ecccbdca01163b12a0ee01a4e36ce35d:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjYWIxMDFkODFmYzQ3YTRmMTAyYjhkNmViN2JjYTU3NDMyN2E1ODgwNmQ3NDQ1ZTM5ZWUzM2QyYzcwYmVjODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/server-auth-boundary-eslint.test.ts#L1-L46",
+          "version": "repo-lines-v1:sha256:3620e5967dd24383ecae37b435255a1f2dc5349b974a8e54096a4096e1b0e739:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjYWIxMDFkODFmYzQ3YTRmMTAyYjhkNmViN2JjYTU3NDMyN2E1ODgwNmQ3NDQ1ZTM5ZWUzM2QyYzcwYmVjODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3ae60e712f34844962a9f9b0ffb4848",
+      "statement": "packages/shared/src/module-boundaries.test.ts enforces shared's internal architecture with the TypeScript compiler API over every non-test .ts file: implementation modules must not import the package-root or types barrel (or self-reference @open-inspect/shared specifiers), and the module graph must be free of both runtime cycles and compile-time cycles, with import('./x').T type references collected as non-runtime edges.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/module-boundaries.test.ts#L144-L212",
+          "version": "repo-lines-v1:sha256:8fd017c45634dcb04d247b0fe1952727ae0147ad6348a660104d96f02a32876e:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhNTYzYjAzZmNhNzJjYzNhZWE5NWUxZTYyNDBjMDk1MTY5MjlhYTU2ZmFkNDhmOTM0ODQwZjBhNTAwMjJhOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2Yjg1ZGI4ZTI4YjI4ODZlMzExMmRjZDJhZjgzNzA5NjYzNjEwOWFkNjdkNzQyZDhlZDY5ZDg1MDVmM2JhYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkN2NhODIxNzQ0ODQ2Mzg0ODRjOWJiNWY4ZTlmZjM3OTYxOGU3MWY1YzViYzVhYzAyNTZiYmMxYTQwYmQ3NmEifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/module-boundaries.test.ts#L45-L105",
+          "version": "repo-lines-v1:sha256:bd2f0f25fb62b377991955a0dadefb039bfbf4d90b980a5ad406150e8fae4c83:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNWVhZGU5OTA4NmI0MjNmM2YyMDMzYzAzYWVlNzM3YTI2N2U4ZWUyYTc1NGY4NzNjYWFiNjgyZDU0YjYwMzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5ZjM2MDUwMzUzZDFkM2M5ZTUzN2Y1MzM2NDg1Yzg5ZjZiNzZlN2I4YTYzNTNkZGJhOWFhZWUzY2Q4OTEwMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNGU4ZjI3YmZjYzU4ZDkxYzY3ZDQ3Mzk2NTQzNDc2NzIwZGUwMWY5ZWFlMTYxNjQwNDBjZjdiM2QwMTIxNjgifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/index.ts#L1-L6",
+          "version": "repo-lines-v1:sha256:7dcb1be6c46855ee2a75987c58ff9a70c12f846ad8196e5c2255bc70378f369c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzlmODZlMzZhNzVlMjMxYzZkYjA3YzJhODI5MzlmMGY0NTQxNGI5ZjUyNjI0OGNjNzk1MGU5ZTY4Mjc1OTc5MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_652a50dc798e4b3781b5bc56fff10c6c",
+      "statement": "packages/shared/src/public-api.test.ts pins the root barrel's compatibility contract at runtime: the automation/environment repository aliases are the identical objects of their canonical counterparts (automationRepositoryInputSchema === repositoryInputSchema, MAX_SESSION_REPOSITORIES === MAX_TARGET_REPOSITORIES), RepositoryPairValidationError thrown by normalizeOptionalRepositoryPair is the publicly exported class, and provider-account and GitHub Autofix contracts remain reachable from the root specifier.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/public-api.test.ts#L1-L40",
+          "version": "repo-lines-v1:sha256:1124cb1522b305e9d3892de6c82ebf2414d724a867ba5c4c520c5475a86e7e31:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiOTUwNmIyMWY0ODNkYzk1ZGYyZjJiMzVmNzBjMGE0NDNiMDUzYTdiOTY0OWY3NzQ2N2U2ODhhMzMyMDA0MDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/index.ts#L172-L195",
+          "version": "repo-lines-v1:sha256:76d24ada3b31edffc3db1abe9e336ac216a449f50beae79fff1eeead70e0a7d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExNzQ0MjkwOTg3MDNlNjM0Y2M2NjRlNDk3NWQxNGFjNDkxMjc0OWU1MTYyNGFiMWEzNTNiZTI0NzNmOWMxMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxZDU4NDZmZjM4NWI2OTc0YjYwMDVjZTk5ODRmOWE3MDY4NzliOWY0ZDAyZDJmNTFlNzE4ZGI5NGNjNjVmZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjMjc1NjAzNDQ0NDNhN2YyYjQyZDg1OTI2MGM3NTM4ZmJlMTljMDNjNTUyZTA2MjZiMDVhOGI4NTBmMDc0YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyOTAxNDJhZTM4ZDljN2U3NmIzZWJhNDM0YWZiODM3MmUwZjhmMTMxNTVhOTVhODdjMjk2NDM0MWNiMGIxMjgifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/repositories.ts#L1-L8",
+          "version": "repo-lines-v1:sha256:9944f432d20ad6f0b25cc366d3fb77a0d05524a4984172783aece760df60857e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODE0NTI4NjRiMGQ5NmVmZTg2OTE2ZmY3NDVhMGY3N2FjNzBiMzI2NTg1YzBlYWY1YzM0ZjllNGE0ZjZmYmY2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzIxMmVmOTEyNjk1MjRiZGFhNTFmNDk3YjU0NzE0ZTkyOTRkNTk3NDc1ODk1MzM3MTY4ZWUxNzIzODhmNDk4ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee13570de8bd44f2872ca99b4708ed3e",
+      "statement": "type-contracts.test.ts uses expectTypeOf to assert that each public type still equals z.input or z.output of its paired schema (RepositoryInput, CreateSessionRequest, SandboxEvent, ServerMessage, TriggerConfig, ModelProviderSelections, ListAutomationsResponse) and that the repository transform keeps a non-null normalized baseBranch only in output; vitest.config.ts has no typecheck mode, so these hold only because tsconfig.test.json includes module-boundaries.test.ts, public-api.test.ts and type-contracts.test.ts in 'tsc --noEmit -p tsconfig.test.json' during typecheck.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/package.json#L186-L193",
+          "version": "repo-lines-v1:sha256:3b497d427beab7509587378f370ab05bea6483fa874e11a0cb29bf7e6eefefc0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzcyN2M0YTQzOWM3ZDIyMTk1MTE5ZjA2NjNhZGM2ZTk0YzFhYzM4YjJlZWNlZjg2Y2MyNDA1YjA3MGQxMWZkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2RkNWRmNjc3NmRiM2NkMzExM2VmYjcwMjY0ZmVhYWY1MzU1Y2EzYTg1ODA1NGI2YTNlNzk0N2JiZjY5NzRhYSJ9"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/type-contracts.test.ts#L41-L111",
+          "version": "repo-lines-v1:sha256:821f3122cf18f58051184f2ac2597f3ecd63b9617301353815e5063b07d65992:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjOWNlYTA1Y2RjNjY0ZWQxMWVmNjM4MTZmOTI0MzM4ZGJhN2I5YTU2ZmQ1ZTQ3OGIyNWQ3MDM5N2I2MjlkMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiOTZkMTYzNTM0MjdjNDk2MTczNWRlOGRhMjI2YjI3MmFjOGFmMzc0YTUwNTY3ZGE1OGUzYzljNDcwMjNhZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/tsconfig.test.json#L1-L12",
+          "version": "repo-lines-v1:sha256:569fced689503a3749d310f3cefb393e5ddb5924e9dce96566f9b9f7df7da693:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/vitest.config.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:b7a8326a3de6c463e6ddc2c9fac738c6d95de0626c6e3374501e774909306e58:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNzRlOWU5MDAzOGViM2EwZGQzNGQzMTMzZjg4OGZhMmVlNTEzZDIyN2NmOTkzZTM2ZTNjNTc1ZDVlOThkYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d244a22139c84258a0b4e7499a801718",
+      "statement": "packages/shared/src/types/boundary-schemas.test.ts is the parse-level contract suite for the schemas other packages validate with, asserting for example that clientRequestId is mandatory and length-capped on a websocket prompt, that cancel_prompt requires a non-empty messageId, and that sandbox events reject a missing sandboxId/timestamp/messageId envelope field.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/boundary-schemas.test.ts#L660-L677",
+          "version": "repo-lines-v1:sha256:5bb9b8368c66a0c303598bcf7835a80eb6b11b45c8c1d159686c9c1812a9c13f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhMmE4Mjc2OTg5NWRmMmI0OGQzNzg0MTY1MTI4MTliODNmYWExZWMxNzA2MGYzZGZhMGQ1ZGEzZWYxYTYzZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwZjVjZGJjYWRhNzVjOTgyMjdlMTRkODdmYTY3MThjNTdiZTczYmFiZDQwYmM4Y2JjYzcxMTYzM2E3YzlkZDcifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/boundary-schemas.test.ts#L679-L733",
+          "version": "repo-lines-v1:sha256:593b8bcfb000516d359950d7bf466df1bbda97a951da7cd38c4f5a1caafa60ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhNWY1ZjQzZTAyMjY1M2I3YTBjZDk4MDViY2YxZTBkMGY1NzUzMzI5ODIwMmQ3MDM0NmU4ZTEwNzZlY2MwZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxNjQ4YmMyYWEyODlkNmM2YzcwZmQ2ZjIxMmY1OGQwMDU5YmYzMjUzMWU0YTQ1M2RlNzc2NjMyOTZmZDE1MzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMzAwMTBhODZkOGVlNWRiZTJkM2MwOTM3NzBiZTA1MjFjYzlhY2VkZDRjN2ZhNTRjNjdlNzc3ZDExOWU5MTcifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/websocket.ts#L6-L42",
+          "version": "repo-lines-v1:sha256:78ea65154d8e731ce4d5846af6f020155292880652c23c2d2867c978088d8bb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhMDU4M2IyZGQxZGQ5MjNhY2Y5NGQ5YTBhMTk0NDFhYTRkN2RhNzZhNmVkOTBlNWY1Y2MxNzNkMzEyMWQzNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NDZlNzQyMmQzNTI2Yzc1M2U4YjAzZjZkMjU2YmVhZDhlZDc2YWRjNzg0YjYyMjg2ODM5NzI1YTZjNjg1ZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2OTViYzEzN2NiZmY0YjY1ODc4ODEwZGY3NDZjNTlmYjIyMzUyNmEwZjZhYmQ5NGVjZjZlMTllNmEyMWI1NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b51bb31481ed47cdaa9490bff39e88de",
+      "statement": "The canonical correlation contract is snake_case trace_id, request_id, session_id, sandbox_id with the headers x-trace-id, x-request-id, x-session-id, x-sandbox-id: web's middleware resolves or mints trace/request ids on /api routes, control-plane's router takes trace_id from the inbound x-trace-id or generates one, always mints a fresh 8-character request_id, and echoes both on every response, while camelCase exists only inside a transport's local types and is converted before crossing a boundary.",
+      "evidence": [
+        {
+          "resource": "repo://docs/adr/0002-shared-session-contracts-and-correlation-boundary.md#L27-L31",
+          "version": "repo-lines-v1:sha256:58e3f03cf8d716ce9dd6dd7f5bb11678eddc9ba1a8e9b00d13c1c66a5c0ce827:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzRmMWQ4MzhlMzViOWRlMjg0ZWRiMTgyOTkyZjU2YTdjMDQzYTg0NGVkMmI3MzNmNWVmZmFmZjQ3OWM1YmVhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWQ2ZmFkZmQ0OWViNzM4NDUxNjZlYWQwYzY4MGNlOTcwNDMwZGQyNzQyMjcxOWJiNTc4ZGNmZjhkYzAwOTY2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmRhM2NlYTYxZDdiMTZiN2Y1YzIyZTM0ZGU2ZGE0M2Q4OTcxMDc3Y2Y3MzgyMjdmNDZlODdiZTQyYzcxZmM4NCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L399-L417",
+          "version": "repo-lines-v1:sha256:a3554fcdba791c9e4bcb492939e0d9ce38cb74b0194e36747d204974190bb90c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0Y2Y5MzY2ODNhMmFjNjJjMjBkODgwNTA0NmUzZjAzZjk5ZDc0YzZlZmExNDVmNDYyZWE2YTc0MmY1MmQ1NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlMTJiNjExODk0M2UzMGMwMDY4MzNlNzgxNjMwYTUzYjMyZjQxN2VmNWY5Nzk1YzNmMTJmMzMwODAyNGM1ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhODU1NDAzYTk0NDVlYTJhZGM2NmRmMWU3NzVkNTIyMjM1ZGU3MmQzZmRmNzNlMjYxN2Y1ZmE3NDcxYzZlYzQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L55-L65",
+          "version": "repo-lines-v1:sha256:11f414adf2ca01f727a0a039b8aa2ea8ea41982c1b7871459f2b9a15e44de132:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0NDViZmUyYjlkOTJkMWNiY2U5N2VmNDI3YjJkZDViZDA3YzdkZmJmMzQyMmFlMGU2ZjAxOGI5MmYzODhkNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwMmE0MTRjNjc1NDZjYTU4NTRkOGNmYjc5YTRkZTZjYjU4ZTgwMjE1NjI1MjkzMWRhZDYzOTJhY2MzMWE5ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViZDIyNTQ4NzU0NGUyMDRkN2FmM2ExMTQ5YThkN2NlZGFiNjVkNDljM2NkZWExZTM5MjEyY2I1YjhkYzg1OTQifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/request-correlation.ts#L1-L48",
+          "version": "repo-lines-v1:sha256:fa1c06e9403ef976fdcf0e914c223eed41f81e4c66afd0365e205c51c42059ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZTkxZmI3YzJjZjM3MzJkNTViOWM4ZDQ1NjlmMWIyYzc2N2Y3ZWI4YjBlYzVhY2Y4NGMwZDJmYWI5NDYwYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/middleware.ts#L1-L31",
+          "version": "repo-lines-v1:sha256:786784c9a63ddefedeb10f9015c4c0486da790e73a2fb5e9aa52dbe718131829:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYjBmZTAxMzUwMzkyNzcyNGE0N2Y0MmE2YTRkNTI1MzMxMmE2M2M2Mzk5ZTgwMTJmM2ZlOWYxNjNlY2JkOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2cf4f18c7b1e48d886857c568237a349",
+      "statement": "CorrelationContext (control-plane/src/logger.ts) is the typed snake_case carrier - required trace_id and request_id, optional session_id and sandbox_id - so the same object can be spread straight into a log line and mapped onto the four canonical headers on every outbound provider call, and the DO's HTTP dispatcher rebuilds a request-scoped child logger from inbound x-trace-id/x-request-id rather than mutating the session logger.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/logger.ts#L24-L37",
+          "version": "repo-lines-v1:sha256:14ec7596b623c62200b6ff5d1d4ae9ab08206f4f7054e9bad0fa8904da4330c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1NDE5Y2JjMjQ5NTJiOGFkODkwNDZlNzMzNzUxMDE1ZDA5MTVjNGE1ZWI0OTczMTA0NmYyZWM5ZWZlNzIxOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/client.ts#L349-L363",
+          "version": "repo-lines-v1:sha256:c26f5833643418a39db7fa78d53e01b148d440475a23c3ec7571ec829a9e93f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyODg1ZjdmNTQ2Yjc1Y2NiYWNjYTg1Y2JhNDJlYjU2NTAwOGEzZWRjNDc2MzExYjVlZjA1NjQzMjhiMzJhMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2MDliODc5NmQ2ZDc0MzM2Y2JlMjZhMzU0MGU0ZDc3M2JlZWJmNjYwOGZiM2VhMTliOTIyZjMxZDNjOWJiMTgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/providers/vercel/client.ts#L487-L496",
+          "version": "repo-lines-v1:sha256:b02c3b9cd973a0c186385497ea0588402121d53747010407ecd27f22645dfd11:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMjQyMzM2MTczNzQ0YmNiOTI4YjJmODJiNWRlNWMwODYyNzFkMDk5OGY2ZTU0ZDJjYmMxMjAyNmVlMDI4MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZWJlYTA2YjI5YjVlZWIzMjVhNjU2N2VkNDlmMTg5YmQ1NDY4OGI2YmEwNTdjMGYxNjYxYWYwMzRhZWE2NWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzODk4NzMzNWY2MjVkZDMzZGRkY2E5MzdhOTFmZWE1NDc1MDU5OTBlOTM4ODA1YjQ1YTZmOWIwOTI3MmUzOTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/dispatcher.ts#L59-L70",
+          "version": "repo-lines-v1:sha256:669dc76a9e9d059749dcdf0b6ea99b3282c1b20439c11e2a53cc302425072137:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3YjYxZGEzNWY1ODdmMmNhOWFiODE1YWVlNjk4Y2Q5NzJmMGNmZDI0MWRiNDEzNDE0ZTJiZjk2ZjllZDExOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8571fa1bb7c440829dcca9965f19e16c",
+      "statement": "shared/src/service-auth.ts is the sole owner of the sig1 wire grammar: buildServiceAuthHeaders emits X-OpenInspect-Service, X-OpenInspect-Service-Signature, optional X-OpenInspect-Actor and x-trace-id, the canonical request layout is pinned by the immutable golden vectors in test-fixtures/service-auth-vectors.json, and a layout change requires a new format tag rather than an edit; signedControlPlaneFetch makes signing and sending consume the same method/URL/body so the bytes dispatched are exactly the bytes signed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/service-auth.test.ts#L44-L90",
+          "version": "repo-lines-v1:sha256:8b9ed8e66a0e20b9e58203075fc677c9f7b7f5bac1e30bcb0b6d1a4cea73add7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjMDUzZjcyZjYyZmEyZWI0MTFjN2RmYzBkY2Y0NDczMzhhMTU4ODI3M2U3ZGU1ODE2ODkzMTNjZWY2YTEzOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjMWI4YzExODk1OTM2N2M5ZTM3MDA2MDA0ZWM2YjQ3NGI5YTFhYzYxZTE2ZGJhNTA0NzQ4NGI5ZmZjMmJkYjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkOTNiNjFjYTFjZWIyZjRlYzRlYTVlODFiNDMyNWE1YWYxZDNiZDEyOWMxZmZjNWEwMmY4NWMxNTM3ZmYwNDYifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/service-auth.ts#L1-L30",
+          "version": "repo-lines-v1:sha256:cf6f1aad84641316504116227ded21abd61b96bd46fdc3e75939a44a6f3ac557:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1ZTEwYWFiZjFmNjNiYmZmY2FlYTBjMDZmZTg5M2NlNWRmZDdkM2U1NGUzOGNlMjUzN2ViODIxMDM0ZTYwNjMifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/service-auth.ts#L139-L182",
+          "version": "repo-lines-v1:sha256:b76522f7c3c3c65d8cbfa80680a32edefa59ed3ee837a815717312bda6d7f895:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyMDc2NWYzOWU0NjMxYWZiNjQ0NWNkODhhMTIyODVkNDI5YTIzYjcyYTkzMzA0MmQ1OWM1MDI2NGExMTNjZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNjA2OWI5ZDMyMjcxOTk4OTZhMzNjNWU3YzQ5Y2NhYjM0OWJkYTVmY2U1YjRhMTgwNmU2MDg2NzhhZTM1YjgifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/service-auth.ts#L298-L370",
+          "version": "repo-lines-v1:sha256:bd5e4ed5dfaa8f6f59283aa44c10a29ff4341f8b24fc6dd8e01a7080668b8933:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyY2I0ZTVkYmM1NWUxOGU3MTgzY2VlMjRkOTI0NWQwMTVhMTYzMTZiMzI1NmE1OTc2Y2NhZDNlNzZkMGU3MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_959d288b8cba45e8b2ed42e20e15bcb2",
+      "statement": "Every inbound protocol message is validated with shared's schema before it can reach session state: sandbox frames are parsed with sandboxEventSchema and websocket client frames with clientMessageSchema, an invalid client frame answers with an error ServerMessage carrying INVALID_PROMPT or INVALID_MESSAGE (echoing clientRequestId when one was parseable), and an invalid sandbox POST answers 400 - and the client switch ends in a 'data satisfies never' guard so adding a shared ClientMessage variant without a handler is a compile error.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/sandbox.handler.ts#L78-L94",
+          "version": "repo-lines-v1:sha256:3d235a45d0a7b8f1b679a4d916ba6f845653237c04971e65ac3a551e8dec3eb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmODk3YTBiMjZiZDIzZTlkOGRjYTA5YjliYmUyNDZlMDRhMzRlN2I2YTRkNWY2NWMwYjgyM2IxZTUyODBiNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ODg2OTJiODM1MTRjZTRjN2Q2NzVlMjY4MWY3ZTlhOGIwYWEyZWY3YWY2Njc0ZTUyYzY0MWY5ZGNlY2NjOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZmIxN2NjZDA2YzI5Y2MxYWIyY2Y0ZGU3Njk2M2Q3MDU4MWQxZTVkYTE5OWRiZjgyNzcxNGYyZTg3ZTNlY2EifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/message-router.ts#L61-L138",
+          "version": "repo-lines-v1:sha256:be76255c9d24f5faeaa77577a550a427ccacc7db855f2f35bc58e8a1a97c6c9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZTRmNmE3NjhkMWU0M2UwMzVmMTcyMjQ4NGMzZWJlOTNkMWMyZTdkNzQ5MjFlYTNiNTQzNTY5NDRkODVhNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4MmM0ZjMxMzVhMzA5NWZmZGVmOTg2MDg1YTgzNjQ4ZjAxMjMwY2M5ZmYyZjY1OGE0NjQ2ZjBhYjc0NGQyYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3633318438b419d80667cef8b40edca",
+      "statement": "The web client parses every websocket frame with serverMessageSchema and, on a parse failure, closes the socket with code 4004; the transport classifies that close as unclean and reconnects with exponential backoff, so an unknown server variant forces convergence on the authoritative 'subscribed' snapshot rather than partial application of a shape the client does not understand.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L10-L56",
+          "version": "repo-lines-v1:sha256:a665a00552bbb9e3db7547fa6f7e2dcd9e28c6c9edd5f7bcdb729c3a85d34a16:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0YWQ4YjQyZDAxYTIxZTBhMmQ1Yzg3ODJhOWQxN2Y4NzZkMDE1NTUwNjQxMGViZTk0MWE3ZjY3MTZjNDQ3NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhY2M3MTY2ZTdjOTUyMGVjZWJmNmYyNmNlNGUyNDRkMGNmMmU1YWQyZmM1ZTY2Nzk1N2EzMWQ3N2Y1MjI5MTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhYmRhZGQwYjY4ZmEyMTYzMWU5NjdkYmEwMWU0NzEzMWJlNTgxMWI0ZWEwMzJkZTNkMmU5N2YwNGE5NzlkYjgifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L188-L203",
+          "version": "repo-lines-v1:sha256:feee3e0f24377576d4669de4120f2dd728fcd2dc2f6dd5e291901cec23371920:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmY2U0MTA4NDBiMWJmMjI5MDJhNzFjN2Q1ZjdkMTNkZmJlNTI0N2ZiZDMwZjhlZGMyOWYzZDNhZGNiYTUzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzUyZjA4YjM5YjA4YjAxYzhkMzA4YmY4ODBiMGJlZjAyZmQxZGZjYzlkOWFhOTNhNGQxYjVmNGQ1OGI2Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlZTVmMjYyMjExYjAyMzc0NjkyNDc4ZDY5Y2EzMjI1YjhhZDhkMzZiNzRiYmJjNWM2YzMzNTM0NDYzOGU1MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ZmRkMDQ2NWJkYTZlMjdkZjE4NjM4YjhkMzNjYmY5YzU1ZWM2Y2U0YjJmNjlkZDJlY2E3M2ZjNzY3NmQxNTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb540567f82548dc828b4b662b791de6",
+      "statement": "web keeps UI-local view types but aliases the protocol types straight from shared (SandboxEvent = SharedSandboxEvent) and normalizes payloads through small adapter helpers (toUiSandboxEvent, collapseReplayTokenEvents, toUiArtifact) before the pure session-socket reducer stores them in UI state - the ADR 0002 'normalize at the boundary, prefer adapters over casts' rule in code.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/session-socket/event-log.ts#L24-L40",
+          "version": "repo-lines-v1:sha256:45546e9ec693822dac49cde1e75de301ee695b9ff80ab887de12f184bc2da7f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1YjliYmNlOTZkMmFlZDc3Yzg0OWI4MmQ4YjNjNmE3Mzg3ZTQ0ZTUxOGFhZDg4Mzc2YmQ2ZDNkNWIzOTUwN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzOTVkMGFmN2MzMjUxMTY1M2ZlOTJjMmVlYjRjNTBlZjA1MjIwYzgxMzgyYWNiYjllNjEwMjU3MTMxOTI5NDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1NmZlMWI1MDY0Yzc1Njk4NDM1OGEzNDU4OWY5YTcyYzE3NjgzN2IwNDk5YmVmYjc3ZTY5MmE3ZTJjNTdhYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMDQ5ZjFhMGVjNzFjZTU5MDc2OTE2MGU5YmYwYjRlOGQ4YjY3NTk0M2I4MmM4ZjUyZGJiODMyZGQ2NWQxNDUifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/session-socket/reducer.ts#L19-L44",
+          "version": "repo-lines-v1:sha256:f37b441cae0fb0d025e1a79692a20306ad97cc2e0044ccc0f4ad16485f332e4d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1NDNmOGRlNGU3NzMzMDVmMzJhZGU4NTQyMjM5YzViN2M5YjU2Zjk1Y2ZkMDYxNGQ1OWJiOWYyZTQ1ZDgyMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2MzE5YzczNDBlODkxMDRmZDAwNGFiYWJmMWQxYmI1MzI4Mjg5ZTYzZmYyYzA4MmNmOTljMjkyMGJhMWFjNWUifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/types/session.ts#L1-L34",
+          "version": "repo-lines-v1:sha256:10ac1edcf478db599326e35c0468981bb1b2d025909832c70db2be7035418064:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxYjdmOTA3OGU5ZTRlMWE0OWRiZDk4MmZiZmIxYWU5ZmVlMzU5NDlhNjhhNTdiN2FiNWE4NGE5ZDcyZTA1MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYzI0MThiMjExNTMxMTA2YTlmNmFiOGQ3MGJjMDM2Zjg5MGM0NDVhNzdkNjVmNjM1NTI1YzJjMDY4N2ZiMTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhNjU0MzY3NDYzMGI1NmZhYmFmM2UwZGEyYWI1MGQ2YTQzNzNlODhkMWM5NWVkMGU1OTQyZjI3OGM4ODNkNjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cdf8b74bb636404ead3e611b108f3b98",
+      "statement": "Credential confinement is expressed in the shared contract itself: SessionSnapshotState is derived by omitting codeServerPassword, vncPassword and ttydToken from SessionState, so any parsed subscribed/snapshot message has no interactive-sandbox credentials, and the contract tests assert the strip and the rejection of a legacy vnc_info message carrying a password.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/server-messages.test.ts#L33-L70",
+          "version": "repo-lines-v1:sha256:435a97eeef1a3adfe2751c8d3ab1d4fae362548f9ee54d14e86db1250d541892:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1MDMxOGQ0MjY2MzM4MjAyYTFmNjljNTFlZjAwNzc0MGNkMTFjZjMxZWM1MjBmMTNmMjk0NjVkN2UxOTgxOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzlkMTE4ZDZlM2NiZjQ1MDUzOTc0OGRlZTdhNDMwN2FjYmU2NDQ2Y2JhMjk3ZjI3NjBmYTVkMGJiYTFiYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmMTIxNWY5Mzg3YTJmM2IyZTRiYTI1NTY0OTM0NWMwZmE2OGQ0YzljZjc5YzNiMWZlNTA1YmUxM2FhMWEyNWUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/server-messages.ts#L54-L59",
+          "version": "repo-lines-v1:sha256:492be532f2cf7374700479127873cfb5f1272b66d6ed48886b8f68812067c92d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk3Y2M1NzliNWYwNTkzZDZiYzk5ZjE4NDJjZDI5MjdlN2ZkMmUzNGUxYWI5Y2IwNmI4OGEwNGNmOGE3ZWYxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTFlOTZmNzIzOWQzNzZlMjhiMmI3MDMxZDdlYWY2ZWFhYTczNzliNmZjNDEzZTA1MjRjM2NhNTQ0ZGFjODc0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjNkMGEyYWJmYjAyYzliYmMwMTE5NDAyZDc5NzU2MDEzZGExNDFlODQzNTM3OWU4MTJhYzg3OTYwOTU1MmM3OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmNmYzc4YWI0YmI5MGU5NjM0YTE5MDIyNGQxNGE4NTk3MWU1MTZhM2ViZGI4ZTVmNDNlYTA0MWJhNmE5NWU0NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8025c57414f346e9b7ecdb6986459187",
+      "statement": "Shared also owns behavioural semantics that used to drift per package: SessionStatus versus SandboxStatus are separate vocabularies (conversation lifecycle versus the current sandbox incarnation), session-activity.ts exposes the named predicates isSessionInactive / isTurnSettled / isSessionPromptable with the deliberate archived divergence documented, and INACTIVE_SESSION_STATUS_SQL is generated from the same set so a query filter cannot disagree with the predicate.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L8-L32",
+          "version": "repo-lines-v1:sha256:2e7282d8f23d549068b993e7d457f7ef03c0178226760e624af60680a5572dd3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyYjEyYTkyOWVhNmNlMGEyZGY0YTUxZTM1NWY2YzlmNjU3NzkxNzI1ZWI1MjFiMTE0YjFkMTI4MmQ1ZDQ4NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhYmJmMDk3ZDMwOTNlMGYzOWM3NzNlYTcxNDAxOTc3OTAzYzVjZDdmMTY0ZDY0ODY0ZjMyZGNmZjYyMjkwZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2ZTAwYTA0ZjJjOTlkMTY0ZDQ1MGY4ZjkzNjBmZjJjYmRjYmY2MTcxYjlkYTEzNTNhN2M1NjZiN2UzMTMzYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjOGEyNTViYTRkMDE4M2MxOGNjZTQ2ODE1MTc0MDg1MTRlOTkwZDRiNGYzZWMxMDQwNWQzZjE5ZWU2NDMzNWMifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/session-activity.ts#L1-L76",
+          "version": "repo-lines-v1:sha256:3148401b88fd6d3b5b35986f413267dc073c11b7bab325b33d30497a60e76204:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4NWU0YzcyODJkYWIwYzVhOTFhNDY0NDNkODJiZjc4ZDNhMGNmMzUxNjYyOGYwNWI0YWYzNGE4MWQwMjRhYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/sessions.ts#L5-L46",
+          "version": "repo-lines-v1:sha256:41b0efdb96c7fea08670ca171291b4bdb6940e82a6d505e9ac36d83c9d01dd9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMDA5Y2YwNTU5MTgyYmE4OTU3ZGYxNmY5MTFjNGUzMjRiMjY2OWZjNTQxZDI2NDk1MGQxZDUxY2FhNzM0YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1M2NkNDc5YTJkODc5ODcxMDQ4NzY1MmE4YjU5MGU4ZGU2MGM0ZjFiMjMyZTU3NGEyZmM3ZTI5ZjY1MzY1OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhNTE5NWUwMjdkZThjYjUzYTY5OWZlYzY3Mzk0ODFkYjRjNTdkMDVlNzllMWZmNWZmOGMyYWZkNTEyMDUxZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aea06c6165e7431d84970968749a2cf7",
+      "statement": "Beyond protocol types, shared supplies the runtime primitives every service reuses: createLogger with logger-owned reserved keys (level/component/msg/ts/service cannot be overwritten by callers) and never-throwing serialization, the CacheStore interface plus its KV adapter, readBodyCapped for hard byte-capped body buffering, and per-service logger wrappers that bind only their own service name over the shared factory.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/logger.ts#L1-L22",
+          "version": "repo-lines-v1:sha256:41654c72109816d35c053edf8206d81168eb9d268827ab317d856e9dca6a244a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmNjdmY2NiNjU0ZDM4OTY0YWM4MzMwZWFkMTE1ODQzNGU2MWQ1MTA2MWIyMmQyNGVlNGE5MGMzYmI3ZGM2YTEifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/cache-store.ts#L1-L26",
+          "version": "repo-lines-v1:sha256:44b05d645bca1a95baefbc4c2c7a2f2d2484e82277967fd97862dc7fd0895314:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YWM4OGYzOGQ5NmYxODU0ZThmNTRiZTZjYzI1MTM2YzdjYzg0ZGY5MTczMzdjMDVkOTQwYmY5NGRkOGE1MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/http-body.ts#L1-L34",
+          "version": "repo-lines-v1:sha256:983e25fb2d9bb6e85bb3e56fe88fabdb9b1440d8ac854cbb0251986578f7f478:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/logger.ts#L1-L47",
+          "version": "repo-lines-v1:sha256:2c69c4c9476a287a13b9ee157813de7a304f78462299c9dd2ac38993189a94a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2ZDE5MjA2MTQyZWMxODA2OGI3NDE3NjgwYzYyZDcwZjA3YWQzMzg3OTI3Yzk3NWMwZWJkNDlmOWI1MjA4N2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_513a1b529ec64ccc8383aa3010eae3b4",
+      "statement": "Cross-service behaviour is lifted into shared so bots and the control plane share one implementation: completion/extractor aggregates control-plane session events into an AgentResponse over injected fetcher/credential deps (no package-specific Env type), triggers owns automation event normalization and condition evaluation for github/slack/sentry/webhook sources, and browser-auth-routes/sign-in-provider/pull-request-tool/git/cron/models/user-id/regex each publish one contract used on both sides of a boundary.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/browser-auth-routes.ts#L1-L21",
+          "version": "repo-lines-v1:sha256:c9401ee28a61493a12a3a886347a86ea510657b51ef7d7614d4277241b206810:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/completion/extractor.ts#L31-L105",
+          "version": "repo-lines-v1:sha256:3ce29bc03f48848825ac01fa538e2ee00557982248dbf19187f43c38ff680b42:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxMDI2NzMxYWMwOTJjYjkwNDQxZmZmNTZlNDhhMzZhZDNhODM3MDhkODFjMTlhZWM3MDhlMTg2ZTk4N2U0NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwYWExNWRlY2E0N2M5MzA4ZmQ1ZTAyMDVjMWNkNTVlOWQwNWQ0NzkxYzNkNzI3ZDM2YWI2M2QwNTM3NGJkOTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZjBmYzczNDhiNjEyNjIzMWZmYjEyM2M1NTIzMGM0MzNhNTkyNjljYmZjOGE2OGY2NjU1MmQ2ZjU1MjMxMTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/cron.ts#L1-L36",
+          "version": "repo-lines-v1:sha256:6ecb9b598d888a4b2098146bbfe93cd0eb06e5340ac58c8ccbd0716df32ff56a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4Yzc4YWJkMTZhMWE3YTM5Yjk0MGQyNjZlMGI4OTM2YzNlMGVlMTJkZWNkYTc4MjE0ZTg5NjNlZTBhMjRiNzQifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/git.ts#L1-L49",
+          "version": "repo-lines-v1:sha256:9213e8c72328d82744c82d0b485641e85574ff037686d8a888e111df0832df25:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/pull-request-tool.ts#L1-L27",
+          "version": "repo-lines-v1:sha256:611b10e7005aba80ef4cba881a8267f10f9a3d17c30b154c67d48124359614e4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNDUyODY0YjBkOTZlZmU4NjkxNmZmNzQ1YTBmNzdhYzcwYjMyNjU4NWMwZWFmNWMzNGY5ZTRhNGY2ZmJmNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNTRmNzBhYjgwZTI2NTc1MTFiMzk2MDNhZDk5MDE0ODBlZWIzZjRjNDk0MThhNTFmMWJiYzdkM2NmOGJiODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/sign-in-provider.ts#L1-L22",
+          "version": "repo-lines-v1:sha256:9b543066e4cd0462a107929a5bf8a95ea45554f85e76ec6592553c4983dc5869:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNDUyODY0YjBkOTZlZmU4NjkxNmZmNzQ1YTBmNzdhYzcwYjMyNjU4NWMwZWFmNWMzNGY5ZTRhNGY2ZmJmNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2NGIzMGFmNGZmNDM3YzhmM2EzMjg3OGQ2YTViYzg2ZDJkNDEwMDc3Y2MzYzFhNGE0NGU5MmZjNTBlNzVjZjkifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/index.ts#L1-L100",
+          "version": "repo-lines-v1:sha256:3336bd463f81d55211f9bb6fb2fe78014e4830e4ffa1512e97095bae5f850220:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYWYyMmNmMDczMjU5MmMyNDcxNDFjYmU2MWVmYTExMDEyNjEyZjVhMzEyMmI5YWY5YmJhZjUyZjU3MjRkMTk0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiZjZkMDVlODM0OThkODQzZjdiZjQyMWYxOGU0MjNlZjIxZmYxM2Y3MjUyZTJkMWQyNmYxYjRjM2U1MTNiNDEwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyNTI1ZGJhZGQ5ZTAyOTAwMDkxNGM4YzQyYTI0YWMzNDY3NDNjYjU5MTVhYzYyODIzMjM5NGNiZGNhOGJjMDIwIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_bcf270087a09421687cf3d547935dbdd",
+      "statement": "@open-inspect/shared is a compiled workspace: consumers depend on it as file:../shared and resolve dist/*.js plus *.d.ts, so 'npm run build -w @open-inspect/shared' must precede any typecheck, build, or test run against it, and CI repeats that build as the first step of the typecheck, web-build, control-plane unit, control-plane integration, web, and bots jobs while the root build and typecheck scripts prefix it themselves.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml#L103-L107",
+          "version": "repo-lines-v1:sha256:d7256fc4cd74fe6052e58797d7abee8934f8b544956a2573c1e81a3ff6d84d5f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIxYWE1ZjM4NDdiZGI0Y2NmZTQ5NzY3NzFmN2Q3OWVlMDdlNDM2ODhjNDI5Mzk0YjNhOGM5MGI2OWUzMTE4NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MyNDZkMDBhMWFhYzM5ZDdhNGY1NTUyMTI2Mjk5Y2E3MzdhNmNmMmI5ODJlMTI3NjVmZWQwY2E1NGM5NmY0ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTkzNGViYTRlYjYxOGMyNzMxNmVhM2RhZjBkNzQ2MjNlOWUwZGY2ZWIzNGViOTQzYWM4NzRmZGE3NDYxZWIxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjgyMTFjMTMwN2MzZTcxMDEzZTc4NDdkZjVkMGJkYTNlMTE2NzI1ZGM5MWY1NzZiZmZkOWM0OWU0MWFiZDY0NiJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/ci.yml#L149-L157",
+          "version": "repo-lines-v1:sha256:63af4fc8f4e6e0e6654b3baa0672c030a4fef7ec9667a96d9d47d5e0266ff81d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIxYWE1ZjM4NDdiZGI0Y2NmZTQ5NzY3NzFmN2Q3OWVlMDdlNDM2ODhjNDI5Mzk0YjNhOGM5MGI2OWUzMTE4NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTkzNGViYTRlYjYxOGMyNzMxNmVhM2RhZjBkNzQ2MjNlOWUwZGY2ZWIzNGViOTQzYWM4NzRmZGE3NDYxZWIxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTU3MGQwMzlmM2VlY2RkY2JlMzk5YTJkMWQyODkxNTk5Mzc5NjhjNDM1NDMyNzMyZmY3MTA5NjA0YzRjZTJkMSJ9"
+        },
+        {
+          "resource": "repo://package.json#L19-L21",
+          "version": "repo-lines-v1:sha256:24b6e45e2706495cf30ed2c0f85c3d42bdc4d2a2c2695310a64b599de50221a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRhNWM3MWRlMTdkZGE1NjBiN2M1MzA2YjQ5ZjY1NGE3ZTRlNTg0ZmRjZTAxNzE3YmY4NzdkMTBiZDMzMTVmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIxOTQyODI2Zjc3NDA2ZGQ0ZmUzNThkYTZhNTZkMTU1NDA3ZTBhYTk0NGQ0NTI5NjgwMTM3OTYwYWExMDc2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODBlMjJlYzU2N2Q5ZmFlZjMwN2FlM2Q3NTcxNWRlMjYyNDNkNDk1NmM0YTMwZmY0MWQ5ZDVhZjI5ZTliMjQxMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGZkMjU0MWNjMzIyZTIwNjVlYmM0NTY5MzRmNzdmNmM2Y2UxYTg2NWRhOWM4MTNiZDk5M2YwNDRmNjIyYzVkZiJ9"
+        },
+        {
+          "resource": "repo://packages/shared/package.json#L186-L193",
+          "version": "repo-lines-v1:sha256:3b497d427beab7509587378f370ab05bea6483fa874e11a0cb29bf7e6eefefc0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzcyN2M0YTQzOWM3ZDIyMTk1MTE5ZjA2NjNhZGM2ZTk0YzFhYzM4YjJlZWNlZjg2Y2MyNDA1YjA3MGQxMWZkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2RkNWRmNjc3NmRiM2NkMzExM2VmYjcwMjY0ZmVhYWY1MzU1Y2EzYTg1ODA1NGI2YTNlNzk0N2JiZjY5NzRhYSJ9"
+        },
+        {
+          "resource": "repo://packages/shared/package.json#L4-L12",
+          "version": "repo-lines-v1:sha256:b6fdaab74e474ed84f66519fac2a60ee12c7970e55fa7555fb17bd4e2f8f0cba:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBmYTZiN2M3YWRjMTFjZTA5OGE0YTljZjc1MmViZDg1ZGQzZTU4YWMwZjhlODA0ZDkzMjljYWY5YjRhYmZlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwY2RiOTcyYTdiZmI3ZWQyNDZmOWZmNjcyMzg1ZTU1ZjQ5NjhmYzExMDQzZGM1YjY4NGQ1MWRmYTMxZGJjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjExMGY1MWIxMjU2ZjUyNGVjNDlhZWY3YmFhMDk2ZTM5NTAwNjc0YzFlM2ZhMDA2NTc3ZWIwZDJiNWJlYzRlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmNjYWMyZjc2YmUxN2RkNzIyODJmNmU4NmE3MzgzNjI5YTQwNDExM2Q5NWM4OGM3NjI2NmZlOTExNzVjNTQzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a61d34abdd2041c188146731a03a6ad7",
+      "statement": "The two repo hygiene gates are deliberately non-blocking: CI runs 'npm run knip -- --no-exit-code' against per-package entry/project globs (with packages/shared scoped to src/**/*.ts and a single ignoreIssues exception for duplicate exports in src/types/repositories.ts), and scripts/lint-complexity.mjs reports classic cyclomatic complexity over packages/**/*.{ts,tsx} - distribution buckets, production/test split, hotspots above 20 - explicitly stating that findings do not affect the exit code.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml#L83-L84",
+          "version": "repo-lines-v1:sha256:93956fd942d77d619fb958cef3a369cfd860453c584edd7574191e313111d27a:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTI1NzZjN2M3NjZhMjEzZjYxNjFkZDhhMjYwNWQzOGU5ZTE3MWRmODQ5YmZmZTA5OGMzMWMwNjJlNDZmY2YzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ViNDkyYTljNjk0ODhkODU4MzI5ODc2YTg3OGFmMWQ4ZTMxOGU3ZGYyNWZmNzk0YzE4YjFjZWFhNWM0ZDUwMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjBlYmIwMjc2ZmMwNTA1ZmVlNTExOGY5NzZjMjdlZmY4OWY3MzdlYzhlNzk3MjBjN2Q3YmU2NTI3OGQyMmMzMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTJkNzU0MDYyZDc3NzE5Y2Y2ZDk5MzEyNDRiZTYyODgxNzZmZWIwY2UyNjE5MDg5MjVlMjUzZWVmZTEwYWJlYiJ9"
+        },
+        {
+          "resource": "repo://knip.json#L1-L30",
+          "version": "repo-lines-v1:sha256:ef9ce5745b516cb09492850a3b91d93c722aedadd786aaa2649f2166a1217a31:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0YTI1ODBjNjA0ZjJkM2UwYmI3MGY4OWRhNzA1NjNkOWI4ZDM3NzM0MzU0MzY4ZTUzNDZhY2UzMDdiMWQzMzcifQ"
+        },
+        {
+          "resource": "repo://scripts/lint-complexity.mjs#L138-L152",
+          "version": "repo-lines-v1:sha256:54ffb18a19a57230ff5de1f0ec2280b4806b80f0e0b46d2ac2bdf2a54e2bcceb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MGM2ODU5MzgyNmRjMjRiOGUwNzRjZDllZjQ4NmM0NWEzOGE4ODYwYmFmMzAyOTZkZWQwYzI0MjdiZjlmMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0MDkwZGFlZGFkMjljNGYzYTQ0ZDJlZWVkNmQ1MmRlZjg0ZWU2MzczOGJhMjg1MzFmZTNmOThhODc0ZWZjN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzNTgwYjgxMDcwZDYzOTI2ZjY4ZTkzM2E3YjhkOTRjOWRlMzQwM2Y2MGRjYzU1ZDRlYWIzYmYwZTAyMGM2NGEifQ"
+        },
+        {
+          "resource": "repo://scripts/lint-complexity.mjs#L8-L12",
+          "version": "repo-lines-v1:sha256:3339e05a785863e94b35c7a168cf60b659c497ca702c59e40e48aa9c0bcd6b1a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBlOGJlZDk5MGY3MDg3MGRlNTBlOWUyMGQxYWQ5NGZjYzM4ZGE0YzY1NGE4MjViYzMxYWRkZmFkMzg0MDQyZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2UyZDc4NTNmMGZkODEwNGYyNWZiZjU0MjZmZTM0MGU2YzI0YTU3NDE5NzlmZWM1NDg3OWM0NWUyYmNkMzY4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjY1ODk3ODA2N2JhNWNjYzhlNWFlMWUyMDE3ZGFjOGU5ZDViOGQzMDJlODMxZmI3N2MzZjUzM2ZiNTQ2MjdlOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f07bd0629a34f3cbe00f2e1c224243e",
+      "statement": "CI runs the complexity reporter's own unit test (npm run test:lint-complexity) rather than the analyzer itself: scripts/lint-complexity-message.test.mjs asserts parseComplexityMessage against a real ESLint complexity diagnostic and pins the throw on an unrecognized message shape, so the reporter cannot silently stop counting functions if ESLint changes its output.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml#L74-L79",
+          "version": "repo-lines-v1:sha256:9f0e22fbad717a8dcb17b58689a8ce4c063ef5e14490e472df0452994c654042:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTI1MjYxYTZiNGVjZmI3MmZjZDg1ZTUxMTM4NWMzOGJlMDRkYWE5MzIyNzVmYmRkNmQwZDI1NmM4NGE2MzMxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTkzNGViYTRlYjYxOGMyNzMxNmVhM2RhZjBkNzQ2MjNlOWUwZGY2ZWIzNGViOTQzYWM4NzRmZGE3NDYxZWIxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjBlYmIwMjc2ZmMwNTA1ZmVlNTExOGY5NzZjMjdlZmY4OWY3MzdlYzhlNzk3MjBjN2Q3YmU2NTI3OGQyMmMzMSJ9"
+        },
+        {
+          "resource": "repo://scripts/lint-complexity-message.test.mjs#L1-L60",
+          "version": "repo-lines-v1:sha256:80a1bca3e8e960d36af2df500d9a70407d65d2ebafa57c4363ba1db7c0a6cde4:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2YzdjY2UwYTcwYjM0ZWZhM2FlMzgwZWExMjA2ZTRmZjAwMzNmZjJmNzZlN2M2ZGZlNGNlM2Y3ZGNkMDg2MjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://scripts/lint-complexity.mjs#L154-L174",
+          "version": "repo-lines-v1:sha256:8e614012abf2810c309a03c53819268e0733186e622a50ea697572e015b72cc9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlODIwMGViZDE3MDliNmE2NzViZWNiM2JlOWYzOWU1M2JiYWMwMmNjOTI3MjM0NjJjMDU0NjhlYjBkYTZhMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4NzRhMWE3MzI1MTkyZWI1ZWFmYTZlYjU5OTUwZjY4MGVjNzdkMWMwNjg5Y2RiNDA0NTY3OTM5NzhhMDZkZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMGRhNTQ3NzI3YTkyYWU0NzAwMzdmYjc0OGYwNTg5ZjllZDJkODg5YmYzYTU5OGZmODdkNTJjMDE2OGZhY2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9e8f0910cd14be2b927302c1b08368f",
+      "statement": "packages/sandbox-runtime/** and *.d.ts files are globally ignored by ESLint because the in-sandbox Python/JS runtime is not part of the TypeScript project: its contract with the control plane is enforced at the receiving edge by shared's sandboxEventSchema validation rather than by shared imports.",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L10-L26",
+          "version": "repo-lines-v1:sha256:b1586250c558bb610cff71523fda107af542c2ff9f8c9997f8a5c99e0e2ce32d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMTFmMjM5YWM2NWM5ZmVjZDRmNzk3NWQ0ZWUwYzY3N2I1OGE4ZWE2Nzg1MmVhMjVkMjc5MjM5MjUxOGQyZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2M2Q1MzVjZTM4MDYzZDZiNGM1MWQ4YzM4NmE3ZjliM2U1ODBhMTRhMTBjMDdiMTk4ZGZhZjE5YzkzYTNiZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2MDJjYmU3MmJjN2FmNDk3YTU4ZmRhZTU5MzliZmM0MDNiNWNiYzZmM2NkYTY3MDY0YmQ2ZjdlNmU3ODNlYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxYzlhMTEzNjE1YTJmZGIyMDNmZjk3N2FkYTBmMDkzMzdhY2ViMWQ2NWZlOTEzYTlkMDYzNWYwNzk2ODRlODUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/sandbox.handler.ts#L78-L94",
+          "version": "repo-lines-v1:sha256:3d235a45d0a7b8f1b679a4d916ba6f845653237c04971e65ac3a551e8dec3eb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmODk3YTBiMjZiZDIzZTlkOGRjYTA5YjliYmUyNDZlMDRhMzRlN2I2YTRkNWY2NWMwYjgyM2IxZTUyODBiNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ODg2OTJiODM1MTRjZTRjN2Q2NzVlMjY4MWY3ZTlhOGIwYWEyZWY3YWY2Njc0ZTUyYzY0MWY5ZGNlY2NjOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZmIxN2NjZDA2YzI5Y2MxYWIyY2Y0ZGU3Njk2M2Q3MDU4MWQxZTVkYTE5OWRiZjgyNzcxNGYyZTg3ZTNlY2EifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T05:37:27.900Z"
+  }
+}

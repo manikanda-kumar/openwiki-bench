@@ -1,0 +1,858 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:714bcc4c64f3bc9d86c876213bbb1383f06d00af43a6d94111e765ebf549f89d",
+  "claims": [
+    {
+      "id": "claim_a02102c302b84fdfa6d314bd389e44e2",
+      "statement": "SessionDO is a platform adapter with no business logic: it holds only sql (ctx.storage.sql), db (env.DB read once behind a documented eslint-disable), and _runtime, and forwards fetch, webSocketMessage, webSocketClose, webSocketError and alarm to the runtime's platform-neutral SessionServer.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L16-L102",
+          "version": "repo-lines-v1:sha256:bc8c37fb675f9d8b1ea51f5d6be4279421ac1cd0540cd4e1a09fa652f57e9653:eyJzZWxlY3RlZExpbmVDb3VudCI6ODcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzMTVjMWY2NTZiN2E4NDNkMDkwMThmNDE1NWQzMDAwZDJjMDkxZWEyODFiM2Q4ZDcwNmVmMjI0OWIwM2EyOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1MjFhMzFkNjMwYWFmY2QwNWEwMDNmNzI0YjU0OGZkMDkyNGQyYzdlNGFlMmMxMmMyOTdkNWJiM2MyNmE2YmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/server.ts#L21-L47",
+          "version": "repo-lines-v1:sha256:a25f6a49cd4bbdcd879665b389d7206fee2c72a29736a8b2590d15a620f88ea0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyNGM1Y2ZhNTk5YTg0MTNiYTMzMjJiNzJiNmEwNTgwY2FiY2YyODFiMWEyMmNkNWQ1Y2FkNGRlZGFjNmQxMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlOGZiMzI0ZDgyOTUxNzFlMzNlZGIzOTU2NjExYTk3YjI0YmM5OTBhOTNhZmE3OTFkMTZmMmE2MWRkOTY5ZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb91f740e46b403485bc8b794d0158ce",
+      "statement": "ensureInitialized runs initSchema then createSessionRuntime and assigns _runtime only after the factory returns, so a throw anywhere inside graph construction leaves the activation uninitialized and the next event retries initialization rather than dereferencing an undefined runtime.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L40-L60",
+          "version": "repo-lines-v1:sha256:01f8144bac47331aaf7b08b1c91abb29b5ffe7475a4043cb85e7389ad3cc466a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwZDQ1YmIzN2Y0ZGY5NTU4ZDA5ZGVkNmI5NDBlZmFhNWIyNjQ3OThjZmJlZGZiZDhkZmZlMzRiNjQ3MzY1MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYWMwNzdmMjFlZGI5NDc1ODAxZGQ2MTcwYzVjMDU5YjJkYWExYzJmZjU0NjdkYzQ5NjBhNjJhNjY4NjA4ZTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a46043456b5a42bb8811a6cb129b6d84",
+      "statement": "The runtime getter calls ensureInitialized on every touch, so hibernation and eviction recovery are invisible to application code; alarm() is the only entry point that passes rehydrateAlarm=false because the delivery itself is the rehydration, while fetch/webSocket first-touch paths rehydrate the persisted deadline through backgroundTasks.submit.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L820-L830",
+          "version": "repo-lines-v1:sha256:d671ca2a3b5dbd585b39b23265d003e6e4d641cc5d2e774376cefae6196382b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhZWYwMWI1NTY1ZjVjNDJiNTIzMjI0ODhiYzRkOWE2OWFkYzU2NGIzYzRiMjZmMjU3NGUxMGQ3MDc1YTllMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxNjdhZGIzMTY3NWQ5NTE1YmM1ZGU0YmRjMWUxMzY1MjUzY2YxNGQ0ZjJmYjAxZjk4NjJhNDYwYzU0MWJjMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhMzBkZWNjZTk0NGZmMWEyZDRhNTUxYjBmZDE2NDBkNmVhNTM2MjViYWYzODQ5YTAxY2U5ZmYyZTc1Zjk2Y2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3ZWUyYWYwM2MyNTlmOTAyNzg5YTdhM2VmODdmMWE2YjkzYmUwOGRlYzMzNTA4MDQ5ZDBkZGEzZmNlNjg0NTcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L34-L60",
+          "version": "repo-lines-v1:sha256:5e31bd74bd7d82228e20b6185acd95fa1114be8afd334070463e9b8fe710472d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2MWZjMmNkZGZiOWJmM2VkYzc3ZmNiODg0Yjc0ZDgzYjEzY2JkMzYyOTMxZmEzMGZlZTIzZDJiNDUzYzgzMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwYjZkODE0YWRjMTk3OGQ0NDFkYTdkNWVkZDU4ZDlmMWQ5OTU4YjEyOTliY2MyMWMyMDBkNDIxNjI3N2JkYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYWMwNzdmMjFlZGI5NDc1ODAxZGQ2MTcwYzVjMDU5YjJkYWExYzJmZjU0NjdkYzQ5NjBhNjJhNjY4NjA4ZTYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L95-L102",
+          "version": "repo-lines-v1:sha256:77b90bb5b96b1ff408645851dd5681436048faa92faae1481e99fd88b26787f3:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyYTJmOTk2ZjA4ZTY4MGJkMjkyMTM1YTZmYTQ5NzhiZGEyNmU2MDJkODRmMzNjYjFkNTk0Nzc1ZDQzMDRiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWFiZjU5ZTQ3NzVlOTBlMDFjYjAzMDM2ZmRmNTNhZDRkYTlhYjY5YjU5NTE3NzU1NGY4ZDRlN2U0ZTE1NjJkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_666a75a709744ddf9193d302ce91d547",
+      "statement": "A session is a SQLite-backed Durable Object: the SESSION namespace binds exactly the SessionDO class (new_sqlite_classes in the test-only wrangler config and the Terraform worker module), the namespace is addressed by the public session id via idFromName, and session.id in the DO database is the Durable Object id.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L98-L103",
+          "version": "repo-lines-v1:sha256:deb3680c386dc7934ca241b2148209713094a407c83f4f81e634ae0faa9f8b24:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM2YTg4YzUyZWExZmEwNTg2NDA4ZGYwYjljOTk1MjZhNjRhY2EyMDJmMTJiMjg3Y2FiNGUxMmQ3ZWZjYTkxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJkMTFjYWY0M2U5N2VmMzY5ZTZiZWVkMWEyNjhiZDA1ODM4ZjI5YjlkZDI1NGJmNjliYTY0ODg0MTQ3MjM0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGMwMDMzM2I5MGM4NjU3YmYzYzA4ODcyNmJiODg4NGYwM2Q4MGU0YzI4N2NkMmQ3YTNlOTlhMjU5NzcyNTAwOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGY3OTMzMTg3YmU3M2ZlMDFiZjkzYzVmMGRhMDZhZmU1ZGM0YzYxMDMxZDIyNGM0NTZmYjRhNTY3MTczZWIyMyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L52-L54",
+          "version": "repo-lines-v1:sha256:2bca02fd940b677516ec9edbb40696fbfc3036efe70cdd3e1e986eb3f0b67856:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGY0ZTVhOTk5ZTdhYWM0YmIwNDg0MGY3YWJhOWE5ZTQ4ZTIxMWM5M2M1ZmRjMGJjMjJiZjJhM2ViM2VhMDE5OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZmYzljNTQ2OGViZmEwNjllZmJjNTBkMmM1OTYxMGFhZTkwNmE4MTIxOTI1MzQ0OTdjNDNjMmQ5ZTIxYzk3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODc3MjUyNjgyZGJiODBlYmI1MDc5YzU2ZGEwZjljOWUxOWEyYTAyNzNiZjI3MGE3ZjJjNjAwOWRhNjkzOTM1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2E3ODU2ZjcyMTA2OWY5YmIzYTU0YjIxMjcwYWZkMmIwYWMwYjdmOTkyZTYyMzNkNjBlMGQxNzNiMDEwMTYyMCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/wrangler.jsonc#L1-L17",
+          "version": "repo-lines-v1:sha256:8b8697624b22762770a4dfa6c3abd71078e6803335bdd800fb983e29d7edcacb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzODkzZjFmNzAzYzkxNjRhODI2NmFlMzg5NzIwNWFiNWQwOWY4YzMzMzFlNzI1ZTAyNGFiOTk4ODQ0MmM1MGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NGQ4YzA3MzQyOTg5MzEwMTU3NmQ4OGQ5OTEyN2U4OWQ2ODkxZDNiMTdlODlkZjAyZWM5YWU3MDcwNWQ4YmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwMDExMTVjMGE2ZDk3NDZlYzk5ZjFmYjBkYTI0YThjNTY3ODA2OWI3ZmNkMjQ1YjU3OGMwMWQwNzAwM2JiZDUifQ"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L215-L226",
+          "version": "repo-lines-v1:sha256:166fd94793ab8062d144de51f2ff326bf33cc3eea80bc20a9c1ed87eba1513b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YTVmOWI5YjIxYmZjYmZiYjNkNzcwNjgwZGVkOTdiNGY1OTliZmRhNDcxNTM1MGJkOTkwMzhhNjcyYzQxYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0ZTExMmY0YWM1MmZjMzJhNmVjYzM1NDAyZGY0ZTc4NGZmZDhkY2Q4YjAyNTIxYmJhMjZmOWYyMjA3NDljMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiNDBiYzIyOGRjZjIzNjY4NjBiYTJiOGY4OTJkMjU5Y2NhNjgxOTU3MjZhZDdlMmI3NDVlNjRiMmUyMWYzNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0ZTEyYjA0ODRhYmIzNWNhMzFiYWQ1YmRiNzQ4MDBhMDVhZmU5N2MyY2UwZTJiZDZlMGQ2ZGQzYzZjNDYwMzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3ff4711a30b437db2ae400fa301a48e",
+      "statement": "createSessionRuntime builds the whole session collaborator graph eagerly in nine numbered tiers - repositories over SqlStorage, sockets and alarm scheduling, the messenger, domain services, the lifecycle manager, the message queue, queue/lifecycle services, internal HTTP handlers, then read models/admission/server - with no lazy getters and no DI container.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:9756ed4eeb40be61c4c2268360141ab32bd8bd2816c227d358ea81320d6069c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjBhMTg3NDJhZjQ4NTE2ZDA3ZjVlZjAxNWEzNjQwNWY1NTEzNWQxMTZhNWUxZjZhYjZlZWUyMDJjMWMxNmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5NzcxMTg5ZjFjN2RkM2M4NGFhMmIyMTQ2ZmJjNjg0OWM4ZGIwMjg5ZDM0ZjE2MDhjODZjYzA2MGI0NjYwMzcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L215-L273",
+          "version": "repo-lines-v1:sha256:4e1e1744b9821fa9a485b1bcf13ca988c2d86bc4237a9110fda9e235146807c5:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmZGI5ZTYxMDNjNDllZTA4NjIwNWZmNTNjMDkyMTM3Njc3MzVjMWU2OTVhNzgwOTJiMjE1N2NhYmU4ZWU4ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MzVhN2NhM2JhZjA2OTRjYTkzNmU3ZTM5ODA0ODYyMzliNWFhZjA3M2QwYzZmZjcwNjg2M2I4ZTYxMTI1YzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjZmNkMTQ5Y2Q3NDM4YzEwNjNiN2YwYWFjOTM5MzEwMGNmZTYxOTE5NjNmZDFjMmI0M2ExNTA4NTlmNjQwMTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4ZjgwOWM2ZTcxN2FkNzM2ODJkZDQzMjVkZWNlMzRkMjMyNmJjM2Q1MzJjZmNlODYzMDc0ZmIwMWYzYjBhMDQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L297-L297",
+          "version": "repo-lines-v1:sha256:f933b347faa39794c8bc3ef58a64959ce8ee33711ec23388903a3ab1b2a38bfa:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkzM2IzNDdmYWEzOTc5NGM4YmMzZWY1OGE2NDk1OWNlOGVlMzM3MTFlYzIzMzg4OTAzYTNhYjFiMmEzOGJmYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkzM2IzNDdmYWEzOTc5NGM4YmMzZWY1OGE2NDk1OWNlOGVlMzM3MTFlYzIzMzg4OTAzYTNhYjFiMmEzOGJmYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTI2YTcyM2RiYzkyZmM0Nzg2OTE2NmIzMTZlYjhhM2Q5MDQyOTY3NzIxYmY5ZGRmYzRkNzIxNmQzMGE1M2ZjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmM0NDc3MDMxZGJiYjY3MzJmNDMzNDhjOTU3YjIzNTdhN2YzZGVlMWVmZDlhYWVjYjNiNjhjZTE5ZjEwNzJhMyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L379-L393",
+          "version": "repo-lines-v1:sha256:09046297af1df3a21d985233d0dc2d1e8af08472e5d3948de9f538c3ca1ff434:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxOWFjMGM5OTRjMjhjMzg0ZWU4MWI0NWZjNzViM2QzMTRmYWJmMmVjNWZiNTgxMDU5YzU3MDRlYTNmOWNiODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MmI3ZWJhYjcwZTJhZWZiMjUzYmQzYTA1YzgyNjBmOTg2MGE4NjhhMzNhOTVjNmRkMjBlYmI5MWNmZTYwNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3MjhmMjhjOGEwMmI1MTBiMDdmNTdiNjhiMjZmMzRjNmVhNGQ5M2M0MjhmYWNjYTFmM2QyNjhiZmQ1MDc4YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4M2M1MDdhZGJkOTM0NjQ5YmIzZDFlNjZiZTk4ZmUwMTBhOWM5ZDJkZmQ3YWQwMGM3NjYzZjU0YjY3YmRiMmIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L416-L416",
+          "version": "repo-lines-v1:sha256:b7970cf4016b7caf0d16bf4b739d4a3a7c7c4e9e2642019f0d98b4446aab6f18:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjc5NzBjZjQwMTZiN2NhZjBkMTZiZjRiNzM5ZDRhM2E3YzdjNGU5ZTI2NDIwMTlmMGQ5OGI0NDQ2YWFiNmYxOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjc5NzBjZjQwMTZiN2NhZjBkMTZiZjRiNzM5ZDRhM2E3YzdjNGU5ZTI2NDIwMTlmMGQ5OGI0NDQ2YWFiNmYxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmNjYTBiNGU3MjgzYWYyOTY2YjE5YzUwYmQ4M2UyNWIzNDM1YmFhNmZhYWUxZDBkZGY2ZGIwMjZjY2FjMzI3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTZjMWI5NWY1OWY5YjVhODc0ZjI4ZDE4YjYzMDc2YjY1NDg0MTQxNzc1YmRmNWUzM2M0ZDNkZWQ1YjAwYzBiMCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L528-L528",
+          "version": "repo-lines-v1:sha256:be1bd4a270c14345cf3d7e4d20cfad87356075e5f16ac896a5973048c5053cab:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmUxYmQ0YTI3MGMxNDM0NWNmM2Q3ZTRkMjBjZmFkODczNTYwNzVlNWYxNmFjODk2YTU5NzMwNDhjNTA1M2NhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmUxYmQ0YTI3MGMxNDM0NWNmM2Q3ZTRkMjBjZmFkODczNTYwNzVlNWYxNmFjODk2YTU5NzMwNDhjNTA1M2NhYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2UwNWUzMmIzMzgyMTVhMWFmMjEwMWExZDQzYjBkNWEzMTE1OTY5ZmFkOTQzOWEwNjY1MmM2MDE0ZTU1MjE0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjEwNjZmMjMwNjQwNmViM2I5ZmFhYjVhODc1ZWI2YjVlNDczYzA5MDY5N2I5ZTQyYjMzYzVmNjQxZjZhN2I3YSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L653-L653",
+          "version": "repo-lines-v1:sha256:6070462bfb074aa9b3cb8a416e31bfab2fa40b554c8015c676ed2b1e41d4e9c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjA3MDQ2MmJmYjA3NGFhOWIzY2I4YTQxNmUzMWJmYWIyZmE0MGI1NTRjODAxNWM2NzZlZDJiMWU0MWQ0ZTljOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjA3MDQ2MmJmYjA3NGFhOWIzY2I4YTQxNmUzMWJmYWIyZmE0MGI1NTRjODAxNWM2NzZlZDJiMWU0MWQ0ZTljOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTUwYjRjOGNhZjY4NTY0ODk3Y2I0MGIyMjllNmVkMzAyMTgxNzE3NGJlMDdmYTRlYjc1YjNlN2JjZmY4N2E4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2JiMDUzOTczNTZiZWMzYTkwMGQ0YjhlM2E5YzkzMDNhZmI2OGY5MWI2MjgyYzdmZmNiMGNkYjJhZjg4M2NmYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_88cc431e55f14dc68095b116303cd72a",
+      "statement": "SessionRuntime exposes only log, server, alarms.rehydrate() and internals; internals (SessionComponents) is a test-only seam whose fields are reached solely through test/integration/session-do-access.ts, and sourceControlProvider is an accessor pair over a mutable cell so a test can substitute the provider after the init request already built the graph - operations only, since the provider name was captured by value at construction.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L146-L185",
+          "version": "repo-lines-v1:sha256:49948174a417e3ff62a56b2c5d628b7ef1b4184564db156aad6d7b0640fa7ab8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmODIzN2E1YWJlYTYzMmI3OTc4NDkwNzU3M2U1ZTM3OTE0MjIwMzMwNzY4OGYxNDMxNmYxYjFiZTk3MjhiOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0NjQxNTE4NDUyNGU0YWM5MjFlN2EzODVhYTU5ZWRkMzNmMzZiZTBlMmQ2MDIzYWQyNWM1ZGVkMGNjNTQwM2MifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L275-L282",
+          "version": "repo-lines-v1:sha256:4c56f812e8faa67cb97127bd539a9ffaa076ff8a157fbe3ce6a1461b9a7f3330:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTBhZDllMTdiNjU3ZTYxZmY2NDM3OTdlOTM0MDZmOTM4MmE5NmIwOWUwYjJmN2U3MzRjZjllNDc3NzFkOGRiYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWYzNDYyMzM5OTQzMjU3Nzc4YWU3OGVhOGMzZWE3MjdkNmMyMTI4MDU5OTRhZTNhN2M4ZTA5MjMzYzE1NWNhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjU2MDA3ZDJkZjVlZjRjM2NhODc5M2I4MDIzNzg4MmUxMGI1MGZjZDkyZjBmYzExYjE1MTEwZDg0MTYwYWMxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjJhOWQ2ZTdlNTJkNzdlOWExMWQ1ODEwZmQ5MTI3NjMwMzE2NGQ1YzJkNTcyMTNiMzBlZGYwNzZjZmYwNDQ5YSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/test/integration/session-do-access.ts#L1-L49",
+          "version": "repo-lines-v1:sha256:4735c39ab5133a025ac6cb6f006538348cca2b99d82411e13049ad541a89d6b6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmZTJmZGFiOGUyM2VlZDY4NjIzMDhhNzA3YTNhYTNkMTc3YWNjMzA5NjY2ODIyODc1NWM2YjI4Y2ViYjc5YTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhMDE0MTFhNjQ5NWEyNGQyOTZjMGQ5OThmZmM3M2IzZDdjMjk1M2I1NjFhYWY3MDgwYWNmOWIzZjdjYjU2ZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxYWEyMDZmMDdiYzIyZGEzMzM2ZmJiODIzMzY0NzAzNGZlZDExY2U4OTgxMjI1YTIwNjE3OWI0ZTg0NjVkM2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8debc4b0006748d8b7f5ae87ea726628",
+      "statement": "Both provider factories are constructed eagerly at graph build and their throw is deliberate: an unknown or missing SANDBOX_PROVIDER, absent provider credentials, or an invalid SCM configuration makes every session request fail at initialization instead of degrading and surfacing the error at the first spawn or PR operation.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/provider-factory.ts#L165-L184",
+          "version": "repo-lines-v1:sha256:cc1e7c7f91dfcbc14ef0dde915fec5fb0ee59363805d1a3990baf4f749fbe083:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZGRiOGI0ZDQzOGFiZmI4ODc3MjY4ZGRlNWQzMDY4M2VjMmYzODhhZjZjM2MzNjQzYWJlMGEwMWY2ZWE0ZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5YzQ3ZTM3MDk3ZmYyZWYxZDU1ZDBjNzMwODQxNTkzMjg1OTcyN2E1MGZiMGM5ZDJiYjBhMzJmYmUxODdjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjZDJjNTNlNjdkZjcwZWM4NzNmNmJlYzU1YThjY2JmMWY3ZGFmOTE5MDQ0NzI2ZDYwZTBjODY4N2Y3NGVkYmEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/provider-factory.ts#L24-L43",
+          "version": "repo-lines-v1:sha256:1d1101907b0507ca101e0b89c24110b062cfe58d473ca6cd2a78cbf787425cc9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljNjdlNGNhZGY1Nzk1NWU1YTFiMGI0MTcyODdlODY2YzMxMmMzN2RjMTk0Y2JmMWMyMmQxYmMzMzE0NmRlNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkNDQwYjYxMzQ0ZjRjMTA1ZTY4MTBmNWQwZDU3Yjg1MTFkMDcyZGFhMzU4NDNhNTg5NTM0NGIwYWQ0NDhmYjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmODJjYTk2MGFhZTE5OTkwMTAzNTQxM2I1YTZlODJhOTE5ZDIzZDAzMGJmNmQ4MWJiYjBhZmEwNDM0MDdlMjQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L865-L869",
+          "version": "repo-lines-v1:sha256:34e43cd02a113a12d99b639fb322c7100ca679eb3d447911132b73e4d217caa7:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RlNzUwNzJkNzA4NzQzNWRkYjRmZDVmNTUzYzhiNzMxMGQ2YWUwMDNiMTgxMDFmMTY2MzYxN2FmYzVkOTc1ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI1MzRmNWRlNTQyMmNmMDhmZmUxN2QxYmMwNWEyMGJjOTEzYjAwNDZmMjA2MmY1NzA3NzljNzE0OTE3OTRjNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzM4NmVhZDliZTZhMTQ1MjM2Yzk1MmY2ZTQzYzU0ZDExMTIyMWM1MWVkYzU0NzY2MzYwMjcyZGI3YjA5NDViMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTM4MTJhNmVmNjk2MmZjOTllNTRiZDNhYTY3ODM5YmM4MjkxMDJhZGI2NTM5MTVlNGQ1MGI1M2YzZDVlNzIyMCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/test/integration/session-components.test.ts",
+          "version": "repo-file-v1:sha256:7499489c2817bb4586a8166e51ba086d829401b8281d504b5bc76be8a22495bc"
+        }
+      ]
+    },
+    {
+      "id": "claim_7419b67c0ed4482eb7f2829abe8a1129",
+      "statement": "The first things the composition root builds are the encryption keys - requireRepoSecretsEncryptionKey and requireTokenEncryptionKey throw unless the value is valid base64 decoding to exactly 32 bytes - and exactly one session-scoped logger over a latched public-session-id resolver that reports the Durable Object id until the session row exists and the public id afterwards.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/env-validation.test.ts#L10-L38",
+          "version": "repo-lines-v1:sha256:7400d03ee60cac6de22d3386565353befc54d8b5604c25e44dd37542f6a074d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMTNmYmRjMzQzMzBkMGRjYjE0ODRjNTliOGFjYWRhMjZmZjIzMGQwMTNlYTgyNDYyODZjYzg3YjJiMDRlYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkNDM0ZTVkM2U4YWIzOTQzNDFhMWYxZDcwNWE1YjU5MDVjNjc4MmIwZTcwOWUyY2M4OGEzMjVkMDZlMWEwMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkNzM5MGZlNjkwNzZlNjA2YTMxNjUxNGRjYmUwZjhmM2E4NGQ5MzU5MzNlMmE5YTFmZDBjNzE2YjgwMGY4NjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2OTllMjE3OGEzZTNjNTYzZmFiYjQyNDQ3Y2ViZTQyNjlkY2ZmOTVhY2JlZWExOWQxZjBiZGRmZTQ4YTNmODcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/env-validation.ts#L48-L48",
+          "version": "repo-lines-v1:sha256:9fc56796d5e268220683dd331c9f82cf350f3e3de7e117af9071c7e00a7caf42:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWZjNTY3OTZkNWUyNjgyMjA2ODNkZDMzMWM5ZjgyY2YzNTBmM2UzZGU3ZTExN2FmOTA3MWM3ZTAwYTdjYWY0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWZjNTY3OTZkNWUyNjgyMjA2ODNkZDMzMWM5ZjgyY2YzNTBmM2UzZGU3ZTExN2FmOTA3MWM3ZTAwYTdjYWY0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODc3Yzk2YWVhMjdmMjFhMDJlMTg3NDA1OTVmZGM1MWFiZjM4NGIyOGQ1ODdlM2U0OTM3Y2VmMjU4NTBhY2MyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWM4ZWM3ZDIxZTRkYTQyYWEzZTI5NjA4YjE0NTE1ZTI1MWQ2NmZlZDg0MWQxN2UyMGVjNzE0YjQzZDFjYWMxNyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L225-L248",
+          "version": "repo-lines-v1:sha256:5f21a444939a1684f0ebb96ef6186d64b4b6f9e648225df8ae3f829776e6b218:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwZDYyYzZjMmM2YTMxYzE0NDNmYzAyNjU4YWI3NWRhN2VlOTA5NjUzZmMxMDg2ODY5ZjMzNDRlZThhZTIzZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNGZhZGU2MTlkMTg5MDZiZGUzZTZmMzYzYTg0NTU4Mjk1ZjZhNGUxZTNmNDc5NGQwNzliMjJlNjYwYWM1ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkMGZmZDhjMTI2MzdjZDY3ODM2YjE5MDdlMDZjZjY2YTVmZGMzYTdiZjMxZjhjNzY2ODUzMjkzOTRhOThjZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhMDQ3NDg3NjNhNDQzN2IwMjhlNjliNGNkMjRmNTU3ZWY4NzQwMTczNDY5NTcxNWZkZjg4OTliOGQzNjdiNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8bc93cf60c4343cdb615a18706161858",
+      "statement": "eslint.config.js bans importing session/components.ts outside session/durable-object.ts and importing session/durable-object.ts outside src/index.ts (tests exempted), and because a later flat-config object replaces the rule wholesale the surviving ban is re-declared per exempted file; src/index.ts is the only re-export site and Env.SESSION is an unparameterized DurableObjectNamespace, so nothing below the adapter can depend on it.",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L153-L217",
+          "version": "repo-lines-v1:sha256:266d43759b41df58a2b4e2a74f85e190fcbca5448ff0fcaed8ff783b304c0cdc:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkOTlmNWQ0YTljYTE1OGIzYmM0OGQ1NWZiMjhkNjMyZGViOTgyZDAzNzkwYzI3NzY3Yzk0ZjhkYWU1NDQ2M2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjgxYTFjMWE1N2EzNjdmZDcwMzBkZGE3ZGIzNzMxYTMwMGE1ZjkwMDJlNmZkZTQ5MjJjNDg1NzllMTY4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MTZhYmU1ODMyZGQwOTA5ZmM2NjM4NjcxMGU2ZDY5NTlhNzViMWFjOWVlODYyZGQ3ZTc1YjdjNmM3MGY0ZjYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L30-L30",
+          "version": "repo-lines-v1:sha256:194d2dc11e45a6f48063b8f59692fd8ef7856fa54dad1dbe5399cf58ef166582:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk0ZDJkYzExZTQ1YTZmNDgwNjNiOGY1OTY5MmZkOGVmNzg1NmZhNTRkYWQxZGJlNTM5OWNmNThlZjE2NjU4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk0ZDJkYzExZTQ1YTZmNDgwNjNiOGY1OTY5MmZkOGVmNzg1NmZhNTRkYWQxZGJlNTM5OWNmNThlZjE2NjU4MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGJmMDNmMzJmZDU1ZGUxZGI3NDVhOTcxNjBjMWJiYjJhYzkwZWQ5NTdjNTJjYWQ3MzU2OGRmZTkyYTU0NTRiOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWY4MzgxNzZkODMyNzBjNDAzNGU3NzRjMzMyZGQ1YTUyMjZmMTZkNTNkY2I4M2U3YjZjMTE2MDM5MzFiYWRjZSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/types.ts#L8-L24",
+          "version": "repo-lines-v1:sha256:95c53186c4021d0dde4d48659ffaa8c1d5ac0bb2c857582b10a17f57d59ac29e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlNzhkOGQwYTliMGI1YmIzZDJlOTYzMmVjMDc5OTRkYmFhM2Y0NWYxNTBjNDkyNjA4NzM5OTAyNWRkYWYwYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyOTE0MjU3NjRhNTVhZWYxOTI3ZTg4YzNiM2Q3NzkxMWM2ZDM4NDg0NGYzZTQ5ZGM1NzQ4NzY1NGEzODZjZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5MWQ2YzliMjcwNWM1N2ZjYjUwNTQwY2MzOTM1NDA1N2Y3M2YwNzUyOWI0MmZlYjgyZTgyYmYzZmI4Y2E3MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjNTUyNGUwYTU1YmRiNjBiYWU0NDEzZjc3YzZiMWNkYTQ3OTI1NjNhNjQ0MTE5YmI4OTk0MDIzMmYxNTdkOWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_80903862e3844cfaa97b8f8b39476531",
+      "statement": "The repo-wide no-restricted-syntax ban on env.DB names the router and the two Durable Object constructors as its only legitimate readers, and SessionDO's constructor is the composition root for the injected handle: collaborators that genuinely need D1 are built conditionally on it and D1-backed projections degrade to no-ops when it is absent, while provider construction and key validation do not.",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L131-L150",
+          "version": "repo-lines-v1:sha256:a05b9c8fec6f9425b7bf31903ba612956f92150c21b25c98c3ca1e61ffd10570:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MWM2NTVmNDBjNGIyYmFiYjFmOGMyODA2OGQwNjhhMWQyYjdjNDcxN2M1MjJhNWJlNjA3NmQ5OWY0YzFkZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjgxYTFjMWE1N2EzNjdmZDcwMzBkZGE3ZGIzNzMxYTMwMGE1ZjkwMDJlNmZkZTQ5MjJjNDg1NzllMTY4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2MzlkNWRkNWJhZTIxZDFiODc5MTg4MmYyZTIxYzVhNTcyZmQxOWYwODhlM2Q1MzU3YTM2YzFlM2JlYmI0NjMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L284-L287",
+          "version": "repo-lines-v1:sha256:3693e1b490628abede68c89148592eafdb269b654a92ba0b1d7d8cc6d04d637e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWVkMDVjNzE0OTRmNDg4OWFjYzBhZWY1OTdiM2ZlNGM1Mzg3MWU3NWYwYTQ3MDQyY2JkYjViYzE2ZTE3ZWVmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODkyN2JiNWNkN2ZkMmVjYmJkN2U0ZDI2MGM3OGVlOWU3ZjIwNDlhYzRhOTkyYjNkNjMxMjg1OTczZDFlZmQ1YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTVlYTU1ZDkwOTlkNjhiMWE3MTMyMjc2NDUxNmU5Njk4NWFlZmU1NDZlODQyYmVkMDZjZjAwY2YwMzMwZmIwNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDE2MGJmZTY4MjYzY2JlYzNiNjc1OGFiNjFlODY4NDA2YjdjYzcyNjIyODEzZGVjZjBiNGEyMGY3ZGNlMjExZiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L18-L32",
+          "version": "repo-lines-v1:sha256:3db08176e28fbd8b9a2a1711a388ad24c79ee32bce3c84c01b71346a564c6c7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzOTg5NDBlOWY5NDhlYTFhNDI4YzJjNzk2ZmU0MTk1ZTA1ZTE4MGQ1NTk3YmFjMDMwODljM2YxODBlNmI5ZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5MzIxNDE4OWUwZTEyNDMzMTE5NWZmMzA5NWJmYzc0NDAyYmE2N2UyMTE3NTI5NzJiZDU1MTVlN2I5YmM3ZTQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/types.ts#L23-L24",
+          "version": "repo-lines-v1:sha256:25fa0002fcae399650e8e1c105709945d75a25de0ead07f70d14b78e25c9191c:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGJiMGI4NDZhODZmYmQyNmRhMjRkZTU1ZDk2YTQzMGQyMDNmNTM2MWEwMDNiY2E0ZTBlMWQ2MjllN2Q2ODIwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTI5MTQyNTc2NGE1NWFlZjE5MjdlODhjM2IzZDc3OTExYzZkMzg0ODQ0ZjNlNDlkYzU3NDg3NjU0YTM4NmNmNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTY4ZWUzNDU4YzU2ZDYyZTEyYjdlNjBiNjcwYjEyNDA2OWRiZTA4MjNlODRhYWI3MTJkODkyOGUwZGNlZWVhNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWM1NTI0ZTBhNTViZGI2MGJhZTQ0MTNmNzdjNmIxY2RhNDc5MjU2M2E2NDQxMTliYjg5OTQwMjMyZjE1N2Q5ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_db4b9eae792745eabea322521d4e7fbb",
+      "statement": "src/session/contracts.ts is the router-to-DO path contract: SessionInternalPaths is an as const map of 39 internal routes plus buildSessionInternalUrl over the http://internal origin, and router-side callers (session-runtime-proxy, session-prompt, session-children, session-diffs, model-provider-accounts, autofix service, github webhooks) and the DO route table both import the same object, so a renamed path cannot silently break one side.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-runtime-proxy.ts#L11-L11",
+          "version": "repo-lines-v1:sha256:c9be5b3fb4d6e10a3308ca34204f84d377c495fbd1056731197f758cd993ee9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzliZTViM2ZiNGQ2ZTEwYTMzMDhjYTM0MjA0Zjg0ZDM3N2M0OTVmYmQxMDU2NzMxMTk3Zjc1OGNkOTkzZWU5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzliZTViM2ZiNGQ2ZTEwYTMzMDhjYTM0MjA0Zjg0ZDM3N2M0OTVmYmQxMDU2NzMxMTk3Zjc1OGNkOTkzZWU5YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzAxMjRkNjIxMjY1ZTY4YTg1M2JmNWEwZjRjNmRmY2MxNmQ2NmZkODg2YmIwYzc3Njg1ZjNjMzA1OWJmZTViOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzY5NDFjYWEzNzYxMWQ1YzAwZWY0MWIzOWE0MmM4YzE3Njk3OTc3YWY2MTgxZGRlOGMxMDRlYmFiZjkxNDllNyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/contracts.ts#L1-L65",
+          "version": "repo-lines-v1:sha256:ebb6d344fc7ff9f0fed33bef30dc26e7a68520e6c51db15492eaf5969aa68d6d:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/routes.ts#L69-L165",
+          "version": "repo-lines-v1:sha256:097520d7e9effce1a792beebd955dac909be64b895033f42f99ead90c535d6ad:eyJzZWxlY3RlZExpbmVDb3VudCI6OTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzMzMzYmYxY2MyZGI4MGJkZDEwYWE4YjQ5MzliZGEwMzFjYmVlMDZlNTk0ZTdiODU4MzM1YzM3YTRmMjhlZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MDE5MGEzMDU4ZDliMWU3NmIzYzU1MzdlNzI3YjViYzM2ZGIwNTU0Yjg3MWU1MGRiYjhkYzk1Yjg2OTgyNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1MjE0ZDA3MjIxZjFmZjUzNzVhYTA3YzUzMmRmZDA4Y2ZmMzZlMDFmZjY0OGNiN2U1OGM3MDhiZGRhYjU1NTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L192-L204",
+          "version": "repo-lines-v1:sha256:f1cd3b417d2906112f79bcd9ca04a1021a99f6e10f8f06e3abfafee02ed78162:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NTNkNzQ5MjViZGQ1YzRiZDljMzg0ZWZkZmYxODUxNTIxNDRlYWU2MGEyODVlZjdiNTNmMzY3MDdlMzVlYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MzNkMGVhOWVjZjJmMzljOWE1MDQwNzM5NWVlNDExNzJmZTY4MmM5Yzg4NWEzNTA4Zjc1YmRlZTE1MWVmZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyYzk1MDA3ZWQ4ZjdlYTZjYmFlYjRlZjdkMzJhZjAxODBjMjA4NTViOTFhNDU0OTNmMjYzMjNjODAzN2EwZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYzA3MzFlMDZjYzVhNTIxYjQxOGU5YjIyNTQ2ZTY3YzUyZmM5NTg2MDk4MzA0OWMxZWZkM2E3YjI4MzU2YjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_32db1df2c4fc439fa8b73dd1a126bb7d",
+      "statement": "SessionHttpDispatcher short-circuits Upgrade: websocket before route matching, matches method plus exact path (which is why the pull-request artifact snapshot route carries its artifact id as a query parameter), returns a plain 404 when nothing matches, and emits exactly one do.request log per matched route with duration_ms, handler_ms and an outcome derived from the status.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/contracts.ts#L32-L34",
+          "version": "repo-lines-v1:sha256:04e92589a441798ab461d9324448f809f69edc1b6febcd3854dc91ff6bc0f366:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjVhNzA1NzczMTNmMzliYzI1ZWUxM2RiYWFlYmU0NGMyZjFjM2EyYzI0YTIyMzVhZmU2NGVkMzAyMGZmYjJkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDg1MDQxNzlhMDU4OGVlZjc2ZDY4MmM4MmRiYmVlNTNjMmY4MjU2YmFmZWQxZTE0ZGI5MDJjYzNlYmEyYjgxNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWUxZjAxMGJkNmJmN2FlYzEwMjNiNzE5Yjk5NWIwNzk4NzRmYjRmNTNlODM5MjA4NjU0NmRkZGM2ZTExMTk5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzFkZDcyOTQ1YWNmNTI5MTkyNGMwMmEzNWIxYzcxMjUzN2RiOTkxYWE2NGE5NTc5NTNlY2Q4ZTY2MTYzY2VlZSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/dispatcher.ts#L16-L57",
+          "version": "repo-lines-v1:sha256:531228d843aa3f0a9c8568da250a9e9a441515a12a593243c74e624e8b993dc7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0ZGVmODBlZTQ3N2NlZjFhN2VkZDE4ZWM2ZjM0MmRjNzMyM2ZlY2Q3ZTkyYTQ0NjY2Y2UxN2YwMzdlMWFjN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNWJkMzcyNGZmMDgwYjY2ZjNjOTVjZGU3ZDA4MmM3YTU3ZDBhZDhlMzYxOTM0NTc3ZTVkNjQwNWNmODkyM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhYzNkY2UyOTY4MmVkOWY1ZWMwMjI3MDMwN2EyNzI1ODhiZmMxMDdhNmU1NjFlZmRkYmU4YTI0OTQ0OGQyYzEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/routes.ts#L106-L115",
+          "version": "repo-lines-v1:sha256:1d9fa018bed8bb12ac5447d0837c1f8ad76997e983b8e1dbda0bbec647e9410c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5Y2E4OTFiZmY3YWMxZjdjZWFhZTQwZWYwNTEwNjZiZTllZmU0N2I0ZTQyODFlODZjMzE5YmUyYzU1ZWJjZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyM2UzZjFhYTk3N2NkZDNmM2UxNjNlZTQ4Y2FlYTYzNDU1YTYwYjFhN2I3ZTE4N2Y3MDkyZDQ0ODkwYWY0ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExYWQ5NmMzMDU5MzJhOWNjNTNiZWVlYzU0NWQ3NDIwNzhlY2MxMDg0YjAyOTlkZWJjMWEyMzRhZDcxYzlkMjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_58b6c8bd92f64ec0a39961f5a7bee399",
+      "statement": "Request correlation is carried by x-trace-id / x-request-id headers and applied by deriving a child logger per dispatch rather than mutating the long-lived session logger, so concurrent requests cannot leak correlation into each other's lines; upgrades and unmatched routes are deliberately excluded from route metrics.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/dispatcher.ts#L22-L22",
+          "version": "repo-lines-v1:sha256:593b7cc50c94aec352658651bb7791c7d5853681dc4489c5099ad8b7b3864b4b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkzYjdjYzUwYzk0YWVjMzUyNjU4NjUxYmI3NzkxYzdkNTg1MzY4MWRjNDQ4OWM1MDk5YWQ4YjdiMzg2NGI0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkzYjdjYzUwYzk0YWVjMzUyNjU4NjUxYmI3NzkxYzdkNTg1MzY4MWRjNDQ4OWM1MDk5YWQ4YjdiMzg2NGI0YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzM2MzkxNmVjZjUxMTg1MjM1ZjFmYTJiYjljYTYwMjlhYmYyNGM2ZjE1M2MwZTNkMzk1MDcxZjU1OTBiNmNkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2FhODZlOTBmNzIyM2M5MTNhMTkzZGMxNjA0ZDRlYjI0YjAzZjk1YTFkZDU5YzJlOTQ0MzgxYjk0MmRhYjk1ZiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/dispatcher.ts#L59-L70",
+          "version": "repo-lines-v1:sha256:669dc76a9e9d059749dcdf0b6ea99b3282c1b20439c11e2a53cc302425072137:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3YjYxZGEzNWY1ODdmMmNhOWFiODE1YWVlNjk4Y2Q5NzJmMGNmZDI0MWRiNDEzNDE0ZTJiZjk2ZjllZDExOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L170-L176",
+          "version": "repo-lines-v1:sha256:841a7a162906c433a34878d96476f9b00083adc24239915d65e1f80e50c01829:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzM3YmMzMTc1OWJiNTc2ZGE2ZDJhY2U1ZTE4YTEyNWMwNmFiYTJhNGRkYjkxMGI5OGJhYTA5NTZkODFiMjZjMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFlNTVmNTcwZWY3MjY3YTI2NjgwMTRmYmQwOTUxZGI2ZWMwMTM1ZGEyNjg4NDk1ZDM1NzdjZDcyNTFjNWIwMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzVkZWI5OWY5NzNiYjc1ZjE3ODhlOGQzMjY5NzkzMWY2YjdmNmRhZTJkYzg3OGNmZDUxOGE1MGFjMDZhZDAzMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZlMmEwYjkwY2UwZGY3OTdlZTA4YzUwZTJiZTYyMTZjZDQ5YWJlZTI0ZThkMDE4NDIyN2U5YjU2NmQwYjU0NCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/runtime-client.ts#L33-L33",
+          "version": "repo-lines-v1:sha256:79f6824c9113723cc6f3198484886bddf5a7b195761e030352a395cf598c6450:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzlmNjgyNGM5MTEzNzIzY2M2ZjMxOTg0ODQ4ODZiZGRmNWE3YjE5NTc2MWUwMzAzNTJhMzk1Y2Y1OThjNjQ1MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzlmNjgyNGM5MTEzNzIzY2M2ZjMxOTg0ODQ4ODZiZGRmNWE3YjE5NTc2MWUwMzAzNTJhMzk1Y2Y1OThjNjQ1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDM1ODc3MTQyYTE4ZmNjYmYzNDY3N2UyZTg4MTM5OGE3MjEwZmUxZThjZjA5MDQ2MWM3M2ExOTYwNDE1N2Q5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc0YTRjY2JkMTkwMDFjODk1ZDNjNmIyMmE4ODRkYzY0NGYzMjM2Y2FmODg4NWEzNzRjYTg5MGJlZTIzMDMzMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2db720ae31844c91a2eb085488ca4327",
+      "statement": "The internal route table is transport wiring only - createSessionInternalRoutes maps each SessionInternalPath plus HTTP method to a method on a business handler in session/http/handlers - and http/routes.test.ts pins the complete method-and-path list, so an unwired or undeclared route fails there rather than at runtime.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/routes.test.ts#L57-L97",
+          "version": "repo-lines-v1:sha256:f0b4682c5fb97969f438bfb7bd1a48350a1e17edab674d25ee7a732b25394a0a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4YzM5YTdmMGE3YjU3YTA1NGVmNTUwNmM3NWM3M2ExZDJlOTMyMGYwYmE5MDhjMzIwMjdjZjk4YmFhODU1ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxN2I1OWZkOGVmODYwNDJmZGMzNTQzNzY3YjM1OWFjMjY3Yjc5ZTk0MzY5MzRjNzQwMzhkMTJkMTI3ZmU4YjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1YjIxNTY4ODJiMDVhNjg0ZWEzMTMzNWQ5ZGFiMzMzZjk4OTJmMzgwNDgyMGU2NjRkMGM1MzAyOWZiOTgyMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkOWFjMjQ4MTRjMDE1YTEwODE4MjY4OTFlZWVmNmE3MTgwMjM1YTUyY2UxOGFlN2U4NGE0Y2ViMzA4ZGU1ZTQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/routes.ts#L65-L165",
+          "version": "repo-lines-v1:sha256:06ee5dab34a79bdd5a344037a6146e37597be6d86b1ef8a7091893a686d17a79:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYWYyMmNmMDczMjU5MmMyNDcxNDFjYmU2MWVmYTExMDEyNjEyZjVhMzEyMmI5YWY5YmJhZjUyZjU3MjRkMTk0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwNDAxOTBhMzA1OGQ5YjFlNzZiM2M1NTM3ZTcyN2I1YmMzNmRiMDU1NGI4NzFlNTBkYmI4ZGM5NWI4Njk4MjYwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3NTBmZTY5ODMwODI3ZTRmMDIzMzVkMDU5YjYwYzMyNWU4YjI5ZTlhN2QxNTc3NzllNjY1YzY4MmY5Yzg2ZDI5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        },
+        {
+          "resource": "repo://packages/control-plane/test/integration/do-internal-routes.test.ts",
+          "version": "repo-file-v1:sha256:b2681319d14a0d87757dd96ceb9997452b48c20b080b1461dbb22f5c23053234"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8ebb35dcd9943e580796c8dd83adbfd",
+      "statement": "initSchema applies SCHEMA_SQL, then applyMigrations tracked in _schema_migrations, then the index set; string migrations swallow only duplicate-column/already-exists and rethrow anything else, function migrations must be idempotent because a crash between execution and recording re-runs them, and indexes run last so they may reference columns legacy tables lack.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L210-L229",
+          "version": "repo-lines-v1:sha256:bdd150694a4faede0ceefcc7a0fab5e41dc388f4cea8a9eb2b821d23d188c731:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1OThkY2VlNWI5Y2NiM2UxMGNjNjU3ZmJlMjM3OGFkOTEzNmMwYzQ2NjE3NmVjOTJlNDJlZWQzZTAyN2U4NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhZDI5NTI1MzZmYzYwMDBhZDkxNTY2YmQ5NTNmMjViYzk1OTYxMGU4MTFhNTI5YTliZWY4YjRmMDdjMWM4Y2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyZTBkZDZlMTBhOWY2ODk4NmNjNGEzMGVlZDZlY2EyYTg5YmRkOTNmNTJjNzFmMjMyMjhmM2E0NTNlYWQ1ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzOGEyYzRmMjcwYTcxYjczZTMzNWUzZDQ3OGE5NTc5MWYyMmUzYTUxNDc1MmRlZmU0YTRiNzRlOTdiMGMyMWEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L236-L248",
+          "version": "repo-lines-v1:sha256:c90c34cf04fb25ea8369d0128f7381a7a8a2bedacf48c58c22722dd6c1cddba6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4ZGE2NDA3MTYxYWI4NGZjMWM3OTAxOWFjYTNlNDk1MmMzOWUxNzhhMDRiYmU0NzE0ODQzMjlkOTlhYmIzNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkY2Q2MDNlOTUzYjhlODYyMWM3ZDQyZmEyMzQ4YjMzM2E5NzNhZGI0NDAyMjc3ZWZmNDUzOWE2OTg5MjZjZjgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L624-L677",
+          "version": "repo-lines-v1:sha256:d9eae263a048d6a794024f812ddbacdf417251a954aef2e7887a5f3a9687e1a1:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4YTkxNzU5NzJmZTE1ZTJhOTY0MWFiMTMxZjU3MWU2YzdjYWJjYTA2ODM3NjJlYmE1ZjIzNTNlNDgzYzNkNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7245e10d964f49c2a56931c14fdd5be8",
+      "statement": "The per-session SQLite database holds session, participants, messages, events, artifacts, attachments, sandbox, session_repositories, session_diff, session_alarm_state and ws_client_mapping, with a CHECK tying repo_owner/repo_name together and forbidding repo_id/base_branch on repo-less sessions, and participants carrying a SHA-256 ws_auth_token plus AES-GCM encrypted SCM tokens.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L497-L501",
+          "version": "repo-lines-v1:sha256:fa59388b74b1b55f956f4c40ae21bee1e4771a644ffefd8e049d2267220ed3a2:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjExMWYyMzlhYzY1YzlmZWNkNGY3OTc1ZDRlZTBjNjc3YjU4YThlYTY3ODUyZWEyNWQyNzkyMzkyNTE4ZDJmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTIyYmZiMmI5NTI5YmIzYWI3ODU1YjBhZDE3M2EwZmY4MDI1MjU1NDdlZjYxZTM2M2I0MTE0OTU5NjNlODQxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWQ2YmMzODMzNDJhMjFkOTE5Y2Q4OWUyM2E5ZjNjNzJkMmY0OWYyOWNjYzNhYjY5N2E3NmFhNjVmMzRjMzRhNiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L51-L208",
+          "version": "repo-lines-v1:sha256:84cb206fdd966dadee8781f2eefc771e97cab81a21cf2024e88c2ec12f99d14a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5NTMyOTYxMjgxM2VkZjY3OGFkMGIwMGEyOWM4NjFjZTJjMTNmZDI4YmQxNjdjMjMzY2ZkOTE5MmMzMTdlZTYwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0YWQyOTUyNTM2ZmM2MDAwYWQ5MTU2NmJkOTUzZjI1YmM5NTk2MTBlODExYTUyOWE5YmVmOGI0ZjA3YzFjOGNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjZjdmYTY3YWRhYmE0ZmU5NmQ0MGQ3MGU2ZDQzNGFmYWZkYjc3YWEwYTBiYjU4ZDAzODU5NGMwNzYyODMyZGE4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4MjZmOTI2Nzc4ZTI3ZmEyYWQ3ZGY0ZGJjY2Q4ODBiNmVjYTk5NDExZDRlNzNiYjBiOGNkZWFmNGIwOWZkNGNjIn0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/ws-client-mapping-repository.ts#L24-L55",
+          "version": "repo-lines-v1:sha256:0907a88f8b492aa93fa3d4501ff976ff1889c70827e4bee3ad868f559dbe42f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNjUwMjY2ZDZlZTdmN2VjNThjNzNkNmUyZjQ5YTMxMTJkZjIwMDQ2YmEyM2VlZTI1OWVjOWViMWQzNGM1YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkOWZiNWRhYWY3MjQ0Yjg2OWM0MzFiMzlhZjg1NWU2NDEyYjMwYmUyNjlmYzEzYzI1ODhmODBiY2ZhYzY5MTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3YjcxZmM3ZWIwNmUxNGM2NzRiNTI1MzRlYmU3MDA0ZTY1Y2NmMDAzYWIwOGYzNTkzMWNiYjkwM2I4NjhkN2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f923902898b244a6bc40eb4eb2a5ee4f",
+      "statement": "MessageRepository claims and completes work with guarded updates that return falsy when the row already moved, and migration 42 enforces the queue invariant in storage with a partial unique index so a session can hold at most one processing message; duplicate claims are requeued to pending rather than double-terminated.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/message-queue.ts#L466-L466",
+          "version": "repo-lines-v1:sha256:b19b40a1bbf11854ec02388817878081ce58f8f1d257637e3347311dc451863e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE5YjQwYTFiYmYxMTg1NGVjMDIzODg4MTc4NzgwODFjZTU4ZjhmMWQyNTc2MzdlMzM0NzMxMWRjNDUxODYzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE5YjQwYTFiYmYxMTg1NGVjMDIzODg4MTc4NzgwODFjZTU4ZjhmMWQyNTc2MzdlMzM0NzMxMWRjNDUxODYzZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjQxZGY3OGVjMDJiYTcyMmZhOTBkM2YxOTk3ODhjNTA0ODIwMGQzN2EyNjE3MTAyYTFkYmViNjNiYzNhYzc0MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGUwYmIwOTBiNzVlMTEwZGIwNzdlOWMxMTFhYWQyNDRiMzM1ZmJlYjQ4MzNmODY1YjBlMTViMjNhZDUzOTU0NyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/message-repository.ts#L316-L375",
+          "version": "repo-lines-v1:sha256:8b1e71a65dd178858b3f0a39dfa0df92c60843fa93a7007bf9fbf08073f6f05e:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4N2E4MTIzZWM4MThiYmM1Yzg1Mzk3YzEzMDZhZDM3OTY2NTM4NGQyZDk4NjVmNThjYmI4M2E0YWVhMjlkZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlMTJiNjExODk0M2UzMGMwMDY4MzNlNzgxNjMwYTUzYjMyZjQxN2VmNWY5Nzk1YzNmMTJmMzMwODAyNGM1ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhM2QxZjkxYWE5MDhlN2RhZDQ1NDE3OGFjOGFlNGRkNjg0OTFkOGE4Zjk4MWZjYjIxZDlhZjM2NmQxNzY0MmEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L216-L219",
+          "version": "repo-lines-v1:sha256:7e7bb2cd3db1fba597035db38cbaa2624b1568720776cbab6b94cf96a5315c9b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzgzMWViODQ0ZWUyODkwOTQ1ZjYwNDQ4Zjk0ZTE2OTMwMjczM2RiZTg4NTZmYzY0MzJlODY4NDQ0YWY0ZGI2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDJiOTQ2Y2ZhNzNmOGY5ZDQ2OTIwZWVhNWNlYzU5ZmQzYzYwOTk4N2VjYjU2NWZkMGIyMTdiNzg3ZmQxYzhhNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDg1ZDUyMTU1MTZjMDU5YzdiZTBhZjRjNDhlMjA0ZDMyNTc4YjBlOGE0NzkwZGJhYTYxYzE0MmZmMWIzYzVhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWYyMDI0NjFjYjgzNjIyNDhhNDQwN2IwOWUxMTc5YTdjYzAzZTY0MTE0YTQxY2MwYzdjMWIyMDVhMjBjYzRkNSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L568-L595",
+          "version": "repo-lines-v1:sha256:33523afb9983857798e986336612cb0b6aac0896919509dbaa32b08bdcb44ae5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMTFmMjM5YWM2NWM5ZmVjZDRmNzk3NWQ0ZWUwYzY3N2I1OGE4ZWE2Nzg1MmVhMjVkMjc5MjM5MjUxOGQyZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE0NmNjOTg5OWFjYzI3YThiZDBmMDIzMWFjZDQ5ZjM2MmI4NDcyMzljMDdhNjdkNWM5OWMxNThjY2Y4ZThhMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwMDkyNjNhMjkzODljM2ZjMzU5Y2IwOTExMzljMDViMDRmMmU5ODZhMjExOTY5N2E0MjJlMDk2NDc1NDNmMTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e58306e23604cdda09c9836fc2615d5",
+      "statement": "SandboxRepository.getSandbox is the single read boundary that turns the bare TEXT status column into a SandboxStatus through coerceSandboxStatus, so every consumer sees the same semantics for the same row; an absent value is the documented pre-spawn pending and an unrecognizable value degrades to failed rather than throwing, because failed is the only status that both refuses reuse and still permits a clean spawn.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/sandbox-status.ts#L18-L50",
+          "version": "repo-lines-v1:sha256:f91f3e7e7c107bd69089b05644a7d2732cd99f18986967cfd91af69dc9150369:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3Y2Y4ZTQ3YTY3M2FlNmNmYmIzYzBhNTEzNzc1OTBlZWQ1OTQ2MDgyNzRmYzUyOWI0NTkwYWFiZDFjYjIxMzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/sandbox-repository.test.ts#L55-L83",
+          "version": "repo-lines-v1:sha256:8b1ecea353f65b7f82bf4c09375f868aece789f34f5949ac3be1cd4eb55fe9c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkOTk5ZGJiMWFmYmRhYjQwMmRiNjA0YzgwN2M2NjU5MGRlMDZjNTE3ZjJlOTkyOGQ0MDBmZWFhYjUyMzA3ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzBmM2NlNTZhYmQyM2RlNzQ3NDMzNjUyZTQ1NzUxNDY2NmRhNjBjYTg2MWE5ZDgzNzllMTVkODg4NGJjNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjMmUyZGIxMTM4Yzc1ODlkNmE2ZmVmMTJkN2JhY2U0NGQxYzJkZjc5NzU2ZjNiMzYyYjEzNzg0MGRlYzcwMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MDAwNDRiNTIxYmVjYzAxYTE0MjFiYmRlMjEyZjM1OWUzZWQwMDZmYmQzMGQ0YTEzYzAyZmM5NDUxNTM1NmEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/sandbox-repository.ts#L85-L90",
+          "version": "repo-lines-v1:sha256:acdf9bc33fda684d3a862b86bec621283718c26eeafe7b637f3e50cd7c2966c8:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0MmViYjhiZDU2NzI0ZWE3N2I1NjIyMzA4YTVmNjFmMTZmYmNiODUxMzNkNzczOWQ5MzA4ZTYzZDU2YmZjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTU0N2I0MzM0YmYwYWJkZGUzMjQ5OWI3NTYwMTgwNjdlOTVhZTQyMDZiN2VkMmM4ODU0NjZlOWQ4ZGQzYTA3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjI5OTg5YTI2MjU5NjU5OTlhOGQ2MjNhNmZiMWMxYTdkNWNhMDBkNjUyZjRmNzVlM2QwZGE4NDA0NmNhMWZjMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_65b2e154048c496eaf9e55ff1bba0e80",
+      "statement": "SessionEventStream is the replay read model over EventRepository: getReplay caps at 500 events excluding heartbeats and fills the subscribed snapshot's timeline, getHistoryPage clamps its limit to 1-500 with a 200 default, and a malformed persisted event row is skipped rather than failing the page; event-cursor.ts encodes the createdAt/timeline_sequence/id keyset while still accepting the legacy createdAt:id and bare timestamp forms.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/event-cursor.ts#L1-L87",
+          "version": "repo-lines-v1:sha256:c4d34a1192a6daad47713ad07fed9ff93aa32aa76f0235722b354d5f52499a4c:eyJzZWxlY3RlZExpbmVDb3VudCI6ODcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YmZkZGIwMzY1NTQ3ODU5MTIwNGY1YjBhODljY2VjYmZjODMyNmEzOWJhNzhiYTk3NTA2MzA5YzljYjU1MDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/event-stream.ts#L20-L74",
+          "version": "repo-lines-v1:sha256:ba7be08a306036d8ff5c8ff388a12f2662b5a16250548ef2f36e1dba19ab0a55:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwZGFlZDNjYWE0MDk0YTg2YTIxNWM5NTE1ODRkY2UyN2QyMjNkYTEzNzkxMjExYTdlNzY1OTkwNDkyOWRjYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkMDNhODM2OTFkMTMyODJhOGZjN2RlMmY4ZGZlMzY4NjkwMjBjNTNkMWJkY2Q2ZGZjZjliM2I0YWIwNTMyZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyMGI5MTc4MmM0ZDQ2NjdkOTMzYmRlNzNlZmZjYWZiNGY3Yzg0ZGMzMWQ0YjA3ZmNmOGEyYThhNzFhODIwOTcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/event-stream.ts#L92-L130",
+          "version": "repo-lines-v1:sha256:3deee01ba1a14ad3338c52b61524cb0a44067b2f4a65e3db8195caa9a6458037:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNzQ1M2NlNGRiOGNhMTZmNjBlNDRiZmI4MGJkZDJhZGRmOWFjOWM1NTM3NjY1OGU4YmI5ODE0MjhlMWU5MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ce9bddc5c364029b5aa6a48a120d1db",
+      "statement": "SessionWebSocketManagerImpl is the only module touching the Cloudflare WebSocket API and classifies connections purely from accept-time tags (wsid for clients, sandbox plus sid for the bridge), keeping a fast in-memory ClientInfo map layered over the authoritative ws_client_mapping table; isAuthenticated accepts either form of evidence, which is why broadcasts still reach a socket restored from tags alone.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.ts#L104-L130",
+          "version": "repo-lines-v1:sha256:dc24b0f2c2673d444d63cd6cd2a94a321bdefbf59aad62e4496224f1c54fa42d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiY2IxYmEyYTczZjQzOTcxNWE5OTEzZDRmODJmNjE5NGQ3ZjkzMTUwNDkzYjBiMDM1YTdiZDY1N2YyYmM4NDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlZTgxZjE5N2MzODczZjkxYjU2ODJiMjY0YzEzOTFkMjhlZTU4OTYxYWVmNzNjZWFiZmJlYTc3OGMxMmFkOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3ZmU3MWJkYTQwNzg1MTEzOTM3M2NmNWNiYWU2MWY0ZGNlNTBhN2VhN2IzMjhhNjc2NTM5NTEwNjdiMTc0NDMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.ts#L182-L203",
+          "version": "repo-lines-v1:sha256:8473d9307ba0fc420f05acab0cc279c4d0692839640ef6f06de7bd5f55cb9b83:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzYzBiZTFhMDcxNTUwNTI3NmJiOGUwNzZmZTQ4NGM2N2FkY2U2YzQ2OTM3MTc5MTRiOGJiZjdlM2RlYTQ2MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExYjI3NjdmYzRlMDUyMzJmOTVhZmVhYmIwNzkyYTVhYWMxZTdjNWE2MDRlMTczNmYyMDU5OGRjODA4MTBmYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExYjFiNTRiZjYwZTI0YzJkZDUyYTc3NmFhOGY5NTU2NTE5NTBhZmU1MWNiMWI1YjJjODgzNDZjZDU5NTNjYzMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.ts#L262-L282",
+          "version": "repo-lines-v1:sha256:44252d33338d74a0e011a53c1c35e34b9198d47ceb1beff0a1836096c9fe39f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZjE0NzJlZjllMjE1ZDVmODhjNWZhNjgyZDc1Njk3YzdkYWMzMWQxZGQ2MWJlNTI4YjA3NGY5MWE5NWM2MGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjODhmOGRkYmM5OTUwYWU3MjdiZmQwODVhZWQ3ZTZiZDdiZDU0ZmIxYjcwYTI3MzdmYWJhYTY5NjBhNWE3ZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhMWM3YTBhNDQyMmRiMDlkMjgzNzY1M2I4YzUyZGU3NWFkZDIwOTQwNWRhYTZlZmZjZWRmMGI0ODhjNTc4MDAifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.ts#L330-L340",
+          "version": "repo-lines-v1:sha256:977d1b4e3d098981de16114c8fbf5bc432b69ce7eaa407a2419ad34b6615116a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkNGIyNGVjOWU5NjNkNTU3ZDVhNjMxYjQ3MDJiZmZkMWQ1ZTA0NWIzZjFmMWU3OTdiN2MzNzUwNTlmZTdmZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd61836e62c04898bb0c41e27b2fd3a2",
+      "statement": "Close codes partition WebSocket admission failures: 4001 for a missing/invalid/expired participant token, 4003 for a duplicate subscribe, 4002 when no ws_client_mapping row backs a post-hibernation socket, 4008 when the 30-second auth deadline lapses, and 4009 when session synchronization fails.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L137-L137",
+          "version": "repo-lines-v1:sha256:16b631cf7898dccf3ffa24215429af0dfd05446f06a4ea89d71bdd9285318e85:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZiNjMxY2Y3ODk4ZGNjZjNmZmEyNDIxNTQyOWFmMGRmZDA1NDQ2ZjA2YTRlYTg5ZDcxYmRkOTI4NTMxOGU4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZiNjMxY2Y3ODk4ZGNjZjNmZmEyNDIxNTQyOWFmMGRmZDA1NDQ2ZjA2YTRlYTg5ZDcxYmRkOTI4NTMxOGU4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmU0OTZjMjIwYzM3ZTU5NGQxYmFhNThiMTQ5YjE2NTFhOTRiODFkY2IwMTdlYmI3NDAxZGNiOTQyMTkyNThjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTYzMTI1NjRiZWY2NThmYmU2YjFjMDU4NzcyNWMzOWQzYWExNTUyNWFkZGQ2OTMyZDg2MmVlODg5ZWZlZDZjNyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L254-L261",
+          "version": "repo-lines-v1:sha256:57cb86a93f6ebcfabd629b990830d21dd67c329791febb2380d9343b6cb05dc2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U0NTg0MzFlZTdlNWY5YjAxMjQxMjQ4NjI1YjU5MjhkMmUzOTIwNjQ1MjdiZTI3N2U1MTIyYjJjYWQyNDQzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVlZjAxYmMwOGRiYzNiNjNlNGU3NWVhM2QyNmE1Yjk0MTg5MTg3N2UyN2FkODkxMzI5Yzg0MTFkN2Q4ZGM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NhMmYzYzg0ODEyMTU3Nzc5MDE3YzkzMjUzMjgxNDFkZDk2ODI3MzdlYzU4MmJjNGQyOGJkYjk5NTMwZDE4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGYwMjQ4ODlmYzkzNjlhZjlmZGI5MzE2ZmVmMjMzNGNlNmFjNGJjMDMxMTY4OTAwODdjNWM0YmNmNmZjMGE4NCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L225-L300",
+          "version": "repo-lines-v1:sha256:c1ba5d8114bf036449bec149dd38bb70a0d526861de4fb67c68f18b8e2f7cfd9:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwMDZjNzc1MTM3ZDQyNDZhZWEzYzhkMjMyYTI1NTJlOTJjZjEzNmM4YzZiZmZhYjk2ZjE4NWFkZWZkNjczNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2OTI4OTIzOGEzMmRhZTQ0YjcwZjYxMWZlYzdkYmFkYTBjY2VlMDRlMzU0OTU2YjA0ZGZiYmIzMGNjNDgyMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwZTkxOWE4NWJkNTJiNWY4NGUwNWYyNWFiYjg1YTgzNzUxYmJiMDc0N2MxMjkyY2QwYmU5YzA1ZTM0ZGZjOTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L353-L365",
+          "version": "repo-lines-v1:sha256:30d63188fe9092780be1023a4eb0f65a2cc6dc72f770ad9dc74c52c7ecbc7a93:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYzgzNWJiOTI1N2ZiZWE3NzAyMmRjYjI3NmQ0OGQ1YjQ3NTQ2YmU2YmVjYzg5ZTU5M2FmNDY3ODQ4YTVhMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NDVjNGNiZTJkMmQwZDRlMDZjYjE3YjFjOWI1NGUwZmI1NjJiMzVkZTVkMjA2MGMyNTEwNWRlODFkOWNlNDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5MjQ3NzZkM2U0ZGUzNmI1OGY2ZDE3MTM0MmE0ZDdiZmM0OWFiNDA2YmNmM2ZmNzljYzQyZDRlODc0ZjY1MGIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.ts#L346-L362",
+          "version": "repo-lines-v1:sha256:d1e6905fa6e7e6c99877df6d582e708311a6079722aceec4c66aefad1b528239:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYzczMWY4N2Y5OGEzNWU4OTQ5ZDQwOWYyMGE2YTQ5ZjQ3NzQzMzU1Y2M1YjdmNDgyMGE5MWQ3ODQ2YzUwZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkNGJmMTZjYWE5NjcwNjdhMDM0MTJkYjIxYTQ2OGMxZmIwMjI0OTQ4ZWU1OWYzMzI1YmFiYjI1YWZlMDkwYWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4ZGRhMzIyYTVmMWU4NzY4Mjc5MWNkMjNlZGQ4ZjZiMWYwMDlkOWU1OGMwNzI4MWE5NjMwNDBjZGIxMzQwNDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6594da10daa74c25a64eab076bbd2a9d",
+      "statement": "getSandboxSocket refuses to re-adopt any socket while the sandbox row reads stopped, failed or stale - closing lingering sandbox sockets instead - because a dead sandbox's socket still reports OPEN after hibernation, and a socket whose sid tag disagrees with the stored modal_sandbox_id is closed as an identity change rather than adopted.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.test.ts#L391-L446",
+          "version": "repo-lines-v1:sha256:80d22df058c3381c4a88add43ee8ebb44ffeb9528df7944361814be28ec769f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZjhhYTI4MDhjMWZlNTJkZDM3NmU2MTljNTFhZjcxYjkzNTdmYTcyYTllYTk1ZWYxZGMyYWYyMGM0Mjg1ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZjhhYTI4MDhjMWZlNTJkZDM3NmU2MTljNTFhZjcxYjkzNTdmYTcyYTllYTk1ZWYxZGMyYWYyMGM0Mjg1ZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkMDYzYzFmY2EyZWU3MzU3YjQwZTkzNTY1YmMxOTU3MDA3NGE1YTYyNzI2MmNkNTgwZWMwNzBmMjgzNmZjYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhYzE0NDBjYmNhZjRkMWRkYWI4MmNlMjRmODQyZDEwMjBmNjNlZGMwZjIzZTFmYTgyNGFmY2FmYzI3MjYwY2MifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.ts#L157-L203",
+          "version": "repo-lines-v1:sha256:af88d04f1e1b45e00d5df9ff802a07b0faf4119085b37e689636920312635a66:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwYTQwZGFjNGY0MWZmNDllM2NhM2YwMDBlODI5MzQ5ZGI1NmRlYTNiZGIxNmViOTMzMDA1ZjAyNzc4N2UzMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZTJlMDk5MDE1MzYwNjBiMWFjM2U0NWNiNWM1ZDNhN2FjNGMxZmExMTkzNjk1NzgwM2ZmNjQ4YzE0YzEzNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExYjFiNTRiZjYwZTI0YzJkZDUyYTc3NmFhOGY5NTU2NTE5NTBhZmU1MWNiMWI1YjJjODgzNDZjZDU5NTNjYzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f9f1962743b42d59ed508653440c810",
+      "statement": "Sandbox bridge upgrades authenticate X-Sandbox-ID plus a bearer token against auth_token_hash and then re-read session and sandbox state synchronously, rejecting non-promptable sessions with 410 and blocking reconnects only for stopped/stale - failed stays reconnectable so a slow boot that overran the connecting watchdog can self-heal - and a successful connect flips the row to ready, broadcasts, records activity and schedules the inactivity check.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/decisions.ts#L18-L41",
+          "version": "repo-lines-v1:sha256:94589bc7c265898b8ef4af2c8f1f998fd3af4481eb0ab1723f00f14faf3ae855:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1ZTcxMjlkZmQ3ODZjZDRmY2JmNjUyZTc0NDEzYjk0OTg3MGJlYmViYTNmMjMxODM4NmVlZjY0MWJjZWJjZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkYTRmOWE5YWJhNDE2ZGUyZjcxNzE0NWM1NWUyNmMxOTkwODA3Mjc4MGZmNDI0NjY0YWY3ZjU1ODZjM2UzODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmNDM3NWI3NjI0MTc3ZmM2MDhjMWRjZGRhZmQyMzE3NmI1MTBlZDA0ZDEyYWU5ZDYwYzFmYzYxY2M2YmQ1NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L57-L175",
+          "version": "repo-lines-v1:sha256:c7b596136f510a30bb295c8987027f35d94b847a54bb9639db0b49d5d93a0b1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4ZjhlNTg3YjY0OTk2NDk3MWVmOTAzNGRlOTMzMDViNzZmYjkxMDc4ZmJmMTkyMWVlM2ZiODU2NTYwNTAxYjA0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzMzI0M2JiOTJjNWIzOTE2NmI1MTg0YjY2YWJlODU4ZDk4NmMxZmM4Y2UwYTJjMGMxYjRkNzhlMzFiNjllZmUyIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkMjQ4MjhlOTRiNjExOTVmMDFhYWFkYWYyMTE5MGRkMzRjMGZiNGMyYWQwMmJjNDliZWM4YjljMDU0OWQ2MTMzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxZGFhM2MzMGViMzYzZTQxYzhhZjU3N2UwMWNkMTNlM2MyNTdlZDUxODcyYjUyOWIwNTBhNjk4NTVhM2JhY2M1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea701933f03b474680b724dbb0d66c29",
+      "statement": "completeClientSubscription is deliberately non-async so the read-send-register-persist handoff from replay snapshot to live stream contains no await; making the method non-async turns that invariant into a structural constraint rather than a convention, and false signals synchronization failure (close 4009).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L283-L340",
+          "version": "repo-lines-v1:sha256:c3a4317a241f29e1e705f3dbe5e1cc23e96de6a01d067adc23a28d0607adf7ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5YjhlMWM0ZGJhZWRiNjBmMDIxZDMxYjBlMmFiNzhlMWFhZjY3YzU2ZDdlNWVmYTdmZmIxZTk1NTNiMzIyNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiMGQ4ZWNjYzBkNTQzMzhjYzE5MzAwY2FlNzI1ZGUyZjNiZDM3NWRmMGFkOWYwNzk2ZTY3NGEwOWYwMTBlODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5ODE1OTA1NGVhYTUzNjhhYzQwMDE4N2NjYThjOWYzMjIzN2RjODhhOWI0Y2JhY2FkMmY1MWM4NjNiNWNmOWQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L353-L365",
+          "version": "repo-lines-v1:sha256:30d63188fe9092780be1023a4eb0f65a2cc6dc72f770ad9dc74c52c7ecbc7a93:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYzgzNWJiOTI1N2ZiZWE3NzAyMmRjYjI3NmQ0OGQ1YjQ3NTQ2YmU2YmVjYzg5ZTU5M2FmNDY3ODQ4YTVhMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NDVjNGNiZTJkMmQwZDRlMDZjYjE3YjFjOWI1NGUwZmI1NjJiMzVkZTVkMjA2MGMyNTEwNWRlODFkOWNlNDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5MjQ3NzZkM2U0ZGUzNmI1OGY2ZDE3MTM0MmE0ZDdiZmM0OWFiNDA2YmNmM2ZmNzljYzQyZDRlODc0ZjY1MGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_61d6980195894ecc8b362426076d8ab2",
+      "statement": "SessionMessenger is the outbound delivery seam over the socket registry: broadcast reaches authenticated clients and sendToSandbox rejects with SandboxDeliveryUnavailableError when no sandbox socket is available, while hibernation-level ping/pong is wired once in the composition root with ctx.setWebSocketAutoResponse so keepalives never wake the Durable Object.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L262-L273",
+          "version": "repo-lines-v1:sha256:81a1023775028aaa69b948f462723cad68d4ce6e3ce3988c0e1631aeb41b2bc7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzNDU3NmZkNTJkMTQ0MDA1MjMwMGYwYjBhY2EwMmVjNjA3NDE3Y2ViZWJlMmZmMzNmNjU5ZDBmZWQyMWM2OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MzVhN2NhM2JhZjA2OTRjYTkzNmU3ZTM5ODA0ODYyMzliNWFhZjA3M2QwYzZmZjcwNjg2M2I4ZTYxMTI1YzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxNmQ1YWU0MzUzYThiYmFhZTQ5ZmZiYjQ5MDViM2IxNDkzMzU1NjljMTQ2M2QxYzg3Y2UyOWFjMGEyMjNjMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4ZjgwOWM2ZTcxN2FkNzM2ODJkZDQzMjVkZWNlMzRkMjMyNmJjM2Q1MzJjZmNlODYzMDc0ZmIwMWYzYjBhMDQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/diffs/service.ts#L165-L165",
+          "version": "repo-lines-v1:sha256:612cd76c439022fb2673b596c18fbb2f9060dcdecd70ca3638239f409b30cb02:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyY2Q3NmM0MzkwMjJmYjI2NzNiNTk2YzE4ZmJiMmY5MDYwZGNkZWNkNzBjYTM2MzgyMzlmNDA5YjMwY2IwMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyY2Q3NmM0MzkwMjJmYjI2NzNiNTk2YzE4ZmJiMmY5MDYwZGNkZWNkNzBjYTM2MzgyMzlmNDA5YjMwY2IwMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzdmMTJjNTIxYTgyZjNlMjcxMzViYTMyNTJkOTgzZDk4ZGM4YWEwMjY0Y2UzNmQzNTk5NjE5ZjY1ZTM0ZTg3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg5YTczMWNkODI1NDM0Y2NjOTFmODI5YTUxYmNlZTA1MDMyY2E1OWUyOGM5OWMxNDZiNzM3ZjBjMTM3NTUxZCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/messenger.ts#L26-L56",
+          "version": "repo-lines-v1:sha256:e7285c28aadcb0a5337987d0335d8e8d3b6d10f79ecebd1c0a323566d40af997:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1ZWM3ZGQzNzI3MDkwMDZiYzQ2YzI5YTQ1ZjBhNzc1NDFiNzg2ZmQyNTEwYzFlYjNlMjEwZDIxOTA1MzQxZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzZGVkM2VjN2M1YmFmNjVlNWU3NjdlYTU0NWNkYTMwMGJiZWY5ODMwMWFmNDc4ZjI3Mjc3ZjVjMDE2YzIzZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3NzM2Y2VkMzBhY2ViYTFiYjc2OWE1YWYzOGNjODBiZjBlMGVhNzk5Y2M0YTQ0ZjdkMDUzODBhZDNiZGU3YWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNzM5YTA2YzFjYmIxMjQ0ZTMzNjNkMzhiY2Y5ZmE1MGNlODRmZWQzOTljMjE5M2EzYzdmMDhkNTk5MThiMmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e5404fa6e03b4a0d9c5e7a19cf4926f5",
+      "statement": "SessionMessageRouter validates inbound frames against sandboxEventSchema or clientMessageSchema, ignores binary frames, answers invalid client JSON with INVALID_PROMPT/INVALID_MESSAGE while recovering the clientRequestId from the rejected payload, allows only ping and subscribe before authentication, rate-limits fetch_history with a RATE_LIMITED error, and its default arm is a satisfies never so a new client message type is a compile error until handled.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/message-router.ts#L61-L165",
+          "version": "repo-lines-v1:sha256:552986106460952a6141c4777087f40a415de35026b2fb4c6392b0673bd19b06:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmY2U0ZjZhNzY4ZDFlNDNlMDM1ZjE3MjI0ODRjM2ViZTkzZDFjMmU3ZDc0OTIxZWEzYjU0MzU2OTQ0ZDg1YTY2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI3MTdhZjExMDFjOTdiN2MyZjUyNTQwNzgyZTYzNGNjNDQ0MGYwZTk3MDM0MWU1MmY5NzUyMzExZDc4YjdkN2QwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5N2Q4NjMyZTU0ZTkyOThhYmI5NTg3MjdlMmQ1MTQwOGFiYWYxMzY2MDM1Mzc5MTAxNDBhYmY2NWIzMGFiNjEzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzZWM5NmY0MzA1ODZiNTM0OGMwOGM1ZTNkMDNjNTM2NDJjMGZkZGI0NDQ0MTUwMTBkYmFhNDU4YzJjOGQ1MTQ2In0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/server.test.ts#L272-L272",
+          "version": "repo-lines-v1:sha256:ffa938dcd170230328919df5992ffc319d4e38e677e39f126da296bac01e239d:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmZhOTM4ZGNkMTcwMjMwMzI4OTE5ZGY1OTkyZmZjMzE5ZDRlMzhlNjc3ZTM5ZjEyNmRhMjk2YmFjMDFlMjM5ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmZhOTM4ZGNkMTcwMjMwMzI4OTE5ZGY1OTkyZmZjMzE5ZDRlMzhlNjc3ZTM5ZjEyNmRhMjk2YmFjMDFlMjM5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGFiZDcxODZiNWYwOTUzYWU4Y2M0MTY2NzY1YjA0MGZlMzM4NWNlNmNlMDBkYThlOWQ4YzhhNWRjYjc2MTg1YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWMwNWQ3ODY2Zjg3Njg5OTVkNDkxMmFiZDI5Y2Y0ZDg1NGU1MTk3OTY0MDc0ZDI5ZDk3MWI4NDEwMWYzM2QwYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e92ad4da729f42cb90d22f8a77b99ae1",
+      "statement": "createEarliestAlarmScheduler serializes every operation through one promise chain over an AlarmScheduleStore (ctx.storage) and a PersistedAlarmDeadlineStore (the single-row session_alarm_state table with pending_deadline, in_flight_deadline and a cancelled tombstone), treats the persisted deadline as authoritative by writing it before touching the runtime, never moves an earlier deadline later, and records cancellation before deleting the runtime alarm.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/scheduler.test.ts",
+          "version": "repo-file-v1:sha256:4f4929fa1c592db0f798fd907b12822ee0e414749055213989e00242fcf15dd8"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/scheduler.ts#L61-L91",
+          "version": "repo-lines-v1:sha256:3cbb98d350f2a8c73a5d7f342d0719e396e4ab9f630e162495dbde729dda2302:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhMGJhNzMzODFlZTFjNjQ5NzJmOWNiZjJlYzJlNjZiNmE1NmRjMTk0M2M3OTI0M2IzM2RiMzVlZTA4ZDlhYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyYTNkMzQxOTM4NzNhNmZmMjg0Mjg4MjYzYWU1MjQ2OGRmMWYzNWI2NzdkM2E5ZDE1MzA5MDZjMjdhNTc0ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmMTg0MDdmZjE3Y2ViNjQ2ODI1YjAwMTMyM2U5MjFhNTc4N2RlMjkyNzY4ZDZlNTExNTMzNDQ0MDQ2MmRlYzIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/scheduler.ts#L99-L172",
+          "version": "repo-lines-v1:sha256:77d70cdcf2efcf0b2e6c2b800cba61836e66b3e7a0695aa4ca09d11cdde624a6:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3ODZmMGNhZjczOGFiZDllMDU4MGU1OGZhNzIwMDZmODIzNTEyYmI5OGZiOWYwOTVhMTU1MDM2NWI1MzBhNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlOGUwNTAwNDIyZGJkOTczMWUzM2QwMDVjNTcxZDMyNzk1NTBlYTkyMTk2ZDU1MWI3ZTI3MDg0MDgyNjllYjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0bfc1c9700784cfea9e4c012ec94811f",
+      "statement": "handleAlarmDelivery moves pending to in-flight through beginDelivery (which returns cancelled for a tombstone and does nothing) so a retry cannot acknowledge a deadline a concurrent schedule replaced, and createAlarmHandler on delivery recovers stop confirmations, fails or re-asserts the execution-timeout deadline, then delegates to the lifecycle manager - failing a stuck message for any non-no_action result and resuming the queue on sandbox_terminated.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/handler.ts#L35-L77",
+          "version": "repo-lines-v1:sha256:ca90160321db0757098d947269feca2d24917d0e4f5ff47bf336a466ee76b8f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1NTJhM2Y0MDIwYzRjYTM0Yjg3OTIzNzA2MmJhZWE1ZjhkOWM3Y2JiY2Q3NTYzMjI0NjgwYThmNjQyNzdiZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwZDMxMWIzNTAwMmYyMGNiYjA2YWNhMDljOGM5ZGJlOTViZmE2NTY1M2JmM2EwOWJjZThiOTY4MTdhODc0YmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/scheduler.ts#L174-L187",
+          "version": "repo-lines-v1:sha256:746492e85726255ab2b5624399ddd072e073a5ef6ac675fb42f2542af2102869:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzN2YxNjBkNzMyZGM4OTA3MmE3YmZhY2I2ODJhYzFlZDNkMTZlMzA4NTc3YTA4OTUzMjVjNjBhYmIwY2I0ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43fec7fdc3024f7cb701c9c8caa8f696",
+      "statement": "resolveExecutionTimeoutMs is evaluated per use from the persisted session row rather than captured at graph build, so a deadline armed after init honours that session's sandbox_settings override, falling back to EXECUTION_TIMEOUT_MS and then the default.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L187-L207",
+          "version": "repo-lines-v1:sha256:cf7b6db93c6269c87a33b01489dc60b0e4d8d8905a256580f43ea29f1a82b95b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjOGZkODMyODMzZTMxZGUyZDNkNzJiZDc4NjRkMWE2YzMxNzZkMTBmYjA4OTk1YTQ5NzcxYjFjNzc4ZDkxNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZDI5OTBhNzYwZWU5ZDY1NzExYWIzN2FhMjkzZTU5OTE0NDI0NmFhNWJiMDgwNTA3MzJjY2Q0YTdhMTc1MzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMjhhZjQ4NDlhMjQ1MDM5ZjZjZjVhNzI5Y2RmYTcyYmQ0ZTU0MTYyOTA0NDgyODIzMjI5ZGViODQ0YjUwODEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/types.ts#L107-L107",
+          "version": "repo-lines-v1:sha256:f658db252d0c928b26b7856a2352f9c0c78af5a6b73caef67455bf645feecbcc:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY1OGRiMjUyZDBjOTI4YjI2Yjc4NTZhMjM1MmY5YzBjNzhhZjVhNmI3M2NhZWY2NzQ1NWJmNjQ1ZmVlY2JjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY1OGRiMjUyZDBjOTI4YjI2Yjc4NTZhMjM1MmY5YzBjNzhhZjVhNmI3M2NhZWY2NzQ1NWJmNjQ1ZmVlY2JjYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjVmMWQ1MTFhNzFlYWQ4MjVjNDJkZjNmNGQwZjk3ZGI3OGJkNGM2ZTIxNzNiNzE1Y2U3MjE1OGM4YjI4YWRmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmY1MTNjMzU5MzE5NWVjMGU5NzQ2OTQ1ZWFmY2E3ZTk3ZGEwMmIyOTM3Y2EyN2Y0ZDJlMDFjMjYwN2FmOTk4OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d0d7ad57fc14902986c2de5271b1066",
+      "statement": "Sandbox status is written through the lifecycle manager with a broadcast after each persisted change: pending is the schema default, a fresh spawn reserves identity as spawning, provider-startup completion moves to connecting, bridge authentication flips to ready, snapshotting is entered only from a non-terminal state and the previous status restored afterwards, and heartbeat-stale or unresponsive paths mark stale.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1013-L1018",
+          "version": "repo-lines-v1:sha256:43d8f641d99e106ddc294a3d3255808e2e7ab572e2bc02249a971a26832842da:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGZkYWQ0MjRkODA1YTA0NThkMGM2NmViM2NjMzE2MWVhMmU5MGUzYjUzNGMxMGYxMzJjNjkzODAzZmZlZjQxMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmVmNjkwMDdhN2U3NWNjZGIyYzE5ZWZhOWQ5NWM0M2JmNzg3ZjMzYTJiOWM4MjY1YzRhNWNlNjQyZmU2ZGJlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODk3OWJjYTY2Y2E2NjllZTJiNWExODUzZWM1OGMxNGJlY2QzYmE0OTRlYmZlZTMyOWU5ZGQzYWFlODBjZDliMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWQyY2MwNWZhOTZkNjc1ZDc1NTQxZDQxODIxOGY3MzhkZDEzYjVlZjg1NDM3N2YwNDFmOWE1NDMxZWUxYTk1MSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1093-L1105",
+          "version": "repo-lines-v1:sha256:079964cd58d391fee7c2156618e39a983927efdd57accfa32f61f7bd9ef149b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NDRiZmRjODA3ODVmZDI2M2E2NzdmMjY0Mjg5NGRlMjU3ZmRiYTZmOGI5ZDBiMzkwOTNjMTkzMTM2ZGZmZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxMDk2NjQ5ODM5OTU2YjY3YjE5NjY1NTVkYTg0MzFlN2VlNTU2Njc5OTA4NmJlNDMwYWVkN2FjNWFhMGJkMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczNDJlNTI1Y2I4YzJjZTY3OTBkNGRmZGRlNmIzOTI2YWJiNTU4YjhjODA3M2M1ZWNjNGExNjNjYzQ5NDg2OTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1151-L1157",
+          "version": "repo-lines-v1:sha256:d44498c8dbd3c7ed7b826edd87339fa19973ba969d89ab4335188260d6059056:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTJjMmFjN2M2N2Q4YzcwZDI3MGE5MGZlZDA1OTY4MWQ1MGY4MDgyYzJlN2VlMTE4MjRjMWZlZGUzYWEzNzAxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQzZWUzY2QyZWIyNTc4MjdhZjQ5ZjcxMWEwNDc3Y2E1MGVmZjc1ZmM0OTAzOGQ2N2UwMWVlNDA3MjQyYjQzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWE5MjkzZmQ4MDU0YjZlNDcyNDgzNzNmMzlmNGRkNzc4MDAxMDVlYjc1ODM0ODY4NzI1NDI4NWNkMTI4MmI3OCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1328-L1336",
+          "version": "repo-lines-v1:sha256:15412ee75c3d47ece006b057b43addce6ca5c9a0a7021f6fb25f902243abe993:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I5ODA5ZjM5YmEwMjBhMDA4MTFiYjZhMWFjM2M0MGY0NmQ4MWQwNjFkNjg1Yzc5ODJhNGMwZGRlZmU2YWU3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTEyN2E4ZGQ1NDk4ZmJmMmQxNWYwYjEyYzVlMTgwYjM1ZTcxZTFiOWQzNjRmMjlmMzJmODhjYmYyMGVjZTk5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjhiMzI3YjA5MjQ0YjA5ZWE5MmJlNDFhNDRiNDZkNjlhNGY4N2E3NWZkNjA3NDVjMTBhOTAwODdmZGJjYWVjOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWI0YjBiNzNjODFhYjM0YmE2ZWMyZWUwNTFjZjg3YTBhOTQyMzk4MTJmODdlMjZjMTI4NDI4ODIzMzg1NTI4MiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1667-L1690",
+          "version": "repo-lines-v1:sha256:d90710075871b8ed6d45a65867a80f878c0fcfd1b0f81ae7bed54eee080af790:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNTlkMmNmZTM1OWUzZWIwMGY5ZWRiYjU3OTM1YjY0MzMxNDdhYTQ1MWM5MWJiN2E2ODUwZDRlOTdjMjgwZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0MTBiNmM1N2M4OTIzMDQ4NzU5NGNmYjhiNjIzMDYwOTZjYjdhNjNjMzNhYTlhYmZmYTNhYTFjYmFlOTZmZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2ZmIxZmEzOWM3MDEyOWFjZDBlZGUyNGI5YTExMDBmMzE3YTVmZjEzMjkxMDg4ZjdhMTQ1MTJjNDU0ODkyNTQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L487-L507",
+          "version": "repo-lines-v1:sha256:2b8903a6e167227bfc98052e173392b6adc72e6d02caf9bf08a1bd36bffcd11c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3YzhiZjJkYTVmYWNhYmQ2MTUwZWE0OTc2Njc4MzQzMGZmMTliNjJiNDM1NWFmYTQzZmQ3NGZlN2IyOTNjMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMjRhMDQ5OTRmNzYzODY0NWVmN2JiNmY0Y2U4MjRmY2EwNWI2NzQwNWNkMTBmMDExMzc3YmRkMDBjYmE4OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiY2Y2YWRiZGMwYjM3NmIzMWE3YjU4Njg2OGIyNWE4NTIzNTE1MjNiNjE5NDkzYWE2NWM3ZmM2ZTlhYmJmOWEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L167-L168",
+          "version": "repo-lines-v1:sha256:cc821a05b55c0443a1ab3e51efb30fd7cb4f669f0486b0e664531e6bf1d82dc5:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTMzM2M4NTc1MjRhZGFhOTNjM2RhZDc2YzgwYTgwNTI0MzRmMGNiZjU0NmZhMDFkZDYxNzJmY2ZmMDNjODVjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGZmOTNjYzMxNTAxOTQ4ZTJjMmFjMDMyZGVlMWYyODA4MzJhOTc4ZmUxOTg0Nzc1ODFiM2ZiZTkyNDA0Yzk3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTM4YmMzMDZkOGU0MDlkY2FlYTI5OWQ1N2RjZGYyYWZhNTQzNTAxNjUwNWM2YThjOWYxZjAwMzgxMjEwMWU1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTE3OGZmMjhlODllMmE2ZTU1ZWEyOTZjYzY5NWY1OTkyNThiMGVkYWQ2MDAzZTQxZTVkMjE2OWQ2NWZjYjhlMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b0a8ac1e73d49d38363030f3d573277",
+      "statement": "The inactivity timeout writes stopped before snapshotting or stopping anything specifically to block reconnect attempts, and a fatal sandbox error reported over /internal/sandbox-error marks failed only after re-checking that the row's identity, token hash and token are unchanged and that it is not already stopped or stale.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1386-L1395",
+          "version": "repo-lines-v1:sha256:2ed41ee27c3ca98a2abffaa3336e13737180f12982e4feffa272613fef0fa277:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3YTIzYWU5MGQ0MjUyMjA3NmNmNDE3YjhmMGMzNDIxZmJiMzkxMWY0NDIyZjg4NzVjZjFlNzY4MTgyZjNhYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjODM3MWMyNjBlZjA0NWM3Y2ZmMmZiMzhjNjlmNjI2ZWZjZTQ3NjJmNTlhMDJmYTk2YzI2ODM5M2YzMmU2YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExMGZiZTFlY2Q1MWU3ODUzNTQwNjY2YTliY2FhODkxOGViNjhmZmIzZmVhNjMwNTdhN2QxN2EyZDk3NGM0YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzYjVkOGYwMmQ3ODdmODQ2NWE0MTU0OTg0MTUxMDBlMzM3NzQyNjlhYWQwNmRmOTkzZGUxMzZhN2MyYjMzNjQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1479-L1494",
+          "version": "repo-lines-v1:sha256:ef70e7c132d1a3538488a484bf8a1ff04c7e2f475dc3127af33760fe6a17cf07:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlMzNiMTMxMjljZjcyMDE3YTU2YTkwMWZjODAzNDQ4Yzg1MDRjMjMzNDhhMDM5MzI0OGQxOTFhMmMyYzU2NzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMzc5NjM4MThmNWViYTFkYWNhNzEwNzMxOTQwOTUzOTk1MGI4MWQ1ZGUzYjYyOTBjZjk4NzhmNzhmZmExYjcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/sandbox.handler.ts#L96-L137",
+          "version": "repo-lines-v1:sha256:54b90e20bc23cde1047fcec2feb4a16b6ba1624b9aea3a0180b80a3d902caa61:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1NmQyYzFiODkxMDliOWZjNDNjMzBmNTljNzYyZmYyMDUwOTM3YWM5MjYwNDJhZTJjZjcwYzBiOWI5NGRjOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmMmI0NmNlYjhhMWJmZmQzMzAxMWIzYWY1ZjRlMWViZTgwNGM5MjUzMDc4MTY5MTdmZjY5MzAxZWJhNmE0MTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3NTQwMTBlYWVmMjI4MmRmMDBlYWRhNDIyYWZjYTNkOWJiNGRkMTljNGU2ZGEwNWJmY2YzZWIwOTU3OTgzMGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5ee367db477046e896edfee61cc7a49b",
+      "statement": "warming exists in the sandbox status union but is never persisted by the control plane: warmSandbox and the typing handler broadcast a sandbox_warming message and the web client sets the status optimistically, which is why the source notes that the SQL default and DEFAULT_SANDBOX_STATUS must be changed together.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1530-L1539",
+          "version": "repo-lines-v1:sha256:2c49fe540529b76f2bcd5792ca49b8b76112b08a93667b89d1ae71b2b84d46f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0ODYzZDBmNzdkZDM4OTI2ZGEyN2FiNjBlNGU1YTc0NzdiODk0ODU2OWY5YmRkOGVkMWMwMWQ4YjI2MThhODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMGY2NTk5MmM1MTA5NzM4NTdmMDQ5NjI2ZTdhMjM2OWI4OGE4MzllNGJkZDZlNDYyODkzMGEyNDhjZmQ2N2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkZWMxMTE4NjA5NGE5ODYzMjQ4NTUwYzZlM2U4YWQ1OTE2NmUzYzQwNTNhMDU3ZWQzOTNlNzY2MjhmYjgzMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/sandbox-status.ts#L5-L16",
+          "version": "repo-lines-v1:sha256:49cf15ad22fe1d174c51a5cbcb8005d4f6cb7198eaa879ad3affe3025359641e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkMjQyYWNkOTdhNTNjN2QwYzJkMTQ0MDZjM2NhM2YyZTUwOGEyYTE3YTkwZmRkYzdmNTU4NTVhZTcxOGY0MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MjI3NDkwZTQ4NGY2MTVlZmNmMjdhZmM1NjlmMTYwY2JiOWU4MjI1OTI0NTFiZTAzMDgwZjRmOTY0OWY5NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlZWEyNDc1MTI2ZGZjNzAyYThlOWQ5YzIzZjIxMTU0ZDA0Mzk2N2E0ZmFjOTMzZmNiNDdiNzM0NjU1Y2ZiZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwMzQ1YTNlMGUxN2JkZDViZDY3Y2M3N2I3OTE1YjNhMDI5YjE1NzE0ODYzMTEzNTFjOWQ0ZDM3MGM4NDNiNTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/presence-service.ts#L109-L109",
+          "version": "repo-lines-v1:sha256:769761196d93906ad55ef3988dc02b94570074dd47d725e94676125bdd5ff364:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY5NzYxMTk2ZDkzOTA2YWQ1NWVmMzk4OGRjMDJiOTQ1NzAwNzRkZDQ3ZDcyNWU5NDY3NjEyNWJkZDVmZjM2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY5NzYxMTk2ZDkzOTA2YWQ1NWVmMzk4OGRjMDJiOTQ1NzAwNzRkZDQ3ZDcyNWU5NDY3NjEyNWJkZDVmZjM2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjIyOGI1OWFiYWU2OTJlNjY4YmM3Yzc4NjNhMTg2ODc4Mzk4MDA2YTM1MWIwMzdhZDFjN2RiOTczYjdlZDBhNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTg2ZGVmMzA5YmUxMDg2Y2IyOTdiNWIyZmY0YmRkNWFlM2RhYTJiNjBlNmYwNjA4OThiZjkyZjJmNTk1YjIyZiJ9"
+        },
+        {
+          "resource": "repo://packages/shared/src/types/sessions.ts#L20-L46",
+          "version": "repo-lines-v1:sha256:d918df77681ddc53955a7959d09e722094675804b5aea4f20178d8a4ab1164c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMDA5Y2YwNTU5MTgyYmE4OTU3ZGYxNmY5MTFjNGUzMjRiMjY2OWZjNTQxZDI2NDk1MGQxZDUxY2FhNzM0YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmYjhjZjJiODdiNTg4YmU4ZWM0NDNhMjE3OGZiNjZiYjQ0OTU4YzZlZmUxYTEyMTljZjZjNzQ1NTM2ODZiNmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhNTE5NWUwMjdkZThjYjUzYTY5OWZlYzY3Mzk0ODFkYjRjNTdkMDVlNzllMWZmNWZmOGMyYWZkNTEyMDUxZjAifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/session-socket/reducer.ts#L229-L229",
+          "version": "repo-lines-v1:sha256:1051a9b5a878f6be89cb4eaa20b9e437f5f8c58a372dad0cc561fd867ed807b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTA1MWE5YjVhODc4ZjZiZTg5Y2I0ZWFhMjBiOWU0MzdmNWY4YzU4YTM3MmRhZDBjYzU2MWZkODY3ZWQ4MDdiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTA1MWE5YjVhODc4ZjZiZTg5Y2I0ZWFhMjBiOWU0MzdmNWY4YzU4YTM3MmRhZDBjYzU2MWZkODY3ZWQ4MDdiOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzM5ZTI4YWFlOGNiZjYzMzY3NDYxY2UwMGFmNDYzYzg1NjIyZTI3MTdlZWU3NzY1YzcxYWE5YmViYzk0Mzk1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYyODIwODkyNGMzYmUzZWE4YzhlZGI5ZDBiYTE1NTYxMGZhMDIzYTc1M2RlYjkyNWRlZmUzODM3ODlhN2Y5YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2c79bef86b78489b9f0805972303a386",
+      "statement": "Sandbox transitions are decided by pure functions in sandbox/lifecycle/decisions.ts so the policy is unit-testable without a provider: evaluateCircuitBreaker gates spawning after repeated failures, evaluateSpawnDecision checks the in-memory spawn flag first to avoid duplicate sandboxes then prefers provider resume, then a snapshot restore, falling through to a fresh spawn when the snapshot runtime version is below the compatibility floor, and a spawn stuck in spawning/connecting past its timeout is treated as recoverable.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/decisions.test.ts#L261-L330",
+          "version": "repo-lines-v1:sha256:32ab5640e3d15f75b5d5a91a68e06a2d361042394662e9846586db423f43dba8:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MGY0MTQ1ZGVkNWY0NDBhNWMxMzU0YTBlNjkzZWVjY2Q0YTU4OGYyNWIzZDBmN2VmM2E5ZTE4MzRhODc1MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY0OGNiMzlkYTAxNzA1ZGI0NGJjNDMzNjc1ZmIwYWFjMDJiZjQ1NWMyODg5YjQ3NTNmMTU1OTBmMTQxZmE4MDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmMjlmMTA3NzYzZjY3ZDQ1ZWU3ZjEyM2IxMjA0NWFmMzg4MmM4YzI3ZmU1ZjA0NDZjZDBhYWM3ZTZmMjM3OTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/decisions.ts#L263-L334",
+          "version": "repo-lines-v1:sha256:d5dd23bcfd30af88d7316fd0faa5dcb0942e1011c6a14c32ce36ddc1079d226e:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiNDlmN2ZmMjFjNDM1YTRjYjA3MjliOGJiZDY5ODI5ODE2ZTNmOTVmYTBlYmNhMmZjYzUxNmNkOTI3ZDliMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ZTAzZDMzODY5MTE2OTJlZmM2MzU2NTMyMGM3OTJjM2U5ZTdiOTg2ODk4ZmE2MTBiNzcxZGJkNDljNzQ3MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5OTRkYzkzZGRhMTNlNGNjZDNmZThiZDYzYzY2ZmIwYzAzOTFjNjAxZTE4NTY1ZmYyY2U2MTUzNWY5ZTI4NmIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/decisions.ts#L43-L110",
+          "version": "repo-lines-v1:sha256:1026ad6c0813a1202b6dfaa4e4c78098af59e96a720f04307613ec0e97e36181:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0NDI2NWQ5OWMwM2I3NzQ5OWZlYzM0MTYzNTQyZGY4Yjg5NWRjNzNlOWI0NGZmNmNjNzc0Y2MyY2Y1OWExNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzYTlmMTNkNTkzMjA4MjAzMDNmYmExNTI0ZTg5NmRhZDI5ZTFlNmRlMGY0NjI5OGMyODRmOTEzZjNjNjU1NWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwOGRmMGQzMWZjMjc0MmE1ZGI2NmM3YjhhYzgyM2JmOGJiOWY1NDU1OWY3ZDcwM2Q5Y2MyYzg3ODQ2ZDA5MTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhOTVjNjhkNTYyNmQ3OWVkYTM3YWU5ZTRmODVhMTljZjAzNzVkN2EzMDc0NWEwMWRjMTVhN2ZmNGRhMjlmNjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_665c5027c0f04653ae78246de0ae6935",
+      "statement": "sandboxStatusSchema (pending, spawning, connecting, warming, ready, stale, snapshotting, stopped, failed) is the compute-side vocabulary and is deliberately disjoint from sessionStatusSchema's conversation lifecycle (created, active, completed, failed, archived, cancelled); a session may be completed with a live sandbox or active with none, and the type comment names rendering the former as session status as the bug that let the sidebar and header disagree.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/types/sessions.ts#L5-L46",
+          "version": "repo-lines-v1:sha256:41b0efdb96c7fea08670ca171291b4bdb6940e82a6d505e9ac36d83c9d01dd9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMDA5Y2YwNTU5MTgyYmE4OTU3ZGYxNmY5MTFjNGUzMjRiMjY2OWZjNTQxZDI2NDk1MGQxZDUxY2FhNzM0YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1M2NkNDc5YTJkODc5ODcxMDQ4NzY1MmE4YjU5MGU4ZGU2MGM0ZjFiMjMyZTU3NGEyZmM3ZTI5ZjY1MzY1OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhNTE5NWUwMjdkZThjYjUzYTY5OWZlYzY3Mzk0ODFkYjRjNTdkMDVlNzllMWZmNWZmOGMyYWZkNTEyMDUxZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_04e6573a92544833976be844a44fee7a",
+      "statement": "SessionStatusService is the single writer of session.status and every transition fans out to three projections - the session_status broadcast to clients, the D1 index (status plus terminal metrics when the turn settled), and a child session's parent DO over /internal/child-session-update - with projection failures logged and swallowed and a same-status call still refreshing them.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/contracts.ts#L51-L51",
+          "version": "repo-lines-v1:sha256:d722c3fe8c0b179df04e78693a6aae103cc656ef7f11b9082a5dda7a5f5e2883:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDcyMmMzZmU4YzBiMTc5ZGYwNGU3ODY5M2E2YWFlMTAzY2M2NTZlZjdmMTFiOTA4MmE1ZGRhN2E1ZjVlMjg4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDcyMmMzZmU4YzBiMTc5ZGYwNGU3ODY5M2E2YWFlMTAzY2M2NTZlZjdmMTFiOTA4MmE1ZGRhN2E1ZjVlMjg4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTUxNmZlMmIyY2IxNDdlMmI2NWJkMDNmZmM3NzJjN2JjY2IxYTIyZWQ0YzQ2MGRhYWU0MThiM2EyY2MxODI3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDc4MTVjYzk2Yjg3ODUxYTI5MzQzMzM3Yjk1OTgzZGY3OTcyNmVlMzUzNGU5ZGZlODU4MzJhMzE4MmE0ZThiMyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L1-L135",
+          "version": "repo-lines-v1:sha256:b2fda29716cea0ee845509f7757d06567bcae108cc67147714f5ed70b0f07b6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYWYyMmNmMDczMjU5MmMyNDcxNDFjYmU2MWVmYTExMDEyNjEyZjVhMzEyMmI5YWY5YmJhZjUyZjU3MjRkMTk0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2MmZhZDNkOWNhMGM3Yzk4YTViNWQwZjU1MDk3NTc0M2QwNzYzOWJhNDVkOWNhMGYzOWFiNWFkZTRmNzNiZmIwIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_5fb1ee435b69429680c4405f86ebefd8",
+      "statement": "Transitions write updated_at as Math.max(Date.now(), previous + 1) so ordering is monotonic even on a clock collision, and cancel() takes a synchronous terminalizeUnfinishedMessages callback so no request can observe cancelled with unfinished messages or accept work between the two mutations.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L60-L64",
+          "version": "repo-lines-v1:sha256:c7b93e03aaa99fc54a5810984f8957239c6c940e955b6eceac9b8394a3270e6e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJmZmIyMjEzZjkxYTFlZWY5YTE3NTMzZjUxMGY5OGM2YjlmMzI4MDhjY2RmNTZkZGEyOGFkODU2ZTdmZmQ5ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGZhYzRlNDM2MzBhYmY2OGMzYTRhNzU3M2ZkNGM0MzAwOGJhNzk4ZGQ3NmMzNzU5ZWVlZjUzZTZjZmY4ZDJlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODUxZDQzOTliNjIyNTdjOTJhYWE5NGFiZDA4ZmVlNDU1MjcxYTc4OWI0OGFiMTcyMmExMThlMTc5MDhiYTU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWE5MjkzZmQ4MDU0YjZlNDcyNDgzNzNmMzlmNGRkNzc4MDAxMDVlYjc1ODM0ODY4NzI1NDI4NWNkMTI4MmI3OCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L99-L114",
+          "version": "repo-lines-v1:sha256:d2e24e94279f4883b3651d572736f4a4e466dfe37347534db05323fd39bc0482:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYjU2ZTM5ZTJhMDE2NTM1MzdhYzBhNmMyZDdiYTRkZjRjOTY1ZDVjMTZlNjc3NWViZWFkNzM2NWU5NTk3NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhZGRlODBkZTQ4YWY2ZDc0MTI3NzAzYzYwNDRlODZjZmIyM2JhY2QxNDkxZjkzYzIyNmNmMjA0Nzk0ZmQyY2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ecb7d022df1c4f269571b6be218d7598",
+      "statement": "getIdleStatusFromTerminalMessages deliberately returns created for a session with no messages - cancelling the only pending prompt deletes its row - so the abandoned-draft sweep can reclaim it; the source comment warns explicitly against 'fixing' this to completed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L140-L175",
+          "version": "repo-lines-v1:sha256:1f08d767405da180d11129d3906e9fc4deeaf59de484ef0c027abd3c4d504aec:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlOGUzYjNmMmE5NGU2M2Q2ZjZkYTkxZGMzODRmNzVjMWEyYmQ1ZGU4YzFjYzU3NDExYTc4NDhjZjNlNjM3YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2NGIzMDMxN2E1M2RhMDI1YTNkYWEyOGFlMGYwMzQ4MWI3NWUwZTAyZWY5ZDY1MGY4MWU1M2Q3ODliNWU4MWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmYjg1MTQ3MWQxODkxMjNkNzI0Y2MxOGUwMzU4NjJkYWIxZWVhYzNhMTcyN2E0N2M3ZGFhNzk2YTA1NzYwODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c0f59e8879c6433ca874e3be59a224ed",
+      "statement": "Unarchive restores rather than starts: it settles the status from the session's own messages instead of asserting active, because every settle path runs off execution events and an idle restored session would otherwise sit in the in-progress group until someone prompted it again.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-lifecycle.handler.ts#L243-L281",
+          "version": "repo-lines-v1:sha256:1582cbcb38e872d8a207981313be11a4e56a228c4b28ffa10c34ec35d7361f77:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjYmNlZjg1N2ViYWFmNDFiOWZhMzkwYzE3OTRhMzZlMWEwZjk2OWUxZTg4NTY2NDg2MGVlMmJlNTc1OTE4ZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNTdkNzZjMWMxZmY3MTUxZTljZGJmMDM1ZmY4YzA0YTg2ZGY4OGFmZGFlNWJmZWUwMDQ3ZTZhMGVmYzBmMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFlMTRiYWNkMjBkZTM5NzgzNmJlNzQ5OTRlYjY2NzRmNDVmZTcxYWUyYTliOGRkZjNkMTVlYmQ5ZjlhOTViY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_77839e95e1ce451d95496558a46a47be",
+      "statement": "The abandoned-draft sweep runs on its own cron (23 * * * *) with an 8-hour TTL, asks each candidate DO to expire itself over the internal route, maps a 404 to missing rather than an error so the index row is retired instead of retried forever, and the DO answers not_draft by repairing the D1 mirror or has_work by settling from message state.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L26-L121",
+          "version": "repo-lines-v1:sha256:a8fd23f26b67c456aaeaf10d13e15ac8e5360c7f4fd7f82ad273d2a2ada94dd3:eyJzZWxlY3RlZExpbmVDb3VudCI6OTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNjYwMjJhZTExZDYzMWFiYTYwODEyNDliNmI1ODY5NzY3YTE5Mjg0YjU1MjNiMDY4YTcyNTUxZWM2MzJmZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyM2MxOWI2ZWZkN2U4MWNmNmI4MzIxMmM1OTkyNmJhNDAzZTBlZGRjOTVjOTJkOGU5YzgwY2YwYWFmNmMxODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwNTc2ODk0OTczYzE1M2E0ODBmNGViZmExMTllMzg1YmUzZDYxZWZkYTg2ZGFiNDcwMDQ2YzFjMDc4ZjhkODkifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-lifecycle.handler.ts#L191-L241",
+          "version": "repo-lines-v1:sha256:5932c4d0d53872b4eef2aa546c3871b02cb69b86bf95ad344e8ec269924ad378:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMzZlMzhmMDNhMTQxM2E4MTAwMWY4NWM3ODcwNmI4M2U3ZjdmMmMxNzJjMjQ3ZjdlMThiMTgxZDBkN2U3YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0MzQ4OWQyNDA1NjVjY2U4ZTRiNDgwODVlNjQ0ZGQzYjM3YmQ3ODg4NDY3OGY1NzZjNTc4YTcyZDMzNzNlYmEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L67-L96",
+          "version": "repo-lines-v1:sha256:d0b6b2cb64a6120f933a4bdb7ebbf60b550ae7c36a8d77e3f6ee43b41ebf812d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNjYwNTg5Y2Y1NGJiZTYxNWY3MDliNjllMjk5MzFkNDFjZmJiN2Q4ODM5MGE3ZjdmODQ3OTQ3ZGIwOTMwMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3OTI1YmYxMjJlYmIzNGFiM2U3YWMxYmZmMmVmNjhiYmFiNDM5NDEwNjNmZDljYmZiNGY2OTJkODVhZTc4MTEifQ"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L228-L230",
+          "version": "repo-lines-v1:sha256:07700233e249e40f3a5229f88c79bcf2fd4a28a2296a5557d85b18d2521f0690:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWE3NmE0YjJhMTM5NjEyYjk4YzM4MmMxNGJmYTE2OGY2ZTc0MDE1ZmRiMDhkYmFiMWY3ZWExMGU5M2Y4OGQxYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmM4NzhkNDc4NTMwNWZjMGNkYjU5NDU4MWMzMWVlMmU5OTY2NWIwNDZkMzM5N2VhZTdlMTQyNTBmNmYxOTE3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjIzMjk2YzFiOGUyY2IzZDcyYjdiYjI5ODA1MDg3NTk0NTdlMmI2MTJkZTVlYjZiNjc0MWFjNjUyMDY0YzExZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ1ZmYzZjhlOTU4MzdkYTYyOWY1NTQxYmFiNWZjOTdkYTdlYTEzNDJmZjcwMmU3ZDVkZDcwYTQzNzY1NzMyZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_625e50dbffac4812b614f21c19464c5f",
+      "statement": "Operations coupling between the DO and its deployment is contractual rather than enforced: Terraform declares the SESSION binding, the new_sqlite_classes migration and the cron triggers for a class named SessionDO, with a source comment requiring the cron entry to match ABANDONED_DRAFT_SWEEP_CRON, while packages/control-plane/wrangler.jsonc is explicitly labelled a test-only config.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L72-L78",
+          "version": "repo-lines-v1:sha256:17229ed92a519dfffde7e52185d571833243c38405c710e9304a59dec73432b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQ5NzlhMTU0MTQ5Yzk5MGVmMDllZDExM2I4MWExNjZhMTlhZDI5MzU4ZDJmZDZhNTY0Mjg2OGMwN2E1YmU4NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDkyYjgxMjgxNjIxNzhjODQ0NzhkNzcxN2EzOTJmYjRhN2MwMzc3YTRhMzczZGNjNzRkYWUyNGE5N2I3M2UyOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjJiNzkzYjRlNjBjMWU5OGU0NzIzZDVjNTA4MzhjZGY0YTcxODcyYjAyNDNjMWFkMjU0NGVlMzYwMDJiNTY5OSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/wrangler.jsonc#L1-L10",
+          "version": "repo-lines-v1:sha256:06fe88c38dc5dcf2b168896c13ea8f5c2a30921a0069d74ebe6b6e10337f7d57:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzODkzZjFmNzAzYzkxNjRhODI2NmFlMzg5NzIwNWFiNWQwOWY4YzMzMzFlNzI1ZTAyNGFiOTk4ODQ0MmM1MGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxMzBmZGFlYTgxYjQ1NTliOGI4MjIyYjU2ZGRlMDY5YTlkODc1MzNiNzcxNWIzZGFhZmIwODcwZDFmNWMxMzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3ZjljOTBlMzQxYWUzNjUyYzk1YzNjMDg4NmZiNjI5MjZiODE2M2Y1MGQyYTdiYjE5ODM2ZGE4Zjg5NjUzOGYifQ"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L215-L230",
+          "version": "repo-lines-v1:sha256:5723af6f9821a79827a7be505d835b1dd36e1ad711f90e303472e88d07935c40:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YTVmOWI5YjIxYmZjYmZiYjNkNzcwNjgwZGVkOTdiNGY1OTliZmRhNDcxNTM1MGJkOTkwMzhhNjcyYzQxYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjODc4ZDQ3ODUzMDVmYzBjZGI1OTQ1ODFjMzFlZTJlOTk2NjViMDQ2ZDMzOTdlYWU3ZTE0MjUwZjZmMTkxNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiNDBiYzIyOGRjZjIzNjY4NjBiYTJiOGY4OTJkMjU5Y2NhNjgxOTU3MjZhZDdlMmI3NDVlNjRiMmUyMWYzNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNWZmM2Y4ZTk1ODM3ZGE2MjlmNTU0MWJhYjVmYzk3ZGE3ZWExMzQyZmY3MDJlN2Q1ZGQ3MGE0Mzc2NTczMmUifQ"
+        },
+        {
+          "resource": "repo://terraform/modules/cloudflare-worker/main.tf#L104-L127",
+          "version": "repo-lines-v1:sha256:850d94bd94a7601b487acefe453252aa01755d5061878ad2c5f9b7adcb40f20a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3YTFlZTEyZmY2ZWI3MGQ0NTVmODY3NzIwMzYyYjViN2E5MDQ5YzM4NmVlODdkYzQzYWVhNjQ1MTE3ZWY3MDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzNzQxYjg4OTRkZmYzMTM2Y2IxZTI0YmM1ZmU2NjM4Y2ZmNDU1N2IzMzE0ZWUwN2NmNTQ2Yzg1ZDRlMzY3YjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2MGRjY2M2YmY4ZTdiYmZjNGY3OGU3YzZiYWE2ZTc4YmNlOWE2NjRjMjVhMmQyYWZjM2JhM2U5OGIyODljZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e1bfdbc282a4ae690114e5f80ab9e33",
+      "statement": "An empty or dead Durable Object answers 404 'Session not found' on the lifecycle, state, snapshot and summary routes rather than throwing, which is the signal the draft sweep uses to retire an index row with no DO behind it; a cancelled session additionally marks its sandbox stopped directly through the sandbox repository.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L105-L113",
+          "version": "repo-lines-v1:sha256:5f2bcb101b2ccdedeebdcb0480d7f378924c03f465bffb1d74ec5a18b3e98331:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE0NGNjOTAwZmFmMTA1MmI0YTRkNDE2MDcyNTFiNmUxODdjMDYwNjAzMGVhNGViY2VmZTAzMDgxYjBiNjRlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjBhZTA1NWU2ZTA5OWY5NzkzNjlkZTY2ZjUxMmE4YWEwM2VkNTdjMzMxYzZkNWYwZmI4ZjZmZTU5ZmI3NzIwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTQxNDAzOGMzNTIwNWYzY2NhNGQ2MzRiNWFlMWE4ODljOWMwZmRmNzVjMmZhMGIxYjE1NDZjOTdiZDNkYTI0OCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-lifecycle.handler.ts#L283-L300",
+          "version": "repo-lines-v1:sha256:565df263602ad19326aef4193c03593bea072d58360882aae62aa9148c91e5fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyNWFiNDVhY2ViMjRiMGE1YzhlZjY2YjZjZTM4ZDI3MzJjYjI3Y2VmZWRlYWVjZDQ5NmU3ZDUzODY2Mzg5MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4OWI1ZDRjNjJiNTdjNDRhNzRmODE3NGVmNjU2ZTQ4NzhiMTBjYzhmYjNjYzgxNDkxNzc1ZDQ0OGE3N2RiM2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyNDhjOTQzNjljMWUxNTgzMWM3MTRhZWRlOTkyNjM5MTM5MjZjZjk0YmQ3ZWM3YjljZDJjYWEwYWJhNDY3NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMzIzNWFiNjIxYmZkNWMwYzZjMmQyZjNhODM2OTk0ZmQ2YmQwODJhM2ZhZTY5MTU4ZTc1Y2M4OWE3Y2MzMWYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/session-lifecycle.handler.ts#L70-L74",
+          "version": "repo-lines-v1:sha256:9108b995419b075905f26bdf1442c59779a3bed1de7ef63468d8f89704f2c656:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkZTNhODQzM2RlMDA1MzUyNThjNTJlYjgxM2JjNTRkNWU3YWNlNjI5MTJhMmQ3MzJiNGY4ZjQ0Y2QwMzk4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmU3NDE0MTQwMmEyOTc4MjA5YTAxODJkNGViMzI5MTZmOWYzNWUxNTlhMThmMWNmYTM1NGNjZTcxMDcyMGYwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDBlMGFmNmQyYzJhZTBlMjAwYzY0NTQzMmEzYTNhNDcyZjBkMzlhZjliYzRjOGM4MmMyYmJiODFmMDhmYmM5ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_14f328285b5342ba935ab004449819df",
+      "statement": "SessionSandboxEventProcessor owns only cross-family concerns - arrival logging, one SandboxEventContext per event with a single clock reading and message attribution, and the ack contract that sends the ack for a CRITICAL_EVENT_TYPES member only after its handler finishes - and routes each event through an exhaustive switch whose default is a satisfies never arm; the ack is skipped and logged when no sandbox socket exists.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/sandbox-events/processor.test.ts#L177-L177",
+          "version": "repo-lines-v1:sha256:0426cf344cc294ae56ae547467eef692eb8f6a4aa7728080b7143ed51930b24c:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQyNmNmMzQ0Y2MyOTRhZTU2YWU1NDc0NjdlZWY2OTJlYjhmNmE0YWE3NzI4MDgwYjcxNDNlZDUxOTMwYjI0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQyNmNmMzQ0Y2MyOTRhZTU2YWU1NDc0NjdlZWY2OTJlYjhmNmE0YWE3NzI4MDgwYjcxNDNlZDUxOTMwYjI0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmM3YjQzNTU3OGQyYzc5YmZiNjBhYzkwYTA2NDA3NzlhYTYzMTNhOGQzOGU0ZDFmZjA2ZDU0ZTlkZjljYWViNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTZiNjE0MzZlMDIwOTNjZTBiNWNiYTkxM2M1YTNlOTZmYTNhNWIwOGM1MjIyOWQxNjE0OGVhMTQzMDY4ZTZhYiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/sandbox-events/processor.ts#L105-L128",
+          "version": "repo-lines-v1:sha256:427f2a42f4ce6973380acbeee3c7dfc7d7661857709a68ce310eee25c2d423b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyYjQwNWJhMWE0ZGQyMmNiZDc3OTBjMDczNzJlNDI3YThhMzk0OTJiZmU3NDIyMGQ4MWFiYTIxOWQ3MTZmNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzNDliNmRlYTNhYmM5N2UyMWQ4YzVkZWE0NmRiMDZiMWI5ODYwYTM3MWFlOTUwNjNhNmFmMDI1YTk2NDkyZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/sandbox-events/processor.ts#L14-L61",
+          "version": "repo-lines-v1:sha256:fabbbe625eb7912e1d1f90be2e583a2f990d0267877be1f550e6778ef6d4098f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNDY3NzVlMjY0NmRkNDRhY2NlYjM5YmMyNzU3NDhmZWQ1N2E5ODI2Nzc4YjQ5OGE1YTNjYzdmNzU2MjUwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZThkYjYyMGFhNGI5M2IyZTY0ZTI4YTc2MDAwODRlZGI4NjBlMWFkYWFiODc5MzE3ZDk1ZDNkNWQ3MTEzYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5N2NkNTllMGYzODc3NTQ3M2RmZTQ0NTk5M2M4OTIwY2E2ZDAwYWZlYmVmZjc0YjBlYWZkY2FkZmYxZWFiNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7bcffb1acc264463ab264f0cbda1465c",
+      "statement": "PresenceService is stateless: participants are projected from the hub's connected client list rather than stored (so two tabs of one identity appear once), and the typing handler broadcasts sandbox_warming before warming a sandbox, which the lifecycle manager's warm decision skips when a socket is connected or a spawn is in flight.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1518-L1540",
+          "version": "repo-lines-v1:sha256:51e395e8520f1683d56d4831fd04e91e54452c13d501bda0735991204896c9d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzNjg4NTUwYWY3MWU1YTgwNDk0YzgzZjY0MTE1MzAxYmMyMTNmZDk5MDQyYzIyNjA2NTY2Zjc4NjQxNTY3ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYTI5MTBlMDZhNzk1Y2MxMWE1NGYzZTI0ZjAwZGUxNDBhNWFjMmQzZDFiZDc3NDM2OGY1NTJkNjQyNzk3YjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0OWI0OGNkNjY0NjNlZGI3YTJhMmY1MjljNzFlMzI0N2EwODFkYTQ1ZmUzYjY2ZmNkNWE0ZWMyYzA1OWNjMTcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/presence-service.ts#L1-L40",
+          "version": "repo-lines-v1:sha256:d1c1e4bee2ec5e3384aae788be540de48e5bdb7623e2bed9ecc7486b54e509fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3ZTQwMGQ0MDk3YzJkNzIzZDIyMWU4NWU4ZWEwNDUyMWU1OThkNzY0YTU2NjdmNjdjNWQ1MmIwMWNjM2EzZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/presence-service.ts#L109-L109",
+          "version": "repo-lines-v1:sha256:769761196d93906ad55ef3988dc02b94570074dd47d725e94676125bdd5ff364:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY5NzYxMTk2ZDkzOTA2YWQ1NWVmMzk4OGRjMDJiOTQ1NzAwNzRkZDQ3ZDcyNWU5NDY3NjEyNWJkZDVmZjM2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY5NzYxMTk2ZDkzOTA2YWQ1NWVmMzk4OGRjMDJiOTQ1NzAwNzRkZDQ3ZDcyNWU5NDY3NjEyNWJkZDVmZjM2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjIyOGI1OWFiYWU2OTJlNjY4YmM3Yzc4NjNhMTg2ODc4Mzk4MDA2YTM1MWIwMzdhZDFjN2RiOTczYjdlZDBhNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTg2ZGVmMzA5YmUxMDg2Y2IyOTdiNWIyZmY0YmRkNWFlM2RhYTJiNjBlNmYwNjA4OThiZjkyZjJmNTk1YjIyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cec8407564fb4cf0bf2dd94834e0fea4",
+      "statement": "Prompt admission is idempotent at the storage layer: a partial unique index on client_request_id (migration 40) dedupes web retries and one on autofix_feedback_key dedupes provider feedback, while sandbox dispatch is gated on a live socket - no socket triggers warmSandbox and a send failure is classified transient versus terminal before the message is failed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/message-queue.ts#L440-L530",
+          "version": "repo-lines-v1:sha256:da4bd6892f4dd1699f51a5211ae2780ead3dd761f956542d2cfe7408aad13c7e:eyJzZWxlY3RlZExpbmVDb3VudCI6OTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3ZTkzYTBkNmMzNzE1NGM2OGExMjJiYjkyM2I1NGY2NmVlNWNiODM0NDliOWViNGIyZDQxMjg4MGJiY2NjMjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5ZmNhMjIzMWY3YzEwMjMyZGU3YTJiOTU3OGNlNmNlNWUxZTA1YTdmN2JjYTgxNzYyYjE1MDBiOTQ2OWY1ZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjNDQwOTJjZmJiMmRhM2VkNDQyNDc3M2U4NjUwZGU1MjI1MjhhN2RiNzc2ZWY4NjY5MzUzZjMxYjdlMDRkODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzZDM4YWQzMDc5NDg3MDczNTZhMDNkMDBlODRjY2JkZjg1MzdkNTE0Yjc5NjIzNWU2OGVhMjUxM2Y1ZmM2OWMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L558-L567",
+          "version": "repo-lines-v1:sha256:7b6e4880de77b675dce12b7541b96e8bb63aa37c22a0b9d63418cca556875a2b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMTFmMjM5YWM2NWM5ZmVjZDRmNzk3NWQ0ZWUwYzY3N2I1OGE4ZWE2Nzg1MmVhMjVkMjc5MjM5MjUxOGQyZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhZDg1Y2E4OTBhMjliOGU4ZTM3YWUwOWMyZGExYTA0M2U4MDU5OTllNzIzNzQyZWQ1NDY1YTZjYjE0ODJjOTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlYTNiZTVhNTBhZWNmMzg4OTkxNzhmNGM2YmNhOGQ5MzEzNGRmZTY3OGYxMzc5YmRkYmY4YTJlZjBlZmI2MDIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L610-L620",
+          "version": "repo-lines-v1:sha256:45a073338a5ac8ad2346b14f573cfac76fc663e6db518cf8c5afad810276f2de:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzOWZlNmY3MzlkYWQ2N2IwODY3ZTZkNThlODA1YTFkYzMxNzNiYzYyNzY5ZmM4YWMxMzY0YmQwOTAyOGVjMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmOGUxYmI3N2IzYTI4MDUxMWRkYWVjZmNlZjBjODk3ZWI4OGUxY2RkOThhNTMxNGE2NGFlZDM4MjhjZGYwNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4YTkxNzU5NzJmZTE1ZTJhOTY0MWFiMTMxZjU3MWU2YzdjYWJjYTA2ODM3NjJlYmE1ZjIzNTNlNDgzYzNkNTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f82cefecdc5a490f9aa21a167a33837d",
+      "statement": "Persisted alarm deadlines exist for host adoption rather than ordinary eviction: the schema comment names session_alarm_state as the recovery source for hosts that can be adopted by another process, and rehydrate deletes a runtime alarm sitting behind a tombstone before re-arming persisted work.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/scheduler.test.ts#L192-L252",
+          "version": "repo-lines-v1:sha256:9dbc70097ca1a629512a2dcaa2c4835bc2334a0cc1b319ab68b4ca7f35360fcf:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjYzY5OTRhMWRiZjc3YjdiZjBmNTA3YzliYzU4MDYwNDU2MDQ3NDcwYzYxZDVjNjE1NzUxMmQ4MTdlZDZiZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyYjZkNWNlMDQ3ZWJjMGIyNDZkM2JkZjRkZjM4M2M5ODQ4ZTFiYjUxZmFlOWFkNTE3MTkzNGY3MDg1ZDE4MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4NmZkNjhlMzE2N2Y5Yzc4MWNkNzNkMTVmNjNkYzQ5MTFmNDA0NzkyY2Q4ODI0NTAxYzI2NGRiNDA2NmEwOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2MDUyZjAyZDI0YjVhZDkyNTI2NzZmNjFjZmY3Zjc4ZjllYTYwOGY2NDU5YWU3YzcwOTJmNmNkZGFmNGYzYWMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/scheduler.ts#L148-L162",
+          "version": "repo-lines-v1:sha256:a59a4c1f149397b015480b98c97ae981c61ad79c08532003bda23e8faea2e006:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjliOGFkYjI3ZjcxMmZhNWZlMTI4YTg5NzgwNGQ2MjcwYjg4ZjRkNDdlNDIxYzNlM2YzZWExY2ViYWFmNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViOTcyZjdlZDg3MjQ4Zjg5ZmY1YTQ3NTI1Nzc1OThkMGY0ZmJjZDE3Y2U4MWQwZmQ5YTU5NmZjNjdmMjUwMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMzlkODkyODNmYWEzOWY5NTVlMmU1NTgyMmQ0M2U3M2I1NGVkZWZlMjJhYTQ3ZmNkM2NjZTRjZWU3MGI1MjMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L197-L198",
+          "version": "repo-lines-v1:sha256:d77147127b574a8a48e628158b30a19549e663a67bda6d62cdde17e0029883c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MzODM3NWFhZWIzZDhlMDhiNGVmZmI5NWJjNjUzZjk0MzYxNWM3NTc2ZGM5NDBlN2E2NTU2Nzk5ZjkyZWNhNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTBmMTFhNjA4MzBlYjdjOTI4ZDE1ZDkwMmNkZjc3OWNkZmIwOWM0YzdlODAyNDhhZWRkNGQ0YjkyYTE5Yzk1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzQ0OWJmMTNmODJjMTRhMzk2NzkyMzBkOGU2ZGVlYmJlNjBmODg4ZDE4N2Y0NTlhNTFkYjY1ZWM5NWQwNjJlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTY0ZTFhYjllM2U2OTlhYmU2Y2IxMjc0ZDBiNTZjNzM3YWFlOGE0NWEzMGZmNTY1NmQwNmI2YWJmNjNlNzMwNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_23d8bba5c6754053a5c8bab38be8b97d",
+      "statement": "The runtime is testable off-platform because the server stack is generic over the connection type and the hub is reached through the SocketRegistry port: the composition root supplies a plain socket adapter to the platform-neutral core, so session/server.test.ts drives HTTP, message routing and disconnection with string connections.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L744-L760",
+          "version": "repo-lines-v1:sha256:55867f6d35bacd0a6cdb679e2b154ab88f1b60282d9335ec295b165b6d53215d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MDA5OGVlOTFhYzg1YTkxMzdkYTA0YjU5NjNjNWRkN2VhMDY2NTY3Y2E5NmJiMTMwMzhiMmRjOGY1MGViMTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzMzQ0ZDRlMWUyODczYzRjZGVjODhhNmViYzc3ODdkNWEzZDUxNjM3NzcwYTgyYTFjMmJjZDM4ZmQ1NzAyYmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzNGQ0N2JjNGM4NDFkYzNhZjY4MTU4ZTU0ODA0MmNmN2NmODQwMjdkZTBlMWQ2NzYxNThkYTY2Mzg0NzJiNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzMGJhZDk1MDkwYmE1NWU4YjVlMDNkYTA2NTljNjRmMjllMDA5YjIzNmFkMzhjMjQyOGE1ZWYxMmFkODIyMDcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/ports.ts#L1-L40",
+          "version": "repo-lines-v1:sha256:9dc10e7323d4e986ef946510c4b896a3f8a3c23a2b3d08cd31e22b58e25d3dca:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiZjYzNzRmNGRjZWQ1OTUzY2U0YzAxNGUwMjcwN2QwOTMyOWNkMGM1Njg0MjM3MGQ0MzM3ZGNlNzAwZTg2NzAifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/server.test.ts#L145-L165",
+          "version": "repo-lines-v1:sha256:a48e236500693e17064c8dcfd86a2973081428e52a9d5b070ef604b291757158:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzYjdjMzAzNDU5ZmI0YzgyNDQ1ZTVhNTRlNzJlNmNkNGQ1MzQzM2QzMDllZDZlNDNmNTJjZTRhNGZiMzlhZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxMzIxYzFiODJhMDI3Mjc5OTA2YjU3OGU2ZTdlM2Q1MmY1MmJjNjQwMzRjNWE3NGUyMzkzYjZiODFiZGZiMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmNTBjYmZmNmI1YzAxMjVlODExODg1OTczNmE1ZTIzMmQzZGM4NmY4ZmVmMDczZTEzMzMwZDYwM2I0MzQ0OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwNzRlZjcxMzM3ZmU0YjQ4NDY2NjEzNmI1MTY3MzcwYWYwM2RlYzkzOGU3NTljZWQ4MDc0MmFiMDM4M2I5ZmEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/server.ts#L14-L26",
+          "version": "repo-lines-v1:sha256:0a50cbd54ee069955688864da59a03bcea418a65d5278a2178443fd8aa75b8a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhNWQwMmZiZWJkNGNlNzU4ZmJkN2I1MWJmN2JmNjFhM2EyMmJjNTBkMTYzYmNkZmQyNWI3MWI2NWM0MzIyNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMmJlYzBiOWJkMGFjMmEzODk2ZjE3ZjI0YzM2NjcxODg5YjM1MGNmYjc0ZWU1NDA2ZjRkMTAyMjQ1ODQwNjQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T05:37:27.900Z"
+  }
+}

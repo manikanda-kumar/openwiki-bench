@@ -1,0 +1,4 @@
+# Files
+
+- [Deployment, Terraform, and CI/CD](deployment.md) - How the full Open-Inspect stack is deployed — the Terraform production root module (Cloudflare Workers, D1, KV, R2, queues, Vercel/OpenNext web, Modal/Daytona/Vercel/OpenComputer/E2B data planes), two-phase Durable Object binding deploys, D1 migration mechanics, the GitHub Actions auto-deploy workflows, required secrets, and operational scripts.
+- [Logging, Correlation, and Debugging](logging-debugging.md) - How Open-Inspect services emit flat JSON logs with a common envelope (level, service, component, msg, ts), how canonical correlation IDs (trace_id, request_id, session_id, message_id, sandbox_id) are generated and propagated across slack-bot → control-plane → modal-infra → sandbox via x-* headers, the event catalog for querying, redaction rules, and the cf-logs worker-log query tool.

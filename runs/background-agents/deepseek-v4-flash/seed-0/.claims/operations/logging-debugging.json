@@ -1,0 +1,512 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:67cabc416e1ee97aebb359829395bc8de61959e972840a862e701e40a3c9ec53",
+  "claims": [
+    {
+      "id": "claim_b8564b6b59634cad9e321ee261858c67",
+      "statement": "All Open-Inspect services emit flat JSON log lines with a common envelope: level (debug|info|warn|error), service (web|control-plane|modal-infra|slack-bot, plus the other bot workers), component (sub-area such as router, session-do, bridge, supervisor, handler), msg (a stable event identifier used for querying), and ts (epoch milliseconds); the TypeScript shared logger and the Python sandbox-runtime JSONFormatter produce the same shape, with the runtime emitting its call-site `event` kwarg in the msg/event slot.",
+      "evidence": [
+        {
+          "resource": "repo://docs/DEBUGGING_PLAYBOOK.md#L5-L19",
+          "version": "repo-lines-v1:sha256:187b27a6a439e8d05056d4abaf63e8f250d57f54fa0e779a5ed45ee4e407c1f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwZWRhZDAyM2U2MTQ5ZDVkNzc0YWNiNjU4NDUxOTYyNTQ2OTIxMDc1MmM1ZjA2ODZkMjRhNDk5MWMwMTkwZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMTA5NjA0ZjZjNWM4ZWU1M2RmZjIxMzA2MzQ0YmVkYmRmZjM1NGI4MWI2ODJiYWMzMDI4NTJkZjhhMTBlZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1ODk3NTMxZGM5MDFmYTNjMDIyOTM2YmIxNTYzNTIyYmFmN2RjNTFjNjc0NzEzODFjOWExN2Y3NTQ2MTZjOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1Y2RiYTBlNTAzODA5OWY1MDY5NTk3MTlkYzE4MmVjNjQxZTlhNzNmZWExMDFhOWZmMWJmZDFiYWRmYzIzMWIifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/log_config.py#L53-L74",
+          "version": "repo-lines-v1:sha256:2d328852ae2baf357ba43cde0716ac654d57b860d4ba34072e5fc422d7c305aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4YzdiNGFlNGY5MjRhNDI5MzZjZTJhZWZhM2UxNDRmZGQzMzVlMTFiMGYzNzU2NWYyZDM5NDE1MzJiZWI3ZWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxM2IwMjEyMjRhMTc5MmY1ZjZmOTA5MGVjZmVkZTY4YjEzMmFiNjAwNTg2ODYwZDIwOWY5Yzc0OGE5MjA5NzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5ZjkzMDgzYzE5NzEyMWI5ODI3MDBiYThhZmFiZDE3MjJjZjFkM2U3NDA0NTA5ZTgwZWZhMjcyNDdmNjJmMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyYWY0NmEzZDdkNDBlYjEyOTRhY2JkZWM2MWVhMDBhOTljMWY3NzJhNjEwNjQ4ZjEyNjQ5MmE4NTYwYmVjMmYifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/logger.ts#L68-L133",
+          "version": "repo-lines-v1:sha256:dd304cba6b4ce07bdddf77076026e67af06ddbb5cd35f8b989d7a138fe2d412b:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNzMwMjE1NTI0M2RlYzY2ZjEyYTVmNjJhMDA2MjA0ODk0MDk2YTE2NDhlY2VjMzllMDk1NjZhMTA4NjRiNTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzMzRkYWM3NGExMDdlOTU2OWQ5M2IxZjAxOGU5NmY2MjZjOTIwMmU5YmQ3Mjg3OWZhZGE0Mzc2MDQxMjhjMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_051519b6b52247e4a934f55ee3aff4ae",
+      "statement": "The shared TypeScript logger reserves the keys level, component, msg, ts, and service: context and per-call data cannot overwrite them, remaining fields merge base context → child context → per-call data with later values winning, Error values are normalized into error_message/error_stack/error_type/error_code, and JSON.stringify is wrapped in try/catch so an unserializable line degrades to a guaranteed LOG_SERIALIZE_FAILURE event instead of losing the log.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/logger.ts#L38-L58",
+          "version": "repo-lines-v1:sha256:893652f6de17e0445089f31c32cf04b64cc484081b922834d6a46bf895420c3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyYzJmNmM4NTdjOGYxNGJkNzIxOTQ0NWU3NjdlZmY3OTdiN2EwZDdjMzg3YzMyNGFiOTE1NGMxOGZmYjdmMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0NmZjODg1ODM5MjBkNDFiZWJiNzdmN2E5NzY3OGQyNjM4NTczOWE5OGVjNzQxYWQxMDRhMjlhZTM3NDNlODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjMTZkZjRkYzYyZTdjZDRlYmE5MWFlYTg0ZWEwNzk2ZTFhNzY3OTNjNGNjY2ZlOWQzYmQzNDRhNmQ1MjVhYmMifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/logger.ts#L77-L118",
+          "version": "repo-lines-v1:sha256:533e4be31a63f922f103f7f92108dbae0ec6e2fc19a2429c9ac08e4f6b3a9fd3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzOWRkMDEzN2Q4MTdiOTljODZjYjJjNWNjZGIxZDlkZDU3ZTg0NTEzOTM4OGZkMGY4YjVlYzdhZTlhMGQzNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlMjRlMmZiM2U5MjI2MjU3OTFjY2I4NDYyNDBkMmY4ZjUyYzg2YTE4ZGQ2M2NlZTNiMmYwNTRhMDVkMGE4MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMTMyNzQ1ZTNlN2IyZGU2NTI1NTM5NTc1Y2NlNDE3ZmQwZjJhNTVkMjRkZDA1ODNlZjczYjE1NDA3ZDAyOTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc7c52e2cbf74dd7907c8e1e25594f99",
+      "statement": "The shared TypeScript logger maps severity to console methods (debug/info → console.log, warn → console.warn, error → console.error) so Cloudflare Workers Logs and tooling see the correct severity while the JSON level field remains available for programmatic filtering.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/logger.ts#L41-L47",
+          "version": "repo-lines-v1:sha256:2a8e0166ff412290681465ea34a78442b228e118b9399414e1b025401b0de5ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDFmYjI4YTNmMWVhZDA1MmYwZDYwZDA2Y2U1OGE1Zjk5YmYwZmE0ODc4ODgxZTY0MzUzYWRhYjk4YWUzMGVmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWExZDFhNjMzOTAyMjljNzk4MzQ3ZTgzYTA0MDU0NDFjOTQwMDAzNTI4NGFkMTY4YzFiZjZjZGYxZDcwYTM3MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQwYmU3NjUzMWVjYzI3NDZmOTVkYTEwMjY2YzhmMzA5YTJlMzhmMzJhMjRjY2ZjMWFiM2JlMGFkNmRiMmM2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTZkMTkyMDYxNDJlYzE4MDY4Yjc0MTc2ODBjNjJkNzBmMDdhZDMzODc5MjdjOTc1YzBlYmQ0OWY5YjUyMDg3YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_70d0011b369f4e64835745bc5bc79a5d",
+      "statement": "Each TypeScript service has a thin logger wrapper that pre-binds its service name: control-plane, web, and slack-bot all call the shared createLogger factory with their own SERVICE_NAME constant, so callers only pass a component.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/logger.ts#L14-L22",
+          "version": "repo-lines-v1:sha256:d46af3978490f691f823afb0e388fda116729545e8d5a8fcf892f2652409a02a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjVlOWJmNWQ5ODE2YmYzMGJiMWZmMWRhMjliMmFjZjVjZDhjZDY2YTI4ZmZlZGQwZTYwMWE1NzJhZDI1NjkxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk4MjQzZWU5MGY1MzkwMDQ2MGFiZmNkNzgzYjMxYmM3NjkxOTJlNjFjNWM1MDQ1NWQ2Mjc1Y2VmMmJmM2ZiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmY2N2ZjY2I2NTRkMzg5NjRhYzgzMzBlYWQxMTU4NDM0ZTYxZDUxMDYxYjIyZDI0ZWU0YTkwYzNiYjdkYzZhMSJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/logger.ts#L13-L21",
+          "version": "repo-lines-v1:sha256:c06fb074eca2ef068b8bb4859dabd678efe4c325b80a142ed64d1de4a712223c:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2MGFkZmUwMWI4YzNiYjlhNzQ0MGIyMzI5MjRlZTNjNzNlMjgyNjQ5NWYyYTMyNWMyZDEwZDUyYzE1ZDU2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQ2MzNlNTdjZTA5ZjExNmRjNmE3MTY3MGNhMDY1MjI5ZWI3ZTQ3ZjkxMWUzNTI1YWIwMDc5Yjg3NjE5NzExNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/logger.ts#L3-L11",
+          "version": "repo-lines-v1:sha256:3cd3924d1e2d8531373ae3d6497239aac3039ae050c1ca97cf4abede676e7e09:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGM2ODI3NWI4NTg5NTU3ODQyYTYxN2MwNzNkMTJiODYzZTNhNGRiYjRhMjg2OTE2ZDM4NWFiNTBjNjRjNjMxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVlZjAxYmMwOGRiYzNiNjNlNGU3NWVhM2QyNmE1Yjk0MTg5MTg3N2UyN2FkODkxMzI5Yzg0MTFkN2Q4ZGM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDZkNDU5MDBiYjg0NWYwZDMwYTE5ODA2YzYyNjQ1YzE5ZDM0ZTY3ODg5ZjQyMmU4ODk3ZmEzM2U3M2FkODRiOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_42f0e2e4ffb9497f867160735bfe5bc7",
+      "statement": "The control-plane CorrelationContext type defines the canonical correlation namespace: trace_id (end-to-end UUID via x-trace-id), request_id (per-hop short UUID via x-request-id), optional session_id and sandbox_id; the Modal client writes these onto provider calls as x-trace-id, x-request-id, x-session-id, x-sandbox-id headers.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/logger.ts#L28-L37",
+          "version": "repo-lines-v1:sha256:16498177f42144f4d6e6630b664bd99d40901bd018e158b24ef26c074f131b69:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNGM4NTFhNjI2ODFjZWY1ZDljM2QwOWYzNDRjN2IzNjY4MjU0NTExYWM0NzJjNjAzZTA0NmYwODZkMmEyNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhMTBjMjg3OWNmMGJiNDNlZGI4MWQ4OGRjMjIyNzNlZDQ2NzQ2NGY1ZDI2NGEyZmMyOTg5ZjBhOTE0YWY5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/client.ts#L352-L363",
+          "version": "repo-lines-v1:sha256:ee9e48d0c353ddbcd1da6f2479c405b9cdc38853d2d7eb35e88f26da2665cd41:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyYmNiZTg5ZjIwOWRiNzZkYjA5ZTk3M2FlYmY5YWY0OGNhZjQxNzNlZGQ3MTY4ZWFiMzY1NjA1ZTQyNDgzYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4OGM4ZWVlOGM4NDg5N2VjNDViMjNiNjkwMTU3MTg4MmZmMGVjZTY4NzRmMTQ0NzE1YWJkYzNjMWEzNzQ1ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2MDliODc5NmQ2ZDc0MzM2Y2JlMjZhMzU0MGU0ZDc3M2JlZWJmNjYwOGZiM2VhMTliOTIyZjMxZDNjOWJiMTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_346da6f2330242288cfbcbea685f7029",
+      "statement": "Correlation keys are canonically snake_case everywhere outside local in-memory variables (logs: trace_id; HTTP headers: x-trace-id, x-request-id, x-session-id, x-sandbox-id; provider/client objects: correlation.trace_id), and modules that use camelCase internally must convert once at the boundary without mixing casings.",
+      "evidence": [
+        {
+          "resource": "repo://docs/DEBUGGING_PLAYBOOK.md#L34-L43",
+          "version": "repo-lines-v1:sha256:287f7739bb6355c36503a1f68ee6e0b94779aef0c9f45d7706e9b0863145f1e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMTRlNzU0Yzg3NmM5NDVkNjhhODZmM2Q1M2U2MDI3MDFhOTFlNmNlMGFkMWViYTNjNDBlZGM0NjIyOGU2OTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllMWYxMTUxOTU4ZjIzNTJhNzFhM2M4ZTQ1MTYxMDgzODQ3M2RhZDEyMDM1NmI2NTczNjRlYjlkMzhjZjVkZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzNTBmYjQ4ODNjMzA2YzBiZDg2NjcxMTM2MjFkODM0NDE4NTllOWUxZmM5ZTdkZGVkODA4MzQ3MWMzY2UzM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0YWJhZTc4ZWFhYzNkYTFhYjBiODk3YjkxNTNhOGE0ZWE5OTBkZjQwOTVkODc4NTcyMDQ2M2E2NjY5ZGFmZWIifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/request-correlation.ts#L1-L48",
+          "version": "repo-lines-v1:sha256:fa1c06e9403ef976fdcf0e914c223eed41f81e4c66afd0365e205c51c42059ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZTkxZmI3YzJjZjM3MzJkNTViOWM4ZDQ1NjlmMWIyYzc2N2Y3ZWI4YjBlYzVhY2Y4NGMwZDJmYWI5NDYwYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b8222971bf3045e2b4ef7d2be258e633",
+      "statement": "The web service middleware runs on /api/:path*: it accepts a valid inbound x-trace-id (validated against /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/, otherwise generating a fresh UUID), always generates a fresh 8-character hop-local x-request-id (discarding any inbound one), sets the internal x-open-inspect-request-id header, and stamps both x-trace-id and x-request-id onto the response.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/request-correlation.ts#L5-L48",
+          "version": "repo-lines-v1:sha256:47746b2e8d14843cbc7fea2ee4873507174d72c9db95a900dfced8234b7040c8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZWVlNGE4NmY5MGE5OTE1MGE0Y2IzNmExZDdiMTc2N2VlNjFmNjBlY2VmMWQ5YWRlYmRmMDE2Y2VhYjdkMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwOTQwOGFhMjdkYjlkZTA4M2MzMjM2NzcxNDdjZGRhMGJhOTZjNmNlZjZiNTk5NDYyYzk2YjZmZTdmMGEyNTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/middleware.test.ts#L5-L34",
+          "version": "repo-lines-v1:sha256:cf1c70e3349621abf15cd5ab7ad2e9391fc0fd8001467bee87a483f5825d9e54:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZDU2OGZkZWQxNTQwZDkzYmU5NzYzYTYzZTM3NGIyN2QyMGMwZTQ3ZTY2OTQ4NWFmMDIxMTAyOTQyNmZkMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzODdiYTczMGI3ODI2NDQzNjA2ODdlN2IyMjMyMDNjMzJiMjgzYTRiZjY2NDZiZGE5ZjZjNWM4ZTRmNTdjOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/middleware.ts#L10-L27",
+          "version": "repo-lines-v1:sha256:9d27d767351a6751fe8b644f0dcbb3587f159459be3667a72ccf7f94409f2988:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxOGRiOWIxMGViOWE1YTA4ODRkNzQyY2VhYjc2ZDk5NzRjZjNiYzkyMzYzN2NkNzM4NGY3YzEyYjQyYTE0NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZWQwOTkzY2E4MDY2Yjk3YjM5NzZkMmRmODI0MGNlY2UyOTZkYzM4YjY5ZTFhYWQwNzQ5NDdmZWNiNjZkODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjOWIzNDI0NmMyZDI0ZDM1M2FiZjBlZDg2NTQ1NzEyNjJhYTg2NGJkNWQ1Nzk1ZmJiY2VmYjk1MmU2YTAzYWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_85a58251e1804367b92e9790b9742d78",
+      "statement": "Web route code resolves correlation through request-context.ts: traceId from x-trace-id and requestId from the internal x-open-inspect-request-id header minted by middleware; getCorrelationLogFields converts the camelCase pair to trace_id/request_id for log lines and applyCorrelationHeaders writes the wire headers.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/request-context.ts#L10-L16",
+          "version": "repo-lines-v1:sha256:8f96aafe1f86b8e33e9f164a103f06877959319b4268bf731b7d2ef6e6a88fc1:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTEzZjQwMGMxN2VkNTBkMDY5M2UyZTU1NDUyM2M5ZmJhZTNkNDUwYmVhNmYxYjNmOWY3Yzc2ZTAyYTRhYjdlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjZjMDNjYmFjNTQzM2M0MGNhZGI5NzcxNDI5ODgzNjUxNGUwMjhkMTFhMDk1YzUwZThiMWIzMDgxMDE2Njk2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/request-correlation.ts#L38-L48",
+          "version": "repo-lines-v1:sha256:029cd18bd4d44a23ffd46681edfb3768ae4354c228ca1ae693364a5448e89634:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMmZmOWE1ZTgwYWQ5YjA0MDg3OGEwZWFiZmE3OWU0NzY4ZmIyYjFjMzU1ZGE2NzBhNzE5YWNkNWEyYzA4YzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliNjBiYTE0Njg3YTkxOTg2OTc3Mjk2MjYwZDA0YWVhY2E1MWMxZTBlNGVjNGI4OTYwODBmZDEyYjEwNTliZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_078aea9aaf314e2289cf1d64c7ec0a50",
+      "statement": "Web → control-plane calls forward only x-trace-id alongside the sig1 service auth headers (buildServiceAuthHeaders adds x-trace-id when a traceId is provided); the control plane still generates its own per-hop request_id, so a trace_id spans all services while request_id is hop-local.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L402-L417",
+          "version": "repo-lines-v1:sha256:5cd172ae6f979a191303477bd1bb913dd7d848e16f84abe438b2ff27341405af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwY2MyYzEyZTIzZjkxNTNlMWQ4NjBmZWNjODM4NTY1ZDc0NDEzNmMwMDI3M2VlNjExODBkYTc4MWQ1ZDU5MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2MGEyYmNjMmE1NjE2Y2VjZmI3ZjIyODc1MWVhNzI1OTA4ODIzZGZkOTA2NzBhNTIxYmI3ZGVhNGNmNmUxMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhODU1NDAzYTk0NDVlYTJhZGM2NmRmMWU3NzVkNTIyMjM1ZGU3MmQzZmRmNzNlMjYxN2Y1ZmE3NDcxYzZlYzQifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/service-auth.ts#L139-L181",
+          "version": "repo-lines-v1:sha256:903e9dc1c05e33fa90c7335f84db15935c2a8f4d7bb21a4115fdbb7c6af8e9e1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNzA5YjRlZjY5MzI0NWMyNDhkY2Y5MGQzN2FmOWI1ODgyMzJlNzk2ZDQ2NzM2MzhlZGQyYjBmNjJlMzY4NzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyMDc2NWYzOWU0NjMxYWZiNjQ0NWNkODhhMTIyODVkNDI5YTIzYjcyYTkzMzA0MmQ1OWM1MDI2NGExMTNjZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkODY5ZjAzNWI2ZjExNTM4NGY3YjAyMDBiYWUyODczZGVmNzhjY2ZmODViYWI3OWFlOGY3YzFmMTJhNWIzZDMifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/control-plane-service.ts#L61-L72",
+          "version": "repo-lines-v1:sha256:29643d29cdd3ddc5de71d26bcb8176a1338b104016af123d5e284763633e2038:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxZjEyMTViYjA0ZDZjN2M4OGYzMzBiODQ3MmEzYjk1NzIwZjY3MzBmMmIxMWM5NWFmY2JhYmUwNTllZWFhNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3ZjljZmE4ZTMyNmNhYTk1NjA0YTk3MTFlZDFhODljY2U1Y2QxMDM2NTBiNDI1NjA4YTIxYjVlMzIyNzJkMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyMTM4ODEzYmVhN2JiZDg2Mjk5NjBjNDI0YzRhMzU1ZDRlNTFjZmViMGE3MDQyOGVkOGFlYjJhNDBmMTY3MjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e9dd19661eec4add8e4da4e69dd525aa",
+      "statement": "The control-plane router builds RequestContext with trace_id taken from the x-trace-id header (fresh UUID fallback) and an 8-character request_id, and every response — including OPTIONS preflights, 404s, and error responses — carries x-request-id and x-trace-id plus CORS headers.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L402-L431",
+          "version": "repo-lines-v1:sha256:cfd32f658a90f589b3ada25b92bd6cc1566ae58987d235bb8347748ee99909d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwY2MyYzEyZTIzZjkxNTNlMWQ4NjBmZWNjODM4NTY1ZDc0NDEzNmMwMDI3M2VlNjExODBkYTc4MWQ1ZDU5MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2MGEyYmNjMmE1NjE2Y2VjZmI3ZjIyODc1MWVhNzI1OTA4ODIzZGZkOTA2NzBhNTIxYmI3ZGVhNGNmNmUxMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxYmQ3YzI0MzNhMzk4Y2QxOTEzN2M1YTU3OTFiYWY2ZGYzZGJiMGQ4MTgyMzc0MGExMGY0YmM0M2E1NDdjZTkifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L55-L65",
+          "version": "repo-lines-v1:sha256:11f414adf2ca01f727a0a039b8aa2ea8ea41982c1b7871459f2b9a15e44de132:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0NDViZmUyYjlkOTJkMWNiY2U5N2VmNDI3YjJkZDViZDA3YzdkZmJmMzQyMmFlMGU2ZjAxOGI5MmYzODhkNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwMmE0MTRjNjc1NDZjYTU4NTRkOGNmYjc5YTRkZTZjYjU4ZTgwMjE1NjI1MjkzMWRhZDYzOTJhY2MzMWE5ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViZDIyNTQ4NzU0NGUyMDRkN2FmM2ExMTQ5YThkN2NlZGFiNjVkNDljM2NkZWExZTM5MjEyY2I1YjhkYzg1OTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_042dfac87c10428aba19883f1e90f3eb",
+      "statement": "Router → SessionDO hops copy x-trace-id and x-request-id onto every internal DO request via createSessionRuntimeClient, and the DO's SessionHttpDispatcher builds a per-request child logger from those headers without mutating the session-level logger so later callbacks keep their own hop ids.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/dispatcher.ts#L59-L70",
+          "version": "repo-lines-v1:sha256:669dc76a9e9d059749dcdf0b6ea99b3282c1b20439c11e2a53cc302425072137:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3YjYxZGEzNWY1ODdmMmNhOWFiODE1YWVlNjk4Y2Q5NzJmMGNmZDI0MWRiNDEzNDE0ZTJiZjk2ZjllZDExOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/runtime-client.ts#L31-L36",
+          "version": "repo-lines-v1:sha256:52d1dbe7cb484c9384868136bb02fe763199296f619455aac81b7e5c48548435:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU3MjljMDE1M2I2MzI3Y2EwYTc2YWNiMmFjNjVmOGI5ZGJjYzRhMmM5YWNlMDc1Y2UyOWUwY2RiYTQzZDI0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWIwM2UzZDJiZGYzMTdhZTFlOTkzNGU5YjJjYzQzMTg0ZTNmMDA5MWM5ZDQ4MmYyNTJhODc5MzRkNjcyNWUzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTI3MzIwZGJmZmE2YzdkMzE2YmJhNTczZDU0YWQ1YTBjMjhlMmI2ZGI5ZmU1ZTFmZWIwMGU1OGI4NzVkODIwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6a23efb67b345ab880c29cecae65c55",
+      "statement": "Modal's FastAPI endpoints accept x_trace_id, x_request_id, x_session_id, and x_sandbox_id headers and stamp them onto the modal.http_request wide event, joining control-plane and sandbox-side logs for the same sandbox; the endpoints also record client-cancelled requests as status 499.",
+      "evidence": [
+        {
+          "resource": "repo://packages/modal-infra/src/web_api.py#L179-L223",
+          "version": "repo-lines-v1:sha256:a5c150a3b1f4dc4c7f5acee611157c047af0ce47b239c7918c9e028bc3b5f940:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhZGY3MTA1NmRlMzQzMDY0MGVjMTM4YjFhZjM1NDMwMzM1OTBkMzc4OThlMGQ4NzExNjA0MDNkZGZhMDkxZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4Mjc2NWY4NmM2MTE5YTQ3M2FkMzkzN2ZlMjg3ZTVlZjE2YmQ3NDNkZTcwMzY2MGNjNTU0ZjZkMjM4NmI4YzQifQ"
+        },
+        {
+          "resource": "repo://packages/modal-infra/src/web_api.py#L350-L383",
+          "version": "repo-lines-v1:sha256:f26d694cecb2a0cfbd295446741d61c66f2403d89ce64f0a072dd05aa9379f27:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMzhmNWUwZDEwZjQxM2VmZmE5MTY5ZDJmZGY5ZDk0MDFhYTA5N2RiM2M3NTZjYzllNTY1NTc3MTEzMWU2ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwMTRhZWIwMTVlOGI4ZTcxMDdjNTQyNmZjODY2ZGZmOWRiYWMyNjBjNmYxMTZhYzM1ODYxYjcwOTk5OGM4ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5Y2I4YzA4ODg2ZDI4MDk5YzgwMzczMzU2MjRkZDc0MTk0N2JmYWUxMWQ4ZmY4OGY0M2Q3MWNhYjZjZDVkMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxN2VjN2Y2Yjc3OTVmNWU3NjM4MDNjYjdhYzQzNTNmZWQ4MzAwMjFmMzYxNGZlOWFjZmMxZWZhMTg3ZjU5NDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e2e735a10d3b41838c17eabea09b15d5",
+      "statement": "The sandbox runtime bridge connects to wss://{control_plane}/sessions/{session_id}/ws?type=sandbox with Authorization: Bearer {sandbox_token} and X-Sandbox-ID headers, and the supervisor logger binds service=sandbox, sandbox_id, and session_id at boot so sandbox-side events join on sandbox_id/session_id.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L458-L489",
+          "version": "repo-lines-v1:sha256:72a279644d912ed5a69f7a9fcb2e755ae94cba01f36f40683b64f827e2f3e781:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2MTg4NDBjNzA0ZmIxNGQyYWM3YTk4OTYzMTFjNzIxNjJlMjllOTM1ZDc5Mjk0OTI3YmU4NjRjMTRkM2U3YjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMDEwNWUwYTY4NTIxYzNkMzMyNjE1MzkwZTg1OWUzOWNmMjQxMjc0YTdkNzgxZDE5NmEzYWRhMDdiMTBmZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkNWRlZDJiMjYwMDI1ODU0ODdmYjZlZjE5OGQ2M2Y5NGYwODBmMDU3OTFjNTJjY2Y0OWJiYjc3ZjFmOTY0ZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2MjdjOTZlNmU5NmM1YTRjYThjMDU0Y2U5NWFiY2RmMTMxYWJkODE4YWI4YzFiZDc2NTUxMDU5M2YyYmU0ZDEifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/entrypoint.py#L37-L42",
+          "version": "repo-lines-v1:sha256:260e9ef4ff5a9e078bc5a00635a13dcbaaab082abc163a277b5a6c59f9ea7d9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWE1MDkwMzlmODgyMjM5NmU1ZTUwODQ4YjQ4ZDQwMTQ3MGYzMDA5NzZlOTkwYmZkODE5NGJjZDJjZGIzZWRmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBjMWYxODhmMTQyZWQ3YTgyNDY4MGIyMDcxNzJjNTUxOWJjNjE0YTQ4ZmRhN2NmMTY3ZWRiOGRkZjc5OTU2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmMwYzNjMWJlN2ExMTUwMjVlZmU1MjNjOGQwZjVjNjA1ODZmZGI2N2ZmNTNkYTBiZmRlZTkyZTZlMjUyNmQ5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODY3ZjNlYmE2ZTU0MTI2YzA0N2E5ODc1ODYzMGY5YTg1MWFmZTk4NDNkNTdlM2I2OGE5Y2M1YzFjNzA2ZTFhMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_90aa78d9efe547b7a41d66e2da610b5d",
+      "statement": "The router emits an http.request wide event per incoming HTTP request with http_method, http_path, http_status, duration_ms, outcome, and the RequestMetrics summary (d1_query_count, d1_total_ms, d1_server_total_ms, d1_rows_read, d1_rows_written plus named <name>_ms spans); uncaught handler failures outside HttpError are the only 500 path that logs inside the router.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/instrumented-d1.ts#L76-L92",
+          "version": "repo-lines-v1:sha256:a313095a4ad5f9de5486bbf969b19f086766b4a45b0aa3f34f9578396655ebef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiOGJhMGQwMDRjZTE4ZDkwOTU2ZDlkZTA4MWY3MjA2MWNjZTljYmMyOTM5MzUxYTY1Nzc3Mjc0NTU4ZjIxNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3MWZhOTJjNTJmYzA4Y2UwZDMyM2VhNmI4ODk4YzcyMWJhNzg4ODQ5ZWJiYzg2MjljYTE3M2ViYmU0MTZiNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2MGI2OGM2MjRkZDAwZmQxYzA2M2Y3Y2E4OTRmOTNkNDMwZGQ1MjNjYTYxZDA1M2M2ZmNlMDU5OWExMDlmMDUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L262-L280",
+          "version": "repo-lines-v1:sha256:7e4918b81c00ac0de0aba49a2f9921cb92462929c06dd063f54dc6c5d5e7f1d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhMTg2YTMzNDM2YWU2NDhiMGY2MTUzYzk1YjU3ZjhmYjRjMWE2N2FhNjE1MjRjZmQwZWZkMDJlZTI1MDg2ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNGU3ZDc1ODY4NDMzNjQ2Y2IxNGQ1ZDI1OTIxNGU0OWMzMGYzYjFhNTdmMzMwZTE0NzMyYzViMmQ1ODAwNmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b308daf08e9645799c1659bd0e501a71",
+      "statement": "Prompt runs are visible in three control-plane events: prompt.enqueue (info/warn; outcomes enqueued, deduplicated, conflict on clientRequestId fingerprint mismatch, rejected on queue_full; the message_id is minted here), prompt.dispatch (outcome sent|deferred|send_failed with reason no_sandbox, queue_wait_ms), and prompt.complete (info/warn from the execution_complete handler with outcome success|failure|already_stopped and total/processing/queue durations).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/message-queue.ts#L396-L511",
+          "version": "repo-lines-v1:sha256:b41427a1eed625fae15d5fac1c0880c04993f2980298fecff11bbb1d3626a0e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3YWFhNmZjMmFjYzcyMTM4MjI5MGRjOGM4YWViZjNiNDBkYTJlM2YxMzQ5OWY2ZmQ1YjUwNWExZjMyN2NhMTg3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyMmQxMWNhZjQzZTk3ZWYzNjllNmJlZWQxYTI2OGJkMDU4MzhmMjliOWRkMjU0YmY2OWJhNjQ4ODQxNDcyMzRhIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2YTQxZDczYzQ1MjJiZWEzOWZmODE1ZTI0YmNmMTMxMTg1MzFkNjcxZWIzY2Y1MzEyMTg4NWUxMWExYzQ3MjRkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1YTkyOTNmZDgwNTRiNmU0NzI0ODM3M2YzOWY0ZGQ3NzgwMDEwNWViNzU4MzQ4Njg3MjU0Mjg1Y2QxMjgyYjc4In0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/message-queue.ts#L848-L865",
+          "version": "repo-lines-v1:sha256:2d501860555187d4f03446b4220d073999e69e68f758c234471e1a0ec5d41da9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmYjNmNDQ1OGE0ZGQ0OTVlN2EzYjE1OGE2Y2VkMDRmMzFjNTZlMGViYjcxMzMwYjQ4YTQ4NjBlMjY3MDQ0YWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4NDg3NTNlMzM2ZmUxYjU3NmVlYjYxNTMyYzgxNzZmZWM0YmI4Mzg3ODU5MzhjYzc5NGQ3YTE0MmViNTE2MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMjY4NGRkMzQ5ZDE3Y2MxMDc5YWFlMDczZWIyM2YxZGU5N2NjNTgzYmVjZjVmZTM0ZTE0YmM2YmYwMjQ4ZGQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/sandbox-events/execution.handler.ts#L61-L91",
+          "version": "repo-lines-v1:sha256:2c1938f1e4292bb883c38dd890fb151626dbd1eb9bbbcbb5bfd7de94d57d7736:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiYzJiN2UwZGI3ODM5YTBjMjA5MTBmZjBjODRmYmM2MDE2NWZiMjI1YThlZjQzN2U5ZDQ4NzViOGMyOTczMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlMmZhYTE3ZGI5Y2ZhYzEwMmE5YjEwMTg5ZWZkMmExODNhYmZjMTcxMWM3ODhlZGUwNzNiMDc3ZDU0ZTdkMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjNjA2OTcyMjgxNGUxMzFhZDEzMzU0NjM3OWMzMWJhYWU0ZjA0MGFiMGJkMzE1ZDU2ZWM3YjFlOWQ4OTQ3NTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a9afa0ff309424da63de71b1ac5dbd3",
+      "statement": "WebSocket admission failures surface as ws.connect warn events with ws_type and reject_reason (sandbox_id_mismatch, token_mismatch, session_terminal, sandbox_stopped, auth_timeout for clients) and successful sandbox connections as ws.connect info with replaced_existing; client auth timeout is logged by the WebSocket manager.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L182-L189",
+          "version": "repo-lines-v1:sha256:419d1f91855f30f8c820ad1e3d3ff76e8009ea6ff90c7ae41282f150d9cb7318:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzIxYWQyODZhNTFmNGIzZDMxMDQ3OWU5NWNiNmY2ZTg3OGEwNjJkMWVlNDIxMTY2YmJhNTdiY2JjYWUwYWUwYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTg1YWY3YTIwNzQ2MjVmMmRhZWY1OGEwYzc5ZmQ2MzRiZWQ0ODU2NzVmZDc5MjVhNGY0MTE0YjhkMmUyZTNkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWZiNzRhNzc4ZWQxM2U5ZDE4YzIwMjY5YzU3N2YwODc3NDE3ZjczZTE2OGQ2ZGMxNWE0MzZmMDNjYzAzZTAwNSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L84-L144",
+          "version": "repo-lines-v1:sha256:06392e03254b7b5f604882b3cb74e779554b58faf956af61166b6ecb28769216:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhN2Q3OTA5OWNhMGJjNzMxZjVkNjI5MDViN2I3YmJlMzVkMGY5ZWIxNGU4YWI0YmU1OTIwNTM0YmM3ZThlZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxMjNlM2E2OGIyNTk1OGNmOTRiNmQ0OTgzYjNlMjJiOGU4ZGE3ZjA2ZDhhNzQ4MDI4MzFhNWRiYTk3NTI3OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNjY5OTMxNjQ5Yzc3ZTRkMjZjY2JhMTJiMmIxNzJhZWNjMGNlYTQzOGU0MWY2MmQ5MWFmNTZiMDFmMTNkNDkifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/websocket-manager.ts#L346-L362",
+          "version": "repo-lines-v1:sha256:d1e6905fa6e7e6c99877df6d582e708311a6079722aceec4c66aefad1b528239:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYzczMWY4N2Y5OGEzNWU4OTQ5ZDQwOWYyMGE2YTQ5ZjQ3NzQzMzU1Y2M1YjdmNDgyMGE5MWQ3ODQ2YzUwZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkNGJmMTZjYWE5NjcwNjdhMDM0MTJkYjIxYTQ2OGMxZmIwMjI0OTQ4ZWU1OWYzMzI1YmFiYjI1YWZlMDkwYWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4ZGRhMzIyYTVmMWU4NzY4Mjc5MWNkMjNlZGQ4ZjZiMWYwMDlkOWU1OGMwNzI4MWE5NjMwNDBjZGIxMzQwNDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7bc4c9361cd34b4c8187be57ba4ef3af",
+      "statement": "The lifecycle manager emits terminal sandbox wide events: sandbox.spawn and sandbox.restore each log exactly one info/error event with outcome, duration_ms, sandbox_id, provider_object_id, and error; sandbox.snapshot and sandbox.snapshot_saved mark snapshot attempts, sandbox.heartbeat_stale warns on missed heartbeats, sandbox.timeout records inactivity timeouts, and sandbox.spawn_superseded warns when a newer spawn won.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L1328-L1391",
+          "version": "repo-lines-v1:sha256:06f845a60626898cadb25a06c125b21d4a6cd78cb52d94d9ad029d20c005f096:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiOTgwOWYzOWJhMDIwYTAwODExYmI2YTFhYzNjNDBmNDZkODFkMDYxZDY4NWM3OTgyYTRjMGRkZWZlNmFlN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzEzNTkwNjY1NjMyM2QxYzVlYTQxNjU0ZWU2NmFmYjU4NWFjZGNmYWVhY2ExMjFkNWUzMGJmMTkzZWVkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4YjMyN2IwOTI0NGIwOWVhOTJiZTQxYTQ0YjQ2ZDY5YTRmODdhNzVmZDYwNzQ1YzEwYTkwMDg3ZmRiY2FlYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOTJiZmQyNDlhMzY1MDk3NDZhZmY2MjM2MjQ1NTJmYzMwMmZhOWMzYTAzZGY3ZDI3M2JhZDk1NzQyMjI1M2YifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L650-L675",
+          "version": "repo-lines-v1:sha256:e0d589bd8ca76e49b04dae14837e291537dd1a5078d1512bf9343054c6f4f4b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZGIwOTAwY2JjOGEyNjM1MDQwZDQwNjgxYmUxMWNkMTQ1ZTI2MGQyNGQ1MDgyZDVhMDBmNWVlMzFjMDMxMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwMDdkYmI2NGFiMWMxNGEzYWU3NGY3ZWQ2ODY3N2JiOTY5Mjg1ODI0N2UyNWUxZmU3NDYxODJjZWZlNjYxZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYzI3OGI0ZTJlNWMzNzZjNTBiZmQ1NzMzN2YzOWNkZGJjYmIyZjU5MzNjYWJmZWQ0MGQ5NTQ3MDUyZjMxMGQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/manager.ts#L943-L984",
+          "version": "repo-lines-v1:sha256:10b01c14b81f13256531814da52a680e3417292e5ddaf015936d95e6563b9768:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4NjVhNjM3OTRlMGQ4MTdiZTczM2Y2NTZhYzU5YTk0ZGUxMmVlODgwNzAxMWJmNTk0MGRiYTMxMjBjZjllZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNzM5YjdmZDE5YWFmN2UxMzg0YzdjZGZiNmQ5NmFkMTdhNjUzZWExZDhhZGNiZWRiNzlkYjg3NDVmZWVlMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkOGE2OTIwZmFkZjY5NGRkZTJmZWU5ZmM2NDAwNzhhOGFlMzFkNmFmNTRjNjg1YTMyNjEzMjZlYTkxZmNjNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4MTk4Y2RjYjE0ZmJhNjFkMmE5YTFlZmQ3YmRhMTU0MWFkOGZmNzJlZmVjNjE0NDhhZGQ0ZTg3ZjU0ODVlMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a99764364ad84d549a29e3626a2b5302",
+      "statement": "Provider clients emit one wide event per outbound call: modal.request (endpoint, session_id, sandbox_id, http_status, duration_ms, outcome) from the control-plane Modal client, vercel_sandbox.request from the Vercel provider client, and daytona.create_sandbox from the Daytona REST client.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/client.ts#L432-L442",
+          "version": "repo-lines-v1:sha256:d83f2442bd8b3ffd85893bb3991d8975b70622c0503b369df20b5e72129afbfa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4ZTcwYmY4YTJjZmNlYjExMTQ0M2M2ZTVlNDQ3Mzg0MjljZTA2YWM2MDQ5ZTAxODlkMzBmMzg4ZjQxZDZjNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNjllMTU0YjI1OWU0NWVjZTRiNDc5YWVhZWNhNmNkNTVkMzlkMzQyZGNhODU0MzQ2MGMyYjZlM2ZmODNjNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/daytona-rest-client.ts#L136-L139",
+          "version": "repo-lines-v1:sha256:f10bf389108a70b1bb1bd1bec2b59684d4efa0eb5b8a583586f596101d7e1a20:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDRkMjg2NGYzOGQwYTQ3MzgxYjcwMmQyM2RhOGU3ZjYxMjA2OWEwYzliMGRjYTZiMjEzM2FkNjExYWFlNWY5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzE3YWYxMTAxYzk3YjdjMmY1MjU0MDc4MmU2MzRjYzQ0NDBmMGU5NzAzNDFlNTJmOTc1MjMxMWQ3OGI3ZDdkMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTI1MGEzNDE3ZTlhZjE5ZTNkOThjZGViNmIwY2RhNzNlOGYyZGM3NGVlNGVlNjk5NDU5MGZhMDQxYzg3NGM1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTdkODYzMmU1NGU5Mjk4YWJiOTU4NzI3ZTJkNTE0MDhhYmFmMTM2NjAzNTM3OTEwMTQwYWJmNjViMzBhYjYxMyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/providers/vercel/client.ts#L468-L468",
+          "version": "repo-lines-v1:sha256:8e8841b70fbfd1d0e5f8956d8af2542ce0cb586c575d28d079ae090e895849a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGU4ODQxYjcwZmJmZDFkMGU1Zjg5NTZkOGFmMjU0MmNlMGNiNTg2YzU3NWQyOGQwNzlhZTA5MGU4OTU4NDlhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGU4ODQxYjcwZmJmZDFkMGU1Zjg5NTZkOGFmMjU0MmNlMGNiNTg2YzU3NWQyOGQwNzlhZTA5MGU4OTU4NDlhMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjM5Y2Q0NTgzYzVjODNiYWZhNzc0N2I4NGY4MDY0OGYwMTA2OTc4NzliY2UwMjZhZDA1YjkyOGE5YmNjYjY2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWIwODQyNzU0MTQ0N2QwZDMwNGIwMWM1Mzk0Mzk3YWRhYzAzYzMxZjBhMzgwYmFkNDFmNjE0YTMyNjA1ZDhlZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f2383526ba64ef198e4ce8625c252ee",
+      "statement": "Completion and linear start-callback deliveries emit callback.complete_delivery and callback.started_delivery (info/error) with session_id, message_id, source, outcome, attempts, retries, http_status, and reject_reason, plus per-attempt *_attempt_failed warns during retries.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/callback-notification-service.ts#L268-L295",
+          "version": "repo-lines-v1:sha256:b9ee154e6c588a244169ec037cc0d45eda68d93385121e81b10ad0ede640e7c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNWEyNjAyYzdiOGYzMDZjNTYwZDUyMTY0MjI5NzgxZTczODFkMWFmZDM0NjRkMDMzNWYwZGMwMGRkYWE5YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjOTcxMWY3MjFhYjBkMzkxZjY5YTRlOTRmYmVmYTZhMTZkNzIwZjU4MTRmMjM4NDI0ZjhmMmQ1ODRmMmZmNzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/linear-start-callback.ts#L107-L123",
+          "version": "repo-lines-v1:sha256:17447723e1d29b30cdc9ee94c2de73ce65a9481512b9f909b75b7ed9518544fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmY2E1OTViMmFmYmEwMWMxZmQzMzdjMGE1MWNjMTgwNDE3MmI4MTQwNDFhMTFmMWUxZjBiYjRiYjMzNzM0YjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmYTA3ZDM0M2FkZTM5OTVmMjRmNWM1ODNmZDk4NGFmYmViYzIwMTQzZWI4OWRhODIzMGY5MTg5MmJkM2JjMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkYTgyYzk0Njc0ZjQ3N2E3YWE0NzQwZjhmNDgzY2U0ZWUyMmVjYjE0YWE0ZjE0NjE2ZmRiZmM0NThiZjAzYmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxM2Y5ZDEwOTFhZjQzN2Q0MjQ3ODM5YjY0MTI4NmMwOTMxNmJjZTViZTZhMjVmY2Q1MmM5ZTgzNWJlMjdhNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d92d5188447f478b91fce2e488ca333c",
+      "statement": "Image builds use one image_build.* vocabulary across component image-builds:* and router:image-builds, with scope_kind (repo|environment) and scope_id; key events are image_build.build_triggered, build_complete_received, build_failed, callback_auth_failed (warn), finalization_job_invalid (error), finalization_error (error; retries exhaust to the DLQ), scheduler_tick plus scheduler phase warnings, trigger_error, late_artifact_recorded, save_hook_trigger(_failed), secrets_change_superseded, toggle, cleanup, and stale_marked.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/finalization-consumer.ts#L34-L50",
+          "version": "repo-lines-v1:sha256:a9104b5814939578a06455559d50eab57e97df447a2d7efbc1406fc927d6e7c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyOTZiNWFiYzg3OWY1MmQ1M2ZhYjEwMmIxYWRhNzQzNGZjOTJhODNmZjM0YWExNTM3MzBhNmNhNDMxYTJhYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3OGJkYzE0NTVmOTJiZWYzZjE2MzJmMjZkMzQxNWNkOTIyNjdiZDZhNDUxYzAxYzc4ODg3YzYwNDkyNTkzZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmNmEzYTg1MzZhZmUyNGE3NWVlMmIxZmQ4MGJjNjk0NjE4ZWVjNjc1NGYyMDUxNGJlMWRiMmU4ZTIxOTlkZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiYzQxODRhNmM3MjZlMDVkZDQ2MDg4YTdkMzMwNzIwNmIxNTA2OWY5ZmU4NjgyNjYwODQ3N2RkMzRkNmQwNzgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/scheduler.ts#L84-L125",
+          "version": "repo-lines-v1:sha256:be369cfcda58d12058e7b22dfd1f57fcfa003798c0193eabf8ed36798ef80a2c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyNjM4YTc0ZjkxYThhOWU3NGFmZWE0ODY2ZmY0ZDRkNmMyZmI3NzhlNDJlYWRiMzRmN2NiNjlkNDQxZjI0MDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MTA0Y2E3Zjc0N2FjODcxNDZlNDVkOGVjZTBhMGExN2ZmYjk5OTQ2N2E0NDBjNGEwOTBmNmY1ZmJjMTJlMWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNzZlYjcwNjMwNmNmMjAzZGZjMWYzNmM1MTZkZTVmODE2ZTBiMzdlMzJmYWMxOGU4ZDA0YTY5YzA5NTUyMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4N2IyOGNiZjc1Yzg1YmJlMjZlYTAzNjkxYWJiZmFjODBjYmVmODA4MmZiNzhkMjlkYTg3MTI2NDgxNTBhZWQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/workflow.ts#L284-L291",
+          "version": "repo-lines-v1:sha256:64341c4397b1f92b684537d434b4e2daf23f42d56c1428d10a84cd2b14669275:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc2ZWI3OTYyOGFhOTA5MDliYWM0ZThjMzU5Zjg2ZDQyYmNhYzEwODY0M2FkMzM5M2MzOWY2Y2YyZjUzMDcxYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzE3YWYxMTAxYzk3YjdjMmY1MjU0MDc4MmU2MzRjYzQ0NDBmMGU5NzAzNDFlNTJmOTc1MjMxMWQ3OGI3ZDdkMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTBjY2FjMGRiZGZlMzBmMzE1ZWQ5NzJlY2U3MTc4MjNkNTg4YzliZmMzNjJmNzNhNzNiNWRmOWJiNjY1YzNlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjNlNjc0NjIwYWM0YTY4ZjExZTY2NDZmYjM0YThlZDE0OTY3YjQ4MDNiMGE4ZjY3MTM3MzNjMDVhZjhiMDdjMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e6581820093e4eb99e1377714bb5c30a",
+      "statement": "The modal-infra sandbox manager logs provider-side lifecycle events sandbox.create, sandbox.snapshot, and sandbox.restore (info) with sandbox_id, modal_object_id, snapshot_image_id, repo_owner, repo_name, duration_ms, and outcome, plus sandbox.create_build for image builds.",
+      "evidence": [
+        {
+          "resource": "repo://packages/modal-infra/src/sandbox/manager.py#L531-L539",
+          "version": "repo-lines-v1:sha256:126aa0d82d3cfe09cb6257bb06af73dbfee175638d8b588b80b87ff78ef20138:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM5YjhiMDhmNGNmMDY2OGJjYTVhYmJmNjVmNTNkOTE3ZWUwMDkwYTE4NmQ1NTlmN2UzM2QxZmVlN2FkNWQ0NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwOWE1M2E2MThkMDI4ZTFkMzAwMGMwYTdhYmNlZWNiZTVmYjM3ZjRlNTExZWZlNDY2NDNmYWQ2ZTY2ODcyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQzMDA3ZmRmZTk2YjQxZjNlMTY0ZWI3Y2RiYjA2Y2M5Y2YxYmI5YTQ2MzJhYzBhN2ZkOTMzMDdlZGFjYWE0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTEyZGU5YzIyMzNhMGFhZjhkM2QzYWY3NmIxYmIxNzllODllODA2YTdmMzU5MmJmNzc3YTJjOWQ3ZDAxMjRhMCJ9"
+        },
+        {
+          "resource": "repo://packages/modal-infra/src/sandbox/manager.py#L578-L584",
+          "version": "repo-lines-v1:sha256:ae9ab82155520728e3a9343e5357b1d24726181f344c88a0117c82c1bfa6bc27:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM5YjhiMDhmNGNmMDY2OGJjYTVhYmJmNjVmNTNkOTE3ZWUwMDkwYTE4NmQ1NTlmN2UzM2QxZmVlN2FkNWQ0NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwOWE1M2E2MThkMDI4ZTFkMzAwMGMwYTdhYmNlZWNiZTVmYjM3ZjRlNTExZWZlNDY2NDNmYWQ2ZTY2ODcyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2E3ZWFmZDljYjU1N2IzMTNlNmI5MDU3MzQyZTg2M2RhYjdjNjJhMDQ2ZDZjYmY5ODkxYzAwZTFlM2FmYWIwYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmJlYzNlN2VhNDQxZDk0NmFkOWUwZDcwZDBlYjdhZmI1MzQ2MDE2ZjZiNWE0ZGYzOWFkNDBmNTFkMmFkNzRlNyJ9"
+        },
+        {
+          "resource": "repo://packages/modal-infra/src/sandbox/manager.py#L686-L695",
+          "version": "repo-lines-v1:sha256:cea9f5415b956068895f603a2eacb54777e611900331f528612133ea8e66a470:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjOWI4YjA4ZjRjZjA2NjhiY2E1YWJiZjY1ZjUzZDkxN2VlMDA5MGExODZkNTU5ZjdlMzNkMWZlZTdhZDVkNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxMzE4NzJiYjE5MTZmMTY4ZTAxYmJjODI3NzdlMWQyNjkyNDdhOWI5MDBjMDdmMDExYjUzYzJhMTU5NjBhNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNjlhMDA3NzZhYjM5ODFhNTk5MDM2NTU4MDU0MmQ0MDdkNzA1MzgxMGNlOGE2N2U5NjM4NjJmZjg0Y2EwNjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_069e78185b004fd28feec637091522c8",
+      "statement": "The sandbox supervisor logs sandbox.startup (info; repo_owner/repo_name, boot_mode, restored_from_snapshot, from_repo_image, git_sync_success, setup_success, start_success, opencode_ready, duration_ms, outcome), supervisor.start, supervisor.error (unhandled exception), and supervisor.fatal (the sandbox will exit and the fatal error is POSTed to /sessions/:id/sandbox-error); OpenCode crashes emit opencode.crash with exit_code and restart_count.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L144-L153",
+          "version": "repo-lines-v1:sha256:b4d33f209055b35e1a0657c76129f8dc3cf5508c00ef46976e75785eebd744f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4M2Y0YTY4ZDFhOGFjOGFkNTk2NzFmZTU3ZjYwZDhjZGFlNGI0NWNkMjU0ZGVjMGM1OTE5MTgzNDU3ZDM1MmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZjA0N2JkZjBiMmMxZGI0YmQyZGNkZjg3NzkzOGY0NDMwNWU3ODFlZTE1ZmQ4ZWE1M2ZjNjUwNjEyMGIxZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4MDE1ODk1NDUxMGNmZjZiY2U4YzA5NjJjZDVlMzY5ZGYwOGQ2NjExYzE3Nzg5Nzg2YjgzZWZiNWQ3OGI3NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwYzYxNTM2MjgzMDQzNzM0ZWMwZWM2YjAwOWIyMmM0MWQ2YTA3ODkxYjE3YTUzZjFiMzk4YThlYWU1NzUyMDkifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L436-L449",
+          "version": "repo-lines-v1:sha256:c4d2ecb13187e8a2c991bf68dce3f5aa6e01eb9ab124c1dbf136a8cda8bf6a2f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjODBkMjNmYTc0MjBmZjAwMmYyZDI0MmViYmJkZDkyMmEwODJmNzcyM2M5NDU2NWU0ODJjMDA2NWY2NTI4YjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYTNjMDM0YWE1NWFhMGVlNWI2Yjc1ZTI4NTI0N2EwZmMxY2RmZGJlOGJiZmY2NDgwMGQyMWYxZmVhMjAwZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5Zjk4NTdmZWE3Y2JmMTZjZWIwYzVlNWQ0ZDc5NjJkMjg5NzY5ODA0ZTliYzFmZjdmY2NjNGRiNGU3M2EyN2EifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/supervisor.py#L77-L77",
+          "version": "repo-lines-v1:sha256:b26f984fc50f00fcbf3c6e77c2ffa9303407e4f50b5692d8dd09c7c13dfb4f97:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI2Zjk4NGZjNTBmMDBmY2JmM2M2ZTc3YzJmZmE5MzAzNDA3ZTRmNTBiNTY5MmQ4ZGQwOWM3YzEzZGZiNGY5NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI2Zjk4NGZjNTBmMDBmY2JmM2M2ZTc3YzJmZmE5MzAzNDA3ZTRmNTBiNTY5MmQ4ZGQwOWM3YzEzZGZiNGY5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDVjNTMwYzVkY2JjMjg2OTEwZjE4YmIxOGM5MWRjODgwMDBlMTM4ZTYzZjg3M2IwZTIxYzk5Y2JjNjI2ZTFiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg5YTgzNGFkNjcxOGIyZjhjNjkwNGYxYzkxMGRhYzU3NWM2OTEwNzdmZGVlZmEyYzkyNzY4NWRjMDM4YWQxNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e36082d896a244b3bbed3037e37996d4",
+      "statement": "The bridge process emits bridge.connect (outcome and aggregate connection counters), bridge.disconnect (reason, ws_close_code, connection_duration_seconds, total_connected_duration_seconds, reconnect counters), bridge.reconnect (attempt, delay_s), and bridge.run_complete; connection errors matching HTTP 401/403/404/410 are considered fatal and not retried — the bridge exits gracefully so the control plane can spawn or restore a sandbox.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L437-L456",
+          "version": "repo-lines-v1:sha256:0779c90e7f8da620b78848261158a35fdda2c9034ab9db8d3ff339fea17af99b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0NjIwYzE0Y2UyMDcwMGM5Yzk0MmEwMDRlYzZhMmRhYzc4YjVjOTI3NzdhNjAyNzNjMmQ1NjEwYTI2NmEzZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzMxNDBiYjAwOTZkMjc0NGVjZDMxZTczNTQzNGYyZjk5OGMxMTA3ZjRmMWIwNTQ1NjUyY2EzMjc2YzhmZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMWM4NDkyYzdjZTcyMTJkNThlYjRjNDQ1Y2JjYThmOGVhYTMwODBlMTM3ZmMzNGNiODk4NDkyN2UyOTFjNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlZjdkMGJlZjZhYzliYWYyMmRlNGE5YWQ5YzI5N2IxY2FmOTdhMTExZDFmYzIwNTMzYTRlZDNlYmY5NTdhNWQifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L483-L516",
+          "version": "repo-lines-v1:sha256:a64f35b8dcf8d84b705a2f4b41064babf464f12621c6894e28f8137b080f789c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyM2NlYTIxMmY5MTkyZDA2YWZkOTU5MWU3NGEyYzJmNjllNTFjOWY1MGIxMTI3NzY0N2I4MjYyYTM0MzQxYmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjA0N2JhMzVjOGQ4Y2Y3YjA4ZmFlMDc1ZTkxMzRkYjc2N2IwNTc5NjkxNjZlMTExYWI5NmE1NDBmZDU3NzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjOTYxZGIyOTE0ZjkzY2U3OTJmZWM0OTNiN2VmMTJhODBjYzA4ZDg2MTJmNGJjNjg2ZmNjMmNlNjE0NTcwMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhOGE2YmJjY2UxZTQ0N2E2NTAxYmE4Y2Y1ZTUwNmM0N2EyYTBhZWMxMjg5NzgzNTViOTFjYWQ5ZTk2ZDhiMmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_149b0847663d4fe09df772a613221d78",
+      "statement": "Prompt processing inside the sandbox emits prompt.start (message_id, model, reasoning_effort), prompt.run (message_id, model, outcome, duration_ms), and prompt.error (message_id, exc), plus prompt.invalid_attachments and prompt.no_output when OpenCode finished without emitting assistant output.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L686-L769",
+          "version": "repo-lines-v1:sha256:1be2cedbef4f5729d5ebe144c46181359b320b38736f67e8a07d6ab82af928b3:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0YTc3ZTg0ZTk5NWI5ZWZhMjI2ZDc1NDI3NzY3YzIwYjkzMTgyOGE0MGQ1MGExOWEwOGUxODdlMDM1MDc1NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhNzNmNDVmMzI2NmU1MWM3OGJiMmY0NTZhNjFjZmM1YjE1ZTczZjVmZWFmOTE4ZTZhOTFlZjFjOTE3NDk5MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjNjBjYTQ2ZWQ1ZDkyNDljMjY3MmY0OTA5OTJjY2YzZGFmOTJjMDllZTM4YjZkYzNiOTNiNzkyYjE4ZjFiOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_99f5714c670043f687192fe24075b21a",
+      "statement": "Git and OpenCode operations in the sandbox log git.clone_start/clone_complete/clone_error, git.sync_complete, git.push_start/push_complete/push_error, opencode.session.ensure (opencode_session_id, action), opencode.start/ready/crash, opencode.restart (delay_s, restart_count), and opencode.max_restarts.",
+      "evidence": [
+        {
+          "resource": "repo://docs/DEBUGGING_PLAYBOOK.md#L204-L223",
+          "version": "repo-lines-v1:sha256:60a30eccf148d9d4dd0edf061b16f9f661626b83ddda7e7299d469f328f2f0f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwOGZjNmZhZDlkMmRlOWU5NTRlYjIwNzNiYjJhMjU1NDk0ODdmNGI2OTI4YzRjNjNkZGRhZTdhMDA3YzhlN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0ZTMyMmMyZDkzMjM2ZmQ0YjZmY2I5MzJlMDU2MjU3Yzk4ZDZmY2UzMDE5YTE4YjI3NmRkOWVhNDM3MjI1M2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4MGYxZGIwNzJjMDllMDc4YjRjNjIyYzJlNWYyNWE2NTM5YWVlYWE5NDUzNjIxMWFlNTU2YWE5ZGQxYWNiZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwMWYyZWMxNzU5M2MxMDU0ZWI0NjM2N2Q4NDUzZWYyNGExNzNjZTk2YjcxMTdkOTFmOWE2OGQ0NGZlZjhiMDEifQ"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/bridge.py#L773-L778",
+          "version": "repo-lines-v1:sha256:2ec8688540342adf8d946e72f4bd45838e1202ef7309f78136c715d6456a48f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWJjMzYxYTdhNjUwN2QxZWQ0NGY5NDViNGY0YzMxNmZhZDQwYmE5M2MzZTQ3NjVjZTBjYTE3YTJlMTgwMDA1MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwOWE1M2E2MThkMDI4ZTFkMzAwMGMwYTdhYmNlZWNiZTVmYjM3ZjRlNTExZWZlNDY2NDNmYWQ2ZTY2ODcyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWM2MGNhNDZlZDVkOTI0OWMyNjcyZjQ5MDk5MmNjZjNkYWY5MmMwOWVlMzhiNmRjM2I5M2I3OTJiMThmMWI5YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzBiZmY0ZGMxNTg1NGFkMzk5ZmJiOGEwNDE3OTc3YTc2NjZlYzMzYTc2ZDllMzFmNTdjYWMxZTc2ZDc2MTlhNyJ9"
+        },
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/repository_sync.py#L102-L102",
+          "version": "repo-lines-v1:sha256:f0a4868734c11072a935366be8bdbc8ccb503d7a20ad0b5b40bae9146731b106:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjBhNDg2ODczNGMxMTA3MmE5MzUzNjZiZThiZGJjOGNjYjUwM2Q3YTIwYWQwYjViNDBiYWU5MTQ2NzMxYjEwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjBhNDg2ODczNGMxMTA3MmE5MzUzNjZiZThiZGJjOGNjYjUwM2Q3YTIwYWQwYjViNDBiYWU5MTQ2NzMxYjEwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJkYTRhNzMwM2UyOWRmMDE4NjI1YWY5YTIyYmYxNmQ5NDJjY2Q4NTkyYzUxMjI5ZTBlODUwODAyNDFiMTZkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWI2YzFjZjZiZGY2YTIyMWY5NTI5MTE1YmIyMDY3YzdiMDFlYzI2NjkyZjU2ODVmNjE1MjcxZTVhOTBhZGYzMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c6c4f4fa3e6a4c25be45eeb40f1e9909",
+      "statement": "The slack-bot mints a fresh trace_id at the /events and /interactions edge, logs http.request per webhook (info/warn; outcome rejected with reject_reason invalid_signature on bad signatures), deduplicates events through KV with slack.event.duplicate (debug) and slack.event.dedupe_unavailable (error, degraded mode), and logs control_plane.create_session and control_plane.send_prompt with trace_id, session_id, message_id, http_status, duration_ms, and outcome.",
+      "evidence": [
+        {
+          "resource": "repo://packages/slack-bot/src/routes/events.ts#L13-L87",
+          "version": "repo-lines-v1:sha256:a579cba89e462b0a82cc747a925d6b993fbcd86e40f0861448e2e6dabe398b58:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2OGI3N2FiMDdiYWM2NmU2MmQzZjFhNWZmNzFkMTcyNWZmYzg0ZjAzYTNlZDFkZjg1MDNiMGRhMDc2ZmU4OWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhMTk5NjIxZjcyNTcwMjk1YzRhY2EwYmEzNzQ3NjE4NGY1YjAzZTcxNjgzYWQ2MjNhMjFjM2ZmYTI0NDU4OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MjcyMDJiYmM3NzY4N2Y1ZjE4NTU5YmZkMmFhN2M0MzFhYmM0MDhhYWYzMWJmMmU0M2UzODhlYjFjMDE3ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/sessions/control-plane-client.ts#L166-L172",
+          "version": "repo-lines-v1:sha256:86f15b2b902478c21f135e9a53450d320cda626a504fb2215338ac6e456fe7ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODY3OGNmYWIzYzVhNjgzOGNlMDJlYzY2YzM2OTUwYWU0Y2IwMDI2NGU2ODhjNjM1NDUyZjBiMWYxMzQxMDlmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJkMTFjYWY0M2U5N2VmMzY5ZTZiZWVkMWEyNjhiZDA1ODM4ZjI5YjlkZDI1NGJmNjliYTY0ODg0MTQ3MjM0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzk1NjQ1YWM1YzZiOTNhNTJmMGEwNDY2ZjA4ZTQzYjMyMDI5NDc0OWYwNDQ5NmQ4OTBkNmE2ZmJlYjRmNzJmNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTcxMWM5MzAzMTM3MWEzNjYxOTkyY2Q3ZTUxODUzNzI1ODdkZGNhMWJlOTZmZjEyMDczMTE3YzM2NjRmMTAxOSJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/sessions/control-plane-client.ts#L93-L99",
+          "version": "repo-lines-v1:sha256:c85f2b568052705dc5e6ea925b77f417ca796421f9c276d2e1297f1a92f24670:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ4ZWZhMGUyNTUyMDc2YjA3ODBkZGZkMWYyMThjYzNlNzExMzg2MDljOGM3ZTc1NjY3ZmUyOTE0MTIxNDgyNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJkMTFjYWY0M2U5N2VmMzY5ZTZiZWVkMWEyNjhiZDA1ODM4ZjI5YjlkZDI1NGJmNjliYTY0ODg0MTQ3MjM0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODNlMGEyYzVhZWI3NmQwYmMxYzlhNWFkNjM2ZTY2YWI4YzgyYThkMWJlODM5NTExZTVkYTNjNDEwM2Y3MWRjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTllNzE5YzA5YTU2MzQxZDdkMzAwZmJkOTAyZjk3ZDRiOGQxZDc2ZjMwNDQ4MGY5Njk0ZmMzYTRhOTg2ZjA4YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ed13c923fcfc4b1095e54fc546f03a03",
+      "statement": "Slack attachment problems use the slack.attachment.* warn family (untrusted_url, download_failed, download_error, size_rejected, too_large, upload_failed, upload_error, notify_failed, file_lookup_failed) and media delivery uses slack.media.*; size events enforce a 10 MiB per-image cap and the bot forwards at most six images per message, with a text-plus-image request losing images still running the text and attempting an in-thread warning.",
+      "evidence": [
+        {
+          "resource": "repo://docs/DEBUGGING_PLAYBOOK.md#L315-L319",
+          "version": "repo-lines-v1:sha256:003ab10e22363a2dd26402ec1659d79185a655d6853b40e19bdc3325fb35d2aa:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBlNTM0NWQ3MDk1OTYyZmI0OWZlZjYxYWE0YmI3N2M3YWYzMGEwNDRlM2ViZWRjZmE5ZjJkODVmYzAxYmJjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU3OWM4YThmYjBjZGFhODM0YjA3NjI5ODg4MDBjNGRmYWU1MWQzY2RjMTkwYmY4NDVkZDlmNzM4YjBhYzBhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjVkNzhkNmM3YmViNjkwZjI5YmZlMGI2ODY5MGM4OGVmMDYxODA5MWEyYjVjNTZiMzI0NDIyNzAzYjk2N2UyMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGViNmRmYzNlOWNlYjRkMGEyMWI2YzVmODUyYTFkZGNhZjQ4OGE4YjRlYjYwOWVhMzk3YWNjYzgyMTRhNzllMiJ9"
+        },
+        {
+          "resource": "repo://packages/slack-bot/src/events/message-handler.ts#L393-L399",
+          "version": "repo-lines-v1:sha256:f718a584bc1db4e82c89415af5c5c67890b1af7aa45ebd1aa432a49dd6f9ccbb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDNiOTY5YTY2ZGE2YjNmMGRmNDc1NmNlY2UyODA2MTgwNjBjN2RmZjA4YTI3MmYzNWE0ZDBlMjFlZjQwZDU2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDZkNzY0ODk4YzlkNzUxZjA5MWMxNDliMmU2NGY1OGNmMzdiYjM2MWVjNTg0OWNjMjhkMGVjMDY0ZjQ5N2I0ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjQwYTE3NDQxOTA1ZWI2ZDY0ZGUwOTZjZDJkMWQ4ZDFkNGJmODVlMzAwZWQwNWNkNTQ0MWUyMzJhNzkyMmEyMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTcwZWFkMzNkZGNjOTg2NWM5YTRkMGM3YWFhNWM3ZDA4YjI1YTE4MjQzMDMzYjM3ODY5ZWY2ODcxMDE0YTQzYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_55e3237353954348b830def353914ad4",
+      "statement": "scripts/cf-logs.ts queries the Cloudflare Workers Observability Telemetry Query API (POST /accounts/{id}/workers/observability/telemetry/query) with filters on the application session_id field, $metadata.requestId, $metadata.traceId (fetch events only), $metadata.message free-text (populated from msg or message), level, and $workers.scriptName; it requires CLOUDFLARE_API_TOKEN (Workers:Read) and CLOUDFLARE_ACCOUNT_ID, defaults to a 30-minute lookback and 1000-event limit, supports --json raw output for LLM debugging, and application fields live under source (source.level, source.service, source.component, source.msg/source.message, source.ts) rather than at the top level.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/cf-logs.ts#L132-L177",
+          "version": "repo-lines-v1:sha256:922ec80fdd4540c3e8ed835efce306fa247e56a579e4edc2e50dba10724772ae:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MWMzNzFkZGJmMDQ2OWI4YzEzNGEyMThiNDIyOGFlMzFiZjUzNjRhNGI3NzY3OWE1OTMxYjI0NzYzMDkxMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3ZmMzYWEzZmE2MDVhZDRlNzYyZTI3ZmU0NGZkZDc5N2YwYWRhNGI3YjM5ZDVmMmM3MzZhODFjZTE0MDA4ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmZTkwNmIwYWQyZGNlNTBkMTRiMGNkZTU1NWExNGI4ZDA1ZGVkNGJmOTQzYzM3OGI4ZjZkZjc5YzBmNmM2NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiN2ViYTI4MmJjNTI4MDY0OTIzNWYyMTFkMjA0ZDJhYjJhMWJlNDNkODY0ODY3ZGVjYmM5ZmMwOTM5ZjQzN2YifQ"
+        },
+        {
+          "resource": "repo://scripts/cf-logs.ts#L254-L293",
+          "version": "repo-lines-v1:sha256:15d58000890731cf289e4b985a08385062eef24db0b1c89cf8eafe4535001cc8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2ZWYyNTE2OTllNWFlNzAwZWY1OGU4YTRlMWZmYTM4MzVmYzEwODU1NDRkNmRjODA1YTA0YWFlZmQ0NWExYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2YzY5MjY3YTViY2E0Y2MwZGZhMDRjNjliNDgwMDgyMTBhMDE4M2JhNjUxNmFmZDljOTk0MDM4MzA1YmMxMzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3ZTc0ZGFjNjc0ODk0ODE0ZmNlNmFmM2VmZjQ2MTYzMzM5M2ExNGMzMWM0ODg0YzE3ZDU5ZDcwNWNhYTEyM2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhMmJmNDgwMjU1M2ZmYmU2ZTNjZDlhOTgxYTdkY2Y0MjM2ODE1NzZlNTNlNzY1MDBjMTgxN2U4MmZlZDMzMGUifQ"
+        },
+        {
+          "resource": "repo://scripts/cf-logs.ts#L301-L359",
+          "version": "repo-lines-v1:sha256:346fdefcde216abb17ce1a1eca4cb4868d19fb4db00a9203b4036bbf2960958e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNWYyMGIxNzZlNGUxOWMwMzA0YmMzMGVhNjdjN2I2MGE3NmRkYWI3NTg2MDcyYWZhMWNiM2ZhODkxM2FiYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzZmVjMTlmYTgzYjI4ZDFmNWQ3ZTU5OWZjNmJhMDZkMTBhZmZmYjYyMTIyZjg0YjJjM2RiMjY2Y2ZkNDZmM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0NWZjYTNjYWJhNDU5ZDA0YzU2YTNjNWQyMzNlNDhiYmI3NWMzMDMzMmQ1YTY1ZDEzZjE3NTIwMjY2YWE3ODAifQ"
+        },
+        {
+          "resource": "repo://scripts/cf-logs.ts#L361-L405",
+          "version": "repo-lines-v1:sha256:b85d7458b7cca1dc9e0a6c13f1097acd9415fa2975ebeefbe0f50c7729bf55e1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NmQxZjEzNzAyYzQzN2EyNWQ5NzEzMDEyNTVkMjRjOWVhZjk5MTQ3ZDg0ZGU1MGYzYzFhMTUyM2JkZDA5OTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4YjNkYzQ1OTZlNzdiODQ1NjVmNGJjMzg0ZWExYzA4NjUzNTI1Y2M3NGQzYzUzZWJkZmY3MGM1N2EyZDVlMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2N2RhNmM0MjQxMjcyYmE5MmNhMWFmZjk5YzVhN2FlZDBjMzAxNGY2NjIzOTM5NTk5YmZmMTFjNDY3NjAyNDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ebc79f1be1d34a30895cf0f90bdbf498",
+      "statement": "Redaction rules forbid authorization headers, HMAC tokens derived from MODAL_API_SECRET and sig1 signatures derived from per-service SERVICE_AUTH_SECRETs, GitHub App private keys/installation tokens, GitHub OAuth tokens, and sandbox auth tokens; body content is omitted unless explicitly whitelisted and truncated.",
+      "evidence": [
+        {
+          "resource": "repo://docs/DEBUGGING_PLAYBOOK.md#L470-L481",
+          "version": "repo-lines-v1:sha256:6225072f8688c411a0deaf4f329d1e4d61da831dc662154f6e5482b1dd80870a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZGIxN2NlNzQ0NmFmMmFhMjU4YjJlMTE0NmIzNTNkNTFiNGM5NmU2NGJiNDIwN2JmNDJlOGZmYzIzYzRjM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhY2YyYTdiM2M4YzhhN2M0NDQxNDBjNzM0MmQ1YWZhYTNlZDRmZjEyYjRhODkwZGNhOGNkMDg1NGIxYjY5NDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwMWYyZWMxNzU5M2MxMDU0ZWI0NjM2N2Q4NDUzZWYyNGExNzNjZTk2YjcxMTdkOTFmOWE2OGQ0NGZlZjhiMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwMWYyZWMxNzU5M2MxMDU0ZWI0NjM2N2Q4NDUzZWYyNGExNzNjZTk2YjcxMTdkOTFmOWE2OGQ0NGZlZjhiMDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef1517068be24cbfb3e3ca9d305551f5",
+      "statement": "Log level guidelines are debug for high-frequency internals (heartbeats, cache), info for wide events, warn for degraded-but-recoverable, and error for failures requiring investigation; LOG_LEVEL env var controls the minimum per service, parsed by parseLogLevel with an allowlist defaulting to info.",
+      "evidence": [
+        {
+          "resource": "repo://docs/DEBUGGING_PLAYBOOK.md#L485-L495",
+          "version": "repo-lines-v1:sha256:440ef471d9507ec867d97783c3aa1b9a500182cefd322011b6d45224cd184691:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjZGZmMTY1YzMwNjU0Y2Y4NTBhNmQzMWQzOTVkODAzNDA1NGFjODA4ODhiYTcxYzQ0NDAxODNkZTAyNDM4MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMTFlNjY0NmYwYjVhM2ZjOTJhMDlhMWJiYjVmMTFkYWJkODFmMjZjZmU0MzA3Nzk4ZGU1ODU5ZTY1NmIyYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwMWYyZWMxNzU5M2MxMDU0ZWI0NjM2N2Q4NDUzZWYyNGExNzNjZTk2YjcxMTdkOTFmOWE2OGQ0NGZlZjhiMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/shared/src/logger.ts#L140-L143",
+          "version": "repo-lines-v1:sha256:d5bd54ebf7a403df89bb34221476ba9edaf9ab025aaa97bb89926738cf2daa94:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAwNjM5ZGVlZTRkZjA2OTZkNDIwMWYzZjVmM2RhZmNkOWFmMjZmMWUzNmYyY2QzNGY0Y2JmOGNiZjlhNDViOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYThmYjU5MTIwNDdjMDQyMzJiNjQ5NWEyNTIxN2JlYzA4NGQ1ZDQ0Mjk2ZTE4NjIyM2Q1NzU2MDNjYThjNTRkMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7419e0416ece4b9c871c07dc91de3e0d",
+      "statement": "Error fields are uniform across TypeScript and Python services: error_type (error class name), error_message, error_stack (error level only, truncated to the last 2000 characters on the Python side), and error_code when the error carries a string code.",
+      "evidence": [
+        {
+          "resource": "repo://packages/sandbox-runtime/src/sandbox_runtime/log_config.py#L68-L74",
+          "version": "repo-lines-v1:sha256:88d530ee504560c535c2de943dbe0d3233758e2570954c166922c1d92ebc9956:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkwZjA4ZTRmOTQwYzZlNjExY2I1YzBmYzdiZDUyZmRkOTJhM2RiZDMzZGI1ZGQ2ZWYwMDNiMjlkMDI5NzVmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjEzYjAyMTIyNGExNzkyZjVmNmY5MDkwZWNmZWRlNjhiMTMyYWI2MDA1ODY4NjBkMjA5ZjljNzQ4YTkyMDk3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjdkODIzMGIxZWZlZjFhMGVjMDRiYTIwNDQzMTI0NThkZTRhZmMyMGFmMmI5NjI0NTdjODM2NmU3N2UxNGIwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjJhZjQ2YTNkN2Q0MGViMTI5NGFjYmRlYzYxZWEwMGE5OWMxZjc3MmE2MTA2NDhmMTI2NDkyYTg1NjBiZWMyZiJ9"
+        },
+        {
+          "resource": "repo://packages/shared/src/logger.ts#L80-L90",
+          "version": "repo-lines-v1:sha256:c09f986116218cc4996c280d921a45c4ee116124d7e34bbe50ff25b66f5bfd24:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0NjgzZmQxODI0ZjJjNzA0OTYwZTg5NGQ5MjZlYzVkODAwNWJmZjk4YmNhODE5ZTc4NDBhMTcxZDIyZjM2YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhNDBhYmU1OGEwMjNhMjgyNjg4NmI5ZjkyZGExOWI3MDkxODEzNjRjNzJiNTVmMmU3MTI4ZmNjNzUzZjE3YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2ODhlYmE3MjY3NGIzYWJhNDBkNjhiZTU0ODJkM2I0ODUxZDhmYjdkMTIzYjIzYzI0ZTVlMWFiMjI0ZWRhMWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_57ee39bf7005432893ee98f855fb526b",
+      "statement": "Wide events classify results with an outcome field: success (completed normally), error (failed with an error), rejected (denied before processing — auth, validation), timeout, and cancelled (cancelled by caller).",
+      "evidence": [
+        {
+          "resource": "repo://docs/DEBUGGING_PLAYBOOK.md#L76-L84",
+          "version": "repo-lines-v1:sha256:78de604be164af726313f454acbc920764d94546f31d04e08290dc0f38e2e380:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTJlOWNlMTFhNGM0MGFiMTU1OTkxMDUxNTc5NzZlNmFjZmJmNTc2NDQ4NGVkOTQ2MWVkZWYwMTM0ZWRkMGVlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVmMzJjMWJiN2Y4YWEwYzU2OGMyOWM2ZDJiNTRmMmJlNTdkZTY4ZTllYjVkODA3Y2Y3M2I2MzQ1ZDUyYmQxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzdmOGI0ZWUxYTFjMDhiMzA0OTA4Y2I0ZjQ5ZTFlYzllZWUwYzNlYjA0ZTA5YWU3MDFhZjk4OTFlNGE1MjI2ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDAxZjJlYzE3NTkzYzEwNTRlYjQ2MzY3ZDg0NTNlZjI0YTE3M2NlOTZiNzExN2Q5MWY5YTY4ZDQ0ZmVmOGIwMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a352aea1295b469087a8b7e3f56f9ac9",
+      "statement": "The SessionDO wraps its logger with createSessionScopedLogger, which injects session_id into every emitted line through a latched resolver so the id upgrades the moment /internal/init writes the session row, without pinning the Durable Object id that existed during first activation.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/session-logger.ts#L14-L23",
+          "version": "repo-lines-v1:sha256:984c7fb1a9d69bc1370877da6d86978788258c89e35bdeecb0b208a58aed912b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ODQ4MWMxYzg4ZWJhNzg1MTNjODRjZmRiMzU2NTVmOTM0OGY2MzIyMTFlOWE5MTNjODJlZDFmOWZjOTcyN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhNTgyZTc3NzkzNDY4ZTQ3ZDc4MDI0ZTE4MmMzZjVkNmY3NjE2YTVjYTA4NzQzNmUxNDUxZGU3M2UyNDhiZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T05:37:27.905Z"
+  }
+}

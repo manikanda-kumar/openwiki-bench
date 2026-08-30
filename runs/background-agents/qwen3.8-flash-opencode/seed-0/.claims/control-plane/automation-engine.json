@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:82130591fee9fd652ccd6cb7d4f401a508f5703715c238374dffb055c4487dad",
+  "claims": [
+    {
+      "id": "claim_14a9aca9afad45a3956dca05bdc8a5fd",
+      "statement": "The automation engine is a D1-backed, request-driven Scheduler with no long-lived process: the Worker's every-minute cron runs tick() (recovery sweep plus overdue firings), routes handle manual triggers, and SessionDO completion callbacks drive runComplete.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L71-L79",
+          "version": "repo-lines-v1:sha256:f4100721e268bfd3cf5caf40bf715af4a4a00764cf13797262ff2d8a7fa87a6e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWYwYWU0NjA4Yzc3ODdiMzQ5NWFmMmIwNDRjYTJlNGI0NGQ1MzIwZmRkMDNmNGQwZWVkNWFkMTQ5NmRjOTQ5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTMwY2E5OWNhMzM4MWJhYzIwOTlhOWQzZDc0ZTA5OTdjYzg1ODE1MTZjYzNmNzI0OWM0MDViNmQwYjk1NGIzNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2IzMWI3NzgzM2UxYzZlODYxMjBjOTQzZjdmNzBmZGViMWJiNGE3MjRmYmVmNGM3MWE5YmRhYzBmYmFhMDVhNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWUxOTlkMWRkMWEzNWFjMzAzNTBjODg0MTFkZDY1ZTdjYmE2MTE3MGQ0ZDY3MmQ3MzFlM2RkMDg3MWYxMDI4ZCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L604-L640",
+          "version": "repo-lines-v1:sha256:6e9ba7049e0157185a4eb60a65f3ebb1516e25edf3d15e3b7ddd4481569319c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlYTI3YmM2MzQ2Mzk4ZmM4YjMyOGEwNTgwZmEzZjExMGM4YWNlZjczOTFmZTQ5ZDJjMzZiYzZhNTdhNjg2YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiNzU2MDczZDQ4NDNlZjAwZTc5YjQ3ZDBkZDU4ZTdkYzNmMDJiZjJhMmIwZTM2MDgxNWY4N2ZiMDIwMjkwNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxZDg4OTk3MzE0Yjg5MzFiNmRmMjk3MWJmYjMxMjNhMzg0ODliMDQ5NzJmNDJlZGM5MDA2MzVmZjlhMjU2YWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e35285527f0442b4a83fcbe57b9fdc02",
+      "statement": "One automation firing creates an invocation with 0-10 runs, each opening one session against one repository, environment workspace, or null-repo target; repository access resolves per repo at firing time so one bad repo fails only its child, and runs snapshot targets making edit-while-active safe.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/automation/repository.ts#L33-L76",
+          "version": "repo-lines-v1:sha256:e8a91fe061dc4946374dbb0328b44de15315d2cb84c0820344058202593bae71:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ODY5YzlkZWUwZTIwNTg5ZGEyMzQ3ZjZkMTc3MGM3NzliYThkNmVlMzZlMDI3NDQ1Y2Q2YjBiYmEwMDhiOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhMjBmYjYyZDNjODE4ZTNmZjlmNTY2NzY1YTc3MDk4MzE4N2ZhMmQxYzZmNmZjOWI3OWFiMDU2MzY0ZGE1YzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/automation/session-target.ts#L36-L66",
+          "version": "repo-lines-v1:sha256:73aed179807a02811eb7c4733785a866c4116dfbc5789bf234b124896c4ab0ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NzdiMWU4YWQ1M2ZhM2U1NDFmMDdmMmU4ZDIzNzY3MWI3ZjcwMDFlZGM4NWFkNGRkMGNjNTg3YWEwNTI4MmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkYmU1NWI0MWFjY2UzZWViNmExNDE4NDEyMzc0NjViZTc4M2I0NzFhZWVkNTFmMjJlNzE5ZDcxZjE5ZjQwNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_17073b6a641048ecaec71c94d4eb2e97",
+      "statement": "Automation triggers are schedule, github_event, linear_event, sentry, webhook, and slack_event defined in shared; ingress routes cover direct webhook and Sentry endpoints plus normalized github-event and slack-event forwards from the bot workers.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/index.ts#L11-L16",
+          "version": "repo-lines-v1:sha256:a7c484bae6ba59be4086f2fe9c64a9ae94bb05b47835fb15eae912522bb7aad6:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTA2ZGEyZWFlMTY4MWI4MGY0ZmEyZGVjMzM3MTliNWRiNDc2ZGUyY2ZkZDUyYzVlNTZlZjAyYTIxYjUxNjZhZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAyZDJjMGQ2ZGM1ZTc0ZDkyZmExNGI5MWRiZWEyNjQwOTBiZWIzNWZkYjkxODhkOWIzNDExODFkY2U5ZjRjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTkzOGFkZDJiOTNlMTc5NTVhYTBhM2UwMWUxNWZhODViOTUyOTc2YTM0NjQyMTNjYjBhZDgzMTBiZmZjZDI5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://packages/shared/src/triggers/types.ts#L9-L16",
+          "version": "repo-lines-v1:sha256:1a66aca2cfae6034b78bbf5f3a0e3e73a6d4f4c9b4d2c6d91c2be394e0102b48:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJiY2U3NzRhMTY2ZWE2ZDU2ZDg5YWFjZDQ4YTdmMTgyMzkxNGE5NTUyNWNkOTdiNTNjZTlmYzkyZGQ0NWYxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVlMjZjZDkyMzY2ZjYwZDhlZDkyZDAyMzlmMDdmZWY3NGNhYzE0YWE2OWFkZGY5YzJjYzBkMTFlYjAwYTQ2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RhMTY4MjY5NDdlMTQ5MzMzN2RjMWQ0YjE0MjY3NjhiYmM4N2NlZWExMDBjMjM0N2QwYWIxZmJkYjc5ZGU2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzgwY2U4NmEwMjIzMjBlOTc1NWM5N2Q2YmMwYTQzZGI0ZGJmODMwNjNiODJhODhmZTQ1NTc5MWMxMGIxNDk4NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5796af1544c54c5ca423354178905f64",
+      "statement": "Overlap guards scope by source: schedule/manual firings block automation-wide on any active run, event firings block per concurrency key, and lost races record an overlap skip atomically with the schedule advance.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L320-L338",
+          "version": "repo-lines-v1:sha256:5e93240a752e07f9e7c8a2d63c250cfe9f88644e6a18dc2fbfe660987c2d72f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkOWY2ZTZmMmNmZjNjNGIxNDc1NjNiZDg1YjBiNTdkYzEwNmY4ZDE1ZmQxMTJkYWE3OTc5MjMwOWJmNDk4ZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwNTUyZWYzMzkwN2U3MWYwMWE0OTkzODVkZTI5YTc2NmNiNDI4Yzk2MjRiNDY5Nzg3ZWRlMmZlNTExZjc2ZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5Mzk5NWQzZjMyZmU5NTcxZTU3NWFmNTM4ZGI0ZTE3ZGZiMDc4ZWQ4ODU5NjNmOGQwNDU5YzEyMDljZWYyNDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ad849fc0baf41f88d9c16c6aaad5e2c",
+      "statement": "Invocation admission is idempotent via unique indexes on cron slot (automation_id, scheduled_at) and trigger_key; a UNIQUE collision rolls back the schedule advance with the batch and re-advances monotonically, returning deduplicated.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L440-L460",
+          "version": "repo-lines-v1:sha256:a59bc5332e6c6759f56edb8a9a52a36c99cd81d6a6325b4d65cdd0d23ca62b21:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4YmNjN2MzMGM5YjQ3MGE0Nzg1OWY1ZGE0Yzk4YTllNThhODg4Zjc4YWFmYTVhZWM1ZmYxYzE1NjIwOTViYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MTcwZTZjOGVmOGJiNWRiNGEwNjcyMGZjNjM4NGNlY2U5NGE3NjRiOTM2Zjc4Y2Y5YTI4M2NkNmFkOWE1NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhMWY0Nzg4YTQyYTg1YWMwOGYzYmY5N2U4YzdjZjYxMGMxMDJlNzU4NGI3NTMzZDU1OWQ1ODE2ODNlMDkxMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2YTNjYTNkYjA2NDI2YThmZDI0ZmQ0Njk1NzAzNjk4MmQzZTk3OGIyYTQzNzA5YTcwNmU2OTFlMzRjYWM1YjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fde0ccda469c45e1ab72ed9f0ffc2cdf",
+      "statement": "Tick pressure is bounded by MAX_PER_TICK=25 automations, a 50-child per-tick launch budget for the Workers subrequest limit, and per-invocation launch concurrency of 4, with whole automations deferred when their estimated children would overshoot while the first always admits.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L76-L91",
+          "version": "repo-lines-v1:sha256:230b08fcdec9428cbea00576ad47d5ea2d0ded0e4c8ef9eb06636512c7d06077:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxZDc2MGQ2NDg0ZWVjZjM1MTNjNGRhZmMxZjZmYTBiMzkyNjE1MmVhZjY0NzkxMjJmNGE1MzBjMWU0Mzc4ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlN2VjOWM4ZGY1MTJlMjQ4ZWZhZjEwYmUzY2QzNDBkNGQ3N2IwMDE3NWE4NjAzYzIxYzdiOWIxMGRiODg5OTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmM2M3MGIyZDI5ODUxZGNmZjI3YzYzZjNhNDU4Yzk5Y2Y5NmEyODhmMzdmNmRiYzc2YTgzMWM5YjM3OTMxNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4YzdhNjdhMTY5Nzg2MzRkYTg3MTY1MmM5OTMxZGMyMGRmNDJjZDcwNjNkZDBlZjg0ODBjMjljM2I2NWRmNmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bedf4398e71d4db385a16a6be457fc31",
+      "statement": "Failure accounting admits at most one strike per invocation via a failure_counted_at compare-and-set shared by callbacks, launch failures, and sweeps; three consecutive failed invocations auto-pause the automation, and the streak resets only when all children completed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L260-L303",
+          "version": "repo-lines-v1:sha256:5f80c13defad5f7f045d1a7ace933ee58546a7253875f6edeb0d5cf43fe5c61e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4ZmQ0YTlkNjcwNTJjMzY2ODM1Njc4MzhjMDgyZGI2OWI5ZGUxNTI4YzBhZDliYmQ4MDRhYmY1NjczOWE3NmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjYTg2NDNhZjc5ZWFhZjQ1MjZmNzc2ZWFiYzAzYzYzNzU4ZmJlMjllNmYyOTMwZDg2NDMyMWNjZGI0Yjg5MzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2c686e9b14ea4030b33e522ee4918ed5",
+      "statement": "Recovery sweeps fail orphaned starting runs older than 5 minutes and running runs past a 90-minute default execution timeout, and a 24-hour finalization sweep repairs accounting missed in the crash-after-callback window.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L94-L110",
+          "version": "repo-lines-v1:sha256:c365876e6e049e8464fb4b78af25ae6bb2d21a19c6f2710f058a28094545a6c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYzhjMGY0YjYwMjY2YjAzNjJhYzdhZGZjZTc5OWZiMGYxNTNlM2Y2NGVmNjlhNDkyMjcxMWVhZmEzYzNjZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NTgwNjA1M2IyNDkwMmRkZDIxZDcwYjhiNGU1MmQzYmJiZmE0ZDIyMWI1NmJkOTg4ZDQ1ZTAyOGVlOTU2NzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0YmI4NmRmY2E3ZWU4ZmI1ZTdmOTAwZjNkNTM0NzkxMmQwYjk4YzFhM2UzYjFhOTgzMmFjMjlmNGJiZjdkNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmZGVkMmZlNzllYmZhMjBlOTRhZjM5NTBhZmU0NWMyMTlhODg2N2M4Zjg5NmNjM2RkOTcwNmY2NDdkZTA2MzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_350343ac6c0043ce960ae249d63351f9",
+      "statement": "Slack replies within a non-sliding 7-day window from the root run steer the existing session regardless of trigger conditions, falling back to re-evaluating the reply as a new trigger when steering is unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L113-L140",
+          "version": "repo-lines-v1:sha256:e0cab293c352fa9b10156d05c315b9a3ea3790cc5bdf008fe9acbf0435f63465:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxNTc5ZTJiM2E3YTNkN2Q4ZWRiOWM4NjIyNGNlZmMyNWY3Mzk2N2YwOTMxNTYyYWNlOTFiMTA5ODRjMTk2YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0NzFhODhjMzhhOWFkNDY0NWEyYjhhNzg3NDVmNjRjZjE0MTk2MzQwODc0N2E1ODAxODAxYzQwNjdiNjFlMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiNTAyZGI3NjRiNDcyOWJhNDYyOTJjZTI2Y2E1NTNhODg5Y2MwN2IwMTA5MTdkY2Y5Zjc0MDE3YzNmYTVhNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwZTVhNGU1Mzg4ZTc5YjUwMWEwYTc5ZjcxZDk5ZmM4YzQ5MzhhZDhkYjAwN2Y5NWM4MDhhMDRkNjljOTMyYjEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L920-L941",
+          "version": "repo-lines-v1:sha256:e5cad856f9b2fc06ad52bb515343e18cb679e44b9612c3cb2370bb5ae6b7d85a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MWU5M2Q4ZmJmMmZiZTcyZTVlZjBmOWRmMGQ1MjY5MjhiOGJkNzU3MWE1MjU1Y2ZiZTlhM2NiMTExMDEyYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5OGFhNzhkYzNlMWUxYWRhMjI2NWZiNWY1OWQ1YjllZGEwYjY4ZDVjMDBhZmQ1NWFjYjhiNDM4Y2JlZmEzMjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4NGMyZTMxYTdiNzdhYmZlNWVmMmU4ZWVmYmIyMWQ4MWE0YzZiZjNiNzY0MmJjNDY2MTQ5MjU2YjFlODA3YmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzMDM3YWUxMDQyYWNhMDMyMmMzYWU4ZDhlNmIzZGEwMmE5MDQzOGZjNjgxOTVlNGYxOWY4MjcwNTI1NDNmYzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d49f674738cb4fc189c735565c9fe9f4",
+      "statement": "Schedule automations are enforced to a minimum 15-minute interval at the API boundary.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L578-L579",
+          "version": "repo-lines-v1:sha256:9f2beaf45536615758298c334874818b4f903fdc7ae2d81a461ee0484733ef02:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDdiNGRiMGJjYWRmYzdmYjk3NDE5ZDMwMzRiNjUzYTQ3Y2VhM2Y1ZTE1YjNkMGE3MmYxMDhjNWM5ODc5OTQzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWExMmIyNTA2NjZhMjY0ZTViYjhjZWYzYzgzNWM4ODljMzQ5OTY2MmM1Zjk3NzE1ODZhYjczMDNmNDg3YzljMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGVkYzBmODk4ZTlhNTdhMjliYjBlM2I0OTMyMTQxYzJjNmVhOGVhN2UwYzFlYTQyODc2YWIyMGYxNjY3MzhlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFlNGVkMTQ4NWQ3Y2VmNjQ3YTM5M2ZmZjNlZTg3ZDVkZTBlNTQ2Njc3NDRlNjljMWYwOWE0Yzg1ZTYwNTZiYiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L73-L73",
+          "version": "repo-lines-v1:sha256:65a4a5930b7fd85eb349013a54faf7c4abb566f39cbee1beb2a4e6a1a3213946:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjVhNGE1OTMwYjdmZDg1ZWIzNDkwMTNhNTRmYWY3YzRhYmI1NjZmMzljYmVlMWJlYjJhNGU2YTFhMzIxMzk0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjVhNGE1OTMwYjdmZDg1ZWIzNDkwMTNhNTRmYWY3YzRhYmI1NjZmMzljYmVlMWJlYjJhNGU2YTFhMzIxMzk0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA1NjYxNjI5ODcxYjAxZjI2YTkyYTcwY2IxYWYyM2JhOTZkODUxZmM4Y2M1NWZlNDQ4OTFmMzJkY2NmNDk3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTJmNGQ5MTYzMjc5M2Q4ODA2YTE1NjczNDlhZjBkOGMwYTJmNTNjODFmOTczNDcyM2ZjYzAzNzk1NDVlNDdmNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6ada9fb6e3f40f282b3c99bf5278dcc",
+      "statement": "Integration tests running in workerd against real D1 pin the engine's concurrency guarantees, including auto-pause after exactly three consecutive failures and admitting exactly one run across two triggers plus a concurrent tick.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/test/integration/scheduler.test.ts#L222-L222",
+          "version": "repo-lines-v1:sha256:95a1c8eba1e3f99880496e9aa8cc4baa1281806e473d8acd6195d90493ffff3e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVhMWM4ZWJhMWUzZjk5ODgwNDk2ZTlhYThjYzRiYWExMjgxODA2ZTQ3M2Q4YWNkNjE5NWQ5MDQ5M2ZmZmYzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVhMWM4ZWJhMWUzZjk5ODgwNDk2ZTlhYThjYzRiYWExMjgxODA2ZTQ3M2Q4YWNkNjE5NWQ5MDQ5M2ZmZmYzZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTgyZTZhY2ZhZjFlMzY0ZjMyNDQ4ZTA4ZDA4NmQzZGViMGM2YTBmMDZmYzg4NjcwMjNjN2FmNzE2ZDNhMTIxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjk3YmMxMzRiYjE4ODU1ZmI4NmNkNDU3ZDQ3ODA2NWYyZmVlZjZiYTVjYjc1NzRlZDkwZTAyNjM2ZDc5YTI0ZSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/test/integration/scheduler.test.ts#L492-L492",
+          "version": "repo-lines-v1:sha256:c33b6cda01633b6a06c140967920b20f4d7c12efd2644d586358749102ce116c:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzMzYjZjZGEwMTYzM2I2YTA2YzE0MDk2NzkyMGIyMGY0ZDdjMTJlZmQyNjQ0ZDU4NjM1ODc0OTEwMmNlMTE2YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzMzYjZjZGEwMTYzM2I2YTA2YzE0MDk2NzkyMGIyMGY0ZDdjMTJlZmQyNjQ0ZDU4NjM1ODc0OTEwMmNlMTE2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGE0YjM4MGVkNDRhMmJiMDQwNzgzMGJmY2MwNTkwNmQ0YzgxMjRmZGRjZjY3ZjgwMjdmN2VjMGY4ZGRkNmQyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWNlNzY2YzFlZTcxNzU2MTkxZTM0N2E1YTBhNDdlZmY2NWQzOTlhNWQ5M2ViZDNjMDllYjU4M2EzNDY1ZWEzYSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T19:06:13.207Z"
+  }
+}

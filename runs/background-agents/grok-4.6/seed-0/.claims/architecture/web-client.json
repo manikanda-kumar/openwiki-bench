@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4eb24b1c5929f7f3659e04ad2de50f6d04d50a31c12585efb515ab1f071e997e",
+  "claims": [
+    {
+      "id": "claim_108232ada225477b8d6ee86ce7493028",
+      "statement": "Browser HTTP to the control plane goes through same-origin /api BFF routes via browserApiFetch, which forces same-origin mode and credentials.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/browser-api-fetch.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:dbcfb04b8687eec2f96cb3b7f079e5267fa20f0344619a81a340f03aa350edb8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a4b4b27b5fe458da0c9c62946de4ce5",
+      "statement": "controlPlaneUserFetch signs each request as service web and forwards the Better Auth session cookie; it returns 401 and does not call the Worker when the cookie is missing, and it discards caller-supplied identity headers.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/control-plane.ts#L30-L72",
+          "version": "repo-lines-v1:sha256:82a87de44a81081e9d24ec12c10da10bcf2878521eaabe3b7aca4dae0ae3bb05:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4NDRhOTAyYTg1YzA2ZDk2ZjNkZGZmOGEyMjgzYmQzNTlhMDBhOWE2ZTFlOTM0YmY2NzM4ZTYwNzgyMWIzYzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee43718b320446d58cef8618255a74b1",
+      "statement": "POST /api/sessions picks allowed create-session fields from the client body and does not accept caller-asserted identity or SCM tokens.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/app/api/sessions/route.ts#L34-L64",
+          "version": "repo-lines-v1:sha256:8f9fb74f7faf003a6abef223a65fa16c1a2cb7fee8bc5f93954b6518883a53b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjZThkNGExMWMxNzcwOWNmYzBlMjJlMjE2NGI5YmFhYjIzODE2YzI1YWY1ZDkyMjgzN2UwOWIwMjg1Nzc5OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4YzljMDY3YmE4ZjQ3MDQyY2EyOTU2YThhZGU5NDEyM2UzMjk4YmVmNzk2MTIyN2ZhOTQzODc2YTRlYTM3YTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d998ebdc83c416ea59d7b5b6fe85a5a",
+      "statement": "The session layout hydrates from getSessionSnapshot (secret-free GET /sessions/:id parsed with sessionSnapshotSchema) and redirects 401 to /login or 404 to notFound.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/app/(app)/(sidebar)/session/%5Bid%5D/layout.tsx#L21-L42",
+          "version": "repo-lines-v1:sha256:98a56cca29c27432941ccdfe80e440f166ff59b0591a888ae9a349b82ef12c80:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkOTBhMmVjOTNjYmEyYjc1ZDZiN2JjOWYzOTlkYThiYmQ0YjI3OTE5ZTNjNzQ1MjY3NjQwOWY0MzI4OWZlMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/session-snapshot.ts#L16-L22",
+          "version": "repo-lines-v1:sha256:4590576011ea106bec8027fea18e2ce874e9889345a95dea22512e173908f3ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwZWI4MDJkMmQ4MDY0NjBmZDE3MGIzMjMwNWYwZTliN2E4MDllMTNiY2MyZmYyMGVmY2JjNzZiOWJiMmU4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmI1ODBlOTY0ZjgzYTQ3M2Y0M2Q0NDM4NDYyOTQ5ZDY4YjU2MDBmZGE3ODdmMTYzNzQ1ZDAwZGU4OWNiZjM2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc7fb927e50944898ecb5a55612e5d1b",
+      "statement": "useSessionTransport connects to process.env.NEXT_PUBLIC_WS_URL (default ws://localhost:8787) and parses inbound frames with serverMessageSchema before they reach the session reducer.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L10-L16",
+          "version": "repo-lines-v1:sha256:3e74c1bc172202ebae4a2753a80b1891d78b50502bdbf97064510351b0873b49:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzRhZDhiNDJkMDFhMjFlMGEyZDVjODc4MmE5ZDE3Zjg3NmQwMTU1NTA2NDEwZWJlOTQxYTdmNjcxNmM0NDc3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzdjM2Y2YzY2Nzg4Y2YyZGE3Njc5NGFiNTU5NWU4ZWUyYTcyYTIwMTg1ODYzYjdlY2M0MmM4OTliZmI0YWUyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2FjYzcxNjZlN2M5NTIwZWNlYmY2ZjI2Y2U0ZTI0NGQwY2YyZTVhZDJmYzVlNjY3OTU3YTMxZDc3ZjUyMjkxOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzFlOWY2NjI0MmY2NTYyMzgxYWU5MmQwZTJhNzg0MWFlM2NiOTU3YzZmMDBlY2U3NjE1OTBmZmUzZmVjZWQ5MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f1a1fe67d9274beb9915fe9939f8d22a",
+      "statement": "sessionSocketReducer is a pure projection of already-normalized ServerMessage inputs; transport, token buffering, and SWR effects live outside it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/session-socket/reducer.ts#L19-L23",
+          "version": "repo-lines-v1:sha256:2758c607de2813a7b2b93fc845c73253891f52799e8fb87653b610c7c23f4e55:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTU0M2Y4ZGU0ZTc3MzMwNWYzMmFkZTg1NDIyMzljNWI3YzliNTZmOTVjZmQwNjE0ZDU5YmI5ZjJlNDVkODIyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGJmZDE4NjZkMzI4ODIxOWMxZjc1ZjU0YWVkYTYwN2EwMTJiNTA0NGZmNjU1OWE0MDA5MWFiZTM5ZTFlYWViOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ccb3d309dc5141acb0c76c91855cb277",
+      "statement": "useSandboxAccess fetches sandbox credentials from the BFF only when the sandbox is ready and does not read those secrets from the snapshot.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/hooks/use-sandbox-access.ts#L25-L34",
+          "version": "repo-lines-v1:sha256:d1c12951daaa1b8539c430897a9eaa0cf3ca895df6a9ceedd8434897b9323179:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkYjZlYWNjMDA2YmRiMTYzZWE4ODEyYzUzMjRiODQ0YjMxNDAyYmY4NTExYmQwMWNlMjZlMGFmYjc1MzZhYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4YmNjMzc3OWI0NmRkMDFhN2I3OWYwMDc1YjFlNzJkMmZlZTY1MjA2MzAwNmVmMTk0NGExNDBhZjgxZTlmYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3NzZkYTc2ODY0MTk5MmY4ZWYzODZlOGUyODE3MmE4NzY4ZGU2ZWM3YmJkNjc2YjkzMmM0YTQ5NjRjMjUyZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_df65246ffb2a4efabc3606525987d599",
+      "statement": "ESLint boundary tests reject raw browser fetch from hooks and client libraries so application code must use browserApiFetch.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/client-auth-boundary-eslint.test.ts#L31-L38",
+          "version": "repo-lines-v1:sha256:9bffe387727c2e558ae8b6a57e40dec6c29476670ef535107f03fa7421e2d9d4:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FiNWFlMGZmNjgyOTczM2NiYjc1MTIxZGY1NjVlYTU1NzRhOTM0NTIxZjg5M2JkZjlkODNkNWZhOWM5YTQ3OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzgzYmNjOTYwMzVkZmY4MGQyYjc4MDc4ODg4NDQwODg1MWQwMDNkNzdkMDJlMDVkNzAwYjZiMGQ2ZmExMGYxNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGRiNjE5MzUzNGNlYmJkZjJjNjJlMjlmZTU1MmU4NDZlZjg4OTcyZDVmYmVkNDE5MTk5NzIzNTIxMGFhNjE4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODhlNjIyOTRiZTM4YmZiZTEwMWE1MDhlZDRhYmNjOWExOWMxMDQ2ZDhhYTI5YTAyYzQ3YTdhODIzZjEyMDlmMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_90e129723be94d8b987500b30f697f2b",
+      "statement": "The Next.js app can deploy as a Cloudflare Worker via OpenNext (open-next.config.ts) or as a standalone Node/Vercel build (output standalone in next.config.ts).",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/next.config.ts#L6-L8",
+          "version": "repo-lines-v1:sha256:c47662b2f9fb61e716fe87f657d4a60ac6f5e28b16e46d2a2bb0e60cfcdc47e4:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjMzEyM2Q4NzBkZDA2ODkyYTZhNWQxMjcxYmIyOWRkNjdiMjhkMzM2Njk1YjQyMzJhNmUzNTFmMTY4OTQ2OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODhlNDBhNWE4YTczYmQxMjZkZDM3Zjc1M2YzYjljMmZmYWQ5ZWExZTMxZmM3Njk5OTkxNjc0MTNjNGM0YTUwZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTNmN2E4NzY2ZGU0ODIxYTE4NWNjNDgyMWQwMzQ0NjVjNjVkMGY4YTg5MmE5YjE5YWMxZmUzNmU4ZmRiZWJlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZmZWZmZGJmNzlhZmQzYjdmZWY3ODliY2Q0MDk4OGRlZjUyMTdlOTM5YjExZjM3MDY2YWZhODlmODcwY2U2MiJ9"
+        },
+        {
+          "resource": "repo://packages/web/open-next.config.ts#L1-L3",
+          "version": "repo-lines-v1:sha256:8e02c850592160eb80d1aed908789f317babcb76985792a86bb79e7c0dd4b1d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDBiM2E0YWE5YjFhYmU4M2ViODBiZjdlNTI5OWM2NDc3N2Y1NzI4ZDhjNDc1NGQxYWFiNjczNmU2M2JkMmVhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU3YmRmYWM5MDc5YTJiYjc2OWZlMjczYjc2ZGM5Y2JhOGMzMjY4Y2ZmNDE5OWRhM2E0MjkzNTYxNTA4YmUzNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T14:40:34.741Z"
+  }
+}

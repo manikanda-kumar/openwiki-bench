@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:35be30aafaacc2310148bb6cd2db007a68a259f30160fe498c47c4979227105b",
+  "claims": [
+    {
+      "id": "claim_bcef332d4bcc480ab809ca55550608f0",
+      "statement": "Browser-side code in the web package can only call same-origin /api/* paths: the fetch seam types the input as BrowserApiPath with mode/credentials same-origin, and ESLint boundary tests ban raw fetch and auth frameworks across the client/server divide.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/browser-api-fetch.ts#L3-L10",
+          "version": "repo-lines-v1:sha256:5ba00065e27f5249ac16ebf25fae79a03b6a114fb5108f3c4a11dcd1252e8a6b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjIzY2I0YzEzZDY3NzU5ZDU0Zjc2NzFkNDQwMzQ5NzJkMDkwM2EzOWQwOGFmYWU3M2JiOTgxZWI5YWIwZGNmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDBlM2MxZjc4OTQ2Yzk0YzY5YzA1ZGRmM2QyNWM5YTA1MzlmOWJhOWQwZTEzMDllNzZlZmRhZmU1ZDE2ZDgwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGNmYzIxZjk3N2E0ZWE4MDU2NGQ5MGNiMzljYmU2OTdlODVjYTRkZWQ0NWIwMTk3MWIxOWZmNzMyYzJlOWY3OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjUwMzQ2N2I1ZjNmMGQzN2I3NDI2NmMyOTU3NjIyMzk5NTNhODBmZWExM2VkYTNkMWNhY2YzNjU5NzEwZjg5YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9f562c1dae204832b2161744593de36d",
+      "statement": "All web server routes dispatch to the control plane through one signing boundary that signs requests as service 'web' with sig1 and deletes caller-supplied Authorization and actor headers, so identity is minted only at that layer.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/control-plane-service.ts#L34-L83",
+          "version": "repo-lines-v1:sha256:66fc9c8d48b5fceaf456bc6b91aebda83325de3c808aadef2d1268b901e41ae8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhYTJlOTQ2MWNlN2YwZmI5YmRjZjBlZjdjNzQ1M2VkZTVkMjBiYTNmOGU0NTFiZTg5ZTgyYjIxYzNmNzJkZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMDE0NzNjMmRmZTdlN2JjMGRjNmM4ZDhlNmNjNjdiZTBkYmYyMDEzYTkyNjM4N2UxZjdkOTEyY2Y5NTNlNjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_243a81e06fc34568ad079f8d4cc14120",
+      "statement": "The web BFF prefers the Cloudflare CONTROL_PLANE_WORKER service binding when deployed on Workers via OpenNext and falls back to a URL fetch of CONTROL_PLANE_URL on Vercel or in next dev.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/control-plane-transport.ts#L51-L78",
+          "version": "repo-lines-v1:sha256:e35ae76729c8f14c833be4cd1a7943d8e35d98ef8fa770a253e545379e5038c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ZGMyYjk4ZTE1MzVhM2Y5YmVjZWMyOTEyNTA3Njg5ZWQ5Nzk0ZTNlNTRlYzFlMjM2ZjM4ODBiMDQwMmVlNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0ZTY3OGI1OTQ2ZjFkODUwMDk0MTk0ZDQ3NmQ1MThlOTk5MjI0ZmFlMDg5M2RmYzQ3MzAwZjFjOGNkZmJmZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmMTdiNzYzYmRmZTZmZjFkNGUyNzIyYTQ5M2M0OTY1NzE2N2E4ODkxMTM5NDY4MzA4NjkzNzhiOGFiYTlhNTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_34eb7c70c97d4572aeb135d931baffcd",
+      "statement": "The /api/auth proxy reaches the control plane's Better Auth runtime only for the six shared-allowlisted browser routes, preserves every Set-Cookie while stripping hop-by-hop and content-encoding headers, forces no-store, and derives the trusted client IP from X-Vercel-Forwarded-For on Vercel versus CF-Connecting-IP on Cloudflare.",
+      "evidence": [
+        {
+          "resource": "repo://packages/shared/src/browser-auth-routes.ts#L8-L15",
+          "version": "repo-lines-v1:sha256:8aeb70c3ed6dc4dc6eec1c30c7205a8ab3ce6235122458bbaeff078f05f05cc5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M5MjgxYzA4NmRmNjkxZWYzYjA4ZDcxYThiOTliYmQyMmJkNzczYWQwYjUwMjZmNmY5ODI1MWMzNDFiNzVhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmNkYzc2ZDEyZTUzMDRkMzA3OWVkYjVmODkwMDA3ZWEwNWYyMjZlNGQ5M2I2OTU2ODQ2MGNhZmFmODAwNzQ0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTM3MjI3NmU3NzVhZDIzMTQ3YzljNDYyOTYzZGNiNWYyYzlkNjJmMmJhZWFiNTNjZWUyODJhYWY3ODhiZDJmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U3OGY4OWMyMzk1ZDdmY2ZkNjMwZjAxOTdlYzdhMDNiOWU0MGEzODcwZTg1MzVlMmFhMWVlNmMwNWQ1MGFjYSJ9"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/browser-auth-proxy.ts#L54-L89",
+          "version": "repo-lines-v1:sha256:5c2d11a7d0fbf3668a7c9a161827af96f9b6313c6cbf1bfd31827a7233d1ef7b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5NWVmNWIxMTJjOTgxNzExZjAxMDlkZjFjZTlmM2NhZTAwMjVkMWYyZWJmN2MwZGRkYzBjNjI1NDNiNDllYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmOTE5MzI1NDEyMzBiYzI4Y2E5ZjRiZjQ4ZDRjNzIxMDAzZGFhNzBmYjhkZWExM2JkMDVmYmM0MWU3ZGFlNWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkMjI3NTIyY2Y2MGZlNTM2MGUwNzk4YjM0ZDhmZTRmZWRmNmJhY2Q5YmFlMTcyNDg2NzdiOGRlNDI3ZjEzNjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_47b1e80d3dca41d69af3991e74693cee",
+      "statement": "Every inbound WebSocket frame in the browser is validated against shared's serverMessageSchema, and the first invalid frame closes the socket with code 4004.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L10-L13",
+          "version": "repo-lines-v1:sha256:360773ae816932758a3a8d2301d573d8c22b203c7360b07613487d54d55dd0b2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzRhZDhiNDJkMDFhMjFlMGEyZDVjODc4MmE5ZDE3Zjg3NmQwMTU1NTA2NDEwZWJlOTQxYTdmNjcxNmM0NDc3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2FjYzcxNjZlN2M5NTIwZWNlYmY2ZjI2Y2U0ZTI0NGQwY2YyZTVhZDJmYzVlNjY3OTU3YTMxZDc3ZjUyMjkxOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I1ZjgwNTg0ZTNkNWQwNzIwNmMwZTgyY2RhMWQ3NDdkNjhiZjkzMmRjNjAxYTc0OTMzY2FjMWIwZDQ0ZDgwMSJ9"
+        },
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L187-L196",
+          "version": "repo-lines-v1:sha256:b044b93c713a18ac54c1af72620cb07eee85d39baec53b5ed009685abd7574da:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyYjQwNWJhMWE0ZGQyMmNiZDc3OTBjMDczNzJlNDI3YThhMzk0OTJiZmU3NDIyMGQ4MWFiYTIxOWQ3MTZmNGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0Y2FiMGZhZDM1NDk5YmQyMmFjYTAyOGIxMDA0MDEzMmY5MmNjMDRlNGFiODI3MTZiZGFjZDU2ZmJjMTc3NWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1NmE1MTk4YmQ1OWVlZTI2NTZjZjU2ZDg3YWYwMmZlYjJmNWY5NjAxZmNjYTEwYmE5MDdkZjQzM2IxZTk2OGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_81bea937217540b38cdb7d4380e74cb6",
+      "statement": "Session transport connects to ${WS_URL}/sessions/{id}/ws, subscribes with a BFF-minted token and random clientId, retries with exponential backoff (1s base, 30s cap, 5 attempts) except terminal 4001/4002 closes, pings every 30s, and uses connect epochs so abandoned attempts never open stale sockets.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L16-L29",
+          "version": "repo-lines-v1:sha256:7cda39914ccb75b1a7b281e8948b2dba6d20accc7ca979825a390e0bbfa77cdc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YzNmNmM2Njc4OGNmMmRhNzY3OTRhYjU1OTVlOGVlMmE3MmEyMDE4NTg2M2I3ZWNjNDJjODk5YmZiNGFlMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjRjNDlmOGIwMWY4ZDg0ZjcxYzM0MDVmOWM3NWU3YmI2ZDVkNmZmZDA1NjgwN2JiNDk5ZmMzMTdjZGQxMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzNzcyNTY2NmM1YzNlNjczY2I2NmJmZDA2NTcyMmI5MTk2OGNhMzdjYzJmNjM4YTEwNTI0OTU5YWNjMzI0ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiYTYzNGVmN2M3NzNjYmJjOGMwN2YxNmM2YzZkYmQ3ZGRjYTQ2YzhmYmIxYzk1ZmFlNTI1ZTQxYWNlZDZlZWUifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-transport.ts#L298-L298",
+          "version": "repo-lines-v1:sha256:471eb5ef3f96964b6635ff8c6cd95a0b1cf8d39cafb0964d0929a291171a580a:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDcxZWI1ZWYzZjk2OTY0YjY2MzVmZjhjNmNkOTVhMGIxY2Y4ZDM5Y2FmYjA5NjRkMDkyOWEyOTExNzFhNTgwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDcxZWI1ZWYzZjk2OTY0YjY2MzVmZjhjNmNkOTVhMGIxY2Y4ZDM5Y2FmYjA5NjRkMDkyOWEyOTExNzFhNTgwYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmE0MWQ3M2M0NTIyYmVhMzlmZjgxNWUyNGJjZjEzMTE4NTMxZDY3MWViM2NmNTMxMjE4ODVlMTFhMWM0NzI0ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I1NTlkOGU0NzEzODI0NjNiNjE1Yjg4MGFhMGFhYmQwNWI1ZDBkYWUwM2JkODAzOTY0YTNlZTBjYmEyMjliOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9cf99b96848a4e47ae2a61c5231faac1",
+      "statement": "The composer's session target is a discriminated union (none/repo/environment/repos) whose request-field builder emits exactly one mode of the mutually exclusive createSessionRequestSchema, so the UI cannot construct an invalid target combination.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/session-target.ts#L105-L129",
+          "version": "repo-lines-v1:sha256:526729f42486a373f280c7dab6ba0f8f5a94d64186f846d809c5c47356c5223b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxZGU3YzVjMmJkOTFhMzA5ZTRhYzY0N2UwMmYyOWIzMDVhNzNjNWRlODQ1ZDYwYTQ5OTA1OWJiMzgyMGUwNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhMjliYTcwOTcwNDdjMTE0MzRkMTM5NzhhYTJiYzNiOGNlODY0ODFiNTYyN2FjZGE3YzAyMTE1ZTdiZjMxYmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/web/src/lib/session-target.ts#L12-L16",
+          "version": "repo-lines-v1:sha256:2ec0a2141f4fb29606c3bd1e81f15367b2ddc42b91c769fa95f1e9001057153a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWU0ZmI5NGJiODA1NzJjZWMzYzA4MTM3MTIzNGNlYmNkZmJkNDZkYTdhMDZkNDU4YzgyMDA1ZmMzNTNkZDhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZkOWNhYjUzMDM0NmIwNTcxOGUxMDNjODdmZjYyZjExZjRjNjQ4ZTk4NDExMTg2ODVjNmIwOWMzZjg1N2NjOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmU1NGM0MWYwMDY4MDAxNGZkMzNlMWFhZWNmNjFlMThkODY2NWVkNTU2Mzg5MWYzNjRlZmI2YTlmYTc5YzRjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWMxNzA1ZGZjNDBkMGY5ZTNkNjlkZGRmM2NiNTk5NTk5YTRhODA2Yjg1OWEyM2IyMDcyNjhiZjZhMTUxYmRkYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a1836ad7c1048ad8cfb843aece50761",
+      "statement": "The composer warms a draft session on first keystroke using canonicalized JSON request identity so only material changes retire the draft, and unsubmitted drafts are expired by a control-plane cron after an 8-hour TTL.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L26-L26",
+          "version": "repo-lines-v1:sha256:3a66022ae11d631aba6081249b6b5869767a19284b5523b068a72551ec632fdd:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E2NjAyMmFlMTFkNjMxYWJhNjA4MTI0OWI2YjU4Njk3NjdhMTkyODRiNTUyM2IwNjhhNzI1NTFlYzYzMmZkZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E2NjAyMmFlMTFkNjMxYWJhNjA4MTI0OWI2YjU4Njk3NjdhMTkyODRiNTUyM2IwNjhhNzI1NTFlYzYzMmZkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTIzYzE5YjZlZmQ3ZTgxY2Y2YjgzMjEyYzU5OTI2YmE0MDNlMGVkZGM5NWM5MmQ4ZTljODBjZjBhYWY2YzE4NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjhjZDA2OWJlYWJmOGQ3ZWI4MjQ3Mzg3N2JiNDA1MWQ4Mjk5ZWU3OTM2ODFhMDIwOGNkZWU3ZTEyNjk2MjA5NiJ9"
+        },
+        {
+          "resource": "repo://packages/web/src/hooks/use-warm-draft-session.ts#L19-L37",
+          "version": "repo-lines-v1:sha256:e32cf6c190252a36413fec94488b192cbc6422854ccdd475e95d1de4a7f0bf0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmNjVhNzc1YmQyOTdiOWFkNTFjMDlmMmFhMWYwZmQ5Yjk5M2U4OGJjN2JlOTk4NDcxY2Y0ZmUxYTlmYWZiMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwOTZiY2M5ZjA3NThmYTcxYmQzOTM5ODVhYjQ5Y2ZmMjNiYmVkOThjYzc4ZDJhZDkyNTgxMWRmMDVlOTIyZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJiMmIyZGNiZDQ1MzZmN2JhNTQ0YmVhNmU3OTU3MzA1NWEwMTk3NjdjNWRlZjc0YzViOTA1MGJkZjk5NDIxNjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b81a4b5e2924a37b224f4191e7dc978",
+      "statement": "The session page's first paint is server-fetched and parsed with shared's sessionSnapshotSchema, seeding the same pure reducer used for live WebSocket updates.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/session-snapshot.ts#L16-L21",
+          "version": "repo-lines-v1:sha256:e2e30597049cdedb3e0d3e162450404370b78cd6f26a3b674f0ecdc4fa70ad84:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwZWI4MDJkMmQ4MDY0NjBmZDE3MGIzMjMwNWYwZTliN2E4MDllMTNiY2MyZmYyMGVmY2JjNzZiOWJiMmU4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODAwMGMyZjRlMjVjY2M4ZjMyMTZlMTFjZjA5NjQ4YjVjZDllYWMyYWQyMDdlMjlkY2UwYjdhMDAzZGEyZTcxNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmI1ODBlOTY0ZjgzYTQ3M2Y0M2Q0NDM4NDYyOTQ5ZDY4YjU2MDBmZGE3ODdmMTYzNzQ1ZDAwZGU4OWNiZjM2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d0596df8e794d3cbf18533bb19655c8",
+      "statement": "Follow-up prompts travel over the WebSocket with a 15-second ack timeout, and history is paged with fetch_history at page size 200.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-socket.ts#L26-L27",
+          "version": "repo-lines-v1:sha256:5c49e88c21236d257bbf831aaf21e0bfd71243c02942420f6d9554badb77f7d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWRmNjBmM2JkOTNhZmY4NDQ4NDlkNjMwYmE3OWMzMjNlNmMyZjNkNjhlM2YzZjhmNWRiNmQ0NDBhMTVkYzVmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGVmNmUyOTUxMmY4YzQ2NTc0MzE1NTdiMzExMGY5Y2U5N2E0MmJlYTg0ZDdjZDRkZmM5OGZhMDVkODZkN2RmNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjBmNDAyZDMzZDdhNzBhMGFlODZkYjcwNTNkNTA2NmE0YjFkNGI0NjJmODg3OTRkYzgyOTAzYzFhYzA3NzRiNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGQwYjYxZTI4YzIzNjIyM2VhZDFiYmZlZTU5MDI3MDBmMmVhZWI4MjQ5OGZmYTdiMGFmODUxNjE1YTllOGViNCJ9"
+        },
+        {
+          "resource": "repo://packages/web/src/hooks/use-session-socket.ts#L392-L392",
+          "version": "repo-lines-v1:sha256:1ecb68d48974d25246e81d753d566ff921560382f9a5c28ee8c0cea76c165cbe:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVjYjY4ZDQ4OTc0ZDI1MjQ2ZTgxZDc1M2Q1NjZmZjkyMTU2MDM4MmY5YTVjMjhlZThjMGNlYTc2YzE2NWNiZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVjYjY4ZDQ4OTc0ZDI1MjQ2ZTgxZDc1M2Q1NjZmZjkyMTU2MDM4MmY5YTVjMjhlZThjMGNlYTc2YzE2NWNiZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzQ1N2E1OWFmNTBkODI3YjI4YWY3OTdhZDdiNjc5NDhlNzFlNzYzYTRmZjMyMWMyMTBmYjc0Mjc4NWViNGJlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWYwZTc4ZWFmNTI1OWM4YmNjYTQzZWQxYmQ4MDU0NDRhZTVhYjc1MDkzNzAwYWYxZWU1YzQ5NWJhNGVhYTY4MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ed7a46b656d24d67867a8c52d02e3c9d",
+      "statement": "Settings panel availability follows the deployed sandbox provider, e.g. the Images tab is gated by supportsRepoImages() mirroring the control plane's IMAGE_BUILD_PROVIDERS policy.",
+      "evidence": [
+        {
+          "resource": "repo://packages/web/src/lib/sandbox-provider.ts#L12-L38",
+          "version": "repo-lines-v1:sha256:44b6b2735b9c957cc68369c4efd948348e8e5847c6fdd416600b83901c8dc0a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1ZTk5MWFjOWMyYTIyZDcwNzFmZDM0ZDIyZjcwZTUzM2ViNTk4YzllOTY3ZDAyMGU1MzBiZTU1ZDg3ZjQxMmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMjk2MGM3MzE4NTcxYjc5NjAwMmQ2MDJiYWU2OWY2MDA2Y2VhYWE1ZGZiN2NmYmJjYWUwMDZhNjlhZDAyOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyMmFmMmY1YmE4YjI2NzZkNmQ1OTVlYTE0NDgwZWM3ZTM2Njk1MDc5Yzc3NGVhY2M2NDAxYzEwMzhiMzVlZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyMTg2MDEzYTNkMDA1MjI3NWQ2NTY2YjM0YjA3YWQ5ZWU3MTZiMjM5YzAzYTZmMjM4NGNhY2Y1ZmU0ZWY1ZjYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T19:06:13.207Z"
+  }
+}

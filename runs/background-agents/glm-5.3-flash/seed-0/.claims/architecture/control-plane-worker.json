@@ -1,0 +1,800 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:67b8184cb2df3ca8c6afda1054e132a5da5660a23db2c03bcfe172276258e6bb",
+  "claims": [
+    {
+      "id": "claim_7166b9bf94f24393a00daf2215e30f18",
+      "statement": "The control-plane worker exposes three platform handlers in src/index.ts: a fetch handler that routes WebSocket upgrades to the SessionDO and all other requests to router.ts, a scheduled handler that dispatches on event.cron between the image-build scheduler (7,37 * * * *), the abandoned-draft sweep (23 * * * *), and the every-minute automation tick plus Autofix queue health check, and a queue handler that routes by isAutofixQueue to either the Autofix consumer or the image-build finalization consumer.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L32-L90",
+          "version": "repo-lines-v1:sha256:8ca352a1b11f9fc0a5c59bcb173d47c2b17b7f796d3c32a8d175e99a076f6314:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzMjdiNmMyNmNjYTI4MDRiMjY2YTc3YTJhNGYxMTU1NTBkOTNiNmUyYzI3MjI4MmJiMGJjZjY0OWQ1Y2MzMDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZDA4NzFiYmMyN2I0ZmFhY2E4NjY2YTE1YTdmNjZmNjc3NjVlNmMwZjA3Y2NjZmM4MDQ4ODA2NWI2NjVkMGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5Y2EyNmZhNTVlYjZjYjg3YWMzZjNlYzI2YzBlNDM2ZTJmMmNlZGVhYTA5NmM3N2Q3MDEwNzk1NTM4ZWI0NzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc77853dd90a4634829ccbbbf496ebfb",
+      "statement": "The WebSocket upgrade path matches /sessions/:id/ws, verifies the session exists via the D1 SessionIndexStore (404 when unknown), and forwards the upgrade to the Session Durable Object resolved by env.SESSION.idFromName(sessionId), adding CORS headers to the 101 response; connection authentication beyond the upgrade is re-checked inside the DO.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L93-L148",
+          "version": "repo-lines-v1:sha256:ee6b9bf4e0b96fba18f29444c697ab7b5fd7920a243b563d61ad0f7e48ac1086:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNzJhMWMwMTEwODg0ODRkYmUzMjFkMWU0MTVmNGI4MzFhZjZiYjk2OWEzNzIxNDI3NmY1ZGY1MTY4YzRmMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlZWNhOWFmY2U1ZjIwMzVkOTdjYjgwNGEwNjI4MmE0YTEyMjM5ZWM1YTI0YWJiNmFlZmVlNzAzZTQ4YjhjODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/contracts.ts",
+          "version": "repo-file-v1:sha256:ebb6d344fc7ff9f0fed33bef30dc26e7a68520e6c51db15492eaf5969aa68d6d"
+        }
+      ]
+    },
+    {
+      "id": "claim_db7442323fb6407f994d6e8a27d6d652",
+      "statement": "Queue routing in the worker's queue() handler classifies a batch by the isAutofixQueue prefix check (queues named open-inspect-github-autofix-*); all other queues go to image-build finalization. The prefix-based check is deliberate so an image-build finalization queue whose deployment name merely contains 'github-autofix' is not misrouted.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L82-L89",
+          "version": "repo-lines-v1:sha256:2e320735662cd43928bf1ad72b8eb527d08e75a1a810ea6dee86b3fa556ba5bc:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMwODdiMmUwMGY3NTlkNDRkZjQyMzM0MzhmYzRjMWE0YWJkMDUxYTA4MDEzYTI4Zjk0YThlYTlhYjhlOTJmYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAzNWUwYjU1NTA3ZTA0ZTdmN2E4MDNmZDY1MjY0YWEwYmQ3YzIxOWMwYmQ2NDUwYzEwZWFkMjg0YTA0YWU0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWVlY2E5YWZjZTVmMjAzNWQ5N2NiODA0YTA2MjgyYTRhMTIyMzllYzVhMjRhYmI2YWVmZWU3MDNlNDhiOGM4MiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/queue-routing.test.ts",
+          "version": "repo-file-v1:sha256:465fdff6c4075cbc3f8bfd686a91062c6db49a2fd923b539d6945f0f336d465b"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/queue-routing.ts#L1-L2",
+          "version": "repo-lines-v1:sha256:de07767f2609ad50681e779ac0f999abe75fb55c47f842f0a810f568fd2a14b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjAyN2QwMDA3YzQ5MTg3NjEyMmU3ODYxODE0ZTdlZDVjNDRiZjU0OWE4ZmUyNWNjNzU3YzgyNzAxMjNhNjJhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGI3NmZlNjZiZWI1YTlmMGQ0NzgzNGY3MmMxY2RkNGI1ZWUwNzU2ZjgxMTdiOGI2MmMyZjUwMzcwNzJlMjI5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_16f3d096a6ef4fc2b9378f5818abea22",
+      "statement": "handleRequest in router.ts runs the full request pipeline: it rejects a missing env.DB once with 503 as the single honest boundary (so ctx.db is always present in handlers), builds the RequestContext with trace/request IDs and per-request metrics, answers CORS preflights before matching, matches routes by method and compiled regex, authenticates non-public routes, enforces the SCM provider gate, executes the handler with HttpError mapped centrally and other errors logged as generic 500, and wraps every response with CORS, x-request-id, x-trace-id, optional route cacheControl, and the http.request wide event.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L376-L532",
+          "version": "repo-lines-v1:sha256:3d1a90801fc0216fa16a88e0018bcb766b2a13cf0fee5195bdfdf2c7b75709af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2YzQ5MzIxYzExNTVmYWUyNTg1NDZhYjBhMDgwOWRkODg0NGJkZWFiMDMxMjA0OWMxNzZiMTZhMDQyNWVlZWY5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhZDI0ZTI0OGIxMTVjODdiMmJiODljNTk0ZjRkMTVmMWE3ZDg5MTI0YmIzZmIwMWQ4Nzk2YmNkOTg4MjdlNjQxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjM2VjYzA2MzNlMDMzNTY3ZDYwYjM2ZDg5ZTgwMzZiZWZlYThjOTkyZWY0ZTRjNDdkMDQ0OTMyYTI1ZGEzZTE3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_813212698d584dde9286e9415c8176d0",
+      "statement": "Every control-plane response carries Access-Control-Allow-Origin: *, x-request-id (an 8-character UUID), and x-trace-id (from the inbound x-trace-id header or a fresh UUID); these correlation IDs propagate through logs and are forwarded on internal DO fetches by the session runtime client.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/logger.ts#L28-L37",
+          "version": "repo-lines-v1:sha256:16498177f42144f4d6e6630b664bd99d40901bd018e158b24ef26c074f131b69:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNGM4NTFhNjI2ODFjZWY1ZDljM2QwOWYzNDRjN2IzNjY4MjU0NTExYWM0NzJjNjAzZTA0NmYwODZkMmEyNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhMTBjMjg3OWNmMGJiNDNlZGI4MWQ4OGRjMjIyNzNlZDQ2NzQ2NGY1ZDI2NGEyZmMyOTg5ZjBhOTE0YWY5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L419-L441",
+          "version": "repo-lines-v1:sha256:203239cd8c3a1dc92a141185b9ea8932305954177d0497f611cba22d4c7f1ef6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMWVlNDVkZDRjY2FjMTgzMDQzMjBhNjI3NTQ2MmQwNGFmOTQ3NzQ3ODdlYjAzNTM4YTc1MWM5MThjYWM1MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkNDk1OTNmYTlmZDlmYmEyNDAxODIwM2JlYTcwYzI4NzMyNjI5ZmUzNTY3NmNmZjM5Mjk3NjBjYjcyNWUwY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3ODYzNWU3ODA0NjMzZTE2MjhkYjgzNjhkMzcxMDBhMDhmMDI1NWVmMGIzZjdkNTYxODhiZjQ1YzJiM2M1ZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxNzM1YzhiZmIyYzRhNWMwZGExN2M2OTkzYmVlMDBhOTViMjcyYzcwNGE5NGMxYTdmYzk4MGQwMWE5NDI1NWEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L55-L76",
+          "version": "repo-lines-v1:sha256:c2c0132f574c20d32aaa09953b33bdc5852ea766215658eb4cb05f7110db526a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0NDViZmUyYjlkOTJkMWNiY2U5N2VmNDI3YjJkZDViZDA3YzdkZmJmMzQyMmFlMGU2ZjAxOGI5MmYzODhkNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwMmE0MTRjNjc1NDZjYTU4NTRkOGNmYjc5YTRkZTZjYjU4ZTgwMjE1NjI1MjkzMWRhZDYzOTJhY2MzMWE5ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmNjM1ODgxOGYxYWJlZDg2MzI5OGQzZGMxZDQwMWM3ZjI0YTgzNzM2MjgxYjdhZGMzNGNmODY2Y2JiNzdmYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09db10a730824a4a80d155381ac67bd4",
+      "statement": "src/routes/shared.ts provides the shared route framework: defineRoute/defineRoutes attach a RoutePolicy (authentication kind plus supportedScmProviders) to a route definition and narrow the handler's principal type; parsePattern converts :name segments into named regex groups; json/error/HttpError give uniform responses with HttpError mapped centrally by the router's dispatch catch.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/shared.ts#L151-L173",
+          "version": "repo-lines-v1:sha256:5bc1b4bf81275ec7e045e822e1ab9a2e396823e6ba5c03abe34ab0ee997abe07:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzMjk4Mzk1YWYwMmI2NDNjZGUyZWQxY2YyZGUyNGZmNWQwMjMyOGI5MGQ4YTNiMjhkNmQ3NmY2ZTMzMjI0MWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZWJiODUyYzMzYjhmYjIyNWI3YWQ0ODY0NWIzNTM5ZTQwN2EzOTRjYWI4YjYxNDg4Zjg2ZTVhNTE0YTc1YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhNDNjZWE2OTE0NDFjNGQwZjNmNzg5NWRhMjQ4M2Y3NGZkYmY3NDMxNTU1YzdkMGQ4NTA2YTFmNTdjMTAwZjkifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/shared.ts#L197-L205",
+          "version": "repo-lines-v1:sha256:b32cc302ee160bf2aa8a4ca9c9b7f54172c0bedfad4443d4fee52805cabcbef5:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWRiMWFlOTdjN2MzYmEwZGMzY2YyYWE4NGY2MjQyOTVlYWZkMjE0Yjk0YTFhZDhiOTkwZDUzMmNhOGZkNGU2ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGMwN2M0YWZmMzU4NzcwYWU1NTc0ZTRlNzc1ZDNiZWZlMWMwNGY4YTUxNThlZjBlY2M5MGExY2UwMDJhMjNhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdhMTU0NDY3YzkyNzRmNTUzMGYzNTdiYWQ5MmIwZDExYzcwZWE0Y2ExNDRmYTk5N2QwNGJjMjI4MmNjNzNmMSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/shared.ts#L69-L100",
+          "version": "repo-lines-v1:sha256:2e16b195327a1149263d6b7f4f0826a6a6c51dc6ef885fead3368a31f6f46380:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViZmZhMzkxZTFiNzQyMGRjZTZlMmEyZjFiZTM3ODM3NmY2NDA3MmFkYTFhZGUzNmNiY2EzZGQzN2FmMjEyMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4Nzk3ZTJmOGU2YzZjMzNmY2RjNjBiODkyNGYwMThkY2M0OWQ0NmYwZTBjYmUyMjZhMTBhYTI1NjAxZGQzZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMzZlNmM3ZGY1MmFlNjU0MTU3N2M4ZjA3YThkYWUwOTIzMmNlYTJlMTFjNzczNjk0ZThmYjk4YzE1NzNlMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwYzhkM2NiMjc3OWNkNTI5Njk3MjhiYTA0NzE4NmE0ZjI2ZDUxMDc5MmFlMjhiNDVlM2JlZTg2OGZjZGRhZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_358b139f16da453d9331ee03bd785e84",
+      "statement": "RouteAuthentication variants are public, handler-authenticated, web-service, user, user-or-service, sandbox (path-bound via getSessionId), and user-or-service-with-sandbox-fallback; named policy constants pin the standard combinations (GITHUB_USER_OR_SERVICE_ROUTE, SCM_AGNOSTIC_* variants, SCM_CREDENTIALS_ROUTE, sandbox-fallback variants).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L118-L158",
+          "version": "repo-lines-v1:sha256:9f47ee79b169ffabd5e9a4420af42758eb57711b168e5978b830c2c6d4cd66f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3OWQ5M2FiYTY1M2U0ZjIxMDZkOTRhN2QzYzU3ZjNjMjMxZTM4YjJkZWE4MTE5Y2IwNjIzNjcyNzM3M2RkMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0NjFlNDc1ZTBhMDk3NDQzOTRiY2EyMDBiNWEyNzFhY2Q4NjkyYjkwYzIxNzBhOWJjZWQ2NzFlZDJhZDY1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0YzRlYWI3MzcyMTQ5YmI5MTNhNGE3NmJmZmE3MDUwY2U2ZDE3MGE3ODBmNjdkNGM1NTAyMjA0MzRjNGE3ZmYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/shared.ts#L106-L149",
+          "version": "repo-lines-v1:sha256:f7527d7eb4f044adcd6aa625bd8c217a126988756edc92ddbbe17eafb760da9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmNjM5Mjk5MzBlOGIzNWI0ODdkMzEyZDBlNWFmZDI0MDI4NmUxODBjYjM3OGJmN2ExYWVlNTgxNTJhY2NkZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNzc5M2UwMzk2YjgxY2JkZThlZjFhMDA5MGYyYjZkZjgzNGI3ZGQ1YmU2YzA5OTk0OTUyYWE3M2RjZGRkMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0YTA0ODFhN2ZjMWEwY2Y2MWJjNzk1MmJlMTdkYzQ0OTY3NjI0ODFiMzFlN2U3OTU5NDcyMmI0MTUyZThjODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2ZTNmMzkyMmUxNzQ5YTk0Nzk2M2ZkNjkxMGJlMjI5ZmQ4YTAyNmY0MGM5NWZhZDk1NjIwZmE4YWQxNWM0N2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9261118234b94b83a39a615c9c9e97ea",
+      "statement": "enforceImplementedScmProvider returns an explicit 501 with a per-deployment message when a route's supportedScmProviders excludes the deployment's SCM_PROVIDER (e.g. bitbucket), and 500 when the SCM_PROVIDER value itself is invalid; the deployment SCM provider resolution is memoized per isolate keyed on the env value.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/README.md#L444-L446",
+          "version": "repo-lines-v1:sha256:d2c37be23a08170172782f4aa4a9189775c030597e956e87ddc147f9b5d10fe8:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFkYWZhOWU2NmUxMDFiMmY4ZDg4YWFhYmVkZmFkNjY1MzkxN2EwNjYzNGJlNzZhMGY4ZmY0Yjk3YjVkMmQxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTRiM2JmNjJlYWQ0YmM0NzY3YmJjZDkwYTc3MmZiMzlhOThkZTdiMjAxNDE0OTMzMWJlMGZmY2Y5YmViNDM3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGZiYjYzNjBhY2MxNmRiNWEwMWYyNGJlYmM5YWY1NTQyMzg0MGZlMWU2MDNkMjBlYTkxOTA2M2FmODg2YzVkNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzRkYjA0ODU4NTAzYTg4MDcxYzhlNDdhNDU0Mjg0NGU3MzZhODQ2YjMzMWUwZTc2ODY4ZjkxNGY4NjAzMzZiMSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L118-L158",
+          "version": "repo-lines-v1:sha256:9f47ee79b169ffabd5e9a4420af42758eb57711b168e5978b830c2c6d4cd66f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3OWQ5M2FiYTY1M2U0ZjIxMDZkOTRhN2QzYzU3ZjNjMjMxZTM4YjJkZWE4MTE5Y2IwNjIzNjcyNzM3M2RkMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0NjFlNDc1ZTBhMDk3NDQzOTRiY2EyMDBiNWEyNzFhY2Q4NjkyYjkwYzIxNzBhOWJjZWQ2NzFlZDJhZDY1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0YzRlYWI3MzcyMTQ5YmI5MTNhNGE3NmJmZmE3MDUwY2U2ZDE3MGE3ODBmNjdkNGM1NTAyMjA0MzRjNGE3ZmYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/source-control/config.ts#L4-L19",
+          "version": "repo-lines-v1:sha256:3a17c9283f7c010aee6952fa993c7ab6cb348ec6fcb4e1ea18602ee9fbec67a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1ZTQ3ZjY5OGM4OThlYmRhNDNiODFiMmY3MmY5OTljMzc2ODcxYTA3NDY1NjA4YjhkZWIyNjcyMmVmYzAxNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwY2JkZWVhYTcxZDIwNmM3YzcxYjk4NGYwN2Q3NWFjYWRjZjJlMzA4ZjI3MTVmYTE3MzRjZmZkMDg3NGRhMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3a11f55d51894961a92196450bd2439c",
+      "statement": "The router's route table composes the full API surface from per-domain route modules: browser-auth, sign-in-providers, sessions (create, index, runtime proxy, ws-token, prompt, PRs, media, attachments, diffs, skills, child spawn/children), slack-notify, repos, secrets, environments and environment-secrets, image-builds, model-preferences, model-provider-accounts, integration-settings, commit-signing, scm-settings, automations, mcp-servers, analytics, autofix, skills, keyboard-shortcuts, and webhooks (sentry, automation, github, slack); GET /health is the only public route.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L301-L371",
+          "version": "repo-lines-v1:sha256:e70da23a52efc82e7e9816640a5867432d6ee071a8a0d2574628e275f700c64e:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYTU5NTA1YWI5YTY1ZjY2YjJhNzY2MWZkMzFiMGY1ZGMxOGYzZTY4YzQ1OTZlNTVkYTgyNWFjNGY0NWI5OTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTE4MzBjMzY0MGYzNTcyY2EwMzhiMWU4OGVjNzBhMmY1M2Q2NjNjNTQ1NTA1MWI4YmFhZjliN2Y3NzQ1NDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzOWNlYzE1ZWZjNmI3N2Q2Mzc4NjhjNDc4NTZmOTA3MjE0Mjk3NjQ4MWYzNzc1MTY4Zjk1NDYxMGY5ZDZkODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f52cb074e36c45008b3a4c3e59218e30",
+      "statement": "A policy-table test (router.policy.test.ts) pins the authentication kind of representative routes from each family (public health, handler-authenticated webhooks and image-build callbacks, web-service auth routes, human-user-restricted routes, sandbox routes with the bound session id, and sandbox-fallback session routes), so accidental policy changes fail fast.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.policy.test.ts#L9-L118",
+          "version": "repo-lines-v1:sha256:84b9e27bf66e9bfed07fbaa2c2367ef6d8e82b27519e3257bcedc2ded54775c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5MmVhNGMxYjEzZTI5ODFiOWVlMWM3YWMyZTE4YmNmYmZkYjg4NGQ1YmRlOGZlZGJkODNlMmMxYTAyY2I3N2Q3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIxNGY4NTI1MDU5NTAyZWQ4NDk0Y2E4MDc3ZmNhNDNjMzRmODY4NTAwM2MwYWQzYWY0NDEwYzIzZGFmMmQ0NmIxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiNWM3MmZlZGY4ZmRkM2Q0Y2MzMDBkM2Y4ZWIwZjI2YTUzMDE2ZjExZDBjZjk3ZmU4YzVhMGUyMDc4NzM5MzBjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2OTBmYTFjZjNjNWY0YzU2ZmRjNjczYWY5NTlmZTU5ZmVmZWQ0NjBlOGFhZTg1ZjQ1MmI3M2MwN2U0NmEyNjg1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_797e3be9277d497aab74b4bfed0dfc13",
+      "statement": "Every non-public, non-sandbox request resolves to exactly one typed Principal before its handler runs — user (canonical userId), service (service name plus optionally asserted actor), or sandbox (sessionId); enforceRoutePrincipal additionally rejects non-web services on web-service routes with 401 and non-user principals on user routes with 403.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/principal.ts#L39-L53",
+          "version": "repo-lines-v1:sha256:9b0860b7f5d0da5562e6f6caf872b2e2408953128b61fface9d7b430b84939a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNmM5NDU5ODc4MWE1YmQ4MWNhMTdmZjJhZDkzNzc1ZWE3ZTE5NjBlOGU2ZGE5MzJlNzBlNjA5NWQ5OGI3MmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L282-L296",
+          "version": "repo-lines-v1:sha256:7eee404cc73508a1d8fd5c3ab579276931d0d4e37e48caae0bd6c6e73fd5d28b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmZmM3Zjc0NjMyZDcyZWRlMTM4MzA5MGQ4YTk2NDYwYWY3NzgyMjRlN2U3MmRiMDBkN2FkMDAwYzkyMGE1NmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhYmJjNTc1NTVkZGJjYzlkZWM5Y2E0YjE5NmU2ZTBiOTBmNWNiZTU0ODc0ZTJiZjZkNTM5YWIxNTJhYTkxYjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd4fe8d697aa4819b7ed34069616b0ef",
+      "statement": "User authentication composes two credentials: a sig1 service signature over the service:web channel verified first, then — only when the route requires webService: user — a Better Auth opaque session cookie validated by a non-refreshing session read so resource requests never extend expiry; the resulting user principal carries the canonical users.id plus provider-independent browser-session evidence, and a malformed or cross-user session raises SessionIntegrityError mapped to 500.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/README.md#L331-L352",
+          "version": "repo-lines-v1:sha256:a2b2ccf0c46ca0f893e0a255073bfd92241b82ff45b7f2abdf76022241193474:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0N2IwNDRlZmFhMDNhYjFmM2RjZDcyMmJmOGZhYTc1NDQ0ZTVlYTFjZDE1NjNlMzYwN2FhNzIxMjEyZTNhMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlZGI5MTIxMjljOTUxMDljNzY2MDlhZDNlYjlkNmQ0YjU1NDExNzQ4NmQzNjZjMGMxOGNlZThkMDcxYjc5YWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhMGFmOTQwYWQ4Zjc2NGU4NWU0MDM3MjQ4ZWEyNDU4NWE5ODVhOTVlMDViMDRkN2IzODY1OWIyMmY0ZjY0NjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyMGJlNDllOGZlMjhjZTQ1YzZmYzgzODY1MGM0YmVmYzNhYjg2Y2ZjZDkwMjQ0ZDNjZjZiMjVlY2QzNjE3NmQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/auth/authenticate.ts#L34-L94",
+          "version": "repo-lines-v1:sha256:4705b3c9c83abb7a87cc2a1abad52de1a0f82f4f6b936374b53759d2e6082bec:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczZmM2NTEzOGRiZjk4YTE2NGE3YjljZjU3ZGFkYzE0NDcxMzhjMDY0NTQwZDc4YzQ5YTJlZDcxYzhjYmVlYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2YWNkNjU3ODE5MGI5OGM1MjliMjdiN2I5NGFhZmY5YzI4ZDcyMzZiOTc3NGY1Yjc4ZTdlNDhkMDU2OWVkMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/auth/user/session-authenticator.ts#L49-L80",
+          "version": "repo-lines-v1:sha256:53ab8a2ae84186e7c6eefd74903fee58cfa6c501fb10893db7f1a8e4165ef22c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkZDdjMzM0NTFiYjc1MzZkZTQwYjQ5ZWM4NjdmNjJiNWVhYmRmMGFkYmNiNTY1MjAwZjUxNTIyYWIxMzEzNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e8a55ff4a3204d49b61886f89a185819",
+      "statement": "The Better Auth runtime is built from a normalized config (BROWSER_AUTH_SECRET of at least 32 chars, exact HTTPS WEB_APP_URL origin with HTTP loopback allowed locally, complete GitHub/Google OAuth credential pairs where partial pairs throw, and at least one enabled provider) and is memoized per env.DB object with a configuration fingerprint — which is why the router's composition root passes the raw binding, not the per-request instrumented wrapper, as the cache key.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/user/runtime.ts#L231-L267",
+          "version": "repo-lines-v1:sha256:ddc56ebdc2aec477ca118ced86420e8ae7df976f7e4f5d3a3855c27fea4a4230:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MTRmZTFkNmRiODNjMTdhYThmMmJmMjM1OWFiOTI5NTFiZGE3NTViZjY5N2VkN2QwZTExMGM1MWY2M2E2NjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmYTE3ODY0M2NiODljODgzZDExYjE0OGIzMDBiMTIzZTFjMjc5ODk1M2QwZDkyYWJkMTcxZTdlMzhmMWVlM2MifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/auth/user/runtime.ts#L98-L129",
+          "version": "repo-lines-v1:sha256:604885d23e8ecc62b12b3564c298cd68b99d1db956f47969ea8f9dd3399ea9cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MTRhYzBkYmU5NWY4NGQ1MDQxMjc3NDY0NzRmZmRhZGY4MmU5ZDIzNGQ4ZTFjZTBhNDMwZGZjZDUyYjllM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2NWE2ZWM1OWUyYmQ5OTEzMzhhMmFiOTUwYzAwZmNiOWY4N2Q2ODRjNzc1YmM5MTQzNDk5NjM5ZGVjYmY2Y2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFjNTMzMjQ5MzJjMDYzOTVkOGM3MjdlM2FlNjFmNTBiZDU4OTQ4MzI1NmIxZTljNWZiYTg2MmIwZDE2ZWMwNTMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L403-L415",
+          "version": "repo-lines-v1:sha256:9983dc8a3c21e246424188372e90e0b8f90da7df6f1a92f14f7f53b865ee2dff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMmI2NzE2MzVhZDM1NzJlMThhNmNmMDg4YjRmZjZkODA3OTg3ZDZjNzA2MDAwNDFhM2UwNzU5ZGMxZDhmYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDVmYmIxODJkMDc4YTg2OTEyYjA0MWQ1YmJhNTM4NDExYjc0ZWY3Y2Y5NzNlODYyMTE5NmVhYjNiZWE4ZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiYTE1MGIyZGIxYWViZTg0ZjJmN2E4NTAwOTlkYTUxNjk3N2RlMmNjNDA2MTQyZTFkNDYyNDQ2NDc0MDliYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3ODYzNWU3ODA0NjMzZTE2MjhkYjgzNjhkMzcxMDBhMDhmMDI1NWVmMGIzZjdkNTYxODhiZjQ1YzJiM2M1ZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d1fae40045904bf4947f8652ac30cd14",
+      "statement": "Sign-in admission is gated by the AdmissionPolicy: allowlists of GitHub usernames, emails, email domains, and GitHub organizations (membership checked via the GitHub API, with API unavailability failing closed as AdmissionUnavailableError), or UNSAFE_ALLOW_ALL_USERS; each configured provider must be expressible under the configured allowlists or construction throws — Google requires provider-neutral email/domain rules.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/user/admission-policy.ts#L107-L188",
+          "version": "repo-lines-v1:sha256:4ecc8b759b34b37b61d02464d4327cdb64d07e39f9c3c6aabb5d06b74a7b0b71:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNWQwNzZlZTU2NmI3MWViYTBlYWM2NzRhMDVjNWRmYjg4MzY0ZDdiNmEyNWVmNmM5MjMxY2E5ZDZjMmQzYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwMTg5Mjc0NDNlMmJhN2ZkNDE0MWFmODI2MGVjODU2ZGVlNWI1OTExY2E0YzI0MmM1M2Q4MWU2NTM1ODNhNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/auth/user/runtime.ts#L131-L145",
+          "version": "repo-lines-v1:sha256:35544f36192cdf9b435e134ff0aee76ee4f5673f1a0214cc39c7d1f58ed72e43:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5YTI2ZWY5NmJjZDg1N2UyOTM1NjRmMTE4Mzc1MThkODVhNGU1MTE3NDU1MTMwYmE4YjNkZTZlYTQ3YjdkOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiMzg3ZGYwYjQ4NzhjYmI5MjBhZmMwY2E0YzIwZTJmMDM3NTBiMThlZjczYTYxZjU3NGEwODExYWU0N2VjMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7da21335e0c4673a19f9e2f6e67bf20",
+      "statement": "Worker-to-worker service traffic signs requests with the per-service sig1 HMAC format binding method, path, canonicalized query, body SHA-256, asserted actor, timestamp, and nonce; the control plane holds one verification key per service (SERVICE_AUTH_SECRET_* — an absent key is a 500 misconfiguration), freshness-checks the header before buffering the body, caps bodies at 16 MiB, performs log-only nonce-reuse detection, enforces per-service actor-namespace assertion rights, and rebuilds the consumed body before the handler sees the request.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/service/config.ts#L3-L22",
+          "version": "repo-lines-v1:sha256:d5b17553e85ae184ce6800be5701c5d09b6c6d9022681392bf87879daa2863b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5ZDlhMTBjYmJkNGQ4YjkyNjdhYTU3NDFmOGQxN2JmZjFjMTUyMGRmYjRjYTAzZGYyZGM5OGQzNmU0MDlmYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiZjIwNDE1YWNiYWY4MzFmZjFjNGQ1MmE2NmMyYWQwNGIzZjc0OGRhMWY5OTFkNzE4NDQ4NDJiYmMxYWI4YjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/auth/service/request-authenticator.ts#L73-L197",
+          "version": "repo-lines-v1:sha256:612b5cb76dcb5d182e7c77a17452f402842f5834dd5e265c531853f5a62bc9c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmMWE3MDJjZWE1N2E5YTZiZjE2ZjE2NDY3MDkwZjQ5Mzg5YjQzMDBkOTczOWM0MmQ5ZGNiNzI1MTk1NTBkNWY1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MmEyY2IyNWExMjJiNDQyMjFhNjIzNGVjNjYwYTdiNWZiN2Y5YmRlN2IzYjllMmIzYzU1OWEwZDk2ZmFjNzM5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3ZTNhMDE4ZTNjOTAxMzczOTFkOGNhOGZjY2ZhODdmYWRjYmJlNmI4ODYyYmZjN2Q2NjlmZmVkMzMyZjg0MTVhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        },
+        {
+          "resource": "repo://packages/shared/src/service-auth.ts#L88-L182",
+          "version": "repo-lines-v1:sha256:90475ad6cc142540c849d99a157aedb99178b8a4e84d6053c8b30be8e2afb0f5:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5ZTlmYWVjNWQ5NmY1ZTExNTJiZWZjMTRkYmY0YTA1MGYyNzRiMDIzZjNiZWIzZWUxMDVkNmQ2YmZlNjFmNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNjA2OWI5ZDMyMjcxOTk4OTZhMzNjNWU3YzQ5Y2NhYjM0OWJkYTVmY2U1YjRhMTgwNmU2MDg2NzhhZTM1YjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_76cd5b299c894b99ae49a2b56608a929",
+      "statement": "Sandbox routes authenticate with a Bearer token verified by a round-trip to the owning session Durable Object (/internal/verify-sandbox-token), which on success sets the sandbox principal; a failed verification is 401, an unreachable DO is 503, and on user-or-service-with-sandbox-fallback routes the sandbox token is tried only when the sig1 attempt failed with failedScheme none — a recognized-but-failed service credential is terminal, so a bot signature can never be exchanged for sandbox access.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/router.auth.test.ts#L43-L101",
+          "version": "repo-lines-v1:sha256:99ca6f9755998ffa1252af5ef145f13af77d7b2b4de778cc43ff7d85976ca1a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxZTJlMTZhYTk5YWJhMjk1NGI3NWFhOTY5MWZlMjI3NjNjMDliOTI4YTEzYmE5YzhhYTUxYzg0ZmZjYmI1NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhY2VjZDc3NjgzNzRhN2FjYWZmMDFkMWQ5Y2YzZWU4NTc0ODk3M2UwZGI5ZWQ5M2VmOWEzNjJjY2RlNWZmNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3NTY0MTY0YmY5NzcxNDY0ZWQzZTY1Zjk0NDY4YzVkOTBkMTg4ZjExZWE0ZDExOGQxMjBhMzVlZDkyZjAwMTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L160-L232",
+          "version": "repo-lines-v1:sha256:2e1aba045506a445359a06e6e1a40343aadc97b7adee55592105e11c6de4df04:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlODYxOTk2NmYyNzczMWFiMDk3M2E4Yzc4MzM0NjQwNWFjMzg4NmFmYTVjMTc5MjljYWU5ODQyNmI1NWY4ZTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L448-L483",
+          "version": "repo-lines-v1:sha256:dcecea6e91f7eb1c16257ee3e41f0dcd9b52010fd59bc5c5339c82a361286345:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiMzIwZGVmZDJmZmRlNTc1YWZlOWQ4MzkzNTI0MWEzNzI5M2EyY2QwYTVlYTYwOTY3ZmI1ODE4NGFlZmYwYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5ODQ5MjZmZDM4MDg5YjdkMjU3NWIyZDYwMzdjMWZiMGEzM2Q0YzVmZWQxYWE4NjJhODQ3MjQxMjk2ZmIzNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZjRkMjY3Y2JjYmYyZDQ4YTdiY2MzM2NlY2NkYjMwZDYxMGRlODgzZWI4NWZhNzE2MWFkYzY3ODc4YzI1ZTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/contracts.ts#L40-L40",
+          "version": "repo-lines-v1:sha256:e3d3aa8fef393c69387457651095d399e57bcc454384a06f26ac4e0273c27522:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTNkM2FhOGZlZjM5M2M2OTM4NzQ1NzY1MTA5NWQzOTllNTdiY2M0NTQzODRhMDZmMjZhYzRlMDI3M2MyNzUyMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTNkM2FhOGZlZjM5M2M2OTM4NzQ1NzY1MTA5NWQzOTllNTdiY2M0NTQzODRhMDZmMjZhYzRlMDI3M2MyNzUyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTM5ODJlODBlYzZkZDgzMmZiMjliM2I4ZjY3Y2E5ODQ1NTg3MTRhY2I4ZjZkNDI5NmQ5M2E3MmIzOGNkZTRmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjI1MDRjMDUwMzMzZTZiYjU2MmU2ODIwMWRkYjY0OWQzZDZiZTBhMzQwNjY2YTQ3ZjNmNGFmNDA4MWMwYTg0ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a49da47451f948fe8e255a79b4649006",
+      "statement": "POST /sessions/:id/ws-token derives the participant identity from the verified principal (rejecting caller-supplied identity and SCM token body fields), forwards to the DO's /internal/ws-token where the WsTokenHandler upserts the participant (coalescing client-sent SCM tokens against newer server-side refreshes) and rotates a 32-byte WebSocket token stored only as a hash; at subscribe time the DO re-hashes the presented token and enforces a 24-hour TTL, closing stale sockets with code 4001.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-ws-token.ts#L14-L59",
+          "version": "repo-lines-v1:sha256:73f66c26a4001086dd7711f40f23e32e6296a7b4d16f1bae3d9cc2a9639629d4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhYzE5NzJhMmZkMTk4NjRkMzNkZDlmNWMyZWE5NmJjZWQ0MTQxZDgxYmRjYzk1ODVmNDU3MTkyNTNmNDRiMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyZTZmY2RkNGQ3Mjc0ODdlOGI4ZDdhNDM3N2YwNjJjZDFiY2U1OTQ0NGQ2ZDczYWE4OGNhNTg0OGY5NGI0ZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4YjIxM2IzZWQ2MGUyOWY2MDQxYTI1ZDZhOTYyNTliNzkwODNkMWU4ZDZjNThlZmM1Nzc1MzY3NmI2MjI0NjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1ZTI2Y2Q5MjM2NmY2MGQ4ZWQ5MmQwMjM5ZjA3ZmVmNzRjYWMxNGFhNjlhZGRmOWMyY2MwZDExZWIwMGE0NjMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/connection-authenticator.ts#L24-L26",
+          "version": "repo-lines-v1:sha256:39c9553a84a0947866fa9deee206caa3e24152735bd2c0b679455081ea521f47:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWNjOTAxNTU5YjJjZTE1ODIzZmY3ODgwNDBhYTdmMmRiNGUyYmZkMGViMDFiZTQ2N2YwNDlmNTYzNjNiM2MyZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTk2MzZiYWU2YzA3NmNkZGNlZWNlN2EwNjkwMzdlM2ZmZTlmZGQ0YTg0NGQ5ZTVmZTFhMWNjNTRmNDMyNDY2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTRkNzVkM2YzMTg4ODQxY2U1MmE2YWM4MmJhZWMxZTY4OTU4NTU3NDMzZTc1ZjY1MjM5MjVmYzk3YmMyYWEzMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWZkODVlODQ5YzY1ZTg0MWU0NDgyY2M3NTdiNTExY2M0YThiYjA5MGU5NzQzOGVhNjhhMjI0NGVjOTY0MmQzYSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/http/handlers/ws-token.handler.ts#L32-L114",
+          "version": "repo-lines-v1:sha256:0f917024333d0798ae9dce543970836775863dffda6702e31d9f54a7b20347f1:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNTFkZWYxZDU3MjRiZGZmM2QzZWIwNDNiN2QyY2E3Mjc4NGRmMWU5OGI4MDYzMjdjYWU4MjRmNzIwZWUxZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ODg2OTJiODM1MTRjZTRjN2Q2NzVlMjY4MWY3ZTlhOGIwYWEyZWY3YWY2Njc0ZTUyYzY0MWY5ZGNlY2NjOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e158f898e1d4f719464b69874479d0c",
+      "statement": "Handler-authenticated webhook routes verify their own credentials: automation webhooks require a Bearer API key verified as a timing-safe SHA-256 hash (32-byte base64url key, rotatable via POST /automations/:id/regenerate-key) with a 64 KB payload cap; Sentry webhooks verify the sentry-hook-signature HMAC against the automation's AES-256-GCM-encrypted client secret with a 256 KB cap; image-build callbacks authenticate with single-use bearer tokens hashed under the dedicated IMAGE_CALLBACK_TOKEN_PEPPER and bound to the exact provider session id.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/webhook-key.ts",
+          "version": "repo-file-v1:sha256:63d8a22ba3f33d500e328819833d56e083bca8ec6d04cdfd6f0b840e1982f166"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L1277-L1297",
+          "version": "repo-lines-v1:sha256:55c3a30eb47e3215c672b7eb2b827f4d899f6f571fc015a9b9864bfe66de90d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZTkyNmVhYjVhZWQ5NWVkMTYzMTQ3MWQ2ODk5ZWFmOWNjZmI5MTdhZTVmOTgzYzhhOTQ3MWU2NmNkN2I1NWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlMTJiNjExODk0M2UzMGMwMDY4MzNlNzgxNjMwYTUzYjMyZjQxN2VmNWY5Nzk1YzNmMTJmMzMwODAyNGM1ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/automation-webhook.ts#L30-L94",
+          "version": "repo-lines-v1:sha256:31da1cff5d8e34786976683c1348f98992fea4ffaecd44ec49078a261eb02070:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZDc4NTQ0ZDA2YTZlNjgwOGIyN2Q1MzA5MDZhY2E5NWZjOTJkYzBkNTI1ZDMwNDU3Nzk5NDUyMjRiYTg5YTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkYWFlMzYyNDBiMGMzY2QzYzI1ZWY3YzdlYmU4OTRkNTE5ZWZhN2U5MjVhOTY5NzM4MTA3ZWU5MDJiYTE4YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_30808639fd39487889b66040445fd838",
+      "statement": "Internal normalized event endpoints (/internal/github-event, /internal/slack-event) accept only the matching bot's service principal per requireEventPoster, validate the normalized event envelope, and forward to the scheduler; the GitHub path additionally tracks PR lifecycle state in a BackgroundTasks submission whose failure never affects automation matching.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/identity-enforcement.ts#L265-L297",
+          "version": "repo-lines-v1:sha256:74100f42b49b1b424456b1a4d9d4f5bb684bad3b20178d7028e72e22a0243c85:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/automation-event.ts#L74-L124",
+          "version": "repo-lines-v1:sha256:8aa748c50bc33ac6d962c46a97380d8fe3fbf4cd10383c9f941f9772d434d6c2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViZTVhNmNlYmE2ZDgxN2FlMGM4ZWJmNDJkZDJjMTM4ZjMzMjI5NGRlYTZlNmNmZGFlOWUwM2IwNTllMTA2OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzMmVlY2Y3OTA0YjY0NWIzMWQ1Y2M4NWE5ODBjYmY0NDVhYWQ1ZGRhMjQxMThlYWZkYTE4MjlkNmE1MWUxYmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZjU5N2U5ODNkYmRjN2RjN2VkNGI2ZmM2ODcyZDM5ODkyNmM0ZTU3ZDY4YjU4MzViMmEwZWFkYjYyNjRjNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhY2UzZmFjZmUwNmRkZGZjYWJjYTE2ZjgwNGQ1MWMzNDI0ODEyZmVhOGVlYTg2NGRiMzM1NjI0MDNkZjA4MzIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/github.ts#L97-L131",
+          "version": "repo-lines-v1:sha256:b4f68a2fa378b1fcc1cb3abdc45a2aa4feae054da86d9c7f0bb067814a910001:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxMmJjMjg3NjAxYTQ1MWMxYWViMTU4NGQ0MTg2NzgxOTUxNjIzOTcyZTI1MmEyMzlkOGUxMmY4YmE4ZTljOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/slack.ts#L1-L16",
+          "version": "repo-lines-v1:sha256:02912d3eb8341fec006d32726298c4072da510d53f66a08f9e138a720acc6c71:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhMTk2ZjRiNGYxODdhN2FkNmQ3MTUyNjlhNTBlYmFiNDExN2I0MzY0OWZmYzhlNzExMmY3MzYwNTUyNzQzYjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51f52b69c5d24ff08099182fb5e06a13",
+      "statement": "Identity enforcement (applyIdentityEnforcement) closes the auth-to-authorization loop for identity-minting routes: participant identity is derived from the verified principal, forbidden body identity/SCM fields are rejected with 400, and session-create, ws-token, and automation-create fail closed with 403 when no user identity can be derived.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/identity-enforcement.ts#L23-L74",
+          "version": "repo-lines-v1:sha256:1d11b0b6fd73ef549a9a6c0813fdc126522f2eff1ad23784ba9d1e3305dd9562:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlOTVhZDMxM2M5MWRiZGMxNTA1MjVmNjZhMTRmZDMwNTFkMTE4MDZiMmIzNGNhOTViMGM4MGRkMjk5ZDQ2N2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4ZDI1NmRlYmM5YmJiNGEwMTA2M2Y3MDFhODgzOGUxNGZhZWQzMDZlM2QzMjkxZWQ5NDkwOGRjZDA5OTgwMDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlMWM0MmE4ZWRlYjgxNzZkNDRjMzE1YmIwOGVjZjcyNjIwNWU2YTk4NzE1MThiY2NlNzE4NDE3MWUzY2RhZWQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-create.ts#L47-L77",
+          "version": "repo-lines-v1:sha256:5bf36a72ee5715aea9ae30ba0f688309d9033a4c3c820ff2a6ced780e388c5d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhMjczNzRiNDU3YTE0YWZkY2U0NjRhYjVmMTAwN2FmM2VkMzVkZWUzOWMyNmVmMDI3M2EwN2E5YTMwNjRkNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmYWJmNmVjYzE4NGNiNGJiODg4MjRiMzQ1ZGI3ZjAyNTI1N2M2OGI1NDIxOTQzNjBlOTBlYzIwYmMwNjE3ZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiYzUwMTdjMGNmYzQ1ZTgwMWY3ODE0NjZmMDZhYWFmZTM0MDE0ZmMyZjc5YWNkYTY0YWMzMTdlNGYyZTRjMzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ad302f16c8c4f62927e7b78965367b0",
+      "statement": "The SqlDatabase port in db/sql-database.ts is the engine-neutral surface all stores use (prepare and batch); D1Database satisfies it structurally via a compile-time assertion so no runtime wrapper exists. The contract types cannot express: batch executes atomically in order with positionally 1:1 results, and meta.changes must carry real affected-row counts because ~38 call sites gate correctness (CAS conflicts, guarded transitions) on it. It is distinct from the session DO's synchronous SqlStorage, which is intentionally not covered.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/sql-database.ts#L54-L75",
+          "version": "repo-lines-v1:sha256:aa5d449d2cc0cb726b5029097aa0963dea710887773d78783482b94e6cc7d2b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1ZjkzMmUxM2MyNmM1YjY1NWEwMTJmMTBmYWU1YWE1MDZhNTBiZDE0OTFjNTM5MzZmZjRkNmE5MmE4YTFkMTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjYTQ3NzdmNTJjODJlZTU5ZTY2YzM1NzQ1MTY0YTA1MjBkOGVlY2ViNDEwMzk2NmIyYzdiMjFlYTQwYWU2YWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4a2ea4a01e484b1d9045067d77736827",
+      "statement": "The D1 layer keeps one store file per aggregate (session-index, automation-store, image-builds, environments, repo-metadata, repo-secrets, global-secrets, user-store, mcp-servers, skills, model-provider-accounts, etc.), each taking the SqlDatabase port in its constructor and mapping snake_case database rows to camelCase API types.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1-L6",
+          "version": "repo-lines-v1:sha256:830f9352fb439b9c41ac972013b68ec24de25123ff3ba7757d0f0d2fb417da3f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGEzMTAyZWIxMWZkODZhZDgxYjNhNTI4ZDZhMGJmZGRjNDExMjgyNGM2YTQ1NmUxYzkxMzBmNjYxZTcwNDFiYyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L65-L83",
+          "version": "repo-lines-v1:sha256:2add4c4b978e9068f0a0c96e3b769b902d6a5d975581529a030e9b8b73df1051:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMWM3ZDM2OTU4YzBkMWUwNDhiYTZlNmRjYmNjMWFmMzIxZDFkYjgyZTQwYWU4OTFhNTFkYmIwZDE4MWUzNmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1YjQwMDBjZDYzOTc0OTliOGVmY2FiMGU5NDIyNjc4ODI5ZmYxNjIwOTgzMDViNmEyYjBkZDI2MDNlMjk5YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2MjM5NGM2Zjg5NzgwZmZiYTU1YWRlMWE1YWI1ZTMwNWExYTNmN2E1ZDFjNDZmMWM4ZTY5NjA2YWUxZWQyMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmMmNmY2RiOWQ1OWYxNjcxZDBkNTEyOTI1ODQ3M2YyZmU2MzM4NGQwNTBjOTVkOWMyOWQ0MWNhYjM4NjYyNjQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/skills.ts#L1-L12",
+          "version": "repo-lines-v1:sha256:33d2f97ac6be32ab0012b9a5beacbfc2fd58b77f7b650ce362c726706be20e32:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MjAwOTY0YTk3ODYzNTUyMmIyYWIwOTBjNjUwNjVkOGVmOGU4NWM0NzMwYmIyZWIwNDYwZDM0YzY3N2RkYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3MTczMTRmMWIzMDgwYzIwYzcwNjMyN2FlYzAyYzMxNGMxY2QxYTgwNzk1NjkwODI5ZjIwODdlZmU3M2E2M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxY2VmNDQyN2VmYzhkYmRkOWU4YmQ0ZmI4Y2RiNjQ5NTcwNDFjYzg2YzdiNGU0MmI2YTMyYmVkZWRlM2Q3YzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6ce49fc2df694b678ec2f80aca2bcf66",
+      "statement": "instrumentD1 wraps the SqlDatabase port so every query records wall-clock time plus engine metadata (server duration, rows read/written) into the per-request RequestMetrics; batch unwraps instrumented statements via the ORIGINAL_STMT symbol before delegating, and summarize() flattens the collector into d1_query_count, d1_total_ms, d1_server_total_ms, d1_rows_read/d1_rows_written plus named spans, spread into the http.request wide event. Stores receive the instrumented handle transparently with no store changes.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/instrumented-d1.ts#L159-L199",
+          "version": "repo-lines-v1:sha256:ca94d6ab87bb5be9fb7968559dc96e3d39d7f2c6d98006f26244cf9711caa1cd:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YmEyYjU5OTY3MzJlNzEzOTBkM2UwY2M1YjliZmRmZTU4YWUzZDZkMzgzY2VhYTMyNzRiMzc1OTY1NWRlYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyNWU0OTUxNzk2NDcxYzQ4YzM1Yzk2MGQ0NWI3MGZhZGQwOTE1YTQ2NDRlOWRkMDQxMzBmMjlmMWJhOGE3OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/instrumented-d1.ts#L76-L92",
+          "version": "repo-lines-v1:sha256:a313095a4ad5f9de5486bbf969b19f086766b4a45b0aa3f34f9578396655ebef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiOGJhMGQwMDRjZTE4ZDkwOTU2ZDlkZTA4MWY3MjA2MWNjZTljYmMyOTM5MzUxYTY1Nzc3Mjc0NTU4ZjIxNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3MWZhOTJjNTJmYzA4Y2UwZDMyM2VhNmI4ODk4YzcyMWJhNzg4ODQ5ZWJiYzg2MjljYTE3M2ViYmU0MTZiNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2MGI2OGM2MjRkZDAwZmQxYzA2M2Y3Y2E4OTRmOTNkNDMwZGQ1MjNjYTYxZDA1M2M2ZmNlMDU5OWExMDlmMDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3ae1f40644e4b09b56fe4ce8755468c",
+      "statement": "env.DB is read exactly once per composition root — the router's request path, the SessionDO constructor, and the scheduled/queue handlers in index.ts — with every other consumer taking the injected SqlDatabase (ctx.db, this.db, or a constructor parameter); an ESLint no-restricted-syntax rule bans .DB member reads in control-plane source, and each composition root carries an inline eslint-disable with justification. In SessionDO, this.db (D1) is deliberately distinct from this.sql (DO-embedded SQLite).",
+      "evidence": [
+        {
+          "resource": "repo://eslint.config.js#L131-L151",
+          "version": "repo-lines-v1:sha256:b820b663940bf08c019747e1c40c1a9637d07c83799e564dfec7327dd375f6d6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MWM2NTVmNDBjNGIyYmFiYjFmOGMyODA2OGQwNjhhMWQyYjdjNDcxN2M1MjJhNWJlNjA3NmQ5OWY0YzFkZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjgxYTFjMWE1N2EzNjdmZDcwMzBkZGE3ZGIzNzMxYTMwMGE1ZjkwMDJlNmZkZTQ5MjJjNDg1NzllMTY4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxNjQzMWIwMjIyMDVlODk2YmVhYWExZWZjM2E0ZGFiNDlhYzMyMjFlM2EyZDkwYWVhN2EwZWIyOTdmZTQ0YmMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L53-L79",
+          "version": "repo-lines-v1:sha256:ae8bea04bef4b308b480c3e31ec5845df408ad309a3665f220e50472fa0c8b59:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ZWQxNzc4OGU3ZjE1YmU1NTlmODg1NjM4NDJkYWY4NGU0MDVjY2I3N2VkZmQ4ZjU4ZDJjNmQ5MGFkMmEwOTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGNhOTljYTMzODFiYWMyMDk5YTlkM2Q3NGUwOTk3Y2M4NTgxNTE2Y2MzZjcyNDljNDA1YjZkMGI5NTRiMzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMWE5NDJhMWVhNzg5OGJhZWQxYjRiMWNiYzdkYmNhMjVhZmRiMjYwZGU1NmZiYjAxMTRjODk1YjQyZTBiYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlMTk5ZDFkZDFhMzVhYzMwMzUwYzg4NDExZGQ2NWU3Y2JhNjExNzBkNGQ2NzJkNzMxZTNkZDA4NzFmMTAyOGQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/router.ts#L386-L415",
+          "version": "repo-lines-v1:sha256:48775354955a7e0bdc7aa76fbd59957f26c4ad22bb387321fa96e24c38bc8e60:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNWM3M2ZjNDNlMjY1N2QwYjdmNWE1MGZiZmZjZDBhOGM1Njc5M2RlYTIyNGFiZWU0NzZhZGVkNjhiNzVkNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDVmYmIxODJkMDc4YTg2OTEyYjA0MWQ1YmJhNTM4NDExYjc0ZWY3Y2Y5NzNlODYyMTE5NmVhYjNiZWE4ZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwMjg5NmU0NzlkMDI5M2M0MTE2YzZhYzRjNWU1OTVlYWU4MTdiYmYxNTI1MzcwMDNhZDUyYTAxNjY4ZjhkNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3ODYzNWU3ODA0NjMzZTE2MjhkYjgzNjhkMzcxMDBhMDhmMDI1NWVmMGIzZjdkNTYxODhiZjQ1YzJiM2M1ZmYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L17-L32",
+          "version": "repo-lines-v1:sha256:6d811252b9cacba8dc5f2b046682156a64bae87177c677da6a04c20705b46151:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMDM2MzA1MTAwMDljYWI5MmQzZTRiYTQ1NjZkOTNhODAyMDg3NmI0Y2ZlOWE2Y2YyODYwNzMzMzYyYTQyZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzMjhlMGExMjAzMGY0OTViYmNhZTJiNjk2NjIwOGZhNDg0MGUwZTAwN2RhMTFlZDZjNmIyZDcwOTE5NzRkMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5MzIxNDE4OWUwZTEyNDMzMTE5NWZmMzA5NWJmYzc0NDAyYmE2N2UyMTE3NTI5NzJiZDU1MTVlN2I5YmM3ZTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9c92589e02694013b1109baa2567025f",
+      "statement": "BackgroundTasks (platform-ports.ts) is the ctx.waitUntil seam for deferring work past the current request; the Cloudflare adapter invokes the task factory synchronously inside submit, absorbs a synchronous factory throw exactly like a later rejection (building a task can never fail the caller), and logs failures as background_task.failed. A contract-faithful test double mirrors the production boundary so collaborator tests exercise the same contract.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/background-tasks.test-support.ts#L22-L55",
+          "version": "repo-lines-v1:sha256:64255f5096bdb6c00d93bffe9bd826b4372294299d4c3e96f4557127b962469e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5YjkwZDY5MzExNmY4ODlkNmQzZGRhMzU1NWRiNDMwZDU2M2UzYmM2MGVkZmFmNDU2MTAwYmUyNGM2ODliNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/cloudflare/background-tasks.ts#L8-L30",
+          "version": "repo-lines-v1:sha256:5784cc8c6ea82ea84633141ae1921bc7b08e682419e112b0b9ce5413dd0055e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzNTFiM2IwOTFjOTBiNzdiYWJhNDlmZTIzNDRhN2QzZTI5NjQyOWU3YjgyYjhmMmJiNjJiZWU2NTI3YTBkNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2YjU1MjAxZDkxZjZiZWY0NTkyMjJhMjFhMmI2OTBjNWVhZDE4YWZjOGFiYmY4OTFhNWZkYzQyY2JiMWRhYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/platform-ports.ts#L5-L17",
+          "version": "repo-lines-v1:sha256:44c2479453d37a600daa6161086d5bd6694f025f198c06d05d0cc55cc529a52d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0ZDIxMjU0ODZlNmNiYmQyZjgxNGM1OTVmNDcxNDgzY2MwMGEwZTU0ZjhkOWFhMTY0ZWQ3Y2I4MWJmNmIwNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwNTk4M2QwNjE5NGY4YmFkM2VjOWUzY2U5ZWNiNzQzNjkyZDQyYzg5NmU0MzhiN2U2ZjhkZTE0MzU1MjUwMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzOTI1ZDdjYzA4MzNlYmU3NWM0MTNkNjg4Njg2OWQ2NzEzNGI2YmZjOWRjZjExYjA1MzNkMDhmNWNiOGFkZGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d48f99034fda4556a39faa3e06a75392",
+      "statement": "BackgroundTasks callers include the PR-lifecycle tracker on GitHub webhooks (best-effort, additive to automation matching) and the image-build save hooks, which submit a detached best-effort trigger so a build-trigger failure never fails the CRUD operation that invoked it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/save-hooks.ts#L28-L63",
+          "version": "repo-lines-v1:sha256:a271cc60e82711ed33cb51bbd5144ed0375dda8dcfd1d1de9bd0b3d5b99f5bc7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNmJhNzUzNzQ0MTU2NGY3NmFlNmQxODA2MmFhYzU3NmNkZDJkNDAwYjczODdkMjIzYjEyNGYwYjUxMjEzYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3YTljOGNlNjc2YmZlNDhkZTE0OTY1YmNmZWRkMzBkMTg4Zjk3MjE4ZWY5NWNkYjM5YzVmZDBhNTQ5NmE3ZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyY2FkMmQ1YWQ2OTZkYjUxMDkyZWI2YTc4Mjc5MGNmZWNiNTc2Y2NiNmMzOTQzMjg1MTMyMWU3MzQxNTdlYjYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/webhooks/github.ts#L34-L95",
+          "version": "repo-lines-v1:sha256:9fdecd3e8181f370cc456ad1ff0d6190dc31450bbeb46013528168c94a00143c:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NDVhMDYxODExY2Q5NmY4YmMwMTQ1N2M4MDI1Yjk0ZjRjZTIyNjBiMDBhNThiNDNiYzM4ZWRhMWZmYjUwYzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlYWM5YTE0OTAxZWZlNDExYzhjMzFiZTY5ODhmODA4MTZjYTcwZDY3YTE5ZWJmMWExOGFiMTk3MDdhNTAxNjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhOGYzMGJmOTIwYzdlYzQxOTFjZjNkMDNhNWUwMDEwMTdjZjdlMzM3NzUzYjUyODdiOWE0M2UxMWNlYWNiYWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_781f0925acb1468f8c2647302691c283",
+      "statement": "The worker's scheduled handler recognizes exactly three crons — the every-minute automation tick (* * * * *), the image-build scheduler (7,37 * * * *), and the abandoned-draft sweep (23 * * * *) — logging unknown triggers and doing nothing; Terraform registers exactly these three schedules and its configuration comment requires them to match the code constants IMAGE_BUILD_SCHEDULER_CRON and ABANDONED_DRAFT_SWEEP_CRON.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L52-L80",
+          "version": "repo-lines-v1:sha256:0f487175eabcdfddfad239dfab67d2dd21c62dea8ea217bc40578f76f261b865:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MDBhZDk2OTEwOTk0YTY2NmU0NzkxNWJlM2RkMjA4OWM2ZTQ3NDNmMzUyOGYxOGZlZmU0ZmMyYTc4ODY0NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4MzUyMWFhNzI2ZDcxNzIxNzBlNzY1NDJiZTQ1MGU1NmM1YmIwOWI0M2RjOGY0MzBjYTVhZjBhMGU0YzczNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYTYwMzA1OGJhYTQ5NDczMTI4YzRkMDU5ZDY1Y2RkNjkzYmRmNWQ3MWExOTY2NTJhOTZjZTI4MzUxYWM3MjEifQ"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L228-L230",
+          "version": "repo-lines-v1:sha256:07700233e249e40f3a5229f88c79bcf2fd4a28a2296a5557d85b18d2521f0690:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWE3NmE0YjJhMTM5NjEyYjk4YzM4MmMxNGJmYTE2OGY2ZTc0MDE1ZmRiMDhkYmFiMWY3ZWExMGU5M2Y4OGQxYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmM4NzhkNDc4NTMwNWZjMGNkYjU5NDU4MWMzMWVlMmU5OTY2NWIwNDZkMzM5N2VhZTdlMTQyNTBmNmYxOTE3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjIzMjk2YzFiOGUyY2IzZDcyYjdiYjI5ODA1MDg3NTk0NTdlMmI2MTJkZTVlYjZiNjc0MWFjNjUyMDY0YzExZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ1ZmYzZjhlOTU4MzdkYTYyOWY1NTQxYmFiNWZjOTdkYTdlYTEzNDJmZjcwMmU3ZDVkZDcwYTQzNzY1NzMyZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_358bac2fabbc478394bc55d3ebafd9e8",
+      "statement": "The Scheduler is the request-driven automation engine invoked by the tick, automation routes, and SessionDO completion callbacks. Each tick first runs the recovery sweep, then processes up to MAX_PER_TICK (25) overdue automations through startInvocation, bounded by a per-tick child-launch budget of 50 subrequest-costly launches (whole automations deferred to the next tick when the budget would overflow) and a launch concurrency of 4 to smooth sandbox cold starts.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1-L10",
+          "version": "repo-lines-v1:sha256:7dbe49c0d5161f2e407ae674ce988d3d104959cfe826dd856311a07a37b7daf2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxZGFjMmJkMjkxNDExYjhlMjAyMWY1MmVkNzZkNjFlNTk0Y2U5MGYxZjJjMGNhZjIwY2ExMzY5OTBkZmY1NDIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L604-L693",
+          "version": "repo-lines-v1:sha256:15382a20d9495ff76b0904f73a7fd405572e12572f71368842220304fb4940ee:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlYTI3YmM2MzQ2Mzk4ZmM4YjMyOGEwNTgwZmEzZjExMGM4YWNlZjczOTFmZTQ5ZDJjMzZiYzZhNTdhNjg2YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiNzU2MDczZDQ4NDNlZjAwZTc5YjQ3ZDBkZDU4ZTdkYzNmMDJiZjJhMmIwZTM2MDgxNWY4N2ZiMDIwMjkwNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMTJjY2RkMGY1NzE3YmIwYjc0NmI2YzM0ZmM0ODljOWRmOTcyMGY5ZDFkNzA4NWUwZDA1ODQxMDczMTJkN2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7393d400eccd47ff806d4cc457f336f3",
+      "statement": "The tick's recovery sweep bulk-fails orphaned starting runs (no session claimed within 5 minutes) and timed-out running runs (EXECUTION_TIMEOUT_MS, default 90 minutes), then applies per-invocation failure accounting; a finalization sweep re-applies missed failure strikes and streak resets for invocations in the last 24 hours — covering the crash window between a child's terminal update and its callback — through the same CAS-guarded, idempotent helper as live callbacks.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L697-L853",
+          "version": "repo-lines-v1:sha256:bae2e7fee71c98714ef7437c7a44ecdd6846489b1ae6e2a0bc151d4af6fd4151:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2M2EzNTliNDE1ZDYxMDNlOTYzMzM0MGMwMDIyMjVlZTVmOTI5YmYwNTkxODA4MDVmMjg4YzZjNDRjNWVkN2ZlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1YzEyY2NkZDBmNTcxN2JiMGI3NDZiNmMzNGZjNDg5YzlkZjk3MjBmOWQxZDcwODVlMGQwNTg0MTA3MzEyZDdiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2ZjQyYjdkNTA3ZWYwN2M1OTViOWJiYWIzYzZjNmM2MTRmM2Y0YjE3NzllMzgxZDFlYjU3YTQxNmIxNmI4OWI4In0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L93-L110",
+          "version": "repo-lines-v1:sha256:c06fb16478e6ff5dc93d5903c6b9f517ffe8f50f9170d33797ed64cef3daeb48:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZWI5YWE1MjAxMDIyYTk0MDkzODRmZGRkZWQ2NzY4YjQzN2RmYmM4YjRhNDc4Mzc2YzAzODk5MjJhNThlNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NTgwNjA1M2IyNDkwMmRkZDIxZDcwYjhiNGU1MmQzYmJiZmE0ZDIyMWI1NmJkOTg4ZDQ1ZTAyOGVlOTU2NzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMGQ0NWQzNmNhOGI3Nzk4YTQ0ZGE0OGE5YTM0ZmJlNjg3MzhkZjRkN2Y4ZTdjZGJhMDY0NzhlM2I5NjcxOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmZGVkMmZlNzllYmZhMjBlOTRhZjM5NTBhZmU0NWMyMTlhODg2N2M4Zjg5NmNjM2RkOTcwNmY2NDdkZTA2MzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a920150e866045f99771658ca736c14f",
+      "statement": "startInvocation is the single firing pipeline behind tick, manual trigger, and events: overlap scoping is automation-wide for schedule/manual firings but per concurrency_key for events (so PR #42 and #43 don't serialize); the guarded atomic batch insert of invocation plus children includes the schedule advance; a UNIQUE collision (cron double-fire, event replay) re-advances the schedule monotonically and stands down as deduplicated; manual overlap records nothing and surfaces as AutomationTriggerBlockedError mapped to 409. Each firing records one invocation that fans out into one child run per target (repository or environment; no targets means one repo-less child), with failing repository resolution pre-failing its child without blocking siblings and provider auth/targets snapshotted before admission so later edits never rewrite in-flight history.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L1145-L1184",
+          "version": "repo-lines-v1:sha256:e1063b982ebf4eb1678075da81cb5a8ec6e00691bf2e3e25fe41ad3fab82f029:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1ZDM3MGI5ZTU3MTUyYjE2MjNmYjNmYTUyMGU4MDY3NDM1NzNlMWVkNmI3NTkxMzhmNzE2ZmUxODA4MmJhOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1NzMyNWY1ZGQ2NTkzNDQ3ODRhY2MyNmZkN2VhNzJlZTEwNTU3NzhkYjhiNGYwMTA4Y2Q3Yzk0YjRjYzhjMWYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L305-L462",
+          "version": "repo-lines-v1:sha256:c10005e536da3a9109caa01b9bc433608d2721427b9dc6dd70f1cf7d83e6a05c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1YWIxOTAyMzMyY2QxMDUwNDk2NTY3NDAzOGMxN2RlMDMyMjU4NDI3NTc0NzdmNzhiMzkwOGNmMTJhZDIyYjg3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhNDdmODI3ZTVjZDA4ZjBiODA3NzgwZDM2MmUwZmZhNTkxNGIwODdiN2Y5MDRjMDZiZjYzNzA3MjE2NDNkNmQ0IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5N2Q4NjMyZTU0ZTkyOThhYmI5NTg3MjdlMmQ1MTQwOGFiYWYxMzY2MDM1Mzc5MTAxNDBhYmY2NWIzMGFiNjEzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhOWY4N2I3YTBmYTczZmM5ZTNlZjE4YTVlNmU2N2FkMGZkNGVmNDE1MzAyZDIwZjBkMWJkZGZlNmJjYTkxNDBkIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_6ebadff62d55498d9ca815674c7e797b",
+      "statement": "An automation invocation's status is derived, never stored: DERIVED_INVOCATION_STATUS_SQL in automation-store.ts is the single SQL definition (with a TS twin the integration tests keep in lockstep) mapping child-run aggregates to skipped, starting, running, completed, failed, or partial_failed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L243-L294",
+          "version": "repo-lines-v1:sha256:021aa756f24877c8db311024f262148ce5485d76a01a4b64f6245c1b80fcc50b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNzY0OWY1OWEwNmUxOTU4NjJlYzJmMDdhYTk5MTQwZWY4ZTc1ODVlMjQ5NDliZDdhNGU4MThkMTc4ODgxODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5MjVjODdmOWUwZGM4MGYyNGQ4YzAyYjA2YzY2OGEyNWZhY2Q1NTQxZGRlMGExYWNmNzc3MzU1YzQ3NTM5ZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a55488d87b424c00a39afb2e8947a007",
+      "statement": "The automation consecutive-failure counter is incremented at most once per invocation — the failure_counted_at compare-and-set admits a single winner across concurrent callbacks, launch failures, and sweeps — and three consecutive failures auto-pause the automation (scheduler.auto_pause); a fully-completed invocation resets the streak. Pre-failed and launch-failed children apply the strike immediately, which is also the born-terminal path that finalizes an invocation whose every child failed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L262-L303",
+          "version": "repo-lines-v1:sha256:1ea39c8ceedeb3e607e3a84bb2a19e27e0171f4feeeb637c3c91e3f7945dac16:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZjJiNGEyZTAxNjVkMWNhYjhhOTZmODUwNzU5NWM1YmJmZWZhMjNhNjAzMDEwY2E5NTc1NzZkMDEyYmNjNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjYTg2NDNhZjc5ZWFhZjQ1MjZmNzc2ZWFiYzAzYzYzNzU4ZmJlMjllNmYyOTMwZDg2NDMyMWNjZGI0Yjg5MzEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L543-L552",
+          "version": "repo-lines-v1:sha256:8407288f06c717b5fda296d1d0a7ff4e953380911865d49beec549f3c48217c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTVkYTkyOGFjZGY4Yzg0ZmFhNzQwY2YzMWViOTRjNmIwNDU0OTAxNTdkMmFmOTdhOWQyZDdmYWVkZjRlOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NTAxMjg4ODIwMGRiNDNkMzcwMjBhZjVlMWU0YjBhMWI4NzAzZWUzZmQ2YzViNTAxY2NlYWU0OWYyYTA4NDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiZmU0NzZiMGY4NmRjNzdhYzM3ODE1NDU2YjQ4NWRkYzgyZmM4YmRhODBkZDNmZjNhMjM1MWY2ZTAyNWNhY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzMzNiM2M3NDcwZDcxZWQ3ZWE5N2Q1ODY5ZDk0MTYxNDA2ZjU3MTBiNzgzZWIzZmZlZWYxNDM3ZmJjZTYxZDEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L99-L100",
+          "version": "repo-lines-v1:sha256:8e77c34be0536ad0267b4b748a71159c11ca18fa78273634ce7705c852a0e496:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIwYzcyNWRlNDc4MDI2ZjYzM2UzODc1N2I0OWQxOGNkZmJhYjkzZTRhMWZkMjNhYjY2OGM3ODdiZTc5MDQ3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMzZTAzMDEwZmU0MDdmNmYxY2VhNDUxYjUwYmM0Zjg2ZTMxNWVlOGQ5YmYzZTk5ZjVjYzMyNjA0YjNjZDdjMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmExYjg5ODExMGRiYjg1NTI2ZWY4YTVmNzA4YmZhYWI0NTNhNWQ2YmM2YzE0ZmY2YWRmZmIyMmNmZGYyOWM3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDA3ODQ2YmU5ZmRhMTE1Zjk2ZGE1YzAzMjY4NjRlNmNjMzgyNzYyNGRlOWIzYjkxNDhmODhmMDMwZjFmNWIzMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2416b87fe82b41649c2cd487d59f1a0b",
+      "statement": "The Scheduler.runComplete callback from SessionDO transitions only an active run to terminal via a SQL guard, so a late callback after recovery-sweep failure or a racing duplicate is acknowledged as ignored — a terminal child never transitions twice; Slack-triggered runs additionally post completion to the triggering thread through the SLACK_BOT service binding, signed with the destination bot's own per-service secret (callback-signing.ts).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1065-L1143",
+          "version": "repo-lines-v1:sha256:80679d28647ef4fe40b1fb64e28fc87fbc2ba5588c522398e8f7b502636f1f4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3OTA3N2YwOTc2NzQyMDMzZTlkZDBmM2U1NDcxOWYxY2EwYTc5NTY0ZTIwNWJhZTdhZTc5NGFhMTZjM2ZlZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NDhkYjQ5YTkzMDA3ZGY3NTJlOTk5Yjg5MjU0ZjUxNzIwNTJlYzZlNWE1ZjY2NzIwZGE4ODBmZDMxNDg4ZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjN2JkM2FmYzdlZGIwZDljODBjZjk1YmU2Yzg5ZDE4NzA1YzYwNzkzZTE3OTk5ZDRmNGJmNTYzZmI4NTM3ZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_904a9f26876d4ee2a02019d0e5f11ffc",
+      "statement": "runImageBuildScheduler (twice hourly) assembles the provider-neutral ImageBuildScheduler and runs each phase independently so one failure cannot skip the rest: republish recoverable finalizations to the Queue, mark stale building rows failed after the maximum provider-session lifetime plus dispatch grace, cleanup terminal builds' provider sessions at bounded concurrency, reconcile scopes (only when an image provider from SANDBOX_PROVIDER among modal/vercel/opencomputer/e2b and a source-control provider are configured, evaluating the rebuild policy and confirming branch drift with head lookups before triggerBuildWithTarget), and reap failed/superseded artifacts best-effort with a stats line logged per tick.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/provider-policy.ts#L12-L30",
+          "version": "repo-lines-v1:sha256:b784559bb1d3d8a6a174e435c3236eab94cfa3891815982be055b83231066bc3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxNTRmOWIyMmE2NjY1YjUwOGQ2YzRhYjM4NTA0MzQwODdjOGY1MDA5NGZlYTRlODdiNmQ1MmE5NzM0Mzk5YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2Nzg0YmY2MjM4YThiNWI5ZTIzZWNmY2Y3YzAyNWE5OTk2ZGVjNjJlNDEwMjMyNTlkYWQ2OTkxM2ExMGQ0MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjZGUzNWM5ODg0NGEzMmVhNzAzYWJiZWUyZWRiMDQwNDlmY2IzZjJjM2RjZjVhY2NkMTBkYTJhNzJhMGQ2ZjcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/scheduler.ts#L255-L281",
+          "version": "repo-lines-v1:sha256:386f09d66579407752076b16a2d7abd4e88a5c7db7f5c2b20569550f7700e8e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJkNWU0YTZkYzQ4Njk2YjAwMTcyM2UyMDljODRhODNlMjc5OGNiNDgxZWU4YzJiNWZjODU3MWRiODkwOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/scheduler.ts#L61-L135",
+          "version": "repo-lines-v1:sha256:f56f1c1cb1e485bc4ded5e81210eea54eba4f63bae5f15b4b8c4810efa59238e:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNDAzZjRmNGVkNGIwNDBhZTVlNWM4N2VhZTQ5NTQ3YzQ5YzgzMmUxOGE3NDNhYzdlMzM3NjE1MDBmYTUwZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODUzZDk1MGYxZDRjNWY3NzYxYTBhZWRlODFhZTNiNGQ0MWRhYjc5NjM0NmNmODBlYTE3ZTY4ZDBlNzZmOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkN2VjNjQ0ZWFhYjY4YTA4ODE5YjNjNmFhMDA3NzQwZjM1ZWYwM2IyMTRhODg5YjAzMGZhMzE1NjI3OWI5YzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_605129a22c0d4ea8bf08e22fdd207347",
+      "statement": "Stale-build detection is sized at the longest provider-session lifetime (build timeout plus the 10-minute finalization grace) plus a 5-minute dispatch grace, measured from row registration, so a long-but-live build is never reaped; the blast radius of misclassification is only a redundant rebuild because the status = 'building' completion guards reject a misclassified build's late callback.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/maintenance.ts#L9-L21",
+          "version": "repo-lines-v1:sha256:20e6302369939ba44df329a528952f36869c2792fa26528e6557c249a7a2d00d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyMDI4ZGQ3Y2JhYTI2ZDE1YzlhODY2ODM0OGIzZWMwOTg3N2I5YzRhMDhjZWVkNjk2OGIwYmQ1NjAzYWYxZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmYzhlNTg3MWJiMDJkOTYzMTRkMTljZTExNmIyYzg3N2VhZTJkYWUwOWRjNWU1ZDQ0MThkZDhjYWZiZjMwZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/scheduler.ts#L14-L15",
+          "version": "repo-lines-v1:sha256:fbf54ec60b1aa143b8e76549cd3b6010a2ac519a0820ebfe4947f07b829e7772:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGFjNTI4NGY0NDI3NjI4YjBlZjhhYzg1OTM4OWUxNzk2Yzk0ZjdhOTgzODMzMTFlN2ZmMmUxZTY2MTRmNGFkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjIzZDdhZjI5YTUxMjEzYTM0ODk4MDNiY2ZiYTE5OWI5OWEzMWZlMDc4ODY0Mzg1MWJmMTIzNTg3Y2UxMWZlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg0MjhjOWExN2NlMGIxZGJiMDhjODZkYmVmZGYwZjUyNDhmZWRiNzg1YzgzN2EyNDI5M2VjNGMxMzVjNDk3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWY1NDBkYjc1ZDNjNzkxM2RlNjU0YjY5Mzc0YzY1NmQ1NzFkODMxZDA1M2VmNzE4NzIwNjA0ZWNkMzAwM2EyYiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/timeouts.ts#L5-L13",
+          "version": "repo-lines-v1:sha256:d2fea40383782218794a3ec812fb9632f3e1fdf78dbabe2c2ccf000ec774bc7a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RlMWJhY2VlY2MxMjM2YWQ5OWQxNmVlZGU0NzA0MDA2ZDE4NGZjOWIwN2ZlM2YzZmVmM2Q3NGEzMDcwNmMzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc4ZTkwZjYwZWYxZWE3YzM2MDg3ZmFiZDkyNTFjODQ5MWM0ZTc2ZDA2MDViZmUxODIyNmRmOTEzNGE4YjllNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGNhOGI5MjNhODAyMDM2ZDJiOTEyOTU2ODYxYTkyZWYwMjhkMThjODMyYjkxYzlhYWZlMTI1YWZhNWY4OWVmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzU1MjYwMjk2OGZjYmJhODIxMWRiMDdhMTU1Nzc3MzQzZWQyMzdhMjI5ZjljZGE4YThkYTc1Y2IwMGIwNzBhZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e90f2db76584d9991b44e7a137a314d",
+      "statement": "The abandoned-draft sweep (hourly at :23, deliberately offset from the image-build cron and on its own cron because retention is measured in hours) retires warm sessions that were never prompted: it lists up to 50 candidates oldest-first from the D1 index and asks each session DO (/internal/expire-draft, 10-second timeout) to re-check the invariant and transition, reporting archived, not_draft (stale index repaired), has_work (a prompt that never dispatched), or missing (404; index row retired); the 8-hour TTL outlasts a long pause at the keyboard because a stopped sandbox respawns on the next prompt while an archived session would reject it, and errors are counted rather than thrown so a stalled session cannot hold the sweep.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/abandoned-draft-sweep.ts#L1-L78",
+          "version": "repo-lines-v1:sha256:af6222665c795185427e1f3fae64a548132c7239477e0638ba05148abc041271:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkOTc5YTE1NDE0OWM5OTBlZjA5ZWQxMTNiODFhMTY2YTE5YWQyOTM1OGQyZmQ2YTU2NDI4NjhjMDdhNWJlODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyYjc5M2I0ZTYwYzFlOThlNDcyM2Q1YzUwODM4Y2RmNGE3MTg3MmIwMjQzYzFhZDI1NDRlZTM2MDAyYjU2OTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_038ec76f514f4e48aa29fd6e9328f5c3",
+      "statement": "All image-build trigger sources converge on ImageBuildWorkflow.triggerBuild / triggerBuildWithTarget / triggerBuildIfStale (cron, save hooks, manual routes), which enforces the per-scope concurrency-1 rule in one place; saving a scope's owning entity kicks a detached best-effort build, while changing its secrets synchronously invalidates live images before the response so rotated values can't keep serving from a stale image.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/workflow.ts#L135-L159",
+          "version": "repo-lines-v1:sha256:dba106630108aff5541a489aa7fe7b578bf7585651f9e4306e1e159926341d8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0NDRjMGJiMzQxYWEwZTg2NTAzMWQyZGU0YzczZTBhZTVkZWM4ZWY4YzVjN2I0YzdlZmMzYzRkODdjY2E0YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMWU1NzAwMzI3N2VlZTY1MWNiNDVmMDZjYjYwNDlkNDU4YWMxNDgzMzVmNDQ1Njc2Y2ZjZmVlMjUyNGJkMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhZTdlZGE3MDgyOTI1NTUyZDU4NGFhZWFmYzk4OGM3ODdkODhjNThmNTZiY2Y1ZjhlYmY3MjE2YWMwNzlkZDMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/workflow.ts#L86-L128",
+          "version": "repo-lines-v1:sha256:eb4834a3812a8cef87d09e79fd363d6f82abd8faafde2e708a25a05ac2cfc7f2:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5Zjc1Mjg2NjBiNjdlNjI2MDc3ZmQzMWY4ZDgwOTQ0ODUzNWFkYzNjNGJkODY1YzllNDY4NjZjOWIxOWExZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhZTdiYjQ3ODAwZTU0ZjI0MjA1NmEwYzU5NDQxMmJlMWY1NmUwODkxZDJkYTliMDc3OTNiMjRmYTQ5MzQyODcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_57ae4cf81b894c4b807735733434c916",
+      "statement": "Every image-build callback authenticates with the single-use bearer token minted at trigger time — only its HMAC hash (under IMAGE_CALLBACK_TOKEN_PEPPER) is stored, bound to the exact provider session id — and the completion or failure is accepted atomically in D1 (a build not accepting the transition yields a 409 mapped error) before publishing a secret-free, versioned Queue command ({version: 1, buildId, completionHash}); the completion hash canonicalizes the accepted payload so the Queue never carries tokens or credentials and stale replays are rejected.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/README.md#L170-L181",
+          "version": "repo-lines-v1:sha256:e4b9f50917892d052c71e1d3cb6bdd86675aac5d9a5a6c08314b9a79ee9e7344:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyMmIxYmMwM2ZjZDYxMWQ2MDRjYTQ5ZGQ1MmFjMjMxNmRiMzUwZGM0Njg0Mzc0NjZmYzMzNTZhZGJlYzQxODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlZmZkNGU2YzYxMjBiYTBiNDA4NmI0MTYyZmM5NWYwZWQ4MDVmM2RmMWJjMzVkYTFjNDNkNzM1YzEwZWNhYTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/callback-auth.ts#L1-L58",
+          "version": "repo-lines-v1:sha256:2a78e00417bf8a7b3c559ca332eb400a508147eb00fadd89d9587416ac35a487:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyNjAzOWRjYTM4N2Q3YzQ1MjIxYWRlNjg4NDEyYTQzYWIyY2UyMTg5NzU2NTFiYTcyNzQ3NjgwNGYwOTgwYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/finalization-job.ts#L1-L84",
+          "version": "repo-lines-v1:sha256:e5c3613cb7b9c87098cdc81798cc11de3ebc2b769b426384f1f880cdbc17aadb:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNDUyODY0YjBkOTZlZmU4NjkxNmZmNzQ1YTBmNzdhYzcwYjMyNjU4NWMwZWFmNWMzNGY5ZTRhNGY2ZmJmNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/workflow.ts#L336-L425",
+          "version": "repo-lines-v1:sha256:451cd7f3fb4afc6ca923f43822987d02403b0429e3c2b34adfa6a68f6841b6cc:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1MmY2ZjNiY2I4OGZkMjYxYzQ4NWQzM2UxYjgzNTVlMjhjYWMxOTlkMmIyOTNiYTBkMjMxMDI4ZDQ1N2RhZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43620c377f2242e1b8ca97171120369c",
+      "statement": "consumeImageBuildFinalizationBatch applies Queue delivery semantics per message — schema-invalid commands are acked (discarded), processed work is acked, and busy or failed work is retried with a delay without aborting later messages in the batch; Terraform configures the consumer with batch size 1, max concurrency 5, max retries 12, retry delay 15 s, and a dead-letter queue.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/finalization-consumer.ts#L22-L74",
+          "version": "repo-lines-v1:sha256:faf848518ebfa9ffaddda48590f222bde367a760e1d66cd5237f53501f0be545:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1OTRhMTE2ZTA0ZDdiZDg1ZjFmNjEyMzg5YWY3MDAwMDM5MDE4ZWY1YjhmMmU2NDk4NDI4ZWEyYjQwMDA5NmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L247-L262",
+          "version": "repo-lines-v1:sha256:b577d5c2a40936c669e8978015dc3cee89d5589ccc2655964b3b7c87e2bde0fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZWZiNGNhNjkzNzA1NTJkNmY5NjhmYWJhMTNjYTE5ODc1Y2IxNDBhZWMyZTEyNWY3ZmFiYTc5MmQyMWI1NWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzOGQzMjk0MWM5YmE0NWMzZWJjZmYwYzkyNmQxZmQwMWFiYjliZDQ4MGNhYjc3Y2ZmY2ZhNGQ1MGU2MjQzMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_01f1d8116dea480c8e8da298b6f77aaf",
+      "statement": "The ImageBuildFinalizer is idempotent under at-least-once delivery: a completion-hash mismatch is dropped as stale; a 6-minute lease (longer than the 5-minute provider deadline) serializes overlapping attempts, with an expired attempt that recorded no artifact failing the build rather than creating twice; the provider snapshot/checkpoint runs under a 5-minute abort deadline; artifact persistence is fenced — an ambiguous D1 failure is re-read before compensating, and an unfenced artifact is deleted or quarantined on the row if deletion also fails — then tryMarkImageBuildReady supersedes prior images for the scope and terminal cleanup removes the bound provider session idempotently.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/finalizer.ts#L141-L219",
+          "version": "repo-lines-v1:sha256:2efcf21b25eb41b87c4569a9d3a8c51b7899ec580c20d9d3e6e2884f0663d354:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyN2M3ZTVkNjI0MTZkNDIzNzFmNWU0MTY0MmMzM2UxOWE3OGFlOThhYWZjNWM4Mzk1ZjdhZDEyOTY1YmNmZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkNmE1NzVmMjdlMzk4ZGI5ZGMzNTk0NWNiMDMwNzllOWUzYjdlMTU0ZGYxZThmNzM1NzQ5OGZiYTI5MDAyMTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjMjMyMmM3NDVkZDE1ODYyMmZjZjE0NDllMWE3ODQ5MTIxMjkxYmRjNTY5MGFjZTY4MjFkZWZlMmI3MDMyMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/image-builds/finalizer.ts#L33-L115",
+          "version": "repo-lines-v1:sha256:09f71c8adf6cb60d29ff0a94986c8b27d447da5af21bef39ad9b593bb39a989a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYmJhZGMyNTU2OTk1Y2IxNTQ1MTEyYTdmMDMzYzQ4YWFlOWUxY2Q0ZDkzZGQ5NDlmZmI0NDU0OWQ5MDA5ZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5NzIxNzk2NGVlZGU0NDQ1OWMwMDUwZjViOWRjYzg2NmVlYzRiYWUzZGUxNWEwOTA4MGMwN2M2MWJhNDVjOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5OTBmZjBjZWMzYzU0Y2Q2NjRkZGU5NzdiMDI4OTgzOGYwYTcyMzIwMDM2NjdhOTNmMzJiNGRiOWEyYzM5MjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d8ff4d1a4da49bbb7fa7bb2fd8e4b9b",
+      "statement": "The control-plane worker is the registered consumer of the GitHub Autofix queue (production remains owned by the github-bot): handleAutofixQueue builds the AutofixService and an AutofixQueueConsumer per batch with MAX_DELIVERY_ATTEMPTS = 5, where a permanent provider error marks the feedback failed and acks, a transient error records and retries (marking failed once attempts are exhausted), and even a schema-invalid envelope retries rather than acking.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/autofix/handler.ts#L40-L84",
+          "version": "repo-lines-v1:sha256:92c07412b027c0548c1fea2b10682983e9ee3df5a49984d2bd5548822e255366:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiY2I0MTlhMTI3MWQzNTQyN2Y0YzM3OGJjMjM3ZTVlMTg2YjdhYmRlNmI4ZmRiNGQ1Yjg0OWRiZTMwZWNiNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/autofix/queue-consumer.ts#L39-L77",
+          "version": "repo-lines-v1:sha256:07c4fe8e5328fcac825e01dafe277c7a4b4ba27e43d690b62969337a0aecc720:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzNTIwODhjNGQyNzkwYmI2Njk3NWE3ZThjNzcxYjgyZTkzN2MzNmQ0ZjU1NzJhZDdhYzBlYmFjNGVhMzUwZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NWQ1NzAyYjg0MGE3NmY5MjEzOWYyMjEwMmUwMTE0MjhiMDdmOWY5N2QzYjYzOWJlNTY3YTRjNzk0MzExZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f7dc377901045ddaa6df468f31d9d97",
+      "statement": "On every automation tick the worker submits checkAutofixQueueHealth via waitUntil, inspecting the AUTOFIX_QUEUE and AUTOFIX_DLQ bindings — used read-only for metrics — and logging autofix.queue_health errors when the DLQ holds any message, the primary backlog exceeds 25, or the oldest primary message exceeds 5 minutes.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/autofix/queue-health.ts#L37-L94",
+          "version": "repo-lines-v1:sha256:01ba5527aedbeecf3e4adcf8d10e68b8a8bdad858acea504d1478f2bea4f7f0c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjNjM5NzZkYjZhZDUyZDUyMTQwY2EwYzNjODdkYjJlOThjYmU5NGQ2MWFmMTlmZTQ1ZGE5NTg4OWQ1OTY1ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiZGZjOGVmZTVkZWRkNzRmNDBlMTFiM2NmZmJjNmVhOGViOGUwMjA5ODVjY2U2YTFmZmIxYjYwZDU1OTc0OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L71-L79",
+          "version": "repo-lines-v1:sha256:f4100721e268bfd3cf5caf40bf715af4a4a00764cf13797262ff2d8a7fa87a6e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWYwYWU0NjA4Yzc3ODdiMzQ5NWFmMmIwNDRjYTJlNGI0NGQ1MzIwZmRkMDNmNGQwZWVkNWFkMTQ5NmRjOTQ5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTMwY2E5OWNhMzM4MWJhYzIwOTlhOWQzZDc0ZTA5OTdjYzg1ODE1MTZjYzNmNzI0OWM0MDViNmQwYjk1NGIzNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2IzMWI3NzgzM2UxYzZlODYxMjBjOTQzZjdmNzBmZGViMWJiNGE3MjRmYmVmNGM3MWE5YmRhYzBmYmFhMDVhNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWUxOTlkMWRkMWEzNWFjMzAzNTBjODg0MTFkZDY1ZTdjYmE2MTE3MGQ0ZDY3MmQ3MzFlM2RkMDg3MWYxMDI4ZCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/types.ts#L19-L21",
+          "version": "repo-lines-v1:sha256:da95e29524f0031928758c43b1d6f57213e84a6317f5773c3d5054d265739d77:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQ4ODU0NjFmNGUwNDBlNWRmZmI4NWY1MmIzNmM4MzNkODYwNTQ5YThiYzZkZDk5NDlhZGJjMjkzYzNmZTFjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ0MGI5MzU5NGUyOGEwZTljYjkyNTFmNGMyYmRhNzVlNjNlOTg2Yjc5MzM5OTRjYzNiNWVhNGJhNGU3N2E3NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzU1YTlkYTI4MzI1NjAyMjEzYjczZTc4NTdlOWYyNDMyNGExZjAyMmJlZGRhMDk2YzgyZGI4OWNmM2IyNjgxNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODY4YzFiYjUyMjYyZWU4MTg0MmMwNTJkYmY2ZmE1YmIzYzU1YWZjNmVhYmQ3ZjhhOWMyM2Q1M2RmZmU0NjhiYyJ9"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L58-L77",
+          "version": "repo-lines-v1:sha256:5df177fc80f0f3f5b6d08d8e0b56dbc4129c199bc9e1c289313693aad550c9f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4Y2M3NGU0YjM5YWE2NDlkZTFlZGEwZWYwYzU4ZDkzMWNkZDFhNTg3N2IzODI0NWE3YmY3YTFiNTgxZjAzMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2MjY3OTM1ZmM2MzM0NjVkODQ4YjQwYTRlZDY5NjdlN2I3YTMyM2Y4MWNkNTNjMTEwYWUyMTAyOTY4N2FhMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMGYwNTIxMmI5MDBlZjUxMzI1ZWQ4ODFjNmI3NWE4Y2NiM2FmN2NkYmZjZGNlMmQ5YWVhNjEyMTA0MGQ1YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3ZmE5MDdhMTIzY2E5MmIwZGRlYmM2NjkxN2FiNjMxOGE3MjIxYTIwZmIyMmJkNjkwYTNjYTJiYzNhMTczZDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d3b51878552d438a92266846a9b978ba",
+      "statement": "src/types.ts Env declares the shell's bindings: the SESSION Durable Object namespace, the DB D1 database, the REPOS_CACHE KV namespace (short-lived /repos listing cache), the MEDIA_BUCKET R2 bucket, the IMAGE_BUILD_FINALIZATION_QUEUE plus read-only AUTOFIX_QUEUE/AUTOFIX_DLQ bindings, optional SLACK_BOT/LINEAR_BOT service bindings, the four per-service sig1 verification secrets, the credential-encryption secret domains, and provider/deployment variables.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/types.ts#L48-L56",
+          "version": "repo-lines-v1:sha256:c35c03ca4d319875b3bc6ec6fce593270a61aaabadef717cd85166584f86e357:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQ1M2MxNDAwODVjY2RhODc0YjdjNjMwZTIwODk1N2NmNTEwODllMDRlNmJhOWZkODk2NzY5ZDk4ZTEwMjM3YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQwZGE2OWUwNGUxZDY0MGQ2OTE1NGUzYmZhMGM5ZTE3OTQ3ZWRhNTBlMTRiMWE2MGRiYmFhY2IyZTYwOTdlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWI3NGIzMjY5ODI2MjljNzY1NGVhN2QyOTA1MjBiMTA0ZjM2YjczOGRlMWQ4N2IzMWJmNTdiMDkzODVmNGVlNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTA1NGNiN2U3NTg3M2NmYjVlY2FjOGU5NzRhMjg2OTk3MDAzNzNlYjJkYzNmYTI4ZmUzYjIxYjhmYTY4NzIxZSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/types.ts#L8-L31",
+          "version": "repo-lines-v1:sha256:16911c842d0933589acca7360fe5b5ea23c0e71c846630c223c39a381a70fb2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlNzhkOGQwYTliMGI1YmIzZDJlOTYzMmVjMDc5OTRkYmFhM2Y0NWYxNTBjNDkyNjA4NzM5OTAyNWRkYWYwYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5MWQ2YzliMjcwNWM1N2ZjYjUwNTQwY2MzOTM1NDA1N2Y3M2YwNzUyOWI0MmZlYjgyZTgyYmYzZmI4Y2E3MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhZTRlYWVkYTMyZjIyOGViY2ZhY2Y2Y2VmMzFiZWJjOTQzNDM1NWRmN2Y2ZjA2OGRhMmE4ZGJmNjc2NzdmN2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e0ab0c24c95845e7bf7e11d6a276131c",
+      "statement": "Production bindings are Terraform-managed: the cloudflare-worker module wires the KV/D1/R2/queue/service/DO bindings, plain-text vars, and secrets, and registers the three cron triggers and queue consumers, while generating the per-service sig1 secrets and the image-callback pepper in Terraform state; wrangler.jsonc is test-only with placeholder IDs for the Miniflare integration suite.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/wrangler.jsonc#L1-L2",
+          "version": "repo-lines-v1:sha256:212e1f8ca286fc0fd693eb1859c53292cb4cbccce0d598b459ae47f9e09e4be8:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDM4OTNmMWY3MDNjOTE2NGE4MjY2YWUzODk3MjA1YWI1ZDA5ZjhjMzMzMWU3MjVlMDI0YWI5OTg4NDQyYzUwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTZmYjA4ZmRhMWFjYjk1N2I2MTE2YmQzNzgxMWExZmU0MWEwMTYxMWMwNjMxZWRiZjc4NmQ2ODg5YTI3YTU1YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzA4Njk4N2U2YWFmYzkzYTM5N2EyYjA5NDA3YTdlMDk1NGEwZjBhZWQ3OTI3YmEwYjMyZDllZTgyMjgwN2FiNSJ9"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L215-L245",
+          "version": "repo-lines-v1:sha256:b9780ac85b90319603125ebdc88fd6677c5481089127cb6a2721004531b212c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YTVmOWI5YjIxYmZjYmZiYjNkNzcwNjgwZGVkOTdiNGY1OTliZmRhNDcxNTM1MGJkOTkwMzhhNjcyYzQxYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiNDBiYzIyOGRjZjIzNjY4NjBiYTJiOGY4OTJkMjU5Y2NhNjgxOTU3MjZhZDdlMmI3NDVlNjRiMmUyMWYzNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmYjA5YjA2MDgxMDE4MzNiZjM0OGM4NTU2OWU4ZmVmOWUxMGZmOGQxYTdhOTkyNDM1YzZhNjVjNDQ2MGQzYzUifQ"
+        },
+        {
+          "resource": "repo://terraform/environments/production/workers-control-plane.tf#L5-L77",
+          "version": "repo-lines-v1:sha256:d988b57eab437f22ba46c60e0cb818221c029cd42ce6b16b2e4d75648754afc2:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YjBlYmNhMzI0YmZmYjRmZDZiN2M1MWYwMjhlNDc3YmJiMzdiZWFlZTFlNjI2OWJhYmZiZDJhYjI5YzQ3ZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2MjY3OTM1ZmM2MzM0NjVkODQ4YjQwYTRlZDY5NjdlN2I3YTMyM2Y4MWNkNTNjMTEwYWUyMTAyOTY4N2FhMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4OGJlODdiN2ZkNDg1NDZjM2JiZTdmNDdkYzBlMDY4OThmNTNjM2NiNmE0MzQyZjFjNzc0ZGU1MmNmN2FlMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3ZmE5MDdhMTIzY2E5MmIwZGRlYmM2NjkxN2FiNjMxOGE3MjIxYTIwZmIyMmJkNjkwYTNjYTJiYzNhMTczZDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f79e03f9c990477e88aabd7c4c11626e",
+      "statement": "src/env-validation.ts enforces the encryption-key contract eagerly: requireRepoSecretsEncryptionKey and requireTokenEncryptionKey require strict base64 decoding to exactly 32 bytes of AES-256 material, failing loudly at first touch instead of running degraded — a malformed key would otherwise throw at the first secret write mid-spawn, and a short key would silently downgrade to AES-128/192.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/env-validation.test.ts#L30-L41",
+          "version": "repo-lines-v1:sha256:1384e939a377075a32da00163d85d22cdadbc2417d497c3a784a156c6f036558:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3NzNmNTM3YzgyNzc1MDA5M2QxYmFmMDhkMTQwYWRjMDUxZTk3OGY0ZGJhNzczMDM5OTc1ZTMwZWVhZWY4NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZDM5MjQzNjdhMzUxYjU5OGU5NmJiZTZkOGE5NDljYzE2NGZkNmU3NDFiOGI4NDkzZTkzY2EwOWJiZGU5OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3MmNiYWIyZjQzYTE5MjJiOGNlYTg0NjkzYTcyNTUzMTg4N2U0Zjg3MTg5YWFjYmY2NTE2ZWI0ZjBmZGVjYTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/env-validation.ts#L1-L58",
+          "version": "repo-lines-v1:sha256:9167acf729d8855f35962f9ffd09a3ad9b1b22711716147e9323d1dc0ca8bb3d:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_47e35d4fa2db456b851cb8a22f25d624",
+      "statement": "The REPOS_CACHE KV namespace backs the /repos listing cache (5-minute fresh window, 1-hour KV TTL, stale-while-revalidate, invalidated on metadata changes) and doubles as the SCM provider cache store; MEDIA_BUCKET is the R2 bucket behind the ObjectStorage port used for media artifacts and session attachments.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/repos.ts#L31-L120",
+          "version": "repo-lines-v1:sha256:e80d0f985a6cfb7c6a69e2ced285277e90ad0791f312b0a8afde2c77b28b6d04:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MGY2NTA3MmIyYWQxYzg0NTViNWZkOGQ3MDUwMGJjYmJjNWY5OGI4MWJhODFkMmZkODQ2MjZjNTgzZTliMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1ODFhYmI0ZjE4MjI1NGVmMDY0MTE2ZWQ4NjcyZDY4MTc2ZjAzMDVjOTg3ODBmM2FhZmQ3MGViY2QyZTFjOGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMGI5YmM0MzFkNjgxNDBiMzE0ZDZlNzgyZGNkOWJiZTljNmRiMmVmODk5NWQxNjA5ZTNlMDAyNWRkMDEwMzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkYjUzY2Q5ZTcxNzMzZDUzMGIyODcwNTQ0NDQ0MDZmODQ4NWQyZTk0OTI4ZTVjYmRhNDQ0NjRlMzk2NDU3NWQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/storage/object-storage.ts#L24-L64",
+          "version": "repo-lines-v1:sha256:3335b3dc0cfd0ee845216e5e6802a0e495962d493a39a30b59231dc299c41f0b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YjM4NzI5ODc4YTE1NTQ4MGUyYmNiMDMzNTAwMzMwOTc1OWY2ZDYyNzI0ZDhlNTJjMDYyNzk5YTNlYTQ5NDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxMGExMGQ0ZWExZDIwNjgwZGVlMzIzOGY4N2M1OGE3MTM4ZDcyYWMwZDRhY2MwY2MyYzFkYjA3N2I3NjAzODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/types.ts#L12-L13",
+          "version": "repo-lines-v1:sha256:23e0192825ce2a1fa755e43b11dc78bfb067da0737ac9db5fc5a7c36c1dce5e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzMzNzQzYjk4OWVlMTI3MDI1NThhMGQzOTczNmJlN2M1ODIzYjQyN2Y3YmFjM2Q4NGVjMjhiNGMxYTVmYTg0OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFlYWNhYjIzYjU5NzY5YmVjOGM4OWE4NDQyMGIzYTFlNTYwNWFjNWY2NzIwYjk2OTFkODVmZTZmNzBlNzIzZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWU4MmY4MzczNTk1YjQ4ZmZmMWRkNjZiYWQ3OGY5YTFhNmIxMjg1ZGQ5MDUyNGVkZWVmYTk1NTBjNzI4N2Y5YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjMwMjAzMWUxMjU1MzUzYzM0NTZmZWFjNGNlMGM5MjZhZDViNjFjMmYzMDgxNTMxYTNkOTZhNWRmZTVkZjQ5ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fd0d0dcaa274ca2a4f744c7a0f27501",
+      "statement": "The worker entrypoint exports the SessionDO Durable Object class for Cloudflare discovery and forwards its fetch, webSocketMessage, webSocketClose, webSocketError, and alarm callbacks to a per-activation session runtime built eagerly by createSessionRuntime (session/components.ts); all application wiring lives in that composition root rather than the DO class itself.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L29-L30",
+          "version": "repo-lines-v1:sha256:ac33ae3254dac1c49b4221a5aa4c2812a4abf5e3c7967db9ef4cd5fab736176e:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk2OGE2OWU0ODcxMjc2NmFkOWNjYmUyMmQzNjNhMTAyNGYyOGIxYzhiODk0NDI0ZmI4MWQxM2UwMzI5NTcyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk0ZDJkYzExZTQ1YTZmNDgwNjNiOGY1OTY5MmZkOGVmNzg1NmZhNTRkYWQxZGJlNTM5OWNmNThlZjE2NjU4MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjZhODlhMTFjYTMwYmE2YTdjYTZjYTAzOWM4MTViZjliNTExZDVlMWM0YTY1M2E2OGVlMzJmNjI4ZTRjMTlmNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWY4MzgxNzZkODMyNzBjNDAzNGU3NzRjMzMyZGQ1YTUyMjZmMTZkNTNkY2I4M2U3YjZjMTE2MDM5MzFiYWRjZSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L1-L67",
+          "version": "repo-lines-v1:sha256:71027ee66d568b7c552bae9af55bcb561df2a98a536bc04951b1ad12a903c628:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxM2Y1ZmM1ZTMxZjYwYTY5M2RkNzZlZTExOWYzMGY2YjYwNGYxNDdjZGRjMDgwNjAxZTQ3YzczYTU5NWEwYjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd8854c5317646b39a2e4481daebc751",
+      "statement": "Stores and services take the SqlDatabase port as a constructor input (AutomationStore and SessionIndexStore follow the same pattern), so the same domain code runs against the raw D1 binding, the instrumented per-request handle, or a test double without modification.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L3-L6",
+          "version": "repo-lines-v1:sha256:74941f92ff7af3b52e3c43e6e105416b2c9b4082b23ec19cc7f7d808e38e10fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjIzY2I0YzEzZDY3NzU5ZDU0Zjc2NzFkNDQwMzQ5NzJkMDkwM2EzOWQwOGFmYWU3M2JiOTgxZWI5YWIwZGNmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGVlZmIwNGM5MGVhYTFmZjc5Y2RlZGFlMjQwODIxYzI2YmIyYjQyZDAzNTBmYzk3OWYyYzU0YTI2YjBmZmQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGEzMTAyZWIxMWZkODZhZDgxYjNhNTI4ZDZhMGJmZGRjNDExMjgyNGM2YTQ1NmUxYzkxMzBmNjYxZTcwNDFiYyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L65-L83",
+          "version": "repo-lines-v1:sha256:2add4c4b978e9068f0a0c96e3b769b902d6a5d975581529a030e9b8b73df1051:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMWM3ZDM2OTU4YzBkMWUwNDhiYTZlNmRjYmNjMWFmMzIxZDFkYjgyZTQwYWU4OTFhNTFkYmIwZDE4MWUzNmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1YjQwMDBjZDYzOTc0OTliOGVmY2FiMGU5NDIyNjc4ODI5ZmYxNjIwOTgzMDViNmEyYjBkZDI2MDNlMjk5YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2MjM5NGM2Zjg5NzgwZmZiYTU1YWRlMWE1YWI1ZTMwNWExYTNmN2E1ZDFjNDZmMWM4ZTY5NjA2YWUxZWQyMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmMmNmY2RiOWQ1OWYxNjcxZDBkNTEyOTI1ODQ3M2YyZmU2MzM4NGQwNTBjOTVkOWMyOWQ0MWNhYjM4NjYyNjQifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L57-L59",
+          "version": "repo-lines-v1:sha256:64033fc1aab2845448989b52ac798ac2cfa08bf43455db855f2455ae339f92bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTFmNmRkODY0ZGRjYmEyZmI2MjYzY2ZhZmM2MGFhMmU1ZWY4NWNiNDZkNTBkYmI2NTNhYmFkMzFmMWExMzY3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQxNDhmNjgyNmI0Mjg5MTU0ZTcyOTg3ZmRmOGIzMWRlODlkNzFjYzM4ZjMzODU4ZTliOGQ2NTIwMjMxMGI0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTMwNWU2NmE1MjVmMWVhOGQ1NmMzNWYzZWRkMzJkN2M4NzJmYjc2MjU0ODVlYzQ4OGNlNWNjYjllYzgxNzZlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODZlNmFjZmIwMmQ4MDVmNDUwYjgwZWM4YmUzZGVmZjAwZjkzODVjYTZkMTM1M2RjODY1ZjY1ZGU4YTYxODA2MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_836a786b604d41b1b963cb2cac1f6fa4",
+      "statement": "The Scheduler exposes four entrypoints beyond its constructor — tick (cron), event (webhook and bot-forwarded normalized events), trigger (manual, 409 on active run), and runComplete (SessionDO completion callback) — and each constructs its own AutomationStore from the injected database.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L1146-L1163",
+          "version": "repo-lines-v1:sha256:8f4cdb1839be1d150a1afbc609060158585ea6907a86a34717fe1d6262617d6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhN2UwZWE5ZWUzZDAwOWU0ZmMzMjU0MzEyMGFhNjZiMWNhZDAyMDVmN2Y2ZjRlNzhkNGIxODBlZTBjNGJmN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmNjc4NjRiNGIzZWM5MWVkZDcwMGYzMzRmMmIzNmVjYWUzZTM1NGFjY2VjZjY5YmM0MzFlNjRiNTNmZDc5ZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiZWRhMzlkYzRlZThiODA0MzA0ZmYyNjQyZGIxYmZhMTUzZDhhNWE3YWY5OTMyMWVhMzE3YzFkZmJkODJiNzMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/scheduler/scheduler.ts#L856-L864",
+          "version": "repo-lines-v1:sha256:c72b104dc2dbb1ac4a1b98592baa8321d2292302cf6138af02b56a0776bb5d1c:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmYxNmE3ODk1ZjM4NDk2OWM5NjczNmE5YWY4M2Y2ZTE5MzcwMzhjMzExMWY1MzkwNGZhN2E5N2VjYzFkMWE1MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjQ5OTU3MzFkMjAyNTBiZGVhYzZkMGY4NzJmNDk0ZWVjN2UyM2UyZjZhODI3NzlkMDNiODFiOTA5MDA4Y2Q1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWM2YjM2YmU2NjcxZmZmYjhhOWUwYzJlMWRhNDMzMTRmZDYzMTczMzEyZmE2YmU5OTcwMzk5YTg5Y2UzYjYxMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_75d4a2f0c4504ff4968c422b369fe73c",
+      "statement": "Session routes obtain DO access through the SessionRouteContext sessionRuntime client, which resolves stubs by idFromName and stamps x-trace-id and x-request-id onto every internal request; internal paths and schemas are shared via session/contracts.ts (SessionInternalPaths) so router and SessionDO cannot drift.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/session-route.ts#L6-L29",
+          "version": "repo-lines-v1:sha256:d7f31e96e8facb73b2bdeaf024cf9c1ccacc58cfafd49f85995739c2f8a4947d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1YWUxNTk2Njg2YmJiNTE5MDVjNmU4ZWJiNWFkNTQ2MzdkZTM0ZTZmYzMyMzFmY2E0NjJkYWI0Mzk4ZTI2OTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzNGUxZWMwMTNmZmQzYTI0MzYwNTExMWViY2U2N2M2MzQ3MWI3MDk0YjFkYThhZjhhYzUxNDliYzg1NTZlNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/runtime-client.ts#L14-L44",
+          "version": "repo-lines-v1:sha256:95f39a562480d3c89d15c0673c40524b84c4b88fba62d9e1c05e29792146d89a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2ZDJiMmI2MDgxM2Y0YzY2NmFiZDEwOWQ5YzA0OWU5YjkzYzMwMmZkZTdlYTYxOTNlNDg4MjRmMjliYTEzMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhODgwOWQxYjUzY2EyNzk3MWRlNmFjZTlhYjk1ZTNmMzJlZGRiYzNhMGM0YzcwZTYxZjVkZjk3ZWFjYmM5MWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_36f5427b19da4394b831d27051cdf951",
+      "statement": "The shared route module also provides the handler helpers parseJsonBody (typed JSON parsing returning an error Response on invalid bodies), extractRepoParams (validated owner/name decoding from named groups), and resolveRepoOrError (SCM provider resolution mapping 404 for uninstalled repos and permanent configuration errors surfaced as their original message).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/routes/shared.ts#L211-L222",
+          "version": "repo-lines-v1:sha256:9d8346e9f1ce7df0e4c2b61e3dd75e87bf7e0b6afc9ecb03d7e52c6fa0985890:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4OTM0NTlmZWU4YjIzMjc3NGRiNzFlMTQxMDA1MmY3YjgzZjUxNWFjM2U4ZGUxMDUzMDgxNDU0MDNlYzZlMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxZWQ0MmIxZjI5ZjYyODJmYTRkN2ZkNWViYjk2NjYwYjYzNDJiMTc1ZGRmODhiNWM5YjczMjYyNjJmNDAxYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjMzhjN2QzNTNiNWE1OTg1NzRmYmJhMGU3OTI4ZGQ0NTVlMTViNzRjNTY5NWYyOWRjMTkzOGU1MmNmOGIyZGEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/shared.ts#L233-L258",
+          "version": "repo-lines-v1:sha256:e132b56ecfc9347643cccaa197e874a3d12f104f8fd1ff67457ab654e2a724f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YTk1ZWEzZTJkMDFjYzIwOTRjMjNkZWIzMzMxNzZiMzIwYWQyYWQ3ZjczYmE4NDc0YWVhNGZjZTY2YTk1YTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0YTc1YTQ5NDliOTM5M2ZlZDY4ZWRmZTliZGU0N2I1NmVmZmExNWU3Njk4YmM2YjI5MTZjMmUxZTg3Mzc0ZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJiZjQ3NjViYjNhYWI3OGY2Y2Y0M2RiOTY3MGYzNjA4NTc2NWY4M2UwNTI2N2MyYTZmOTQ2ZWJkZTllNWVkMmIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T06:58:43.189Z"
+  }
+}

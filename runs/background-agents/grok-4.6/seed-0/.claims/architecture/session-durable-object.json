@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ac8b7e163c94202a0e44137392c353b5b6efcb49d10196246972e608af1a723d",
+  "claims": [
+    {
+      "id": "claim_6cb77e1f8e3f4cecaa5a7d22a850b03e",
+      "statement": "SessionDO is a thin Cloudflare adapter: it applies the SQLite schema, eagerly builds createSessionRuntime, and forwards fetch, WebSocket, and alarm callbacks to SessionServer.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L1-L102",
+          "version": "repo-lines-v1:sha256:bd510d957e393675dd2049a8acc1759f09c96b7399485019058e79f5980c5fcf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYWYyMmNmMDczMjU5MmMyNDcxNDFjYmU2MWVmYTExMDEyNjEyZjVhMzEyMmI5YWY5YmJhZjUyZjU3MjRkMTk0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_97199e8966244cab9b64d2a748d30673",
+      "statement": "createSessionRuntime builds the collaborator graph eagerly, including sandbox and source-control provider factories that throw on misconfiguration so a broken deployment fails at initialization instead of running degraded.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L1-L21",
+          "version": "repo-lines-v1:sha256:86e8a1b420652180d91a31d0348fbae82b04cce98c3735d6d2d2ff0072be82e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlZjNkOTY5NzdjMDcxZDJmY2U0NzNhYTgyYTY0ODA4YTcxMWUzZjE0ZjljNGJkZGQ1YTM1Y2M5ZDM0MWM0YzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMTJkNzY0OTAwMDYxMDY3YTczMjU5YjNkY2RkMzM2YjljNTMwOTdlZjFlZWIyZDRlNTEzNTVkNjQ0ZTk0ZjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9eeb229dd48743ec960a800312c168a1",
+      "statement": "The runtime is published only after the graph is fully built; a throw during initialization leaves _runtime null so the next event retries instead of using a partial graph.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L44-L52",
+          "version": "repo-lines-v1:sha256:ec73567339291a9327703ea1b833e4e41be9ca43388bbdd21b9b3e0d29016a85:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZhZjdhZDFlYmRlNGY3OTZiODkzZDExZTdjN2JkMDQ1NGRkYWZmMjg1NTlmYTk1MzQxZmFiZDMxN2Y4MTAyYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDRiYjI5ZTRhZTMwYjhkZTUxYjg5NTYzY2YxNjVkZGVjOThmODVmYjlkZjUzOGI5Y2E3NDdhYjk5ZTI4YWY3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzgwZTQyMGQ0YjVjYTkzZGMxYTdhZjZmMTgyMzZlMWU2OGU0NTk1NWU2YWJjZmQwMTk5YTZhY2UxYzFiOTdhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTM3MGE3N2NkYjczY2Y2ZGVmODAyN2Y1ZGY2NzA3MDZmOTU2OWZhZWJhODMyNjNkYmViOWNiN2EyNjNjNmIxMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1dad4fb0003745558d5c86125712168a",
+      "statement": "Per-session SQLite stores session, participants, messages, events, artifacts, attachments, sandbox, session_repositories, session_diff, session_alarm_state, and ws_client_mapping, and is a different engine from D1.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L50-L207",
+          "version": "repo-lines-v1:sha256:b730d644852a80746a759e81796e914de3eff12b3bd7035064906d64820d3be7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhN2EyYjkxNjA0YzdlZWY3NWRhZDU5YTQ3N2VkNWNmYjE2NzM4NzM5MzZkNmQwYThlZGJjZjBjMGM0ZjVmYjFkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0OTk2N2VjMWVkMzgzNmY4ZWIxN2FmZjE3MmI1YmZlZjdkZTYwNDg1YTQzOWM2Y2ExMWM1OTFlMTc1NTczOWFlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3NTY1ZjM1NzQ1OGFmYWM0NDg5Zjg0N2U4Mzc4NmE5ZWE1NTliMzZkNmYyY2YxMWVjYjZmOGUxMmExNjEzMTYxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjZTBjZDI4NTMyMGY2MjVmMWYyZGY0MWU4ZjMyNzlmZjIwNTRlYzc5ZmM5M2JlMjY5NTI0NGQ0MDViNmE4ZjM1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b2ff5be5be124ec9950401762e5de415",
+      "statement": "The session table requires repo_owner and repo_name to be both null or both set, and no-repo sessions cannot carry repo_id or base_branch.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L77-L83",
+          "version": "repo-lines-v1:sha256:0e19c8f8676f608609de908456dcb3ed3892cfb7ee5e628cb127d5719d8a9dd4:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTczZDgyN2VkMjYwMDljNzllYjAyNWM3MTkzZDAyNzliYTgwNTFiNmU4OWQ0YTI0YTk3ZDczYmMwMGRlMWYzZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYyNjc5MzVmYzYzMzQ2NWQ4NDhiNDBhNGVkNjk2N2U3YjdhMzIzZjgxY2Q1M2MxMTBhZTIxMDI5Njg3YWExMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODVkOTRlZTY1YjU3MzBjNTk1NzA4ZDViZjYyZGNkZTliNjYyNmYxMzkzYzI4ZmRlZTI1M2Y2N2RhYjg4NDQ5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWQ2MmYzOWMwODUxMzBjZTVhNzljMDk3MmZkN2E1MjgzNjNhYmEyMjkwYzljYjIxZDBmNzA3YzMyY2U1YmFlNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cc2034083144199bbb3afc9baa321ba",
+      "statement": "A unique partial index allows at most one message with status processing.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L218-L219",
+          "version": "repo-lines-v1:sha256:4119c26028515809a53a43e4010e3f9a7a7e26e3d6621631259b4d6eb2ac9b04:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQxN2I0Y2VlMDZhNjM1MDgyNDBlMGI3ODEwNmZlNzk3YWMyM2I3NzJiZWNmOTg5Yzg3Y2YwNDM3M2Q2ZWU0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDJiOTQ2Y2ZhNzNmOGY5ZDQ2OTIwZWVhNWNlYzU5ZmQzYzYwOTk4N2VjYjU2NWZkMGIyMTdiNzg3ZmQxYzhhNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmNlMmVhYjFiYWQwYjIzNWI4ZDIzZjE4NDExZmIxMGQ0MzI0ZmVmMGI0Y2FmNWQ2NTlkYjk2NmQwOGIzOGZlMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWYyMDI0NjFjYjgzNjIyNDhhNDQwN2IwOWUxMTc5YTdjYzAzZTY0MTE0YTQxY2MwYzdjMWIyMDVhMjBjYzRkNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_320a40e975834921b295baa60dc430a2",
+      "statement": "SessionHttpDispatcher routes WebSocket upgrades to the authenticator and matches internal HTTP routes by exact path and method, returning 404 for unmatched paths.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/http/dispatcher.ts#L16-L30",
+          "version": "repo-lines-v1:sha256:51e154c3b1f37786533672334de6ec5d5be14862e03305d7874cc503ad1262c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0ZGVmODBlZTQ3N2NlZjFhN2VkZDE4ZWM2ZjM0MmRjNzMyM2ZlY2Q3ZTkyYTQ0NjY2Y2UxN2YwMzdlMWFjN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MjBhN2QyNjVjYWNlZTZkYThiN2RjMTUzMmQwOThlYjBjZTZhM2EwNWVhMzZhNjdkZDhmODEwN2Y1ODJjYTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNWJkMzcyNGZmMDgwYjY2ZjNjOTVjZGU3ZDA4MmM3YTU3ZDBhZDhlMzYxOTM0NTc3ZTVkNjQwNWNmODkyM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlOWIwYjk5YjQ3NzgxN2NmMWVkMzlmNjFhZjk1ODFhM2YwNjUxMzBjN2E3OTk4YWY3MDNlN2MxN2RmN2E4ZjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a489f18c00c46f0a424cc03e6eaeefc",
+      "statement": "The alarm hook initializes without re-arming the alarm, then the handler recovers stop-confirmation timeouts, fails stuck processing messages past EXECUTION_TIMEOUT_MS, and delegates remaining work to SandboxLifecycleManager.handleAlarm.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/handler.ts#L29-L74",
+          "version": "repo-lines-v1:sha256:730179a1e40dc1351379688873114e9693b40b8cee2beed7b66c8528fc810da5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjYWUwMjg5NjQ0NjIyOTM0ZmYwZTBhZWFiMjY5YmRlMDYxZWQxNWRiMTkzMWExMTg4OGZlNmNmYjlkYTU1ODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmMDFhMWFlODc1ZjNjM2I5ZjI5ODNlOGYxM2Y0MTBiMjg4MWIzMGEyN2NjNTE4MDUzMjRlMzMzOTZlMmNmN2MifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L95-L102",
+          "version": "repo-lines-v1:sha256:77b90bb5b96b1ff408645851dd5681436048faa92faae1481e99fd88b26787f3:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyYTJmOTk2ZjA4ZTY4MGJkMjkyMTM1YTZmYTQ5NzhiZGEyNmU2MDJkODRmMzNjYjFkNTk0Nzc1ZDQzMDRiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWFiZjU5ZTQ3NzVlOTBlMDFjYjAzMDM2ZmRmNTNhZDRkYTlhYjY5YjU5NTE3NzU1NGY4ZDRlN2U0ZTE1NjJkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f1a3860a0f5543d9b9b0cdffed0881a3",
+      "statement": "session_alarm_state is a singleton row used to multiplex pending and in-flight deadlines onto Cloudflare's single Durable Object alarm slot.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/alarm/scheduler.ts#L28-L50",
+          "version": "repo-lines-v1:sha256:c1cdc808ee8037c102bfd9ffba68709f6debcde9cb124e07f9a57fe7f80bdd31:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MThmYmQ2Y2QyNzU4MTQ1Y2Y4NjllOWE1M2U3ZDljMDUxYmI2YWY1YWRlOGFmMTUxY2JmZTI5ODkzZjI2NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMTJjMzU1OTUyMWM2OWJjZGRkMDQ5YTc2OWZkYzc3YzNhN2ZkNmZjY2FjNDcyMjA1OGYwZDg2NzUxZTAwODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2NDZjYTliYWJjYTEzZTk4OTk1YTcxYmNjNjkxOGY2ZjNiNmE5MGZjZjU4ODRjMDhhNTJiMDQ5ZGUxNWRmYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkMWM4ZWNmNjQxYzdiNTZlOTE5MTZjNGNlY2ExYjY1OTQyZWUzYTEwNTI5N2E2Y2ZkMTNkMWExZGE0MWUyZDUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L43-L48",
+          "version": "repo-lines-v1:sha256:3fb7e05d8294c3b13c836c802bece729cee98793246997528453626fdc594881:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQ0NzQ3ZDc1NTQzZjNkNzUyZWIxZDZlOTAzYmExZjUxYzIxYTNjZTVjZmE0YjY3NTRlMmEzNTk0ZTJlYTcxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTNhYjZlZmRjNjRjOGU0YzU1NGIyYjkwN2YyYTg1NDYxMGZhZjlhZmJkMjk4M2I5YzNjZGE4ZWY3YmY2MzRjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWE0ZDIzZmVhMjViNGJiZTIxMDUwNDc3ZGRkOTAxZWVjMmU2NTE1OGZiY2E2YTBmMGZhOGMyOTdiYWMyNDQ4MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODc3MjUyNjgyZGJiODBlYmI1MDc5YzU2ZGEwZjljOWUxOWEyYTAyNzNiZjI3MGE3ZjJjNjAwOWRhNjkzOTM1MSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T14:40:34.741Z"
+  }
+}

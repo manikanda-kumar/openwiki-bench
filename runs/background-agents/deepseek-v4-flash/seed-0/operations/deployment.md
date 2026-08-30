@@ -1,0 +1,231 @@
+---
+type: operations-guide
+title: Deployment, Terraform, and CI/CD
+description: How the full Open-Inspect stack is deployed — the Terraform production root module (Cloudflare Workers, D1, KV, R2, queues, Vercel/OpenNext web, Modal/Daytona/Vercel/OpenComputer/E2B data planes), two-phase Durable Object binding deploys, D1 migration mechanics, the GitHub Actions auto-deploy workflows, required secrets, and operational scripts.
+tags: [deployment, terraform, ci-cd, cloudflare-workers, d1, vercel, modal, sandbox-providers, github-actions, secrets]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-08-29T05:37:27.905Z
+sources:
+  - id: openwiki-source-90318d329ff8f3e5b4839a99
+    resource: repo://.github/workflows/deploy-web.yml
+  - id: openwiki-source-48b66d532319d4a443905cb3
+    resource: repo://.github/workflows/terraform.yml
+  - id: openwiki-source-c17bbe00abbcf37cbd7991f3
+    resource: repo://packages/control-plane/src/image-builds/scheduler.ts
+  - id: openwiki-source-23775c3de52f3ab95a13cb8b
+    resource: repo://README.md
+  - id: openwiki-source-d891859c5e5b394a5a032cb6
+    resource: repo://scripts/cf-logs.ts
+  - id: openwiki-source-f1227299a054c9ff35745daa
+    resource: repo://scripts/d1-migrate.sh
+  - id: openwiki-source-15da8da8c7bdff1abc4cb72d
+    resource: repo://scripts/merge-split-users.ts
+  - id: openwiki-source-344a5fca018ad90d1b0510f1
+    resource: repo://scripts/wrangler-secrets.sh
+  - id: openwiki-source-484565d93bbeca8d1e9af4c1
+    resource: repo://terraform/environments/production/backend.tf
+  - id: openwiki-source-7bb3354c04f77c2ab8ef9930
+    resource: repo://terraform/environments/production/checks.tf
+  - id: openwiki-source-ca32cc2da6748302c6ab7063
+    resource: repo://terraform/environments/production/d1.tf
+  - id: openwiki-source-e86b5d69d2491d837adc3678
+    resource: repo://terraform/environments/production/e2b.tf
+  - id: openwiki-source-28b35a6ce3d8df7bffac5544
+    resource: repo://terraform/environments/production/locals.tf
+  - id: openwiki-source-54d09c819f3e04f003b1e6fa
+    resource: repo://terraform/environments/production/main.tf
+  - id: openwiki-source-558042c2f927635a06c1fca4
+    resource: repo://terraform/environments/production/modal.tf
+  - id: openwiki-source-b7c195aa0f3b906d5b30af05
+    resource: repo://terraform/environments/production/opencomputer.tf
+  - id: openwiki-source-300c6e4548b103bb79d5e8ad
+    resource: repo://terraform/environments/production/outputs.tf
+  - id: openwiki-source-a80abe724e74aa5066cf87b2
+    resource: repo://terraform/environments/production/service-auth.tf
+  - id: openwiki-source-ce69e5ae58b4998e2dfd95f7
+    resource: repo://terraform/environments/production/terraform.tfvars.example
+  - id: openwiki-source-b931243b02cce6880be8db12
+    resource: repo://terraform/environments/production/tests/auth_provider_configuration.tftest.hcl
+  - id: openwiki-source-47eb1f097086561efc04dc6a
+    resource: repo://terraform/environments/production/tests/classifier_provider.tftest.hcl
+  - id: openwiki-source-de4f55a0b48317d13d098ebb
+    resource: repo://terraform/environments/production/variables.tf
+  - id: openwiki-source-f65fe5d28acb333c7cf660f8
+    resource: repo://terraform/environments/production/vercel.tf
+  - id: openwiki-source-d655602608e793153a1fa18b
+    resource: repo://terraform/environments/production/versions.tf
+  - id: openwiki-source-fcd28f905acaec24c01bda80
+    resource: repo://terraform/environments/production/web-cloudflare.tf
+  - id: openwiki-source-af601ea441cafd590b137f04
+    resource: repo://terraform/environments/production/web-vercel.tf
+  - id: openwiki-source-4167b211967d9a75eed01b74
+    resource: repo://terraform/environments/production/workers-control-plane.tf
+  - id: openwiki-source-0532e15c798610c96a8411c7
+    resource: repo://terraform/environments/production/workers-github.tf
+  - id: openwiki-source-2d2e9524f398faf51ea43a7d
+    resource: repo://terraform/environments/production/workers-slack.tf
+  - id: openwiki-source-7efa2030c8716b697af137d4
+    resource: repo://terraform/modules/cloudflare-worker/main.tf
+  - id: openwiki-source-a66aac9efca2662ae02c7695
+    resource: repo://terraform/modules/modal-app/scripts/deploy.sh
+  - id: openwiki-source-20c8f0177c3cbd56de08da6f
+    resource: repo://terraform/modules/opencomputer-infra/main.tf
+  - id: openwiki-source-7cb4573ebaa8370a03d3647c
+    resource: repo://terraform/modules/vercel-sandbox-infra/main.tf
+  - id: openwiki-source-4dfb5d80c6ca3491595b64c7
+    resource: repo://terraform/README.md
+generated: { by: "openwiki/0.4.3", at: "2026-08-29T05:37:27.905Z" }
+---
+
+# Deployment, Terraform, and CI/CD
+
+Open-Inspect is deployed as **infrastructure-as-code from a single Terraform root module** (`terraform/environments/production`), with GitHub Actions driving plan-on-PR and auto-apply-on-main. There is no checked-in production `wrangler.toml` for the control plane — Worker configuration, bindings, secrets, cron triggers, queues, and schedules are all generated by Terraform, which also builds the Worker bundles, applies D1 migrations, builds sandbox base images/templates/snapshots, and provisions the Vercel or Cloudflare-hosted web app. The `terraform/README.md` is the authoritative operator reference; this page explains how the pieces fit together and what invariants operators must respect.
+
+The deployment is **single-tenant by design**: all users share one GitHub App installation and can reach any repository the App is installed on, so the guidance is to deploy behind org SSO/VPN, install the App only on intended repositories, and restrict sign-in with `ALLOWED_USERS` / `ALLOWED_EMAIL_DOMAINS` / `ALLOWED_EMAILS` / `ALLOWED_GITHUB_ORGS` (README security model; Terraform enforces an admission gate at plan time).
+
+## Deployment topology
+
+| Provider | What Terraform creates | Terraform support |
+| --- | --- | --- |
+| Cloudflare | Workers (control plane + optional Slack/GitHub/Linear bot workers), KV namespaces, D1 database + migrations, R2 media bucket, Queues (image-build finalization, Slack completion delivery, GitHub autofix) with dead-letter queues, custom domains/routes | Native provider (`cloudflare/cloudflare`, pinned `< 5.20.0`) |
+| Vercel (web) | Web project + environment variables when `web_platform = "vercel"` | Native provider (`vercel/vercel ~> 2.0`) |
+| Cloudflare (web) | OpenNext web Worker + `wrangler.production.toml` + custom domain when `web_platform = "cloudflare"` | Native provider + wrangler CLI |
+| Modal | Modal app + secrets via CLI wrapper when `sandbox_provider = "modal"` | `null_resource` + `local-exec` (no provider exists) |
+| Daytona | Seeded base snapshot when `sandbox_provider = "daytona"` | REST API wrapper script |
+| Vercel Sandboxes | Managed base-runtime snapshot when `sandbox_provider = "vercel"` | REST API wrapper script |
+| OpenComputer | Managed declarative template when `sandbox_provider = "opencomputer"` | REST API wrapper script |
+| E2B | Sandbox template when `sandbox_provider = "e2b"` | Template SDK wrapper script |
+
+<!-- openwiki: mermaid parse failed and this diagram was converted to a text fence so it does not break rendering. Fix the diagram source and restore the mermaid fence. Parser error: Heuristic: an unescaped angle bracket inside a label breaks rendering; rephrase the label. -->
+```text
+flowchart TD
+    GH["GitHub Actions on main"] -->|"terraform apply"| TF["production root module"]
+    TF --> CP["control-plane Worker<br/>open-inspect-control-plane-suffix"]
+    TF --> D1["D1 database + migrations"]
+    TF --> KV["KV namespaces"]
+    TF --> R2["R2 media bucket"]
+    TF --> Q["Queues + DLQs<br/>finalization / slack / autofix"]
+    TF --> WEBV["Vercel project (web_platform=vercel)"]
+    TF --> WEBC["OpenNext web Worker (web_platform=cloudflare)"]
+    TF --> DP["Sandbox data plane<br/>Modal / Daytona / Vercel / OpenComputer / E2B"]
+    CP -->|"service bindings"| BOT["slack-bot / github-bot / linear-bot Workers"]
+    CP -->|"SESSION binding"| DO["SessionDO Durable Object"]
+    CP -->|"HTTP + WebSocket"| WEB["Web app"]
+```
+
+## Terraform layout and lifecycle
+
+- `terraform/modules/` holds reusable modules: `cloudflare-worker` (native 3-resource pattern), `cloudflare-kv`, `vercel-project`, `vercel-sandbox-infra`, `modal-app`, `daytona-infra`, `opencomputer-infra`, `e2b-infra`.
+- `terraform/environments/production/` is the only root module; it is deliberately split by concern (`kv.tf`, `d1.tf`, `workers-*.tf`, `web-vercel.tf`, `web-cloudflare.tf`, `modal.tf`, `vercel.tf`, `e2b.tf`, `opencomputer.tf`, `daytona.tf`, `checks.tf`, `moved.tf`, `service-auth.tf`, ...) so each concern stays isolated while Terraform addresses remain stable. `moved.tf` records state moves so older `count`-less addresses migrate cleanly.
+- **State** lives in a Cloudflare R2 bucket (`open-inspect-terraform-state`, key `production/terraform.tfstate`) via the S3-compatible backend; credentials are passed with `-backend-config`, never committed. The backend requires R2 read/write keys plus an API token with Workers/KV/R2/D1/Queues **Edit** permissions (Workers Routes: Edit only if routes/custom domains are managed through Terraform).
+- **Provider pins**: Terraform `>= 1.14.0`; `cloudflare/cloudflare >= 5.16, < 5.20.0` (5.20.0 regressed Worker observability with `propagation_policy`); `vercel/vercel ~> 2.0`; plus `null`, `random`, `external`, `local`. The Vercel provider validates its API token **on init even when no Vercel resources exist**, so Cloudflare-only deployments must leave `vercel_api_token`/`vercel_team_id` unset to keep the built-in dummy defaults (`000000000000000000000000` / `unused`); CI supplies these same dummies for `web_platform = "cloudflare"`.
+- **Two-phase first deploy**: Durable Object class creation and service bindings need the target to exist first. Fresh deployments run `terraform apply` with `enable_durable_object_bindings = false` and `enable_service_bindings = false` (phase 1 creates workers + migrations), then set both to `true` and apply again (phase 2 attaches `SESSION` and service bindings). DO class **deletion** is different: it must run with bindings enabled (`enable_durable_object_bindings = true`) and a new migration tag; the `cloudflare-worker` module has a plan-time precondition that fails a deletion attempt with bindings disabled, because that version would drop every surviving DO binding.
+- All new material that Cloudflare requires ("add Queues: Edit to the token before any apply that provisions queues") is gated by apply-time failures, so upgrades surface missing permissions rather than silently skipping resources.
+
+## The production root module
+
+Everything is named with the `deployment_name` suffix (`locals.name_suffix`): workers `open-inspect-control-plane-<suffix>`, `open-inspect-web-<suffix>`, `open-inspect-slack-bot-<suffix>`, etc.; KV namespaces `open-inspect-session-index-<suffix>` (+ `-slack-`, `-github-`, `-linear-` when the bot is enabled); the D1 database `open-inspect-<suffix>`; the R2 media bucket `open-inspect-media-<suffix>`; queues `open-inspect-image-build-finalization-<suffix>` (+ `-dlq`), `open-inspect-slack-completion-<suffix>` (+ `-dlq`), `open-inspect-github-autofix-<suffix>` (+ `-dlq`). URLs derive from `cloudflare_worker_subdomain` (`control_plane_host = open-inspect-control-plane-<suffix>.<subdomain>.workers.dev`).
+
+### Control plane Worker
+
+`workers-control-plane.tf` builds the bundle (`null_resource` running `npm run build` in `packages/control-plane`) then deploys via the `cloudflare-worker` module:
+
+- **Bindings**: `REPOS_CACHE` KV, `DB` (D1), `MEDIA_BUCKET` (R2), queue **producer** bindings (`IMAGE_BUILD_FINALIZATION_QUEUE`, plus `AUTOFIX_QUEUE`/`AUTOFIX_DLQ` for read-only health metrics when the GitHub bot is enabled), service bindings `SLACK_BOT`/`LINEAR_BOT` when those bots are enabled, and the `SESSION` Durable Object binding.
+- **Plain-text bindings** carry access-control lists (`ALLOWED_USERS`, `ALLOWED_EMAIL_DOMAINS`, `ALLOWED_EMAILS`, `ALLOWED_GITHUB_ORGS`, `UNSAFE_ALLOW_ALL_USERS`), `WEB_APP_URL`, `WORKER_URL`, `DEPLOYMENT_NAME`, `APP_NAME`, `SANDBOX_PROVIDER`, `SANDBOX_INACTIVITY_TIMEOUT_MS`, and provider configuration (Modal workspace/env/suffix, Daytona URL/snapshot/target, OpenComputer URL/template, Vercel project/runtime/expiration, E2B URL/template/timeout/pause). A complete OAuth credential pair (GitHub client id+secret, Google client id+secret) is the provider-enablement declaration — partial pairs are rejected by variable validation, and the id goes in plain text while the secret is a secret binding.
+- **Secrets**: `BROWSER_AUTH_SECRET` (bound from the legacy `nextauth_secret` input so rotation is decoupled from the browser-auth cutover), `TOKEN_ENCRYPTION_KEY`, `REPO_SECRETS_ENCRYPTION_KEY`, `PROVIDER_ACCOUNTS_ENCRYPTION_KEY`, `IMAGE_CALLBACK_TOKEN_PEPPER`, per-service `SERVICE_AUTH_SECRET_<SERVICE>` keys for web/slack-bot/github-bot/linear-bot (generated by `random_password` in `service-auth.tf`), GitHub App credentials, OAuth client secrets, sandbox-provider credentials, and `SLACK_BOT_TOKEN`. `GITHUB_APP_PRIVATE_KEY` must be PKCS#8 (`BEGIN PRIVATE KEY`) or Web Crypto import fails.
+- **Cron triggers**: `["* * * * *", "7,37 * * * *", "23 * * * *"]` — must stay in sync with the scheduler, image-build scheduler, and abandoned-draft-sweep constants.
+- **Image-build finalization queue consumer**: batch_size 1, max_wait_time 1000 ms, max_concurrency 5, max_retries 12, retry_delay 15 s, with a dead-letter queue; the queue itself is created here because durable finalization needs Queues: Edit on the token.
+- **Observability**: each worker deploys with observability enabled at head sampling rate 1 (`invocation_logs = true`), which is what makes `scripts/cf-logs.ts` (Workers Telemetry API) able to search historical logs.
+
+### D1 and migrations
+
+`d1.tf` creates the database (`read_replication` disabled) and a `null_resource` that re-runs `bash scripts/d1-migrate.sh <db-name> terraform/d1/migrations` whenever the `sha256` of the sorted migration SQL files changes. Migrations live in `terraform/d1/migrations/0001_*.sql` … `0070_*.sql`; the script enforces `NNNN_description.sql` naming, rejects duplicate numeric prefixes, tracks applied versions in a `_schema_migrations` ledger table, and batches each migration with its ledger insert in one atomic D1 execute so a failed migration rolls back and a lost client response is safe to retry.
+
+### Web app — Vercel or Cloudflare/OpenNext
+
+- **`web_platform = "vercel"` (default)**: `web-vercel.tf` creates the project with monorepo settings (install command `cd ../.. && npm install && npm run build -w @open-inspect/shared`, build `next build`) **without** a `git_repository` — deploys happen through the separate `deploy-web.yml` GitHub Action. Environment variables: `CONTROL_PLANE_URL`, `NEXT_PUBLIC_WS_URL` (wss), `NEXT_PUBLIC_SANDBOX_PROVIDER`, `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_APP_ICON_URL` (production + preview), and the sensitive `SERVICE_AUTH_SECRET` (the web's sig1 key, generated in state). A `check "vercel_url_matches"` block fails the plan if Vercel assigned a different production URL than the expected `https://open-inspect-<suffix>.vercel.app` pattern, because browser-auth redirects and cross-service references would silently break.
+- **`web_platform = "cloudflare"` (OpenNext)**: `web-cloudflare.tf` builds with `npm run build:cloudflare -w @open-inspect/web` (inlining `NEXT_PUBLIC_*`), writes a generated `wrangler.production.toml` (worker name, `.open-next/worker.js`, `CONTROL_PLANE_WORKER` service binding to the control plane, `ASSETS` binding, `workers_dev` disabled when a custom domain is set), uploads the web's `SERVICE_AUTH_SECRET` via `scripts/wrangler-secrets.sh` (which also deletes retired `GITHUB_CLIENT_SECRET`/`GOOGLE_CLIENT_SECRET`/`NEXTAUTH_SECRET`), deploys with `wrangler deploy --config wrangler.production.toml`, and optionally attaches a custom domain. `NEXT_PUBLIC_*` changes require a fresh web build (Terraform rebuilds Cloudflare's automatically; Vercel needs a redeploy).
+
+### Bot workers
+
+When `enable_slack_bot` (default true), `enable_github_bot` (default false), `enable_linear_bot` (default false), the matching worker is deployed with its KV namespace, a `CONTROL_PLANE` service binding back to the control plane, `SERVICE_AUTH_SECRET` (= its own generated sig1 key), and provider credentials. Slack additionally gets a completion-delivery queue + consumer (DLQ, retries 1), and GitHub gets autofix queues (consumer attached to the **control plane** worker, retries 4). The Slack bot embeds the classifier credential chosen by `classification_model` — exactly one of `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` is bound (`classifier_secret_bindings` local) — and an Anthropic classifier reuses the deployment-wide `anthropic_api_key`, so existing deployments need no new variable; an OpenAI classifier requires `classification_openai_api_key` or validation fails closed.
+
+### Sandbox data planes
+
+- **Modal** (`sandbox_provider = "modal"`, default): `modal.tf` hashes `packages/modal-infra/src`, `packages/sandbox-runtime/src`, deploy scripts, `pyproject.toml`, and `uv.lock`; `modal-app` module creates secrets (`llm-api-keys`, `github-app`, `internal-api` with `ALLOWED_CONTROL_PLANE_HOSTS`) and deploys `deploy.py` via the Modal CLI, eagerly building the sandbox image (`uv run python deploy.py --build-sandbox-image`) before publishing endpoints.
+- **Daytona** (`daytona`): `daytona-infra` module builds a named base snapshot (seeded first by `python -m src.bootstrap --force` from `packages/daytona-infra`); the control plane talks to the Daytona REST API directly (no shim service).
+- **Vercel Sandboxes** (`vercel`): `vercel.tf` + `vercel-sandbox-infra` build a **managed base-runtime snapshot** — deterministically named `openinspect-base-<hash16>` — by creating a temp sandbox, uploading `packages/sandbox-runtime`, installing the runtime/tooling, snapshotting, and stopping it; the name is passed to the control plane as `VERCEL_BASE_SNAPSHOT_NAME`, which resolves it to the newest snapshot at spawn time. `vercel_base_snapshot_id` remains a manual fallback that skips managed builds. Session source precedence: prebuilt-image snapshot → manual base snapshot ID → managed base snapshot name. Like Daytona and E2B, Vercel does **not** auto-inject LLM keys — operators add them as global secrets in the web UI.
+- **OpenComputer** (`opencomputer`): `opencomputer-infra` builds a deterministic declarative template `openinspect-runtime-<hash16>` from a hash of `sandbox-runtime` + the builder (`build-template.ts`, package manifests, `package-lock.json`); the template name is bound as `OPENCOMPUTER_TEMPLATE`. Setting `opencomputer_template` pins a manual template and skips the managed build.
+- **E2B** (`e2b`): `e2b-infra` builds a template via the E2B Template SDK, keyed on a hash of `packages/e2b-infra` + `packages/sandbox-runtime/src`. Ordering is deliberately **worker-first** (`depends_on = [module.control_plane_worker]`): the new control plane boots the old launcher-bearing template fine, while an old control plane cannot boot a launcher-less template — so a failed template rebuild leaves a fully working system, at the cost of a brief 404 window on first enablement or `e2b_template_id` rotation.
+
+### Admission gates and plan-time checks
+
+`checks.tf` hard-fails plans that would deploy an unusable or unsafe configuration:
+
+- `access_control_gate`: at least one allowlist must be configured, or `unsafe_allow_all_users = true`.
+- `sign_in_provider_gate`: at least one complete OAuth pair; GitHub sign-in needs a GitHub-specific or provider-neutral admission rule; Google sign-in needs provider-neutral admission (email allowlist or explicit unsafe allow-all) because GitHub usernames/orgs cannot admit Google identities.
+- `cloudflare_custom_domain_gate`: a custom domain requires `web_platform = "cloudflare"` plus a non-empty `cloudflare_zone_id` (otherwise it would be silently ignored).
+- `vercel_url_matches` (above) and variable validations for every provider (e.g. `modal_token_id` required when provider is modal, `e2b_api_key` when e2b, `github_webhook_secret`/`github_bot_username` when the GitHub bot is enabled, `classification_openai_api_key` when an OpenAI classifier is enabled with a bot). Sensitive values are marked `sensitive = true`, and generated per-service keys (`random_password`) never enter `terraform.tfvars`.
+
+## CI/CD: GitHub Actions
+
+Three workflows deploy on **push to `main` only** (path-filtered), plus scheduled/manual updates:
+
+- **`.github/workflows/terraform.yml`** — the primary deploy. On PRs touching infra/worker/web paths it runs `check-secrets` (skips plan when `CLOUDFLARE_API_TOKEN`/`R2_ACCESS_KEY_ID` are unset, e.g. external forks), then `validate` (`terraform fmt -check -recursive`, `terraform init -backend=false`, `terraform validate`, and `terraform test` on the auth-provider and classifier suites with mocked providers), then `plan` with a PR comment (plan kept to 60 KB, failure still posts the comment, then fails the job). On pushes to `main` (or `workflow_dispatch`), the `apply` job (environment: `production`) runs `npm ci`, builds the worker packages, `uv sync --frozen` for Modal, `terraform init` against R2, and `terraform apply -auto-approve` with every variable sourced from repository secrets (`TF_VAR_*`). Terraform is pinned to `TF_VERSION = 1.14.8`; concurrency is grouped per-ref with `cancel-in-progress: false` so Terraform operations are never cancelled mid-apply.
+- **SchedulerDO retirement staging**: before plan and apply, the workflow runs `terraform state pull` and, **only when the stored `cloudflare_worker_version` migration tag is still `v2`**, writes `scheduler-do-retirement.auto.tfvars.json` (`control_plane_migration_tag=v3`, `migration_old_tag=v2`, `control_plane_deleted_classes=["SchedulerDO"]`). The release-specific deletion is therefore not a permanent default for fresh deployments; a missing/absent state is validly treated as "not v2" without silently skipping.
+- **`.github/workflows/deploy-web.yml`** — deploys the Vercel web app when `web_platform = "vercel"`: skips entirely when `WEB_PLATFORM` is set to something else or Vercel secrets are missing; otherwise `vercel pull --environment=production`, `vercel build --prod`, `vercel deploy --prebuilt --prod` with **Vercel CLI pinned to 58.4.0**. (When `web_platform = "cloudflare"`, the web is deployed by the Terraform workflow; dummy Vercel credentials then satisfy the provider's init validation.)
+- **`.github/workflows/ci.yml`** (TypeScript lint/format/knip/typecheck/build/test, control-plane integration sharded 1/2 + 2/2) and **`.github/workflows/ci-python.yml`** (ruff + pytest for sandbox-runtime/modal-infra/e2b-infra/daytona-infra) run on PRs and pushes for non-deploy validation; `openwiki-update.yml` re-documents the repo daily and opens an `openwiki/update` PR.
+
+Required repository secrets are enumerated in `terraform/README.md` and `docs/GETTING_STARTED.md` Step 10: Cloudflare token/account/subdomain + R2 keys, Vercel (web) and Vercel sandbox credentials, Modal token/workspace/secret, sandbox provider credentials, GitHub App id/key/installation (PKCS#8), OAuth pairs, Slack bot token/signing secret, GitHub bot webhook secret/username, Linear client id/secret/webhook, `ANTHROPIC_API_KEY`, `CLASSIFICATION_OPENAI_API_KEY`, the three encryption keys, `NEXTAUTH_SECRET` (legacy browser-auth name), `ALLOWED_*` access lists, `DEPLOYMENT_NAME`, `WEB_PLATFORM`, `SANDBOX_PROVIDER`, `ENABLE_*` toggles, `APP_NAME`/`APP_ICON_URL`, and `ENABLE_DURABLE_OBJECT_BINDINGS` (defaults to `true`; set `false` for CI phase-1 deploys). `CLASSIFICATION_MODEL` is an Actions **variable**, not a secret.
+
+## The provider-account encryption key
+
+Provider-account credentials (model subscriptions stored through Settings > Provider Accounts) are encrypted under a **dedicated key** that Terraform generates by default (`random_bytes.provider_accounts_encryption_key`, base64 32 bytes) and persists in remote state — the worker binds it as `PROVIDER_ACCOUNTS_ENCRYPTION_KEY`. Operators may supply an existing key via `provider_accounts_encryption_key` / `PROVIDER_ACCOUNTS_ENCRYPTION_KEY` to survive upgrades. **Changing the key makes stored provider credentials unreadable**, so the input must stay stable after credentials are stored, and the remote Terraform state is the recovery source for a generated key — back it up. `service-auth.tf` generates the per-service sig1 keys and the image-build callback pepper the same way (state-owned, never operator-supplied).
+
+## D1 migration mechanics
+
+`scripts/d1-migrate.sh` is the single migration runner (local and CI):
+
+1. Validates every file is `NNNN_description.sql` and that no numeric prefix repeats — duplicate prefixes would mean one migration is silently skipped forever by the `_schema_migrations` version key.
+2. Ensures the `_schema_migrations` ledger exists, reads applied `(version, name)` pairs, and skips confirmed files; a renumbered file colliding with an applied version is a hard error.
+3. Appends the ledger `INSERT` to each pending migration file and executes the combined SQL in **one** `wrangler d1 execute --remote --file`, so migration + ledger row are atomic and idempotent under retry.
+
+Terraform triggers this via `null_resource.d1_migrations` keyed on the migrations' content hash (plus the D1 id), so adding or editing `terraform/d1/migrations/*.sql` re-runs it on the next apply.
+
+## Operational scripts
+
+- `scripts/cf-logs.ts` — fetches historical Worker logs through the Workers Observability Telemetry Query API, filtered by session id / request id / trace id / free text / level, with JSON output for LLM debugging (`bun scripts/cf-logs.ts --session <id> --json`).
+- `scripts/wrangler-secrets.sh` — uploads a worker's `SERVICE_AUTH_SECRET` and deletes retired web-auth secrets (`GITHUB_CLIENT_SECRET`, `GOOGLE_CLIENT_SECRET`, `NEXTAUTH_SECRET`); used by the Cloudflare web deployment.
+- `scripts/merge-split-users.ts` — converges a split canonical user pair (issue #1290) across identities, sessions, automations, SCM tokens, and read states; dry-run by default, `--execute` to apply, idempotent re-runs.
+- `scripts/d1-migrate.sh` (above); `scripts/lint-complexity.*` are CI-only gatekeepers.
+
+## Verification
+
+After `terraform apply`, `terraform output verification_commands` prints the canonical checks: control-plane `/health`, sandbox-backend health (Modal exposes `https://<workspace[-suffix]>--open-inspect-api-health.modal.run`; Daytona/Vercel/OpenComputer/E2B talk to their provider APIs directly, so there is no shim health URL), web URL `curl -I`, and an authenticated endpoint that must return 401 (`/sessions` unauthenticated). `outputs.tf` also exposes worker names/URLs, the Slack events/interactions URLs, the Linear webhook + OAuth authorize URLs, the D1 id, KV ids, and `web_app_url` (which uses the real Vercel production URL when on Vercel, not the predicted pattern).
+
+## Invariants and failure semantics
+
+- **First apply must be two-phase** (bindings off, then on); DO class deletion must be single-phase with bindings on and a new migration tag — the module preconditions prevent the dangerous deletion-without-bindings arrangement.
+- **D1 is authoritative for global state; Durable Objects own live session state.** Terraform deploys workers before/after migrations in the order encoded in `depends_on` (e.g. E2B worker-first, control plane depends on `null_resource.d1_migrations`), and DO init compensations handle partial failure at runtime.
+- **Every queue consumer has a DLQ and tuned retry settings** (finalization retries 12×15 s; Slack completion 1×15 s; GitHub autofix 4×30 s). Queue producer bindings on the control plane are read-only for health metrics; Autofix production is owned by the GitHub bot worker.
+- **Cloudflare token permission drift fails loudly**: an apply that must create queues fails if the token lacks Queues: Edit; the docs require upgrading the token before the apply, not after.
+- **Never commit `terraform.tfvars`/`backend.tfvars`/state**; rotate secrets by editing tfvars and re-applying; review plan output before local applies.
+- CI **never cancels an in-flight Terraform apply** (concurrency group, `cancel-in-progress: false`), and the plan/apply steps tolerate unset secrets only by skipping the whole job (external contributors), not by degrading the plan.
+
+## Adding environments
+
+Copy `environments/production` to `environments/staging`, change the backend key (`staging/terraform.tfstate`), set `environment = "staging"`, init with backend config, and apply. All resources are suffixed by `deployment_name`, so multiple environments can coexist in one account as long as names differ (Vercel URLs are globally unique, hence the guidance to use a personal/company-unique `deployment_name`).
+
+## Focused tests
+
+- `terraform/environments/production/tests/auth_provider_configuration.tftest.hcl` — mocked-provider plan tests asserting OAuth pair enablement wiring (GitHub-only binds only `GITHUB_CLIENT_ID`/`GITHUB_CLIENT_SECRET`; Google-only, combined), `PROVIDER_ACCOUNTS_ENCRYPTION_KEY` presence, operator key passthrough vs 32-byte generated key, rejection of malformed/31-byte/33-byte keys, and Vercel URL wiring.
+- `terraform/environments/production/tests/classifier_provider.tftest.hcl` — asserts the default Anthropic classifier binds only `ANTHROPIC_API_KEY` (backwards compatible, no new variable), an OpenAI `classification_model` binds only `OPENAI_API_KEY`, both bots receive `CLASSIFICATION_MODEL`, and Slack setup outputs expose worker/events/interactions URLs.
+- Both suites run inside `terraform validate` CI; the workflows' broader TypeScript/Python CI covers the deployed packages, and control-plane integration tests run under Miniflare/workerd with real D1.
+
+## Related pages
+
+- [/openwiki/architecture/control-plane.md](/openwiki/architecture/control-plane.md) — the deployed Worker's entrypoints, router, auth, and bindings.
+- [/openwiki/architecture/persistence.md](/openwiki/architecture/persistence.md) — D1 schema, migration history, R2/KV roles.
+- [/openwiki/architecture/sandbox-providers.md](/openwiki/architecture/sandbox-providers.md) — provider capabilities and lifecycle that the data-plane modules serve.
+- [/openwiki/operations/logging-debugging.md](/openwiki/operations/logging-debugging.md) — Worker log retrieval and debugging workflows.

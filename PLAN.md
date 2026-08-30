@@ -1,6 +1,6 @@
 # OpenWiki-Bench — plan to extract a standalone benchmark project
 
-Status: draft, 2026-08-30. Source of the first data: `background-agents/openwiki-bench/`
+Status: framework and historical evaluation complete; repeated run matrix blocked, 2026-08-30. Source of the first data: `background-agents/openwiki-bench/`
 (5 runs, repo `background-agents` @ `32470cc2`, openwiki 0.4.3).
 
 ## 1. Why this exists
@@ -8,8 +8,9 @@ Status: draft, 2026-08-30. Source of the first data: `background-agents/openwiki
 Public coding benchmarks measure short, self-contained, often-memorized tasks. They do not
 measure what actually decides whether an agent is useful on a real codebase: sustaining a
 multi-hour task, decomposing it, keeping ground truth, calling tools without thrashing, and
-finishing. OpenWiki `--init` on a real repository is naturally that task — 20-40 dependent
-subtasks, hours of wall time, no single correct answer, and a machine-checkable output.
+finishing. An OpenCode agent driving OpenWiki's MCP generation loop on a real repository is
+naturally that task — 20-40 dependent subtasks, hours of wall time, no single correct answer,
+and a machine-checkable output.
 
 The bench measures **wiki quality and the process that produced it**, across three axes the
 user cares about: reasoning, code understanding, tool calling.
@@ -36,14 +37,13 @@ Concrete gaps this plan closes:
 | Correctness | anecdotes ("500 after 200") | sampled contradiction rate with CI |
 | Cost | absent | $ per finished page / per verified claim |
 | Tool calls | absent | calls per page, failed-call %, redundant-read % |
-| Reliability | prose ("3 attempts") | deaths, resumes, completion rate over 3 seeds |
-| Variance | n=1 | n=3 seeds, per-axis spread |
+| Reliability | prose ("3 attempts") | deaths, resumes, completion rate over 3 trials |
+| Variance | n=1 | n=3 trials, per-axis spread |
 
 ## 3. Target project
 
-Name: `openwiki-bench`. New repo, separate from both `openwiki` (the tool) and
-`background-agents` (the subject). UNCONFIRMED: remote `manikanda-kumar/openwiki-bench`,
-public vs private.
+Name: `openwiki-bench`. Separate from both `openwiki` (the tool) and
+`background-agents` (the subject). Remote: public `manikanda-kumar/openwiki-bench`.
 
 Node + TypeScript, ESM, no framework. Scripts are the product; the write-up is generated on
 top of the scores, not the other way round.
@@ -79,6 +79,38 @@ the first write-up becomes a dated artifact, not the live one. ~5.3 MB, safe to 
 
 The subject repo is NOT vendored. Scoring needs the source at the pinned SHA; the CLI clones
 or takes `--repo <path>` and asserts `git rev-parse HEAD` matches `subjects/*.json`.
+
+### 3.1 Official 45-run matrix
+
+The official matrix is three OpenCode Go models × three independent trials × five pinned
+repositories = **45 runs**. “Trial” is the statistical unit; the existing `seed` field is its
+stable identifier and does not imply that the provider offers deterministic seeded sampling.
+
+Every contestant uses the **same OpenCode agent runtime**, OpenWiki MCP server/version,
+generation prompt, ignore policy, tool permissions, retry/resume policy, and telemetry proxy.
+This isolates model behavior better than mixing native OpenWiki, Grok host, and OpenCode host
+runtimes.
+
+| System ID | OpenCode Go model | Agent runtime | Generation path |
+| --- | --- | --- | --- |
+| `deepseek-v4-flash-opencode` | `opencode-go/deepseek-v4-flash` | OpenCode | OpenWiki MCP |
+| `glm-5.3-flash-opencode` | `opencode-go/glm-5.3-flash` | OpenCode | OpenWiki MCP |
+| `qwen3.8-flash-opencode` | `opencode-go/qwen3.8-flash` | OpenCode | OpenWiki MCP |
+
+The repositories deliberately vary language, architecture, maturity, and navigation pressure:
+
+| Subject ID | Repository and pin | Capability axis | Quality profile |
+| --- | --- | --- | --- |
+| `cloudflare-os` | `cloudflare/cloudflare-os@af56a9d79d8a60ebed8dabb11b075cd88efc1b87` | TypeScript distributed control plane, capabilities, RPC, Durable Objects | highly structured monorepo |
+| `smallstep-cli` | `smallstep/cli@f7b2bd24a4a9519b13c91dc37dae49d36b77068d` | Go CLI, certificates, OAuth/JWT/SSH, platform behavior | mature with historical complexity |
+| `extractthinker` | `enoch3712/ExtractThinker@66920c9af1b74bd20731ed7ac1cbe4794a0da21b` | Python document pipelines, loaders, extraction and classification | integration-heavy and uneven |
+| `celld` | `denoland/celld@a52f9905425bc41134d817694bdc2c50bcc5e856` | Rust ownership, replication, durability and concurrency | clean logic/effect separation |
+| `pi-desktop` | `DLYZZT/pi-desktop@08502be45f4f8c22da5ad563c9b6f0e37315cc97` | React/Electron process isolation, IPC, lifecycle and state | modern, defensive, fast-moving |
+
+All five were selected from the owner's GitHub stars after source-level comparison. Public
+popularity and existing documentation remain contamination risks and are recorded per subject.
+`background-agents` remains the historical pilot dataset, not an official matrix subject;
+`web-recap` is excluded because it is small, external-state-heavy, and already benchmark-exposed.
 
 ## 4. Metrics
 
@@ -129,9 +161,14 @@ Six axes, scored 0-4 **per page**, anchors written out in `rubric.md`:
 Wiki score = mean of page scores, penalised by `coverage` and `completeness`.
 
 Protocol: strip model identity and shuffle directory labels before judging; two judges plus a
-tiebreak; never let a contestant judge its own bench. Judges: Fable 5 primary, Opus 4.8
-second, gpt-5.5 (via `codex exec -s read-only`) as an independent third. Report Cohen's kappa
-— below ~0.6 the anchors are broken and rankings are not publishable until they are fixed.
+tiebreak; never let a contestant judge its own bench. The official judge transport is **Amp**,
+not direct OpenRouter calls: Fable 5 primary, Opus 4.8 secondary, and GPT-5.5 as disagreement
+tiebreaker and correctness-probe judge. Run each blind task in a fresh isolated Amp thread with
+no contestant repository/project attached, import only its JSON response, and record thread ID,
+Amp mode, resolved model/version, and execution time in the private judge manifest. Preflight
+exact model availability before the matrix; never silently accept Amp routing to a replacement
+model. Report Cohen's kappa — below ~0.6 the anchors are broken and rankings are not publishable
+until they are fixed.
 
 Cost control: judge a fixed 8-page stratified subset per run (quickstart, overview,
 control-plane, plus five random), and run the full contradiction probe on those pages only.
@@ -141,14 +178,10 @@ control-plane, plus five random), and run the full contradiction probe on those 
 OpenWiki records no usage: `src/telemetry/` captures command, provider, outcome and an error
 category only, by design. Cost must be captured outside the tool.
 
-- Native `--init` runs: OpenWiki is LangChain-based, and `LANGCHAIN_TRACING_V2` is already in
-  the env passthrough (`openwiki/src/config/env.ts`). Setting
-  `LANGSMITH_TRACING=true LANGSMITH_PROJECT=openwiki-bench-<model>-<seed>` yields per-run
-  tokens, tool calls, tool errors, latency and retries for free.
-- Host-agent runs (Grok Build, OpenCode + MCP): LangSmith sees nothing. Route
-  `OPENAI_COMPATIBLE_BASE_URL` through a local LiteLLM proxy that appends usage to JSONL.
-  Point native runs at the same proxy so both paths land in one comparable ledger and no
-  number depends on a provider dashboard.
+- Official OpenCode + OpenWiki MCP runs do not expose native OpenWiki LangSmith traces. Route
+  OpenCode Go inference through a usage-recording proxy or normalize OpenCode's own ledger to
+  JSONL. Capture OpenCode tool events separately so model tokens, MCP calls, failures, latency,
+  retries, and repeated reads land in one comparable per-trial record.
 
 Derived:
 
@@ -200,53 +233,56 @@ and `plan.summary.json`; mark anything not recoverable as `null`, never guessed.
   OpenWiki duplicates its managed markers. (Learned on `background-agents`.)
 - Identical prompt and identical ignore file across models; record both hashes.
 - One writer per page. No ensemble merges — merged output is unattributable.
-- Runtime is not comparable across native and host-agent paths; cost per unit of output is.
+- Freeze one non-interactive OpenCode invocation, OpenCode version, OpenWiki MCP version,
+  permissions, max turns, timeout, and resume procedure before trial 0.
+- OpenCode must use only the selected `opencode-go/*` model for the entire trial; no planner,
+  writer, or fallback model substitution.
 
 ## 7. Validity
 
 - Contamination: prefer private or post-cutoff subjects with no public wiki. The bench's own
   argument collapses if the subject is memorized, so state the contamination case explicitly
   per subject in `subjects/*.json`.
-- n: three seeds per model per subject. Report per-axis variance; a one-rank gap inside
-  variance is not a gap. The current host-Qwen-over-DeepSeek call is explicitly narrow and is
-  exactly the claim seeds will confirm or dissolve.
-- Second subject with a different shape (the first is Cloudflare Workers + Durable Objects).
+- n: three independent trials per system per subject across all five subjects. Report per-axis
+  variance, worst-subject performance, and cross-subject spread; a one-rank gap inside variance
+  is not a gap.
+- Macro-average subjects with equal weight so the largest repository cannot dominate.
 - Judge bias: blind, multi-judge, kappa reported, contestants excluded.
 
 ## 8. Phases
 
-**P0 — reproducible numbers from data already on disk.** Bootstrap repo, migrate the five
+**P0 — complete.** Bootstrap repo, migrate the five
 runs, backfill `run.json`, write `grounding.ts` and `structure.ts` plus `bench score`. No LLM
 spend. Exit: `results/scores.json` regenerates from a clean clone.
 
-**P1 — scoring that survives disagreement.** `rubric.md`, `judge.ts` (blind, multi-judge,
-kappa), `probe.ts` contradiction rate. Exit: kappa >= 0.6 and a leaderboard whose ordering is
-traceable to per-page scores.
+**P1 — complete pilot, official Amp transport pending.** `rubric.md`, `judge.ts` (blind,
+multi-judge, kappa), and `probe.ts` contradiction rate are implemented and the historical runs
+were judged through OpenRouter. The ordering is traceable to per-page scores, but primary-judge
+κ = 0.476 misses the 0.6 gate. Before official runs, revise the weak taxonomy/style anchors and
+replace direct-provider judging with isolated Amp threads while preserving the JSON contracts.
 
-**P2 — economics and tool calls.** LangSmith on for native runs, LiteLLM proxy for host-agent
-runs, `cost.ts`, derived per-page and per-claim economics. Exit: every future run has a cost
-row; the five existing runs stay `null` and are labelled as such.
+**P2 — parser complete; official capture pending.** `cost.ts` and derived per-page/per-claim
+economics are implemented. Freeze OpenCode Go usage and tool-event capture before the matrix;
+the five historical runs stay `null` and are labelled as such.
 
-**P3 — statistical weight.** Three seeds per model, second subject, variance reported,
-`results/COMPARISON.md` generated from `leaderboard.json`.
+**P3 — harness complete; 45-run matrix outstanding.** Five repositories are selected and pinned.
+The runner captures immutable artifacts and telemetry, and the leaderboard enforces three trials
+on all five subjects. The historical dataset cannot satisfy this gate retroactively because its
+prompt and telemetry are unavailable.
 
 Do P2's LangSmith switch before the next run regardless of phase order — that run's cost data
 is unrecoverable afterwards.
 
-## 9. Immediate next actions
+## 9. Remaining execution work
 
-1. Create the repo and the layout in section 3; migrate the five runs; commit.
-2. Backfill five `run.json` files from README plus `plan.summary.json`.
-3. Implement `bench score` (grounding + structure) and publish the first machine table.
-4. Write `rubric.md` before any further judging so the existing prose verdict can be re-derived
-   rather than trusted.
+1. Revise and re-freeze rubric anchors before another judge pass; current primary-judge κ = 0.476.
+2. Freeze and smoke-test isolated Amp judging with exact Fable 5, Opus 4.8, and GPT-5.5 model resolution.
+3. Freeze and smoke-test the non-interactive OpenCode + OpenWiki MCP invocation and usage/tool-event capture.
+4. Execute trials 0–2 for all three OpenCode Go systems on all five pinned subjects (45 runs).
 
-## 10. Open questions
+## 10. Resolved design questions
 
-- Repo visibility and remote name. UNCONFIRMED.
-- Whether `openwiki-bench` vendors OpenWiki's claim resolver, imports it as a dependency, or
-  reimplements the `repo-lines-v1` check. Importing keeps the definition of "grounded" owned
-  by the tool under test, which is a bias worth naming.
-- Second subject repo. UNCONFIRMED.
-- Whether the fork's split-model routing (DeepSeek planner + host Qwen writer + Grok fallback)
-  becomes a bench contestant in its own right.
+- The benchmark reimplements and parity-tests OpenWiki's small `repo-lines-v1` hash contract rather than importing the full application.
+- The official subjects are `cloudflare-os`, `smallstep-cli`, `extractthinker`, `celld`, and `pi-desktop` at the pins in section 3.1.
+- The official contestants are DeepSeek V4 Flash, GLM 5.3 Flash, and Qwen 3.8 Flash from OpenCode Go, all driven by the same OpenCode agent through OpenWiki MCP.
+- Split-model routing is a distinct agent system if added; it is never merged into a component model's row.

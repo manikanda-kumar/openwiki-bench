@@ -1,0 +1,896 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e1f2e30cb645670e64a2afbb4919fcbf5cacf38640a5ffb19774b94ce2c13cab",
+  "claims": [
+    {
+      "id": "claim_643d5b1244874aa7beef5f1f04c88b1f",
+      "statement": "Open-Inspect state splits across two SQLite databases: shared D1 (`env.DB`) holds the cross-session system of record (sessions index, environments, automations, image builds, secrets, skills, users, model-provider accounts), while each Session Durable Object owns an embedded SQLite database holding hot session state (participants, messages, events, artifacts, sandbox, per-repo git state); D1 is accessed via the async `SqlDatabase` port and the DO's `SqlStorage` is a deliberately separate synchronous engine.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/README.md#L20-L46",
+          "version": "repo-lines-v1:sha256:7ce6a59f8a0075fd861331c0dc86f63272b7989077bc33855173c130ca0e197a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3YTc1Nzk5NzNmYjA2ZGRhM2Y3MGMyMjM4YzQyMWExZTAwZGYxNjIxMGRlMzI2N2RiYWE4MmQ0YWU2ZjYyZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0YWE0ZDA1M2VmNzMwODk2YTc3MTFkZmU1YzBjNTNmZWE0MDM5MDVhZDVhMWMzNjY0MDdjNWVlMmVjZWNiNWEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/sql-database.ts#L18-L21",
+          "version": "repo-lines-v1:sha256:f1f5c3704a57052855362d9fda2d00e6639a43123adcc600a41ab6c1ee8dfffa:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FhMzI3YjM2NWU2NmI4MDYwNjE1NzcwMDFhOTliNzlmMWZhNjE4Mjg5ZTU5ZTMxM2IyM2Y4OTM0YmY5YjlhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGEyZWU3ZTBhY2IxMmMyNTI0ZWRjMzliNjIzN2Y3YTJmNjUwMGYyZTE1MzFkNjZhM2ZkZjE5ZTRiZDg1ODI3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmM1OWE4OTQ4NjBjYzZkZGUyZWQ1MDRiZjRkMGU3NDY5NThkNzU1NzQyM2ZlNGY0ZDgwYWVlZGJhOGE3YWZhNCJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/sql-storage.ts#L1-L13",
+          "version": "repo-lines-v1:sha256:600bf3a2c9f04b04e5993a56276b57d64126dcca3896383937fdf80cdc48ad65:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwNTRlZWY2MDQ3OTViYWNkMzM3NTRiM2UyZjE4YTg1ZDUyNWU1ZmIzZWUwMTlhMTg0NTAyNjVlODJiYTgxYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYWFjNzk3NmFhM2JiYjdjNTBhZDhmZTlmMTJkNDVlM2EzNDk2MmYwNzAzNWI1MWFjYWQzZmUxNWEzMGQ2ODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf08e051194843a5a3da9e93db3442b1",
+      "statement": "`SqlDatabase` (`src/db/sql-database.ts`) is the engine-neutral port all shared-state stores are built on: `D1Database` satisfies it structurally (compile-time asserted, no runtime wrapper), `batch()` must execute as a single atomic transaction with positional results, and `meta.changes` is a required field that store call sites (CAS conflict detection, guarded transitions, insert-vs-update detection) gate correctness on.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/sql-database.ts#L23-L75",
+          "version": "repo-lines-v1:sha256:7c516c37b7b881d0eab4f739067914c4fdb92b0319f41817d89a5c92ac4eb757:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0YzZmMWE2NjU0YjczMjQwYWY4ZWUxMjRiODViZmJlNTA4OGRhNWI5ZmJiNjI4OTNjYzhkZWI0ZTQ0MDkwMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1ZjkzMmUxM2MyNmM1YjY1NWEwMTJmMTBmYWU1YWE1MDZhNTBiZDE0OTFjNTM5MzZmZjRkNmE5MmE4YTFkMTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjMjRlZmNiMDU5YjIyY2VkYTE1ZTNmMGJjZDIyZWJkNDBmYThkYjlhM2M5YzExNDY0YmE1Yjg5MTMzODA1ZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d4e4b1c5e753442fb45a9a9116625461",
+      "statement": "D1 SQL access is organized as per-aggregate stores in `src/db/` (SessionIndexStore, EnvironmentStore, AutomationStore, ImageBuildStore, SkillStore, UserStore, the secrets stores, etc.), each taking a `SqlDatabase`, keeping snake_case rows in the database and camelCase types at the API boundary; the router injects `instrumentD1(env.DB, metrics)`, a transparent wrapper that records per-query timing and rows read/written into the request's wide event.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1-L23",
+          "version": "repo-lines-v1:sha256:43cd04ef3ae0c51bcb7143fb8a4d1ec3cc5b50ab0780891588ae38f5ffb991e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NGU0ZTczMzM5NDI0MDY4YjhjOGM1ZjMxOTM3MWE0ZmRiZTcwZDkxNDBmMjEyNTY4YzhhOWQ5NjgyMzQ0ZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyZDY5YTk1ZmQ5NDhkN2Q0NDVkMDg4NGMyMzMxODY1MGMzYTE1ODU5MzEwZDJlZmU1OWViZTRhMzY0MmFiZDAifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/instrumented-d1.ts#L1-L11",
+          "version": "repo-lines-v1:sha256:b0393bbadeb5aa1abeab6f34ccbc07170c87e9861f04b13f497c6e25de87dc83:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MmE0MjkzODJiMmUxNDcxOGUwZTM3YjA1NzBhOGExNzAyOTkxZmNkODQ5OGNkODQwNjBhOGJmNGYwNTAxN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzOWUyY2ZiYzVkMGRmNDMzZWM1MzQ0MzQ3YWVhMTA3MDc4MWVlMDAzNjBjZmQ0NWQzNTdmNDkzNjFjOWNmMTIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/components.ts#L284-L289",
+          "version": "repo-lines-v1:sha256:16bdca90e9379a0a01204aab85fb1f32b8503d61a1be7b7c586bea053da35c34:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWVkMDVjNzE0OTRmNDg4OWFjYzBhZWY1OTdiM2ZlNGM1Mzg3MWU3NWYwYTQ3MDQyY2JkYjViYzE2ZTE3ZWVmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzg4MjRmZGIwYTAwMDczMjQyMjI1ZDMwMTBjYTMyNGM2YTgzMzM3YzJlZjMxMjExYzFhOTU3ODdmYTY3Y2EzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTVlYTU1ZDkwOTlkNjhiMWE3MTMyMjc2NDUxNmU5Njk4NWFlZmU1NDZlODQyYmVkMDZjZjAwY2YwMzMwZmIwNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjhmMTg2YWJlOGJhNDgzZjRlMzM3MDg2MjllOTgyNTNkZWFjZjZiYTYzNGY3MGI4OTAwY2YyNWNmMzdkMzYzOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f5c4268eeb9449e92fb1b0f52b1a643",
+      "statement": "D1 migrations live in `terraform/d1/migrations/` as `NNNN_description.sql` files (numeric prefix = tracked version) and are applied by `scripts/d1-migrate.sh <database-name>`: it fails fast on prefix-less filenames and duplicate prefixes, maintains a `_schema_migrations (version, name, applied_at)` ledger, rejects a version recorded under a different filename, and submits each pending migration plus its ledger INSERT as one `wrangler d1 execute --remote --file` call so a failed migration rolls back and a lost response is safely retryable.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/d1-migrate.sh#L10-L43",
+          "version": "repo-lines-v1:sha256:622a77d1dc165bdfc976cc8b02298ca62093be942df58a9159b84e6dd49bf340:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkZTljOWJlOTEwZjI4MWM3YTkxODJiNjIyMGNhYjc5MTA4YzdmMjBkYWNjZDU3MGNlOWRmOTM5ZWI5NmNlZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxYmViZDAzYTdmOTU2OGQwYzg2NWRmMTQxMDU3MDQ2NjQxYzhhNjdjMzIzZjQ4OTMyZjFlZTFlY2RmNmI1NmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmNThmMTY0NDE5NzU3NTgyNmVmNGU3YzQ0NTk1ZGU2OTI0Zjg4YzRjYjhiMmZmMTYzOTc1YzJmYzQ5MDQxZmIifQ"
+        },
+        {
+          "resource": "repo://scripts/d1-migrate.sh#L64-L106",
+          "version": "repo-lines-v1:sha256:804b04c4749a977e9bdbd3e22f378fa067bd61da41ea55adb72e155f1fd2329d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkZDQ1YzQwZjY5MzI2YjVkNGRmYzNmODFjNDc3MzA3NTY3ZWQ4NjJjODZkNDkyOWIxZjU2YjM3Njc0YmM3YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhYjFkMmY0YzAyZDg0ODExZjU5MDM0MmU1ZjIyNjJhNTc3NTVhMjdiMjY0MDYwZGI0MDA4ZWNlOWVlOTBiNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmZjFkYjkwNmM4MWZlNTAxYjcxM2RkNjg2MTM3NjBmMmNkNzQ1NGRjZTUzYWZjZTQwOGY3MDVhY2ExZmRmODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2000a39def1641dca4947be8086cb6ea",
+      "statement": "Terraform drives migration application: `terraform/environments/production/d1.tf` declares a `null_resource` whose trigger is the sha256 over the sorted migration file set, so `terraform apply` re-runs `d1-migrate.sh` whenever any migration file changes, and the D1 database is created with read replication disabled.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/environments/production/d1.tf#L5-L33",
+          "version": "repo-lines-v1:sha256:c8ffb86f34df4018709d2bf5d06f96dd2ed78d8af5d5e3eca328008d43604790:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmYTFjMzY1YjgwYjI1ZjlkNTNjNjhmM2ZmODE2ZGU4OTA3ZWUzZTQ0MmVkNDE3YzdhOWVmYmFlNWMzMTk2NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxN2UwMjkxZmY5MTkxMGQxMjE4ZWU1M2Q0MjMwMjE0ODUzNzBlOGY2YTJkNmM3ODgxZmJiMzU4N2MzZmQzMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_195e1a7d6c7a4c7b86ab88c9cf1d31ac",
+      "statement": "Control-plane integration tests apply the real D1 migrations automatically: `vitest.integration.config.ts` loads `terraform/d1/migrations` with `readD1Migrations()` into a `TEST_MIGRATIONS` binding, and the setup file `test/integration/apply-migrations.ts` calls `applyD1Migrations(env.DB, env.TEST_MIGRATIONS)` before any test runs — so a new table needs both a migration file and store updates, because store-only changes pass typecheck but fail at runtime against the migrated D1.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/test/integration/apply-migrations.ts#L1-L3",
+          "version": "repo-lines-v1:sha256:dbd4619ccc0c98d49c7509e61e21a264942b89ed75cf15f02f2529ce4609913e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTIyMzM4NzRiM2M0NTQxZDNkMzU3MzQ2NDk2MzcwMDdjODAyNWJkNzU4YmVlYjZiNzg0NmQxOTg2ODI1NDZkYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIyMDNkZWI3OTFhMmQwZTgxZWFiZmQ1MWJkMmFhNjgyZTNhYzBlYWEyZDU5ZDVhMTkzZWFkMmY3OGRmOTkyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/vitest.integration.config.ts#L145-L153",
+          "version": "repo-lines-v1:sha256:feb4b5c0ac5aa3aa62b4524d799112804d148fb0c2c4326eaa5f5a92bd6b0a91:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRlNjUzYmZlNjE1M2Q0NjJmNzVkM2Q3MDQwYTI1NjhmNWRkZDNhZDE2NTgxNmExYzE0ZGFiMGY2MGU1MzQ4ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U2ZWU3OTExNmJjNGE1MGQxOGQxY2I2Y2JlZDMzZDhhMzNjZTRmYWYzZWFiODIwNGVhOTljNDViZGI1NzQ5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjUyOWQzYzEwODRkOGFlNDNjZmU1NmUyMTE5ZjRkYmE4MzU5ZTM1M2ZhY2Q1NDU1NzY2YTY0ZGUwY2ViNWRhZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjA0N2ZjNWJkMjIxYTkzMDg2Zjg4ZDQ1MTFkOGZkZTViYmY2ZjlhMmU3NTZhM2E0ZDAzYWE5YzA2YmE0Y2RiNyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/vitest.integration.config.ts#L39-L47",
+          "version": "repo-lines-v1:sha256:25b45c242877bfd3c24bc292a2d6129e7983d724e0eaf0474ad3341b7c75c8e1:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTkzNmIxZmI0ZmZmMjE0ZDY3NDc5NzJhNzc4ZDkzZTAxM2ViOTZkODFhMzIzY2I3ZDNjODIxOWRkNzA0Yzg0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzNlMjNiYWVhOTMyNjFkMjBmZjhlMTlhZWRkNGZmYjQwNGY3YjhiNDdiMzE1ZTIzZDk1MjQxYjc2MWUzNmZhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQyZWM1NWVmMzlmM2ZjY2IzNmViODdkMjM2M2E2YjdiODhkYTg1OWNiMmRlZWNhZTdlOWRhYTczZjRjYjE1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2UzZTNjZmNiODdmNjU2ZDhiNjE4NTkzNzdiZDUwZDY3ZmJkNTU1NWNmMDNkMTk4NDE5MDliNmYzNDI3YzgwYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cdcc25a73b3344668a207fd635a431cf",
+      "statement": "D1 migration backfills are written guarded (`NOT EXISTS` / `IS NULL`) so re-running them is the idempotent roll-forward repair path, while schema-changing statements (ALTER TABLE ADD COLUMN) in the same file are applied exactly once via `_schema_migrations` because SQLite has no ADD COLUMN IF NOT EXISTS.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L11-L16",
+          "version": "repo-lines-v1:sha256:ce0cbfb8ebbfae30a996336358950b93f226b33d04096f30b712c558225a915d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWUyN2NkMzMyOWU4MjYwMGFhNGVhMmNjMGFjZmU4Y2VjYjMxZjIzMDhhMTAwNjM0NDNlODUwMWY0ZjMyYzA5ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjkzZjc2OTQ0NDFlY2NjMjdjZjhhNDc0MWNkNDZhMWI0MzgzYzJhYWRiNjkwY2U2MzNhNTY4ZTc0YjMzMmRlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjczNjFhODZlZWUwY2ZiYzMyMjgzZjIzMTRkMTYzYzYwYmNjYjJjZThmMzdjMDZkOGFhZDU5ZGRhMWE3MzM2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjAwZjkwMjVlMDE3MzFmOWZlNDYxMDcyYjZhODE4ZTM0NGIyZWJiMDk5ZjgyOGMyODc5M2M5ZTJkYjhiNmI0NiJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L44-L60",
+          "version": "repo-lines-v1:sha256:90ec1fb114e1db379916875fa5c92a57416e85f9f7a69c527b5620a8762d0490:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiNjFjNjE2YTljN2UwNWJhZmFmOTBjMGE0MjQzODZkMTM2MmI0YjFiYWVlYThlNWE1OGJjYzE2MTAwMzhiMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZGE2M2ZhZjMwNWZjZTdlNTJjYjhjYTUyOGVmMDQ0YzU0ZjIxNGFkYzdkMWUzZTdmNDJjMWFmZWJlY2ViNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzNWE0ZWVjOWYxYWQ3NTA2NGU1N2VkZmU5YzE3NzViOGRhYjRjMWU0MDk1NjRmMGJhNTYwM2VlYzhiZWRhMjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e02a4dec54a541ae9029f83571382349",
+      "statement": "Migrations 0039/0040 replaced the per-kind `repo_images`/`environment_images` tables with the unified `image_builds` registry, copying environment rows verbatim (they already carried fingerprints) and dropping the old tables; the control-plane scheduler naturally rebuilds enabled scopes so no legacy backfill job was required.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0039_image_builds.sql#L1-L72",
+          "version": "repo-lines-v1:sha256:7ebf72b7879c1fde3644a3a0e629a4b116a405ca0b5d1c63e0c5d39afaf3ab9b:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiODljZjEzZTljMGI2ODRkODc3ODA2MGNhNGFiN2JlMTg5NzlmMWVmNzc2YTg2OWUwZjM3MGYxOTgyMmYyM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlNmJhODZiZjc0MzA2N2VjMGNkNDQ2M2MzODVmZGU5NWJkNjhiYzE2YzlmYTE4NTdlNDg3YzIwZTRmOTgzODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0040_drop_repo_images.sql",
+          "version": "repo-file-v1:sha256:bbce3a396e0cd1e265063088592eb46d8ac04c78666153c738103982daec8c07"
+        }
+      ]
+    },
+    {
+      "id": "claim_7cb9002190c2462ea99dc657778b6347",
+      "statement": "The per-session DO schema uses a two-path design: `SCHEMA_SQL` gives fresh DOs the complete current schema, while `MIGRATIONS` is an ordered numbered list tracked in a DO-local `_schema_migrations (id, applied_at)` table applied to existing DOs; `initSchema(sql)` = SCHEMA_SQL, then applyMigrations, then indexes, and `SessionDO.ensureInitialized()` calls it on every activation (first touch after construction or eviction) before building the runtime graph.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/durable-object.ts#L40-L60",
+          "version": "repo-lines-v1:sha256:01f8144bac47331aaf7b08b1c91abb29b5ffe7475a4043cb85e7389ad3cc466a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwZDQ1YmIzN2Y0ZGY5NTU4ZDA5ZGVkNmI5NDBlZmFhNWIyNjQ3OThjZmJlZGZiZDhkZmZlMzRiNjQ3MzY1MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYWMwNzdmMjFlZGI5NDc1ODAxZGQ2MTcwYzVjMDU5YjJkYWExYzJmZjU0NjdkYzQ5NjBhNjJhNjY4NjA4ZTYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L644-L677",
+          "version": "repo-lines-v1:sha256:8ab5bb4ba2b5b22f00cb230cc83df4bdbc0047b44dd9caa6a1925c85712b06f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MmE0MjkzODJiMmUxNDcxOGUwZTM3YjA1NzBhOGExNzAyOTkxZmNkODQ5OGNkODQwNjBhOGJmNGYwNTAxN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3MjU3NmFmNTJiNTI1N2NiNmM2NDFiYmQ1NWI3NzdmM2JmM2RhN2FkNDRhZjZiMzUxYTg0ODVjZDUwOWY4ZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ca3c088232a14662bf8a6948b4cf599a",
+      "statement": "The fresh-DO and migrated-DO schema paths are kept from diverging by shared SQL constants — e.g. `SESSION_REPOSITORIES_TABLE_SQL` is used both inside `SCHEMA_SQL` and as migration 31 — and a unit test asserts both paths create the table; `runMigration` swallows only duplicate-column/already-exists errors and rethrows everything else, and function-type migrations must be idempotent because a crash between execution and recording can re-run them.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.test.ts#L263-L270",
+          "version": "repo-lines-v1:sha256:397c9d1ae7300b5ca6fdc03e4ed7e278aa5059e4a64e827d700688c685b90b1b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjcyZWI3OGNlZjY3ODAxYzMwNDNhMDEwNDA2MWZlMzI1NDFhMTVhMGU0YWY3MWJhNzJkZTlkM2I1NWM2YTdlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EzZTQ2Zjk0Mjc2YjZmNmY0ZWQxZjAyYWY3OGJlZjZhMmVlMWM0MzlkZDU1ODRiOTczOTQ4MzEzMjE0ZDJiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDA0OGY0ZjA2NWU2ODFmOTc5NGVlYjFhMjY2ODQ1MTcyYjgyZDBlYjViNTY1OTZhNjBiMmIxZjBiZmNkZjQyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmE0NDE4NDJhNDg5ODBjNzI5MWMyNGUzMzJiZDYyYzhlZDJjZTlmNzcxNWYwZGVkZDNmYzE3MTg0NWFiYjBkYyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L496-L500",
+          "version": "repo-lines-v1:sha256:269be8e42fa7893b9d7627f166929a6325fa839f9e5bc959a7632f39b2900579:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTAzM2ZkODFhMWNiZjNlNWQyZWM2NzRlYWU4YWFiYjFlYTMyMTM3MGExNjE4MjM2OTQzYWU0MmEwOTZlNmVmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWFhYjI2NjgyMGJmZTFjNmViNDNlNjZlMzQ0NDczZWY5ZThmMjNlZTM1OTY2ZDk3MTlhOTA1NTk3YTg4ZmIwNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDlmMjBhMzkwMjdiZTQ0MjI1MDAzNmMzNmI0M2UzYTdlYjczZjg2MzY0ODFkYWY2Y2JkNWE4MmQ4ODQzMGRmYyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L8-L20",
+          "version": "repo-lines-v1:sha256:e1e253382ea04f04f2cbcd10d45437ef30dd413336d8e1d12a27bff55a25ada3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYjFiNmVmNzJjYjNmNDQxMjcxNTdkOTc5Yzk5Y2Y2NjgxYzE1MjI5NmJjZjNkZjIyZmEyZmFlMTkzM2IxOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4ZjZiODI3NTRjMTI4MTM5MzJkZDJiNTQyZWZhNDA1ZWU1OGVlOGU1MGI3NWU4NzcyMTc1ZmMzMTNjODc3OGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjNWRmODVhYzNhNzkwZTFjYjhlOGE2NzVkY2U5OWQzNTBkYzczOGJkYmE5YWJkMzQxM2U3NzQ5YWE3Zjc4YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1ZDAyOWYwYTI5Y2EzZmI4YTgzN2U3ZTBhNjlhNjk4NDJiZWU2NGYxMmExOTYxMzdiNzQ2ZTdiNjljNGJhMGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ba8b0ab7760410d8bdb236535f7fad3",
+      "statement": "`sessions` (migration 0002) is the queryable session index, one row per session with title, the scalar primary-repository mirror (`repo_owner`/`repo_name`/`base_branch`), model, status, lineage (`parent_session_id`, `spawn_source`, `spawn_depth`, and `root_session_id` added in 0063 with a cycle-safe recursive backfill), automation linkage (`automation_id`, `automation_run_id`), launch provenance (`environment_id`), analytics mirrors (`scm_login`, `user_id`, `total_cost`, `active_duration_ms`, `message_count`, `pr_count`), and the all-or-none `latest_terminal_message_*` triple added in 0055.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L65-L135",
+          "version": "repo-lines-v1:sha256:daa06471d5b3a426612c5130428ac5136aba885552527769105816704b9eb668:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMWM3ZDM2OTU4YzBkMWUwNDhiYTZlNmRjYmNjMWFmMzIxZDFkYjgyZTQwYWU4OTFhNTFkYmIwZDE4MWUzNmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2MjM5NGM2Zjg5NzgwZmZiYTU1YWRlMWE1YWI1ZTMwNWExYTNmN2E1ZDFjNDZmMWM4ZTY5NjA2YWUxZWQyMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5ZTA1OGZmOTYyMzRmNTBjMWZkMTRkNDNlMmFhMWU4NTdlNjRlM2JkZmZhNmZmOWYwZmVmMTUzNzUzOGZkYzMifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0002_create_session_index.sql#L1-L17",
+          "version": "repo-lines-v1:sha256:b9f0cde3bea67baa71a69cc37e115103128fc01c5c00afb475f2658ff8f601c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxOTc3Y2ZjM2EwYmUyOWY0NjJiYWNjYWI2NWE3ZjkxOTdhNmRkNmU4ZWQ2MGQwNWRiNzRjMzYwZTczNjBkZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzYTBhYmVlMWM2MzgzZDlkNTE1ZjY5ZWY3ZjQ4ZDlkMWQyMjQzZTM5ZTBmYzllNjE1ZDBlOWYxY2RlNGYxNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2ZGIyMjIyOTJlOWFhNWFjZTFmYmU0MzYwOWQyNzg3YmM4MmY0M2Q2MDIwNDgzNWFmNzk2YzdlNmFjZTE3ZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf53d4bb1f374c3680bff80b1e464426",
+      "statement": "`session_repositories` (0032) holds a session's ordered member repositories — `position` 0 is the primary, mirrored into the scalar session row columns — with `ON DELETE CASCADE` from `sessions`; pre-feature sessions have no rows and readers synthesize a one-entry list from the scalar columns.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L56-L63",
+          "version": "repo-lines-v1:sha256:2395578fc48517efeec2bf18f092150f8aeac5dcc91be502c5d34a75e295095d:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzJhZjA3MTE5MWE0ZThiMzg1MTI2N2QyZDA4MTE3ZmU3YWUxZTdiMTNjOTAzODQzMjg0MzZlODdjZjljZTU5ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDM4MjlmZGUyMGE2Y2QyMzFmMzg0Zjg0MDQ3MWQ2ZmIzN2FhZjI4MjkzMzMzMTUwMzIyNjkzZTVmZGQ0NmNlMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGFhMTNlYTBkY2Q5MTE2ZjRjNjIwMjFkNTA2ZWQzYTBlZWNkOGU3ODYyNjFiNWY1NWI5NzQzZjI0ODJlM2QwYSJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0032_session_repositories.sql#L1-L25",
+          "version": "repo-lines-v1:sha256:328746f82f1acacc68ab4b3d6dddb37dc22498603fc0088ea1b9687e815b25cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyNTlmNjRiNjhlYWExODQ5ZjAwMTM2NDQ3YzQyY2MyZmE3NTBhNzc4MDllMzNhODBhMzM5OWQ3OThiNjEyNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMTFkZDVjODE5YTM5OGQ1OTQ0NGRlYTRhY2E0NGYyNGJkZTMyMTIwMWZiODI3YjFkNTFkMTE1ZTcwZjlhZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b658961f45c474e92022b2be0ecc303",
+      "statement": "The row-0-mirrors-scalars invariant is enforced at session creation: `initializeSession` throws when `repositories[0]` does not match the scalar repository fields, and the DO `session_repositories` table comment documents that position 0 mirrors into `session.repo_owner`/`repo_name`.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L112-L134",
+          "version": "repo-lines-v1:sha256:548a5c5bb327deac0c65e87d25c5d5447f60413c28e82163808e5d666d37b069:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNmYwNTZmYjJkZjc2MzBiZmU1NmRjNWFiYjkyYWUxMGIzN2I3Yzk2NWQ3YjQ2NWQwZGMxNjg3OGRiMTY5MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhMzdkZmNiMzM2YzUzOGVkM2I5MzAzZGEzOGQ3NDM0ZTUwNjkxMzhiOTAyYjgwMTA5YzAxNDdiYzZjMWNmOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2OTVhYmY4YTQ1NzllYjRmNDQzYWQ0MWUxNGIxMzU3YjdiMDI5MjQ1OTFhODUxMTFkY2M1OTQ3NjFiNDEzYTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkNjQ2ZDYzOThmOTc1ZTk5NGQ2ZTk0NGIzNjE0ODExOGFhMzY5MzY1NDE1NzEyNmExZjkxNThjZmYwZDA1ODMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L186-L192",
+          "version": "repo-lines-v1:sha256:cb0d8ffbbafab7881fc5950676cd1c0f2d591168f10571805ce3517473496c92:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQwOTg1MTAyNjVlNTVjZTBhNzg4ZDhjMjU5NTllZGVlOTM1M2Q1NmY2MWNmZjNkYWE4NDA0NmIyOTRjZjA2YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQ0ZTZhMTNkMGMxNzFhYTBkOGVjNjk1ODIzMDQzZGUzY2QxY2I0OTE2MzU0Y2NhZDdjMzkzOTBhOTMyMTIzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2RjNjk1Y2Y1Mzc2ZWRkZTkxZDdjZmQyMDUzZTMyNzNlODYzYjE0MDY0ZGQwYTIwN2MwYWQ4ODNlZTc2MzUyOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDMyYmJlY2ZmNjAxNjkzYjI5MTM2MzgzMzdhMTdiZGJjODZiMDRhM2UxZGYxMmY1ZGQ4Y2Q5ODQyODYwMTY1NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4acdee2948f945449e8256e0b29647de",
+      "statement": "`SessionIndexStore.create()` validates repo fields together (lowercased/trimmed, blank pairs nulled), requires the `providerAuth` snapshot to be complete across every subscription provider, and writes the session row, `session_repositories` rows, pinned skill manifest, and provider-auth rows in one atomic `db.batch`; a skipped insert (0 changes) throws because `initialize.ts` relies on D1 failures being caught before any sandbox spawns — and D1 is written first, before DO initialization.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L250-L354",
+          "version": "repo-lines-v1:sha256:ed6f2e1389e5df5d5542e97abf6763e7f89296bd8bcf8542231872fd58cec13a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0YjBiOTU0NTMwNzMyOTZmZDJlMWRkMzI2Zjg5YmEzZGRjYjBmZTAyMzcxOGNmMmEzNTYxNWQzY2UyNGE1ODU1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkN2NmOGJjNzI2YmFjNDQ4NmVlOGU4YTlmNTA4ZmZkN2Y4MDA3NTE2ZjRkMjY1NDE2Y2M5ZDU2NzgzZmNiZGRmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2MzYzODQyZmJiMTE4OTVmYmQ1MmRiM2E4ZGY5NDQ2YWM0MGY2YzlkOGMxNWEyMjlkY2U3ZThjODQ4ZmQ2MGNiIn0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L136-L161",
+          "version": "repo-lines-v1:sha256:0e120db2398a9abe73bde3a63814ea5008be7e1149d8ae9f3873d1b2a4a57730:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0Y2ExNWRmYWQzN2FkMWFmNTllM2RjNWUxYTExNzI2NzExOWE2MWExMGY5NWYyZWFiMzM3MTJiMWExM2U2MDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxYTc5ZmU2MjYzM2Q0N2VkNTc2ZTk1MzAyMzU3NzQzMjU5MTBhODlmMWIzMjcxYzRjYmVmNDVkOTk1YjMxY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MTcyYzgxNmMwMjI5N2MzYzE5ZTQ2NDdmNGEwZmY1Zjc1ZjZiY2ZjZDVkOTMyZTEwZGE3YWQwOWViOWU1MGMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/initialize.ts#L80-L87",
+          "version": "repo-lines-v1:sha256:956407efab47e7171b32ba83b30cb5fd2cfd39ba2f92b7faecf02fcee01bb651:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTUwODQ0NzFiOGJkZTI3NTcwMjFjNzVkZmY1MTIzMDI1NmNjMzFjMzQzMjFhMGUxY2FlOTE4Y2Q2MjZiZDQxMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGI1ZGFhMTMyZDFhMGY5ZjZkOGMxMjViN2FhMGFlZDIwZTRjZTIxYWZkZGE0NDE3MjE1Zjc5MmUyOGM0N2I2OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b31e0dc501d745079e0005d70164a219",
+      "statement": "`SessionIndexStore.updateStatus` only applies monotonic `updated_at` values (`AND updated_at <= ?`) to protect the index from out-of-order async writes, while `repairStatus` and `archiveOrphanedDraft` are deliberately unguarded repair paths used by the abandoned-draft sweep to fix a drifted draft projection without claiming new activity.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L770-L778",
+          "version": "repo-lines-v1:sha256:975f0fe2d2989fb61c7e8f554c672c626cada0f875e49d7152fc2b8369577b17:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI5YjMyOTQxYjA1YjE1ZWFiMDhmNDViODQzYzkxYzNmY2QyYmY4NjI0YmMzYjhjNTEzYmYyMTJhYjQwMjhmNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWVlYzg1Y2ZjODA3ZGY2NzUwZTk0MGQ3Yjk2YzAzMzFiYzRhMmU4YjFmNjczNDhiNDUwOGNjNGMyNGIwZTc3OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmZjMjFmNzVjOTRlYmJjMDcxNGFkYjUyYWVhODU1MGQ5MTBhMmUwZGQxZjZmOTlmMTBiODIwMTk3ODg1MzY0YiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L830-L860",
+          "version": "repo-lines-v1:sha256:022741376e1c67a505dd2da64090a3e32252b3b87a36131eab69d8139993fd7d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1OTdhY2ZiYTRkNjMzNTRmNWI0MjQ5YWY3MTVhMjk3YWE2NjdkMWQzZDQ2Mjg4ZmVlYmNhYTEwNTJkMGZiNDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmYmUwNzc5ZWE3MjFiNzQ3MWFlYTUyMTc2YWFjNzEwZjQ0YmZlOTc1YjdkZjgzMTJiMDYwNTcyY2QwYTMxNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjNmQ2MmUxZmNkYTZhOGMyMjkxMDE5MDJiODA5MmU5M2FhYjU1ZWIyN2ViMTQ0Y2NmMjY3NGI1MWRlOWUzNjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_356f555e4aed4498819c8e23737adb03",
+      "statement": "`acquireChildAdmissionLease` claims parent concurrency capacity in the `child_admission_leases` table (0058) with a 5-minute TTL, counting live children plus unexpired leases against `maxConcurrentChildren` in a single guarded statement; leases are released by token on completion or expiry.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L911-L960",
+          "version": "repo-lines-v1:sha256:c560c23f13b5b2b1b6f9feba693b252641a28e282f0a3c24160cadde65b2f7ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMGNlOTA5MGJjNjkyNjBjNGNmZWJlMjU3ZjA5ZTZkYWViMmM2M2E4MjYzNDNkNTM0NDQ2NjZjM2NjNzM3NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmYWI0ZjZlNjJiOWFjMjE1Y2Y5N2IwNTgzNDEwYmQ1MTI1ODZiNjllNWNlN2M2ZDU3MzFhMzdhZTI5YzJjYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwNWFiMGNhOWYzNGZjMTVhZWM1NmMzYzMzYmVmN2IxZmIwMmQ3Y2MxNzU5ZWNiOWQ2NjQ4NGIzYzZiODNkMWMifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0058_child_admission_leases.sql#L1-L10",
+          "version": "repo-lines-v1:sha256:485356045c0894d271c991734c2e0f0fff70ca89f64fc2d079c72dcec53f260a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1YjlhZGE3NzI3NmU4N2FjM2YzYmI0ZDUxYmI5NTE3YTk4OWJjYTM1MThlYmZkNGRiMjMzYzgzNDY4NWFjYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYmQ2NDQ0NmFjMTNiZTIwMDc0NGM2M2ZmOTMxZmQ3NzE3OTYyNDA3MmRmODRmZmQ3MjU0YTkzMDg2MTkyZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b02cfe0949b14e639dfbdc3283ad7737",
+      "statement": "The D1 sessions index is the WebSocket routing authority: the worker's upgrade path answers 404 for a session id absent from `sessions` (`SessionIndexStore.exists`) before any Durable Object is resolved.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/index.ts#L103-L119",
+          "version": "repo-lines-v1:sha256:c1548435e4f6c89c6b9cab295215f62f0ae52292a9c6282297e7323ca848b192:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5Y2NmNTY2OTlhYTlmNGMyN2VjNjZkODA0NjRhNjMzZjhkOTYwYmYyZTNiZTZlNjcwYmM0OGYzOGZlN2E1NDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwYTA0MmJjMzRjYWQ4N2E1ZjJhODZmNGMyMmU2ZjE0MzY2YzlmMzBkMTM1MmVlMjIwYjE0NWVhYjQ0ODExZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5MTVmZTk2YTg0YTMwYmMyMzJiNTNhZDRkY2FkZjExYWYwMGI4ZmI5YTI1NDRjMjUxYzhhNzUzZDI3NjNlYjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f289d60a8ebc4f47a3a78fa582e4715b",
+      "statement": "`session_pull_requests` (0041) makes D1 the queryable authority record for PRs created by sessions — the DO `pr` artifact is a live-view mirror — keyed by the DO artifact id, with a `lifecycle_state IN ('open','closed','merged')` CHECK, a draft-only-while-open invariant, a monotonic `provider_updated_at` guard on upserts, and canonical identity `(repository_external_id, pr_number)` with a legacy `(repo_owner, repo_name, pr_number)` fallback.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-pull-request-store.ts#L5-L44",
+          "version": "repo-lines-v1:sha256:4ad8468088b805e2484a1ce1da3b4b49a5f783e18fae3d50cdf8720eae2fa8f5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2OTJiZjQyYTQ5OWRmZWI2NTA1MDg0MDEzNjNmM2RhMjc3MzE3MjMzNmZhY2YwYjFmMGNjYWI3MzgwYTM4MWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlNzFjMTY4ZGEzZTlhNmE3ZTE3OGI4MmM4M2YyZGNjN2UyODdmOWFlMzk1NDQ1OTRmOTkyNmM4ZWQzZTlkMDQifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0041_session_pull_requests.sql#L1-L50",
+          "version": "repo-lines-v1:sha256:281c8d5a9e3bf37182a60dfe3d301e1ae0ef4259b44e89d2628f3fb345275d02:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2M2I2OGQ5NTUxMGViZjY2MmY2MmJmZjEzZDAzYmZiMzYwN2M1NzBhMWQ5YjNlMDBhM2Y5YTE5YmVjZWQ0MmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMDZmYjRiNTFhYWEwZjM3MTc3YzJiYTRiMjlmNzY0NDk2OTE3OGQwYzE2Zjc2ODZlMTZhY2EyNTdmM2FjYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_68cc93436b68458197cf6c170d78e813",
+      "statement": "`session_read_states` (0055) stores per-user last-read message per session, cascading from both `users` and `sessions`, serving the unread projections on session lists.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0055_session_read_states.sql#L17-L28",
+          "version": "repo-lines-v1:sha256:c53489fa20c21a682b015540b71008cb88caee70c39e43ee47a5e4451aa61a20:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhY2M2MzhiZjY2MDRjZDI3NTNmOGYwMTZkNjk3YmZhODkyMzZhYzcwZTg3YzM2YzFkM2FlZWFhNDNkZTQxZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4Njg3ZTM4ZmRmYzI5YThlZmY3YzllYThkOGQ3ZmY1NTAzNmQ5MGIwNmRlODEwZDBkOGExYzdmNTI2YWMxOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5OTBjYjRlN2ExNmQ1MmU2ODliZjBjOWZkY2E3NTgxODE1MjUxOTRkYWU5MGI5ZjE1NThiM2ZhNTc3ZDljNWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_35047a13a8f14bff9229a464c67c5093",
+      "statement": "`repo_metadata` (0002) is the repository catalog with description, aliases, and Slack channel associations, extended by `image_build_enabled` (0010, the per-repo prebuild toggle) and `default_environment_id` (0036, the GitHub-bot workspace redirect).",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0002_create_session_index.sql#L19-L30",
+          "version": "repo-lines-v1:sha256:89df15c98997159fc86028e10e26158cc6348bf8af59f7cea1961b9539b70728:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzNzQyYWY1MWU2YTM1ZTU5NjA4OTQ3MWI2MWE4MDliOTA3YzcxMjNlZmQ1ZTkwYjkzMWFiNzc2OGRlMWU3YzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhZTFkYjUyMGNkOTdkMGQ0ODc2OGY5ZWRmZmQ3NGVhMDQzYTI1ZjQyMWY1MTc0ZTJlMmE1MjQ2MGIwM2MwY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0010_add_image_build_enabled.sql#L1-L3",
+          "version": "repo-lines-v1:sha256:9ac45b1f732bfc59bd4b3279ba99ac11970fcaab7ddee16d6b5029c094e31c82:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGY1MjhlZDM0NjI0NTBjZGI4N2Q5NWI4NTBhMjA1MDFlZmQ0NTQ1MzNlZjk0NzEzOWI3Njk2MTY4NWMzMTY3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzgxOTcwMWUwYWRmMDQzMWJlODBkMTRlN2Y4YWYxMDBmNWU0NTVjMjMzY2EwMzk3OWMxYmUyN2I2MzU1NDIzMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0036_repo_metadata_default_environment.sql#L1-L6",
+          "version": "repo-lines-v1:sha256:3e862b8c57357dc6ab4aa5454f937d32acc7cf68b5890f5b8c036e8a8a12658c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZiZjNmMWI4MjdmODVkNjM5NGE5ZTU1NDk5MjE2YThlZDc1MmQ5OThmMmQxMDgwZTk5ZWEyMjdlZmM3NTExNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTFjMDkzZDc2MzA4NmI2YTlmMjM4ZjFmMzBhOTc5MmI3NmNlN2U2MjFkZGEzMWVlOWVhNTgwYzNmMWY5ODhhMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f6ebd53842404327941063b2555ec2b4",
+      "statement": "`environments` (0033) is a named, prebuildable repository set: `environment_repositories` stores the ordered members with per-repository `base_branch`, the name is unique case-insensitively (the stable `env_<id>` is what Slack/Linear targets reference), and `environment_secrets` mirrors `repo_secrets` with the same encryption key and caps.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/environments.ts#L1-L64",
+          "version": "repo-lines-v1:sha256:ed3c0151966d46d68e559743928f7d2ed6caec14b6d651fb5a643a1228671731:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhYzI1ZjliYmJiYzQ1ODNjYzE3Zjg0Yjk5MTA4ZGViNmUzMzZjY2U1NDU3NDNkYTE2NTZlMmI2MjFjZjgxYTQifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0033_environments.sql#L16-L47",
+          "version": "repo-lines-v1:sha256:7d1753c8738546419d337e0e3530f1233629b170008a197cd837f372a52adbec:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlZjQ0ZmJlZjczNTdjMjgyMTczZjViYmJmMmQ3ODA2M2YzOTM5ZTE1NmQ3MTQ5NDdiNmYxNGI5OWI5N2QzZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2NTFlYmEwN2U1NWViMTI3NWU1MmNkYjU1ZTAxMzgwNDY5MGJkM2I1OTNmY2NiZGI1YTQzMTk4OWY5MDAxOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjZTI1NWZjN2ZlZDAyZDhhNTU0ZWMyMThmYWRiYTIyNGEzYWIwNjcxMzI4ZmE4MTg2MmM2NzdmMDM4YWFmNjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a896050286d14f85935f0c2cdd721cd9",
+      "statement": "The environment delete cascade is deliberate: `environment_repositories` and `environment_secrets` are owned children with `ON DELETE CASCADE`; `image_builds` rows are superseded (not cascaded, FK-less on purpose) so the cleanup reaper can still reclaim provider artifacts; `sessions.environment_id` is FK-less so sessions keep a benignly dangling provenance id — and `EnvironmentStore.delete` composes repository deletion, secret deletion, build supersession, and the environment delete into one atomic `db.batch`.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/environments.ts#L196-L219",
+          "version": "repo-lines-v1:sha256:d912d5f333bab721ea325e335d6293ba0cc87bece44dc7864740926c72678180:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4MGJhZGUwNjkwNTJjOWJiYmI0MzBlZTg0NjE5ZDUxNmVkOWRjNzQ1ZjVjNzFmOGViMjg3YzJlNjkyNmY0NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4MDMxNDhlODMxZjBhMGNjMzBhNjViMmM2ZWJlOGFiY2U1ZjE5NWU3MTVlMGFjYTBiNzNhZjcxNTMxMzg5ZDgifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0033_environments.sql#L9-L14",
+          "version": "repo-lines-v1:sha256:a4bdfe31c219c2dc992ddfd07329f76618ed0a8b22fecb14467a68b42a665f34:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWNhZTFkY2RhMThlNzM2OWU2NmM5NDRiYzQ0NmFmODAzNWM0NWM2MDQ1YzBmYWY5NWQyMjVlY2JiMmE3ZGIzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQxMjRkMTMwMjUyYTc4ZGRkYzRhYzE0MTRiM2MwNTFjOWY3YmU4MzYyNzcwODNlYTNmYmVlN2MyMzk5ZGJlZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZiNzQ0ODczNGM5ZmNjZmU5OTBlNmRlOGMzNDhhZGI5NmMwNzZmMGI4ZGEzNjhiNzIyODE5MmQwMTRiYjM0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzc5YTBlYjFjNzFkNzQyYjc2YTE3Njc4NDBiMTA1MDE3ZjRmMWM4MzE3NjNhY2Q4ODBhYjViODlmOTI3YTY4NiJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0039_image_builds.sql#L5-L7",
+          "version": "repo-lines-v1:sha256:b8dcc3d3c888033345c0d54ef5dfcc42a067beed47d7ad59ab4ab42cae066b35:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U1ZDk4OTY1ZTFiMTE2NDkxZmY1YmI4ZTU3NzFjN2FjN2VjNzRmYTczMzhmNjFkNjYxNjhmMGVmOWYxZDQ5NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTM5NGZkNDc0YzNmNDAzMzQzYWUyNWM5NTk2ZDdjYThlZGZmYzFmNjg0NDc5OWFkYjQ4NmU4MTk4ZmUwNTA3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTM2NDU2Y2JkYjFmNmFhMTY1ZDdlOTk3MTNjZTg1NDhlOTdlNzc0MDdlODljMGUxMmJhN2M0NzdlYmEzMTgwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDMwOWE4NDdkZWFlZTI0ZTBhZjQxMmMwNzhmNTYyM2FkZThmM2FhMzJjZDNjNWM0OTBjMjc3ZDAwMWU2NmEwNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a8e11ff27724769bdaaecd186d11ddc",
+      "statement": "Secrets have three D1 scopes sharing one store plumbing: `global_secrets` (0004), `repo_secrets` (0001, keyed by `(repo_id, key)`), and `environment_secrets` (0033); all three encrypt with `REPO_SECRETS_ENCRYPTION_KEY` and go through `src/db/scoped-secrets.ts`, which owns only the scope-independent pieces while each store keeps its own table-specific SQL and API.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/scoped-secrets.ts#L1-L8",
+          "version": "repo-lines-v1:sha256:681e3cc6200a28ee798c834e4eeb6754247298f8ba61daa20e9803d1191256ce:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmI1YzIzNmEzZWUyMGYxYjNhYTY5NWYyYzA3ODg4OTk4OWIyYzk5OTJkZWEzZWIwOWRlNTkxZDIxMTViNjY0NCJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0001_create_repo_secrets.sql",
+          "version": "repo-file-v1:sha256:47b87990fd3049eefbf3281210997bf5e123d77c92a3a60df473bf88450104a4"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0004_create_global_secrets.sql",
+          "version": "repo-file-v1:sha256:2025f628072001da33983aef14f21183441effec7d72d9f70541a743208b00ce"
+        }
+      ]
+    },
+    {
+      "id": "claim_1dc04ceea23e42a2b5e2887cd3745692",
+      "statement": "`image_builds` (0039, extended by 0052) is the unified prebuilt-image registry for both scope kinds — `scope_kind` is `repo` (scope_id = lowercase owner/name) or `environment` (scope_id = environment id) — carrying the provider artifact id, per-repository SHAs (`repository_shas` JSON `[{repoOwner, repoName, baseSha}]`), the `repositories_fingerprint` for spawn matching, the `runtime_version` (SANDBOX_VERSION at build time), status `building|ready|failed|superseded`, callback-token state (hash only, expiry, used_at), Queue-finalization lease state (`completion_hash`, `finalization_lease_token/expires_at`), and `provider_session_cleanup_pending`.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/image-builds.ts#L98-L114",
+          "version": "repo-lines-v1:sha256:65de25be08c89db148cc2f4f855b1bf841b62414d523bacb685aa8e4ce67dfc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0MTQ4OGM3NWYxYzk2OTc5N2YwNmRlMWZiZjkyMTlmMjA0NGY0NzExMzg0MjllY2ZiNTRlYjQ1MGIxMDc4NTIifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0039_image_builds.sql#L9-L31",
+          "version": "repo-lines-v1:sha256:19e2e5f81838e3373a6dd54677ccbe0e3ca5dd54325e6a31808ba36808c4deb0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3YWNiMmI0YzkyNDU1ZTUwOTQ4OGYzMDExZTM2NmZkOTg3MjVhMTIyNGNiMWRlYjMyNTcwZWQ2M2JmMzRjOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjNjFlNThmZWZiODJmYmI2MTc5YTdhY2ExN2MyNGE3ZDk0NjgwMjNkOTFkZTNkM2JhNmNkOTdiNjBkYzBlNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNWJhYzQ0N2U4MGI5MGZkMzQzMDk5MGQ0ZTZmNTg0MWE5NmQ3YzFkYzYyM2U0NWI1YmFhM2ZjZjlkNDVlOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiMzI4OTI4MzM2NmRmOTVlNmUzNzE5NDMwMTdmYTc0NjY5ODExOWZlYWZkNjJiZmZkNWQ5YTBlOGRhMzhkNzEifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0052_image_build_finalization.sql",
+          "version": "repo-file-v1:sha256:7391f0d1a8291c96d64cf7ed4958168d15b3aba71d7194566286fa12e041640f"
+        }
+      ]
+    },
+    {
+      "id": "claim_ceee6f2fff724b1ca950dee3916595b1",
+      "statement": "`ImageBuildStore.registerBuild` is the authoritative concurrency-1 gate for image builds: a single `INSERT … SELECT … WHERE NOT EXISTS (a building row for the same scope+provider)` is atomic within one statement so concurrent triggers cannot both insert; `bindProviderSession` then binds the provider session and sets `provider_session_cleanup_pending = 1`.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/image-builds.ts#L218-L264",
+          "version": "repo-lines-v1:sha256:369c9f9a7f3e54d2d7ba03c9ec75f8dfb4d1c8b03caf1e75b79479e0ac21d729:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkNDBhMDhlYWU3NjJjMzVlN2U1YzRhZGY2NzUyY2EyMTAxMzg1ZDgyZWEzZWVmNTQwZTc2MmJjOGMyNGE5NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5NmE0ZjkxZmUwMmJjMGE0MWJiNTNmOGMwN2NmOGJhOTk1MjgyM2I1ZmQ3MjhhYzlhMWRmOTA4NmUzNTNjMmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_493615ba6ea74218997a01fd656db21b",
+      "statement": "Image-build callback acceptance is a conditional UPDATE requiring the exact bound `provider_session_id`, a hash-compared, unexpired, single-use callback token, and `status = 'building'`; an exact duplicate is reported as a replay (safe republish after a lost HTTP response, since accepted callbacks stay authorizable) and any conflicting or stale callback is rejected without changing the row.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/image-build-finalization.ts#L163-L200",
+          "version": "repo-lines-v1:sha256:66ff2aef5c04f8375bdaa51741c1836d003567b6be85960533aaebf2659c43a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyZjkzYmFjY2E1ZGYxMTQ0Mjg5NGNjNTA1YjEwYTgzZDI2MjJhZjlkNTIwM2ExZGMzYWRhZmY1ZDk4ZmI4MjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0N2I2OWE3OGM3NTA1NTNlODkxZjEwYjUwODE0YzNmNzVmNTg0MzBhMmEzNzViZTM2NmMxZTIyZThlYThiNmMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/image-build-finalization.ts#L48-L93",
+          "version": "repo-lines-v1:sha256:7cba1728d18d6c242c728d3909214d628b64923f958ea2a5c34aec5dbde70883:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjMzY0Yzg4ZWU4MzdiYTk3ZjBjNzRmNjljNDAyYzgzNTI3N2M2YTBhZTAzNDM2YjE2OTJmODQ0Njc0M2Y0MWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjMzljNjJmMGM0ZTBhY2JmMTM2N2M2N2E3OGMwOGQwODNjNTUzMzA1ZmYyZjM1Mjg1MGU2YmUzMGVmZjEyNWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fd3494e1e8494fffa245d317160cf1a6",
+      "statement": "Image-build finalization happens off the request path: callbacks atomically accept the payload in D1 then publish a secret-free command to Cloudflare Queue, whose consumer claims an exclusive lease (expired leases replaceable), transitions the row to `ready`/`superseded`/`failed`, and performs idempotent provider-session cleanup; sweep SQL constants (`MARK_STALE_IMAGE_BUILDS_SQL`, `PROVIDER_SESSION_CLEANUP_SQL`, `SUPERSEDED_IMAGES_SQL`, `FAILED_IMAGE_ARTIFACTS_SQL`) reap stale/failed/superseded rows, with matching partial indexes added in migration 0053.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/image-builds.ts#L144-L196",
+          "version": "repo-lines-v1:sha256:b6969edb8f2c311a81b50a7148745175863d8d5a2e70c54e83a152dfa819c481:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNDEwMjMwZjgwYWY5YjU4ZWVmMGYxN2U0Yjg0ZjdjNzY3NGE5ZWJjNWI2ZTg3MWU2YjMwODQ1NjhhOGQ3YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlZTIxZWEwM2I4MDY3OGNhNDM0ZGEwYmY2NWQyMDU2OTQ5NTJiYTQyMzBiOGIzOGNjZTk1MWYwZDE5NjA0YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3OGM0NGI1YTRiYmI3OThlODkzMTkyYjBkMjZiZWMzZjlhODVjNjI5ZjAwM2EyMmMyZmI3NTM5MGE1M2FhOTQifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0053_image_build_scheduler.sql",
+          "version": "repo-file-v1:sha256:624b63215017149444eaaf0c985f9442a84810c41b737ff39d488d87296d289a"
+        }
+      ]
+    },
+    {
+      "id": "claim_a4f706d9d0da4b46aad20396c857af7d",
+      "statement": "At spawn time a session boots from its scope's ready prebuilt image only if the image's `repositories_fingerprint` equals the fingerprint of the session's own repository snapshot (not the scope's current repositories) and its `runtime_version` passes `MIN_COMPATIBLE_RUNTIME_VERSION` (the floor fails closed on an unparseable version); any miss falls back to the base image — sessions are never blocked on builds.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/image-selection.ts#L1-L13",
+          "version": "repo-lines-v1:sha256:61db1224e5679ffb9dde1f3ae63595086e42ca2280c2b0748192c8e170547160:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxYzg5NzRjYjJjZmVmNTk3YjVlNTc4MWJjNjU0NTY2YzA2ZTNjMTgyNDMzMGM0ZDQ3MDViNjk3MGQ0NjNkNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxOWViODVmMGQwYWZmM2E0MGVjY2VjYzRhZTI2YzkwNGMxMWVmM2IxY2Y3ZTU0Y2U3NjNhMjIxZDA2ODAzZjMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/sandbox/lifecycle/image-selection.ts#L86-L118",
+          "version": "repo-lines-v1:sha256:af6640d716818ff42aecf135f6e49177019902eedbb2a2392b1f4315e8d345b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5M2IwZmFiZDMxOTA3OGYyYjI5ZDY2MWMzYTk1NzMxZDA5NjEzMmVmNWZkNGRkZWVjZjhhZDlhMWIwMzZhYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxOGE4NDE1MWE0ZmVhMWQ1Mzg3MGMyZmEwODczOThiMWUxNTRlMDQ4NWNhYTNiZGNlNGNhMGM0MTg3NjkzNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjYzg5ZWVjZGQwYzQ2YmE1OTMzYzkzYzhkOGNkNDQyNzM5ZTkwMGMyYjIyOGVlYTU1MDcyOWYyZTM5YmQ0YWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_454df245c8e24eedab7ceac98237cd21",
+      "statement": "`automations` (0013, reshaped by 0029/0031) holds trigger configuration — `trigger_type`, `schedule_cron`/`schedule_tz`, `event_type`, JSON `trigger_config`, encrypted `trigger_auth_data` — plus model/instructions, `enabled`, `next_run_at`, `consecutive_failures`, and soft delete (`deleted_at`); the scalar repository columns were dropped in 0031, so the live target selection lives only in the normalized tables.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L55-L75",
+          "version": "repo-lines-v1:sha256:7513994886f2a555a380bf6982ab107e59dba3590bd4050be4e67e296062bc9d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYzNlN2ZhZWY4YzYxYzhkMjhjNTdkNWU3NjE4NTY5ZWNiMDEwM2JlZWJjZWJlODBlZjYzNmY1ODlmYzE1ZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiNmE1ZjAzODBkOGU2OTQ4ZDQxYTE5N2I5Nzc1NGMzMDA4YzAwZGY5ZjVkNjIxOGU0MTJjZDYxYjQyMDUxYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1ZGQ3NTVmNGVkYTM1NzI4MzhmMWM3ZTc5ZWM0Y2E3M2Q0MzcwZDhiZDBlNTllMzM3NzFkMzliYjM1YjM2NjkifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0013_create_automations.sql#L1-L29",
+          "version": "repo-lines-v1:sha256:388cd5dfbe9f8781ed15dfadcb120a2d1701c7f83616bb04df525220bdd6305f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1OGZlZWFlZDdlNWJjNjIzNmQwZTg3OTlmYTE2NTU0OGZhMDBlNmY1ZjAzY2ZkYzQ5OTViYTViNTY1ZGI5NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzllNGQxOWMzZjVhYzYwYTZiNzc5ZDhjZGVkN2ZjZTRmZjg0MmRhZGFkMjkyOWZhN2NiMjEyMDUzM2I5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3YzQxZTVlOTI2Y2Y2YzE4YjdmZWVjZTgyNjVhY2RiYzgwYTBmYzM5MDgzMWNlNGQ0NmU2YjU4NzFkYjNkZTUifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0031_drop_deprecated_automation_columns.sql#L1-L11",
+          "version": "repo-lines-v1:sha256:db0206efa8752a7f8f8916fe8d73d7cf799e9fbfd67ab98abe789f2c89c50c85:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwOGVlZDExOTk0NWM4OTkwYzZiYjc2OTYwYTAwYzdlMjU1NmQyNmI4MDc0ZDU4NjgzOWEwYzk1OGFhOTA1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4NjYwZGVhMWI2ZTc3ZDE2OTJkZDA1YWQ0NDRiMmIwYjY4ZWI2ODQ0YTJjMTk4ODI1MTE4NTljZGM3N2Y1N2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhMjZkYTc5NDYyZjdhOTFmOTYwZWZlMTdkY2U4ZjdkYTQ5YTU2ZTdlOWNiZjNjN2ZiNzEwNDNiMDAyMzQzMjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0441d4867d2947d79229ad0bb377f945",
+      "statement": "`automation_repositories` (0030) and `automation_environments` (0037) are the live target selection, unique per `(automation_id, repo_owner, repo_name)` and per `(automation_id, environment_id)`; zero rows is a repo-less automation — behavior derives from the data, with no mode enum or JSON blob.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L18-L38",
+          "version": "repo-lines-v1:sha256:12dc24968e35e605b766ab0a9d39a81b64d59772b36036eefcb2655d42045a3f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwNzIzMjFjOGZkOTc4NzlkOTcwZTY2MjA0ZGYxMzMzODkyNjI0ODVkYjliN2Q3MmI2ODBmYTQ0ZDA4NGQ0MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmYTQ1OTljYWUzNjhkMDY5MGZkZDA4N2ExM2Y5NmUyNDlkYmQ3YmMwZjU5YmI4OTQ4MWFlODU1Zjg5NWM2YzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmMzI4YTQ4NTE3MTFmMTQ5YTVkYTE4MDg2ZTk3NDI3YTE5YzlmYzFhMjg1YzI3MWQxOGUzZTA0MjE5ZmUwYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMTBhOTBmMzVmZmFkYjY0MThlOWExNGMzNWMzYzVjNTM3ZGRjNGI3ZGE2OWE2NTQyM2FlNTg1MzQ0NjA3ZWUifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0037_automation_environments.sql#L10-L20",
+          "version": "repo-lines-v1:sha256:8cc2267d0ddbff513e33a5791f220baad99c52d0122cd7aaf0a3f8e4348d44cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzYjhhNWJlYjI2NDI1MTQwOTE2NWJlM2YyMmQxZDlkOTg5MDdkY2ZhMDYxNmEzZGVjZTM5YjQ3YWQ1YzcwMTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwNjA5MzRjN2E5OGY2MWZjZjA0MmI5MDNiZjZiYzM0ZGE5ZDkyMzNmZmMyOWYwNWMxZTc0NmYzZTdmN2M1MzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiM2ZlNmI3OTYwN2JjNmNhZTkyNTZlNzBmYmU0ZGZjYjI5NmNjNmQyNDIwNDFkNjdlNDI5N2UzNjNjOTgwNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5OGRiMzkxZmM4YzdiY2VkMGI5ZDJmNjE4YjFkYjM0MTg4ZDQ3MTkxYjllMmVjZDkzZWQwZWQ1OTI2YmM2ZDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1b2f29d1ba11459e85f8252243eb9c1d",
+      "statement": "`automation_invocations` (0030) is one thin row per firing: `source` (`schedule`|`manual`|`event`, distinct from the configured trigger type), `scheduled_at` (the cron slot, CHECK-required for schedule sources), the firing-scoped `trigger_key` (event dedup via `UNIQUE (automation_id, trigger_key) WHERE trigger_key IS NOT NULL`), `concurrency_key` (per-key overlap scope), `trigger_metadata`, `skip_reason` (present iff a skipped childless firing), and `failure_counted_at`; a partial unique index on `(automation_id, scheduled_at)` for schedule sources dedups cron double-fires, and status is never stored on the invocation.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L132-L144",
+          "version": "repo-lines-v1:sha256:74c557c47281255447e754962e29671d753125035aeccbfb98f6498dfd940487:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3NDAyMzMyNmFhZDcyMDlmMDg0NGNmYmU1NTA5YzQwYzM4Mjc5MmE1MzI0MWRjNmEzOGU2ZjdlOGNmMzkwZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlNGJjYzc3YTBiMTdkYWY5N2VjM2RmNzNlM2VmZGNjMTk0OWJkMzA1MWZjZDRlYTZkYTUzYWQ2ZTQwNGQyMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwM2IyMWI4YzVhODc1MTU5Yjk4OWQ3ODNhOWZkZjhmYmU0MzA5MjU4NzU0MDZmZWM5MDliNTVlYWE5ZTNkZGUifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0030_automation_repositories_and_invocations.sql#L62-L100",
+          "version": "repo-lines-v1:sha256:bf10916418d28bbeec14eb85b8f506f67254eddcb7734f4a3f39e3570faa7bd5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4OTkwNDg4ZWQwNjJhZDAwNDliNDI5MGFjMzFiNjA4NmNiMzU3OWZmMzAyZGZlY2IwN2U3NDVjNjkyMGMyZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmOWY0NWEzZWRkMjZmMzZkMTQ0MTJlYzcyM2NkMDA4ZDliYTJlMDhiYTZlZGNmMzVjNzZiOWI3ZDk2NTU5YmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkYjlkNTNiMmRiMWY3MTZhZDAyYTM0NWFjNzNjYjgzOTlkMzVkZDNkMzY4NWI0NDI2YTBiNmY3YTg2ZjA5MmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllZmVlNGQxNzAyZWFiZDA4YTJkZTY2ZGQyOTAyYjYzMGM5ZmVkOGU5YmNlYTA4MmViMmU2MGIyZmM3NzNjNTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0143cd635140420d931108aad958a240",
+      "statement": "`automation_runs` is the per-target, session-linked unit — one row per repository or environment per invocation, required by 0059 to have `NOT NULL invocation_id` (a table-rebuild migration that aborts on malformed rows rather than inventing data) — and each run snapshots its target at firing time (`repo_owner/repo_name/repo_id/base_branch` or `environment_id`), making history self-contained so editing the live selection never rewrites the past; unique indexes enforce at most one run per repository and per environment per invocation.",
+      "evidence": [
+        {
+          "resource": "repo://docs/MULTI_REPO_AUTOMATIONS.md#L70-L82",
+          "version": "repo-lines-v1:sha256:799532fa414e82d70e1aed9dcd59d139e9380994cc140e69fb0eb2d39d487e15:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmOWIzZGZmOWM1MWExNDlhZmY3ZjMyMTZiMjRkOGUxYmY0OTlhNzlhYjdmYzVmOGJlYWVlZTgxNWUwY2Y0YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2Y2RiNTJlZmJlODM2ZmNkNjQyYTQ5ZTExOWVmYWU0NjA0YmIyNmMyYTcxZjY2NDE4NDRlMzU1YTYzZTBiNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNGQxZDY2MWEzMTViYzgzMjc1ZWJhM2FlOWViNTNmYTM0ZWRmMzliY2ZhM2NjOTM0NDA5M2MzZTgxOGY4OTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4NzNiMzAwYWMzMmNiMmQxZDJhYTA2OTAwOTZkMWU3ODdiMDc5N2NjY2E1NzYxMTcwZjUzM2QwZjhjY2E4ZTkifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0059_require_automation_run_invocation.sql#L1-L27",
+          "version": "repo-lines-v1:sha256:19bc7d2d0be33873f67affed6b0d3b943476fcd7210eed6bcd89c568a66c8bc9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NDY1ZGFmMjg1OWZlYjUxNjFmYmYzNTcwMWVkZjA3MzZkZTlmMTk5MTBkOTI2YjRlMjA2MzcxYWJhODIwNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4YThlN2EyNDQwOWU3YTgyNzFiYzcwNGRmMGJkM2UyNGRhMzFiYjQ1OTlhYzIwMWYzZjgzNTI4ZmI3OTFkNDUifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0059_require_automation_run_invocation.sql#L43-L64",
+          "version": "repo-lines-v1:sha256:6e7e3aaa27b66fbee1aa834d1cf5b936e02f46d89476e3b77958b4fd7f05dadc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlZGFjZjI3ZGJmM2Q4ZTFkNWJiZGM1ZWU0NTY4Y2EwZTIyMzhkNWVkMjA4MTYyMzEzNDIzMWYxMGQxZGQzY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3NmU1ZDMzNDFmNTZhZDE1OTRjYjQ4NmI2MzI2ZGVhMTZiY2M5MWI0MjIzZmRiZDI5MThiYTM4NDUwZWU2YTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkMjA4MDNlZjlmNGY4OWE0MmEyOTZlOTY4MjA1MDhmZjFmMzUzM2RmNmZhMjVjYjBhMmVhMWNhZTU2ZjhmMDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0fb406faeaf8443680d44410f068a915",
+      "statement": "Invocation status is derived, never stored: `DERIVED_INVOCATION_STATUS_SQL` in `automation-store.ts` is the single SQL definition aggregated over child runs (no children → skipped; any active child → starting until one leaves starting, then running; all terminal → completed/failed/partial_failed/skipped), mirrored by a TypeScript twin `deriveInvocationStatus` that integration tests keep in lockstep — deriving removes the crash-between-last-child-and-parent-update wedge class.",
+      "evidence": [
+        {
+          "resource": "repo://docs/MULTI_REPO_AUTOMATIONS.md#L49-L68",
+          "version": "repo-lines-v1:sha256:784dea1af296c404ecbf009f19a8b8d5a41e279800452cbfbe507446e5c8adc6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5YTU3MWEwMWJlZWExMTY1YTZjYzg1NTZkMDVjMmQ5NmRiNmM2ZDk3NzQwMzU0MjkzZDM0YzA5ZTJhYjk5ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MmVmMWIxYmM3MmU5YzU3MmZkNGQ4NDlmYmExMDZhNzdiN2JjZjNlYTAyM2U0MzBjMjZhZDVhODBiM2NjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkMjdmZGNjNGNhYTNjNTk2OGVjYjRhOWExZWZlNzA0NTViMmM3YmQ5MGMwNzhhZGZiNmJmNmQ4YjcyNDgzODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNmVhMmJlY2MzNWFlMjc2YTNiZDJjMjE3NjkwMTM5ZjExODgxYjFiZjNlNGNkZDA5NDUyNDJkMGFlYzY4NmEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L243-L294",
+          "version": "repo-lines-v1:sha256:021aa756f24877c8db311024f262148ce5485d76a01a4b64f6245c1b80fcc50b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNzY0OWY1OWEwNmUxOTU4NjJlYzJmMDdhYTk5MTQwZWY4ZTc1ODVlMjQ5NDliZDdhNGU4MThkMTc4ODgxODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5MjVjODdmOWUwZGM4MGYyNGQ4YzAyYjA2YzY2OGEyNWZhY2Q1NTQxZGRlMGExYWNmNzc3MzU1YzQ3NTM5ZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09e58a6ff08f4a269cd62c8868902e33",
+      "statement": "`AutomationStore.insertInvocationGuarded` creates the invocation, its child runs, and the schedule advance in one D1 batch where every statement is self-guarded: the invocation insert is suppressed when an overlap predicate matches (automation-wide for schedule/manual, per `concurrency_key` for events), child inserts are no-ops when the invocation was suppressed, and the schedule advance is a compare-and-set on the claimed cron slot (`WHERE next_run_at = ?`, deliberately not a monotonic-timestamp guard which would let a loser skip a slot); a UNIQUE violation (cron double-fire, event dedup) rolls back the whole batch and callers classify it via `isDuplicateKeyError`.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L884-L991",
+          "version": "repo-lines-v1:sha256:6970f78a769f4069d318f51eb1cf1f8d47b3801fcbf683bbcf496cd251f87005:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0ZjJhMmY5OTZmMDhlNjgwYmQyOTIxMzVhNmZhNDk3OGJkYTI2ZTYwMmQ4NGYzM2NiMWQ1OTQ3NzVkNDMwNGI1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiZWVlZmRkNTExM2Q5OTA1NmYxZTE5ZGUxYjdkNWJlZGU2ZTBhMzAxZjllOGY3YmU0ZWFkM2Y4ZjhkYTg2NmM4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0ZTY2OTlhNzBjMGJmY2NjZmNjNmY3M2FmMTkxMTBlYzM5OTJkOTBiNGMyY2JhZjQwYmQ4ZTE2YWI2MDMxOGYxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_c119188af5cc400da327133ab86c93e9",
+      "statement": "`tryMarkInvocationFailureCounted` is a compare-and-set on `automation_invocations.failure_counted_at` (`WHERE failure_counted_at IS NULL`) so exactly one racing callback counts an invocation's failure toward auto-pause; a recovery sweep finds recent all-terminal invocations with a failed child whose failure was never counted (the crash-after-last-callback window).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/automation-store.ts#L1089-L1103",
+          "version": "repo-lines-v1:sha256:eecaccb0f3f79779166d8eb1d20143ba66647346e79e6e8c331b24b7b3c6db2a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlZWVmZGQ1MTEzZDk5MDU2ZjFlMTlkZTFiN2Q1YmVkZTZlMGEzMDFmOWU4ZjdiZTRlYWQzZjhmOGRhODY2YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0MjU4ZjA2NDI3MmQ3ZTY0ZDlmY2E0YjAyMjAzY2U2ZjkzMjM2MGQ1NDdhMDdjNzJmZjg2NDlhYmMzMDJmMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43e4d4e3879b49458fe7173d415d14aa",
+      "statement": "`automation_slack_channels` (0026) is the watched-channel join table for slack_event automations, letting channel-keyed event selection find candidate automations by channel index instead of scanning and JSON-parsing every automation's trigger_config.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0026_slack_triggers.sql#L1-L14",
+          "version": "repo-lines-v1:sha256:d3b7b780071ba5361016d4d3f7515ee6676580c7e1fb3bb8eb8375407624d54f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhOTcwYWM2NjU5MzU5OWY2YzljZTZlNGE1N2RiOWZkNzI3MmFiN2RmOWNlNjE0ZTA3ZTUxMTc4MTNhY2FmMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyZTg1NTk3NmExZTQwNGE2MDAyNjM4MjdmNTg3ZDY5YWEyMGEzOTVkZTk4NTMxODgzMTAzODIxZjUyYjI1MzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZjJmYzU3ZDMxMjllNzg3YzA1NDNjYjQxMzYzNjQ2ZGQ5Y2I1ZGVjM2I4YjE2YzdkNWM3ZTNkZDQzZjQ0NjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7544637ae864a90a3bf735be1bf1c79",
+      "statement": "The skills subsystem (0061, `src/db/skills.ts`) separates the mutable catalog row (`skills`: enabled flag, soft delete, `current_revision_id`) from immutable content in `skill_revisions` (`UNIQUE (skill_id, revision_number)`, content sha256, body, metadata) with files in `skill_revision_files`; database triggers abort any `current_revision_id` that does not belong to the skill.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/skills.ts#L113-L114",
+          "version": "repo-lines-v1:sha256:7ea884e536c2e5f8566b9bdc8c25ddd625cc722e1874ea82c4fcc748047eed91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTE4NWU0M2Y0YTU3ZjIxOTllMGQ2ZGI4ZWU0YWM5NWZmNDQ2ZmZiYWYzODhiZDEzZjA3ODExZTMxMDNiNzcyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTAzM2QwMWNkNGQ1MzYyYjk4ZjM5NDA5YmRjYWY4NzJkOTczOTQyZTZkMGMwOWJhZTA4ZjhjOTVhYjc3ZmY0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjQ0OWQ1Y2ZmZDg5ZTc3NTk1OTNmZjUzOTVkMmFmNGRmMTVlZWIxOTQ4MmNiNWQ1OGZkZWIwNWU2YmY1NWI2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2I4YzM4MGRkNDI5OTA5ZTZiZDFjZTNhNGMxYTBiZTYyZmQxZWY4MmE3MGM4OTIyNjQwYTI4MWY3OThhMTExOCJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0061_managed_skills.sql#L10-L51",
+          "version": "repo-lines-v1:sha256:0487479e57c018444ba46e3afb405458223d706bfe7f08d21656540d928156e6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmYTQzMGE3YTA5MzQzNDNkMDkyNTE3YmE5OTBhNWY0NmZjOGM4ZGY4Nzk0NDcwNThhODcwMWEzMzg1YjViYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlNmM3NGY2Mzk4M2FiZTk1Y2NkNjI0ODY3ZGQ5M2RjNTUwNDQyODU0NWVlMzBkNGVjM2FhYjYwMzQ2YmViNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhNTE5YzExMDRjMDM0ODMyNGMxZGM2MzFkMTlmMTU5ZmZjYTFiNzQ5YWI1MWExOTg5Mjg3YTYyMDk0MjU0MmMifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0061_managed_skills.sql#L77-L98",
+          "version": "repo-lines-v1:sha256:a3f6b6bbb45af03e66d6de747e08cf06d0b32b7ebc7f22cf966a765a4608dfa8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5YTk0ZDNkOTA3OTc0YmI5Y2QxZjg3NzdjOGQyMTliZDQwZjBlZmMxNDQ0OTIwMzYyM2YxZWJmODhlZDk1MDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxOTc4MGVkZWYzOTZiNjY2OGI1ZWY2MTcyNjkyYmU1OWNiZDMzODNlMDIxZDNiYjI0OWM2NzYwYjM4MGQ4MzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwOTFjYzMxY2E3YjhmOWM1ZDYxZDUzMjE0NTI0OWMzNDZmYjM0Njk5YjFjZDU0N2U4MjhlZDlhYjM5MGI3YTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6a41773612449dfb3802f16ca7d7939",
+      "statement": "`skill_assignments` grants applicability with exactly one of global/repository/environment scope shapes (CHECK-enforced); assignment writes — and environment renames affecting provenance — advance the `skills_catalog_state` singleton `generation` that session skill resolution uses to retry consistent snapshots; `skill_profiles`/`skill_profile_items` are per-user named filters that do NOT grant applicability (resolution intersects profile ids with assigned enabled skills) and their writes also bump the generation.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/skill-profiles.ts#L18-L25",
+          "version": "repo-lines-v1:sha256:f7667555f86d5fd675e16573db2daaf7b30640a1a799e786ff0d133ebc45c7e5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDcwMTllYmQ4MjkyMDg3NzcxYmI5MGNhODVlYzgwZWIwN2FhY2VhMWFiOTJiOTM0NjNjYTcwMmMxNzU4NDQ4MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGE1ZWMzZDIyYWRhNTc3NGQ1Y2VhYjEwNjg3NzRhYWY0YTRhMmE0MDk2NDRjYWExYjdiYzllZjg3MTRmNmRlNyJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/skill-profiles.ts#L82-L103",
+          "version": "repo-lines-v1:sha256:aa1a19bf035e09ddc1eceb0e6e336e2162be2e3da35632c52e1f10b2a4fb3541:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzZDUxNTI2MmFjYjU4MzAzODA0NThhYzMyMjM4MzExZTIwM2MwYTE3YzMyMzE3NWE1NjJlNzZjMTgxYWI4NjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkYTdjODdmN2ZhYzVhMjVjOWRiNGRlOWRjOGMwODFhZWQ2NGI1MTI0Mzk2ZjI3MGY2NjUxNWI4MDJhZTY1NjIifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0061_managed_skills.sql#L53-L127",
+          "version": "repo-lines-v1:sha256:59b1b5c1848e9ed1199a5b8fd93288ed3ab1f06229214a0c01d2bdb61d52fb41:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNTc5MzUwOWEzZjgwZTk1ZWQ0MDM0ZjY0Njk0ZDAwY2ExYWZjOTlhMzZlMWU3M2NhZDljNThmNGM1ODFhYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyNTQzOGNhZmEwZmIzZjZjMDk0NmY2MjA0NmJhZGEyMWZhY2QwNWE4NzVmMjVhYmUyYjI2MGI1MTdhNGE5ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNTdlNjMxM2I5NTQzZWYxMWNiYjMwZjEzYjkwMmZjM2I0ODg0ZWI3MjEyMTFhMDdjOGM3NGQ5NDEyZWY5MWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb5e01430b26484db5c9da73d62dccb0",
+      "statement": "`session_skill_manifests` + `session_skill_revisions` pin the immutable resolved skill set per session (selection mode, resolver version, manifest sha256, per-revision provenance); the manifest is written atomically inside the session-creation batch (`SessionIndexStore.create`) or copied verbatim from the parent session for agent-spawned children, so a session cannot exist without a consistent pinned manifest.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/session-index.ts#L356-L429",
+          "version": "repo-lines-v1:sha256:77476a68be48f25fac0f21a07e41f270cacfbf794ed5109929bda314f0e9a2ee:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZDQwOThjYjk5NzgzODJjYWE1Y2FmMDc4NDI4ZmM0MTRjMmI2ODYwYTUzZmZhMTdlNGU2YTkyMTZkNzhjYWQifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0061_managed_skills.sql#L146-L177",
+          "version": "repo-lines-v1:sha256:b3e31e797312acb54fd346d47fee7b2f56a7e7ca1ed9db84cdb60573dbc537d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1YzljZGUxNThjYTA5M2Q2ZmFmNThkMTg4MzgxNjg5MTJiZGM0Y2M0MjYwOTdmOWQ4N2M1YmJkMTBkNGI5MDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzNjZhZjA5ZDIyYWE4MGE3NTZiN2M5ZDNlNGEzOWNkMzNmOTQ2MDEyODBiNTEzNDhhYzQ5NDFlMTEzOGE0ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e84a659d178342f7946d8b41a849cea3",
+      "statement": "`skill_import_sources` (0069) records per-revision import provenance for repository-imported skills (provider, repo, resolved ref, commit sha pinning a moving ref to immutable bytes, and a source_sha256 distinct from the regenerated revision digest); editor-authored revisions have no row, so a skill's recorded source is its most recent import and survives later hand edits.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0069_skill_import_sources.sql#L1-L25",
+          "version": "repo-lines-v1:sha256:19ff9cbab255df2213222bd0ddbc124e9b774c6afeb12f8eccc65118bed65fc1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1Zjg1ZjAxOWIzZDcwMmVkZTNiNzBhMTg5YTc1OWFjYmMwZjkzZjc0NmMwZTgzZjAwZjBlNzA1ZWVjN2M0MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViMzNjNjA3YzJmOWJmMGJhYjMzY2VjZDI0ZTJlNzFjMWRkYTM5N2ExMzVmNWZjNjViMDUzZTYwYzM2YjNiYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_012bea7c443c4da8a825cb83cfab3ff7",
+      "statement": "Integration settings resolve through three layers, lowest precedence first: `integration_settings` (0007, global defaults by `integration_id`), `integration_repo_settings` (0007, per-repo overrides), and `integration_environment_settings` (0038, the top layer keyed by `(integration_id, environment_id)`, `ON DELETE CASCADE` from environments); only the session-scoped integrations (`sandbox`, `code-server`) accept the environment level, enforced by the store's `supportsEnvironmentSettings` allowlist.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/integration-settings.ts#L86-L91",
+          "version": "repo-lines-v1:sha256:8020d63fca645dce9c96427df7401fe627c884b409482b6740fe1ea1420bf825:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc3NTM1MWJmYzJhMWVhMGRhZDVjYWNlZGYwYTg0MzJjNjI0OTE4YTMwMjY5MzNjNjlhY2YwNDAyMWY1YTc1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTMyNTA3ZTIzNzg3MjMwMTY4NGJhNmVkNjViNWY5MTQyMWIxZjcwYWNjMjE5MjMxNmJkOWMyZGIxNTkwYzczYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWZhM2IxYzM3YmFhZGJlYzk2NjIyNmYwZGE1MzU0NWVkMzU5MjI4NGEyMGU1NzEwYzc2NmM5OWE3NWE1MTI0OSJ9"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0007_create_integration_settings.sql",
+          "version": "repo-file-v1:sha256:6e0ea5e9649ec34e2f506db89b0db7533e24a162e1290b5e221c6f585acf8dde"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0038_integration_environment_settings.sql#L1-L19",
+          "version": "repo-lines-v1:sha256:466bad278a3106f696564164770d5733815a012999bf4c2ebd1606b92588b8a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ODA4NjhhNmRkMDdiOGQ0N2IxMzg5ZWFlYTYxYmE4OGQ0NDMzYjM1YTk3YWY2Mjc4ODRmODcwNjJmN2Q0NjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b0838e3982d4f50b775854d4f509535",
+      "statement": "`users` + `user_identities` (0019, `src/db/user-store.ts`) is the canonical user model: one canonical record per person with free-form `provider` identity links unique per `(provider, provider_user_id)` — no CHECK constraint, so new auth/SCM providers need no migration; `sessions`, `automations`, and `user_scm_tokens` all carry a nullable `user_id` for attribution.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/user-store.ts#L18-L32",
+          "version": "repo-lines-v1:sha256:392fae1c14aafc43f0baa8a832f5257a5f221e8aa22299cd05c02fe3e5d238a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1ZTI2Y2Q5MjM2NmY2MGQ4ZWQ5MmQwMjM5ZjA3ZmVmNzRjYWMxNGFhNjlhZGRmOWMyY2MwZDExZWIwMGE0NjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2ZTFjNTUzN2NhOGZmYWMxZmY4MGI5MzQ3OWJhM2IwYjMyYzM4YTcwZDNlNDI5MzNhMmI5ODg4MDkyNWM4NTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNTc1OGQ2MWVlOTA4MDFjYWIzZTI3N2U5NjYzODRkYWRhMTM4NmY1ZTY2NDk4NzcwNzczM2QzMjc1ZDVlNjAifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0019_create_users.sql#L1-L47",
+          "version": "repo-lines-v1:sha256:6c4ef3c47492742ad9558330911c3e8595ee4c0a478bcb1416dd6e194ae4dc4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjMmEyMTdjMTRmZmExYTVlMzA0NzM1YjhhZTg3NDQ1NGNmNmEzZWZlYjc0ZTlkNjVjNDNkMjI0NDFkMjFkY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2NzA3ODQyNDA4NjY1ZTQ2NzQwMGQ4YTQ4Nzc0MjZjNTkyYzBiMDcwN2U5NWMwYjJmNTYzOWUyNTEwZDRkZDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59df664cc0b141c092e0d0c6f68ca490",
+      "statement": "Better Auth is configured so its user model IS the canonical `users` table and its account model IS `user_identities` (with the OAuth credential columns `access_token`/`refresh_token`/`id_token` added there in migration 0057), with `encryptOAuthTokens: true` so credential columns are written as ciphertext; `auth_sessions` keeps browser sessions and `auth_verifications` OAuth state.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/user/better-auth.ts#L91-L129",
+          "version": "repo-lines-v1:sha256:276e311fc070999c839f88d94b186b1df4ec5fcfec8b989bf51ac696ed2b91ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMDg1MDlhODU3YzM5NDA1OThmMDE0OGZhZWI0YzRiNGNlMTZkYzJjNmIzMGUwMzRhNDk0ZjgyNTI5YWViZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZmU0Y2E4YjE4ZWMzNTgzYjljZGQ3NTk5YWNkMTlhYzk4MTkxOWU5MmYzYzE2Y2Y0Y2RlZGFmNTBlZTdiMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwOGIzNGZjMTMzM2I3NGFhZDNhZWE5MDkxODZkZjJmODA0YTg3ZjI5ODQ0M2I4NTViNWZmZTNjMDk0YjNmMGMifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0057_reconcile_canonical_auth_identities.sql#L45-L56",
+          "version": "repo-lines-v1:sha256:1563f68b4cee3f394f4186442b961c8912179cd9c9063ad3e96568cfe3e84893:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhOGQzZjJiNGE5ZjI4MzUyZGRkMzdmOGNkNjA1ZjUxNjU5YzUwYTE4ZWI3ZWIxMzlkZTVkZTRlYzI1OWRjZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5ZWZlNDdiMzgzYTAzZjMwOWZmZDQxYzg2ZDVlMDI3ZDEzY2EyNTc4ZTViNWFmMmI0MGJiMzkxNGQ2YTU3ZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YmZhY2M4Yjk3YmM4MWQ0NjAwOWZkYWIzZGNlMzYzODU0OTE2NmU4YTgzNDQxODA0M2IxYTkxODMxZjUxZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiOTcyMGYzMGE0NTk2MmNmYzE1ODIzNTZlM2M0OTVkYjcwNGZkNzA1ZjY0YjZmZmM4MDlmYzQ4NWM2NGFmMjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0d4f77dfc55b40acbd1e9fb007166012",
+      "statement": "`verified_email_claims` and `browser_auth_sessions` (0047) hold mailbox-ownership proofs and browser session tokens (hash-at-rest) with absolute-expiry and revocation CHECK constraints.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0047_terminal_browser_auth.sql#L24-L56",
+          "version": "repo-lines-v1:sha256:4d1921b7f7ebf23dbdc970145cb9c0c4c204f57c4d37461fe774dece53593954:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkZWIyNDdiNTc5NGMzMDFkMTdhMjFiMzA2ZmM3ODczODU4M2IwNWUwZWJhMWI0ODcyOWY1MTlhMTdlNWVmOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwNTQwYmNkZGMzODRiZDRmYmIyZTAxMzdhYTA3NGJiN2Q3ZDU2NTU3MTkwY2Y5MjY3NjYzOGNkY2Q5NTcwYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkOTMyYTZjOTc5MzI4MTk2MWQ0OGY4Y2U4OWEwN2Q5OGRiZWIxMWVlMzk1YzIxM2E1Y2E2MzIyZTE0NmQxMGEifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0047_terminal_browser_auth.sql#L79-L109",
+          "version": "repo-lines-v1:sha256:03a7d61367b7b1e0309e6ff9f35fb232498000307ff0500b8842de425e53edc4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2OTExM2UyZjM4OGQyZjdkMDMyNzMzNTE4NmIyNDljOGZmNTBjMTE3YTgwYjU0MjVmMzZmZDI3ZmU4ZGYwZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDk5Y2UyOTIyNTEyZmZkMDdlNDNlZTc3ZjU2OGIwODg5ODM0MTA3MzdmMzNjNjJmMTNmNGJhMzc4ZWFmNWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5YWUwZjJhNDg0OWVmNzczNTJiYjE3MTg0MzA4YmExY2MyMzBmY2Q2NjA1ZTA5YmFiNjk5ZDgzZDYwN2E5MTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0675f85407a4eb397af26ccadb11eda",
+      "statement": "`api_tokens` (0044) are control-plane-issued opaque credentials (web_session and web_session_refresh kinds) — hash-at-rest with a rotation `family_id`, `rotated_to` successor pointer, family expiry cap copied through rotation, and a plain `expires_at` index for the retention sweep.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0044_api_tokens.sql#L1-L32",
+          "version": "repo-lines-v1:sha256:a7b32741cce7c014d7f71132d701c46023a771d9bad90723edf6309c785e03bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5MjcxMGFhMWNjZWE0MDcyNDc3NjBmN2FiNWJlYzA3YTY0MmMxZjIyMDFmYTYxNGFhNDBiMDJiNTU0YjYwZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkYmIxMTRiNTdmZmRjOTllZWEzY2JjZTdkNDRmZDkyOTFkZjIyODUxZjBjNGFlNjc4MjlmOTRhM2M4ZmIxOTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e7019cca5754747a73989ef07a548e7",
+      "statement": "Subscription-provider account storage (0064/0065): `model_provider_accounts` (status `active`/`disabled`/`reconnect_required`, unique external identity per provider among non-archived rows, `lifecycle_version` for optimistic concurrency), `model_provider_account_credentials` (encrypted payload, versioned schema, and a strict `exchange_state` machine — `idle` xor `in_flight` with owner and started-at, CHECK-enforced — fencing token exchanges), `model_provider_account_defaults` (one default per provider, with a trigger refusing to disable/archive the default account), `session_model_provider_auth` (per-session immutable auth snapshot with CHECK-constrained modes), and `model_provider_account_authorizations` (the heavily CHECK-constrained device-flow state machine).",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0064_provider_accounts.sql#L1-L48",
+          "version": "repo-lines-v1:sha256:8ae18fba9a676431b1076b7c0efdbb28bae76289b85ddfba6bf8bda9ff839647:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4ZGRlMzFhZjQ2MGJmMTJmMWM5NWNkZDYzNzBjZmEzNmI4ZDNmYzdmZGE1NjhiN2JhYzI2NWExNzgxNjRiZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlNjI5YWJhNjQ3NmUxYTk0MmRiNGI4YjViMmI1YWMxYjA4ZTg1MTI0YzA0NzE1OGJmYjlhY2Y0NmVjYmIyODIifQ"
+        },
+        {
+          "resource": "repo://terraform/d1/migrations/0064_provider_accounts.sql#L50-L74",
+          "version": "repo-lines-v1:sha256:8cb700e30886f69c85c24cba028de4e9f9b35d2c577788fee51260e680762700:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYWY5YWQ4NWE3NmI2YmExZDYxOTM1YTExM2IyODc2NjAyZjVkODk2MGVjNWI1N2RmMzg5YTY5MGE2NGUzYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0N2EyNmU3NTJjMmYxZjE5MjdjYzJlZDkxNzczYzY5MzIxYmMyZDk2NTgyMGFjMmU5NzgxYTZhOTA5Y2Y5MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwZmU0ZDJmYjEzMzJkZGI1ZTgzNDRjNTMyNWNkZDhhYzgzMzgyYmFjODI3NWNjYTc4MzJjOTYzM2Q3OTdiMjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b7726950a2624adba10e4e79cfe371d6",
+      "statement": "`D1ModelProviderAccountAtomicWriter` composes the account, credential, authorization, and default stores so account + credential + default are written in one `db.batch` on creation, and reconnects verify both the expected credential version and account state in the same batch — a failed exchange can never leave a half-connected account.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/model-provider-account-atomic-writer.ts#L103-L155",
+          "version": "repo-lines-v1:sha256:d46a2c2b5345d26e773ece9ca74618314d35d76de42b0126852eca13a8e2d2f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4YzRmN2IzNDFkN2RmNmJkODQyYzY1Y2QzNDI4OTM1MGYxYjMyODMwYmNlOWY5NjlkZWU3MzhmYTYxMzRmOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4MGQ2MzI5NTk2OTZkMmM5N2Y5MzdlMmI2OThmMDA4NzlkNDQ1ZGJlMDg5OWJhY2Y3MGEzY2Y2M2JkNWNjMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzMjdlMWJlODZkZmNjNThmMmViMjJjYmJkYjkxNGNhOGQ1ODIxNGQ4OTAwMjkzMzc0YmY3NjY0MDAzYjBhOGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d704f6a31124107a971ac634d954304",
+      "statement": "Other encrypted D1 tables use `REPO_SECRETS_ENCRYPTION_KEY`: `mcp_servers` (0018, revision added in 0062) encrypts env/header values (empty maps stored as plaintext `{}` sentinel), and `commit_signing_configuration` (0043) stores the commit-signing private key encrypted in a singleton row.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/commit-signing.ts#L52-L75",
+          "version": "repo-lines-v1:sha256:dda465301b528780912f57c05c6d83a3897738eff194fe1ad439bc81ffd0a338:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYWRmZDE3OTMyYjBiOTQyZTdjMmUzMmUyODJhMDQ4ODEwNjY4NDZiOGVkYWFlYjNkODEzNzM3ZTEyN2JiZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2MjIwZDFjOTgyNmFiYTNiYzc2MTRjOWQ4MDMyZDY3MDU1M2ZhZmI1ZmE5ZWQyZmU0MzZhMGRlZDQ3YjgzYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjZDZhYzliNDJlMmE4ZWQ5OGM5NDk2MjEwOTRjZmZkODI1Y2MyM2I0MzdmN2IzYjFlZDEwYmUwMmY3ZDAyOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0MmIyZDk5MDNhMTkyYmM5YjcxZTA3ZjMzZTZiMjQyZDE5ZmUxZmI0YmVjMTViN2E4Y2YyZjU0OTUwNDIwMDcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/mcp-servers.ts#L125-L136",
+          "version": "repo-lines-v1:sha256:352c3b7d98e9946f5548a911fc42cf49cda3d06e3197d67c26b6fb4d044b56b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzN2E5OTVjMDU2MWNmNWEzOTI5Zjg5YjQ4N2EwNzkzYjk2YjM2YzQzMTNmYjQ1Y2NlMjljNmJhY2JjYmM3ZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1ZDhlOThlN2Q2ZDU0N2RhZmZhMWY1NDMwNDgyNDljZjdlNTdjMmNiODg4NjhmNTgwYmFkNzIwODc3M2MyMjEifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/commit-signing.ts#L36-L41",
+          "version": "repo-lines-v1:sha256:eab930431d7e24b8922f4a8c36b1e2aa025b0d521f6aa876c260f2d79971d8ec:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGViNDYwMTZmMGM4YWFjMGI0ZmIwZGM2NzA3MTViYjgzMjdkMjU5YWU4MjgzODM3ZWE1MzllMWUzZTMyM2FlOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQwZjJkM2EzYWFkYTI3NTg2NDU3OGQwYTQzOTE1NjM4ZDU0M2ZlY2EyYzk0ODU4ZGI5NDEyMTFlODZjZWYyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNlYzJmNjIyMThkYzk5YjYyNGRkOTMyMzA1ZTQyNjE1NGE3MTUzZjczMGQwYTZkYjQ0N2YxNWFhM2I1NjMwMSJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/mcp-servers.ts#L37-L37",
+          "version": "repo-lines-v1:sha256:8d6afa70b313e5f696ca37d5341ac5dbb2db02c59cb5edbbf4cf238ae9e3fc3f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGQ2YWZhNzBiMzEzZTVmNjk2Y2EzN2Q1MzQxYWM1ZGJiMmRiMDJjNTljYjVlZGJiZjRjZjIzOGFlOWUzZmMzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGQ2YWZhNzBiMzEzZTVmNjk2Y2EzN2Q1MzQxYWM1ZGJiMmRiMDJjNTljYjVlZGJiZjRjZjIzOGFlOWUzZmMzZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDk3MDFiZmE3YjdhOGJlOWYxNmNjMTAyNmViNzcwMzkyYjFiNDRjZjQ3NDE3MjI2Nzc0Y2U5MDhhYzEyMDBlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU3ODRiZWU0MzI2NzczM2VjZjA1NGE4MzQ1NWJmYzA5YmM2ODcxYjBmZjI5NDI4YTkwMjNjZTgxYjI1ZmExYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_44a7371171b34cbba3dfb9eb136e61d5",
+      "statement": "`pr_autofix_feedback` (0070) is the durable receipt/decision ledger for PR feedback Autofix — recording why a provider object was or was not dispatched (decision `received`/`queued`/`skipped`/`failed`) — while execution admission stays authoritative in the owning Session Durable Object.",
+      "evidence": [
+        {
+          "resource": "repo://terraform/d1/migrations/0070_pr_autofix_feedback.sql#L1-L37",
+          "version": "repo-lines-v1:sha256:050f9e155a9d4a815a980ce0c9778910834bbaa0288ec3cee6528379222fc6c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNzEzNDE3NTRjYmQyYTg5ZTY2YzlhNDhkMjg0YWMxNmQ2YzI5MmI1NTE5ZDNkNTJiY2NmNTRmZTUwNzIzN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0ODQ3MjY1MGY0Zjk0YzkyMDQ4YjJhZjY1ZjlmZWQ2NWNkODUwZDkxN2IzY2IzOTk5NzA1MzEwYzI3NTE0NTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_363468c8736b448e81cdd3f40bcb7e63",
+      "statement": "The DO `session` table holds hot core state: external name, title, scalar primary repo mirror, per-session model/reasoning default, status (`created`/`active`/`completed`/`failed`/`archived`/`cancelled`), lineage (`parent_session_id`, `spawn_source`, `spawn_depth`), `code_server_enabled`/`vnc_enabled`, `total_cost`, resolved `sandbox_settings` JSON, `environment_id` provenance, and `opencode_session_id`; a CHECK requires `repo_owner`/`repo_name` to be null together and no-repo sessions to lack branch context.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L50-L84",
+          "version": "repo-lines-v1:sha256:dd1f3f5a2e7cdb1019c904bc6a29e17125cafc80c7993439118b210e3a15048e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YTJiOTE2MDRjN2VlZjc1ZGFkNTlhNDc3ZWQ1Y2ZiMTY3Mzg3MzkzNmQ2ZDBhOGVkYmNmMGMwYzRmNWZiMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1NjVmMzU3NDU4YWZhYzQ0ODlmODQ3ZTgzNzg2YTllYTU1OWIzNmQ2ZjJjZjExZWNiNmY4ZTEyYTE2MTMxNjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMTE0MzllMGYxZmNlNjg4ZDkxODA4MDM1ZjhiZjgyNTQxYzAyYzIxMTZmYjZjNjhlZmFmOGE0OTQzNzg1M2MifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/types.ts#L29-L54",
+          "version": "repo-lines-v1:sha256:25e209871c61f8b8dde404f2960a9c7fc4ac97800feba0199f9fd5dd0e9c538f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkMWI4ZTRiNmIwZDEyYTBkNjJhYWZkZWU0ZTJhM2RmYzBhNjgwODgwOTA4M2EzOTcwNTEzMjdhMTRmZjdmYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzNmQ5MjY4ODZmOWVjMGI2Nzc0NzljZjU1NzU4MDBmNjljMzY2NjM0ZjhlMjlhY2FlMzM3MDcyNDRiNzc5ZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2YjFjM2E5NGY2ZWVmODkwNTQ4ZDBhN2RjYTg1MmRjYWE1ZDBhM2U3NGRkZjVlYjU5YzRiZTYzNmRhNDI1MzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_78037e8b63254774b878a42be54dc805",
+      "statement": "The DO `participants` table stores session members with SCM identity for git commit attribution, AES-GCM-encrypted `scm_access_token_encrypted`/`scm_refresh_token_encrypted`, and `ws_auth_token` stored as a SHA-256 hash (never plaintext) for WebSocket authentication.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L87-L105",
+          "version": "repo-lines-v1:sha256:81d735c03c58b41488401c6b2f6b723311ed2d96f8fffe02547f03e9cd12004b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MzNhODc5M2IyNTYxZmE0Y2ZhZDIwZTk1YWY2M2I4N2I0M2UxNjVmMDZiZmI3NmRkNzJkZjRjNWE2OTQ1ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkNjJmMzljMDg1MTMwY2U1YTc5YzA5NzJmZDdhNTI4MzYzYWJhMjI5MGM5Y2IyMWQwZjcwN2MzMmNlNWJhZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4YmU5NDE1MjdiNGU3MjExZTY4NTVmNTVkZmI5NmRlZmNhMzk5ZTViZjlkZWMzOTVmZTQzYjQzMmVkYmE2NWMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/types.ts#L79-L95",
+          "version": "repo-lines-v1:sha256:bf48dccab979c8978a9631def4da9befb0a6140b179ec826e48ec39b1b0e21e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2OTQxZjE0YTQxMjc5OTZmNGE3ZjA0YjUwZTMxMGZmYjFmMjdlODJiNzk4YWZlMmNjMDQxYzM0N2ViYzIxMTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1MDljZDE0MGU0YTZkODU2NTExYTczNDA5OThiNjI0OGE4MjJhMDVlYjhjZWVkZGVkMTZiMTBlNmIzNmJkZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlZjRjZGY4MzM5MTYxZWUyYjU2ZGU1ZWI4YzY5OWQ5MDU0MmE3YjRlMGIyNTcxZDEzOGNkODYyOWE1ZDk4NzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e254a6808b134584a30c390dc3dd1ad4",
+      "statement": "The DO `messages` table is the prompt queue and history with status `pending`/`processing`/`completed`/`failed`, per-message model/reasoning overrides, Slack callback context, web idempotency (`client_request_id` unique partial index), Autofix dedup keys, and `stop_confirmation_deadline`; a unique partial index enforces at most one `processing` message per session (migration 42 repaired duplicates by requeueing later claims).",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L107-L129",
+          "version": "repo-lines-v1:sha256:823e90cc9302ead844c925986057000e6d31128a9f132da66d4e7ba8f2156397:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmOWNlNjBjMDM2ZmNiZjI5OTAyZjZlNzVkYzhiOGEyODY0ODJhNjYxYjI3MzRlZGEzYmM0NTMzNmJmYWU1YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzODg0ZGFmYTMxMTg0Mjg0NzUyYzMyZmNlOWRlMDU1NzdmOTRmYjcxNTJlMTkxY2M5ODlkZTk3MTQxMzEzMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhMWYwNWU3MzJjMWE3YzM3ZjRjMTU5YWMwYTk0Njc5NjY0MjY0YzY4ZThkN2I5NGRkZjExMTRkMzdkODMzOTYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L213-L223",
+          "version": "repo-lines-v1:sha256:b60fdbac1ae15efe54893c63fd416ceb0942c7aa6b46816787b08ed2cd19489a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MDYzY2E5MmIyNzMwYTdiYzM5ZjI4MWVlNjAzNWQ1ZGRiNmFiNjdmZjc2OGIxZjQ2ZjJiOThhOTgzNzUzN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0ZDM0ZTZkY2QzYTJhODBlYzY3OThhNGVjM2UwNGZhMjI2NGQ4ODE2M2I5NGJkMGY0NjhkZjA3ZjI4MDg1MDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhOGY0ODYyNjEwZjcwOWMyNDNlNWUwOGQ0ODQ3OTJkMWYxNWVlOTZhYThkODRhODFjYTI4OWVkYWZlZmJmZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0YTM1Y2IwNGZlN2NmY2E1YmI4ZmY2NDFlYWE5MTJjOTIxMTYxMzE2ZmM1MzBiZWM2ZGI2MGQzZmM5YmZkYzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_06ec678ef72b40dbaef24e25cb55301c",
+      "statement": "The DO `events` table is the append-only agent event log (tool calls, tool results, tokens, errors) with a `UNIQUE timeline_sequence` (added in migration 38, backfilled from rowid) for stable ordering and cursor-based pagination.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L131-L139",
+          "version": "repo-lines-v1:sha256:84e42b46b90908ece7cf4b011de52c20beaacc61cce2e911a9fb1f3a9be48e26:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWVjZmU1ZmUxODczZjI5YjI4ZTEzYTBmNjMwODBhZmYyZTIwZjA1NmU2ZDYwM2M1N2U2NDM5NGU0MzljOTlkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5NjdlYzFlZDM4MzZmOGViMTdhZmYxNzJiNWJmZWY3ZGU2MDQ4NWE0MzljNmNhMTFjNTkxZTE3NTU3MzlhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDcxOTZlOTA3ZjNkNzI0ODIwNTM2YzI2NmUwYThlZDViZTAwMTdjMGZiZTI1OTAxZDUyODQ2ZjQ1ZjU1Nzg5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmMwMjUwNGUxNjQxNDNlZjU1NDAyNTFkMDFiNWZmOWY1NTMzOGYyYzdlOGJiZWQ4NWY5Nzg5YTRkNGY4N2U2ZiJ9"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L538-L548",
+          "version": "repo-lines-v1:sha256:1f28c8609ef97ab78905c34897fea3dc423c1efb5b2a833e0882d8db8461c31a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMTFmMjM5YWM2NWM5ZmVjZDRmNzk3NWQ0ZWUwYzY3N2I1OGE4ZWE2Nzg1MmVhMjVkMjc5MjM5MjUxOGQyZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlN2NmYTIwOGFmNjY3YzE2NjczMjNmMTFkMTg4NWY1YWUzMmRlMmM0YTk3ODM5ZjRmMmRjNzU3YmYzM2I0YTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyNDE0MTI3NzJlMzhiMTdhZjQzYTM2OWVjMmE5NmMyMmVlZTQxNjViZTNmZmUyMWQ3NzU4ZTk4MDQyZDZmMTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5be7b18caf544f1a19e09a181bfe9ae",
+      "statement": "The DO `sandbox` table holds the selected backend sandbox: provider/snapshot ids, `runtime_version` and `snapshot_runtime_version` (restore compatibility floor), sandbox auth token (hash preferred), the status machine (`pending`→`spawning`→`connecting`→`warming`→`ready` plus `stale`/`snapshotting`/`stopped`/`failed`), `git_sync_status`, heartbeats, a spawn-failure circuit breaker (`spawn_failure_count`), and rotating code-server/VNC/tunnel URLs and passwords; `session_diff` is a singleton holding the latest durable checkout diff bundle (the only home of source patches), and `session_alarm_state` persists alarm scheduling state for DO adoption recovery.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L156-L184",
+          "version": "repo-lines-v1:sha256:e6e5f36162215d04086edcac73fe851f1993053dda53af0e3be3111fb9352e03:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwZDE1ZjFiY2Q2MWY3YTA0OTU3MmZjMjUxMzAxZjFjMzgzMzc3YzQ3MTcyM2Q0YWExOTVlNDNkMWZlOGZiMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMwNWIzZDM1NzMwY2U1OGM4YTcxNzMzNGM5MTQ0YjRlMmFlOGY1NmY5NjMyMThkN2MzNDYyMjhiODhlOGIyZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ZjYxYjYyZTI2ZTcyNDE3ZjFkYTE1MWQ4MWNjZGRhMmMxNThhNWMzMzkyOTVmMDJiYjE2OWYxNDk3YWM2ZjIifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L26-L48",
+          "version": "repo-lines-v1:sha256:0b9d501ed079fc714141fa20499f95d795573968041a1e0d932bee0312dbfbd1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3YTljNGI1MTY2ZGNlMmU3NDNmYTNiNTMyMjA4MDUzNzc2YTg5YjAzOTY2MWQ1MDc5NzUyZTdhNDMxNmIwMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzYWI2ZWZkYzY0YzhlNGM1NTRiMmI5MDdmMmE4NTQ2MTBmYWY5YWZiZDI5ODNiOWMzY2RhOGVmN2JmNjM0YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNGQwODAyYzRkZTZmYTk4Nzc1ZTdlOWNmODg5ZTczNTY2NTk3YzA2M2Y2ZGM2YmU3NDU4NGZkYjM1ZjdkYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3NzI1MjY4MmRiYjgwZWJiNTA3OWM1NmRhMGY5YzllMTlhMmEwMjczYmYyNzBhN2YyYzYwMDlkYTY5MzkzNTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef4e75c37fcc420781a5c401a1a64ca1",
+      "statement": "The DO's `session_repositories` table extends the D1 identity subset with per-repo git state (`branch_name`, `base_sha`, `current_sha`) — git state is DO-only and deliberately absent from the D1 index (\"D1 doesn't store it\"), with pre-feature readers overlaying the position-0 row with the session scalar columns.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L186-L207",
+          "version": "repo-lines-v1:sha256:b4549fc867fdecca24c6bc46600ec974f0a9032b250230cd7677c53c941485cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MDk4NTEwMjY1ZTU1Y2UwYTc4OGQ4YzI1OTU5ZWRlZTkzNTNkNTZmNjFjZmYzZGFhODQwNDZiMjk0Y2YwNmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkYzY5NWNmNTM3NmVkZGU5MWQ3Y2ZkMjA1M2UzMjczZTg2M2IxNDA2NGRkMGEyMDdjMGFkODgzZWU3NjM1MjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMGNkMjg1MzIwZjYyNWYxZjJkZjQxZThmMzI3OWZmMjA1NGVjNzlmYzkzYmUyNjk1MjQ0ZDQwNWI2YThmMzUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/types.ts#L61-L73",
+          "version": "repo-lines-v1:sha256:9277358701bb521d69f99ad9b84d4fd8d3d7c98214b150235ab74f45f53bdfaa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMDQzYjc1ZWMxZWIwNmQwYTkzYTZjNTcwMmIyNGEwNWVlMDQ3YjUwODY2YmYwYzU0NzY2OGRmOGYyZDc5MTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhZTg2YTRjZGQ4MjlhZGZiNDNhNjA2YzZlYTBlODdmNTNjOTkyODYyOGI4OWZiOWVjMzRhNDQ5ZjUzOTk2OTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_375560a1542d4a6f9e0bafaf7cae5f57",
+      "statement": "The DO `ws_client_mapping` table maps WebSocket ids to participants so connections recovered from WebSocket hibernation can be re-authenticated after DO eviction.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/schema.ts#L200-L207",
+          "version": "repo-lines-v1:sha256:92fc593dd464ec78559b63ac159b78e3a2fb06fbe25f6ff39c6d8e65238fa100:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVjNGU0YzJlZWY2ODkzMmQ4NTg3MTMxNGRiM2Q5Yzg1MDVlMGRlNGRjNTY5MmRiYjdhM2RmZGVlYWRlZTVkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5NjdlYzFlZDM4MzZmOGViMTdhZmYxNzJiNWJmZWY3ZGU2MDQ4NWE0MzljNmNhMTFjNTkxZTE3NTU3MzlhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzI4Nzk4M2IzNjhiMzkwMmQ1ZTgxM2UxYjEyNGU2MDUzNzE0ZGExMTM5OTU5NTIxMDZjYTgyY2VlNTg2NTViYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2UwY2QyODUzMjBmNjI1ZjFmMmRmNDFlOGYzMjc5ZmYyMDU0ZWM3OWZjOTNiZTI2OTUyNDRkNDA1YjZhOGYzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f53f6fd1ba44e8ba494b5594ba83b22",
+      "statement": "The DO is the live authority and D1 a projection of selected facts: `SessionStatusService` is the single place every status transition fans out — connected clients (broadcast), the D1 session index (status plus terminal metrics via `updateMetrics`), and the parent session's Durable Object (child rollup) — with D1 writes monotonicity-guarded; projection failures are caught and logged, and `repairIndexStatus` re-projects without claiming new activity.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L1-L65",
+          "version": "repo-lines-v1:sha256:9b360ff7fbca75b81bc6889fc8dd20f72afef998a14c8bb3504c1816a65d78d2:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkMTZkZGNkYzRiYjhlZjFmNTA4MjdkN2RiNDk4YjQ1NmYwNWM5YWZjNWU4NGQzYmRiNWNlODZmMDNkOGNhYzcifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/session/session-status-service.ts#L116-L133",
+          "version": "repo-lines-v1:sha256:5193f1c76fad8eb5824b07bc24ca242f9278aff542f695a300fa60f1c347775d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4ZGQxOTE2OGNkMWZlZDgyZDczZGY5N2VhYzY1ZjA1M2U4YjdkYWU4N2FiN2U1MjAzZGIwMTJkOWQ4YThlYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0YTUzNDA2ODA4YzczZTQ5ZWI0YWY0NTU5ZmNjMjJiNzhjNGY3NzUxYzM2ZTBhODRlZjMyYWE2MzcwZTg5ZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNjYwNTg5Y2Y1NGJiZTYxNWY3MDliNjllMjk5MzFkNDFjZmJiN2Q4ODM5MGE3ZjdmODQ3OTQ3ZGIwOTMwMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc44f079cdbc4ef7aa76ddf1aa80905d",
+      "statement": "`TOKEN_ENCRYPTION_KEY` is the AES-256-GCM key domain (`encryptToken`/`decryptToken` in `src/auth/crypto.ts`: 256-bit key, 96-bit random IV, base64-encoded `IV || ciphertext`) protecting SCM enrichment tokens — participant tokens in the DO `participants` table and the D1 `user_scm_tokens` refresh-token store; rotating it invalidates stored SCM tokens and affected users re-link.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/crypto.ts#L1-L68",
+          "version": "repo-lines-v1:sha256:9abff569d8e56ca88ee198324062366fc0fce624609ad050ab0bd8df7eeaf9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NDU0MDAwNzFmOGQzODkxNzg2MDhkZGMxOTZmNmNjOWRhNjVhNjVjYWJjMDkxZmVlZGNkNTUzYWNiZDQ2YTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e57dfb1865d4b0c939597488a665a2b",
+      "statement": "`UserScmTokenStore.upsertTokens` only overwrites when the incoming token expires later (`WHERE excluded.token_expires_at > ...`), and `casUpdateTokens` performs a refresh-token compare-and-set on the raw ciphertext so concurrent refreshes cannot clobber each other.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/user-scm-tokens.ts#L115-L149",
+          "version": "repo-lines-v1:sha256:22553ea89bb29adb9cdc81694eedf0d2bcb3a21042eeeb2f95527a5a6a445f87:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjODk1MTlmNDUxYzAxZTIyNDNkYjA3MDVjYjI5Zjc5NGMyMmJjZjYyMWM0NjY2YmVhMDA4ZjQwNzIyY2EwNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjNzMwYzY3YmExMjMwOTJlYTEyNDM2ZjBiZTY0YmNjOTI2MTVkNDMyZGRhZjZhOTRjZTkxY2FhM2U3OWExMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhY2IyMTc3ZjVhNDU2MzEwOTE5MzQ2NzFlYzAzOGQzY2JjZTYzZGFlMzgxMDlhNzU4NzllYTU1NmRjMjM3NjMifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/user-scm-tokens.ts#L77-L113",
+          "version": "repo-lines-v1:sha256:f523b5f43a28d58edea55ad9d228d2e5f28285a95e63fe343d6eba7d1f2ae33d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4YmNiNGU1ZmUzY2RmYTEwMjczMWUzMGYxOGE5ZGI4ODEzY2NmNTFjM2UxMjM5N2E1NWM5NDVjZmFmMjRkOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlZWVmZGQ1MTEzZDk5MDU2ZjFlMTlkZTFiN2Q1YmVkZTZlMGEzMDFmOWU4ZjdiZTRlYWQzZjhmOGRhODY2YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNTc4OWQwY2U4ZmEyZWRiZTA2ZDRhZTIwMDE2MjkwZmVjNjczZGNiNjg0Njc5YjFhODM2MzdmMDNjMDAyNmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe3b4b61f60b46e0ac21fcb1bae54a11",
+      "statement": "`REPO_SECRETS_ENCRYPTION_KEY` is the single key for all three secret scopes and also for other stored control-plane secrets: automation `trigger_auth_data` (e.g. Sentry client secrets via `encryptSentrySecret`), MCP server env/header values, and the commit-signing private key; `src/db/scoped-secrets.ts` provides the shared write validation, per-scope key cap, encryption bookkeeping, and row codecs, with `SecretDecryptionError` carrying the failing key but never plaintext or ciphertext.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/webhook-key.ts#L30-L41",
+          "version": "repo-lines-v1:sha256:e1099c62db7826f8ecbe28180d24f4781ec0851d60f5d6c75040a2018c053070:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YTNiNTQ4ZTg4NWEyN2IxYTliM2VkYTcxYjVkN2ExNjA0NmRjMWUzNmU3NWNmMzc0ZWUyMjBkODBkOWQ2NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyNzNkNTI1MDdiZTA1YjYwZmU5YzU3OWYyMGRkMjdhN2NjMzEyNmZlODA1ODBjZWQ4NjYzNmMzMGY1Njk4MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/scoped-secrets.ts#L1-L146",
+          "version": "repo-lines-v1:sha256:98f782dbc938a01aa490baef403b700b7794e0efa8d7e4b465f6bd935b410cde:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYWYyMmNmMDczMjU5MmMyNDcxNDFjYmU2MWVmYTExMDEyNjEyZjVhMzEyMmI5YWY5YmJhZjUyZjU3MjRkMTk0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/routes/automations.ts#L652-L655",
+          "version": "repo-lines-v1:sha256:490b54ae5a6915f1eeee937ceff98327cbb4624d76535f84b212cc1a1a8f1554:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhlYzUzNDhjYTAzYjFlMzQ5Y2FjMzE0N2NlMWFjZTgyNDAxNWQ2OTI3NzYzNTdhZjZlOTI3Y2RmZjRjMGY5ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzdkZTFiMzY1ZWVhMzhhOWJiMTQ1MjlkYWEwYmU3ZTNjM2EzMDg5OGIyODc2M2RmMTk5ZWFlODRkZDNiZTRiYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2Y4MTE1MjZlNDJkMDIwNmJiMDhlYTgzYWU1MWU3Yzc1ZGY4NTBjMzViN2Y2NWE1ZGQ4NTY3MzAxNzNlOTEwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzU5M2UzZDljN2JlYzk4MTUzZmNkMTkyYzIzOTc1MjA1NzE3NTk0NTY0MjIyYzg1OGQwZDQzZGZlZTllNTI3MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_99d56ee7defa46db97ee8ae603cdac2b",
+      "statement": "`src/db/secrets-validation.ts` enforces the rules gating every secret write: keys must match `[A-Za-z_][A-Za-z0-9_]*` (max 256 chars) and not be in the reserved-key blocklist (system env vars like `SANDBOX_AUTH_TOKEN`, `PATH`, `GITHUB_APP_TOKEN`), values max 16 KB, max 50 keys and 64 KB total per scope; `mergeSecretSources` folds ordered per-session sources lowest-precedence-first (the primary repository passed last so it wins collisions) with per-source byte attribution and a 128 KiB combined session cap.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/db/secrets-validation.ts#L1-L56",
+          "version": "repo-lines-v1:sha256:4b4ff0e5cf85cd97080fc76c947ef0ea6a7b5f85cc4f30776285d0a7bd306810:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkN2Y5ZmRmODNlZDM5ODk0NTNkZTc2NWE4MzFkNzU5OWNmZDQxYWQyYjFiYzU5NGQ0Y2RmNmM0NjJlMDRkMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4YzJiNzBjY2Y1Yjg5NTA3OTRiMzdhOWEwOTkwMzUyZjQ5YTc1YzQ3NjRlNjJhMjE2ZjQ5OWZmOTJjNTllOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkMThjM2MyZmM0OWY0NGE2OGIwYTBjOTI5ZTNhNDUxMDRlOGJiZGM0NThkZTYyNTYyYTRiYzk0MDBjNjhiNWYifQ"
+        },
+        {
+          "resource": "repo://packages/control-plane/src/db/secrets-validation.ts#L94-L150",
+          "version": "repo-lines-v1:sha256:227e7044cc7411aac0bb073633b2ec9d3a758f42a5f6d718419ea60c0659ff21:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNWU1NWU0ZmU2ZTI3YTZmMTlhNmQzM2E3NzJkZGY3MDkzZjU4NjJmZWNjYjk4N2MwZDRiMDMwZTYxZjE3NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4NWMxNWIzYTk0ZWFjN2Q0NmVkZDE1NGZjNjI5MGFkZDZhYmJmY2FjMzlmMzgzNWUwZTg0YmQwOGE5N2UxNjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiOWU3ODM3OWE5YmZmNzk5ZTQyMmU0NTEzOThlODIwYzI0ZjhiYTg5NjBkZjU4NTEyOTBlYzczY2Y5MDhiOWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_033ea928e2e9437ca8cee88951638d3b",
+      "statement": "`PROVIDER_ACCOUNTS_ENCRYPTION_KEY` (implemented in `src/auth/provider-account-crypto.ts`) encrypts subscription-provider credentials with a versioned envelope (`v1.<iv>.<ciphertext>`) and AES-GCM additional authenticated data binding the provider account id, provider, and credential schema version — a ciphertext cannot be decrypted under a different account context; rotation requires an explicit migration that re-encrypts every credential while both keys are available.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/auth/provider-account-crypto.ts#L35-L104",
+          "version": "repo-lines-v1:sha256:c712f040883cef1b02044147fd7c249f4e0d1aae1f858855cdd1bcff019caf9c:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MDNhNGY3YzFiZDY1YWVjYmRiZGQwNThjNmYxYjc0MmNmN2YyMDZkYTExYzdlNzdkMzU3NDhjYWVhNWRiNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3YzZmYzk3MzdlZGQyYTgzMTllNzk1N2QxMzhjZTMzNmQxM2ZlMDQxMTRjZjg1MDI4MDZhY2RkMTJiZjVmNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxODI1ZDUyOWEyOTM2OWU4ZWJiNzljZTM2ZmU5MTBlMzQwZWZhYWE1NDNhNjEwYzY2ZmQxOWRkYjY5NDQwNzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea40d3fef05f42ed835b024d8173a21d",
+      "statement": "Encryption keys are validated fail-closed at startup (`src/env-validation.ts`): each key must be present, strict base64, and decode to exactly 32 bytes for AES-256, so a malformed key fails at first touch rather than mid-spawn and a short key cannot silently downgrade to AES-128/192.",
+      "evidence": [
+        {
+          "resource": "repo://packages/control-plane/src/env-validation.ts#L1-L58",
+          "version": "repo-lines-v1:sha256:9167acf729d8855f35962f9ffd09a3ad9b1b22711716147e9323d1dc0ca8bb3d:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T06:58:43.189Z"
+  }
+}
