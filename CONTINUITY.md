@@ -21,8 +21,9 @@ Done:
 - Implemented blind rubric judging, disagreement-only tiebreaks, source-only probes, telemetry economics, publication-gated leaderboard, and isolated run capture.
 - Completed 31 Fable + 31 Opus judgments, 24 GPT tiebreaks, and 62 GPT correctness probes. No unresolved tasks; overall kappa is 0.476, with taxonomy/style anchors weakest, below the 0.6 gate.
 - Selected and pinned cloudflare-os, smallstep-cli, ExtractThinker, celld, and pi-desktop; removed guessed native configs in favor of a frozen future OpenCode + OpenWiki MCP invocation.
+- Added and verified Amp orb lifecycle setup: OpenCode 1.18.25, OpenWiki 0.4.3, user-level OpenWiki MCP integration, OpenCode Go credential aliasing, and a no-inference preflight for all three models.
 Now:
-- Final verification and honest non-publishable report complete.
+- Orb setup and historical benchmark framework are verified; setup changes are committed locally and not pushed.
 Next:
 - Re-freeze clearer rubric anchors, freeze Amp judging and the OpenCode invocation/telemetry contract, then execute 45 trials.
 Open questions (UNCONFIRMED if needed):

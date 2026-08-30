@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export PATH="$HOME/.local/bin:$PATH"
+
+profile="$HOME/.bash_profile"
+profile_marker="# openwiki-bench OpenCode environment"
+touch "$profile"
+if ! grep -Fqx "$profile_marker" "$profile"; then
+  cat >> "$profile" <<'EOF'
+
+# openwiki-bench OpenCode environment
+export PATH="$HOME/.local/bin:$PATH"
+if [[ -z "${OPENCODE_API_KEY:-}" && -n "${OPENCODE_GO_API_KEY:-}" ]]; then
+  export OPENCODE_API_KEY="$OPENCODE_GO_API_KEY"
+fi
+EOF
+fi
+
+installed_version() {
+  local package="$1"
+  local manifest="$HOME/.local/lib/node_modules/$package/package.json"
+  if [[ -f "$manifest" ]]; then
+    node -e 'process.stdout.write(require(process.argv[1]).version)' "$manifest"
+  fi
+}
+
+opencode_version="1.18.25"
+openwiki_version="0.4.3"
+if [[ "$(installed_version opencode-ai)" != "$opencode_version" || "$(installed_version openwiki)" != "$openwiki_version" ]]; then
+  echo "Installing OpenCode $opencode_version and OpenWiki $openwiki_version"
+  npm install --global --prefix "$HOME/.local" \
+    "opencode-ai@$opencode_version" \
+    "openwiki@$openwiki_version"
+fi
+
+echo "Installing project dependencies"
+npm ci --prefix "$repo_root"
+
+echo "Installing the OpenWiki integration for OpenCode"
+openwiki integrations install opencode --force
+
+echo "Orb setup complete"

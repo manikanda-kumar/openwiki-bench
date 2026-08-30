@@ -36,6 +36,17 @@ npm run score -- --repo /path/to/background-agents
 
 Outputs are stable: no timestamps or local paths are written into scores.
 
+Amp orbs run `.agents/setup` to install pinned OpenCode and OpenWiki versions, project
+dependencies, and the user-level OpenWiki MCP integration. Before starting paid trials, run:
+
+```bash
+npm run preflight:opencode
+```
+
+The preflight verifies credentials, exact CLI versions, all three OpenCode Go model IDs, and the
+OpenWiki MCP registration without sending a model request. Project secrets may use
+`OPENCODE_GO_API_KEY`; orb login shells safely expose it to OpenCode as `OPENCODE_API_KEY`.
+
 ## Planned official matrix
 
 Every run will use the same OpenCode agent and OpenWiki MCP generation path. Only the OpenCode Go model changes:

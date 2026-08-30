@@ -12,3 +12,7 @@ Executable JSON configs are intentionally deferred until the non-interactive Ope
 OpenCode/OpenWiki versions, permissions, max-turn policy, resume behavior, and telemetry capture
 have been smoke-tested and frozen. Committing guessed commands would make the benchmark look
 reproducible when it is not.
+
+Amp orb setup pins OpenCode 1.18.25 and OpenWiki 0.4.3, installs the OpenWiki integration at user
+scope, and provides `npm run preflight:opencode`. The preflight validates setup and model
+availability without consuming inference.
