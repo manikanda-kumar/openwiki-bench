@@ -23,7 +23,7 @@ Done:
 - Selected and pinned cloudflare-os, smallstep-cli, ExtractThinker, celld, and pi-desktop; removed guessed native configs in favor of a frozen future OpenCode + OpenWiki MCP invocation.
 - Added and verified Amp orb lifecycle setup: OpenCode 1.18.25, OpenWiki 0.4.3, user-level OpenWiki MCP integration, OpenCode Go credential aliasing, and a no-inference preflight for all three models.
 Now:
-- Orb setup and historical benchmark framework are verified; setup changes are committed locally and not pushed.
+- Orb setup and historical benchmark framework are verified and pushed to `origin/main`.
 Next:
 - Re-freeze clearer rubric anchors, freeze Amp judging and the OpenCode invocation/telemetry contract, then execute 45 trials.
 Open questions (UNCONFIRMED if needed):
