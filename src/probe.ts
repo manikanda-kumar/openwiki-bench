@@ -36,6 +36,14 @@ export interface ProbeAggregate {
   contradiction_rate_95_wilson: { low: number; high: number };
 }
 
+export function parseProbeResponse(content: string): Omit<ImportedProbeLabel, "id"> {
+  const parsed = JSON.parse(content.trim().replace(/^```(?:json)?\s*/u, "").replace(/\s*```$/u, "")) as { label?: unknown; rationale?: unknown };
+  if (parsed.label !== "supported" && parsed.label !== "unsupported" && parsed.label !== "contradicted") {
+    throw new Error("Probe judge returned an invalid label");
+  }
+  return { label: parsed.label, ...(typeof parsed.rationale === "string" ? { rationale: parsed.rationale } : {}) };
+}
+
 function digest(value: string): string {
   return createHash("sha256").update(value, "utf8").digest("hex");
 }
@@ -137,12 +145,7 @@ export async function runOpenAIProbeJudge(
     const body = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
     const content = body.choices?.[0]?.message?.content;
     if (content === undefined) throw new Error(`Probe judge ${config.id} returned no content`);
-    const parsed = JSON.parse(content.trim().replace(/^```(?:json)?\s*/u, "").replace(/\s*```$/u, "")) as { label?: unknown; rationale?: unknown };
-    if (parsed.label !== "supported" && parsed.label !== "unsupported" && parsed.label !== "contradicted") {
-      throw new Error(`Probe judge ${config.id} returned an invalid label`);
-    }
-    const probeLabel: ProbeLabel = parsed.label;
-    const label: ImportedProbeLabel = { id: task.id, label: probeLabel, ...(typeof parsed.rationale === "string" ? { rationale: parsed.rationale } : {}) };
+    const label: ImportedProbeLabel = { id: task.id, ...parseProbeResponse(content) };
     labels.push(label);
     await onLabel?.(label);
   }

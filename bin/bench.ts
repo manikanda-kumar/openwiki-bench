@@ -2,11 +2,12 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { runAmpTask, type AmpModeConfig, type AmpTaskProvenance } from "../src/amp.js";
 import { aggregateTelemetryByRun, readTelemetry } from "../src/cost.js";
 import { prepareAllJudgeTasks, prepareAllProbeTasks, writePreparedEvaluation } from "../src/evaluation.js";
-import { aggregateJudgments, runOpenAICompatibleJudge, selectDisagreementTasks, type JudgeManifestEntry, type JudgeTask, type OpenAICompatibleJudge, type PageJudgment, type WikiPenalty } from "../src/judge.js";
+import { aggregateJudgments, parseJudgeResponse, runOpenAICompatibleJudge, selectDisagreementTasks, type JudgeManifestEntry, type JudgeTask, type OpenAICompatibleJudge, type PageJudgment, type WikiPenalty } from "../src/judge.js";
 import { buildLeaderboard } from "../src/leaderboard.js";
-import { aggregateProbeLabels, runOpenAIProbeJudge, type ImportedProbeLabel, type OpenAICompatibleProbeJudge, type ProbeTask } from "../src/probe.js";
+import { aggregateProbeLabels, parseProbeResponse, runOpenAIProbeJudge, type ImportedProbeLabel, type OpenAICompatibleProbeJudge, type ProbeTask } from "../src/probe.js";
 import { generateReport } from "../src/report.js";
 import { runSystem } from "../src/run.js";
 import { scoreAll } from "../src/score.js";
@@ -113,6 +114,30 @@ async function main(): Promise<void> {
     process.stdout.write(`Recorded ${existing.length} judgments (${pending.length} new) -> ${output}\n`);
     return;
   }
+  if (command === "judge" && args[1] === "run-amp") {
+    const config = await json<AmpModeConfig>(required(args, "--config"));
+    const tasks = await json<JudgeTask[]>(option(args, "--tasks") ?? path.join(evaluationRoot, "judge-tasks.json"));
+    const privateManifest = await json<{ entries: JudgeManifestEntry[] }>(option(args, "--manifest") ?? path.join(evaluationRoot, "judge-manifest.json"));
+    const conflicts = [...new Set(privateManifest.entries.filter((entry) => config.contestant_models?.includes(entry.model)).map((entry) => entry.model))];
+    if (conflicts.length > 0) throw new Error(`Judge ${config.id} is excluded from contestant model(s): ${conflicts.join(", ")}`);
+    const output = option(args, "--output") ?? path.join(evaluationRoot, `judgments-${config.id}.json`);
+    const provenanceOutput = option(args, "--provenance") ?? path.join(evaluationRoot, `judge-provenance-${config.id}.json`);
+    const existing = await optionalJson<PageJudgment[]>(output, []);
+    const provenance = await optionalJson<AmpTaskProvenance[]>(provenanceOutput, []);
+    const completed = new Set(existing.filter((judgment) => judgment.judge_id === config.id).map((judgment) => judgment.task_id));
+    const limit = integerOption(args, "--limit", Number.MAX_SAFE_INTEGER);
+    const pending = tasks.filter((task) => !completed.has(task.id)).slice(0, limit);
+    const rubric = await readFile(path.join(projectRoot, "rubric.md"), "utf8");
+    for (const task of pending) {
+      const prompt = `${rubric}\n\nAnonymous wiki outline:\n${task.wiki_outline.map((title) => `- ${title}`).join("\n")}\n\nEvaluate this page:\n\n${task.content}`;
+      const result = await runAmpTask(task.id, prompt, config);
+      existing.push({ task_id: task.id, judge_id: config.id, ...parseJudgeResponse(result.response) });
+      provenance.push(result.provenance);
+      await Promise.all([writeJson(output, existing), writeJson(provenanceOutput, provenance)]);
+      process.stdout.write(`Recorded ${config.id} judgment ${existing.length}/${tasks.length} (${task.id})\n`);
+    }
+    return;
+  }
   if (command === "judge" && args[1] === "disagreements") {
     const tasks = await json<JudgeTask[]>(option(args, "--tasks") ?? path.join(evaluationRoot, "judge-tasks.json"));
     const primary = required(args, "--primary");
@@ -137,7 +162,7 @@ async function main(): Promise<void> {
     }, privateManifest.penalties);
     const output = option(args, "--output") ?? path.join(evaluationRoot, "judged-scores.json");
     await writeJson(output, { ...aggregate, manifest: privateManifest.entries });
-    process.stdout.write(`Aggregated judgments (kappa=${aggregate.cohen_kappa.toFixed(3)}, publishable=${aggregate.publishable}) -> ${output}\n`);
+    process.stdout.write(`Aggregated judgments (weighted-kappa=${aggregate.linear_weighted_cohen_kappa.toFixed(3)}, exact=${aggregate.exact_agreement.toFixed(3)}, publishable=${aggregate.publishable}) -> ${output}\n`);
     return;
   }
   if (command === "probe" && args[1] === "run") {
@@ -152,6 +177,26 @@ async function main(): Promise<void> {
       await writeJson(output, existing);
     });
     process.stdout.write(`Recorded ${existing.length} probe labels (${pending.length} new) -> ${output}\n`);
+    return;
+  }
+  if (command === "probe" && args[1] === "run-amp") {
+    const config = await json<AmpModeConfig>(required(args, "--config"));
+    const tasks = await json<ProbeTask[]>(option(args, "--tasks") ?? path.join(evaluationRoot, "probe-tasks.json"));
+    const output = option(args, "--output") ?? path.join(evaluationRoot, `probe-labels-${config.id}.json`);
+    const provenanceOutput = option(args, "--provenance") ?? path.join(evaluationRoot, `probe-provenance-${config.id}.json`);
+    const existing = await optionalJson<ImportedProbeLabel[]>(output, []);
+    const provenance = await optionalJson<AmpTaskProvenance[]>(provenanceOutput, []);
+    const completed = new Set(existing.map((label) => label.id));
+    const limit = integerOption(args, "--limit", Number.MAX_SAFE_INTEGER);
+    const pending = tasks.filter((task) => !completed.has(task.id)).slice(0, limit);
+    for (const task of pending) {
+      const prompt = `Decide whether the statement follows from only the supplied source excerpts. Label supported when the excerpts establish it, unsupported when they do not establish it, and contradicted only when they establish the opposite. Return one JSON object and nothing else: {"label":"supported|unsupported|contradicted","rationale":"brief explanation"}.\n\nStatement:\n${task.statement}\n\nSource excerpts:\n${task.sources.map((source, index) => `--- source ${index + 1} ---\n${source}`).join("\n")}`;
+      const result = await runAmpTask(task.id, prompt, config);
+      existing.push({ id: task.id, ...parseProbeResponse(result.response) });
+      provenance.push(result.provenance);
+      await Promise.all([writeJson(output, existing), writeJson(provenanceOutput, provenance)]);
+      process.stdout.write(`Recorded ${config.id} probe ${existing.length}/${tasks.length} (${task.id})\n`);
+    }
     return;
   }
   if (command === "probe" && args[1] === "aggregate") {
@@ -205,7 +250,7 @@ async function main(): Promise<void> {
     return;
   }
   if (command !== "score") {
-    process.stderr.write("Usage: openwiki-bench run|score|prepare|report|cost|leaderboard ...\n       openwiki-bench judge run|disagreements|aggregate ...\n       openwiki-bench probe run|aggregate ...\n");
+    process.stderr.write("Usage: openwiki-bench run|score|prepare|report|cost|leaderboard ...\n       openwiki-bench judge run|run-amp|disagreements|aggregate ...\n       openwiki-bench probe run|run-amp|aggregate ...\n");
     process.exitCode = 2;
     return;
   }

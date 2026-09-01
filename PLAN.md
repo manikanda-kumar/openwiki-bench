@@ -162,12 +162,13 @@ Wiki score = mean of page scores, penalised by `coverage` and `completeness`.
 
 Protocol: strip model identity and shuffle directory labels before judging; two judges plus a
 tiebreak; never let a contestant judge its own bench. The official judge transport is **Amp**,
-not direct OpenRouter calls: Fable 5 primary, Opus 4.8 secondary, and GPT-5.5 as disagreement
-tiebreaker and correctness-probe judge. Run each blind task in a fresh isolated Amp thread with
+not direct OpenRouter calls: GPT-5.5 through Amp's `deep-classic` mode as primary, Opus 5 as
+secondary, and Fable 5 as disagreement tiebreaker and correctness-probe judge. Run each blind task in a fresh isolated Amp thread with
 no contestant repository/project attached, import only its JSON response, and record thread ID,
 Amp mode, resolved model/version, and execution time in the private judge manifest. Preflight
 exact model availability before the matrix; never silently accept Amp routing to a replacement
-model. Report Cohen's kappa — below ~0.6 the anchors are broken and rankings are not publishable
+model. Gate on linear-weighted Cohen's kappa — appropriate for ordinal 0–4 scores — and report
+exact agreement plus unweighted kappa as diagnostics. Below 0.6 weighted kappa the anchors are broken and rankings are not publishable
 until they are fixed.
 
 Cost control: judge a fixed 8-page stratified subset per run (quickstart, overview,
@@ -255,30 +256,29 @@ and `plan.summary.json`; mark anything not recoverable as `null`, never guessed.
 runs, backfill `run.json`, write `grounding.ts` and `structure.ts` plus `bench score`. No LLM
 spend. Exit: `results/scores.json` regenerates from a clean clone.
 
-**P1 — complete pilot, official Amp transport pending.** `rubric.md`, `judge.ts` (blind,
+**P1 — pilot complete; official Amp transport frozen.** `rubric.md`, `judge.ts` (blind,
 multi-judge, kappa), and `probe.ts` contradiction rate are implemented and the historical runs
 were judged through OpenRouter. The ordering is traceable to per-page scores, but primary-judge
 κ = 0.476 misses the 0.6 gate. Before official runs, revise the weak taxonomy/style anchors and
 replace direct-provider judging with isolated Amp threads while preserving the JSON contracts.
 
-**P2 — parser complete; official capture pending.** `cost.ts` and derived per-page/per-claim
-economics are implemented. Freeze OpenCode Go usage and tool-event capture before the matrix;
-the five historical runs stay `null` and are labelled as such.
+**P2 — complete.** `cost.ts` and derived per-page/per-claim economics are implemented. Official
+runs preserve OpenCode JSON events and session exports, reject model substitution, and normalize
+tokens, reported cost, latency, tool failures, page completions, and verified claims. The five
+historical runs stay `null` and are labelled as such.
 
-**P3 — harness complete; 45-run matrix outstanding.** Five repositories are selected and pinned.
-The runner captures immutable artifacts and telemetry, and the leaderboard enforces three trials
-on all five subjects. The historical dataset cannot satisfy this gate retroactively because its
-prompt and telemetry are unavailable.
+**P3 — execution contract frozen; first subject executed.** Five repositories are selected and
+pinned. The runner captures immutable artifacts and telemetry, enforces one model/session with no
+operator retry, and the leaderboard requires three trials on all five subjects. The historical
+dataset cannot satisfy this gate retroactively because its prompt and telemetry are unavailable.
 
-Do P2's LangSmith switch before the next run regardless of phase order — that run's cost data
-is unrecoverable afterwards.
+OpenCode telemetry capture is mandatory for every official trial; a run without a valid session
+export is failed because its cost and loop data are not recoverable afterwards.
 
 ## 9. Remaining execution work
 
-1. Revise and re-freeze rubric anchors before another judge pass; current primary-judge κ = 0.476.
-2. Freeze and smoke-test isolated Amp judging with exact Fable 5, Opus 4.8, and GPT-5.5 model resolution.
-3. Freeze and smoke-test the non-interactive OpenCode + OpenWiki MCP invocation and usage/tool-event capture.
-4. Execute trials 0–2 for all three OpenCode Go systems on all five pinned subjects (45 runs).
+1. Judge and gate the nine completed `smallstep-cli` trials using GPT-5.5 `deep-classic` primary, Opus 5 secondary, and Fable 5 for tiebreaks/probes.
+2. If the gate passes, execute and judge the remaining 36 trials one subject at a time.
 
 ## 10. Resolved design questions
 

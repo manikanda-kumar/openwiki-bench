@@ -5,9 +5,14 @@ import { test } from "node:test";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
-import { runSystem } from "../src/run.js";
+import { redactSensitiveText, runSystem } from "../src/run.js";
 
 const exec = promisify(execFile);
+
+test("redacts Google OAuth credentials from retained raw artifacts", () => {
+  const input = "123456789012-example.apps.googleusercontent.com GOCSPX-example_secret";
+  assert.equal(redactSensitiveText(input), "REDACTED_GOOGLE_OAUTH_CLIENT_ID REDACTED_GOOGLE_OAUTH_CLIENT_SECRET");
+});
 
 test("runs a configured system in a pinned isolated checkout and captures artifacts", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "run-test-"));

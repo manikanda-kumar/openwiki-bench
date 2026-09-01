@@ -48,7 +48,11 @@ test("aggregates median tiebreak scores and gates publication on kappa", () => {
   assert.equal(aggregate.wikis[0]?.score, 0.75);
   assert.equal(aggregate.publishable, false);
   assert.ok(aggregate.cohen_kappa < 0.6);
+  assert.ok(aggregate.linear_weighted_cohen_kappa < 0.6);
+  assert.equal(aggregate.exact_agreement, 0);
   assert.deepEqual(Object.keys(aggregate.axis_kappa), [...RUBRIC_AXES]);
+  assert.deepEqual(Object.keys(aggregate.axis_linear_weighted_kappa), [...RUBRIC_AXES]);
+  assert.deepEqual(Object.keys(aggregate.axis_exact_agreement), [...RUBRIC_AXES]);
 });
 
 test("requires a tiebreak judgment only when primary judges disagree", () => {

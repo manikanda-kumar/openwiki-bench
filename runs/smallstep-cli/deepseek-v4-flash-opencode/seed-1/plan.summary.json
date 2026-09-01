@@ -1,0 +1,363 @@
+{
+  "plan_page_count": 14,
+  "deletePages": [],
+  "statuses": {
+    "complete": 14
+  },
+  "pages": [
+    {
+      "id": "62c7d4ba-e1c2-4970-9ad1-3ac5886f188d",
+      "path": "/openwiki/architecture/ca-client-flows.md",
+      "title": "CA client and enrollment flows",
+      "purpose": "Document the cautils package: online vs offline CA clients, the certificate enrollment flow, the one-time token flow, ACME flow, bootstrap flow, and how provisioners are selected.",
+      "seedPaths": [
+        "utils/cautils/acme_flow.go",
+        "utils/cautils/acmeutils.go",
+        "utils/cautils/bootstrap.go",
+        "utils/cautils/certificate_flow.go",
+        "utils/cautils/client.go",
+        "utils/cautils/offline.go",
+        "utils/cautils/token_flow.go",
+        "utils/cautils/token_generator.go",
+        "utils/cautils/tpm.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/tokens-and-provisioners.md",
+        "/openwiki/commands/ca.md",
+        "/openwiki/commands/certificate.md",
+        "/openwiki/commands/ssh.md"
+      ],
+      "instructions": [
+        "Explain online/offline mode selection, audience construction, provisioner prompting/filtering, and failure behavior. Cite evidence per flow."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5c5058b2-d059-4fd9-9419-40f3db348e93",
+      "path": "/openwiki/architecture/cli-runtime.md",
+      "title": "CLI runtime, flag system, and error handling",
+      "purpose": "Explain how the urfave/cli application is constructed and executed: app lifecycle, global flags, help templates, plugin dispatch, STEPDEBUG error reporting, and the exec helper.",
+      "seedPaths": [
+        "exec/exec.go",
+        "flags/flags.go",
+        "internal/cmd/root.go",
+        "internal/cmd/root_test.go",
+        "internal/plugin/plugin.go",
+        "utils/utils.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/guides/adding-a-command.md"
+      ],
+      "instructions": [
+        "Ground claims in internal/cmd/root.go and internal/plugin/plugin.go. Explain STEPPATH/STEPDEBUG behavior only where source establishes it."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8c82545f-5d94-4a3d-8bde-a585c0affd8c",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "Step CLI architecture overview",
+      "purpose": "Map the repository as a whole: the step CLI's responsibility, module layout, command registration model, entrypoint, and major command groups.",
+      "seedPaths": [
+        "README.md",
+        "cmd/step/main.go",
+        "command/README.md",
+        "go.mod",
+        "internal/cmd/root.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-client-flows.md",
+        "/openwiki/architecture/cli-runtime.md",
+        "/openwiki/commands/ca.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Describe ownership boundaries between command packages, shared utilities, and cli-utils dependencies. Cite entrypoint and registration evidence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "f0dd9e55-2246-404c-962f-65821555e7fb",
+      "path": "/openwiki/architecture/tokens-and-provisioners.md",
+      "title": "Provisioning tokens: claims, options, and parsing",
+      "purpose": "Document the token package: JWT claim structure and options, validity constraints, token parsing and type detection, and per-provisioner token generation.",
+      "seedPaths": [
+        "token/options.go",
+        "token/options_test.go",
+        "token/parse.go",
+        "token/parse_test.go",
+        "token/provision/provision.go",
+        "token/token.go",
+        "token/token_test.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-client-flows.md",
+        "/openwiki/guides/extending-provisioner-token-support.md",
+        "/openwiki/utils-cautils-token-flow.md"
+      ],
+      "instructions": [
+        "Ground all claims in token/ source files. Note which provisioner types exist and how Payload.Type() detects them."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "2918e619-d880-427f-b18e-f50ef2430a07",
+      "path": "/openwiki/commands/ca.md",
+      "title": "step ca command group",
+      "purpose": "Document the ca command group: init (PKI generation and deployment types), bootstrap, token, certificate, sign, renew, revoke, rekey, root/roots, health, and the provisioner/admin/policy/acme subcommand trees.",
+      "seedPaths": [
+        "command/ca/acme/acme.go",
+        "command/ca/admin/admin.go",
+        "command/ca/bootstrap.go",
+        "command/ca/ca.go",
+        "command/ca/certificate.go",
+        "command/ca/init.go",
+        "command/ca/policy/policy.go",
+        "command/ca/provisioner/provisioner.go",
+        "command/ca/renew.go",
+        "command/ca/revoke.go",
+        "command/ca/root.go",
+        "command/ca/sign.go",
+        "command/ca/token.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-client-flows.md",
+        "/openwiki/architecture/tokens-and-provisioners.md",
+        "/openwiki/commands/certificate.md"
+      ],
+      "instructions": [
+        "Explain ca init's deployment types and file outputs, and the admin/provisioner/policy management surfaces. Cite init.go and provisioner evidence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "92ad3e23-451c-4c5f-bf07-540745a8dd37",
+      "path": "/openwiki/commands/certificate.md",
+      "title": "step certificate command group",
+      "purpose": "Document the certificate command group: create (profiles, templates, CSRs), sign, inspect, verify, lint, bundle, format, key, install/uninstall, p12, fingerprint, needsRenewal, and remote.",
+      "seedPaths": [
+        "command/certificate/bundle.go",
+        "command/certificate/certificate.go",
+        "command/certificate/create.go",
+        "command/certificate/inspect.go",
+        "command/certificate/install.go",
+        "command/certificate/key.go",
+        "command/certificate/lint.go",
+        "command/certificate/p12.go",
+        "command/certificate/sign.go",
+        "command/certificate/verify.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-client-flows.md",
+        "/openwiki/commands/ca.md",
+        "/openwiki/commands/crypto.md"
+      ],
+      "instructions": [
+        "Explain certificate profiles, default templates/validity, KMS-backed keys, and CSR flow. Cite create.go and sign.go evidence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "6917ab52-cbf0-401d-930e-ad4e616e289f",
+      "path": "/openwiki/commands/crypto.md",
+      "title": "step crypto command group",
+      "purpose": "Document the crypto command group: JOSE/JWT/JWS/JWE, JWK key management, KDFs, hashing, NaCl, TOTP, key handling, random, and Windows PE utilities.",
+      "seedPaths": [
+        "command/crypto/crypto.go",
+        "command/crypto/jwe/jwe.go",
+        "command/crypto/jwk/jwk.go",
+        "command/crypto/jws/jws.go",
+        "command/crypto/jwt/jwt.go",
+        "command/crypto/kdf/kdf.go",
+        "command/crypto/key/key.go",
+        "command/crypto/nacl/nacl.go",
+        "command/crypto/otp/otp.go",
+        "command/crypto/winpe/winpe.go",
+        "internal/kdf/kdf.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/tokens-and-provisioners.md",
+        "/openwiki/commands/certificate.md",
+        "/openwiki/operations/build-and-release.md"
+      ],
+      "instructions": [
+        "Describe the insecure/subtle gating policy and safe defaults. Cite crypto.go security considerations and kdf evidence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "fd3b7f1f-08ec-4da3-94b3-d4b8fc89ba9b",
+      "path": "/openwiki/commands/oauth.md",
+      "title": "step oauth command",
+      "purpose": "Document the oauth command: OAuth 2.0 authorization code, device, JWT-bearer, and OOB flows, provider discovery, and output modes.",
+      "seedPaths": [
+        "command/oauth/cmd.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-client-flows.md",
+        "/openwiki/architecture/tokens-and-provisioners.md",
+        "/openwiki/commands/ca.md"
+      ],
+      "instructions": [
+        "Describe supported flows and flags. Note where the default Google client IDs live and how output modes work."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ec82fac4-801e-4c57-8ff1-13bcbd251139",
+      "path": "/openwiki/commands/ssh.md",
+      "title": "step ssh command group and SSH utilities",
+      "purpose": "Document the ssh command group and internal/sshutil: certificate signing flows, SSH agent integration, login/logout/list, config, hosts, inspect, proxycommand, and the remote shell implementation.",
+      "seedPaths": [
+        "command/ssh/certificate.go",
+        "command/ssh/config.go",
+        "command/ssh/inspect.go",
+        "command/ssh/list.go",
+        "command/ssh/login.go",
+        "command/ssh/logout.go",
+        "command/ssh/proxycommand.go",
+        "command/ssh/ssh.go",
+        "internal/sshutil/agent.go",
+        "internal/sshutil/inspect.go",
+        "internal/sshutil/shell.go",
+        "internal/sshutil/sshutil.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-client-flows.md",
+        "/openwiki/architecture/tokens-and-provisioners.md",
+        "/openwiki/commands/ca.md"
+      ],
+      "instructions": [
+        "Explain identity certificates, client-authentication-required CAs, host IDs, agent add/remove semantics, and proxycommand."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "81e3dd20-bf2f-41b3-8993-525a0939411d",
+      "path": "/openwiki/development/testing.md",
+      "title": "Testing strategy",
+      "purpose": "Document the repository's testing approach: unit tests across internal packages, focused package tests, and the integration testscript harness.",
+      "seedPaths": [
+        "integration/certificate_test.go",
+        "integration/crypto_test.go",
+        "integration/help_test.go",
+        "integration/main_test.go",
+        "integration/shared_test.go",
+        "internal/cmd/root_test.go",
+        "internal/kdf/kdf_test.go",
+        "internal/sshutil/sshutil_test.go",
+        "token/parse_test.go"
+      ],
+      "relatedPages": [
+        "/openwiki/guides/adding-a-command.md",
+        "/openwiki/operations/build-and-release.md"
+      ],
+      "instructions": [
+        "Describe the txtar testscript harness usage and which layers are covered. Cite test files."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "34d31745-671d-4082-9a1c-fa04add3baea",
+      "path": "/openwiki/guides/adding-a-command.md",
+      "title": "Change guide: adding a step command",
+      "purpose": "Focused change guide for adding a new subcommand: package layout, registration via cli-utils command.Register, flags reuse, error conventions, and testing.",
+      "seedPaths": [
+        "command/README.md",
+        "command/base64/base64.go",
+        "command/version/version.go",
+        "flags/flags.go",
+        "integration/help_test.go",
+        "internal/cmd/root.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/cli-runtime.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/testing.md"
+      ],
+      "instructions": [
+        "Follow the documented command-add workflow from command/README.md and cite registration evidence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "52ac5b1a-6113-494b-b0c4-80c3e3df71fb",
+      "path": "/openwiki/guides/extending-provisioner-token-support.md",
+      "title": "Change guide: extending provisioner token support",
+      "purpose": "Focused change guide for adding or extending a CA provisioner token flow: token claim options, token type detection, token generation, and the provisioner prompt filters.",
+      "seedPaths": [
+        "flags/flags.go",
+        "token/options.go",
+        "token/parse.go",
+        "utils/cautils/offline.go",
+        "utils/cautils/token_flow.go",
+        "utils/cautils/token_generator.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-client-flows.md",
+        "/openwiki/architecture/tokens-and-provisioners.md",
+        "/openwiki/commands/ca.md"
+      ],
+      "instructions": [
+        "Explain the touchpoints for a new provisioner type grounded in token_flow.go and token_generator.go."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "71bc39aa-48da-43e5-b6b9-78fdff38344e",
+      "path": "/openwiki/operations/build-and-release.md",
+      "title": "Build, packaging, and release",
+      "purpose": "Document how the step binary is built, tested, packaged, and released: Makefile targets, GoReleaser config, docker images, systemd units, shell autocompletion, and OS packaging scripts.",
+      "seedPaths": [
+        ".VERSION",
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml",
+        ".goreleaser.yml",
+        "Makefile",
+        "autocomplete/README.md",
+        "docker/Dockerfile",
+        "make/version.sh",
+        "powershell/install-step.ps1",
+        "scripts/postinstall.sh",
+        "systemd/README.md",
+        "systemd/cert-renewer@.service",
+        "systemd/ssh-cert-renewer.service"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/testing.md"
+      ],
+      "instructions": [
+        "Ground claims in Makefile and .goreleaser.yml. Do not invent release infrastructure not present in source."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "a1fc50c6-1ced-46bf-a8b1-e6ebc5c82b67",
+      "path": "/openwiki/quickstart.md",
+      "title": "Step CLI quickstart",
+      "purpose": "Practical quickstart: build the binary, run common commands across groups, understand STEPPATH configuration, and route readers to relevant wiki pages.",
+      "seedPaths": [
+        "Makefile",
+        "README.md",
+        "cmd/step/main.go",
+        "command/ca/ca.go",
+        "command/certificate/certificate.go",
+        "command/crypto/crypto.go",
+        "command/ssh/ssh.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/commands/ca.md",
+        "/openwiki/commands/certificate.md",
+        "/openwiki/commands/crypto.md",
+        "/openwiki/commands/ssh.md"
+      ],
+      "instructions": [
+        "Keep commands concrete and verifiable against command help text. Reference other wiki pages for depth."
+      ],
+      "status": "complete"
+    }
+  ]
+}

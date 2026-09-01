@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { test } from "node:test";
 import os from "node:os";
 import path from "node:path";
-import { aggregateTelemetry, aggregateTelemetryByRun, aggregateTelemetrySource, importLangSmith, parseTelemetry } from "../src/cost.js";
+import { aggregateTelemetry, aggregateTelemetryByRun, aggregateTelemetrySource, importLangSmith, importOpenCodeSession, parseTelemetry } from "../src/cost.js";
 
 const proxy = (type: string, extra: Record<string, unknown> = {}) => ({ schema_version: 1, source: "proxy", type, ...extra });
 
@@ -54,4 +54,27 @@ test("reads normalized JSONL and computes derived metrics", async () => {
     assert.equal(aggregate.usd_per_verified_claim, 0.25);
     assert.equal(aggregate.tokens_per_plan_page, 4);
   } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test("normalizes OpenCode model, tool, and completed-page events", () => {
+  const events = importOpenCodeSession({ messages: [{
+    info: {
+      role: "assistant", cost: 0.25,
+      tokens: { total: 120, output: 20, reasoning: 5 },
+      time: { created: 1_000, completed: 1_250 },
+    },
+    parts: [
+      { type: "tool", tool: "read", state: { status: "completed", input: { filePath: "src/a.ts" }, time: { start: 1_050, end: 1_060 } } },
+      { type: "tool", tool: "openwiki_openwiki_submit_page", state: { status: "completed", input: {}, output: JSON.stringify({ status: "complete", page: "/openwiki/a.md" }) } },
+      { type: "tool", tool: "write", state: { status: "error", input: { filePath: "src/b.ts" } } },
+    ],
+  }] }, "subject/system/seed-0");
+  const aggregate = aggregateTelemetry(events);
+  assert.equal(aggregate.input_tokens, 95);
+  assert.equal(aggregate.output_tokens, 20);
+  assert.equal(aggregate.usd, 0.25);
+  assert.equal(aggregate.latency_ms, 250);
+  assert.equal(aggregate.tool_calls, 3);
+  assert.equal(aggregate.failed_tool_calls, 1);
+  assert.equal(aggregate.finished_pages, 1);
 });

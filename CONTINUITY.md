@@ -8,11 +8,11 @@ Constraints/Assumptions:
 Key decisions:
 - Reimplement the pinned-SHA repo-lines-v1 exact hash check locally rather than depend on the whole OpenWiki package; document parity and test it.
 - Score an agent system (model + runtime), retaining runtime as a first-class manifest field.
-- Require three trials per subject across five subjects, completed probes, no unresolved judgments, and Cohen's kappa >= 0.6 for publication.
+- Require three trials per subject across five subjects, completed probes, no unresolved judgments, and linear-weighted Cohen's kappa >= 0.6 for publication; report exact agreement and unweighted kappa too.
 - Hold the OpenCode agent + OpenWiki MCP runtime constant; vary only DeepSeek V4 Flash, GLM 5.3 Flash, and Qwen 3.8 Flash from OpenCode Go.
-- Official blind judging uses isolated Amp threads with exact Fable 5, Opus 4.8, and GPT-5.5 resolution; OpenRouter artifacts are pilot provenance only.
+- Official blind judging uses isolated Amp threads with GPT-5.5 `deep-classic` primary, Opus 5 secondary, and Fable 5 for tiebreaks/probes; OpenRouter artifacts are pilot provenance only.
 State:
-- P0-P2 framework and historical P1 evaluation complete; official 45-run P3 matrix is planned. Changes are uncommitted.
+- P0-P2 framework and historical P1 evaluation complete; `smallstep-cli` execution and official rubric-v2 evaluation are complete. The ordinal agreement gate passes (linear-weighted κ=0.603, exact agreement=0.646, no unresolved tasks).
 Done:
 - Located five source runs and inspected claim, plan, page-manifest, and OpenWiki resolver formats.
 - Migrated all five source runs byte-for-byte, added run manifests and subject metadata.
@@ -23,13 +23,13 @@ Done:
 - Selected and pinned cloudflare-os, smallstep-cli, ExtractThinker, celld, and pi-desktop; removed guessed native configs in favor of a frozen future OpenCode + OpenWiki MCP invocation.
 - Added and verified Amp orb lifecycle setup: OpenCode 1.18.25, OpenWiki 0.4.3, user-level OpenWiki MCP integration, OpenCode Go credential aliasing, and a no-inference preflight for all three models.
 Now:
-- Orb setup and historical benchmark framework are verified and pushed to `origin/main`.
+- `smallstep-cli`: DeepSeek 3/3 complete; GLM 2/3 complete with one forbidden-delegation failure; Qwen 2/3 complete with one upstream HTTP 503. Official contestant spend is $2.585702. Rubric v2 used GPT-5.5 primary, Opus 5 secondary, Fable 5 tiebreak/probes; all 280 v2 tasks have exact model and prompt-hash provenance. The weighted κ gate passes at 0.603.
 Next:
-- Re-freeze clearer rubric anchors, freeze Amp judging and the OpenCode invocation/telemetry contract, then execute 45 trials.
+- Execute, score, prepare, and judge `cloudflare-os`, then continue in frozen subject order only if its artifacts validate.
 Open questions (UNCONFIRMED if needed):
 - Exact start/end times and resume counts absent from source artifacts remain null.
-- Reproducible non-interactive OpenCode + OpenWiki MCP command and telemetry capture must be smoke-tested before trial 0.
-- Exact Amp modes/model-resolution metadata for Fable 5, Opus 4.8, and GPT-5.5 must be preflighted before official judging.
+- None.
 Working set (files/ids/commands):
 - PLAN.md; README.md; METHODOLOGY.md; src/*; bin/bench.ts; systems/*; subjects/*; runs/background-agents/*; results/*
 - Verification: npm run verify; npm run score -- --repo /tmp/background-agents; npm run bench -- prepare --repo /tmp/background-agents
+- Exhausted schedule: `81a72383-69d5-4b61-b6f0-283daabcfdd8` (fired 2026-08-31 05:30 IST)

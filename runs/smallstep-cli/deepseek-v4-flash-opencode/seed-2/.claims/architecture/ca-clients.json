@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d69cec38183c409bf7a594bf8b63b7f69260d8a9705ed4442b70b2c99ef0e1e2",
+  "claims": [
+    {
+      "id": "claim_794319e2e009432b9eecdefad3dc7169",
+      "statement": "All certificate-related commands talk to a CA through the CaClient interface in utils/cautils/client.go, which covers X.509 sign/renew/revoke/rekey, SSH sign/renew/rekey/revoke/roots/federation/config/check-host/hosts/bastion, version probing, root pool access, and CA URL access.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/client.go#L27-L48",
+          "version": "repo-lines-v1:sha256:7d9082e3dc6bfd7f7ef4fda03bbc2077610af0366eb8e8085ee0b4043dd65958:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyZWFlZmUxZmNiZjA3NGNkMDg5YmQ4MDg3OWY0ZWVmMmMwZDhjZWExZjE0Y2RmNTI0ZTZmODgwODY4Yzk3ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwYWExYTdjYzc1OTY4NmI0YTkzZDdmOTI4MDFlMzhiYjQ2NzU5ODlhNWU1MmY3MjgzZmY2Y2M3MDhlNTNkY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZDU5ZGJjN2EyYTMwN2M3ZDhlNGZiZmVmM2E3NzIyMTgwNTk4YTJjZGY1ZTRmNWJiODYxYWZlYmMzOGJkZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5399625c36da422bb4acdddae2af763d",
+      "statement": "cautils.NewClient returns an in-process OfflineCA when --offline is set (requiring --ca-config) and otherwise builds an online client via ca.NewClient with ca.WithRootFile(root), where root defaults to pki.GetRootCAPath().",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/client.go#L52-L74",
+          "version": "repo-lines-v1:sha256:728e02c9fda0397f940ca7b0af3633c0e94b12b6a90ea0c7f7b0dbc4d00b5619:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4MmFmNWYyN2Q1NThkNTY0MzI3NTAyMWY1MWRhYjk4OWVmMjViMWYxZGVmZWE0NjIyNjNkNGIzNzczNzJjYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyZDU5ZGJjN2EyYTMwN2M3ZDhlNGZiZmVmM2E3NzIyMTgwNTk4YTJjZGY1ZTRmNWJiODYxYWZlYmMzOGJkZjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlNzFkMGVlY2ExNGRlODUyYmQyNDgzNWM5NGY0ZjQ3NjdkOTRmNmM3MTkwZGZkNWNkNmQ1NmZmMTJmOGZiMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ea1ffb1231b418cb26b5e3ce073a1f1",
+      "statement": "NewAdminClient authenticates against the step-ca Admin API using --admin-cert/--admin-key when provided, otherwise it generates an ephemeral admin identity by minting a SignType token, creating a CSR, calling client.Sign, and passing the result via ca.WithAdminX5C.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/client.go#L99-L204",
+          "version": "repo-lines-v1:sha256:966317c783e03925080050b58d8f80d6abb517cba0e23d1709518f4ecfac2b58:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3OTU4NTA2MjEzZGYzODdjZjNiZjMyZWRmNWY2YzRmZDM2ZmNjNzcwZjE5NDBmNzIwY2JhZjlmMjE1YWRiMjMxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3YmI5MjJhMWUwYWExZGNkYWJhY2RiYzg4NWY3OWQyZTcxZGJmY2Q3MWJhNDVkMmMyZGE2ZDkyMzQ3MDBhY2JhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c2179fa416c4681b134f245c25e8b28",
+      "statement": "CertificateFlow.GetClient trusts the CA from a token's sha claim and http audience using ca.WithRootSHA256, deriving the CA URL from the token audience when --ca-url is absent; otherwise it requires --ca-url and --root (or the default root path).",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L134-L171",
+          "version": "repo-lines-v1:sha256:eac06e54a30b1c44b73cef0ba05ec80a593dabe45011372e61bc7bd15ba6eeb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzYzYyZTg3OWUyNmViZjhmZmVhZWZlODlhZDcxYmU5NTkxOTFhNGMwOGJmMjljYTdjNGFlZGRiMWExZmNiNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkMGJkOGM0ODMzOWU5NjExZmRjMWNmMmU3MjJiNjQ2NjRmNzNkN2E4ODY4NWZmMTA0N2Y4YTNhZWNkOWJkOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZjNjNzNhMzNlZjliZWJmYmFlYjE3ZDE4MDE3MTg4MzIzMTM1NDNmMjYwMGM0OWNmOWViOTkwNThkYjZiYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f02a5e2cb65b475c904eae11daa48448",
+      "statement": "OfflineCA is a process-wide singleton wrapping the smallstep/certificates authority.Authority, built from the ca.json configuration, to avoid double initialization because backends such as badgerDB take locks on open.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L36-L81",
+          "version": "repo-lines-v1:sha256:535a7ad7ebf3f401a29b0c771c81fe1d6113871042646acb5be94508de7544d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyY2FiNDE0MGU3ZmJhMTliN2E1MGRmNGQyODJkMGNhMzNlMzQzMTE4ZmQ1ZWY4MjhmMzE1NDVmZWFkZWYzZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3MTgzNjU0MWFhOGZkMTdlODVlYjA5ZDY0ZDZkOGRjYzk3YTQ3MGJmOTA5Yjc1YmQ1Mjk3ZTFhYTA1Y2I4ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2YzMyY2FlZTY3OWNjZWY5ODcyOWY0MDJhNzc2NWIyODlmNDg4ODZlNDE4YWJmNTI0MTY5NmY0ZWU5MWRmOWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_73c3a1adc83b4c26bbc1ccec5eeb77af",
+      "statement": "OfflineCA Sign runs authority.Authorize followed by authority.SignWithContext; Revoke builds authority.RevokeOptions from a token (MTLS=false) or the client certificate extracted from the passed *http.Transport (MTLS=true); Renew and Rekey extract the peer certificate from TLSClientConfig.Certificates[0].",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L196-L222",
+          "version": "repo-lines-v1:sha256:b7ea102fb32e8b0b3f3d4c5a4e7f27f9edfbdc4d295484002cbfcb641ddc2fa5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0YTEyZDE1ODgwYzRiODVjNGQyZTY0ZGU3N2Q5ZjYxOWEzNjI4ODViNDIxNWMzN2IyMWVmOTE5OGE5NGI1NjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwYzlhODRkNTg5ZTQ5MmJhNWQwYmQyODZhNGU4YTU4YTllNzJiZTFkODczZmY2MmFkODljZWMwNzE2NWI3YjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwOWUxMGQ4MzgxOTY2MGM2YjYwZWQ3ZmM4ZWRjZGYwMWM3NjYzMGE2NzNmMjNkOTlmM2NjYzYxNzQ4ZTgyZmMifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/offline.go#L277-L341",
+          "version": "repo-lines-v1:sha256:0f79ed48611a4e5dfd7904cf3331d40bfed187a05d108d0f550f0aca0775d5d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MTQ0ODJmMDRhZmQ5NzVjMTY4ZmIyOWY1YzE4MmI2MmIyMzVhYmFjMDkwMjdmYmViYWRkYjE0YjdhODFjOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlNGU0MmY3MDQwMTdiZmYxMWViODYxODQ1ZDMyYTA0MjRhNjc4OGJhMWU3NDQyOGFiMTI2MDJjOGEzZmEyZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4OWRjMDQ4ZGQwYjJhZWZhZTFkOWFkNzc2NTI3ZjRjMjEyYzhmZDk1ZmEzODQ5ZGE2NjgxZDI0NzhmMmRjMGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_933926cb88f6431685f4cd843f65da63",
+      "statement": "The renewer in command/ca/renew.go builds its own http.Transport with a root pool and (while the certificate is valid) an mTLS client certificate, then creates the online client with ca.NewClient(caURL, ca.WithTransport(tr)) or falls back to cautils.NewOfflineCA under --offline.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/renew.go#L425-L480",
+          "version": "repo-lines-v1:sha256:33a946aa7797b12818ee4247cbe7f3f5ea0f6174ea66a69cec015ff70832392f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxZDliZjUwYTFhM2Y1NTMwMTJlMTIxY2JhNDgyNWI0MDE0YWIzMDcwMjIyMTdkOTk2NzQ2NzUyYjViNGFjOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NmZhMzI5ZTkyMmU2NmI1YTVmYTkxYWQxYjIxOGI4MGY5ZmYyNGE5ZDdlNmFjNTJmYzRkNDQxZWE4ZTVjNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNTc4NDY2NWE1ZjZjZTc2ZjFjNzBjNTAzNDlkYWEyMjg3ZGE0NTA2NmFlZmRjZmU4MzIwNDI3NTRiMmQ3NGYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-31T04:41:54.708Z"
+  }
+}

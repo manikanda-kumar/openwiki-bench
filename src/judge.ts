@@ -54,6 +54,10 @@ export interface JudgeAggregate {
   judges: { primary: string; secondary: string; tiebreaker: string };
   cohen_kappa: number;
   axis_kappa: Record<RubricAxis, number>;
+  linear_weighted_cohen_kappa: number;
+  axis_linear_weighted_kappa: Record<RubricAxis, number>;
+  exact_agreement: number;
+  axis_exact_agreement: Record<RubricAxis, number>;
   publishable: boolean;
   unresolved_tasks: string[];
   pages: Array<{ task_id: string; wiki_id: string; scores: AxisScores; mean: number }>;
@@ -170,7 +174,7 @@ function validateScores(value: unknown): AxisScores {
   return scores;
 }
 
-function parseJudgeResponse(content: string): { scores: AxisScores; rationale: string } {
+export function parseJudgeResponse(content: string): { scores: AxisScores; rationale: string } {
   const cleaned = content.trim().replace(/^```(?:json)?\s*/u, "").replace(/\s*```$/u, "");
   const parsed = JSON.parse(cleaned) as { scores?: unknown; rationale?: unknown };
   return {
@@ -222,6 +226,25 @@ function cohenKappa(left: number[], right: number[]): number {
     return sum + leftRate * rightRate;
   }, 0);
   return expected === 1 ? (observed === 1 ? 1 : 0) : (observed - expected) / (1 - expected);
+}
+
+function linearWeightedKappa(left: number[], right: number[]): number {
+  if (left.length !== right.length || left.length === 0) return 0;
+  const disagreement = (a: number, b: number): number => Math.abs(a - b) / 4;
+  const observed = mean(left.map((value, index) => disagreement(value, right[index]!)));
+  const expected = [0, 1, 2, 3, 4].reduce((sum, leftCategory) => {
+    const leftRate = left.filter((value) => value === leftCategory).length / left.length;
+    return sum + [0, 1, 2, 3, 4].reduce((inner, rightCategory) => {
+      const rightRate = right.filter((value) => value === rightCategory).length / right.length;
+      return inner + leftRate * rightRate * disagreement(leftCategory, rightCategory);
+    }, 0);
+  }, 0);
+  return expected === 0 ? (observed === 0 ? 1 : 0) : 1 - observed / expected;
+}
+
+function exactAgreement(left: number[], right: number[]): number {
+  if (left.length !== right.length || left.length === 0) return 0;
+  return left.filter((value, index) => value === right[index]).length / left.length;
 }
 
 function mean(values: readonly number[]): number {
@@ -283,11 +306,16 @@ export function aggregateJudgments(
     }];
   });
   const kappa = cohenKappa(left, right);
+  const weightedKappa = linearWeightedKappa(left, right);
   return {
     judges,
     cohen_kappa: kappa,
     axis_kappa: Object.fromEntries(RUBRIC_AXES.map((axis) => [axis, cohenKappa(byAxis[axis].left, byAxis[axis].right)])) as Record<RubricAxis, number>,
-    publishable: unresolved.length === 0 && kappa >= 0.6,
+    linear_weighted_cohen_kappa: weightedKappa,
+    axis_linear_weighted_kappa: Object.fromEntries(RUBRIC_AXES.map((axis) => [axis, linearWeightedKappa(byAxis[axis].left, byAxis[axis].right)])) as Record<RubricAxis, number>,
+    exact_agreement: exactAgreement(left, right),
+    axis_exact_agreement: Object.fromEntries(RUBRIC_AXES.map((axis) => [axis, exactAgreement(byAxis[axis].left, byAxis[axis].right)])) as Record<RubricAxis, number>,
+    publishable: unresolved.length === 0 && weightedKappa >= 0.6,
     unresolved_tasks: unresolved.sort(),
     pages,
     wikis,

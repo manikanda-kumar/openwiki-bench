@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "runId": "84c6864c-19aa-408a-a9eb-5f328fb31bde",
+  "mode": "init",
+  "phase": "generating",
+  "startedAt": "2026-08-31T03:10:44.156Z",
+  "language": "en",
+  "languageChanged": false,
+  "requiredRewritePages": [],
+  "initialPages": [],
+  "sourceFingerprint": "sha256:1524ed80d9cc346cf133adf47a1bed3f7de901846010cc7ff8186ae1bd1c9035",
+  "actor": {
+    "producerActor": "opencode",
+    "metadataModel": "host-agent/opencode"
+  },
+  "previousLastUpdate": null,
+  "wikiGoal": "# Benchmark documentation brief\n\nCreate a source-grounded wiki for engineers who must understand, operate, debug, and safely change this repository.\n\n- Explain the architecture, ownership boundaries, core data/control flows, persistence, external integrations, configuration, and failure handling.\n- Include a practical quickstart and focused change guides for representative maintenance tasks.\n- Treat source code and tests as authoritative. Cite concrete source evidence for every non-obvious technical claim.\n- State uncertainty when the repository does not establish a fact. Do not invent runtime behavior, guarantees, or deployment details.\n- Prefer a coherent, non-overlapping taxonomy over exhaustive file-by-file narration.",
+  "beforeContentSnapshot": "3a6bac43d2c608fff454aed9418503c68d1f5125c6ee87617fbe17f8160172c8",
+  "preparedWiki": {
+    "generatedProvenance": []
+  },
+  "plan": {
+    "pages": [
+      {
+        "id": "6ec1e964-83de-4996-bf62-f3d06ac988b3",
+        "path": "/openwiki/architecture/ca-client-integration.md",
+        "title": "CA Client Integration (Online and Offline)",
+        "purpose": "Explain utils/cautils: the CaClient interface, online client construction against step-ca, the embedded OfflineCA authority, admin clients, bootstrap/health, and provisioner discovery.",
+        "seedPaths": [
+          "flags/flags.go",
+          "utils/cautils/bootstrap.go",
+          "utils/cautils/client.go",
+          "utils/cautils/offline.go",
+          "utils/cautils/tpm.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/tokens-and-auth.md",
+          "/openwiki/core/ca-admin-and-acme.md",
+          "/openwiki/guides/change-guides.md"
+        ],
+        "instructions": [
+          "Describe admin client construction with admin-cert/admin-key x5c flows.",
+          "Document NewClient's offline-vs-online branch, ca-url parsing (https-only, IPv6 bracket repair in flags.parseCaURL), and root fallback to the STEPPATH root CA file.",
+          "Explain OfflineCA as a singleton wrapping smallstep/certificates authority with ca.json config and password-file handling, and why the singleton exists (badgerDB lock note).",
+          "smallstep/certificates is external: characterize roles at the import boundary only."
+        ],
+        "status": "complete"
+      },
+      {
+        "id": "609e6cfc-f372-4466-b68b-e585f31acf0c",
+        "path": "/openwiki/architecture/cli-runtime.md",
+        "title": "CLI Runtime and Command Registration",
+        "purpose": "Explain the process entrypoint, how the urfave/cli app is assembled, the command registration/import mechanism, plugin dispatch, middleware injection, and error/exit handling.",
+        "seedPaths": [
+          "cmd/step/main.go",
+          "command/README.md",
+          "internal/cmd/root.go",
+          "internal/command/inject.go",
+          "internal/plugin/plugin.go",
+          "utils/utils.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/step-environment-and-configuration.md",
+          "/openwiki/core/x509-and-crypto-commands.md",
+          "/openwiki/guides/change-guides.md"
+        ],
+        "instructions": [
+          "Document error rendering (messenger errors, STEPDEBUG), panic handler exit codes, and InjectContext middleware pattern.",
+          "Explain command.Register/Retrieve registration via blank imports and the plugin fallback (step-<name>-plugin lookup, Windows extension handling, known plugin URLs).",
+          "Trace main() -> cmd.SetName -> cmd.Run() -> step.Init() -> newApp -> app.Run(os.Args).",
+          "cli-utils (command, step, ui, usage, errs) is an external dependency: describe the contract as used from this repo, not its internals."
+        ],
+        "status": "complete"
+      },
+      {
+        "id": "9d74c1a7-7df6-4caa-942f-5e2e26ea427e",
+        "path": "/openwiki/architecture/step-environment-and-configuration.md",
+        "title": "Step Environment, Contexts, and Configuration",
+        "purpose": "Explain the on-disk step environment: STEPPATH/base path, per-context authority directories, contexts.json/current-context.json, defaults, the --config global flag, and context-related flags.",
+        "seedPaths": [
+          "command/context/context.go",
+          "command/context/list.go",
+          "command/context/select.go",
+          "command/path/path.go",
+          "flags/flags.go",
+          "internal/cmd/root.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/ca-client-integration.md",
+          "/openwiki/architecture/cli-runtime.md",
+          "/openwiki/operations/build-and-release.md"
+        ],
+        "instructions": [
+          "Be explicit that file layout mechanics live in the external cli-utils step package; ground claims in this repo's usage.",
+          "Document contexts.json layout, select/current/list/remove subcommands, --context/--profile/--authority and --no-context flags.",
+          "Show how flags.CaConfig defaults to $(step path)/config/ca.json and where root CA path comes from.",
+          "Use step path documentation and --base/--profile behavior to explain default $HOME/.step, STEPPATH override, and per-context authority path selection with evidence from command/path and command/context docs and code."
+        ],
+        "status": "complete"
+      },
+      {
+        "id": "67461925-77f5-4e31-9799-152b172d6e34",
+        "path": "/openwiki/architecture/tokens-and-auth.md",
+        "title": "Tokens, Claims, and Provisioner Authentication",
+        "purpose": "Explain the token package (JWT claims, options, validity limits, claim names), token/provision OTT, the token flow used by ca/ssh commands, audience paths per token type, and the x5c/sshpop/nebula/key attestation header flags.",
+        "seedPaths": [
+          "flags/flags.go",
+          "token/options.go",
+          "token/parse.go",
+          "token/provision/provision.go",
+          "token/token.go",
+          "utils/cautils/token_flow.go",
+          "utils/cautils/token_generator.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/ca-client-integration.md",
+          "/openwiki/core/ca-admin-and-acme.md",
+          "/openwiki/core/ssh-certificates.md"
+        ],
+        "instructions": [
+          "Cover how provisioner JWTs are generated/encrypted (token_generator.go) and renew token special case.",
+          "Document default issuer/audience, MinValidity/MaxValidity bounds, and claim keys (sha, sans, step, user, cnf).",
+          "Explain parseAudience mapping of token types to /1.0/* CA endpoints and provisioner discovery via pki.GetProvisioners, plus ACME/SCEP token-flow rejection errors.",
+          "Note provisioner-key AES encryption details as delegated to go.step.sm/crypto where applicable."
+        ],
+        "status": "complete"
+      },
+      {
+        "id": "c17e7c5e-82fa-4e85-9773-c39e1de46c58",
+        "path": "/openwiki/core/ca-admin-and-acme.md",
+        "title": "CA Administration, ACME, and OAuth",
+        "purpose": "Explain the ca command group surface: ca init (offline PKI bootstrap), provisioner/admin CRUD via the CA management API, ACME subcommands and acmeutils flow, ca token, plus the hidden api group and the step oauth command.",
+        "seedPaths": [
+          "command/api/api.go",
+          "command/ca/acme/acme.go",
+          "command/ca/admin/admin.go",
+          "command/ca/ca.go",
+          "command/ca/init.go",
+          "command/ca/provisioner/provisioner.go",
+          "command/ca/token.go",
+          "command/oauth/cmd.go",
+          "utils/cautils/acme_flow.go",
+          "utils/cautils/acmeutils.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/ca-client-integration.md",
+          "/openwiki/architecture/tokens-and-auth.md",
+          "/openwiki/operations/build-and-release.md"
+        ],
+        "instructions": [
+          "Describe ca init delegation to smallstep/certificates pki vs the CLI's own orchestration (what evidence exists here; state uncertainty about external internals).",
+          "Document ACME flow in acmeutils: account/key handling, challenge types actually referenced in this repo (e.g. http-01, dns-01, tls-alpn if present) and EAB flags.",
+          "Explain admin/provisioner commands requiring admin credentials (admin-cert/admin-key) against the management API.",
+          "Summarize oauth flows supported by command/oauth (authorization code, OOB, JWT bearer, refresh) from its registered flags/usage text."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "57bfad15-84fb-418d-a034-dc7de3cd5f11",
+        "path": "/openwiki/core/ssh-certificates.md",
+        "title": "SSH Certificates and Agent Integration",
+        "purpose": "Explain the ssh command group (login, certificate, list, revoke, renew, rekey, proxycommand, config, hosts, checkHost) and internal/sshutil agent protocol client used to talk to ssh-agent over unix/pipe transports.",
+        "seedPaths": [
+          "command/ssh/config.go",
+          "command/ssh/login.go",
+          "command/ssh/proxycommand.go",
+          "command/ssh/ssh.go",
+          "internal/sshutil/agent.go",
+          "internal/sshutil/pipe.go",
+          "internal/sshutil/shell.go",
+          "internal/sshutil/sshutil.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/tokens-and-auth.md",
+          "/openwiki/guides/change-guides.md",
+          "/openwiki/operations/build-and-release.md"
+        ],
+        "instructions": [
+          "Document SSH_AUTH_SOCK handling and the Windows named-pipe configuration in sshutil/pipe.go.",
+          "Explain proxycommand usage pattern with ssh_config and renewal helpers; mention systemd renewer units as the operational counterpart (cross-reference build page).",
+          "Trace how step ssh obtains host/user certs through cautils flows and stores them in the SSH agent via sshutil."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "eed92497-fc2d-4a96-85bb-ece308d3251b",
+        "path": "/openwiki/core/x509-and-crypto-commands.md",
+        "title": "X.509 Certificate and Crypto Command Groups",
+        "purpose": "Explain the certificate and crypto command groups: offline X.509 create/key/csr, inspect/lint/bundle/verify/install, format/p12, and the JOSE toolkit (jwt/jws/jwe/jwk), kdf, otp, nacl, hash, rand.",
+        "seedPaths": [
+          "command/certificate/certificate.go",
+          "command/certificate/create.go",
+          "command/certificate/inspect.go",
+          "command/certificate/install.go",
+          "command/crypto/crypto.go",
+          "command/crypto/jwt/jwt.go",
+          "internal/cryptoutil/cryptoutil.go",
+          "internal/kdf/kdf.go",
+          "utils/cli.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cli-runtime.md",
+          "/openwiki/guides/change-guides.md",
+          "/openwiki/operations/testing.md"
+        ],
+        "instructions": [
+          "Document key-generation option flow (kty/curve/size validation in utils.GetKeyDetailsFromCLI) and trust-store installation via smallstep/truststore.",
+          "Explain internal/kdf providers (scrypt/argon2/bcrypt via pkg/bcrypt_pbkdf) and cryptoutil roles.",
+          "Map subcommand structure from group registrations; do not narrate every file.",
+          "Note where implementations delegate to go.step.sm/crypto and zcrypto/zlint."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "664ce1c3-421e-4799-b883-337927540c9d",
+        "path": "/openwiki/guides/change-guides.md",
+        "title": "Change Guides",
+        "purpose": "Focused, verification-grounded guides for representative maintenance tasks: adding a command, adding/reusing a flag, changing CA client or token behavior, extending plugin lookup, adding an integration testscript, and bumping release packaging.",
+        "seedPaths": [
+          "CHANGELOG.md",
+          "Makefile",
+          "command/README.md",
+          "docs/CONTRIBUTING.md",
+          "flags/flags.go",
+          "integration/main_test.go",
+          "internal/cmd/root.go"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cli-runtime.md",
+          "/openwiki/operations/build-and-release.md",
+          "/openwiki/operations/testing.md",
+          "/openwiki/quickstart.md"
+        ],
+        "instructions": [
+          "Derive every step from existing code patterns, not hypotheticals; where the repo is silent (e.g. review policy), say so.",
+          "Each guide must state the files to touch, the invariants to preserve (registration import in internal/cmd/root.go, CHANGELOG requirement from docs/local-development.md), and the narrowest validation command.",
+          "Keep guidance verifiable offline: make build, make test, targeted go test paths."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "387b8fad-ab4b-4878-bd4b-a43c49fab2d8",
+        "path": "/openwiki/operations/build-and-release.md",
+        "title": "Build, Packaging, and Release Operations",
+        "purpose": "Explain how step is built, versioned, packaged, signed, and released: Makefile targets and version injection, GoReleaser config, Docker images, deb/rpm packages, systemd renewer units, shell completions, PowerShell installers, and GitHub workflows.",
+        "seedPaths": [
+          ".VERSION",
+          ".github/workflows/ci.yml",
+          ".github/workflows/release.yml",
+          ".goreleaser.yml",
+          "Makefile",
+          "autocomplete/bash_autocomplete",
+          "cosign.pub",
+          "debian/changelog",
+          "docker/Dockerfile",
+          "docker/Dockerfile.debian",
+          "make/version.sh",
+          "powershell/install-step.ps1",
+          "systemd/README.md",
+          "systemd/cert-renewer@.service"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cli-runtime.md",
+          "/openwiki/operations/testing.md",
+          "/openwiki/quickstart.md"
+        ],
+        "instructions": [
+          "Describe systemd cert-renewer timer/service pattern and the S3 redirect note in systemd/README.md.",
+          "Do NOT cite or describe OpenWiki-owned files listed in .openwikiignore (AGENTS.md, .github/workflows/openwiki-update.yml).",
+          "Document VERSION derivation (git describe, GITHUB_REF, .VERSION fallback), LDFLAGS injection into main.Version/BuildTime, and CGO_ENABLED=0 default.",
+          "Map goreleaser build ids, archives, nfpms, signing, and checksums; note GoReleaser Pro vs OSS skip logic in the Makefile."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "0bb1e260-72d5-4c18-8b76-31c5044b60ed",
+        "path": "/openwiki/operations/testing.md",
+        "title": "Testing Strategy",
+        "purpose": "Explain how this repository tests itself: unit tests colocated with packages, the testscript-based integration suite that runs the real step entrypoint, testdata txtar conventions, and how to run and extend tests.",
+        "seedPaths": [
+          "Makefile",
+          "flags/flags_test.go",
+          "integration/certificate_test.go",
+          "integration/crypto_test.go",
+          "integration/help_test.go",
+          "integration/main_test.go",
+          "integration/shared_test.go",
+          "integration/testdata/bogus.txtar",
+          "integration/testdata/version.txtar",
+          "token/token_test.go"
+        ],
+        "relatedPages": [
+          "/openwiki/guides/change-guides.md",
+          "/openwiki/operations/build-and-release.md",
+          "/openwiki/quickstart.md"
+        ],
+        "instructions": [
+          "Cite real assertions; do not speculate about CI-hosted behavior beyond workflow files.",
+          "Document testscript.Main wiring: the step command is the in-process cmd.Run entrypoint, giving end-to-end coverage without spawning binaries.",
+          "Note make test uses gotestsum with -short and coverage; make race exists.",
+          "Show how txtar scripts and testdata fixtures are organized per area (testdata/certificate, testdata/crypto, testdata/help)."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "6b42bd14-5e7c-4c96-b871-2ebdda9caa55",
+        "path": "/openwiki/quickstart.md",
+        "title": "Quickstart",
+        "purpose": "Get an engineer from clone to a working, tested local build of step and oriented to the repository's major systems and where to change things.",
+        "seedPaths": [
+          "Makefile",
+          "README.md",
+          "cmd/step/main.go",
+          "command/README.md",
+          "docs/CONTRIBUTING.md",
+          "docs/local-development.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cli-runtime.md",
+          "/openwiki/guides/change-guides.md",
+          "/openwiki/operations/build-and-release.md",
+          "/openwiki/operations/testing.md"
+        ],
+        "instructions": [
+          "Cover bootstrap/build/test/install loop with exact make targets and cite Makefile lines.",
+          "Map the top-level directories to their roles (cmd, command, internal, flags, token, utils, exec, integration, packaging dirs) briefly.",
+          "Point to the change guides and architecture pages rather than duplicating them."
+        ],
+        "status": "pending"
+      }
+    ],
+    "deletePages": []
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6fac35c6dc6baa6fb9c5e590918cebb15ca58c8cbc907683dac90ee420a510ad",
+  "claims": [
+    {
+      "id": "claim_5c13c0694d0041bbaedcdb22eabeed97",
+      "statement": "NewTokenFlow dispatches token generation through a type switch over the selected provisioner (JWK, OIDC, X5C, Nebula, SSHPOP, K8sSA, GCP/AWS/Azure, ACME, SCEP), short-circuiting RenewType to generateRenewToken before provisioner selection.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L101-L183",
+          "version": "repo-lines-v1:sha256:a206beb644478060eeb535b0495937c744cf645f516ffc3684fa13fa81394d6d:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwYzhjZmQyOGMxNzY1NzliOTVlNWU2NjQ4N2RiZDU4NTIwOTVkZjEwMWMwN2Q1NzExYjk5YWEyZjU3YTVjOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwMjE5YjY4NzVhOWQxNDk3MDMxODNiYzU4NWQ5ZDA3YmQ5MDYyNzI5MDdiZmIyZWVmMGFiZGQ4MjZlM2I3NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYjI5M2U2MjJhMDllNDc0MGM4NjlkY2JjYmYyZDVhMThhYjViMzMxODE0YmNjMzY1OGZjYjk2MzgzY2EwNDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b92e570baadf4b65a5452115b1e1135c",
+      "statement": "OfflineCA.GenerateToken repeats the same per-provisioner type switch with root and audience sourced from ca.json, so provisioner dispatch logic must be changed in both online and offline paths.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L539-L599",
+          "version": "repo-lines-v1:sha256:495da39465a45685232b408b9a6d4dbba87aa2e8f78248f36566eda4235ba25f:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZjE3NTRjZGYzMzMzNjc5YThmZDEzYmJiNGU3NzNjNTY4ODg0MDcyYzIzZTg1MTFhODRhNWUwMjViZWZhODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwZjZhZDc2M2Q5NWQ0NzQyOThkYjczOGU2ZmFmZTc1YzA0ZDhhOTQ5Y2VjMjQ1N2ExNmI0NDdmYTQwNzM1MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczZmQ3OTQ1ZjI2Njc1OWY1ZTQ1NDkyMzIxNzRmMGUzNzhiYTdmYWI5ZDJkNGE0OTZkMDFjMDk5ZTU2MGI1NDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_af19fbd6a084467586308b53509ab9ea",
+      "statement": "provisionerPrompt narrows candidate provisioners by credential flags (x5c-*, sshpop-*, nebula-*, k8ssa-token-path), filters by --kid, --admin-provisioner, and --provisioner/--issuer, and errors when no provisioner matches.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L291-L359",
+          "version": "repo-lines-v1:sha256:eea8d3daf443233ffff7ef2b16ec7fb331f215ff725e99b2d028a2982337774a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjNDQ3N2NmODFlMmI5NTNlYmE0MDY1NmNkMDg1NWE5ZTQ1NDIyNWY2YTA5YWE2NDg1MzliYjZmZjk5ZTljYWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYjE3MjAzNzc0MzM5YzhmYjEzMWY5NDJkN2JjN2I3MDVkODQzYWE5ODhiMTMzY2NmZjZhMjZjMjgxZDViM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiZGZlZjViODk4YmNkY2E1MjIyNDA1NTc5MmNlYWYxOTU0NjdmMzYzMGE1NWEyMTI2N2VmYzZkOWEwMjMwNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c9ba16020f04f13922baa7af1f22038",
+      "statement": "TokenGenerator.Token composes a random jti, kid/iss/aud, optional root SHA claim, and bounded validity, then signs via provision.New and jwk.Algorithm.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_generator.go#L56-L94",
+          "version": "repo-lines-v1:sha256:9756c5fa1b502fa1f9f03df9863b64b600145553a14e01acec04c98682f676d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiNzI2NTkyNjYwY2VhNDdkODZkY2I0OGVhMmZjMTIyYmZkNDc4OWE4ZWFkOWVlYjYxZWIwMzc4NGRmNmU3NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3NmI2NGY0ZTdlZjlhM2MwNzM4MzhlZDI3ZTA3M2VjMTE4ODVlODlkMWEyMjAxYjg3MDdkYmE3YjQ5YjE0OWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwNjYyY2ZiMmZmMzQ0MjgwYWM4MTI2OTAyZDIwYWNiYTllYzdjYTg3ZDcxYWQzZDU3ZThkYjhkMzI4ZDA3ZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e15d11073aa432ea54b589242d6cc30",
+      "statement": "Token validity is constrained centrally: default 5 minutes, minimum 10 seconds, maximum 1 hour, and not-before at most 30 minutes in the future, enforced by WithValidity.",
+      "evidence": [
+        {
+          "resource": "repo://token/options.go#L148-L169",
+          "version": "repo-lines-v1:sha256:d233a591e76c520a7af3b562119349cd9b0bfda38ad9dd3b1955f1672280bdc5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NTFmZjU4MDhiNTZjZTJjOGMyNmU0MmU5MmE3M2M5OWViZDc1MzlkZmUxZWRkNTJiZTFhZWM5ZDQ2OTFkN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMzFhODNlMTBkNjU3NTg3Nzk0YzIwZGE3MjE2MzVlNzVmOWM0YTExOGYxMzI3NDhiMmE1NzVjMjM4ZjkyZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkYjQ4MWUzNThiMDBmOGVlMmU3ZTI5NmMyYjAxNWRiODlhOWQxZGQyZWQ0ZjRlYzk1ZTQxY2M0MjY5M2EyYjUifQ"
+        },
+        {
+          "resource": "repo://token/token.go#L11-L25",
+          "version": "repo-lines-v1:sha256:5523034036d47fc6eee7403bb56ff235996e96412b4247f1f17c6eeaad924cab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwZDk4NmIwZGY3ZTljNDdhYTc4MmIwNjYwOTQ2OWJjOGVlY2E0NzYxMmI4MzhjZjgyOWRkYTRiY2RkZDMzMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZWE3MDZlMmUxMTIwOTI4NTAwMzUyYjEzOGEyMDMwY2M4YjE4NjQ5Mzg1M2QyZDZhYjc0YmQ2Yjg1YmUxZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YzE2YzUzNDViMzg1MGI0MTEzY2ZhODFhYzk4NTQzODhhZmFkZmNlNThjNTkwYWYwMjAzZWJmM2Y2NGViNTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_844b0c9b46f14cbca2e1ac876b878090",
+      "statement": "Claims.Sign sets kid to the signing key's thumbprint, merges ExtraHeaders into JWT headers, and forces a single-element audience to serialize as a JSON string.",
+      "evidence": [
+        {
+          "resource": "repo://token/token.go#L69-L103",
+          "version": "repo-lines-v1:sha256:d03b0a4a944b5285e640eaac7d3e05423541996681e99bea74f59313109ce231:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MzFhNmFkMzVmYTg1MjZmNTdkZGQ2OTJhY2E5MTZjMzEyMjBhNGQ0NWVhYTkxNTViZTg2YTljZjY2MTA4ODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlYjNiYjU0ZWZjMmY5MTNmM2MzMDY5NzY1NjQwMzFlY2I5NTA0OWVhZDUyMzAzNDE2ZjgzMDE4MGQ4ZDRlNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmZmE1NjJiNzcwNWM2MDViNzRmNWU3OGE4NDAwOWQwNGZmMWMyZWY4ZGFjMzlkZWIyZWQ2N2E4MGY2ZTE4YWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e5b499a370a409a8749820815583f7b",
+      "statement": "loadJWK resolves the JWK signing key from --key (KMS-capable via cryptoutil), from the offline ca.json encryptedKey property, or online via pki.GetProvisionerKey with password decryption.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_generator.go#L380-L439",
+          "version": "repo-lines-v1:sha256:dccc9d7ba4d89aa747afc518bdde5b47596c88e98b7ff5e0c5b9caaf9612898a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ZmZmYWFlZGNjN2U3ZTNmY2NkNjU3NDI5NjE2OGYzNTMwZjUyMGYxZDAzZGNmNjM0MmQ5ZGU0YzY3MGRkNmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0OGNjMzdlMGQ4N2MwNDk0YWYzMTUzM2UxMmJhODUwMmRkMDAyYmQxNDVkNTM5NDhhYWQ0NTAwYTk0ZTIwOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2OTBlZTE3NWVkMjkwMTA0NTNlZTdmMWQ4NTE5N2MwMTI3NmQwZGMzZjU4YzRjOTk3NzRhNzJmNGNkMmY4ZTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b51c3cb6979240c1951ac32648c95401",
+      "statement": "OIDC token generation re-invokes the step binary itself via exec.Step('oauth', '--oidc', '--bare', ...) forwarding provisioner client and scope configuration.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_generator.go#L144-L169",
+          "version": "repo-lines-v1:sha256:8b8fc1a4ae7b27158b6d8bb033718a63281a9afe422fc46eac7a4db4b19ffd47:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZDUyZmIzYzMzZTZhYzFiYTY5YTEzODgxN2IyNzczZDk0OTczMGJjMDJiMWY1MmNiNzU3OTU2ZDcyOTg5YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzNGQ4Njg2M2EyMWQ2MTNhOThkNjBiMzg5NjllZTc5NTMxYWMxOTY5NjhlNmM4MjE1NDQ4YzdkYjAyODhkOGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwNTYzN2JkMjg0Mzk0ZjJmODIwOWUyZGEyYmU1NzYzYTMyYzgwNDhjOGYyZDExZTE4YzczNDQxOWJlZTk4YTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_11758347f86e48ada61743466058461c",
+      "statement": "Renew tokens are provisioner-independent: generateRenewToken requires --x5c-cert/--x5c-key, issues claims with issuer step-ca-client/1.0, and places the certificate chain in the x5cInsecure JWT header.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_generator.go#L471-L517",
+          "version": "repo-lines-v1:sha256:42d2282195df47feb8e571c9a6448fba879630dd54a3cd76cffac9aaf5e797e5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhNzA4Y2YxMGExNmQ3YzZlYjg1NTU1ZTVkMWZmZjc0OThhMGMwZGNlZDA2MzE4OThmYWFkMWY1ZTE4NDY1NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwZDAyZWQ5YjVjYTljYWZiYmUzMDRjOTlhNTY4MjVjYjI2ZjA4ZDk3MjhjZjEyMzBlYjQyOThmYzgyZjM2NmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd818bf93c874094b2169861f4f526d0",
+      "statement": "The package-global sharedContext carries cross-command flow state such as DisableCustomSANs (set by GCP/AWS/Azure provisioners) and the bound CertificateRequest, which CreateSignRequest consumes when computing default SANs.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L313-L347",
+          "version": "repo-lines-v1:sha256:90adff9ea73c55cc9dfe1cdf5d018ea2da6c6acde679ac70cd68da7430c79927:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ZDQ5ZjY3ZjAwMTA4NTZmNjYyOGJlZjg3OGNjOTg3NDNlZWU4YmU3MmJhZTRkYjgwN2U3NTJhNDQ0OTc2NDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzZTRmM2MwMTYwMjcwZmZiYjQ0YjNlZGNiNDA1ZWMwMmE5MzFmZDEzMDg5YTMzZDRlODM1MTc2ZmRlMmE5ZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyODUwZjBiZTQxNzljYzExZDc1MDY2ZWQyYmUzN2U3OTZjZTFlMjA1MWE4YWQ5ZWM5Y2Q3NjlmZGFlMjQ5MjYifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L42-L51",
+          "version": "repo-lines-v1:sha256:96f0252de7618372ba713372da3714505637fc363f8dccdf4147d68d736a8189:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlOWYwNjY3YjY4YTExZmFjMzNiOWY2ZDJkMTBhNzIyZjVhMmVhNjQxYmM2NTZkNzkyMmY0ZjRlNjE4ZmE5MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmYmE3YjZkZmMxYWUwMGQ0NmQ5OTZkMDc4MDA0ZDIxYzQ5NGI2NzFjYzg4NTRlNDBkMzA5NjhmYjJjNzY5MmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlNGNjYWRkNWEyYmI5MmUxNDdjMWM0NjVhYTk1MjdjOTkwNzhjYTE3OGZjYzk2OWQwODRmM2QxZTVjOTc4YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYjE3NWRkNjU1OGM0OTY2ODI4ZDcyMTBmNGZlZTBlNWRlMTM1ZDk0YTJjNmYwMzQyZTcwZDYwODlkOTU3M2EifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L167-L175",
+          "version": "repo-lines-v1:sha256:a80b53c2ab8f00b9bf99114cafd82c2dac4234ec20e4816ff185832f2ac9ca79:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTJhMDc5M2RmMDYyYjMyMGM1MGNmOTQzNjYwNTAwYjAwNzFiMjM1ZDZkYzg0ZGYzZDM1MjkyNGYxNWM4ZTg4OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2JkYTU0ZjA1YTE5NWRkZTM5MzA0YmEzYTg0ODYxNWIyNmY0YjhhMzQ5ZjQ2MzRhZTRiZjRiZjhlZDliN2VjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDc1NWNlYjVkMDU3MDI5MjE4NzA1MWFkZTg3NjJmNjZmMzhkNDY5ZDgwYjMzYzYyY2IzMjVjYjgzOWNkMTNlMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTM5Nzc3N2NkOTEzMDY0MDczMWVlNGM1ODk0YjRjYTRlNWFhMTZkZDMxYmVkMTk3N2U3MWE5MTAyY2Q1NTEwOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_40a62fd309844aaa8e9f94511b2a250a",
+      "statement": "parseAudience maps token types to fixed CA endpoint paths (/1.0/sign, /1.0/renew, /1.0/revoke, /1.0/ssh/sign, /1.0/ssh/revoke|renew|rekey) under the https ca-url.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L39-L76",
+          "version": "repo-lines-v1:sha256:31e0d37473f0678195165f95e9d89e97299cfd46c98ebdc66157984630f16460:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MTIzOTMzNjg1ODBmODI2Y2VmMDZkZGEzZTUyMjgxNjk3ZWM4NjIyNDgzNGI4Nzk2NTJlNTQ5ZmI4YTRjZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5M2Y5NzViNzViNDNlYTkzOGMxN2MxZGNkYWJhMTNkMDNmODJhZDNlYzgyNjlkMWMxNTZkNjNjOWIzNTdmMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1OWJiZTMzOTZjMWJkM2I2NDQ0ZDhlZjJkNjU3NGE5MWFmZTM4NzIxZWRkZTQ3NWQ0Y2MzMDAxODQyMzEyY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e51e1d0c707438297db4131ed834fbb",
+      "statement": "ACME and SCEP provisioners are contractually excluded from token flows, returning dedicated ACMETokenError/SCEPTokenError types.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L176-L179",
+          "version": "repo-lines-v1:sha256:8b08f29870cf2a988ce7004d51815db2932d6ce96f99525bfd3e7d61a6aa6427:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVlNjUzNWY1NWRjMDlhNmI5YmFlYmZkMWZkNmIxYTUwZGQyMTU3ZDM2MGE0ZjcyYWQ5MjlmYTI5YzBjMjE2YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE2ODQ3YzZhZDQzNDY0NWI1YjIxODcyYWNlYTUxMGE0Mzg4Njk2YTFlNmY0ZDNlOTllODQ1MGJmOWJjZWNjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDRiZGIyYjQwYjU2Yzg0YmJiYWYyYWNlZTdhOTU0MzAwYjFiMzBjZWUzNTAwYmM2MDUwYzMxZDFhOTJkNWU4ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTA0ODM4NTZiMmZjZjhlZTFiOTFiNTdiYmQ2N2ZjYmVjYmQwNzU4ZWY3YTIwNGUyM2JmMmYxNTliZDM0M2JjMSJ9"
+        },
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L78-L98",
+          "version": "repo-lines-v1:sha256:78b3d27ed11a508cbcd5884a0a4ddd93f064226b356cad8094970a481e807872:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNDUwNzU4NjUyNWIzYjdhMjlhNTcyZTdmYzQ1NGRkYzE1YmFkM2MxZDRhYmEyNTE3MmMwNjg4MDM0YjY0MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxNGQyOWFjYzM2MmU1YTQzN2ZkMzI3M2MwYjg5YTQ3YTg3OWI1ZDkxYzVhYWQ0NzNiYjM2MjFlNjYwM2UzZjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f231c1933d56450c9bc2156c49891893",
+      "statement": "Focused tests pin the extension seams: provisioner prompting behavior (TestProvisionerPromptPrompts), offline audience mapping (TestOfflineCA_Audience), and claim option construction (TestOptions).",
+      "evidence": [
+        {
+          "resource": "repo://token/options_test.go#L26-L26",
+          "version": "repo-lines-v1:sha256:fb90882395fe684230a91c4b9a058df876cc130da6f768fbf1f2c8cea37de5b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI5MDg4MjM5NWZlNjg0MjMwYTkxYzRiOWEwNThkZjg3NmNjMTMwZGE2Zjc2OGZiZjFmMmM4Y2VhMzdkZTViOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI5MDg4MjM5NWZlNjg0MjMwYTkxYzRiOWEwNThkZjg3NmNjMTMwZGE2Zjc2OGZiZjFmMmM4Y2VhMzdkZTViOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWZlNWJhNTA3YzU0OTc0MGI3YmNhODUyOGE4YzI4N2U5NmVkYjhmNzhjMzNlMzJkNmI3NWQxOGExNDBhY2RhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTUwNGEzMTI3N2JmNGE3NjI2MTA5ZGM4NzQ2YmFiZGZkZWMzZDdmZDAyM2M3YWI1NWQ4OTk0MTc0M2JjMzNiNCJ9"
+        },
+        {
+          "resource": "repo://utils/cautils/offline_test.go#L56-L56",
+          "version": "repo-lines-v1:sha256:b03bac621b8f8634c3136a46296f0b45ba0c3ea49e2d38ebb620d52542377144:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAzYmFjNjIxYjhmODYzNGMzMTM2YTQ2Mjk2ZjBiNDViYTBjM2VhNDllMmQzOGViYjYyMGQ1MjU0MjM3NzE0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAzYmFjNjIxYjhmODYzNGMzMTM2YTQ2Mjk2ZjBiNDViYTBjM2VhNDllMmQzOGViYjYyMGQ1MjU0MjM3NzE0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGRjMmIwNmMwMGE4MTQxOTc4MmQ3MzJiNjA5MjU2NmYzZDMzYjlkZTBmODNiMGE4NzljOWZkYmQ0ZDBhZWUxZiJ9"
+        },
+        {
+          "resource": "repo://utils/cautils/token_flow_test.go#L31-L31",
+          "version": "repo-lines-v1:sha256:c8554e5d48375b716d4d3594e2982668ff49da481e7ae0187adfe74002156d82:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzg1NTRlNWQ0ODM3NWI3MTZkNGQzNTk0ZTI5ODI2NjhmZjQ5ZGE0ODFlN2FlMDE4N2FkZmU3NDAwMjE1NmQ4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzg1NTRlNWQ0ODM3NWI3MTZkNGQzNTk0ZTI5ODI2NjhmZjQ5ZGE0ODFlN2FlMDE4N2FkZmU3NDAwMjE1NmQ4MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmUxYTBiMDJiZTdkYTk5NzJlYTdiNTZhZjhkZjhiYmQzYzI1NDI2MWM2NzFiOTRlNTEwNThmMTIxNmUyYjM1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjk3M2YzMThjMjNiYWYwYjZkZGJhNGViNTM5YmZlMWI0ODI4NjE4ZGUwNmZiZDM0MDAwMjFhZGFjZDJiNjQzOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9690a8d8a074a43b3ae7338bef7b9e8",
+      "statement": "Provisioner types and their identity-token helpers (GetIdentityToken) originate from the external smallstep/certificates authority/provisioner package; the CLI cannot support a provisioner type the dependency does not define.",
+      "evidence": [
+        {
+          "resource": "repo://go.mod#L19-L19",
+          "version": "repo-lines-v1:sha256:ed97835a99a259f9b21acc32c2f3623224557c1cc971ed71c5f92e4436edf02d:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5NzgzNWE5OWEyNTlmOWIyMWFjYzMyYzJmMzYyMzIyNDU1N2MxY2M5NzFlZDcxYzVmOTJlNDQzNmVkZjAyZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5NzgzNWE5OWEyNTlmOWIyMWFjYzMyYzJmMzYyMzIyNDU1N2MxY2M5NzFlZDcxYzVmOTJlNDQzNmVkZjAyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTFhMjJiNmRmMTc2OTgwMWM4ZjNmMWY3ZDA4NjRkOGM1ODFkMGFhM2RjNjkyOTAxODg5ZDA0YWEyMGI0YjU3OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjdkZTdjNDNiYzdhOGZkMmY1MWFlMGI0ZWE4MDM4MTM1OGY1OTNhYzBlZWIyMzU4YzVhNzNmZDE4NjFiYTIyNyJ9"
+        },
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L12-L12",
+          "version": "repo-lines-v1:sha256:22132987e6f2a1959460469d48a383275f4aa0c78dea42246344b380edb7857b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjIxMzI5ODdlNmYyYTE5NTk0NjA0NjlkNDhhMzgzMjc1ZjRhYTBjNzhkZWE0MjI0NjM0NGIzODBlZGI3ODU3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjIxMzI5ODdlNmYyYTE5NTk0NjA0NjlkNDhhMzgzMjc1ZjRhYTBjNzhkZWE0MjI0NjM0NGIzODBlZGI3ODU3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWVjYmIzNzg1M2QzZDcwZGNiOWY3NWQxMmJmODIwZjg1NzMwY2I2M2M3MjYxOGY1ZmNiMjQ4OGVjMTc3ZWM4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzJiOGFlYWZkNTVlZGQ5ZmRhNzNlMjZlZjNkYmM0NDk5MjJjYTkzNTg3ZDhmYzc5YjYzMTEwZjU3NzUzNTdkOCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-31T01:48:16.413Z"
+  }
+}

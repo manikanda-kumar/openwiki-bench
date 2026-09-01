@@ -39,13 +39,29 @@ Two claims are sampled deterministically from each judged page. A judge receives
 
 ## Blind rubric judging
 
-The six axes in `rubric.md` are scored 0–4 per page. The fixed subset prioritizes quickstart, architecture/overview, and control-plane pages, then selects deterministic seeded pages up to the limit. Frontmatter and contestant identities are removed. Fable 5 and Opus 4.8 score every page; GPT-5.5 scores only pages where any axis differs and also judges correctness probes. Official judging uses one fresh repository-less Amp thread per blind task. The private manifest records the Amp thread, requested mode, and resolved model/version; model substitution invalidates the task. The aggregate uses the per-axis median and multiplies each wiki's page mean by completeness and repository coverage.
+The six axes in `rubric.md` are scored 0–4 per page. The fixed subset prioritizes quickstart, architecture/overview, and control-plane pages, then selects deterministic seeded pages up to the limit. Frontmatter and contestant identities are removed. GPT-5.5 through Amp's `deep-classic` mode and Opus 5 score every page; Fable 5 scores pages where any axis differs and judges correctness probes. Official judging uses one fresh repository-less Amp thread per blind task. The private manifest records the Amp thread, requested mode, and resolved model/version; model substitution invalidates the task. The aggregate uses the per-axis median and multiplies each wiki's page mean by completeness and repository coverage.
 
-Cohen's κ is calculated over every primary/secondary axis decision and reported separately per axis for diagnosis. Overall κ below 0.6 or any unresolved judgment blocks publication. This gate is deliberately strict: low agreement means the rubric has not earned a ranking.
+Linear-weighted Cohen's κ is calculated over every primary/secondary axis decision because the 0–4 scores are ordinal: a one-point boundary disagreement must not count like a 0↔4 disagreement. Overall weighted κ below 0.6 or any unresolved judgment blocks publication. Exact agreement, unweighted Cohen's κ, and per-axis versions of all three are still reported for diagnosis. This gate is deliberately strict: low agreement means the rubric has not earned a ranking.
 
 ## Cost and agent-loop telemetry
 
-`cost` normalizes LangSmith exports or proxy JSON/JSONL into input/output tokens, USD, latency, tool calls/failures, redundant reads, cost per finished page, and cost per verified claim. Repeated reads of the same normalized file beyond two count as redundant. Historical runs without traces remain `null`; zero is never substituted for unknown spend.
+Official runs retain OpenCode's raw JSON event stream and full session export. The runner verifies
+that every assistant turn used the configured provider/model, then normalizes per-turn tokens,
+reported USD, latency, tool calls/failures, successful page submissions, plan pages, and verified
+claims to JSONL. `cost` also accepts LangSmith and proxy exports. Repeated reads of the same
+normalized file beyond two count as redundant. Historical runs without traces remain `null`; zero
+is never substituted for unknown spend.
+
+Each official trial gets one OpenCode session and a three-hour wall timeout. There is no automatic
+retry or resume: process death, timeout, source modification, incomplete finalization, or model
+substitution remains an immutable failed trial. Forbidden subagent delegation fails fast on the
+first task-tool event. This makes recovery assistance part of the system definition rather than an
+unrecorded operator advantage; the frozen official systems use none.
+
+An interruption proven to originate outside the contestant (for example, the benchmark executor
+being forcibly recycled) is not charged as a model death. Its partial artifacts are retained under
+`runs-invalid/` with an infrastructure failure manifest, excluded from scoring, and the same matrix
+cell is rerun from scratch. Provider errors and contestant behavior never qualify for this exception.
 
 ## Recommendations
 

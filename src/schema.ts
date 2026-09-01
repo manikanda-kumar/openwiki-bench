@@ -25,11 +25,19 @@ export interface RunManifest {
   };
   prompt_sha: string | null;
   ignore_sha: string | null;
+  system_sha?: string | null;
+  execution?: {
+    agent: string;
+    opencode_version: string;
+    session_ids: string[];
+    timeout_seconds: number;
+    telemetry_file: string;
+  };
   cost: {
     input_tokens: number | null;
     output_tokens: number | null;
     usd: number | null;
-    source: "none" | "langsmith" | "proxy";
+    source: "none" | "langsmith" | "proxy" | "opencode";
   };
 }
 

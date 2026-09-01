@@ -1,4 +1,4 @@
-import { readdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { scoreGrounding } from "./grounding.js";
 import { readJson } from "./io.js";
@@ -61,6 +61,7 @@ export async function scoreAll(options: {
       runs,
     };
     const output = path.resolve(options.output ?? path.join(options.projectRoot, "results", "scores.json"));
+    await mkdir(path.dirname(output), { recursive: true });
     await writeFile(output, `${JSON.stringify(scores, null, 2)}\n`);
     return scores;
   } finally {

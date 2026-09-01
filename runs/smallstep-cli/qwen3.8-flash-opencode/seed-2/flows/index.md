@@ -1,0 +1,6 @@
+# Files
+
+- [ACME and OAuth Flows](acme-and-oauth.md) - How step obtains certificates over ACME (standalone/webroot http-01, device attestation, trust configuration) and how the step oauth client gets OAuth2/OIDC tokens that feed OIDC provisioners in the CA token flow.
+- [CA Enrollment, Token, and Signing Flows](ca-enrollment.md) - End-to-end flow by which step requests certificates from step-ca: provisioner discovery and selection, one-time-token generation per provisioner type, key/CSR construction, signing through the online client or in-process OfflineCA, and renew/revoke/rekey semantics.
+- [SSH Certificate Workflows](ssh-certificates.md) - How step ssh generates user/host keys and short-lived SSH certificates, logs in through the ssh-agent, renders client/server SSH config from CA templates, proxies connections via ProxyCommand with bastions, and renews/checks hosts including offline mode.
+- [X.509 and Crypto Toolkit](x509-and-crypto-toolkit.md) - step's offline crypto surface: step certificate create/inspect/verify/sign/lint/install with profiles and JSON templates, and the step crypto JOSE (JWT/JWS/JWE/JWK), KDF, hash, NaCl, and OTP commands and their key-generation defaults.

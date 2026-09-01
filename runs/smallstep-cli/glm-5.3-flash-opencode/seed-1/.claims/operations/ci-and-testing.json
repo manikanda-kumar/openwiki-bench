@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:853398c1a121998af51a13095957152cf6206a87b563c08aa822566d850b976d",
+  "claims": [
+    {
+      "id": "claim_6947579235e94d07a9ef4c5304759324",
+      "statement": "CI triggers on pushes to master (excluding v* tags), pull requests, and workflow_call; it delegates to the reusable smallstep/workflows goCI.yml with CodeQL, multiple Go versions, pinned golangci-lint v2.12.1, and per-ref concurrency groups with cancel-in-progress.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml",
+          "version": "repo-file-v1:sha256:8b447016773c9bee0c697540c4e9b18495d315b040848ee1273b1ce6016b3a44"
+        }
+      ]
+    },
+    {
+      "id": "claim_074d8e0db0994884978e8b5aff5e8795",
+      "statement": "make test runs unit tests in short mode with atomic coverage via gotestsum, make race adds -race, make lint runs golangci-lint (config fetched from smallstep/workflows) plus govulncheck, and make bootstrap installs the toolchain.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile#L104-L174",
+          "version": "repo-lines-v1:sha256:b8a457d15c02162a136dac5c4cefeadfa1c3498a14549d88a3fada78e4845130:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzY2JkMWMxZTkwNmY4MzkzNzAxN2MwZjM2NzAwMGU0ODI4NzA1ZWRhNDQ0YTVlMjc4ZTBjMmU0Mjk3MWJhYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwNzI0MTE1ZDU0MmIyMjRiNjA0ODE0MzllMTkwMjJhM2IzNjBhZDIxN2RkOTEzMmY3YWU1Mzk2ZjEwNjkxMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0NDNiMWU3Mzk5ODI5MDQ1MjliYjQ4NDQxMmZmMzk3NWI4ZGRkYzU2NDZlOTRkMTUxNzRmNTJhN2QxMDA4MGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c200ec7937c74fb491f16c724d773faa",
+      "statement": "The integration harness uses rogpeppe/go-internal testscript and registers the step entrypoint as internal/cmd's Run via TestMain, so scenario scripts execute the real command tree in-process without spawning a separate binary.",
+      "evidence": [
+        {
+          "resource": "repo://integration/shared_test.go#L9-L14",
+          "version": "repo-lines-v1:sha256:1afe235aae476239d5f9d26f2852ea9a2f7f8bebb364597f0a6cec2ab22ba4e4:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdhOWI1ZTkwMTljOGRiODc4M2VjOWMzZmViYjBhMmM5ODYyZjYxYTA1YzMwOGZlODk1ZTRhOWJlZDAzZWRiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMTFiYWRjYWU5NDIyZGQwZTY2OTBlMjg1MTdlNTVhNTM1NTA4ZDcyMWFmYjdjNWQwMzI3MDVlODQ1NDQ0MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7dca0b5ce018405fbd0335bbb5511f69",
+      "statement": "Scenarios are .txtar archives under integration/testdata, registered with testscript.Run and explicit Files lists; version.txtar runs 'exec step version' and asserts stdout matches Smallstep CLI/0000000-dev, proving tests run against an unversioned dev build.",
+      "evidence": [
+        {
+          "resource": "repo://integration/main_test.go#L9-L19",
+          "version": "repo-lines-v1:sha256:8e6511f55aedf8653d3b838340e3d084232814255788d164225a4eeeabe10778:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4MDcyNDJmZjllOWU3ZmE1ZDNjNDI5NjM5MWI4NzFlNGVmNDgyZWFlZWZkNGViYzQ2NWViZThlYTE1OTljYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkMDZjZmRiMmMyOWFhODJkNzVlY2MzOGIwYmUxYTlkNjlkNzZkZjk2YjYzZGI3YzNjZjY0ODljMjJkOGRkMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://integration/testdata/version.txtar",
+          "version": "repo-file-v1:sha256:768f0fde97bd49c46ee6be9d3204cb8a947b6091165e353eecc2089b56d3f0df"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b54e9ed773c4707be874c291c462c65",
+      "statement": "Go-level fixtures are prepared in testscript Setup hooks: TestCertificateSignCommand generates a CA and CSR with go.step.sm/crypto helpers, serializes them into the test working directory, then runs the certificate/sign.txtar scenario.",
+      "evidence": [
+        {
+          "resource": "repo://integration/certificate_test.go#L17-L53",
+          "version": "repo-lines-v1:sha256:c3d0b3112bf480231db8e3874b7e92a69c60a760933405957be83d724ddde1f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyYmE1MmE5YjVjY2UxM2IwOWUwYWE1ZTM1YWM2MTNiYTU1MzJhMDkzZmM1ZDhhNjNlMjNmZmUyZDBjYmNlMzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViYWQ3Y2MyZGZhZmMyMTc1ZmEyZDk3MDRlMDIwMmY5NDA4M2E5ZGE2OWE1ODViMGIxOGM0OGJlYTIzNjI3NWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhNGY5MTA3ODM5NmY5YzMyMDZlNzRiZDc2ZTg0MjNhZmVlMGM3OGRjYjI0ZDVlODI3NjZkNGQ4NjdjZmYzNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4ZDcwOWUxMjBmZjRjNDI4YjhhNzkwMDc1ZTI4N2Q1NWU0NWM0YmMwZWRjNDc5YTE2MDJjMWRlZWI4NWViZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d754d8c7178843b58e640a23448416e3",
+      "statement": "The harness covers help output (help/help.txtar, html.txtar), certificate flows (sign, verify, fingerprint), and crypto flows (jwt-sign/verify/inspect, jwk-create variants, otp, keypair), with custom check commands like check_jwk registered via Cmds.",
+      "evidence": [
+        {
+          "resource": "repo://integration/crypto_test.go",
+          "version": "repo-file-v1:sha256:ad24d42a5fef4d3244cbee44f2667cff6f11612fcea50d0571d298024ad32e9d"
+        },
+        {
+          "resource": "repo://integration/help_test.go",
+          "version": "repo-file-v1:sha256:0040e2b45b1825dc868ca67d784a98fc92c94de45dfebd231dcf752882ad30d5"
+        }
+      ]
+    },
+    {
+      "id": "claim_8882e7f84d3a4522801f75022cbda964",
+      "statement": "The release workflow fires on v* tags, runs CI first (goreleaser needs ci), computes IS_PRERELEASE from -rc tags, and reuses shared smallstep/workflows for GoReleaser with enable-packages-upload and multi-arch Docker builds of both Alpine and Debian images.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml",
+          "version": "repo-file-v1:sha256:33d073846a4eb7e2cebaaf8676b1dcac2226ea69def2dcc7010c15a9b09729e3"
+        }
+      ]
+    },
+    {
+      "id": "claim_49d3c17a8d8d4d0d89dc2ea3d08df139",
+      "statement": "For full non-rc releases, the update_reference_docs job builds the binary and regenerates the CLI reference into the separate smallstep/docs repository using 'step help --markdown', rebuilding the docs route manifest with jq.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml",
+          "version": "repo-file-v1:sha256:33d073846a4eb7e2cebaaf8676b1dcac2226ea69def2dcc7010c15a9b09729e3"
+        }
+      ]
+    },
+    {
+      "id": "claim_d36628323c47427995f19fb18b4148ed",
+      "statement": "Unit tests live next to the code they cover (token, flags, cautils, kdf, command packages) and use testify/require plus the smallstep/assert helper.",
+      "evidence": [
+        {
+          "resource": "repo://flags/flags_test.go",
+          "version": "repo-file-v1:sha256:adaed2f6fe785de73831798d68d13fac1314b97da643e3936f7d771b5ad0e2ed"
+        },
+        {
+          "resource": "repo://token/token_test.go",
+          "version": "repo-file-v1:sha256:2802fc89d5983aba8a262d1a60154d141838127cd68df10398ed124d1e9a151e"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6cc16ea759e47de85c00e31a83012e5",
+      "statement": "Because integration scripts execute the command tree in-process, a command panic is caught by the app-level panic handler rather than crashing the test process.",
+      "evidence": [
+        {
+          "resource": "repo://integration/shared_test.go#L9-L14",
+          "version": "repo-lines-v1:sha256:1afe235aae476239d5f9d26f2852ea9a2f7f8bebb364597f0a6cec2ab22ba4e4:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdhOWI1ZTkwMTljOGRiODc4M2VjOWMzZmViYjBhMmM5ODYyZjYxYTA1YzMwOGZlODk1ZTRhOWJlZDAzZWRiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMTFiYWRjYWU5NDIyZGQwZTY2OTBlMjg1MTdlNTVhNTM1NTA4ZDcyMWFmYjdjNWQwMzI3MDVlODQ1NDQ0MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        },
+        {
+          "resource": "repo://internal/cmd/root.go#L156-L170",
+          "version": "repo-lines-v1:sha256:5d37a92a8688f96bf908d753c092322a909e0eace194f9f0b132dc126cd3b271:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwN2MxODQxZWM4NDQ3ZTE3ZTc4NGJkZjVjMGM1OGIyNGFhOGQyZDg4N2VlOTAyODk1OTJmMjQ3ZjJmYWJiY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MmJjZTQ4YTNkMjMxNmZiYjE0YzAzYjViOWMxYTcxNGUyYTFkMmU1MjkwYWUxMDc4NjhkYmU0ZTUzZDQyYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0MDczYTI2YjEzY2UyNWVlOThkMGU3ZmFhOWM1YTU2Yzk1NGZiZjY3MTBkYWMzMmNkNjA3YzlhNDkwZWVlZTAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-31T02:46:08.220Z"
+  }
+}

@@ -1,0 +1,730 @@
+[
+  {
+    "task_id": "page_06025f422aefaf456e407b70",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page cleanly owns one outline entry (the `step ca` command group), opens by naming its registered subcommands, and routes flow mechanics, tokens, ACME, and STEPPATH config to other outline topics without re-explaining them; it never quite states out-of-scope boundaries as such, so it lands at 3 rather than 4. Code grounding: there are no file paths, symbol locations, or quoted source anywhere — only bare identifier names (`cautils.BootstrapAuthority`, `ACMETokenError`, `CreateSignRequest`, `ReasonCodeToNum`, `caConfigClient`) dropped into prose. A reader cannot verify any claim, e.g. the `expires-in/20` jitter, the 2/3-validity daemon default, or the `0600` file modes, which are exactly the non-obvious details that need evidence. Reasoning depth: it goes beyond signature listing in places — mTLS-vs-token fallback for expired certs, passive revocation semantics, any-JWK-provisioner-can-revoke-any-cert, OIDC certs not revocable by serial, admin-API-then-ca.json fallback — but these are stated as facts rather than derived, and invariants (why the token subject must match the CSR CN, why KMS rekey forbids `--out-key`/`--daemon`) are left unexplained. Change usefulness: it names commands and flags but no files, packages, tests, ordering, or failure signals; a developer adding a provisioner type or flag would still have to find the code from scratch. Style: opening establishes purpose, one section per subcommand routes questions well, no significant repetition; it reads as a competent reference. Correctness: nothing internally contradictory or obviously wrong, and the mutual-exclusion and fallback claims are coherent, but there is no acknowledgment of uncertainty and the CRL/OCSP 'TODO' claim is asserted without support."
+  },
+  {
+    "task_id": "page_0cdea010799cd65bd179ffab",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 1,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns onboarding/quickstart and consistently routes depth to sibling topics (ca, certificate, crypto, ssh, build) rather than re-explaining them; it never explicitly states out-of-scope boundaries beyond 'see the linked pages for depth', so short of 4. Grounding: anchors exist for build ldflags (Makefile:126-132), step path flags (command/path/path.go:17-103), contexts, ca init and bootstrap writes, and the ssh-agent requirement (command/ssh/login.go:154-159), but a large share of concrete claims are bare recipes — scrypt as kdf default, --alg options, --acme support, --offline semantics, renew/revoke syntax, certificate profiles — with no evidence, and the given citations are line-range pointers without saying what the code establishes. Reasoning: almost entirely command recipes; the only derived consequences are 'offline uses the ca.json from init' and 'login needs an agent'. No invariants, ordering, failure behavior, or causal model of token→certificate issuance. Change usefulness: aimed at operators, not changers; it names no change locations, tests, or failure modes and defers entirely to the contributor pages. Style: opening states purpose and scope, headings route the likely questions (build, config, local crypto, CA, SSH, next steps), code blocks are short and earn their place, no repetition. Correctness: no contradiction visible from the page; minor imprecision only (the BSD-style `date -v+1M` example is platform-specific and unflagged)."
+  },
+  {
+    "task_id": "page_10c39048ae38a55d5f223d99",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: a genuine architecture-overview topic that stays at the layer/ownership level and explicitly routes runtime, STEPPATH, CA flows, and command-adding to other outline entries; it never states out-of-scope boundaries in its own words, and the 'Core data/control flow' and package-map sections drift toward CA-integration territory, so short of 4. Grounding: only three real citations (internal/cmd/root.go:26-28,30-43,122; go.mod:7-36; flags/flags.go:291-296) plus command/README.md:50-62. Substantial claims are uncited or vague — the whole CertificateFlow/TokenFlow call chain, 'registers at init()', exec's signal forwarding and browser launch, the precedence order 'CLI flags > defaults.json > flags defaults', and 'utils/cautils/*.go' as a citation is decorative. Reasoning: derives one good consequence (blank imports mean disabling a group = removing an import; sub-groups nest via Subcommands rather than Retrieve) and the useful fact that verification rules live in smallstep/certificates while this repo owns selection/transport/storage. But no invariants, no failure behavior, no init-ordering or duplicate-registration consequences, and the online/offline decision is asserted without explaining its conditions. Change usefulness: gives a package map and one concrete lever (blank-import block), but no implementation order, no tests, no validation steps or debugging signals; a reviewer gets orientation, not a safe change path. Style: strong opening, headings route well, the dependency table earns its place, no repetition; the flow pseudo-diagram is the one buried major answer and the package map partly duplicates the layers list. Correctness: nothing contradicted on the page's own evidence, and it correctly flags the stale README rather than asserting it; version pins and the sub-group nesting explanation are internally consistent, but there is no explicit handling of edge cases or uncertainty elsewhere."
+  },
+  {
+    "task_id": "page_12008212eebdbc7ac2e94058",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 1,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: a Quickstart legitimately spans systems, and onboarding is clearly the owner here; it routes CA client, tokens, ssh, certificate, and build concerns to their own topics instead of re-explaining them. It never explicitly states out-of-scope boundaries, so it stops short of 4. Grounding: only a handful of real source anchors (cmd/step/main.go, internal/cmd/root.go, go.mod, docs/local-development.md, the OfflineCA reference). Nearly all behavioral claims — that bootstrap writes config/defaults.json and records a context, that renew defaults to mTLS, that --offline and --token are mutually exclusive, that ca init writes ca.json under $STEPPATH — are asserted with no evidence beyond a link to another page; a wiki cross-link is not source evidence. Reasoning: the page is a command catalog. It describes what to type and what appears, but derives no invariants, ordering constraints, or failure behavior; even the one interesting constraint (mutual exclusion of --offline/--token) is stated without explaining why or what happens on violation. Change usefulness: build targets and the entrypoint/assembly files are genuinely useful starting points, but there is no change path, no tests to run beyond 'make', and no failure modes — it delegates entirely to the Change Guides page. Style: purpose is clear in the first two lines, headings map cleanly to likely first tasks, code blocks are short and earn their place, no repetition; falls short of 4 because prerequisites-then-workflows-then-links is flat rather than progressively disclosed, and 'Where to look next' partly duplicates inline links. Correctness: nothing contradicts itself and the claims are plausible and appropriately hedged (default $STEPPATH, 'two latest versions ... see go.mod'), but the page never acknowledges edge cases or uncertainty, so it does not reach 4."
+  },
+  {
+    "task_id": "page_1210606d3bd8b8e6f7d4a906",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: an architecture overview legitimately touches many systems, and here the survey framing is the owner — the module map and control-flow section stay at orientation level rather than re-explaining bootstrap, tokens, or SSH in depth. It never states out-of-scope boundaries or routes readers to sibling topics, and sections like 'Versioning and build' duplicate territory owned by a packaging entry, so it falls short of 4. Code grounding: the command-set claim is tied to a specific file (internal/cmd/root_test.go) and dependency claims to go.mod, but most of the page is path-level assertion — 'each package registers via command.Register in init()', 'beta re-exports ca.BetaCommand()', the four-step control flow, and the offline in-process authority.Authority path are all plausible but backed only by directory names, not by evidence the page explains. Reasoning depth: it derives a real dispatch chain (main → cmd.Run → app.Run → action → cautils → certificates client) and identifies offline mode as an alternative path against the same command surface, which is more than layout restatement; but invariants, failure behavior, ordering constraints, and why the plugin fallback or context resolution work as they do are left implicit. Change usefulness: it names ownership boundaries well enough that a developer knows which directory to open, but gives no change path, no ordering, no tests to run beyond a generic mention of the testscript suite, and no failure modes. Style: opening establishes purpose, headings route cleanly, and the ownership table shortens comprehension rather than decorating; the binary-surface bullet list overlaps the table somewhat and the reader must scan two sections for the same 'where does X live' answer. Correctness: no internal contradiction found; claims are consistent with each other and appropriately hedged in places ('conceptually', 'notable alternative path'), though the confident enumeration of the hidden-command list and the exact Go minimum version are stated with more certainty than the cited evidence supports."
+  },
+  {
+    "task_id": "page_17f74e6b16969223e3acd229",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Scope is clean: one topic (STEPPATH layout, bootstrap-written files, contexts) owns the page, and the closing note correctly disclaims that cli-utils owns the Contexts schema. It stops short of 4 because it never states out-of-scope boundaries up front or routes adjacent concerns (bootstrap/provisioner selection, CA client flows) to other topics, and the team-bootstrap and root-download material drifts toward an adjacent entry. Grounding is mostly good — specific line ranges for permissions, defaults.json keys, UseContext, SaveCurrent — but several load-bearing claims lean on file-level-only citations (repo://command/path/path.go appears three times with no lines) for the `step path`/context-routing behavior, which is the page's central mechanism; contexts.json/current-context.json semantics are admittedly inferred from help text, which the page honestly flags. Reasoning derives real consequences: why only a fingerprint is needed as a trust anchor given the insecure client, the 0600/0700/0644 permission split, the missing-profile-defaults seeding fallback instead of failure, and ctx.Set propagation within a command — but there is no account of resolution precedence when flags and current-context conflict, nor of concurrent/partial-write behavior. Change usefulness is the weakest axis: it names the right files and call sites, but gives no implementation order, no tests to run, and no debugging or rollback signals for someone adding a context-aware command or a new defaults key. Style is solid: purpose is stated in the opening, headings route questions, no repetition, though the invariants section partly restates permission facts from the bootstrap section. No contradiction spotted; the 'added, saved as current, and set as current' phrasing is imprecise redundancy rather than an error, and uncertainty is handled explicitly at the end."
+  },
+  {
+    "task_id": "page_1951049474740aebc0fd4be9",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner — token construction/signing/parsing plus the provisioner-dispatch flows — and it states the two-layer ownership up front (token package vs utils/cautils). Adjacent topics (OIDC via `step oauth`, offline CA audience derivation, SSH cert flows) are touched only where the token flow requires them and are not re-explained, but the page never explicitly declares out-of-scope boundaries or routes readers elsewhere, so it stops short of 4. Code grounding: nearly every non-obvious claim carries a file+line-range citation, including defaults, claim names, dispatch branches, and error types, and the dispatch table pins each provisioner branch to a distinct generator range. A few claims are stated with more certainty than the cited evidence can establish — 'to detect duplicates' for the 256-bit jti is an inferred purpose cited to the generation site, and 'clamped by MinValidity/MaxValidity' is asserted rather than shown; the prose does not flag these as inference. Reasoning depth: goes beyond signatures — derives the renewal special case bypassing provisioner selection, the OIDC exception to subject prompting, the SSHPOP restriction to renew/rekey/revoke token types, the audience path differences between online (/1.0/...) and offline, and the ACME/SCEP unsupported terminals. Missing a precise model of failure ordering (what happens when flag-based filtering yields zero candidates) and of the security rationale behind x5cInsecure renewal tokens. Change usefulness: names the exact files and functions a change would touch and lists four invariants, which supports review, but gives no implementation order, no tests to run, and no debugging/rollback signals — a developer adding a provisioner type would know roughly where to look but not the full sequence of edits (parse.go Payload/Type, token_flow switch, token_generator, provisionerPrompt filter) as an ordered checklist. Style: opening establishes purpose and ownership immediately; headings map to real questions (claims, parsing, audience, selection, dispatch, offline, invariants); the table earns its place by compressing seven parallel branches; no significant repetition. Correctness: no contradiction visible from the page itself; the model is internally consistent (audience derivation matches the flows described, renewal precedence is consistent with the dispatch description). Minor imprecision only — 'SSH sign/renew/rekey/rekey' duplicates rekey and omits revoke, which the page later lists."
+  },
+  {
+    "task_id": "page_1a39e131ed3e9fa251bc62f6",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns exactly one workflow (adding a CLI command) and touches other systems (ca, crypto, context commands) only as examples of that workflow, so ownership is unambiguous; it stops short of 4 because it never states out-of-scope boundaries or routes adjacent concerns (e.g. certificate flows, provisioner APIs) elsewhere. Grounding: most non-obvious claims carry file:line evidence (command/ca/ca.go:68-88, internal/cmd/root.go:30-44 and :62-82, internal/command/inject.go:14-23, utils/read.go:76-107, cautils/bootstrap.go:191), but several assertions are uncited or vague — that Usage/Description drive completion and man pages 'via the cli-utils usage package', that CLIContextFromContext recovers the CLI context, and that Makefile drives lint/build — and the errs helper list mixes cited and uncited entries. Reasoning: it explains mechanics and step ordering, and derives a couple of real consequences (side-effect imports required only for new top-level packages; validate before side effects; extract logic to internal/ for testability without a CLI context), but leaves the registration/init ordering invariant, error-to-exit-code behavior, and failure modes largely unexplored — no causal model of how Register, root wiring, and help generation interact. Change usefulness: names concrete files, the sequence (locate → define → action → validate → I/O → test → docs), reusable flag sources, and specific test files to mirror; it lacks explicit validation commands per step, failure signals, or how to detect a command that registers but never appears. Style: purpose stated up front, numbered headings route the likely questions, code block is minimal and earns its place, no repetition; it isn't 4 because edge cases (context-based actions, thin-wrapper testing) are folded into the linear narrative rather than separately retrievable. Correctness: nothing in the page contradicts itself or the cited evidence, but 'No manual completion work is needed' is stated with unsupported certainty and the InjectContext/ActionFunc dual-wrapping description is loose enough to mislead."
+  },
+  {
+    "task_id": "page_20d582b1a80de70b5ba57232",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the build/packaging/release pipeline clearly owns the page (Makefile, GoReleaser, release workflow, Docker, packaging scripts); the shell-completion and systemd sections are adjacent but defensibly part of shipped artifacts, and the completion section touches CLI runtime territory without re-explaining it. No explicit in-scope/out-of-scope statement or routing to sibling topics, so short of 4. Grounding: nearly every claim carries a file plus line range (Makefile:64-71, .goreleaser.yml:151-159, systemd/cert-renewer@.service:8-27), and the cited spans plausibly establish what is asserted; a few trailing claims (powershell install scripts, postinstall/postremove wiring) are named without evidence, and citations are locations rather than explanations of what the code shows. Reasoning: mostly an accurate inventory of the pipeline. It does derive a couple of consequences — version-string precedence (GITHUB_REF over git describe over .VERSION for git-archive exports), step_latest_* copies only on full releases, and the S3-redirect constraint on systemd file paths — but ordering between stages, failure behavior (signing/upload failures, partial releases), and invariants linking the two GoReleaser builds (step vs step-cli symlink/ghost file) are left implicit. Change usefulness: a developer learns which files to edit for a new target or package format, but gets no implementation order, no validation steps (what to run before tagging, how to dry-run GoReleaser), no rollback story for a bad release, and no test/failure signals beyond 'make test/race/lint' being listed. Style: opening is functional rather than a purpose statement, but headings route questions well, sections are non-redundant, and detail density is appropriate. Correctness: nothing internally contradictory; the deprecation note on autocomplete/ alongside its inclusion in archives is handled without overclaiming, and no subtle edge cases are asserted with false certainty — but neither are exceptions explicitly explored."
+  },
+  {
+    "task_id": "page_221eeabfa4ab9e7b369808bf",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: a quickstart onboarding path is a legitimate cross-cutting workflow and the page keeps that workflow as the owner, ending with explicit routing to Architecture Overview, STEPPATH, Certificate Issuance, and CA Init/Bootstrap rather than re-explaining them. It stops short of 4 because it never states its own out-of-scope boundary up front, and the offline and certificate-toolkit sections drift toward material owned by 'Offline X.509 Operations'. Code grounding: several claims carry precise anchors (Makefile:126-132, Makefile:48-71, command/ca/init.go:720-752, command/ca/certificate.go:220-307, internal/cmd/root.go:54), but many operationally specific assertions are bare — file modes 0600/0644, the exact defaults.json keys, EC P-256 as default key type, and the '--offline is incompatible with --token' rule are all uncited, and cautils/offline.go and bootstrap.go are named without line evidence or a statement of what they establish. Reasoning depth: it explains a few consequences (ldflags stamping feeds `step version`, defaults.json is why later commands can omit --ca-url/--root, non-interactive init implies Standalone), but the causal model stays shallow — no invariants about ordering, no failure behavior if fingerprint validation fails or ca.json is absent, no explanation of why offline and token conflict. Change usefulness: this is a run-these-commands page; it names files a developer would touch but gives no change locations, no ordering, no tests, and no failure modes, so review or modification support is minimal. Style: opening states purpose, headings track the user's actual sequence (build → env → init → issue → offline → next), code blocks are short and earn their place, no repetition; not 4 because 'Where to go next' is the only progressive-disclosure affordance and edge cases are absent rather than segregated. Correctness: nothing internally contradictory, and the note that step-ca is a separate server binary is a good disambiguation; docked from 4 for unhedged certainty on unverified specifics (default curve, exact file modes) and no handling of edge cases."
+  },
+  {
+    "task_id": "page_22ddf78969a450e07586277d",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening names the owned subject (startup, error/panic handling, help customization, plugin fallback) and explicitly routes command registration and flag contracts to two other outline entries without re-explaining them; version/completion coverage is a defensible part of the runtime surface, and there is no second co-equal system. Grounding: most non-obvious claims carry file:line anchors (root.go:46/50/95/134-147/156-170/182, plugin.go:20-52/56-72, version.go:14-34, completion.go:100-123), and the prose usually says what the cited code establishes (e.g., the exit-code contract is attributed to the run() block). Docked one point because several specific assertions are uncited or vaguely sourced: the init() behavior in cmd/step/main.go (UserAgent override, AppName LDFLAG override), the pemutil/jose PromptPassword and pemutil.WriteFile bindings, and the claim that Message() is 'the shape produced by cli-utils errs' are inferences presented without a pinpoint boundary. Reasoning: it derives real consequences rather than restating signatures — STEPPATH-before-PATH lookup implies user-local shadowing; step.Init() failure precedes all commands so even `step version` breaks; STEPDEBUG=1 changes both error formatting and panic re-raise; child plugin stdio inheritance means no exit-code remapping; InjectContext differs from wrap by seeding a caller-supplied context and panics if the CLI context is unset. It stops short of a full causal model (no ordering constraints among the newApp wiring steps, no discussion of why registry population via init() must precede Retrieve()). Change usefulness: it names precise files and line ranges a developer would edit, but gives no implementation order, no tests to run, no validation steps, and no debugging signals beyond STEPDEBUG — a reviewer knows where to look but not how to verify or roll back. Style: opening delivers ownership and flow immediately, headings ('Plugin dispatch', 'Non-obvious behaviors') route likely questions, the numbered lookup sequence shortens comprehension, and there is no significant repetition or decorative formatting. Correctness: no internal contradiction; the page hedges appropriately ('GetURL currently knows only kms', 'the exit-code contract visible in run()'), but it does not surface subtle exceptions such as what happens when a plugin exists but is non-executable, or how PATHEXT interacts with the PATH fallback."
+  },
+  {
+    "task_id": "page_25a5864c5d46b2b5d5b4a689",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one topic clearly owns the page (the OTT model and NewTokenFlow dispatch), and adjacent systems—OAuth (`step oauth --oidc --bare`), ACME/SCEP typed errors, offline CA—are mentioned as routing points rather than re-explained. It never explicitly states out-of-scope boundaries, and the offline-token and command-surface sections lean toward adjacent entries, so short of 4. Code grounding: package/file attributions are consistent and a few claims carry exact line ranges (token_flow.go:39-76, :101-183, :212-273, token_generator.go:98-117, certificate.go:280-293), but the bulk of the option list, token-type inference rules, and per-provisioner generator behaviors are attributed only to a filename, which is too coarse to verify; nothing appears decorative, but important details are vaguely evidenced. Reasoning depth: the audience-derivation rule and the type-dispatch table are genuine mechanism, and a few consequences are drawn (ParseInsecure because the CA revalidates; ACME/SCEP errors as a control-flow signal; cnf binding as proof-of-possession). Mostly it enumerates options and branches; validity bounds, kid derivation, and the sans/CSR matching are stated as facts without deriving what breaks when they are violated or how the flow context is ordered/shared. Change usefulness: a reader learns which files own tokens, options, parsing, flow dispatch, and the command surface—enough to find a change site—but there is no implementation order, no tests to run, no failure modes or debugging signals. Style: purpose is clear in the opening, headings route the obvious questions (token model, types/audiences, dispatch, offline, binding, command), and lists are used where they compress; the option inventory is closer to a reference dump than progressive disclosure. Correctness: no contradiction surfaced from the page's own internal logic; the `cnf` thumbprint header is written `x5rt#S256`, which reads as a typo for the standard `x5t#S256` confirmation member—minor imprecision rather than a model-invalidating error. The page states things with uniform certainty and never flags uncertainty or exceptions, so it does not reach 4."
+  },
+  {
+    "task_id": "page_30c99c5c2a130b39d3d8d6af",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the architecture topic dominates and the opening states the design thesis (init()-based registration, delegation to external libs, plugin extension), but two substantial sections — 'Plugin dispatch' and 'Error handling and panics' — are full treatments of material owned by adjacent outline entries (plugin integration, debugging/error handling), and the page never declares what it owns or routes readers elsewhere. Grounding: references are mostly package/file names with only two line-range citations (root.go:95-154, :134-147); several non-obvious claims are unsupported — the Windows extension list, the PowerShell re-invocation, the exit-code-2 panic path, LDFLAGS build injection, and 'the Makefile drives go test' are asserted without pointing at the code that establishes them. Grounding is present but often vague, and the page does not distinguish observed code from inference (e.g. 'intended to be set at build time'). Reasoning: it explains startup order and the registration mechanism and derives one real consequence (enabling/disabling a command group = adding/removing a blank import), plus the STEPDEBUG behavioral fork, but stops at mechanics — no ordering invariants (why step.Init() must precede newApp), no discussion of init() ordering hazards or name collisions between plugins and built-ins, no failure modes beyond 'prints an error'. Change usefulness: a reader learns where commands are registered and roughly which file to touch, but there is no dependency order, no invariants to preserve, no validation steps beyond 'tests live next to packages', and no debugging signals other than STEPDEBUG. Style: strong — the opening gives the model, headings route questions (startup, registration, overrides, actions, plugins, errors), the one code block earns its place, and there is no significant repetition; it falls short of progressive disclosure since edge cases are interleaved with the main flow. Correctness: no internal contradiction surfaced; minor hedged imprecision in 'exits with code 1 (or the error's semantics)' and the unqualified claim that all non-success output stays on stderr sitting immediately beside 'app.Writer = stdout'."
+  },
+  {
+    "task_id": "page_33ebfefcf1a69a18036b4dc6",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 1,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one workflow (build/test/release) clearly owns the page, and the closing section routes the entrypoint/ldflags wiring and source-build instructions elsewhere rather than re-explaining them; it never explicitly declares out-of-scope boundaries up front, so not a 4. Grounding: claims are attached to named files (Makefile, .goreleaser.yml, cmd/step/main.go, docker/Dockerfile, make/version.sh) which makes them locatable, but evidence is file-level rather than specific — e.g. the CGO_OVERRIDE default, the 'GoReleaser Pro vs OSS detection' skipping post-hooks, the 'unversioned' archive variant, and the ghost-file handling are asserted with no shown target/stanza, and no distinction is drawn between what was read and what is inferred. Reasoning: almost entirely descriptive inventory of build targets, archive contents, and signing steps; it never derives consequences — why CGO_ENABLED=0 matters for the static/multi-arch matrix, why ghost files exist for /usr/bin/step, how the .VERSION fallback interacts with git-archive tarballs where git describe is unavailable, or what breaks if ldflags paths drift from main.Version. Ordering and failure behavior are absent. Change usefulness: a developer knows which files to open to add a platform, package, or lint step, and knows make test/race/lint exist as checks, but there is no implementation order, no statement of which changes must move together (e.g. build ldflags plus main.go symbols plus nfpm build), no CI gating detail, and no rollback or debugging signal for a failed release. Style: opening states purpose, headings map cleanly to build/test/version/release/packaging, no repetition, no gratuitous decoration; the release section is a bit list-dense but readable. Correctness: nothing internally contradictory or dangerous; statements are consistent and hedged appropriately about the deprecated autocomplete folder, though the page never acknowledges uncertainty or edge cases (e.g. Pro-only config features when building with OSS GoReleaser), keeping it short of 4."
+  },
+  {
+    "task_id": "page_37f5010290993a9e47f7ea70",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 1,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns 'orientation/quickstart' unambiguously — build, test, a 30-second map, and routing. Every adjacent system (dispatch, flows, KMS, CI) is named and delegated to its own outline entry without re-explanation, which is the 4 behavior. Grounding: claims point at real locations (cmd/step/main.go -> internal/cmd.Run, command.Register in init(), blank imports in internal/cmd/root.go, integration/ txtar, docs/local-development.md), so major structural claims are traceable, but several non-obvious assertions are asserted rather than evidenced: CGO disabled and ldflags version stamping, ''N/A' unless built with make/goreleaser', the step-<name>-plugin fallback naming, and the make targets' exact flags — no Makefile or plugin-resolution evidence is shown for any of them. That's 'most major claims located, important details unsupported' = 2. Reasoning: almost entirely descriptive. It names the registration mechanism but never derives why blank imports are required, what ordering init() registration imposes, or what happens when a plugin binary is missing; the version 'N/A' remark is the only near-consequence. = 1. Change usefulness: real validation commands (make test/race/lint) and the CHANGELOG obligation give a reviewer something concrete, but the page names no change locations, ordering, or failure modes — it outsources all of that to the guides. = 2. Style: opening states repo and purpose in two lines, headings route the four likely questions (build, test, architecture, where next), the link list is grouped by intent rather than dumped, no repetition or padding; genuine progressive disclosure for a landing page. = 4. Correctness: nothing contradictory or dangerous, and the 'N/A unless built with make/goreleaser' caveat shows some care, but it does not handle subtle edge cases broadly enough for 4."
+  },
+  {
+    "task_id": "page_398c19ebea83a40863704ef2",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening states exactly what the page owns (checkout → working binary, plus routing), and every adjacent system (CA integration, plugins, STEPPATH, flags, release) is named and handed off to another outline entry rather than re-explained; the closing task table is pure routing, not duplicated ownership. Grounding: nearly all non-obvious claims carry specific file:line evidence (Makefile:104-117 for bootstrap tooling, Makefile:123-132 for build, cmd/step/main.go:10-16 for version injection, internal/plugin/plugin.go:20-52 for plugin discovery, go.mod:3 for the Go pin), and the command examples are attributed to the help text they came from; a few claims are lightly stretched — `$STEPPATH` defaults, `config/defaults.json`, and per-context dirs are asserted with no citation, and 'go build shows N/A' is inference presented as fact. Reasoning: mostly procedure. It does derive two real consequences (LDFLAGS absence → N/A version; the server lives in smallstep/certificates so this repo is client + `ca init` only), but no invariants, ordering constraints, or failure behavior beyond the STEPDEBUG hint. Change usefulness: gives build/test/lint entry points and a debug signal, which supports validation, but names no change locations, ownership boundaries, or failure modes — it delegates all of that. Appropriate for a quickstart, still low against the rubric. Style: purpose is clear in the first two sentences, numbered sections map to the obvious reader questions in order, the table shortens rather than decorates, and nothing is repeated. Correctness: no contradiction surfaced; minor imprecision in the unsupported STEPPATH layout detail and in labeling `make test` as 'unit + integration' without evidence for the integration part."
+  },
+  {
+    "task_id": "page_3f28b5f272d1d6e914275d63",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner — the process lifecycle from main() through app assembly, dispatch, and fallback. Plugin discovery and completion are genuine tails of dispatch rather than separate systems, and STEPPATH/flags are touched only where the lifecycle requires. It never explicitly declares out-of-scope boundaries or routes adjacent concerns (STEPPATH details, shared flags, adding-a-command guide) to their owners, so it falls short of 4. Code grounding: nearly every non-obvious claim names a specific file or symbol (cmd/step/main.go, internal/cmd/root.go, internal/plugin.LookPath, internal/cmd/root_test.go, command/completion/completion.go, command/README.md), and the prose says what each establishes rather than decorating. Citations are file/symbol-level with no line anchors or quoted snippets, and a few assertions (exit code 2 on panic, ldflags defaults of \"N/A\", PATHEXT fallback list) are stated with more precision than the cited granularity proves. Reasoning depth: derives real consequences — ordered startup with panic recovery installed before step.Init(), the exit-code contract, the four-step fallback decision order, why pemutil/jose hook installation gives binary-wide consistent password prompting, and the invariant that root_test.go pins the top-level command list so unwired or removed packages break CI. It stops short of a full causal model: no discussion of init()-ordering hazards from blank imports, no security consequence of PATH-based plugin resolution preferring STEPPATH, no concurrency angle. Change usefulness: gives the registration pattern, the blank-import site, and the failing test a contributor will hit, plus the plugin naming convention needed for an external command. Missing explicit ordering for a full change, validation commands, and rollback/debug signals beyond STEPDEBUG. Style: opening answers ownership immediately, headings map to likely questions (startup order, app assembly, registry, fallback, completion, failures), the exit-code table compresses rather than pads, and there is no repetition; edge cases (Windows PATHEXT, .ps1 via PowerShell, InjectContext) sit in named sections. Correctness: internally consistent, no contradiction visible from the page; it correctly hedges on renameable app name and notes kms as the only known plugin URL. Some certainty is unverifiable from the supplied text, and the STEPDEBUG panic path (prints version, re-panics) versus the stated exit code 2 is slightly under-reconciled."
+  },
+  {
+    "task_id": "page_4521166b177c1105f4eb94d3",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns one coherent subject — the step binary's process lifecycle from entrypoint through app construction, plugin dispatch, flags, and error reporting — matching its outline entry. The exec/exec.go section is the weakest fit (child-process and browser helpers are runtime-adjacent but not flags or error handling) and the page never states out-of-scope boundaries or routes readers to sibling topics like the command-group pages, so it falls short of 4. Grounding: nearly every non-obvious claim carries a file:line range (root.go:50-85, plugin.go:20-52, flags.go:645-706, utils.go:14-23), and claims are specific enough to be checkable (exit code 2 for panics, PATHEXT on Windows, https-only ca-url normalization). It stops short of 4 because several multi-part claims collapse into one citation range without saying which boundary establishes what (e.g. the newApp bullet list attributes template overrides, name defaulting, and command registration to a single 60-line span), and the Makefile/build-target claim is asserted without a line reference. Reasoning: it explains mechanics and a few consequences — STEPDEBUG switching between %+v and terse output, panic exit code differing from error exit code, plugin lookup order, signal forwarding to children — but leaves the interesting invariants implicit: why side-effect imports must precede command.Retrieve(), what ordering guarantees init()-time registration provides, what happens when a plugin name collides with a built-in, or why Exec uses execve on POSIX and Run on Windows. Change usefulness: a developer learns where things live and could locate a change site, but the page gives no implementation ordering, no validation steps beyond a single passing mention of root_test.go asserting the command list, and no failure modes or rollback signals for adding a flag or command. Style: the opening states purpose and scope, headings map cleanly onto likely questions, bullets are used where they compress rather than decorate, and there is no repetition; it does not quite reach progressive disclosure since edge cases (Windows PowerShell handling, WSL detection, IPv6 bracket normalization) are interleaved with routine description rather than separated. Correctness: no internal contradiction is visible and the exit-code and debug-flag details are stated consistently across three sections; the page does not, however, flag any uncertainty or subtle exception, so it sits at 3 rather than 4."
+  },
+  {
+    "task_id": "page_453f1597b43993670e78e787",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns 'system architecture' as a cross-cutting orientation topic, explicitly states what is out of scope (external module internals, dispatch details, STEPPATH), and routes adjacent concerns to named outline entries rather than re-explaining them. Grounding: nearly all structural claims carry file:line evidence (cmd/step/main.go:10-29, internal/cryptoutil:28-177, utils/cautils/offline.go:27-80), and it honestly flags a search-based negative ('no in-tree importer was found by search') as inference; a few claims cite bare file paths with no lines (command/ca/provisioner/provisioner.go, command/certificate/install.go) and the table's 'throughout' for go.step.sm/crypto is vague. Reasoning: it establishes a downward dependency order and a couple of real consequences (offline singleton exists because double init can deadlock on BadgerDB; child-process signal forwarding makes child exit status become step's), but most of the body is an inventory of layers and integration points; ordering, state transitions, and invariants of the online flows are left to other pages. Change usefulness: excellent for orientation and for deciding which module owns a concern, but it names no implementation order, tests, or failure modes for making a change — a developer would still need the linked pages. Style: opening answers purpose and ownership immediately, headings route predictable questions, the external-ownership table earns its space, no repetition. Correctness: no contradiction spotted; the page distinguishes fact from inference and hedges where evidence is thin, though it doesn't surface subtle exceptions beyond the deadlock note."
+  },
+  {
+    "task_id": "page_47413cc495a2ca61d9a67dce",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one system (the OAuth/OIDC token-acquisition path) clearly owns the page; the CA-side re-entry section is justified because it is how the OAuth command is consumed, and verification is explicitly handed off elsewhere. But there is no explicit in-scope/out-of-scope statement routing adjacent concerns (provisioner config, CA token structure), so 3 not 4. Grounding: nearly every non-obvious claim carries a specific file+line range, including flow-specific ranges and the exec re-entry boundary in both token_generator.go and exec/exec.go. Deductions: the same range #L68-L77 is cited for two unrelated claims (that verification happens in `step crypto jwt verify`, and the refresh_token struct field), which reads as a stretched citation, and the 'documented in-source as public' claim leans on a comment without saying so. Reasoning: goes past mechanics — derives flow-selection branching, PKCE/state/nonce construction, callback state validation before exchange, device-poll expiry semantics, and the non-obvious consequence that provisioner ListenAddress is honored unless STEP_LISTEN overrides. Falls short of 4: no concurrency model for the callback server/errCh, no security analysis of the shared public client secret or the subprocess token passing through stdout. Change usefulness: names the two owning files and the flag-to-flow mapping, but gives no tests, no implementation ordering for adding a provider or flow, and no debugging/rollback signals — a reviewer knows where to look but not what to preserve or validate. Style: purpose stated up front, headings route the obvious questions (which flow, which provider, what output, how CA commands call it), no significant repetition; hierarchy is slightly flat and the re-entry section repeats the listen-address point twice. Correctness: no contradiction surfaced; defaults and constraints are stated with hedges where appropriate, and the closing Uncertainty section correctly flags the README/implementation gap on refresh tokens rather than asserting support. Not 4 because subtle exceptions elsewhere (e.g. implicit-flow risk, secret handling) are noted but not analyzed."
+  },
+  {
+    "task_id": "page_4bd1781e46e9fd3d7ea36197",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner (testing across unit/integration/CI) and spillover is minimal; it never states out-of-scope boundaries or routes adjacent concerns (e.g. CLI runtime, build/release) to other topics, so short of 4. Grounding: file paths are given throughout and a handful of claims carry exact line ranges (integration/shared_test.go:11-14, help_test.go:21-107, Makefile:151-175), but many assertions are vague or unsupported — 'exercises crypto command scenarios' establishes nothing, and the unit-test bullets assert specific coverage (PHC prefixes, validity bounds, key-ID generation, registered top-level command list) with only a filename behind them. Reasoning: mostly an inventory; the one real derivation is that testscript.Main maps 'step' to internal/cmd.Run so .txtar scripts exercise the real command tree, plus the help harness's enforced constraints. No invariants about test isolation, -short semantics, fixture setup ordering, or why in-process execution matters for coverage/flag state. Change usefulness: a developer learns where tests live and which make targets to run, but there is no guidance on adding a scenario (txtar layout, Setup hook contract, custom command registration order), no failure modes, and no debugging signals. Style: opening states the model in two sentences, three headings route the obvious questions, no repetition; not progressive-disclosure-complete since edge cases are absent rather than sectioned. Correctness: nothing internally contradictory or implausible, but it also never flags uncertainty or exceptions, so it stays at 3."
+  },
+  {
+    "task_id": "page_5c682c6404c716223c6f2559",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 1,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page unambiguously owns onboarding (what the repo is, prereqs, build, first commands, where to go next) and pushes every adjacent system to its own outline entry via the routing table; it never re-explains tokens, contexts, or KMS. It stops short of 4 because it never states its own scope boundary in prose — ownership is inferred from the routing table rather than declared. Grounding: nearly every non-obvious claim carries a specific file+line citation (Makefile targets, bootstrap.go, fingerprint.go, local-development.md), and the citations match the claims they support; a few are loose — `repo://go.mod` with no line range for the minimum Go version, and the `make build`/`make test` flag descriptions (CGO_ENABLED=0, atomic coverage) are attributed to a broad line span rather than pinpointed. Reasoning: almost entirely descriptive. It lists commands and what they produce but derives no invariants, ordering constraints, or failure behavior; the one causal statement — that CA flows require a running step-ca and that bootstrap persists root+defaults under $STEPPATH — is the sole consequence drawn, and even there the state model is deferred rather than explained. Change usefulness: a developer gets the validation loop (make lint/test/build/race, `make` default target) and the contribution rules (CHANGELOG for behavior changes, go mod tidy for deps), which is real but generic; there are no change locations, no ordering, no failure modes, no debugging signals. Correctness: no internal contradiction and no claim that overreaches its citation; the `--insecure`/`--no-password` pairing and the fingerprint-accepts-URLs detail are the kind of specifics that suggest the source was actually read. Style: opening answers 'what is this and what do I run first' immediately, headings map to the questions a newcomer asks in order, the table is the shortest possible form of the routing answer, and nothing is repeated — progressive disclosure works as intended."
+  },
+  {
+    "task_id": "page_603d2db31936e5e532550e52",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the CA client layer clearly dominates and the closing section routes adjacent concerns, but the 'Token generation' section is one of the longest on the page and describes provisioner-specific token minting (JWK/OIDC/K8sSA/X5C/nebula/sshpop/renew) that the page itself hands to the 'Provisioning Tokens' entry — a substantial block belonging to an adjacent owner. Grounding: three files are named (client.go, offline.go, token_generator.go) and most claims cite a symbol, but evidence is file- and name-level only; specific behavioral assertions (0600 write mode, singleton motivated by badgerDB locks, WithValidity min/max enforcement, default K8s token path, 'https' normalization) are stated as fact with no shown code, and the Offline CA and CertificateFlow sections attribute many methods to files without distinguishing verified reading from inference. Reasoning: mostly an annotated API inventory; it does derive a few real consequences (bootstrap token detection via sha claim + http audience selects WithRootSHA256 trust instead of --root, the offline singleton avoiding double-init, renew token subject must equal the cert CN, ACME/SCEP provisioners rejected), but ordering, error propagation, and invariants around the in-memory admin identity bootstrap (which signs itself through the very client it is constructing) are left implicit. Change usefulness: a reader learns which file to open for each concern, which is real value, but there are no tests named, no implementation order for adding a client method or a new token type across CaClient/OfflineCA/TokenGenerator, and no failure modes or debugging signals. Style: opening states purpose and scope, headings route the obvious questions, and there is no repetition; it loses a point because the body is largely flat bullet enumeration of method names rather than progressive disclosure. Correctness: no internal contradiction and no claim that looks operationally dangerous, but the page never flags uncertainty or edge cases, so it does not reach the top band."
+  },
+  {
+    "task_id": "page_628f3fde0eef00b87298d8e4",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page has a clear owner — how the CLI obtains a CA client (online vs offline vs ACME) and establishes trust. It routes context/defaults storage to the STEPPATH topic rather than re-explaining it. Minor spillover: the admin-client bootstrap and ACME sections drift toward token/issuance topics, and the page never explicitly states out-of-scope boundaries, so it falls short of 4. Grounding: nearly every non-obvious claim carries a file+line citation, and the citations are specific rather than decorative (e.g., the singleton rationale, the TLS-transport peer-certificate extraction, the WithRootSHA256 branch). Short of 4 because several claims lean on a single repeated range (client.go#L52-L74 is cited for selection logic and separately for failure behavior) and multi-file conclusions like 'Sign runs the same pipeline as the server' cite only the offline side, not the server boundary they compare against. Reasoning: derives real consequences — why the offline authority is a singleton (badger lock, re-init impossible), why bootstrap deliberately uses an insecure client (fingerprint validates the response, not TLS), the dual trust modes (root file vs sha claim in token), and how offline renew identifies the subject certificate. Stops short of a full causal model: no discussion of concurrency implications of the shared singleton across commands, key material lifetime, or ordering constraints. Change usefulness: names the owning files and the decision points, which lets a reader locate a change, but gives no implementation order, no tests to run, and no debugging/rollback signals; the 'Failure behavior' section describes error surfaces rather than how to validate a change. Style: opening immediately answers 'what is the abstraction and what are the two implementations'; headings route the likely questions; bullets are used where they compress rather than decorate; no repetition. Not 4 because the admin-client section is a detour from the online/offline framing and isn't signposted as such. Correctness: no internal contradiction detected and hedged claims are attributed to source ('the in-source reason'); not 4 because it asserts without qualification that offline Sign runs 'the same' pipeline as the server, which is stated with more certainty than the cited offline-only evidence establishes."
+  },
+  {
+    "task_id": "page_669e15a2c486d45399faa3b8",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner (how the command tree is assembled, registered, and customized) with adjacent concerns routed out via See-also links to architecture, STEPPATH, and the add-a-command guide. It never states explicit out-of-scope boundaries in prose, and the final shared-flags section drifts toward CA-targeting/config material (ParseCaURL, Context, template data) that plausibly belongs to the configuration topic — good but short of 4. Code grounding: nearly every non-obvious claim carries a specific file:line range (root.go:25-44 blank imports, :122 Retrieve, :180-194 stringifyFlag, plugin.go:20-52 LookPath order, root.go:62-79 error contract). Two claims are unsupported: 'integration help tests assert on them' has no citation, and the assertion that the registry lives in cli-utils is stated rather than shown. Reasoning depth: derives real consequences — why the pemutil/jose hooks are required for --force/--password-file to work, why flag usage strings embed placeholders, why root_test.go pins the command list and must change with imports, the plugin lookup precedence and fallthrough to help, and the exit-code/STEPDEBUG failure contract. Stops short of a full causal model (no state transitions, ordering hazards between init() registration and Init(), or security implications of plugin resolution from $STEPPATH/plugins). Change usefulness: names the exact edit points (root.go import block, package init + command.Register, the pinned test, flags/ for reuse) and the hidden/beta patterns, but leaves implementation ordering and validation steps to the linked guide, and gives no debugging signals beyond STEPDEBUG. Style: opening states purpose and scope; headings map to distinct questions (assembly, conventions, newApp customization, plugin fallback, hidden/error surface, flags); no repetition or decorative tables; edge cases are isolated in their own sections. Correctness: nothing internally contradictory or operationally dangerous; claims are appropriately scoped (e.g. hidden-but-runnable api, beta reusing the same acme.Command object). It does not flag any uncertainty or subtle exception explicitly, so not 4."
+  },
+  {
+    "task_id": "page_6d9ad2d8a0bc015a159dc3eb",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one owner (the cautils CA-integration layer) clearly dominates; token generation, flags, and admin commands are referenced and routed out rather than re-explained, but the page never explicitly declares out-of-scope boundaries beyond a See-also list, so short of 4. Grounding: nearly all non-obvious claims carry file:line ranges (client.go:52-74, offline.go:28-81/140-163, certificate_flow.go:250-293, token_flow.go:101-183), and several are notably precise (audience lacking /1.0/ prefix, GetRootCAs returning nil); a few claims are uncited or vague (0o600 defaults tied loosely, 'password-protected key handling via pemutil/ui.PromptPassword', admin CSR self-verification), and some ranges are coarse enough that the reader can't tell which line establishes what. Reasoning: goes well past mechanics — explains why the OfflineCA singleton exists (locked BadgerDB), why offline authorization uses method-scoped contexts (server-identical rules), why Renew/Rekey read the leaf from the mTLS transport instead of a token, and the security invariant that ParseInsecure only shapes the client while the authority re-verifies the OTT. Change usefulness: concrete files, the online/offline branch points, provisioner-selection precedence, and error/failure behavior are all named, but there is no implementation ordering guidance, no tests to run, and no rollback/debug signals. Style: purpose stated up front, headings map to real questions, no repetition; the CreateSignRequest SAN-derivation paragraph is a dense run-on that buries per-token-type detail. Correctness: no contradiction visible from the page; it handles subtleties (empty CertChainPEM fallback, DisableCustomSANs dropping CLI subject, RenewType bypassing provisioners) but never flags uncertainty or unverified areas."
+  },
+  {
+    "task_id": "page_730279882ed90b0f454d3b69",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns one cohesive pipeline (enrollment → token → sign) and explicitly hands off adjacent concerns rather than re-explaining them — OIDC/ACME/SCEP token gaps route to the ACME/OAuth page, renewal daemon scheduling to the systemd page, URL/context parsing to the configuration page, SSH specifics to the SSH page. Mentions of many provisioner types serve the shared workflow, which is the legitimate owner. Code grounding: nearly every non-obvious claim carries a file plus line range (certificate_flow.go:134-167 for the TOFU-vs-root branch, token_flow.go:291-409 for provisioner filtering, token/options.go:146-165 for validity clamps, offline.go:36-80 for the singleton), and the citations are used to establish specific mechanisms rather than as decoration; the prose distinguishes what code does from why (e.g. flagging the singleton rationale as a deadlock workaround). Reasoning depth: it builds a causal model — why a `sha` claim plus http audience removes the need for a local root, why the JWK no-`--key` path is a distinct trust posture (CA-held encrypted key, CA authorizes), why RenewType bypasses provisioner selection, jti as replay defense, DisableCustomSANs suppressing user subject for cloud provisioners, and the offline path's transport type-assertion to recover the peer cert. Change usefulness: concrete ownership boundaries and dispatch points are named (NewTokenFlow switch, loadJWK, CreateSignRequest per-type defaults, offline mirror in offline.go:539-601), which is enough to locate a change and see that online/offline paths must be edited in parallel, but there is no validation/test guidance, no explicit ordering, and no debugging or rollback signals — short of 4. Style: the opening states the shared-pipeline thesis in two sentences, the diagram compresses the flow, step headings route questions, the provisioner/token table replaces prose that would be longer, and bolded sub-topics (Token shape, Renewal is special) allow edge cases to be skipped; no repetition. Correctness: no internal contradiction and several subtleties are handled carefully (chain fallback to ServerPEM+CaPEM, x5c-insecure header, multi-use K8sSA tokens, ACME/SCEP sentinel errors), but the page does not flag uncertainty anywhere and states some derived behavior with flat certainty, so it does not reach the explicit-edge-case-and-uncertainty bar."
+  },
+  {
+    "task_id": "page_7aa5c97f122debc66544d16e",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one coherent topic — the CLI's assembly/registration/plugin/error plumbing — and the opening states it. Command groups, exec helpers, and completion all plausibly belong to this framework layer rather than to the per-command outline entries. It never declares out-of-scope boundaries or routes readers elsewhere (e.g. STEPPATH details, individual command groups), so it stops short of 4. Code grounding: nearly every claim names a concrete file or symbol (cmd/step/main.go, internal/cmd/root.go, plugin.LookPath, exec/exec.go, command/completion/completion.go) and correctly flags that Register/Retrieve live in the external cli-utils package. Evidence is file-level rather than exact (no line anchors or quoted code), and some specifics — the PATHEXT default list, powershell -noprofile -nologo, exit code 2 — are asserted without showing what establishes them. Reasoning depth: mostly mechanism narration; the fallthrough ordering (STEPPATH/plugins before PATH), the 'blank import to enable a group' consequence, the note that panic recovery only covers panics propagating through run(), and the STEPDEBUG == \"1\" exactness are real derived implications, but invariants around registration ordering (init side effects vs. duplicate registration), signal forwarding semantics in Run, and error-wrapping contracts are left implicit. Change usefulness: a reader learns where to add a command group and how to name a plugin binary, which is a concrete change path, but there is no implementation ordering, no tests to run, no failure modes for a botched registration, and no debugging signals beyond STEPDEBUG. Style: purpose is clear up front, headings route the obvious questions, no repetition; the exec/exec.go inventory is a dense identifier list that reads as a dump rather than progressive disclosure. Correctness: internally consistent, no contradiction visible from the page; hedging on panic scope and the exact STEPDEBUG value is handled well, but there is no broader treatment of edge cases or uncertainty."
+  },
+  {
+    "task_id": "page_7d01d5415b7a98b20f2224d9",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner — the local `step certificate` command group — and the opening explicitly says 'no CA involved', which routes CA-backed issuance elsewhere; it stops short of naming adjacent topics or stating out-of-scope items, so not a 4. Grounding: three coarse function-range citations (create.go:495-771, sign.go:237-397, verify.go:149-378) plus the profile constant range carry the whole page; the dense claim set — 24h vs 10-year defaults, RSA 2048 minimum, `--skip-csr-signature` requirement, `--bundle` leaf-only, CSR-mode flag rejections, `--path-len -1`, CRL/OCSP issuer resolution — is largely asserted without pointing at the code that establishes each, so evidence is present but vague at detail level. Reasoning: mostly a well-organized behavior catalog; it does derive a few real constraints (issuer must be a CA with keyCertSign, path-length checks for intermediate profiles, profile/template mutual exclusion, inspect never verifies) but no state model, ordering, or failure analysis beyond 'exits non-zero'. Change usefulness: it names the three action files and their profile/flag surfaces, enough to locate a change, but gives no implementation order, no tests, no validation steps, and no debugging signals — a developer adding a profile or flag would still have to reverse-engineer the wiring. Style: purpose is stated up front, headings route by subcommand, the profile table earns its place, and there is no significant repetition; progressive disclosure is decent but the 'Other subcommands' bullet list is a thin dump. Correctness: no internal contradiction and the nuances it does flag (self-signed requiring --subtle, --insecure disabling CRL signature verification, --ca rejected for root-ca/self-signed but optional with templates) are handled with appropriate precision; nothing verified beyond the page, so no credit for explicit edge-case/uncertainty handling at a 4 level."
+  },
+  {
+    "task_id": "page_7d62467347a9cd303c3cb6e0",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one topic (step path layout + contexts) clearly owns the page, and the Boundaries section states what the cli-utils library owns versus this repo. It stops short of 4 because the out-of-scope routing points at an external library rather than the adjacent outline entries it brushes (bootstrap/CA init, plugins), and those are absorbed rather than deferred. Grounding: most structural claims carry file:line anchors (path.go:92-104, root.go:54, bootstrap.go:37-42/169-193/197-210, init.go:544-570), and the page honestly marks the contexts.json encoding as library-defined rather than asserting it. But several behavioral claims are uncited or vague: the '▶' prefix and alphabetical ordering in `context list`, the `--json` output shape of `context current`, the plugins/ and ssh/includes rows lean on bare file names, and the flags.ParseCaURL fallback story cites only 'flags/flags.go'. Reasoning: goes beyond layout — it derives the remove-safety invariant (refuse current context, refuse deleting authority/profile dirs still referenced by another context, via cs.List() with saveAuthority/saveProfile), and states the UseContext predicate that gates context creation. Missing are ordering/failure consequences: what happens if current-context.json points at a deleted context, precedence between STEPPATH, --context/--authority/--profile and defaults.json, or partial-write behavior. Change usefulness is the weakest axis: it names files and a plausible edit surface but gives no implementation order, no tests to run, no validation or debugging signals, and no guidance on what breaks if a new artifact is added under the base path. Style: opening states purpose immediately, the table earns its place as a lookup index, headings route the likely questions, no significant repetition; the lowercase mid-document heading and the somewhat buried flag-resolution answer keep it off 4. Correctness: no internal contradiction detected and the page is appropriately hedged about library-owned encoding; not 4 because it does not address subtle cases such as profile/authority sharing edge conditions or precedence conflicts."
+  },
+  {
+    "task_id": "page_82777213f5b59e62e88233b9",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: testing/validation clearly owns the page — unit, testscript integration, and CI gating are all facets of validation, and adjacent concerns (plugin fallback, release ops, command authoring) are routed out rather than re-explained; no explicit in-scope/out-of-scope statement, so it stops short of 4. Grounding: nearly all non-obvious claims carry file:line evidence (root_test.go:11-26, shared_test.go:11-15, help_test.go:21-40, ci.yml:17-30) and the prose says what each establishes (e.g. TestAppRuns 'proving why newApp takes writers'); a few claims are vaguer ('27 non-integration *_test.go files', 'integration/testdata' with no line anchor, Makefile:151-152 supporting the ./... claim). Reasoning: derives real consequences — the exact-ordered-list assertion as a tripwire for blank-import registration, testscript.Main avoiding a compiled binary, help-quality failing CI on documentation regressions, release.yml needs:ci making tests a shipping gate — but stops at flow-level implications rather than a full invariant/state model. Change usefulness: concrete files, a change→validation table, and the 'update TestAppHasAllCommands list' ordering hint; lacks failure-mode/debugging detail (how testscript failures surface, how to regenerate report.json, no rollback signals). Style: opening states the three-way split immediately, headings route questions, the table earns its place, no repetition. Correctness: no contradictions spotted, and it correctly flags an unverified-looking detail (the -short flag with no testing.Short() branch, attributed to CI convention); the '0000000-dev' explanation is a stated inference, not overclaimed."
+  },
+  {
+    "task_id": "page_89bd328b67415c4473a68a77",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening states the owner (utils/cautils as shared CA-facing layer) and the page holds together as one workflow cluster, but the token-flow/provisioner-selection material is large enough to overlap the outline's separate provisioning-token entry, and no out-of-scope boundaries or routing are stated — 3, not 4. Grounding: nearly every non-obvious claim carries a file+line range (client.go:52-74, token_flow.go:39-76, offline.go:140-158, acmeutils.go:234-283), and specifics like the 0o600/0o644/0o700 modes and the 10x1s polling bounds read as actually derived from source; docked to 3 because several citations are asserted rather than explained (e.g., what in tpm.go:40-196 establishes the AK-to-challenge binding, and the errs.RequiredFlag claim is hedged as 'RequiredFlag-style'). Reasoning: mostly accurate flow narration; it does surface one genuinely useful cross-boundary consequence (offline Audience builds /sign without the /1.0 prefix the online parseAudience uses) and notes ACME/offline mutual exclusion and the renew-token early return, but invariants, ordering constraints, and failure consequences (what happens when the audience mismatch bites, why sharedContext is package-level and what that implies for concurrency/reentrancy — especially with the OIDC path re-invoking the CLI) are left implicit. Change usefulness: a developer learns which files own which stage and could locate a change, but there is no implementation order, no tests to run, no validation or rollback/debug signals, and no guidance on which invariants to preserve when adding a provisioner or token type. Style: purpose and scope are established up front, headings route the likely questions, the token-type/path table earns its place, and there is no significant repetition; short of 4 because the token section mixes selection, generation, and offline handling without progressive layering. Correctness: no internal contradictions and the page is appropriately specific; not 4 because it does not flag exceptions or uncertainty beyond the single prefix discrepancy."
+  },
+  {
+    "task_id": "page_8c134599f62475a37ec0c0a8",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner (the `step oauth` command and its grant flows); the OIDC-provisioner mention is a legitimate integration pointer rather than a second system, but the page never explicitly states out-of-scope boundaries or routes Token Generation / CA flows elsewhere, so it lands at 3 not 4. Grounding: only two concrete citations exist (`command/oauth/cmd.go`, `utils/cautils/token_generator.go:generateOIDCToken`). Everything else — the five-way flow selection table, the hard-coded Google/GitHub endpoints, PKCE S256 with a 64-char verifier, the 2-minute timeout, the 5-minute device-poll cap, `STEP_OPEN_BROWSER=0` — is asserted with function names as loose anchors but no file/line evidence, and the page never distinguishes what it read from what it inferred; that's 'most major claims gestured at, important details unsupported' = 2. Reasoning: it explains flow selection precedence, PKCE/state/nonce usage, and polling/timeout behavior, and has a Failure behavior section, but stops at description — no derivation of why state validation matters against CSRF, no ordering invariants between discovery and endpoint flags beyond restating the requirement, no concurrency/channel-lifetime consequences despite mentioning a token channel and error channel. Common flows plus a few implications = 2. Change usefulness: a developer knows to open `command/oauth/cmd.go` and roughly which function handles which grant, which beats naming concepts alone, but there are no test files, no validation steps, no implementation ordering for adding a provider or flow, and no debugging signals — 2. Style: opening states purpose and the CA linkage; headings route the obvious questions (flow selection, providers, loopback, device/OOB, output, failures); the table earns its place; no repetition. Doesn't quite reach progressive-disclosure 4 since edge cases like `--implicit` and Google's non-spec `verification_url` are tucked mid-prose. Correctness: internally consistent, no self-contradiction visible, and it correctly flags the JWT path as returning the JWT itself rather than an OAuth token; but it asserts specifics (exp now+3600, 64-char verifier, interval default 5) with unhedged certainty and no evidence, so it does not qualify for 4."
+  },
+  {
+    "task_id": "page_8c225da310b4cef805fc7a00",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner (shared flag definitions + parsing/validation helpers in flags/ and utils/), with adjacent concerns (contexts, CA integration, runtime error path, command authoring) routed by link rather than re-explained. It never explicitly states out-of-scope boundaries, and the context-selection section drifts slightly toward context semantics, so 3 not 4. Code grounding: nearly every non-obvious claim carries a file:line range (flags.go:649-706 for the ca-url pipeline, 613-643 for --set merging, utils/cli.go:20-84 for key details), and it correctly hedges on HiddenNoContext being interpreted by an external package. A few claims are asserted without located evidence ('Kid is handled ad hoc', 'used wherever --issuer is a legacy alias', 'commands that operate globally ... declare it'), keeping it below 4. Reasoning depth: it derives real consequences rather than restating signatures — https-only enforcement, path stripping, IPv6 re-bracketing, the process-start evaluation of step.Path()-derived defaults making offline config context-dependent, insecure-gated RSA minimums, and the FirstStringOf 'explicitly set vs default' distinction that makes error messages cite the typed flag. It stops short of a full causal model (no ordering/failure-mode analysis across callers), so 3. Change usefulness: it names the owning files and the reuse rule, but gives no implementation order, no tests to run, and no debugging/validation signals beyond 'return errors to the messenger path'; a developer adding a flag would still have to discover registration and test conventions elsewhere. Style: purpose and scope are set in the first paragraph and headings route well, but the flag catalog is a dense identifier dump that costs scanning for little derived meaning. Correctness: internally consistent, no contradictions detectable from the page; it handles subtleties (BoolTFlag default-true semantics, CompleteURL being deliberately more forgiving than parseCaURL) but not enough exception coverage to earn 4."
+  },
+  {
+    "task_id": "page_8c462ea5a5175866bbbefd47",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: an architecture overview is a legitimate outline entry and the page keeps a clear owner — the module-level map of what this repo implements vs. what it delegates. It routes adjacent concerns (KMS plugin, contexts, renewal, release pipeline) with pointers rather than re-explaining them, but it never explicitly states out-of-scope boundaries, and the 'Build identity and entrypoint' section drifts into Build-and-Release territory, so short of 4. Grounding: nearly every non-obvious claim carries a file+line citation (root.go blank imports, offline.go singleton, client.go CaClient, token_flow.go dispatch); a few are vague whole-file pointers (go.mod, .goreleaser.yml, sshutil/agent.go, context.go) supporting non-trivial claims like 'GoReleaser builds from the same main target' and 'contexts.json written by context commands', which keeps it below 4. Reasoning: goes past inventory in places — the CaClient interface explains why online/offline commands share code paths, the offline singleton is tied to a concrete failure cause (badgerDB lock on double init), and the CAS blank imports are tied to init() ordering before command execution. But the causal model stops there; no state transitions, error propagation, or ordering constraints for the bootstrap/token flows it names. Change usefulness: a reader learns which package owns what and could locate a change (command/ tree, utils/cautils, internal/*), but there is no implementation order, no tests to run, no validation steps, and no failure/debugging signals. Style: opening states purpose and scope, headings route predictable questions, the ownership table earns its place, no repetition; progressive disclosure is partial since 'Non-obvious structural facts' is a catch-all rather than a named edge-case section. Correctness: no contradiction visible from the page; the uncertainty section correctly scopes the CLI as short-lived with renewal delegated to schedulers, but subtle exceptions are largely unaddressed."
+  },
+  {
+    "task_id": "page_8f10379e0abef514a70dd120",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: SSH certificates clearly own the page — command group, issuance, agent, config, host discovery, proxycommand, lifecycle all belong to one subsystem, and token machinery is routed out to the Token Generation topic rather than re-explained. It never explicitly states out-of-scope boundaries (e.g. X.509 lifecycle is only gestured at), so short of 4. Code grounding: claims are anchored to symbol names (`certificateAction`, `loginAction`, `flow.GenerateSSHToken`, `client.SSHRoots()`, `version.RequireClientAuthentication`, `WithRemoveExpiredCerts`) and one package path (`internal/sshutil`), but there are no file paths or line-level references, so most evidence is nominal rather than exact; details like the `--add-user` rejection rules, the 404 friendly-error, and the `x5cInsecure`/`/ssh/check-host` audience are asserted without pointing at where they're enforced. Reasoning depth: it does derive some consequences — why `login` requires an agent, why the early-return-on-existing-key path exists, that expired certs are pruned during probing, and why the generated ProxyCommand makes plain `ssh <host>` work — but ordering, error paths, and invariants (what happens when the agent is absent, token/flag conflicts at runtime, identity-cert requirement interplay) stay implicit. The closing lifecycle section is pure hand-wave: 'mirror their X.509 counterparts' with no mechanism. Change usefulness: a reader learns which symbols matter but gets no concrete file locations for the command implementations, no registration point for a new subcommand, no tests, and no failure/rollback signals; only `internal/sshutil` is locatable. Style: opening establishes the command surface, headings map cleanly to likely questions (issue, log in, configure, discover, proxy, renew), prose is dense without repetition; the thin final section and the buried flag-validation blob inside a paragraph keep it from 4. Correctness: no internal contradictions or obviously dangerous claims detected from the page alone; statements are appropriately hedged in places, but it does not surface edge cases or uncertainty explicitly."
+  },
+  {
+    "task_id": "page_8f632c93964e8f146b3bac45",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening states the owner explicitly (the token/ package plus the token-producing flows in utils/cautils), and adjacent concerns—TokenGenerator/per-provisioner generators and the step ca token CLI surface—are routed to other outline entries rather than re-explained; spillover is negligible. Code grounding: nearly every non-obvious claim is anchored to a named file and symbol (token/token.go validity bounds, token/options.go option list, token/parse.go Type detection, token_flow.go dispatch), which is specific enough to locate, but evidence stays at file/symbol granularity with no excerpts or exact boundaries for multi-file conclusions such as the renewal path or the OfflineCA branch, so it falls short of the top band. Reasoning depth: it mostly enumerates mechanics—claims seeded, options available, dispatch by provisioner type—and derives only a few consequences (renewals bypass provisioner selection via x5cInsecure, OIDC skips the SAN prompt because the CA derives principals from email, OfflineTokenFlow's two mutually exclusive modes). Ordering constraints, what happens when validity bounds are violated, and why kid is a public-key thumbprint are left implicit. Change usefulness: a developer learns which files own which behavior and could find the right function, but the page gives no implementation order, no tests to run, and no failure or debugging signals beyond naming ACMETokenError/SCEPTokenError. Style: purpose is stated in the first sentence, headings route claim model, parsing, and flows separately, lists are used where they compress, and nothing is repeated; it stops short of progressive disclosure since edge cases are interleaved with the main enumeration. Correctness: no internal contradiction surfaced and details like the cnf x5rt#S256 value and the audience path table are self-consistent, but the page asserts everything with flat certainty and never flags an exception or unknown."
+  },
+  {
+    "task_id": "page_9b062e4bce4b05cbb5ce212c",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 4,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one coherent owner (client-side persistent config state: STEPPATH layout, contexts, defaults.json, CA-flag resolution) with clear routing in See also. Held at 3 because the bootstrap section leans into enrollment territory and the opening states what the page covers but never declares explicit out-of-scope boundaries. Code grounding: near-exhaustive file:line evidence tied to specific claims, and citations are used to establish what they actually show (e.g. fingerprint verification at bootstrap.go:104-113, 0600/0700 root write, CaConfig default at flags.go:289-296); it also explicitly flags that precedence logic lives in cli-utils and is therefore not established here — fact/inference separation done well. Reasoning depth: derives real consequences (root download is trust-on-fingerprint before anything is trusted; remove computes directory sharing before RemoveAll; offline ca.json resolves against the active context path, so context selection silently changes offline signing config; --root silently defaults and only errors if the default file is absent). Stops short of a full causal model — no state-transition account of context creation/failure, no concurrency or partial-write behavior. Change usefulness is the weak axis: it names the right files and boundaries but gives no implementation ordering, no tests to run, and no rollback/debugging signals; a reviewer learns where to look but not how to land a change safely. Style: purpose stated up front, headings route the likely questions, no significant repetition; some paragraphs pack multiple independent facts into single run-on sentences, which slows retrieval. Correctness: no internal contradiction detected, uncertainty is handled honestly rather than papered over; short of 4 because of absolute phrasing like 'manipulated exclusively through step.Contexts()' that the cited call sites do not fully substantiate."
+  },
+  {
+    "task_id": "page_9f7629258fd1f84d165d0108",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one coherent owner — the KMS/plugin seam (plugin lookup, internal/cryptoutil, step-kms-plugin invocation). The TPM/ACME section drifts toward certificate issuance but stays tied to attestation, and the closing bullet does route provider logic out to go.step.sm/crypto/kms; however the page never explicitly states its in-scope/out-of-scope boundary against adjacent outline entries (Certificate Issuance, CA Tokens), so 3 not 4. Grounding: nearly every non-obvious claim carries file+line evidence (IsKMS semantics L26-43, signer invocation L229-260/L306-344, attest L346-362, exitError L219-227), and the PSS ≥v0.12.0 claim is correctly attributed to an inline comment rather than asserted as fact. Docked from 4 because caller claims cite bare files with no lines (command/certificate/create.go, ca/renew.go, ca/rekey.go) and the TPM section's broad protocol description leans on two line ranges that likely don't cover all of it. Reasoning: derives real consequences — the file-wins-over-URI precedence rule, digest-only signing matching KMS semantics, one subprocess per signature, the sshagentkms/Ed25519-only x509 compatibility quirk, JWK default-alg derivation. Stops short of a full causal model (no concurrency detail beyond 'a goroutine writes stdin', no error/retry or partial-failure state analysis). Change usefulness: identifies the seam file and the exact functions a change would touch plus the observable failure string, but gives no implementation ordering, no tests to run, and no guidance on adding a new KMS-backed call site or validating it — meets 2, not 3. Style: opening does not state page purpose, but headings route the likely questions cleanly (convention → resolution rule → invocation → attestation → consequences) and there is no repetition or filler. Correctness: no internal contradiction detected; claims are appropriately hedged ('hardcoded today', comment-sourced version floor), but no explicit handling of subtle exceptions beyond the sshagentkms case."
+  },
+  {
+    "task_id": "page_a85904731ee38484417bfd6c",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Scope is unambiguous: the page owns the add-a-command workflow and explicitly delegates framework mechanics and CI details to the command-framework and testing pages rather than re-explaining them, and it only touches other systems (flags, cautils, STEPPATH) as steps of this workflow. Grounding is strong—placement rules, the registration template, help-text gating, and changelog/CONTRIBUTING requirements all carry file:line refs—but a few citations are broad ranges (Makefile:123-176, flags/flags.go:71-124) and the stringifyFlag placeholder claim is partly sourced to another wiki page rather than code, so it falls short of exact-evidence-for-everything. Reasoning goes beyond mechanics: it derives that commands are opt-in and that omitting the blank import degrades to plugin-fallback 'not found' instead of a compile error, and that TestAppHasAllCommands pins the exact top-level name list—but it stops short of a full causal model of registration/ordering invariants. Change usefulness is the page's strength: concrete placement decision tree, ordered steps, the specific tests that will break first, local verification commands, and gotchas including the stale command/README import path and STEPPATH resolution via step.Path(). Structure is progressive—numbered steps route questions, gotchas isolate edge cases, no repetition. No contradictions surfaced, and it correctly flags the outdated README as documentation drift, but it doesn't systematically qualify uncertainty."
+  },
+  {
+    "task_id": "page_a86a26db2944f5176970ea47",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Scope is a single clear workflow (adding a command) and the page stays on it; it references flags/errors/testing only as steps in that workflow rather than re-explaining them, but it never states out-of-scope boundaries or routes readers to the adjacent flag-system/testing topics, so it stops short of 4. Grounding is strong: nearly every non-obvious claim carries a file:line citation (command/README.md:5-17, internal/cmd/root.go:30-44, command/ca/ca.go:68-85, integration/help_test.go:43-107, Makefile:151-175), and cited examples are named for what they demonstrate (leaf command vs. custom flags); it falls short of 4 because several citations are asserted without explaining what the code shows (e.g. errs usage 'serializes to consistent exit behavior' is attributed to a README section, not to the errs implementation). Reasoning is mostly procedural mechanics: it does derive one real causal chain (blank import -> init runs -> command.Retrieve picks it up) and one enforcement consequence (help test constrains Description format), but invariants, failure modes when registration is missed, ordering constraints, and cross-module consequences are largely implicit. Change usefulness is solid — concrete packages, registration sites, flag/error conventions, doc requirements, and validation commands in a sensible order — but there are no debugging signals for the common failure (command silently absent), no rollback guidance, and no description of what the help test failure output looks like. Style is clean and progressive: numbered steps route the likely questions with no repetition, though the opening does not summarize the end-to-end flow before the steps. No internal contradiction is visible and the guide hedges appropriately (e.g. command.ActionFunc or cli.ActionFunc), but it does not address subtle exceptions such as nested subcommand registration ordering or when a command should not be registered at all."
+  },
+  {
+    "task_id": "page_abb880b4f4fa5df8f7122cc6",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns 'architecture overview' — layout, ownership boundaries, and top-level control flow — and consistently routes adjacent concerns (ca group, certificate group, STEPPATH/contexts, ACME/bootstrap, error handling) to other outline entries instead of re-explaining them, which is exactly the 4 behavior. Grounding: claims are anchored to named files/symbols (cmd/step/main.go, internal/cmd/root.go#run, command.Retrieve(), OfflineCA, NewCertificateFlow) so most major structural claims are traceable, but the evidence is nominal rather than exact — no line ranges, no quoted code, and several specific assertions (panic handler 'exits with code 2', STEPDEBUG=1 stack printing, CAS backends enabled via blank imports, 'no other package depends on these groups') are asserted with certainty and no supporting excerpt. Reasoning: the four-step control flow explains the common issuance path and the online/offline seam, which is real behavior rather than pure layout, but the page derives few consequences — no invariants about token single-use, no ordering or failure semantics, no explanation of why the CaClient abstraction exists beyond naming it as a seam, and file permissions are hedged as 'typically restrictive' without stating the rule. Change usefulness: ownership boundaries genuinely tell a developer which package to touch for a new command or a CA-facing change, but there is no registration procedure, no dependency ordering, no tests to run, and no failure/debug signals beyond STEPDEBUG. Style: opening states purpose and scope, sections route predictable questions, the bullets shorten rather than pad, and there is no significant repetition. Correctness: nothing internally contradictory and the description of the registry/offline split is coherent; it stops short of 4 because it handles no subtle exceptions and expresses uncertainty only once."
+  },
+  {
+    "task_id": "page_b51b1b2a8e4e75fd5374d201",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one coherent owner (external crypto/KMS integration) with three clearly delineated mechanisms; the exec-plugin section overlaps 'Command Dispatch' but explicitly routes there rather than re-explaining, and TPM/ACME material is framed as an integration path, not a certificate-issuance tutorial. It never states out-of-scope boundaries explicitly, so short of 4. Grounding: claims are pinned to named packages, files, functions (`IsKMS`, `CreateSigner`, `LoadJSONWebKey`, `plugin.GetURL`, `flags.KMSUri`, `utils/cautils/tpm.go`) and to exact subprocess invocations and flags, which is specific enough to verify; but there are no line-level anchors, several consumers are hedged as 'among others', and the page rarely marks inference vs. fact. Reasoning: it derives some real behavior — the file-existence check taking precedence over URI shape, rejection of the default file type, hash-to-`--alg` mapping, the Ed25519-only restriction for `sshagentkms:`, plugin-defaults for non-RSA — but stops at mechanics. No failure modes (plugin missing at signing time, non-zero exit, malformed stdout), no ordering or lifecycle invariants, no discussion of why shelling out per operation is the chosen boundary. Change usefulness: a developer learns which package to edit for a new KMS-backed operation and which flags exist, but gets no test locations, no implementation order, no validation steps, and no debugging signals for a failing plugin exec. Style: strong — the opening states the two-plus-one mechanism split, headings route questions, nesting is used only where it compresses, and there is no repetition. Correctness: nothing internally inconsistent or overclaimed; the separation between in-repo helpers and the external plugin/library responsibilities is stated carefully, but subtle exceptions and uncertainty are not systematically handled."
+  },
+  {
+    "task_id": "page_b6b0154a512d5fef5db2a215",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the issuance/renewal lifecycle clearly dominates, but the page never states its ownership or boundaries, and two chunks sit in adjacent territory — the 'Offline signing' section plus the online/offline unification framing overlaps 'Online and Offline CA Flows', and 'Standalone certificate tooling' (create/sign/verify/lint/p12/install) is a separate no-CA toolset enumerated rather than routed. It does correctly route ACME-DA to the KMS page and disclaims server-side policy. Grounding: most non-obvious claims carry file+line evidence (flag incompatibilities, flowContext fields, offline authorize/sign, needs-renewal thresholds, systemd timer settings). Weak spots: acme_flow.go, revoke.go, certificate.go, verify.go/lint.go are cited without lines, and the rekey claim rests on a single-line citation (client.go#L35) that cannot plausibly establish 'supplies a new public key so the CA issues a certificate for a fresh key pair'. Reasoning: goes beyond mechanics — explains why --offline and --token conflict (token predates the offline CA), why the CSR is bound into shared context (fingerprint claim ties request to token), the ACMETokenError fallback path, jitter to prevent synchronized renewals, and how ExecCondition + exit-code semantics make the systemd unit a no-op when renewal isn't due. Stops short of a full state/failure model (no partial-write, clock-skew, or mTLS-expiry failure behavior). Change usefulness: names the right files and entry points and the systemd contract, but gives no implementation ordering, no tests to run, and no debugging/rollback signals; a reviewer knows where to look but not how to validate. Style: opening establishes the unified flow, headings route questions, numbered steps are load-bearing, no repetition; the standalone-tooling list is a mild detour. Correctness: no contradiction surfaced; passive-revocation note, exit-code table, and the explicit Uncertainty section handle edges honestly, but the thinly-evidenced rekey assertion is stated with more certainty than its citation supports."
+  },
+  {
+    "task_id": "page_b8370a9aaf7a6934ac8459bf",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns the OAuth/JOSE toolkit surface and routes claim structure to the token page, KMS plugin dispatch to the CLI runtime page, and key flags to the shared-flags page. The `step ca token` section is a mild spillover (it is a token-package/CA concern), and there is no explicit out-of-scope statement, so it lands at 3 rather than 4. Grounding: most non-obvious claims carry file:line evidence (embedded Google client IDs at cmd.go:38-60, flow dispatch at 491-511, device polling at 863-982, jwt-bearer assertion at 983-1092/62-66, KDF PHC + salt at internal/kdf/kdf.go:20-46, subprocess OIDC generation at token_generator.go:144-169). Several catalog bullets (JWE `--subtle` gating, OTP, NaCl, `key` subcommands, `keyset`/`public`/`thumbprint`) are asserted with only directory-level pointers, keeping it below 4. Reasoning: it does derive a few real consequences — browser-launch fallback to printed URL, `--device-authorization-endpoint` requiring `--token-endpoint`, legacy `verification_url` acceptance, constant-time KDF comparison, and the CA driving `step oauth` as a subprocess — but most of the crypto half is an inventory with no invariants, ordering, or failure model, and the `--bare`/`--oidc` output contract is stated without exploring error paths. Change usefulness: a developer learns which files and integration txtar scripts to touch (`command/oauth/cmd.go`, `command/crypto/*`, `integration/testdata/crypto/`), but there is no implementation order, no statement of what must stay compatible (e.g. the exec.Step contract the CA depends on), and no debugging or validation steps beyond naming test data. Style: opening states the two families and their link; the flow table genuinely compresses four modes; headings route questions. The crypto section is a flat catalog that buries individual answers, which caps it at 3. Correctness: no internal contradiction is visible, and it correctly hedges (`pkg/bcrypt_pbkdf` noted as having no in-repo consumers, the client secret described as 'not so secret' per in-code docs), but it does not surface subtle exceptions systematically."
+  },
+  {
+    "task_id": "page_bac241f9f11877058ca9f66d",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: ACME cleanly owns the page; attestation detail is routed to the KMS topic rather than re-explained. The EAB section drifts toward the Admin API/policy topics and the page never explicitly states out-of-scope boundaries, so it lands at 3 rather than 4. Grounding: most non-obvious claims carry file:line ranges (certificate.go:256-268, acmeutils.go:625-666/668-708/710-865/196-232/159-194), and the prose says what each range establishes. Weaker spots: the EAB section cites only a directory, and the 'other challenge types unsupported' caveat leans on an unquoted code comment. Reasoning: derives real consequences — ACME provisioners rejecting token auth produces ACMETokenError that reroutes the command, offline and ACME are mutually exclusive, permanent-identifier orders refuse extra SANs, TPM qualifying data prevents key reuse across orders. Stops short of a full causal model (no retry/poll timeout behavior, no error paths on finalize, no cleanup ordering beyond the webroot note). Change usefulness: concrete files and line ranges plus a clear flow give a change entry point, but there are no tests named, no implementation ordering, and no failure signals or debugging hooks — a reviewer would still be guessing at validation. Style: opening states purpose and where the code lives; headings map to likely questions (routing, setup, order lifecycle, challenges, EAB, caveats) with no repetition. Correctness: no contradiction surfaced, but entry-point item 3 restates item 2's mechanism as if it were a distinct route, and 'requires one of --standalone or --webroot; if neither is given it defaults to standalone' is self-undercutting — minor imprecision, not a material error."
+  },
+  {
+    "task_id": "page_c68cf9c2cd2b1e64c8c42e4a",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one command group clearly owns the page, and adjacent token/client-flow material is routed to other outline entries rather than re-explained; it never explicitly declares out-of-scope boundaries, so short of 4. Code grounding: only one real source location appears (`internal/sshutil`); everything else is bare identifier name-dropping (`createPrincipalsFromSubject`, `flow.GenerateSSHToken`, `caClient.SSHSign`, `version.RequireClientAuthentication`) with no file, package, or call-site evidence, so a reader cannot verify claims like the 0600/0644 permissions, the `/etc/machine-id` host-id derivation, or the Windows 0-lifetime agent behavior. Reasoning depth: it goes beyond signatures — the agent-reuse short-circuit in `login`, the roots-fetch fallback to certs-only in `logout`, host-only `renew` — but these are stated as facts, not derived; ordering, failure paths, and invariants (e.g., what happens when the agent socket is absent, or when identity CSR creation fails mid-flow) stay implicit. Change usefulness: no concrete change locations beyond one package, no dependency order, no tests or validation steps, no debugging signals; a developer would still have to go find the command files themselves. Style: the opening states ownership and the subcommand inventory, headings group commands sensibly, and there is no significant repetition, though the flat bullet grouping buries the most consequential flow (certificate issuance) at the same level as trivia like `inspect`. Correctness: nothing contradicts itself and the user-vs-host renew restriction and default cert type are stated carefully, but subtleties are asserted flatly without hedging or edge-case handling."
+  },
+  {
+    "task_id": "page_c9abbc15bac2c30deda1cbd1",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 3,
+      "reasoning_depth": 1,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: 'architecture overview' is a legitimate outline entry, but the page functions largely as an undifferentiated repository survey — the 'Major command groups' section restates material owned by the separate `step ca`/`certificate`/`crypto`/`ssh`/`oauth` entries, and 'Shared dependencies'/'Extension seams' touch CA-client and token topics. It routes to the CLI-runtime page exactly once and never states what it owns versus defers, so it lands at 2 rather than 3. Code grounding: nearly every structural claim carries a specific file:line anchor (Makefile:126-132, command/ca/ca.go:68-85, flags/flags.go:471-508, go.mod:5-36), and the citations match the modest claims being made; it falls short of 4 because several assertions are unsupported or vague (the `internal/` ownership table rows, 'used directly by offline mode', 'the app collects the tree with command.Retrieve()' with no anchor). Reasoning depth: this is the weak axis — the page enumerates packages, registration mechanics, and command inventories without deriving a single invariant, ordering constraint, or failure mode. The one causal chain (init() registration → blank import → Retrieve()) is stated but its consequence, that a missing blank import silently drops a command, is never drawn. Change usefulness: a reader learns where things live but gets no change path, no dependency ordering, no tests, and no validation or debugging signals; the two change-guide topics are not even cross-referenced. Style: opening states purpose and scope in one sentence, the ownership table genuinely shortens comprehension, headings are predictable, and there is no repetition — but progressive disclosure is absent because the command-group section is flat inventory rather than layered detail. Correctness: no contradiction detected within the supplied text; the closing 'openwiki/ is documentation-only, not part of the product binaries' is a reasonable, appropriately-scoped caveat, though the page never acknowledges uncertainty anywhere else."
+  },
+  {
+    "task_id": "page_ce95e9511eacd70073168bfe",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one workflow family (SSH certificate issuance/renewal/config/proxying) clearly owns the page, and adjacent concerns are routed out rather than re-explained (token plumbing → CA Enrollment; timer renewal → Renewal Automation). It never states an explicit out-of-scope boundary up front, and the offline section edges toward Configuration/Contexts territory, so 3 rather than 4. Grounding: nearly every non-obvious claim carries a file:line anchor tied to the specific behavior it supports (validAfter=-1m at login.go:190-194, SSHPOP token subject/audience at renew.go:96-131, identity CSR path at login.go:203-283, upstream issue #1641 for the half-close fix); a couple of wide ranges (agent.go:20-260, offline.go:345-537) bundle several distinct claims, but nothing is obviously stretched. Reasoning: goes well past mechanics — defines the operative invariant ('logged in' == valid CA-signed cert resident in the agent), explains why clock skew forces backdated validAfter, why OIDC forces subject to the ID token email (provisioner identity function derives principals), why renewal uses the existing cert as its own credential, and why each direction of the proxy relay must close independently. Change usefulness: concrete ownership map and failure modes (exit codes, 404→'no SSH support', agent-absent error), enough to locate a change, but no test files, no ordering guidance for a multi-file change, and no validation/rollback signals. Style: opening states purpose and enumerates the command surface; headings map to the questions a reader would actually bring; no repetition or filler sections. Correctness: no internal contradiction and it handles subtleties (default vs --all logout scope, --force bypass, agent-derived User discovery) without overclaiming; not scored 4 since it asserts uniformly without flagging any residual uncertainty."
+  },
+  {
+    "task_id": "page_def4f806906c089b42b93fea",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns one coherent workflow — modifying the shared cautils flow layer — and treats token types, offline mode, and client construction as coupling points of that workflow rather than as independent subjects, so the spillover into adjacent outline entries (Token Generation, Certificate Renewal, CA Client Integration) stays subordinate. It never explicitly declares out-of-scope boundaries or routes readers elsewhere, so it stops short of 4. Code grounding: claims are anchored to named symbols and a few file paths (token_flow.go, utils/cautils/offline_test.go, utils/cautils/client.go, token/options.go) and named tests, which makes most major assertions traceable, but a substantial set of specific behavioral claims carries no locator at all — '--token is incompatible with --offline', 'step ca certificate converts the ACME error into the ACME flow', 'audiences synthesized from config.DNSNames[0]', 'sharedContext is a package-level var' — and nothing quotes or paraphrases actual code, so the reader must take the mapping on faith; evidence is symbol-vague rather than exact. Reasoning depth: genuinely derives consequences rather than restating structure — the three-way agreement between parseAudience, OfflineCA.Audience, and the per-provisioner generator switches, with the named runtime failure mode when they diverge; the dual trust path tying token.WithRootCA writing the sha claim to GetClient reading it; RenewType bypassing provisioner selection. It flags process-global shared state but never draws the concurrency or test-isolation consequence that follows from it, and state transitions across flow stages are asserted rather than modeled, keeping it below 4. Change usefulness: concrete files, named regression tests that pin specific behaviors, grep targets tied to the invariant they protect, and the upstream API coupling through smallstep/certificates. Missing dependency ordering for a multi-part change and any rollback or debugging signal. Style: numbered invariants route questions well, the opening states purpose and why the topic matters, checkpoints are a distinct operational section, no repetition. Correctness: no internal contradiction and no claim that reads as inverted; deductions only for unsupported certainty stated flatly ('singleton', 'intentionally error'), with no hedging or acknowledgment of uncertainty anywhere."
+  },
+  {
+    "task_id": "page_e0ed741de0cd338cff56f2d1",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Scope is stable and singular: the token claim model, options, parsing, and the provision wrapper. It routes generator strategy to the CA-flows topic instead of re-explaining it, but never explicitly states out-of-scope boundaries (e.g., that provisioner-specific token minting lives elsewhere), so it lands at 3 rather than 4. Grounding is strong — nearly every non-obvious claim carries a file:line span (token/token.go:71-104 for kid/typ headers, options.go:146-168 for validity enforcement, parse.go:64-82 for Type() ordering) — but several citations are wide ranges (options.go:30-168 covering many distinct helpers), so evidence is specific-ish rather than exact per claim. Reasoning mostly reports mechanics: the constants table, the option catalog, and the classification list are accurate but consequences are thin. The one real derivation — that Type() is priority-ordered, so a token with both a cloud payload and sha/sans classifies as cloud — is stated but its implications (misclassification risk, why single-element aud must serialize as a string for step-ca compatibility) are asserted, not developed. No discussion of failure behavior on validity violations, clock skew, or x5c chain-validation failure. For change work it names the owning files and the option-function pattern, and mentions parse_test.go coverage, but gives no ordering (e.g., add constant → option → parse-side claim → classification → test), no invariants to preserve, and no validation or debugging signals. Style is good: the opening states ownership, headings map to the obvious questions (claims, options, parsing, helper), the table earns its place, and there is no repetition; it falls short of progressive disclosure since edge cases are absent rather than isolated. No internal contradictions are visible and the model is self-consistent, but the page states everything with uniform certainty and flags no exceptions or uncertainty."
+  },
+  {
+    "task_id": "page_e2c628c6cefd047851b14d46",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Ownership is unambiguous: version resolution, Make targets, GoReleaser, Actions, and containers are all one release pipeline, and adjacent concerns (testing, systemd units, dev loop) are routed out via See-also rather than re-explained. It stops short of 4 because there is no opening statement of what the page owns or excludes — it starts mid-topic at 'Version resolution' — and the CI/lint discussion brushes the Testing entry without saying where the boundary lies. Grounding is strong and specific (Makefile line ranges, .goreleaser.yml sections, scripts/postinstall.sh:3-16), but a few claims are asserted without the evidence being shown to establish them: 'debian/ contains only copyright and a boilerplate changelog stub', 'Dockerfile.debian is the same idea', and 'packageName must be kept in sync with the nfpm release by hand' read as inference presented as fact. Reasoning goes beyond restating config: it derives the precedence order of VERSION, explains why the nfpm build renames the binary to step-cli (so alternatives can own /usr/bin/step), why armhf6 debs are skipped (Artifact Registry conflict), and how IS_PRERELEASE gates the latest Docker tag — real consequences, but no failure modes, ordering hazards, or what breaks if the version variables drift. Change usefulness is concrete on locations ('extend builds[].targets', 'edit nfpm contents/scripts') and warns that debian/ is not dpkg machinery, yet gives no validation path (e.g. make goreleaser snapshot to check a new target), no dependency ordering across the release jobs, and no rollback or debugging signals for a bad publish. Style is dense but navigable, headings map to real questions, and there is no repetition; it loses a point for having no purpose/flow answer available before the reader is in Makefile line numbers. No contradictions surfaced, and it correctly handles subtleties like Pro-binary detection and rc classification, but it does not flag uncertainty where it is inferring."
+  },
+  {
+    "task_id": "page_edc949050000967364ac8869",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page owns onboarding end-to-end (install/build loop, first offline PKI, first CA interaction) and explicitly hands off every adjacent concern — build pipeline, STEPPATH/contexts, enrollment internals, renewal automation — via inline links and a routing table, without re-explaining them. Grounding: nearly all non-obvious claims carry file:line evidence (Makefile targets, command/path/path.go for STEPPATH default, command/ca/init.go for the init walkthrough, utils/cautils/offline.go for --offline, release.yml for the container image), and it honestly labels the example blocks as coming from the commands' own help text rather than passing them off as verified runs; a few statements are looser than their citation strictly establishes ('make test' = 'unit + integration suites', 'bootstrap verifies the downloaded root against the fingerprint before saving' is asserted with only a downstream config link, and the docs/local-development.md GOPATH aside is an unsupported editorial judgment). Reasoning: mostly procedural, as a quickstart should be, but it stays at the level of 'run this, get that' — the two genuine derivations (offline signs against ca.json via the same CaClient interface as the server mode; bootstrap persists ca-url/root into defaults.json) are asserted in a clause each rather than developed, and there are no invariants, failure modes, or ordering constraints (e.g. what happens if the fingerprint mismatches, or the intermediate must exist before the leaf is only implicit in the command order). Change usefulness: gives a developer the verification loop (build/test/lint) and a reliable map of where work lives, but names no change locations, no tests to add, and no debugging signals — it routes rather than enables. Style: purpose is clear from the first two lines, sections are ordered by increasing setup cost (local-only → local CA → remote CA), the table is the shortest possible form of its content, and there is no repetition or padding. Correctness: no internal contradiction or dangerous instruction found; the Go version pin and specific line ranges are unverifiable from the page alone but nothing conflicts, and the page does not flag edge cases (offline prerequisites, fingerprint-mismatch behavior) that would earn a 4."
+  },
+  {
+    "task_id": "page_f05301336f44ea47883cec0d",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner — the CaClient abstraction and its online/offline implementations. SSH, renewal, and admin-API material appears only as it passes through this abstraction, so spillover is minor, but the page never states out-of-scope boundaries or routes readers to adjacent topics (renewal flows, admin management API, offline operations), so it stops short of 4. Grounding: the interface block and the factory/admin-client claims carry file:line ranges (client.go:52-74, 77-96, 99-204; certificate_flow.go:134-171), but the entire OfflineCA section — singleton behavior, badgerDB lock rationale, GetCaURL synthesis, Authorize/SignWithContext delegation, RevokeOptions construction, transport peer-cert extraction — is attributed only to 'utils/cautils/offline.go' with no specific evidence, and the renewer section cites no location at all. Most major claims are anchored, important details are not. Reasoning: goes beyond signatures — explains why RoundTripper is threaded through Renew/Revoke/Rekey (mTLS cert carriage), why the sha claim plus http audience lets one token both locate and trust the CA, why double initialization is unsafe, and how the offline path reuses the renewer's transport to recover the peer certificate. Falls short of a full causal model: no failure behavior when the sha/audience path is partially satisfied, no ordering or lifetime consequences of the singleton across commands. Change usefulness: names the right files and the two branch points a change must touch, but gives no implementation order, no invariants to preserve when adding an interface method (both implementations plus offline authorization), and the Tests section is vague — it admits the offline path is only covered 'end-to-end through the command flow' without naming a runnable check. Style: opening states the abstraction's purpose immediately, headings map to likely questions (selection, trust bootstrap, admin, offline, renewer), no repetition; the full interface dump is large but load-bearing here. Correctness: no internal contradiction and the claims are mutually consistent; unverifiable-from-page details are stated plainly rather than overclaimed, but there is no explicit handling of exceptions or uncertainty."
+  },
+  {
+    "task_id": "page_f281c76e76d052c581428743",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: renewal lifecycle clearly owns the page; rekey/revoke/needs-renewal/systemd all serve the lifecycle theme rather than competing for ownership, but the page never states scope or routes adjacent topics (KMS, token generation, SSH certs) to their own entries, so it stops at 3. Grounding: nearly every non-obvious claim carries a concrete anchor — tlsLoadX509KeyPair via internal/cryptoutil.CreateSigner, renewer.Renew, RenewWithToken's x5cInsecure header and <ca-url>/renew audience, nextRenewDuration, getAfterRenewFunc, fileutil.WriteFile 0600, exit codes 0/1/2/255, unit directives ExecCondition/RandomizedDelaySec=5m. Evidence is symbol-level rather than file:line and the prose never separates read-from-code fact from inference, blocking 4. Reasoning: derives real consequences — why the client cert is detached and idle connections closed before token renewal, why expiry forces the token path, jitter bounded by period/20 to avoid thundering-herd, the period/3 window matching the 66% default, and how needs-renewal's exit contract is what makes ExecCondition gate the timer. Not a full state/concurrency model, so 3. Change usefulness: only rekey.go and revoke.go are named; the renew command's own file, the renewer implementation, and any tests are absent, and there is no ordering or validation guidance — a reviewer knows the concepts and flags but must go find the code. Style: opening dives straight into mechanics instead of stating purpose, but headings route questions cleanly, there is no repetition, and edge cases sit in their own sections. Correctness: no internal contradiction spotted; flag exclusivity, defaults, and the 1-minute error backoff are stated consistently, with minor imprecision ('split on spaces') left unqualified."
+  },
+  {
+    "task_id": "page_f39132313cd39ed95fa1e70a",
+    "judge_id": "opus-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 4,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one package (token/ plus token/provision) clearly owns the page; consumers like cautils and command/ca/token.go are named and routed to other outline entries rather than re-explained. It never states an explicit out-of-scope boundary section, so it lands at 3 rather than 4. Code grounding: essentially every non-obvious claim carries a file:line range (parse.go:65-82 for Type() ordering, options.go:148-168 for validity bounds, token.go:69-103 for Sign behavior), and inference is flagged as inference (e.g. 'header presence is what makes them valid to the CA, not payload shape'; 'cautils.TokenGenerator is the only in-repo producer'). Reasoning depth: derives real invariants — priority ordering of type detection, nbf<exp and MaxValidityDelay/Min/MaxValidity bounds, ExtraHeaders overriding kid, single-element aud serialized as a string, ParseInsecure being non-authorizing — but stops short of a full causal model of failure modes or the security consequences of x5cInsecure. Change usefulness: names the four test files as the contract to update together and flags that CA-side expectations live in an uncontrolled repo, which is a genuinely useful boundary; lacks implementation ordering, validation commands, and rollback/debugging signals. Style: opening states ownership and the parse/build split immediately, headings route predictable questions, and no section repeats another. Correctness: no internal contradiction detected; minor imprecision in 'falls back to the $STEPPATH secrets root when unused' for WithRootCA, which is asserted without explaining the mechanism."
+  }
+]

@@ -30,7 +30,7 @@ export interface LeaderboardSystem {
 export interface Leaderboard {
   schema_version: 1;
   systems: LeaderboardSystem[];
-  judge_agreement: Pick<JudgeAggregate, "cohen_kappa" | "axis_kappa"> | null;
+  judge_agreement: Pick<JudgeAggregate, "cohen_kappa" | "axis_kappa" | "linear_weighted_cohen_kappa" | "axis_linear_weighted_kappa" | "exact_agreement" | "axis_exact_agreement"> | null;
   publishable: boolean;
   blockers: string[];
 }
@@ -117,7 +117,7 @@ export function buildLeaderboard(options: {
   if (options.judged === undefined) blockers.push("blind rubric judging has not been run");
   else {
     if (options.judged.unresolved_tasks.length > 0) blockers.push("one or more rubric judgments are unresolved");
-    if (options.judged.cohen_kappa < 0.6) blockers.push("primary-judge Cohen's kappa is below 0.6");
+    if (options.judged.linear_weighted_cohen_kappa < 0.6) blockers.push("primary-judge linear-weighted Cohen's kappa is below 0.6");
   }
   if (options.probes === undefined) blockers.push("correctness probes have not been run");
   return {
@@ -126,6 +126,10 @@ export function buildLeaderboard(options: {
     judge_agreement: options.judged === undefined ? null : {
       cohen_kappa: options.judged.cohen_kappa,
       axis_kappa: options.judged.axis_kappa,
+      linear_weighted_cohen_kappa: options.judged.linear_weighted_cohen_kappa,
+      axis_linear_weighted_kappa: options.judged.axis_linear_weighted_kappa,
+      exact_agreement: options.judged.exact_agreement,
+      axis_exact_agreement: options.judged.axis_exact_agreement,
     },
     publishable: blockers.length === 0 && systems.every((system) => system.statistically_publishable),
     blockers,

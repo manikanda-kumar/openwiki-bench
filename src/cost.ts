@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-export type TelemetrySource = "proxy" | "langsmith";
+export type TelemetrySource = "proxy" | "langsmith" | "opencode";
 
 export interface NormalizedTelemetryEvent {
   schema_version: 1;
@@ -68,9 +68,9 @@ function blank(source: TelemetrySource, type: NormalizedTelemetryEvent["type"], 
 export function parseNormalizedEvent(value: unknown): NormalizedTelemetryEvent | null {
   const record = object(value);
   const type = record?.type;
-  if (record === null || record.schema_version !== 1 || record.source !== "proxy" ||
+  if (record === null || record.schema_version !== 1 || (record.source !== "proxy" && record.source !== "opencode") ||
       (type !== "model_call" && type !== "tool_call" && type !== "page_finished" && type !== "run_metrics")) return null;
-  const event = blank("proxy", type, text(record.run_id));
+  const event = blank(record.source, type, text(record.run_id));
   event.input_tokens = finite(record.input_tokens);
   event.output_tokens = finite(record.output_tokens);
   event.cost_usd = finite(record.cost_usd);
@@ -82,6 +82,61 @@ export function parseNormalizedEvent(value: unknown): NormalizedTelemetryEvent |
   event.plan_pages = finite(record.plan_pages);
   event.verified_claims = finite(record.verified_claims);
   return event;
+}
+
+/** Normalize one `opencode export` session while retaining its raw export separately. */
+export function importOpenCodeSession(value: unknown, runId: string): NormalizedTelemetryEvent[] {
+  const root = object(value);
+  const messages = Array.isArray(root?.messages) ? root.messages : [];
+  const events: NormalizedTelemetryEvent[] = [];
+  for (const value of messages) {
+    const message = object(value);
+    const info = object(message?.info);
+    if (info?.role !== "assistant") continue;
+    const tokens = object(info.tokens);
+    const total = finite(tokens?.total);
+    const output = finite(tokens?.output);
+    const reasoning = finite(tokens?.reasoning) ?? 0;
+    const model = blank("opencode", "model_call", runId);
+    model.input_tokens = total === null || output === null ? null : Math.max(0, total - output - reasoning);
+    model.output_tokens = output;
+    model.cost_usd = finite(info.cost);
+    const time = object(info.time);
+    const created = finite(time?.created);
+    const completed = finite(time?.completed);
+    model.latency_ms = created === null || completed === null || completed < created ? null : completed - created;
+    events.push(model);
+    const parts = Array.isArray(message?.parts) ? message.parts : [];
+    for (const partValue of parts) {
+      const part = object(partValue);
+      if (part?.type !== "tool") continue;
+      const state = object(part.state);
+      const input = object(state?.input);
+      const tool = blank("opencode", "tool_call", runId);
+      tool.tool_name = text(part.tool);
+      tool.tool_success = state?.status === "completed" ? true : state?.status === "error" ? false : null;
+      tool.file_path = text(input?.filePath) ?? text(input?.file_path) ?? text(input?.path);
+      const toolTime = object(state?.time);
+      const start = finite(toolTime?.start);
+      const end = finite(toolTime?.end);
+      tool.latency_ms = start === null || end === null || end < start ? null : end - start;
+      events.push(tool);
+      if (tool.tool_success && part.tool === "openwiki_openwiki_submit_page") {
+        try {
+          const result = object(JSON.parse(text(state?.output) ?? "null"));
+          const page = text(result?.page);
+          if (result?.status === "complete" && page !== null) {
+            const finished = blank("opencode", "page_finished", runId);
+            finished.page_path = page;
+            events.push(finished);
+          }
+        } catch {
+          // The raw export remains authoritative when a tool returns non-JSON output.
+        }
+      }
+    }
+  }
+  return events;
 }
 
 function usageFor(run: RecordValue): RecordValue | null {

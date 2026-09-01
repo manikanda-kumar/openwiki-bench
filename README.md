@@ -57,11 +57,14 @@ Every run will use the same OpenCode agent and OpenWiki MCP generation path. Onl
 
 The five subjects are `cloudflare-os`, `smallstep-cli`, `extractthinker`, `celld`, and `pi-desktop`. See [PLAN.md](PLAN.md#31-official-45-run-matrix) for pins and selection rationale.
 
-The non-interactive OpenCode invocation and telemetry capture will be smoke-tested and frozen before trial 0. Executable configs are deliberately not guessed. Once frozen, the runner will check out each pinned subject in isolation, install the shared brief, record prompt/ignore hashes, capture OpenCode and OpenWiki artifacts, and refuse to overwrite a trial.
+The non-interactive OpenCode invocation and telemetry capture are frozen in `systems/*.json`.
+The runner checks out each pinned subject in isolation, installs the shared brief and ignore policy,
+records prompt/ignore/system hashes, validates the exported OpenCode session against the exact
+provider/model, captures raw and normalized telemetry, and refuses to overwrite a trial.
 
 ## Semantic evaluation
 
-The checked-in pilot judgments used OpenRouter and are preserved as dated provenance. Official evaluation will run blind tasks in fresh, repository-less Amp threads using Fable 5, Opus 4.8, and GPT-5.5, then import the same JSON contracts consumed by the aggregation commands below. Exact resolved model IDs must be recorded; Amp routing may not silently substitute another model.
+The checked-in pilot judgments used OpenRouter and are preserved as dated provenance. Official evaluation runs blind tasks in fresh, repository-less Amp threads using GPT-5.5 through `deep-classic` as primary, Opus 5 as secondary, and Fable 5 for tiebreaks and correctness probes. Exact resolved model IDs must be recorded; Amp routing may not silently substitute another model.
 
 ```bash
 # Prepare opaque, deterministic page and claim tasks
@@ -69,18 +72,18 @@ npm run bench -- prepare --repo /path/to/background-agents
 
 # After importing Amp results, select only primary/secondary disagreements
 npm run bench -- judge disagreements \
-  --primary fable-5 --secondary opus-4.8 \
-  --primary-judgments results/evaluation/judgments-fable-5.json \
-  --secondary-judgments results/evaluation/judgments-opus-4.8.json
+  --primary gpt-5.5 --secondary opus-5 \
+  --primary-judgments results/evaluation/judgments-gpt-5.5.json \
+  --secondary-judgments results/evaluation/judgments-opus-5.json
 npm run bench -- judge aggregate \
-  --judgments results/evaluation/judgments-fable-5.json,results/evaluation/judgments-opus-4.8.json,results/evaluation/judgments-gpt-5.5.json \
-  --judges fable-5,opus-4.8,gpt-5.5
+  --judgments results/evaluation/judgments-gpt-5.5.json,results/evaluation/judgments-opus-5.json,results/evaluation/judgments-fable-5.json \
+  --judges gpt-5.5,opus-5,fable-5
 
 npm run bench -- probe aggregate \
-  --labels results/evaluation/probe-labels-probe-gpt-5.5.json
+  --labels results/evaluation/probe-labels-probe-fable-5.json
 ```
 
-Aggregation rejects missing/duplicate probe labels and duplicate judgments. Judge identities are checked against contestant models. `leaderboard` refuses publication below Cohen's κ = 0.6, with unresolved judgments, without probes, or below three trials × five subjects per system.
+Aggregation rejects missing/duplicate probe labels and duplicate judgments. Judge identities are checked against contestant models. `leaderboard` refuses publication below linear-weighted Cohen's κ = 0.6, with unresolved judgments, without probes, or below three trials × five subjects per system. Exact agreement and unweighted κ remain visible diagnostics.
 
 Telemetry accepts normalized proxy JSON/JSONL and LangSmith exports:
 
@@ -109,6 +112,7 @@ subjects/{cloudflare-os,...}.json    five official pinned subjects
 systems/README.md                    planned OpenCode Go systems
 judges/README.md                     official Amp judge protocol
 runs/background-agents/*/seed-0/     immutable run artifacts + manifests
+runs-invalid/                         preserved infrastructure-invalid attempts excluded from scoring
 results/scores.json                   generated machine results
 results/leaderboard.json              publication-gated cross-run results
 results/REPORT.md                     generated human report

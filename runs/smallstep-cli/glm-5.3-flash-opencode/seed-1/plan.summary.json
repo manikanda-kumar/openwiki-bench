@@ -1,0 +1,325 @@
+{
+  "plan_page_count": 13,
+  "deletePages": [],
+  "statuses": {
+    "complete": 13
+  },
+  "pages": [
+    {
+      "id": "ac17f2a8-3d5f-486f-93d9-8c65e88b9659",
+      "path": "/openwiki/architecture/command-framework.md",
+      "title": "Command Framework and CLI Bootstrap",
+      "purpose": "How the step binary boots: urfave/cli app assembly, command registration via init() imports, shared flag/error/usage packages, exit codes, STEPDEBUG, and plugin dispatch for unknown commands.",
+      "seedPaths": [
+        "cmd/step/main.go",
+        "command/README.md",
+        "exec/exec.go",
+        "flags/flags.go",
+        "internal/cmd/root.go",
+        "internal/plugin/plugin.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/guides/adding-a-command.md",
+        "/openwiki/integrations/kms-and-plugins.md"
+      ],
+      "instructions": [
+        "Cite concrete flag/error helpers",
+        "Cover both the app-level error output contract and the command registration convention"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e045fb19-0840-462f-9f78-24e18389b2b4",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "Architecture Overview",
+      "purpose": "Repository-level architecture: module identity, dependency structure, package ownership boundaries, and how the major systems fit together.",
+      "seedPaths": [
+        "README.md",
+        "cmd/step/main.go",
+        "command/README.md",
+        "go.mod",
+        "internal/cmd/root.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/concepts/ca-tokens-and-provisioners.md",
+        "/openwiki/concepts/steppath-and-contexts.md",
+        "/openwiki/integrations/kms-and-plugins.md"
+      ],
+      "instructions": [
+        "Avoid exhaustive file inventory; use systems and boundaries",
+        "Explain ownership boundaries between this module and smallstep dependencies"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "326c97e8-faca-485a-b195-02fea130345b",
+      "path": "/openwiki/concepts/ca-tokens-and-provisioners.md",
+      "title": "CA Tokens and Provisioners",
+      "purpose": "The single-use JWT token system: token package claims/options, NewTokenFlow dispatch by provisioner type (JWK, OIDC, X5C, SSHPOP, Nebula, K8sSA, cloud identity, ACME/SCEP errors), and token generation mechanics.",
+      "seedPaths": [
+        "token/options.go",
+        "token/parse.go",
+        "token/provision/provision.go",
+        "token/token.go",
+        "utils/cautils/offline.go",
+        "utils/cautils/token_flow.go",
+        "utils/cautils/token_generator.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/steppath-and-contexts.md",
+        "/openwiki/workflows/oauth-sso.md",
+        "/openwiki/workflows/online-and-offline-ca-flows.md"
+      ],
+      "instructions": [
+        "Cover token claims, validity, and audience derivation",
+        "Explain which provisioner types support token flows and which error out"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "49ef5348-dbbf-4e41-ace5-6c9929423463",
+      "path": "/openwiki/concepts/steppath-and-contexts.md",
+      "title": "STEPPATH State and Contexts",
+      "purpose": "On-disk state model: STEPPATH layout, defaults.json, contexts.json, per-authority contexts and profiles, and how bootstrap and context commands persist configuration.",
+      "seedPaths": [
+        "command/context/context.go",
+        "command/context/current.go",
+        "command/context/select.go",
+        "command/path/path.go",
+        "utils/cautils/bootstrap.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/concepts/ca-tokens-and-provisioners.md",
+        "/openwiki/workflows/online-and-offline-ca-flows.md"
+      ],
+      "instructions": [
+        "Explain how commands resolve defaults from these files",
+        "Note file permissions and creation points"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "10ae2bac-493c-4bb6-a65c-960d9d975518",
+      "path": "/openwiki/guides/adding-a-command.md",
+      "title": "Guide: Adding a Command",
+      "purpose": "Representative maintenance guide: how to add a new subcommand end-to-end (registration, flags, errors, usage annotations, tests), grounded in the actual conventions used by existing commands.",
+      "seedPaths": [
+        "command/README.md",
+        "command/ca/ca.go",
+        "command/certificate/fingerprint.go",
+        "command/crl/crl.go",
+        "flags/flags.go",
+        "internal/cmd/root.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/operations/ci-and-testing.md"
+      ],
+      "instructions": [
+        "Make it a focused change guide, not a survey",
+        "Reference the registration convention, shared flag/error packages, and help text format"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "cd89238a-8393-48c8-a6b5-7eded089a6ed",
+      "path": "/openwiki/integrations/kms-and-plugins.md",
+      "title": "KMS and Plugin Integrations",
+      "purpose": "External tool integration seams: the step-<name>-plugin discovery/execution convention, step-kms-plugin delegation for signers/public keys/certificates, and TPM attestation support.",
+      "seedPaths": [
+        "command/crypto/key/sign.go",
+        "internal/cryptoutil/cryptoutil.go",
+        "internal/plugin/plugin.go",
+        "utils/cautils/tpm.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/concepts/ca-tokens-and-provisioners.md",
+        "/openwiki/workflows/online-and-offline-ca-flows.md"
+      ],
+      "instructions": [
+        "Explain the file-vs-URI resolution heuristic",
+        "Note attestation usage in ca flows"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "c8bf2dd3-70dd-4458-b874-0ee05b5caadc",
+      "path": "/openwiki/operations/build-and-release.md",
+      "title": "Build and Release",
+      "purpose": "Building and shipping step: make targets, goreleaser configuration, docker images, debian packages, powershell installer, shell autocompletion, and package repository publishing.",
+      "seedPaths": [
+        ".goreleaser.yml",
+        "Makefile",
+        "autocomplete/README.md",
+        "debian/changelog",
+        "docker/Dockerfile",
+        "powershell/install-step.ps1",
+        "scripts/package-repo-import.sh",
+        "scripts/package-upload.sh"
+      ],
+      "relatedPages": [
+        "/openwiki/operations/ci-and-testing.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Ground packaging facts in goreleaser config and scripts",
+        "Note CGO_ENABLED=0 and cross-build targets"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "f0d652a2-4834-4e99-8935-86c081bf9205",
+      "path": "/openwiki/operations/ci-and-testing.md",
+      "title": "CI and Testing",
+      "purpose": "Verification infrastructure: GitHub Actions CI/release workflows, unit test layout, testscript-based integration harness, linting and vulnerability scanning, and local development workflow.",
+      "seedPaths": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml",
+        "Makefile",
+        "docs/local-development.md",
+        "integration/certificate_test.go",
+        "integration/main_test.go",
+        "integration/shared_test.go",
+        "integration/testdata/version.txtar"
+      ],
+      "relatedPages": [
+        "/openwiki/guides/adding-a-command.md",
+        "/openwiki/operations/build-and-release.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Cite concrete test harness files and txtar examples",
+        "Explain how integration tests invoke the built binary"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "decec94f-75ce-4be2-9ab4-ffea28042884",
+      "path": "/openwiki/workflows/certificate-issuance-and-renewal.md",
+      "title": "Certificate Issuance and Renewal",
+      "purpose": "End-to-end X.509 flows: token-based sign requests, ACME flow, renew/rekey/revoke semantics, needs-renewal checks, and the standalone certificate create/verify/lint tooling.",
+      "seedPaths": [
+        "command/ca/certificate.go",
+        "command/ca/renew.go",
+        "command/ca/revoke.go",
+        "command/ca/sign.go",
+        "command/certificate/create.go",
+        "command/certificate/needsRenewal.go",
+        "command/certificate/verify.go",
+        "systemd/cert-renewer@.service",
+        "systemd/cert-renewer@.timer",
+        "utils/cautils/certificate_flow.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/ca-tokens-and-provisioners.md",
+        "/openwiki/concepts/steppath-and-contexts.md",
+        "/openwiki/workflows/online-and-offline-ca-flows.md"
+      ],
+      "instructions": [
+        "Distinguish online (token/mTLS/ACME) issuance paths from offline signing",
+        "Include systemd renewal automation contract"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "2676c655-b828-4154-a1b7-0de794a57769",
+      "path": "/openwiki/workflows/oauth-sso.md",
+      "title": "OAuth and SSO",
+      "purpose": "The step oauth command and its role as the OIDC provisioner backend: authorization code/OOB/refresh/bearer flows, listen address handling, and how CA commands re-enter the CLI to obtain OIDC tokens.",
+      "seedPaths": [
+        "command/crypto/jwt/verify.go",
+        "command/oauth/cmd.go",
+        "utils/cautils/token_generator.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/ca-tokens-and-provisioners.md",
+        "/openwiki/workflows/online-and-offline-ca-flows.md",
+        "/openwiki/workflows/ssh-certificates.md"
+      ],
+      "instructions": [
+        "Cover console vs listen modes and token output",
+        "Explain the exec re-entry into step oauth"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "62c35e7e-2e05-4e3e-8a44-238f85f23005",
+      "path": "/openwiki/workflows/online-and-offline-ca-flows.md",
+      "title": "Online and Offline CA Flows",
+      "purpose": "The CaClient abstraction: online step-ca client vs embedded offline authority, bootstrap/team-authority flows, admin client credential bootstrapping, and root/fingerprint trust model.",
+      "seedPaths": [
+        "command/ca/bootstrap.go",
+        "utils/cautils/acme_flow.go",
+        "utils/cautils/bootstrap.go",
+        "utils/cautils/certificate_flow.go",
+        "utils/cautils/client.go",
+        "utils/cautils/offline.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/ca-tokens-and-provisioners.md",
+        "/openwiki/concepts/steppath-and-contexts.md",
+        "/openwiki/workflows/certificate-issuance-and-renewal.md"
+      ],
+      "instructions": [
+        "Cover bootstrap persistence of root and defaults",
+        "Explain when the offline singleton matters"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "a9f9d5e4-993f-4a43-a0e4-9b45eee642b6",
+      "path": "/openwiki/workflows/ssh-certificates.md",
+      "title": "SSH Certificates",
+      "purpose": "SSH certificate workflows: user/host cert issuance, SSHPOP renew/rekey/revoke, agent integration, single sign-on login/logout, proxy command, and known-hosts management.",
+      "seedPaths": [
+        "command/ssh/certificate.go",
+        "command/ssh/inspect.go",
+        "command/ssh/login.go",
+        "command/ssh/logout.go",
+        "command/ssh/proxycommand.go",
+        "command/ssh/ssh.go",
+        "internal/sshutil/agent.go",
+        "internal/sshutil/pipe.go",
+        "internal/sshutil/sshutil.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/ca-tokens-and-provisioners.md",
+        "/openwiki/workflows/online-and-offline-ca-flows.md"
+      ],
+      "instructions": [
+        "Cover both X.509 and SSH signing audiences",
+        "Explain agent integration and SSH config templates"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "f92fe7a8-df99-4c0d-af24-87505c545d3e",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical onboarding: build, test, and first commands, with pointers into the architecture and operational docs.",
+      "seedPaths": [
+        "Makefile",
+        "README.md",
+        "cmd/step/main.go",
+        "docs/CONTRIBUTING.md",
+        "docs/local-development.md",
+        "go.mod"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/guides/adding-a-command.md",
+        "/openwiki/operations/build-and-release.md",
+        "/openwiki/operations/ci-and-testing.md"
+      ],
+      "instructions": [
+        "Describe the module's role within step-cli and its seam with external smallstep modules",
+        "Ground every claim in the cited source files"
+      ],
+      "status": "complete"
+    }
+  ]
+}

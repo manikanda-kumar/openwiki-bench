@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5ffa1d8fb8088d6b1f622c53eb7e7a02c9f4d3d786c4956cdbbf2fddc6cfbcd0",
+  "claims": [
+    {
+      "id": "claim_ceaf8416a6874e898398f7a01e1a7dcd",
+      "statement": "bootstrapAction selects between team and direct bootstrap: --team with --ca-url or --fingerprint is rejected; --team plus --team-authority calls BootstrapTeamAuthority(team, teamAuthority); --team alone calls it with the default authority sub-domain \"ssh\"; --team-authority without --team errors; otherwise --ca-url and --fingerprint are both required and BootstrapAuthority runs.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/bootstrap.go#L85-L111",
+          "version": "repo-lines-v1:sha256:9233088e1d6b59adda81887d92d0e867322f64b15dddaffc7f86ff7f8b6fc0fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNjk1M2U5M2IyYjcyZWFiZjE4ODM4NmM0ZjY5Y2Q1ZjIxM2MxNmNjYTRjMDMxODUzYzg5YzEyMWY1YzQyZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6ff67c356c843d18795a75533107260",
+      "statement": "BootstrapTeamAuthority queries https://api.smallstep.com/v1/teams/<team>/authorities/<teamAuthority> by default, or a --team-url endpoint with <> placeholders replaced by the team ID, using an unauthenticated HTTP GET that maps 404 to 'authority not found'.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L226-L246",
+          "version": "repo-lines-v1:sha256:7d1037f5b3440f80aa67d275baecce4e132bc0d5529de0f046e39eacecf7f2a9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxOTE4ZDBkMmYwZDEyYjY0MDRkMzZmOWI1YWE0MzM2MDc1MjlhY2FlNTNkNDZmNGZiNmU5Zjc4MzRiZmFmNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0NDVhMDdkMjJiMjFmNTM0OWI4NjFkMjEwNDAwMDE0Yjc1ZmIxMmUwZjdlYjVmNWNlNDc3MDBkYzhjNTI5MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYzVkNWExNTY1ODQ1OWU4MTU5MDgzM2U4MjczMTcwYmJlNTQ2YzkzNTRiZjQyYzhjN2JhNjg1ZWM4M2IxOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2e461f79ee24bf3b228484026097f0f",
+      "statement": "The team endpoint returns {url, fingerprint, redirect-url, provisioner, min-password-length}; a CLI --redirect-url overrides the API value, otherwise https://smallstep.com/app/teams/sso/success is used when both are empty, and the default context name is <teamAuthority>.<team>.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L273-L293",
+          "version": "repo-lines-v1:sha256:ca59ebb4b5c2fdf539d37a888d3afd438932160ed8de63f06f712e5aa62b6cb3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhYzY0ZjRhNzQ1ZmE1MjI4NmQxMGJkODBkNzQxZmE0MGExMjliOTAzYjA1ODY3NDM1NjE2NTU3MWRmMzM0ZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDRhN2JlYzUwYWY2ZTBjMTJhMDY3MjFiZmVjMTg1NjI4M2ZmYjk0ZjQ1OGM0N2ViZjQwNjJiNDVjZmU1ZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMTBlZmM0M2ZmM2Y4MjM2NzkyYTRmNjBhZTI3YTExZjhhMmIxOTQ5M2ZkNmE1YjBmNTg2OGRhMjk1OTAzODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxNGQ4NDQ2YjAzNTQ5YWFmZjBhZDM3ZDdjNmNjMjYxZTBiZTU5ZTZlZGY2NWJkMDU2OGU2NDM5NjhiZjUxNzkifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L28-L34",
+          "version": "repo-lines-v1:sha256:5e9151c85fc80b36be8da663e772ab26f619f2ec3b6ba4a7834933f00118f004:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjhhZGQ1OWE1YzIxNjZjOGE3ZThlZDg4NmFhNmU2OWY3OTkzMTJhNjU0MTJjZjU1Y2RmNDVlMjg4MzgwMDBmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzcxMzVmMTcyODk2NDc1YzU0ZTI5OTBiMjE3MWRkOTE1MDA3YTljNDg2MzMzM2FhYTRmZjAxYTI3YzQ4ZmI3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDkyOWI0MzA1OGRiMDYzNGM2ZjMzODVjNDkxYzZlYTczNDg5YWQ3MWY0YjA4Mjk5ODYxMGQxM2FjNTg2OTczNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e77ab8837c274237b354dff54d75f82b",
+      "statement": "BootstrapAuthority derives the default context name from the --authority flag or the CA URL hostname with the port stripped via getHost, and passes any --redirect-url through to bootstrap.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L296-L317",
+          "version": "repo-lines-v1:sha256:89d6290a779ebdfffcf4ea8629c188763649c1dde065dd070ba0585a67870f19:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNjgyYzY0MjE1NzRhZjg3MTI3NDNhNjI0ODA4MGE1YWYxYjZiODU4NzgyNzA5MGE0OWRkYTI2YjFlYmIxMzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3ZDU5ZmY1YzgwNTkxNjkyZmYyNmQzN2QyZGM2NGU1NjRlOWEyMTIyZGIwYjZlMGY1NzgwZTg4NTk3Zjc2OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2Y2RiMDU5NGNkZDkzZDdhYWYzODdiMDdkN2MyZWU1ZGM1MmRkOTE5OGY1NmMxNWQ2Zjk2YmYxYmFjMDcyYjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bfc658ecb40c403daf4f1458de441f50",
+      "statement": "The bootstrap routine creates the CA client with ca.WithInsecure() and calls client.Root(fingerprint); the client validates that the returned root matches the SHA-256 fingerprint, which is the trust-pinning mechanism shared with step ca root.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/root.go#L86-L91",
+          "version": "repo-lines-v1:sha256:157aeb1301772a99b7db7acd3f9cf327645e6243e4f1e8c5794896829eb3930f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzU1YmE4MTg1ZGNlYmYzODViNjM3M2Q3MmFhODVhZDA4ODM2Nzk4OGJlZmIwNTllNGM0ZGQzMTc3YWZlNTVjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmUxYjQ5ZGM3MmY2MzI2M2RjNGY4MWRkMjFkZjNlZGJmZTY1ZTk2NWU3YWYyOGM0Mzg4YWYyNzQ1OGVlNjBjZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDUwNzM4N2IwNmFiNDE2YjE1Nzc4ZDI3NzUyYjkzMmJmMWVkNDFmYzBmMjY2YWQ2YjkwZDhkNzNjZGU2MzZhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmU2OWM1MmIwZDkzZmFmYTk4YWQyYWRiZjdmMjM5ZDcwYzQwOWQ0OTU0ODhhN2ZkZGE0NjY0ZmMxYjc4YjlmYyJ9"
+        },
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L104-L113",
+          "version": "repo-lines-v1:sha256:939535ef6f951facbf7472eaeeffa3804afc1a98ec9ba220fbdfdeafb198c170:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMjIxM2QzMTQ5ZjQyYTFlODQzODA1NzE4YmJhNmU5NGJiZjU5MjkyNjY5MjY3NTE0NTkwYWY4MmQ2MDMwZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4YzBiMzFhYTY0M2QyYmEyM2QzZmZmZGY5NDJiYTRjNGRiYzk4YmVmMDEyZDcwZDc0MGJiMGZjM2I2ZDcyOWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzODU2MTU2YzNjODg0OWVmZjc3OTJmNTBmYjc1ZTNkYzhmYjU3MzM4ZDdhOGI1OTEyYTk5YWE5ZTM5OTMwMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b207bbb046694f8f81b9fb7901d8b0f1",
+      "statement": "bootstrap participates in contexts when UseContext holds, adding the context, saving it as current, and activating it; otherwise it warns about contexts when $STEPPATH/config/ca.json exists.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L115-L144",
+          "version": "repo-lines-v1:sha256:0ec88be2faab9a1fa16dc4ee1592e594831bd683a4452ab7bacb0bbfb077bcae:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2OTU1ZThhNmQyODZmZmQ2MzZhZjU3ODU2ZjcyNzE3NTFiYWQwOTJlYmI0MWZlNzc2ODI2YmZhY2VjNzhiNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlNjljNTJiMGQ5M2ZhZmE5OGFkMmFkYmY3ZjIzOWQ3MGM0MDlkNDk1NDg4YTdmZGRhNDY2NGZjMWI3OGI5ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjN2ZmN2UwY2EyNDk0NmM4OTQ5MWVmZWI0OWNmZWJjMGQ3YTkzYzcyODc0ZjdkMTQ5YWQ1OTY1ODZhMmNhOWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_76aa977935974a8cb0909ca6b712e919",
+      "statement": "bootstrap creates the root's parent directory with mode 0700 and serializes the downloaded root certificate to pki.GetRootCAPath() with file mode 0600.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L145-L165",
+          "version": "repo-lines-v1:sha256:e086b853c6bb99d41699c79197a46fb606007800256026caba656d12a3ec71f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3M2E1MDAwOTJmNDUxMjFiY2E3NzhlMDNjYzYxNzhlODRlZDhlYTA3ODViYWVjYzI2NTg0MGI0OGU1ZTdiYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlMWI0OWRjNzJmNjMyNjNkYzRmODFkZDIxZGYzZWRiZmU2NWU5NjVlN2FmMjhjNDM4OGFmMjc0NThlZTYwY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmYjViYzdiZjU2ZGQyMWYwZTFmM2JmZDRmOTY3ODRkYjhhNWMwZTkxMGI4Mjk1NTFkYTA4NmI3OWVmMmFjMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4NmM1OTlkYzI0MzFkY2UyNGY3MDZjYTVjYmExZjI4MWY1OTU5NTcxYWZhMDRjMjFiNmY1NWU5MmM1MjBkODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0463df3af10d4983bd60dc854088be09",
+      "statement": "bootstrap normalizes the CA URL with utils.CompleteURL (defaulting the scheme to https), writes defaults.json (mode 0644) with ca-url, fingerprint, root, and optional redirect-url/provisioner/min-password-length, and sets ca-url/fingerprint/root into the live CLI context.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L163-L195",
+          "version": "repo-lines-v1:sha256:c8dad2704d2937afe1c07bd871cb502a570587a7adacbc2278660941f822b7e4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMTRmNmFkYjZmYWFjMTk1ODkzY2M2ZTkyNGM4MzBhYTIzYTRkMGYzMDE3YzY0NjY5MTMwMTdlMjU1YjQ2MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2YWVlNzBiYjU2MDE0YzYzZjIyZGQ1NjZmZmVmNzdkYzA0YzJmYmM0MjE5Yjc3Mjg1MDA4NGY3ZTk1YzkzMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjNjFmOWJjYmFlZmQwNmQ4MWNlNmVlNTA3ZmRiNDQ1MTU0NDdmMzE4MGYxODY0OGY0NWEwYmMxMThjNTAzYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3MzVlMzYxY2MwODY3YzQyY2Y0MWVlMjFhODdkOWY0YjlhY2NiNWQxYmYyZGQ0MDJhNTdjMjBhYTdhOTkzMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_25a2b9ebca5b4a13b961fd9e812ef13f",
+      "statement": "With contexts enabled, bootstrap seeds the profile defaults file (step.ProfileDefaultsFile()) with {} when it does not exist.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L197-L210",
+          "version": "repo-lines-v1:sha256:bd0525574d4d23a4ef560e8abf9b7cf01e1ddc6e34a15cd970ce491d66391510:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlOTJiMWMyYzMwODc0NmNiOTE5MDQ5ZDMxMDI4YzI3ZmFjODEyZWJkYzFiYmI2Mzk5MTExYWJlZjZmNWFhYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmYTU1NWQxZTRhZDYxYWE1ODFiN2JhZDE2NmJmY2YxN2EwZTE3MzUyNDlkNDk1NGUyYzZmNDdlMWU1ZjhmNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwYzg3MDk0YzRjNDNhMjgyZTc4N2VmY2I5MzNlOWM0MTRhNDJkNjIyZmUyM2NkN2I2YWE3N2Q3MDEzOGFmM2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_80c0ed44b76e49b4867ca6250d3980bd",
+      "statement": "With --install, bootstrap installs the downloaded root certificate into the system trust store via truststore.InstallFile.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L212-L219",
+          "version": "repo-lines-v1:sha256:a5a81d2fc87277a3168775f5640a4ddaadc53d1cfcf809778b4c57f7f4a0e116:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU5ODE0ODkzYzM4OWM2MTgyNTA2OGI2NjRiYTI2NDg0ZWZkOTFiY2U0Mjg0ODY2MGY3MWNlY2ViMGQ5MzIwMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjJmMmZmNWZlZWM2MGY1ODdjOGZhZTRlODdmODA5YTY2MWNmZmVkNmI0N2FhZTVmNmQ2YTI2NTNhYTg5NTJlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTJiMTkyMmNlMTEzNTI0YTM5YWRkYzljNjdkMGU3MGJlMWM0N2U3M2E4MTU5MDRiMDdjZGFlNzhjNTQ1ODliYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f6acfe8ac1ad466ab752b8c7ab3f91d7",
+      "statement": "step ca root requires a fingerprint, downloads and validates the root via client.Root, and either writes it to the given file with mode 0600 or prints the PEM to stdout.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/root.go#L86-L108",
+          "version": "repo-lines-v1:sha256:dd010570fcc6f538af8cb54b2d95880b222781cc4b79dd5f10d03dcba99dce58:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWJhODE4NWRjZWJmMzg1YjYzNzNkNzJhYTg1YWQwODgzNjc5ODhiZWZiMDU5ZTRjNGRkMzE3N2FmZTU1Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1MDczODdiMDZhYjQxNmIxNTc3OGQyNzc1MmI5MzJiZjFlZDQxZmMwZjI2NmFkNmI5MGQ4ZDczY2RlNjM2YTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9fc91e01e005414e9f551bf23a295e4e",
+      "statement": "step ca roots and step ca federation fetch the root bundle and federation bundle from the CA through the same client's Roots() and Federation() calls.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/federation.go#L114-L154",
+          "version": "repo-lines-v1:sha256:ac4ad3dd3963977fd262b5caa03edd11de53276a1672b0f103af2587396fb7f5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ODg0Y2VjZDgwZWZjYTRiY2M3YTRkOWUyNTNkZWMzZTc4MWQ1YmNmMzVkYTNmNjNlYTMzMmVmMmIxNWQ4OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmYjZiNzhlZGY2MWFiMWMzMjU2MTE2OGMxZDM5N2ZhM2NkMTAyNWM4YjRkMGVlMzQxZmJkZTgwMzk0NGNlZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3OGJlYWRhNTI2NjdhZDg4ZDVlMTk0MTc5YjYyOTY2YTgwNTAxOTdkMmQ5NzcwZGEwZTljYzU5YjFlNTkyZjgifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-31T08:02:07.014Z"
+  }
+}

@@ -43,6 +43,7 @@ export async function prepareAllJudgeTasks(options: {
   const penalties: Record<string, WikiPenalty> = {};
   for (const runRoot of await runDirectories(options.projectRoot, options.subjectId)) {
     const run = await readJson<RunManifest>(path.join(runRoot, "run.json"));
+    if (run.outcome !== "complete") continue;
     const batch = await prepareJudgeBatch(runRoot, run, options.pageLimit, options.seed);
     tasks.push(...batch.tasks);
     manifest.push(...batch.manifest);
