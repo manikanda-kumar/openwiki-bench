@@ -1,0 +1,717 @@
+[
+  {
+    "task_id": "page_0354cdb2d0b62277ced80f14",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the gadget sandbox (dynamic worker + iframe) clearly owns the page and adjacent concerns (agent loop, gatekeepers) are referenced rather than re-explained, but the prose never explicitly states what it owns versus excludes, so it stays at 3. Grounding: nearly every load-bearing claim (globalOutbound:null, cache key structure, restore-forger confinement, CSP string, iframe handshake) carries exact line ranges and often quoted excerpts; a few claims (e.g., the Proxy 'hack' for facet stubs) rest on a locator plus assertion, and one internal link is broken, keeping it at 3 rather than 4. Reasoning: the page builds a coherent causal capability model — why cache keys use snapshotted chat sequences (merge mid-load can't flip the doc), why disallow_importable_env prevents self-calling loops, why the env must be a plain object with safety shifted to name validation, why capnweb ships as a doubly-nested data URL, and why the forger capability conveys no extra authority — covering state transitions (facet aborts, invalidation) and security consequences, earning 4. Change usefulness: exact files and line ranges plus failure signals (verify() total failure, 20s timeout) exist, but there is no ordered edit sequence and no named tests, capping at 2. Style: strong opening thesis, well-routed sections, and a synthesizing closing; the leftover openwiki broken-link HTML comment and dense identifier prose keep it at 3. Correctness: internally consistent with no detectable contradictions; the stray broken-link artifact is minor imprecision, so 3."
+  },
+  {
+    "task_id": "page_0afd272c8b8266c9cf689ec7",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns deployment admin/config and explicitly delegates auth config ('deliberately NOT here') and blueprints, but then still catalogs auth env vars (CF_ACCESS_*, AUTH_GATEKEEPERS, DISABLE_PASSWORD_AUTH) in its own table — the boundary is stated but partially violated, so 3 not 4. Grounding: nearly every load-bearing claim carries file:line evidence with quoted code comments, and inference is labeled (DEPLOY_URL marked 'Uncertain'); however some citations are locators only (bare REVIEW.md references, broad ranges like feature-flags.ts:1-52) without showing what the code establishes, so 3 not 4. Reasoning: multiple genuine causal explanations — promise-tail serialization prevents lost updates across KV I/O, auth config stays env-driven so a compromised admin session can't escalate, install-completion stamping makes partial format installs retry, and one-time bundle promotion avoids undoing admin removals — but they don't form a single precise state-transition model, so 3. Change usefulness: concrete files/symbols and some failure modes (lockout guard, partial-install retry) are present, but there is no ordered edit sequence and no named tests or validation steps, capping at 2. Style: strong opening establishing the single-writer model, well-routed headings, a table that earns its place; dense quoted fragments in the opening slightly impede first read, so 3. Correctness: no internal contradictions found and uncertainty is handled honestly, but I cannot confirm subtle-edge coverage beyond that, so 3."
+  },
+  {
+    "task_id": "page_1c6afc4444839f9156cfe661",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page stays firmly on logging/tracing/error-reporting and routes the browser capture pipeline to the app-shell page, but it never explicitly states its own scope boundary in prose (e.g., what it owns vs. what security-invariants or app-shell own), so it stays at 3. Grounding: load-bearing claims (ReservedLogField enforcement, ALS context boundaries, no-op reporter behavior, rate-limit degradation) carry specific line-ranged citations with prose explaining what each establishes; a few secondary claims (level semantics, DO-liveness of in-flight RPC delivery, pageLocation rebuilding) lack exact evidence, keeping it at 3 rather than 4. Depth: multiple genuine causal links — type-level field bans as structural secret prevention, ALS context not surviving RPC/hibernation hence re-establishment requirement, limiter failure degrading to drop rather than block, fragment-as-bearer-capability motivating pageLocation truncation, provider messages echoing caller values motivating code-only logging — a solid 3, but not a unified state-transition/concurrency model for 4. Change usefulness: concrete files, invariants (no-secrets, bounded attributes, no-op semantics) and failure modes are named, but there is no ordered edit sequence and no named tests or validation steps, capping at 2. Style: clear sections that route likely questions, no major repetition; lacks a true progressive-disclosure opening giving the whole-page ownership answer, so 3. Correctness: internally consistent, uncertainty and no-op/edge behaviors handled plausibly; no contradiction detectable from the page alone — 3."
+  },
+  {
+    "task_id": "page_1cce635b3a2e2a4e719c6c5a",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the quickstart workflow clearly owns the page and prose actively delegates adjacent concerns (caching rules → Testing and Build Tooling, CI/fork-PR → Release Pipeline, 'not covered here' for deployment), but it never explicitly states its own scope in prose, so it stays a 3. Grounding: nearly every load-bearing claim carries a specific file+line citation with an explanation of what the code establishes (run-local's selective build at scripts/run-local.ts#L3-14, router proxy fallback at packages/router/src/index.ts#L47-58 plus run-dev-server.ts, .dev.vars loading); a few assertions ('wrangler/vite bundle from source', the HMR-socket rationale) read as inference without labeled evidence, keeping it at 3. Depth: multiple genuine causal explanations — why dev-client is a separate port (HMR sockets die on workerd restarts), why the AI Gateway token is optional only when WORKERS_AI carries traffic in the same account, why 'build' is really type-check — earn a 3, though it stops short of one coherent system model. Change usefulness: concrete files and named validation commands exist, but there is no ordered edit sequence for any change and failure modes are mostly deferred to other pages, capping at 2. Style: the opening delivers the one-command answer, sections cleanly isolate hot-reload, integrations, and tooling detail, and edge cases (gateway token caveat, HMR caveat) sit in their sections — true progressive disclosure, 4. Correctness: no internal contradictions; subtle exceptions are handled carefully, but claims can't be verified beyond the page, so 3."
+  },
+  {
+    "task_id": "page_292c2b5b9be969b5d051f3c0",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the change workflow clearly owns the page and the opening states what the contract spans, but the prose never explicitly names out-of-scope boundaries or delegates them (related-links list doesn't count), so 3. Grounding: nearly all load-bearing claims carry file:line evidence with prose explaining what the code establishes (e.g., the ts-expect-error casts distinguished from type mirrors, retryOnDoReset scoped to reads); a few conventions like the useState-stub rule are asserted as 'applied throughout' without a specific citation, holding it at 3. Depth: multiple genuine causal explanations — stubs appear callable so useState setters invoke them, disposal not rejecting in-flight calls forces cancellation flags, throw-not-null preserves pipelining, validators regenerated from signatures at build — but stops short of one coherent state/concurrency model, so 3. Usefulness: ordered 4-step edit sequence, exact files/symbols, invariants to preserve (no interface mirrors, validateRpc, disposal), named validation (pnpm build/test, capnweb-validate regen) and debugging signals (coded error families, DO-reset telemetry) earn 4. Style: opening gives the flow answer, numbered sections isolate operational detail, worked example and bullets isolate edge cases — progressive disclosure present, 4, despite one dense run-on paragraph in step 1. Correctness: no internal contradictions; handles subtleties (disposal semantics, cast rationale) but blind verification can't confirm edge-case completeness, so 3."
+  },
+  {
+    "task_id": "page_2e2eacf722863a75b3e4ff8a",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening explicitly claims ownership (workpiece model, git store, code flow, blueprints) and delegates once to the agent-and-chat page, but out-of-scope boundaries are thin and the export-formats section drifts toward gadget-runtime concerns rather than blueprints/git — a solid 3, not the explicit two-sided boundary a 4 requires. Grounding: nearly all load-bearing claims carry line-ranged citations with prose explaining what the code establishes (allocateWorkpieceId overseer.ts:1956, threeWayMerge git-store.ts:484-521, propagateBlueprint overseer.ts:6892, archive format blueprint-archive.ts:17-19), but several non-obvious claims lack exact evidence (syncWorkspaceOutputs in user.ts with no lines, deleteBlueprintPropagation ordering, R2 version retention, the agent instantiation path), blocking 4. Depth: the page builds a coherent causal lifecycle — shared id namespace prevents facet-name collisions, reflessness explained via record-managed roots and dedup, diff3 replacing CRDT/porcelain because the ancestor is always known, dirty-before-write enabling Retry, KV-first deletion halting public access, retained R2 versions preventing instantiation races, symbolic spawner refs because ids are workspace-local, promote-once preserving admin removals — covering state transitions plus concurrency and security consequences, meriting 4. Change usefulness: concrete symbols, invariants ('never rename a deployed blueprintId', porcelain off-limits, propagation order) and failure signals (dirty flag) exist, but no ordered edit sequence for a change and no named tests, capping at 2. Style: the opening answers ownership, sections isolate operational detail (stores, archive format, instantiation), and edge cases (migration, bundled blueprints) are grouped at the end — genuine progressive disclosure, 4. Correctness: internally consistent, uncertainty and legacy paths handled carefully, no contradiction detectable from the page alone; without source verification of subtle edge cases, 3."
+  },
+  {
+    "task_id": "page_30d704bf2a9f9da206883ba4",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the OverseerDurableObject clearly owns the page and spillover (agent, sharing, code storage) is routed via links, but the prose never explicitly states in-scope/out-of-scope boundaries — the related-pages list alone doesn't earn the promotion to 4; 'Chats' from the title is also barely covered. Grounding: nearly every non-obvious claim carries a specific file:line-range citation and the prose explains what the cited code establishes (e.g., alarm contract at overseer.ts:8212-8226, notifyClosed at server.ts:229-273); some conclusions ('guarantees metadata is never revealed') are inference presented as fact and not labeled, holding it at 3. Reasoning: strong causal content — alarm keep-alive contract and constructor-reschedules-before-alarm ordering, ensureObserver-after-role-check as a security ordering invariant, deleted-shared-gadget non-resurrection, first-open-awaited vs background ambient-capsule reconcile for latency, defensive facet reset — comfortably a 3, but sections like the loopback catalog remain descriptive and the pieces don't cohere into one integrated model, so not a 4. Change usefulness: exact locations and boundaries abound, but there is no ordered edit sequence and no named tests or validation checks, capping at 2 (the linked change guides don't transfer). Style: clear opening, headings route likely questions, no repetition — a solid flat reference (3), though dense identifier-heavy sections and edge cases interleaved with the main path keep it from 4. Correctness: internally consistent, edge cases (best-effort pushes, DO restart mid-facet, alarm retry) are handled plausibly; nothing contradicts itself, but I cannot confirm subtle-exception handling against source, so 3."
+  },
+  {
+    "task_id": "page_32b4fce5d60e51e823e76d10",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the gatekeeper contract clearly owns the page and adjacent topics (observers, actions, sandbox) are routed via links, but the opening never states an explicit in/out-of-scope boundary, and the loopback section includes several non-gatekeeper entrypoints (AgentSelfLoopback, tail loopbacks) that belong to agent/sandbox pages — solid 3, not 4. Grounding: nearly all load-bearing claims carry line-ranged citations with quoted excerpts explaining what the code establishes (e.g. the `[]` vs omitted rule, the chokepoint quote); a few locators are vague ('src/user.ts:1734+', a symbol-only cite for getGatekeeperClassFor), keeping it at 3. Reasoning: builds a coherent capability-flow model with explicit state transitions (connect→account→class→facet→session) and multiple derived security/ordering consequences — verified-email requirement prevents account takeover, verifier design compensates for Fetcher unwrap impossibility, flag-gating because RPC stubs can't report optional methods, authorizeObservation-before-data ordering — earning 4. Change usefulness: concrete files/symbols and invariants (idempotent removeObserver, chokepoint placement) but no ordered edit sequence and no named tests, so 2. Style: purposeful opening and question-routing headings, but the three-tier section is extremely dense parenthetical prose bordering on identifier dumps — 3. Correctness: internally consistent, handles subtle cases ([] semantics, idempotency, stale ambient records), but subtle claims can't be independently verified from the page alone, so 3."
+  },
+  {
+    "task_id": "page_37edc9ebeaf4b956bda54920",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: authentication clearly owns the page and gatekeeper/admin material is routed via links, but the prose never explicitly states what it owns and excludes — links alone don't earn the 4. Grounding: essentially every non-obvious claim carries exact line-range citations with prose explaining what each establishes (e.g., SHA-256-of-argon2id storage at user.ts#L354-367, anti-lockout rule at auth/config.ts#L26-33), and the one inference about ADMINS/email mismatch is explicitly labeled as inference. Reasoning: a coherent security/causal model — env-var vs AdminConfig split justified by compromised-admin threat, double-hashing rationale, email-keyed identity invariant across providers, PendingLogin lifetime tied to the in-flight RPC eliminating cleanup paths, transient auth grants vs the persisted Cloudflare billing exception — covering state transitions and security consequences. Change usefulness: concrete files, symbols, and failure signals (AUTH_ERROR_CODES, signupsEnabled chokepoints) but no ordered edit sequence or named tests, capping at 2. Style: strong opening and well-routed headings; the '[REDACTED:password]' heading artifact and slightly dense sections keep it at 3 rather than full progressive disclosure. Correctness: no internal contradictions; subtle exceptions (lockout avoidance, Cloudflare billing scope, auto-provisioned account protection) are handled explicitly and uncertainty is marked."
+  },
+  {
+    "task_id": "page_3b5adfafa317c0e8c9609c34",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the opening explicitly names the owner ('where a turn runs, what the agent can do, how effects become durable, how model requests are routed'), delegates billing config to the Configuration page in prose, and the gaps section explicitly excludes pi-agent-core internals — adjacent gatekeeper/config topics are referenced without re-explanation. Grounding: essentially every non-obvious claim carries exact file:line ranges with prose stating what the cited code establishes (e.g., globalOutbound:null → no network; emit turn_end as sole durable write); multi-file conclusions (getModel routing, ai-invoke error conversion) cite each boundary, and inference/uncertainty is labeled ('best-effort HTTP status', TODO placeholder, external package caveat). Depth: forms a coherent causal model — edits-buffered-until-barrier explains the executeCode refusal guard; durable-iff-transcript invariant from the single commitAgentStep transaction; DO single-threading makes the daily-count read-modify-write race-free; compaction termination argued from strictly-forward boundaries; callback exemption prevents stranded callbacks; security consequences (SSRF via post-DNS filtering, prototype-pollution guard, prompt-injection delimiter stripping) are derived, not just listed. Change usefulness caps at 2: concrete symbols/files and named failure modes (budget overrun fails agent-visibly, verify() startup failure) exist, but there is no ordered edit sequence and no tests are named — the RPC/gatekeeper change guides are separate pages and their usefulness doesn't transfer. Style: progressive disclosure is real — ownership/flow in the opening, operational detail in named sections, edge cases isolated in 'Known gaps'. Correctness: no internal contradictions; subtle exceptions (cancelled-turn persistence semantics, callback exemption, addObserver no-op rationale) are handled explicitly with uncertainty marked."
+  },
+  {
+    "task_id": "page_42aef8207c97b92c8708c58e",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 2
+    },
+    "rationale": "Taxonomy: the quickstart workflow clearly owns the page and adjacent topics (release, architecture, testing) are routed via links, but the prose never explicitly states its ownership and exclusions, so it stays at 3. Grounding: load-bearing claims (run-local vs dev-server split, dev pre-flight gatekeeper build, auto-login env vars, watchdog timeouts) carry file:line citations, but several non-obvious claims are unsupported — e.g. that wrangler/workerd 'comes from the workspace's dev dependencies' and the first-tour characterizations ('every interface is documented', 'the workspace kernel') — keeping it at 3, not 4. Depth: beyond procedure it derives real consequences — a gatekeeper lacking the matching build task is silently skipped by the dev pre-flight, and an exit-124 watchdog kill should first be read as an OOM-killed workerd child — meeting the two-causal-explanation bar for 3, though no coherent model beyond tips. Usefulness: concrete commands, ordered dev sequence, per-package vs cached test paths, and a named failure check (exit 124) satisfy 3; no invariants or rollback signals for 4. Style: opening establishes purpose, headings route questions well, sections isolate operational detail — 3; the embedded broken-link comments mar polish. Correctness: the 'Configure external services' section directs users to four package READMEs that do not exist (flagged in the page itself), which is a material dead end in a setup guide, capping correctness at 2."
+  },
+  {
+    "task_id": "page_42b2744f59891de723d326c2",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the quickstart workflow clearly owns the page and adjacent concerns (build system, deployment, gatekeeper OAuth details) are routed elsewhere, but the routing is a closing link list; the prose never explicitly states what the page excludes, so it stays at 3. Grounding: citations are pure locators (scripts/run-local.ts, scripts/run-dev-server.ts, docs/public-server.md) with no line ranges or quoted excerpts; load-bearing claims like the wrangler.dev.jsonc generation details, ADMINS seeding, and AUTH_GATEKEEPERS semantics have no specific evidence, so only a minority of claims are traceable → 1. Reasoning: mostly procedural startup mechanics; it does derive a couple of consequences (DISABLE_PASSWORD_AUTH ignored unless the allowlist is non-empty to avoid lockout; gateway mode needing a transport via WORKERS_AI binding or API token), but invariants stay largely implicit → 2. Change usefulness: concrete files and env vars plus a basic validation path (visit localhost, try prompts) are present, but there is no ordered edit sequence, named tests, or failure modes for modifying the dev setup → 2. Style: the opening answers the flow question in two sentences, options and configuration are isolated in named sections, and edge cases (OAuth/AI Gateway/MCP flags) are grouped where a reader would look; genuine progressive disclosure with no repetition → 4. Correctness: internally consistent with no detectable contradictions, though several precise details (binding names, var pass-through list) carry unsupported certainty; minor imprecision at most → 3."
+  },
+  {
+    "task_id": "page_488e75300b070874d6ca5873",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the RPC contract clearly owns the page and gatekeeper interfaces are delegated via one link, but the prose never explicitly states its scope boundaries (e.g., it explains sharing pipelining and gatekeeper deployment without declaring them out-of-scope), so it stays at 3 per the promotion rule. Grounding: nearly all load-bearing claims carry file:line citations, often with quoted excerpts explaining what the code establishes (LoginAttempt disposal semantics, error-code fallback, reconnection probes), and the AGENTS.md-sourced conventions are honestly flagged as unverifiable in the evidence index with closest in-repo substitutes; a handful of claims (validateRpc behavior, 'project policy') rest on locators rather than shown evidence, so 3 not 4. Reasoning: the page builds a coherent causal model—capability minting as authorization boundary (#isAdmin checked once at mint), share-key redemption inside openGadget to enable pipelining, disposal-without-call as loss detection, RpcPromise queuing preserving call order during outages, error-message text doubling as classification fallback making message changes a compat break, CORS opened because WebSocket is already cross-origin with in-band auth. That covers state transitions, ordering, and security consequences, earning 4. Change usefulness: exact files/symbols and failure modes (compat-break warning, stub-in-useState trap, disposal invariants) are named, but there is no ordered edit sequence and no named tests or validation commands, capping at 2. Style: the opening delivers the ownership/flow answer, sections cleanly isolate transport, validation, subscriptions, and conventions, and edge cases (laptop sleep, older deployments) sit in their operational sections—progressive disclosure earns 4. Correctness: no internal contradictions; the page explicitly and correctly handles subtle cases (backward-compat error classification, evidence-index exclusion, reconnection edge cases), so 4."
+  },
+  {
+    "task_id": "page_4cb4d0070050ff319dabbf15",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the deployment/routing/release workflow clearly owns the page and the opening states its scope; adjacent concerns are delegated (AdminSettings 'see the workshop-backend page', public mode to docs), but the closing account-key/auth-mapping paragraph drifts into sharing/auth territory and the page never crisply states exclusions in prose, so 3 not 4. Grounding: citations are locators only — file paths (packages/router, scripts/release/*.ts, deployment-config.ts) and symbol names (NO_DEFAULT_CRED_INPUTS, MANIFEST_VERSION) with no line ranges or quoted excerpts; load-bearing claims like the binding-scan routing, the closed placeholder list, and PREINSTALL/SINGLETON semantics are asserted rather than evidenced, so 1. Depth: several genuine causal derivations — manifest-uploaded-last as the completion marker, non-atomic promotion → CI resource-group serialization + newer-release guard, auth config kept out of AdminConfig to contain a compromised admin session, DISABLE_PASSWORD_AUTH gated on a non-empty allowlist to prevent lockout, SINGLETON to avoid duplicate ambient capsules — covering ordering, concurrency, and security; but they are per-section explanations rather than one unified model, so 3. Change usefulness: concrete files, an edit sequence for manifest changes (edit → UPDATE_GOLDEN=1 regenerate), named tests, fail-closed failure modes, and required env vars give a solid 3; explicit rollback/debugging signals for a bad promote are missing, so not 4. Style: purpose-first opening, headings route questions, edge cases (gatekeeper-email, candidates) are findable, though paragraphs are dense and edge cases are inlined into main-path prose — 3. Correctness: internally consistent, no contradictions found, uncertainty (e.g., dormant email handler) flagged — 3."
+  },
+  {
+    "task_id": "page_5a58fbe9e42437da66f9f3f2",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page cleanly owns build orchestration and the dev server; spillover into gatekeeper/testing topics is minor and routed via links, but the prose never explicitly names exclusions or delegations, so it stays a 3. Grounding: nearly every non-obvious claim carries a specific citation with line ranges (e.g., env declaration on tasks at packages/workshop-frontend/vite.config.ts:38-45, direct binary dispatch at scripts/run-dev-server.ts:333-360), and prose states what each cite establishes; a few cites are vague locators ('vite.config.ts:14-90+', 'AGENTS.md §build', '563+'), which blocks a 4. Reasoning: this is the page's strength — it builds a coherent causal model of caching and startup: env stripping means env-reading builds must be tasks; cache hits restore archived outputs, hence the uncached clean dependency to avoid leaking sourcemaps from a previous enabled build; unminified pre-flight output must match watcher output or Wrangler restarts mid-startup; deferred app-UI watchers because watch mode cannot skip its initial build; shutdown driven by Wrangler's exit to avoid orphaned workerd children. That covers state transitions, ordering, and concurrency consequences — a 4. Change usefulness: concrete files/symbols, dependency ordering rules (uncached clean before cached build, pre-flight before watchers), and named failure signals (reported cache miss, stale restored artifacts, mid-startup worker restart, 'a new gatekeeper needs one of those tasks or it is never built here') support a 3; it lacks explicit invariant-preservation plus rollback guidance for a 4. Style: opening states purpose, headings route questions, no repetition, but prose is dense with heavy parentheticals and edge cases are inlined into the main path rather than isolated — 3. Correctness: no internal contradictions; edge cases (env fingerprints the value, not pointed-at contents; package-relative vs workspace-wide exclusions) are handled carefully, but blind judging cannot confirm the subtler claims, so 3."
+  },
+  {
+    "task_id": "page_5b4c07616ef460d24e89d6c5",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the RPC contract clearly owns the page and adjacent concerns (change process) are routed via a link, but the prose never explicitly states out-of-scope boundaries or delegates neighbors like Gatekeeper Framework or Capability Security Model, so it stays at 3. Grounding: nearly all load-bearing claims carry line-ranged citations and several quoted excerpts ('capnweb queues sends while a socket is still CONNECTING'), but universal claims ('every RPC implementation class is decorated', 'subscriptions follow one idiom throughout') are supported by 2–3 examples rather than exhaustive evidence, blocking 4. Depth: multiple genuine causal explanations—probe-gated reconnect because capnweb queues sends on CONNECTING sockets; object-wrapped stubs due to React's callable-setter behavior; identity dropped because disposal doesn't reject in-flight calls; admin authorization checked only at capability mint—earning 3, though these remain somewhat independent observations rather than one fully unified model with complete state transitions. Change usefulness: concrete files/symbols and validation mechanisms are named, but there is no ordered edit sequence or named tests; the change workflow is delegated to a separate guide, which does not transfer, capping at 2. Style: purposeful opening, well-routed headings, no repetition; the pipelining/disposal section is dense and mixes frontend/backend concerns, so 3 not 4. Correctness: internally consistent, quotes and mechanics cohere, no contradictions found; the universal claims carry mild unsupported certainty but not a material error."
+  },
+  {
+    "task_id": "page_5cb006641d267fa36a1a990b",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the agent runtime/chat turn loop clearly owns the page; mentions of gatekeepers, compaction, and models are in service of the chat runtime, but the prose never explicitly names out-of-scope boundaries or delegates adjacent concerns to other outline pages, so 3 not 4. Grounding: nearly every load-bearing claim (persistence barrier at turn_end, effects-iff-record, executeCode isolate properties, binding-map immutability, budget constants) carries path+line-range citations, and inference is mostly flagged; but several multi-part conclusions (e.g., 'effects iff record', replay determinism) lean on single citations without quoting what the code establishes, keeping it at 3. Reasoning: strong causal model — why constants live in agent.ts (dependency direction), why the barrier guarantees log-never-behind, how disallow_importable_env prevents self-looping code, why transient stub capability lifetime bounds authority, and why never-rebinding names yields replay determinism; these cohere into one persistence/capability model covering state transitions and security, earning 4. Change usefulness: excellent locators and named failure behaviors, but no ordered edit sequence and no named tests/validation steps for making a change, capping at 2. Style: opening states ownership and flow, headings route questions well, no repetition; edge cases are woven into main-path prose rather than isolated, so 3. Correctness: no internal contradictions detected; claims are consistent and uncertainty is not overstated, 3."
+  },
+  {
+    "task_id": "page_63d6a6957685cc4911d7345c",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 4,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the release pipeline clearly owns the page and adjacent concerns (topology, dev server, fork-PR CI) are routed to Architecture/Toolchain/Testing via links, but the prose never explicitly declares its ownership and exclusions, so it stays at 3 per the promotion rule. Grounding: essentially every load-bearing claim carries a file plus line-range citation and the prose usually says what the code establishes (placeholder substitution, upload ordering, PREINSTALL enforcement); however some assertive claims lean on broad ranges (e.g. 'byte-identical to wrangler deploy' from L3-L9, the GitLab resource-group detail folded into promote-release's citation), so not every claim is tied to exact, unstretched evidence — 3. Depth: this is the page's strength — a coherent causal model: manifest-uploaded-last as an atomic completion marker, the check-then-act promote race and why CI must serialize plus the newer-release guard's benign-vs-hard-error semantics, at-most-once PREINSTALL to prevent duplicated ambient capsules, tiered preview deploys forced by service-binding dependencies, preview_urls=false and secrets-as-worker-secrets with the CI-log-leak rationale — ordering, concurrency, and security consequences all derived — 4. Change usefulness: exact files, the golden-file regeneration command and review step, the ordered manual build→upload(--candidate)→promote sequence, invariants (never bypass --candidate, serialize promotes, spurious secret inputs make connectors uninstallable), and failure/rollback signals (silent rollback hazard, phantom-publish hard error) — meets the 4 checklist. Style: headings route questions and the opening states the contract, but the manifest-lib section is a single very dense wall packing several distinct answers (placeholders, deploy inputs, preinstall, email exception) into run-on parentheticals, hurting retrieval — 3. Correctness: no internal contradictions and edge cases are handled with care, but several confident claims can't be checked beyond the citations and carry some unsupported certainty — 3."
+  },
+  {
+    "task_id": "page_677afd32769b711e5a223556",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the build/toolchain topic clearly owns the page and the closing routes testing and dev-server concerns elsewhere, but the prose never explicitly states its own scope boundary — routing via a 'Where to look next' list doesn't satisfy the promotion rule, so 3. Grounding: load-bearing claims (env stripping, input/output overlap, script-vs-task bypass, singleThreaded rationale) carry line-ranged citations with explanations of what the code establishes, and inference is labeled ('verifiable by grep', 'measured numbers live in repo guidance'); however several claims rest on unlocated 'repo guidance' or external facts (TS5102, 'wrangler and vite bundle from source'), blocking 4. Depth: excellent — the page builds one coherent causal model ('a cache hit is only as correct as the fingerprint is complete') and derives multiple consequences from it: why env-reading builds must be tasks, why byte-identical configurator bundles shipped under opposite flags, why deploys use --no-cache, why incremental tsc is banned, why clean must precede cached builds to avoid surviving sourcemaps. That's 4. Change usefulness: exact files, invariants (task/script naming, env declaration rules), guard tests (env-passthrough test fails on uncategorized reads), and debugging signals (--last-details), but no explicit ordered edit sequence for a representative change, so 3. Style: good structure — opening gives the toolchain answer, traps/naming/codegen/lint sections route questions — but the trap paragraphs are dense multi-package blocks where specific answers (e.g., the filter rationale) are buried mid-sentence, so 3. Correctness: no internal contradictions; the page explicitly handles subtle exceptions (typed-storage emitting despite noEmit, wildcard VITE_ env, cache-false vs env tradeoff, value-vs-contents fingerprinting) and marks uncertainty, so 4."
+  },
+  {
+    "task_id": "page_67a273a9c8a63d67155147d1",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page explicitly states its owner ('this page reads those declarations') and routes adjacent concerns — connect/approval machinery to Gatekeeper Framework, enablement to Configuration, template details to How to Add a Gatekeeper, MCP endpoints to MCP Connectors — earning the 4 promotion. Grounding: nearly all load-bearing claims (three auth vendors, verified-email rule, Cloudflare billing-scope union, provisioning chokepoint, binding-based discovery) carry file+line citations with prose explaining what each establishes; a few entries are locators only (linear.ts with no line, the 'sixteen packages' count uncited), so 3 not 4. Depth: several genuine causal links — billing scopes always unioned explains why Cloudflare sign-in requests full scopes while others request only 'auth'; sharingDomain framed as a convenience boundary between trusted deployments, not a security boundary; auth-capable is necessary-but-not-sufficient without AUTH_GATEKEEPERS — but these don't cohere into one model, so 3. Change usefulness: concrete files/symbols and a named failure-adjacent check (NO_DEFAULT_CRED_INPUTS manifest rule, AUTH_GATEKEEPERS allowlist) but no ordered edit sequence or tests; the linked how-to guide doesn't transfer, so 2. Style: clear opening, headings route category questions, tables shorten comprehension — a well-organized categorized reference, 3. Correctness: no internal contradictions; subtle caveats are handled carefully, but several factual specifics (package count, line-level claims) are unverifiable blind, so 3."
+  },
+  {
+    "task_id": "page_732610ff49812652d13d5fa9",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page cleanly owns the 'Architecture Overview' role and delegates detail to other pages, but it never explicitly states its own scope boundary in prose—cross-links and a 'Where to go next' list don't earn the promotion to 4. Grounding: many claims carry line-ranged citations with prose explaining what they establish (router binding scan, wrangler flags, gadget facet loading), but a load-bearing section—the package map, which anchors the whole OS-mirror model—is supported only by bare paths/symbol names (locators, not evidence), and support-library descriptions are uncited; per the rubric an unsupported load-bearing claim caps at 2. Reasoning: at least two genuine causal derivations (bindings-as-routing-config → installing a gatekeeper is a redeploy not a code change; global_fetch_strictly_public → SSRF guard for the agent's webFetch; disabled gadget internet → bindings as sole egress), plus cache-key/abort-reload semantics, meeting the bar for 3 but not a full state-transition/concurrency model. Change usefulness: concrete files and symbols and one plausible edit path (add a GATEKEEPER_* binding), but no ordered edit sequence with named tests or failure checks, so 2. Style: strong opening with purpose and the OS-role table, well-routed sections, no repetition—a solid 3; edge cases and operational detail aren't layered enough to claim full progressive disclosure. Correctness: no internal contradictions or overreach detected; claims are stated with appropriate specificity, so 3."
+  },
+  {
+    "task_id": "page_8b3a997a27768579132b0b4a",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: one clear owner (observability/error reporting across backend, frontend, analytics); scope is coherent, but the prose never explicitly names exclusions or delegates adjacent concerns—the closing 'Related' links don't count per the promotion rule, so 3. Grounding: nearly all load-bearing claims (reserved-field erasure, error normalization, 204 no-op conditions, origin-'null' frame acceptance, build-flag gating) carry path+line-range citations with prose explaining what the code establishes; a few cites are locator-only (serialize-exception.ts, gatekeeper-linear observability.ts without lines), blocking 4. Depth: multiple genuine causal links—type-level field erasure as the no-secrets enforcement mechanism, ALS context requiring per-operation re-establishment because it can't cross RPC/hibernation, fail-closed-to-204 rate-limiter behavior, and the unverified reportedUserId security caveat—but it remains a catalog of mechanisms rather than one unified causal model, so 3. Change usefulness: concrete files/symbols and named failure signals (204 no-ops, cited tests) plus invariants to preserve, but no ordered edit sequence for any change, capping at 2. Style: opening states the four-mechanism map, headings route questions well, no repetition; dense parenthetical citations slightly impede retrieval, and edge cases are embedded rather than layered, so 3. Correctness: internally consistent, and it explicitly handles subtle exceptions (no-binding no-ops, hostile thrown objects, unverified client-supplied identity, limiter-failure drops), so 4."
+  },
+  {
+    "task_id": "page_926abe9891115eac50e84b2d",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 4,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening explicitly declares ownership ('what do I touch, and what breaks') and delegates mechanics to Agent Runtime, RPC changes, Admin Settings, Gatekeeper Framework, and Testing — meets the 4 promotion rule. Grounding: nearly every load-bearing claim carries exact line ranges plus quoted excerpts (prompt conventions, budget rationale comments, compaction ratios, formatInstanceInstructions text); a few multi-file claims (KV mirroring/sole-writer DO, sub-agent restriction rationale) rest on wiki cross-links or bare locators, keeping it at 3 rather than 4. Reasoning: multiple genuine causal derivations — widening a tool sub-surface widens spawned-agent blast radius, budget constants exist to make 2MB DO-record overflow impossible with composition bounded by row sums, one-sided limit changes merely relocate rejections, compaction boundary selection must protect reverts or rollback is lost, admin precedence as the security boundary. These are strong but read as per-section notes rather than one unified causal model, so 3. Change usefulness: exact files/lines, an explicit preference ordering (prompt text and soft config before load-bearing budgets), named test commands, invariants to preserve, and debugging signals (missing action-log observation entries = unaudited path) — full 4 checklist. Style: opening answers scope, headings route each likely change type, verification isolated, edge cases (documented known gap) placed in context; dense but every section earns its place — 4. Correctness: no internal contradictions and edge cases are handled, but several precise line-level assertions carry unverifiable certainty from the page alone, so 3."
+  },
+  {
+    "task_id": "page_96e8e5fa7d1b81d421b93173",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the observability topic clearly owns the page and the annotated related-pages links delegate adjacent concerns, but the prose never explicitly states out-of-scope boundaries beyond the link list, so it stays at 3. Grounding: nearly every load-bearing claim carries file:line ranges with an explanation of what the code establishes (reserved-field type errors, no-op binding checks, rate-limit fail-closed), and inference/design-intent is labeled ('deliberately'); a few negative or multi-file claims (e.g., 'gatekeeper Workers never report cross-origin directly') aren't fully boundary-cited, blocking a 4. Depth: strong causal model — why context must be re-established at RPC/hibernation boundaries, why pageLocation is rebuilt (fragments are bearer capabilities, href retains credentials), why reportedUserId must never drive decisions, waitUntil isolation, fail-closed rate limiting — forming a coherent 'bounded, no-authority, fail-safe' reporting model with security consequences. Change usefulness: concrete files/symbols and named failure checks exist, but there is no ordered edit sequence, tests, or rollback guidance, capping at 2. Style: the opening gives the two-pipeline ownership answer, sections isolate operational detail, and edge cases (gatekeeper frames, missing bindings) are grouped separately — genuine progressive disclosure. Correctness: internally consistent and edge-aware (event/component exceptions, non-http URL dropping), but several confident negative claims can't be confirmed from the page alone, so 3."
+  },
+  {
+    "task_id": "page_974b1cc94b46d97ff5468d65",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: blueprints clearly own the page and scope is stated (what a blueprint captures vs. excludes), but the prose never explicitly delegates adjacent concerns (e.g., gatekeeper creation, code storage, admin config) to their owning pages, so it stays a 3. Grounding: nearly all load-bearing claims carry file:line citations with explanatory prose (dirty flag semantics via docs/blueprints.md:63, archive layout via blueprint-archive.ts:1-5/17-21/149-159, instantiation ordering via server.ts:465-472 and overseer.ts:8518-8553), and design intent is labeled as intent; however several claims rest on doc-file citations rather than code, and a few locators lack line ranges (plans/multi-gadget.md, format-blueprints/README.md), blocking 4. Reasoning: multiple genuine causal explanations — dirty-before/clear-after ordering for propagation failure, retained R2 versions to avoid concurrent-instantiation races, commit-before-record ordering preventing headless records, two-phase gatekeeper creation for symbolic spawner references, reserved-key exclusion preventing ID shadowing, promote-once semantics preserving admin removals — meeting the bar for 3, but the pieces stay section-local rather than forming one integrated model. Change usefulness: concrete files and symbols with line ranges are named, but there is no ordered edit sequence and no named tests or validation checks, capping at 2. Style: purpose established up front, headings route likely questions, no major repetition; edge cases (orphaned blueprints, size limits) are findable but the closing orphan paragraph is tacked onto an unrelated section, so 3 not 4. Correctness: no internal contradictions or unsupported certainty detected from the page itself; nuanced exceptions (import ownership transfer, screenshot clearing, retry semantics) are handled plausibly — 3."
+  },
+  {
+    "task_id": "page_9ae366daf2d47372f6f78261",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the quickstart workflow clearly owns the page and adjacent concerns (release pipeline, test layout, architecture) are routed to other pages, but the prose never explicitly states what it owns versus excludes, so it stays at 3. Grounding: many load-bearing claims carry line-ranged citations (run-local.ts:1-57, dev-server-config.ts:32-60, run-dev-server.ts:42-62/409-420, CONTRIBUTING.md:13-23), but the entire Build/test/lint section — load-bearing for a quickstart (single type check, TS7 noEmit, Vite+ cache replay, what CI enforces) — plus claims like ADMINS dev default and the HMR/wrangler behavior are uncited, capping at 2. Reasoning: at least two genuine causal explanations (fork PRs skip previews because GitHub withholds secrets on fork-head pull_request runs; HMR socket not surviving wrangler restarts explains why dev mode doesn't proxy the frontend), plus precedence rules (--port over env var, shell env over .dev.vars) — a solid 3, not a full causal model. Change usefulness: concrete commands, files, ordered workflows, and named validation ('pnpm lint before pushing; it's what CI enforces') meet 3; no invariants-to-preserve or rollback/debug signals for 4. Style: well-routed headings and a fast path first, but the opening jumps into prerequisites without a purpose/flow statement, so 3. Correctness: no internal contradictions and uncertainty is explicitly labeled ('Uncertain / coming soon'), but claims can't be promoted to 4 without stronger evidence handling."
+  },
+  {
+    "task_id": "page_ab01def3dec73546416e6a27",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: observability clearly owns the page and it states some exclusions (browser console.*, gatekeepers reporting directly), but it doesn't systematically route adjacent concerns to other outline topics (e.g., DO retry policy overlaps reliability/persistence without explicit delegation), so 3 not 4. Grounding: load-bearing claims carry file:line citations with explanations of what the code establishes (no-op when ERROR_REPORTER absent, 204 fail-open, normalizePageLocation rationale, retry predicates); a few claims cite whole files (wrangler.jsonc, vite.config.ts, REVIEW.md) without excerpts, keeping it at 3. Reasoning: multiple genuine causal chains — fail-open rate limiting so reporting never breaks UX, reportedUserId as unverified report vs finding, URL rebuilding because href leaks credentials and #share= is a bearer capability, jitter decorrelating replay bursts, writes-never-retry for replay safety — but these are per-subsystem explanations rather than one coherent model, so 3. Change usefulness: concrete files, symbols, and conventions abound, and one test is named, but no ordered edit sequence or systematic validation path for a representative change, capping at 2. Style: opening sets scope, headings route questions well, no repetition; opening covers only server logging rather than the whole page's flow, so 3. Correctness: internally consistent, explicitly handles edge cases (missing bindings, local flagless aborts, ALS boundaries); without source access I can't confirm the exception handling enough for 4."
+  },
+  {
+    "task_id": "page_ae654e9271a6423d1c4d1ded",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the page clearly owns authentication/sign-in and routes adjacent concerns via links, but its prose never explicitly states out-of-scope boundaries (a related-pages list doesn't count), so 3 not 4. Grounding: essentially every non-obvious claim carries exact file:line evidence and multi-file conclusions cite each boundary (e.g., token format cites both api.ts:70-79 and server.ts:680-694; the no-/auth/*-callbacks claim cites router and server); inferences ('therefore cannot change who can sign in', 'can never lock everyone out') are derived from cited mechanics. Depth: builds a coherent causal security model — env-var vs AdminConfig split → admin-compromise containment; conditional DISABLE_PASSWORD_AUTH → lockout impossibility; capability-only PendingLogin stub → abandonment semantics plus the deliver/awaitResult race handling; double-hashing → server never holds reusable credentials; transient vs persistent grants with the Cloudflare billing exception. Change usefulness: concrete files/lines and failure behaviors exist, but no ordered edit sequence and no named tests/validation steps, capping at 2. Style: opening gives the convergence answer (three paths → one token primitive), per-path sections isolate operational detail, and edge cases ('Two trust details', account-shape quirks) are grouped — full progressive disclosure. Correctness: no internal contradictions; subtle exceptions (lockout guard, Cloudflare non-transient scopes, name-never-refreshed) are handled explicitly."
+  },
+  {
+    "task_id": "page_b5703f552ff428636aafdd85",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the page explicitly claims the protocol (gatekeeper.ts) as its owner and repeatedly delegates adjacent material—per-vendor implementations to connector pages, hook storage to The Overseer Workspace Object, sharing orchestration to Sharing and Observers, iframe hosting to Workshop Frontend—earning the 4. Grounding: essentially every non-obvious claim carries an exact line-range citation, multi-file conclusions cite each boundary (router + auth-vendors for discovery; user.ts chokepoint; overseer.ts loopbacks), and one design principle is quoted verbatim from provisioning-policy.ts; no load-bearing claim is left unsupported and inference/design rationale is labeled as such. Depth: the page builds a coherent causal model—why empty resourceUrlPatterns differs from omission (avoid unshown access requests), why flag-gating replaces stub probing (RPC stubs can't expose optional methods), why observation authorization may follow fetching (audit fidelity), why callbacks must not be stored (session-tied revocation), the pre-mint policy chokepoint preventing agent bypass, simulation semantics for delayed approvals, and prompt-injection-motivated catalog clamping—covering state transitions (apply/reject/revert/restart) and security consequences. Change usefulness: concrete files, symbols, invariants, and failure modes are present, but there is no ordered edit sequence or named tests/validation steps (that belongs to the How-to page), capping at 2. Style: strong opening and well-routed sections, but paragraphs are extremely dense with inline parentheticals and edge cases are interleaved rather than isolated, so it reads as an excellent flat reference: 3. Correctness: no internal contradictions; the page explicitly flags subtleties (temporary userId hack, expiry-contract distinction, empty-vs-omitted semantics), meriting 4."
+  },
+  {
+    "task_id": "page_b84bb35a6cc95c36ccbcb51f",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the agent/chat loop clearly owns the page and adjacent concerns are delegated ('see the git-store page', 'see the sharing page'), but the prose never explicitly states exclusions—auto-approval and model routing sections drift toward gatekeeper/RPC territory without a stated boundary, so 3 not 4. Grounding: many claims carry file:line evidence and a quoted worker-definition excerpt, but a load-bearing area—compaction (trigger ratio, boundary rules, checkpoint contents), promised in the opening—cites mostly bare symbols/files without line ranges or excerpts, as does the auto-approval section; per the load-bearing rule this caps at 2. Reasoning: excellent causal model—frozen ambient set explaining stale chats, never-rebound names guaranteeing replay determinism, persistence-barrier failure reaped by reconcilePendingGadgets, restore-forger capability scoping, drain single-flight and stop-at-first-gate ordering, turn rerun after compaction, AGENT_RUNNING mutual exclusion—covering state transitions, concurrency, and security coherently: 4. Change usefulness: concrete files, symbols, and invariants, but no ordered edit sequence, tests, or validation/rollback steps: 2. Style: strong opening and well-routed headings, but dense identifier lists (tool enumeration) and packed sections make some answers require rereading; solid 3. Correctness: internally consistent, edge cases (failure paths, replay determinism) treated carefully; no contradiction visible from the page alone: 3."
+  },
+  {
+    "task_id": "page_b97ac038d8e2810c2133bc39",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the kernel worker clearly owns the page and adjacent concerns (observability, user/overseer DOs, gatekeeper lifecycle) are linked out, but the prose never explicitly declares its in-scope/out-of-scope boundary, so it stays at 3. Grounding: nearly all load-bearing claims carry file+line-range citations with explanatory context (fetch routing, admin minting, do-retry semantics, KV mirror); a few peripheral claims are uncited (router serves assets, dynamic gatekeeper bindings 'never checked in'), keeping it at 3 rather than 4. Reasoning: multiple genuine causal derivations — replay-safety rationale for single retry (reset can't distinguish applied vs lost), fresh-stub-per-request eliminating broken-stub bookkeeping, single-DO-writer preventing KV races, one-shot admin capability minting — but these are per-section insights rather than one integrated causal model, so 3 not 4. Change usefulness: concrete files/symbols and invariants to preserve are named, but there is no ordered edit sequence and no named tests or validation steps, capping at 2. Style: purposeful opening, well-routed headings, edge cases (DO resets) isolated; the opening doesn't fully deliver the flow answer by itself, so 3. Correctness: internally consistent, distinctions handled carefully (retryable vs durableObjectReset, idempotent install flag); no contradiction detectable from the page alone — 3."
+  },
+  {
+    "task_id": "page_bcd856ba10422c358e61501f",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the gatekeeper lifecycle clearly owns the page and adjacent concerns (approval queue, gadget iframe) are routed via links, but the prose never explicitly names its in-scope/out-of-scope boundary, so it stays at 3; the external-message-gateway section is arguable but plausibly lifecycle-adjacent. Grounding: nearly every load-bearing claim carries file paths with line ranges and the prose explains what the code establishes (e.g., getGatekeeperClassFor as chokepoint, addGatekeeper rollback); a few claims lack citation ('the creating user's DO id rides the props so model resolution bills the right account'), blocking 4. Reasoning: the page builds a coherent capability-security model — why only the class reference crosses the DO boundary, why hooks must never store session callbacks, why source-prefixed keys prevent DO-name collisions, why isAdmin is fetched fresh per open, rollback and orphaning semantics on remove vs unbind — covering state transitions and security consequences, earning 4. Change usefulness: exact files, symbols, and invariants are named, but there is no ordered edit sequence and no named tests or validation checks (the SKILL.md link doesn't transfer), capping at 2. Style: strong opening and well-routed headings, but the prose is dense with identifiers and the flow answer requires reading through the tier section, so 3. Correctness: internally consistent, handles subtle distinctions (unbind vs remove, dormant vs disabled provisioning) with no contradictions detectable from the page alone; unverifiable against source, so 3."
+  },
+  {
+    "task_id": "page_bd6d3caf27cf85969af13bb8",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 1,
+      "reasoning_depth": 3,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening prose names the page's owner (local run + build system) and explicitly delegates test infrastructure to the testing page and deployment vars to the deployment page — meets the 4 promotion rule. Grounding: the page is rich in file-path locators (scripts/run-dev-server.ts, scripts/dev-server-config.ts, build-format-blueprints.mjs, root tsconfig) but per the rubric these are locators, not evidence — no line ranges or quoted excerpts back load-bearing claims like the env-stripping/fingerprint semantics, the ~0.33s pnpm-exec saving, the TCP-poll watcher ordering, or the single-threaded tsgo rationale; fewer than half the load-bearing claims have specific evidence, so 1. Reasoning: multiple genuine causal chains (tasks vs scripts because pnpm --filter can't see vp tasks; env must be task-declared or it's invisible AND unfingerprinted; cache:false required for env-named external paths since the fingerprint sees the value not the contents; deploy uses --no-cache so stale artifacts never ship; app-UI watchers deferred to avoid competing with Wrangler bundling) — solid 3, though it stops short of one fully unified state-transition model. Change usefulness: concrete files, a named verification loop (build/lint/test), invariants to preserve (prefer env over untrackedEnv, don't reintroduce root recursive script) and a debugging signal (vp run --last-details) — 3; a 4 would need clearer ordered edit sequences for representative changes. Style: purpose up front, headings route questions, but bullets are extremely dense and some edge cases (typescript6 alias, catalog pinning) are packed into run-on list items — 3. Correctness: no internal contradictions; minor unsupported precision (0.33s figure) keeps it at 3."
+  },
+  {
+    "task_id": "page_c2d762461ef3f99fdb845108",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the page is clearly owned by 'Backend server entrypoints, sessions, and auth' and delegates RPC transport to the RPC page, but it never explicitly states its own scope boundary in prose, so it stays at 3. Grounding: essentially every non-obvious claim carries a file+line-range citation with prose explaining what the code establishes (e.g., token format across server.ts:684-692 and user.ts:304-352; auth config in auth/config.ts:14-30 plus REVIEW.md:33-35), and multi-file conclusions cite each boundary — 4. Reasoning: a coherent capability/security model with multiple derived consequences: fresh per-request DO stubs eliminate broken-stub detection; read-only retry vs. never-retry writes because a DO reset is ambiguous between applied/unapplied; auth config kept out of AdminConfig so a compromised admin session cannot flip it; DISABLE_PASSWORD_AUTH gated on a non-empty allowlist to prevent lockout; PendingLogin as an unguessable capability with liveness tied to the in-flight RPC; notifyClosed disposal as lost-DO detection — 4. Change usefulness: excellent locations and invariants, but no ordered edit sequence and no named tests or validation steps, capping at 2. Style: purposeful opening and question-routing headings, but the prose is dense with heavy parentheticals; edge cases are present but interleaved rather than layered — 3. Correctness: no internal contradictions; subtle exceptions (Cloudflare sign-in doubling as billing connection, no-op credential callbacks, signupsEnabled as access toggle not auth config) are handled explicitly — 4."
+  },
+  {
+    "task_id": "page_cfb35339ad535dffed538dc8",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns the gatekeeper framework and explicitly routes adjacent concerns out (auto-approval drainer → agent-and-chat page, observer strategies → sharing-and-observers page, the three singleton gatekeepers → 'their own pages'), earning a 4. Grounding: a handful of load-bearing claims have specific evidence with line numbers (overseer.ts:4445 sharing enforcement, :4665 submitAction lockdown refusal, :4711 hook recorded disabled), but many equally load-bearing claims rest on file-level locators or nothing — e.g., vendor discovery by scanning GATEKEEPER_* bindings, capabilities-via-ctx.props for stub restore, the verifier-returns-to-minting-vendor guarantee, and admin-disabled enforcement in user.ts have no line ranges or excerpts. That's roughly half coverage → 2. Reasoning: multiple causal explanations form one coherent capability/security model — why the gatekeeper must not store hook callbacks (session-bound revocation), why observations must be awaited before returning data, why prohibitAllSharing latches lockdown, why disabled-resource enforcement happens before capability minting, and the full pending→apply/reject/revert and hook register→enable→deliver→disable state machines — meeting the 4 bar. Change usefulness: concrete files and reference implementations are named, but the actual build guidance is delegated to the write-gatekeeper skill (which doesn't transfer), and no tests, validation steps, or ordered edit sequence for modifying the framework are given → 2. Style: the opening answers ownership, sections cleanly isolate contract/hooks/sharing/agent surfaces, and edge cases (awaitDecision, restart, revert) sit in named subsections without repetition → 4. Correctness: internally consistent, handles subtleties (fetch-before-authorize is allowed, non-clean rollback via restart); no contradiction detectable from the page alone → 3."
+  },
+  {
+    "task_id": "page_d08c849ca2fd9529ee0c196f",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page is owned by the sharing permission-graph/lazy-revocation topic and explicitly draws boundaries in prose — 'prohibitAllSharing intentionally does not live in this module' (routed to Overseer policy), UseOverseerInterface details routed to the Workspace Overseer page, and SharingManager's ownership ('owns all manipulation of collaborators and shareKeys, performs no RPC') is stated directly; that earns the promotion to 4. Code grounding: nearly every load-bearing claim (edge model, HMAC key storage, fixed-point computation, sync-before-abort restart, atomic redeem-and-open) carries line-ranged citations and the prose explains what each establishes, including a quoted comment; a few derived statements ('roles only increase, so the loop converges') are unlabeled inference and not every claim reaches exact-evidence standard, so 3 not 4. Reasoning depth: 4 — the page builds a coherent causal model: recompute-at-open is *why* lazy revocation is safe; monotone role raising is *why* the fixed point converges; storage.sync precedes ctx.abort *because* abort bypasses the output gate; HMAC-only storage is *why* a storage leak doesn't leak links; edges pointing at links (not aliases) is *why* alias deletion is safe. Security and state-transition consequences (session eviction, no-op removals not restarting the DO) are covered. Change usefulness: concrete files/symbols and invariants to preserve are named, but there is no ordered edit sequence and no named tests or validation commands, capping it at 2 per the checklist. Style: clear opening, well-routed headings, no repetition — a solid 3; the opening is dense enough that operational vs. edge-case layering doesn't fully qualify as progressive disclosure. Correctness: no internal contradictions found and edge cases (revoked-link reversibility, keepUsers bounding, no-op grants) are handled consistently; unverifiable blind, so 3."
+  },
+  {
+    "task_id": "page_d3eb64a82be3d14a173413fe",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: Quickstart clearly owns the onboarding workflow and aggressively routes adjacent topics (build cache, testing, security) to their pages, but its prose never explicitly states what it owns versus excludes — routing tables alone don't satisfy the promotion rule, so 3. Grounding: load-bearing claims (what run-local builds vs. skips, ports, proxy paths, env-var seeding, what CI gates) carry line-ranged citations with explanations of what the code establishes; a few softer claims ('~11k lines', gatekeeper READMEs as setup guides) are locators only, so 3 not 4. Depth: mostly procedural flows with a handful of implications (run-local doesn't prebuilt gatekeeper bundles; pnpm --filter can't see vp tasks; npm incompatible with catalog setup) — implications, but not derived invariants or failure-mode reasoning, so 2. Change usefulness: concrete commands, file locations, and named validation (pnpm lint = CI gate) but no ordered edit sequence — links to change guides don't transfer their usefulness, so 2. Style: genuine progressive disclosure — the opening gives the run-it-now answer, named sections isolate the dev loop and command reference, and routing tables handle everything else without repetition, so 4. Correctness: no internal contradictions or unsupported certainty detected; claims are hedged appropriately (e.g., 'notably does not run the full build'), so 3."
+  },
+  {
+    "task_id": "page_d84ba6005dce5ba63133817a",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: build/test tooling clearly owns the page and the Integration Test Harness is routed out only via a link — the prose never explicitly states what it owns versus excludes, so 3 not 4. Grounding: nearly every load-bearing claim carries a file path with line range and the prose explains what the cited code establishes (env-passthrough.test.ts for env stripping, vite.config.ts for the cache:false decision, with-timeout.ts for the watchdog); a few external-behavior claims (vitest's silent Node fallback, pool-workers not wiring onWorkerdCrashRestart) lean on locators in guard files rather than exact evidence, blocking 4. Reasoning: the page builds one coherent causal model of the task cache — undeclared env vars are both invisible and absent from the fingerprint (silent wrong-input builds), value-vs-target fingerprinting explains cache:false, self-written paths explain the exclusion list, and why `incremental` tsc is banned — plus derived failure modes like the hardcoded root-package filter silently double-running tests on rename; that's a precise model with state/invariant coverage, so 4. Change usefulness: concrete files, invariants (task/script name collision, env only on tasks), validation (env-passthrough test) and debugging signals (`vp run --last-details`, exit 124) are present, but there is no single ordered edit sequence for a representative change, so 3. Style: strong opening thesis, well-routed sections, dense but non-repetitive — a solid 3; the prose is compressed enough that some answers need rereading, short of clean progressive disclosure. Correctness: no internal contradictions; claims are consistent and uncertainty (undecided type-aware lint policy) is flagged, but subtle claims can't be promoted beyond 3 on the page alone."
+  },
+  {
+    "task_id": "page_dc5417f411d829a73fa044a7",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the page names its owner (collaborator sharing + observer enforcement as implemented) and explicitly routes read-time exclusion/lockdown to Capability Security Model and code-snapshot sharing to Blueprints — meets the 4 promotion rule. Grounding: nearly every load-bearing claim carries file:line-range evidence with prose explaining what the code establishes (e.g., mint-time enforcement at overseer.ts:8340-8350, role ordering at sharing.ts:29-45, reprompt bound at overseer.ts:7890-7990), and it distinguishes design docs from implementation; a few secondary claims (fragment stripping in error reports, some docs-only assertions) lack exact code evidence, so 3 not 4. Reasoning: a coherent causal model — why ensureObserver runs only after the role check (metadata non-disclosure), why revocation aborts the DO after ~100ms (kills the fanout session table while letting the revoker's RPC settle), why failures are collected not short-circuited (single re-prompt), why orphaned observer records are safe (live-graph authorizeObservation) — invariants, ordering, and security consequences form one model: 4. Change usefulness: excellent locations and invariants but no ordered edit sequence or validation workflow for making a change (only one test named in passing); per the checklist this caps at 2. Style: the opening states the core invariant and scope, sections isolate share links / open() flow / role asymmetry, and edge cases are grouped under Known limits — full progressive disclosure. Correctness: no internal contradictions; the page explicitly flags historical-plan vs implemented behavior and enumerates v1 limits and best-effort failure modes, handling uncertainty correctly."
+  },
+  {
+    "task_id": "page_dceeac6b5edeb56abcd22dd6",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one clear owner (gadget code lifecycle: storage → OT stream → execution → rendering → export); the opening states the flow it covers and see-also routes adjacent topics, but the prose never explicitly names exclusions/delegations, so it stays at 3 per the promotion rule. Grounding: nearly every load-bearing claim carries a file+line-range citation with prose stating what the code establishes (e.g., threeWayMerge at git-store.ts#L484, sandbox attrs at GadgetUI.tsx#L494-L506); design-intent claims ('chosen so code can be exported') and export-limits.ts lack precise anchoring, keeping it at 3 rather than 4. Depth: multiple genuine causal chains form a coherent model — refless git design → enumerable roots, intentional dangling objects, no GC; server-ordering convention → ChangeSet transform law; pending-buffer composition → ~RTT submission granularity; origin-less iframe → doubly-nested data-URL Cap'n Web embedding and MessageChannel handshake; facet abort-on-context-change → live code swap — covering concurrency (OT idempotency, order-tolerant paths) and security (globalOutbound: null, capability stubs), earning 4. Change usefulness: precise ownership boundaries and module-privacy invariants ('only transformCodeChange may call map'), but no ordered edit sequence and no named tests or failure checks, capping at 2. Style: purpose stated up front, headings route questions well, no repetition; density of inline citations keeps it a strong flat reference at 3. Correctness: internally consistent and careful with exceptions (target=_blank vs window.open, pinned vs uncommitted gadget rule); no contradiction found, 3."
+  },
+  {
+    "task_id": "page_e4bfda030334fb550d8fc81d",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the opening names the owner (the Overseer DO's ownership and state machines) and explicitly delegates code formats, agent execution, sharing, and hook mechanics to their outline pages — meets the 4 promotion rule. Grounding: nearly every load-bearing claim (open flow ordering, storage invariants, OT retry semantics, appliedAt stamping) carries line-ranged citations with prose explaining what the code establishes, and inference is labeled ('historical reasons', 'documented hack'); however, several dense claims share one citation span (the submitCodeChange bullets all lean on api.ts#L1690-L1740) and a few assertions ('the UI locks editing during turns') are uncited, so 3 not 4. Reasoning: a coherent causal model — role check before observer check prevents metadata leakage (security), shared-by-another-owner treated as missing prevents deleted-workspace resurrection, seq-skip = rebuild because OT cannot tolerate double-application, appliedAt stamping required or subscribeToActions resume misses records, destructive vs content-preserving generation bumps — covering state transitions, concurrency (stragglers, DO resets, hibernation), and security; 4. Change usefulness: excellent locations and invariants to preserve, but no ordered edit sequence and no named tests or validation steps, capping at 2. Style: purpose and scope up front, headings route questions well, but paragraphs are extremely dense with inline parentheticals and edge cases interleaved into the main path rather than isolated, so 3. Correctness: no internal contradictions; subtle exceptions (stale merge as expected outcome, same-seq-different-payload as client bug, read-only retry semantics) are handled explicitly and precisely."
+  },
+  {
+    "task_id": "page_e68eb537ab111d68f01ea0eb",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns the architecture-overview role and stays at survey altitude, routing depth to other pages via links — but its prose never explicitly states what it excludes or delegates (a related-pages list doesn't count), so it stays at 3. Grounding: most load-bearing claims (OS mapping, router dispatch, RPC flow, package roles) carry specific line-range citations, but several trust-boundary claims — 'gatekeeper code cannot assert its own ambience' (cites AGENTS.md and provisioning-policy.ts with no lines/excerpts) and parts of 'gatekeepers never mint capabilities' (bare AGENTS.md) — rest on locators, not evidence; with at least one load-bearing security claim unsupported, the cap is 2. Reasoning: it derives real consequences (GATEKEEPER_* env scanning ⇒ installing a gatekeeper is a binding change not a code change; simulated approval outcomes ⇒ agents aren't blocked synchronously; double sandboxing ⇒ gadget bugs can't leak other users' data), earning 3. Change usefulness: concrete files and symbols plus one plausible change path (gatekeeper installation as binding change), but no ordered edit sequence or named tests/failure checks, so 2. Style: strong opening establishes purpose, headings route questions, the table earns its place — a well-organized flat reference, 3; edge cases aren't a distinct layer so no promotion. Correctness: internally consistent, claims hedged appropriately ('if configured'), no contradiction detectable from the page itself — 3."
+  },
+  {
+    "task_id": "page_e77c3495858801e34f900dad",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: compaction clearly owns the page with minimal spillover (checkpoint/replay touches overseer topics only as needed), but the prose never explicitly states what it excludes or delegates, so it stays at 3. Grounding: nearly every load-bearing claim carries a specific file:line range and the prose explains what each citation establishes (e.g., why totalTokens is cleared, why the boundary respects record boundaries); multi-file conclusions cite both sides (agent-compaction.ts + agent.ts/overseer.ts). A few assertions ('merge/revert/rollback refuse while a turn is active') lean on thin locators, keeping it at 3. Reasoning: this is the page's strength — a coherent causal model with derived consequences: record-boundary cuts preserve tool-call/result pairing; triggering at 85% below the limit is what makes failed summaries safely degradable to an uncompacted turn; clearing totalTokens prevents a never-re-trigger bug; commit-after-model-I/O safety is argued from the active-turn lock; rollback deletes checkpoints that folded erased changes, which is what enables cross-boundary reverts. That's a 4. Change usefulness: exact files, symbols, invariants, and failure semantics are named, but there is no ordered edit sequence and no named tests or validation commands, capping at 2. Style: opening states purpose and flow; headings route trigger/boundary/summarization/checkpoint/rollback questions well, though heavy parenthetical density makes some answers require rereading — 3. Correctness: internally consistent, distinguishes fallbacks and edge cases (unknown models, /compact, cancellation, epoch resets); no contradiction found, but blind judging cannot confirm the subtle-edge-case handling against source, so 3."
+  },
+  {
+    "task_id": "page_eb82a667f0027e9ae4018e1c",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy 3: the two auto-provisioning gatekeepers clearly own the page and adjacent concerns (RPC contract, admin policy, agent runtime) are routed via links, but the 'ambient path, end to end' section substantially re-explains provisioning-policy, UserDO minting, and overseer installation that belong to Framework/Overseer/Config pages, and the page never explicitly states its own boundary in prose — so no promotion to 4. Grounding 3: nearly every load-bearing claim carries a file+line-range citation and the prose says what each establishes (e.g. describe()-before-id-allocation at user.ts:1249-1283, alarm non-overlap at schedule-driver.ts:658-720), with inference and unknowns labeled in the Uncertainty section; a few claims lean on wiki cross-links or a README as locators, blocking 4. Depth 4: it builds a coherent causal model — capability-not-identity authority, in-flight promise dedup against the DO input-gate race, resolving AccountDescription before slot allocation to avoid burning ids, alarm-handler non-overlap preventing re-arm bypass, facet-id inheritance as the workspace scope, observer exclusion enforced at collection granularity — covering state transitions plus concurrency and security consequences. Change usefulness 2: concrete files/symbols and named failure semantics plus one named test (workerd facet inheritance), but no ordered edit sequence or validation checklist for making a change, so it fails the 3 checklist. Style 3: the opening establishes purpose, headings route questions, and edge cases are grouped, but the prose is dense with heavy parenthetical citation runs and bolded asides that force rereading in places; not clean progressive disclosure. Correctness 3: no internal contradictions found and uncertainty is flagged, but several strong claims (e.g. 'single chokepoint', 'exactly two visibilities') carry unverifiable certainty from the page alone, keeping it at 3."
+  },
+  {
+    "task_id": "page_ec4bb3754a199a27febc7793",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the quickstart workflow clearly owns the page and adjacent concerns (auth config, cache rules, testing, deployment) are delegated inline, but the prose never explicitly states ownership boundaries — the 'Where to go by task' section is a routing list, which per the promotion rule doesn't lift it to 4. Grounding: nearly all load-bearing claims (pnpm pinning, run-local's four steps, dev-server/dev-client behavior, verify commands, CI scope) carry specific file+line citations; a few claims are uncited (monorepo table role descriptions, vp cache semantics), keeping it at 3 rather than 4. Reasoning: mostly command mechanics with a few useful implications ('build is type-check + codegen, not a compile', cache-invalidation warning, frontend fall-through), but no derived invariants or failure-mode analysis — 2. Change usefulness: concrete files/commands and named validation checks exist, but there is no ordered edit sequence for any change; it's orientation, so 2. Style: exemplary progressive disclosure — the opening alone gets you running, named sections isolate dev variants/verification/navigation, and edge cases (self-hosted 'coming soon') are cleanly grouped — 4. Correctness: no internal contradictions or unsupported certainty detected; claims are hedged appropriately (e.g., 'don't expect packaged tooling') — 3, without enough demonstrated edge-case handling for 4."
+  },
+  {
+    "task_id": "page_ec799edb4d521d2ebaca9fcd",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the opening explicitly names what the page owns (entry point, DO set, persistence, minting chokepoints, admin config) and delegates agent, gadgets/git, and sharing to their own pages — a clean 4. Grounding: several load-bearing claims carry exact line ranges (server.ts:794-872, user.ts:157-226, overseer.ts:959-1290, user.ts:1666-1691), but other load-bearing claims — 'writes never retry / replay once only for pure reads' (do-retry.ts), the KV mirror revert-on-failure and single-writer serialization (admin-config.ts), and buildGatekeeperVendorMap discovery — are supported only by file-level locators without line ranges or excerpts, which the rubric treats as locators, capping at 2. Depth: multiple genuine causal explanations (retry restricted to reads because a reset can't distinguish applied-from-lost responses; auth config kept env-var driven so a compromised admin session can't alter it; admin check done once at capability mint; serialized read-modify-write preventing lost updates), earning 3, though they don't cohere into a single state-transition model for a 4. Change usefulness: concrete files, symbols, schemas, and the migration-gating `version` singleton are named, but there is no ordered edit sequence and no named tests or failure checks, so 2. Style: strong opening, well-routed headings, edge cases isolated (DO-reset subsection), but the long raw schema identifier dumps force scanning, holding it at 3. Correctness: no internal contradictions; edge cases (legacy read-only collections, replay-safety caveat) handled plausibly; without stronger evidence anchoring, 3."
+  },
+  {
+    "task_id": "page_ed1f3a95af61697e2486ee2e",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 2,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the page explicitly owns the system map ('This page is the map; each subsystem has its own page') and routes adjacent concerns to named pages (gatekeepers, sharing-and-observers) without re-explaining them — a 4. Grounding: several load-bearing claims have exact line-ranged evidence with explanation (router binding scan router/src/index.ts:28-35, gadget loader overseer.ts:3964-4027 with globalOutbound:null, iframe sandbox attributes GadgetUI.tsx:491-507), but other load-bearing claims are supported only by symbol-name locators or nothing: workspace-as-Durable-Object, the ApprovalQueue read/write split, live permission-graph recomputation, and getGatekeeperClassFor as the sole minting chokepoint carry no line ranges or excerpts. Roughly half of load-bearing claims are specifically evidenced → 2. Depth: multiple genuine causal derivations (binding set IS routing config → installing a gatekeeper is a pure binding change; globalOutbound:null → capability-only egress; overseer-as-facet-parent → lifecycle/restart authority; iframe sandbox → postMessage-only channel), meeting the two-causal-explanation bar for 3, but no full state-transition/concurrency model, so not 4. Change usefulness: concrete packages/files and one plausible change path (install a gatekeeper via bindings), but no ordered edit sequence or named tests/failure checks → 2. Style: opening gives the ownership/flow answer, named sections isolate operational detail (deployment tiers, runtime model, sandboxing, security), and the 'Established vs. aspirational' section groups edge cases — full progressive disclosure, 4. Correctness: no internal or source contradiction detectable from the page, and it explicitly separates verified mechanisms from aspirational README claims, handling uncertainty correctly → 4."
+  },
+  {
+    "task_id": "page_f0420b1f4a7bedeef5f12a48",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns the architecture-overview role and routes every subsystem (kernel, gatekeepers, RPC, gadgets) to its owning outline entry without re-explaining, but its prose never explicitly states what it owns versus excludes — routing links and a 'Where to go next' list don't satisfy the promotion rule, so 3. Grounding: nearly all load-bearing claims carry file:line evidence (globalOutbound: null and srcDoc CSP at overseer.ts:4013-4027 / GadgetUI.tsx:105-117; router binding-scan at router/src/index.ts:1-57; loopback re-entry at overseer.ts:8766-8795) and it distinguishes README aspiration from implementation, but several package-map assertions ('14 vendor connectors', 'typed-storage the only package emitting dist') and some capability-model claims rest only on wiki cross-links, blocking 4. Depth: multiple genuine causal links — module-global socket state because of React dev double-invoke, gatekeeper install being purely a router binding change because routes are discovered by scanning bindings, Overseer self-confirmation against the User DO, and the sandboxing-not-trust security model — earning 3, though the full state/concurrency model lives in the linked pages, not here. Change usefulness: concrete files and one plausible edit path (binding change to install a gatekeeper), but no ordered edit sequence or named tests/failure checks on this page; linked change guides don't transfer, so 2. Style: the opening table answers the ownership question, named sections isolate routing/flow/runtime detail, and edge cases are grouped in an explicit Uncertainty section — full progressive disclosure, 4. Correctness: no internal contradictions and uncertainty is handled honestly, but precise line-range claims are unverifiable blind and some counts are asserted with unsupported certainty, so 3."
+  },
+  {
+    "task_id": "page_f1aa0d264b73c57880041352",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the page clearly owns the connector catalog, and its prose explicitly delegates the shared contract to Gatekeeper Framework, MCP trust boundaries to MCP Connectors, and context/scheduler internals to their dedicated page — in-scope/out-of-scope is stated, not just linked. Grounding: nearly every claim carries a file+line citation with an explanation of what it establishes (e.g., NO_DEFAULT_CRED_INPUTS at manifest-lib.ts:260-266, scope derivation at google.ts:376-393), and inference is flagged (linear's status, session-API gaps); it falls short of 4 because several load-bearing claims rest on README lines rather than code (auto-discovery via GATEKEEPER_<NAME> bindings cites only a package README) and the multi-file discovery claim doesn't cite the backend/router side. Depth: multiple genuine causal links — HA skips OAuth because instances lack a central directory, email is NOT_INSTALLABLE because Email Routing requires a zone workers.dev lacks, preinstalls must take no inputs because 'a preinstall has nobody to ask', Google scopes derive from requested resource patterns to gate later upgrades — but these are per-connector vignettes, not one coherent model, so 3. Change usefulness: concrete files (deploy-inputs.json, manifest-lib.ts sets, run-dev-server.ts seeding) and a uniform install recipe give a plausible edit path, but no ordered sequence for modifying/adding a connector and no named tests or failure checks, capping at 2. Style: strong opening and shape-based headings route questions well, with an explicit uncertainty section; dense parenthetical citation clumps and uneven depth across shapes keep it at 3. Correctness: no internal contradictions; uncertainty and exceptions (linear's undocumented status, cloudflare's fixed OAuth endpoints, email's dormant loopback) are handled explicitly."
+  },
+  {
+    "task_id": "page_f669a38d4e17bb2ed421c2d1",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the observer mechanism clearly owns the page and teardown is routed to the sharing page, but the prose never explicitly declares its in-scope/out-of-scope boundary, so it stays at 3. Grounding: every load-bearing claim (ensureObserver ordering, ambient auto-fill, repair-loop budget, commitment-point persistence, forward-exclusion semantics, verifier minting/cast) carries exact line ranges with prose explaining what the code establishes; the strategies table is explicitly labeled as documentation-derived rather than code-verified, which is honest inference labeling — 4. Depth: a coherent causal model with multiple derived consequences: verification placed before capability handoff prevents metadata leakage to unauthorized callers; rollback intentionally spares pre-existing registrations because removal would desynchronize excludeObservers from the persisted record; over-naming in excludeObservers fails closed (blocks, never leaks); per-open re-verification bounds revocation staleness — 4. Change usefulness: concrete files/symbols and failure modes are named, but there is no ordered edit sequence and no named tests or validation steps, capping it at 2. Style: the opening delivers the invariant and flow, sections isolate operations (record lifecycle, exclusion, verifiers, teardown, strategies), and edge cases are grouped — genuine progressive disclosure, 4. Correctness: no internal contradictions; subtle exceptions (ambient bindings as selection-only exception, best-effort teardown, bounded reprompts) and uncertainty are handled explicitly — 4."
+  },
+  {
+    "task_id": "page_f7b6ad1b59c001b02f5a49e1",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns the architecture/topology topic and routes persistence, RPC, and sandbox details to sibling pages via links, but it never states in prose what it owns versus excludes, so the promotion rule caps it at 3. Grounding: nearly all load-bearing claims (router binding scan router/src/index.ts:24-35, facets src/overseer.ts:4064-4082, DO addressing src/server.ts:686/702, LOADER with globalOutbound:null) carry file:line citations with prose explaining what the code establishes; a few claims rest on vague locators ('REVIEW.md', 'wrangler.jsonc comment near the migrations block') and inference is rarely labeled, keeping it at 3 not 4. Depth: multiple derived consequences — env-scan routing means installing a gatekeeper is a pure binding change; globalOutbound:null yields no-internet sandboxing with loopback entrypoints as the controlled channel; name-addressed user DOs vs newUniqueId workspaces; getGatekeeperClassFor as the single enforcement chokepoint before capability minting. These are real causal links, but they don't cohere into a full state-transition/concurrency model, so 3. Change usefulness: concrete files and one plausible edit path (add a gatekeeper = add a binding), but no ordered edit sequences, named tests, or failure checks — 2. Style: strong opening with the OS mapping, headings route topology/entry-point/boundary questions, table shortens the package map; but edge cases (dev asset fallback, Access-mode rejection) are embedded mid-section rather than isolated, so 3 rather than full progressive disclosure. Correctness: internally consistent, handles dev-vs-prod and idempotent blueprint install carefully; no contradictions detectable from the page itself — 3."
+  },
+  {
+    "task_id": "page_f940571582ac368b671c765e",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns the frontend shell and explicitly routes adjacent concerns in prose ('the specifics... are covered in the RPC protocol page. What the shell adds on top', backend forwarding delegated to observability), satisfying the promotion rule to 4. Grounding: nearly all load-bearing claims carry file+line-range citations with explanations of what the code establishes (e.g. useAuth.ts:96-119 for pipelined authenticate, errorReporting.ts:66-125 for throttle/fingerprint), but a few claims are locator-only or vague ('currently a single placeholder entry' in feature-flags.ts, the AGENTS.md aside), so 3 not 4. Reasoning: multiple genuine causal derivations — pipelined auth means errors surface at first stub use rather than blocking boot; route excluded from the error fingerprint so navigation loops can't exhaust the cap; setReportedUserId keyed on the stub covers all three auth modes; report path never rethrows so observability can't alter app behavior; pageLocation normalized because share-link fragments are bearer capabilities. These are invariant/security consequences (3), but they remain section-local observations rather than one coherent model, so not 4. Change usefulness: concrete files/symbols and several failure modes are named, but there is no ordered edit sequence and no named tests or validation steps, capping at 2. Style: strong opening, headings route likely questions, no major repetition — a solid 3; edge cases are interleaved with main prose rather than isolated, so not full progressive disclosure. Correctness: no internal contradictions; subtleties (idempotent dispose, unverified diagnostic label, dev-only VITE_BACKEND_HOST) are handled carefully; unverifiable externally, so 3."
+  },
+  {
+    "task_id": "page_fa2dc50e9419974ec8e74ce4",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 4,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the opening explicitly names the owner (collaborator sharing/observers), routes blueprints to Code Storage and enforcement to the Overseer page — meets the 4 promotion rule. Grounding: essentially every non-obvious claim carries file+line-range evidence with prose stating what the code establishes (e.g., HMAC-only key storage sharing.ts#L45-L64; ensureObserver ordering overseer.ts#L7852-L7875); multi-file conclusions cite each boundary (overseer.ts push + server.ts client-side prune), and non-facts are labeled ('GC is a stated future option, not current behavior'). Depth: a coherent causal model — reachability-based lazy revocation implies re-add restores transitive reshares; HMAC-hashed keys mean neither storage dumps nor the server can mint keys; observer check runs after role confirmation so denial leaks nothing; rollback restricted to this-call registrations; monotonic prohibitAllSharing latch overriding role computation — security and state-transition consequences are derived, not just listed. Change usefulness: concrete files/symbols and failure modes exist, but no ordered edit sequence or named tests, capping at 2. Style: good structure and routing, but dense parenthetical prose makes some answers require rereading — a solid 3, not full progressive disclosure. Correctness: no internal contradictions; edge cases (alias key rows, one-reprompt cap, best-effort fan-out failures only logging) and uncertainty are handled explicitly."
+  },
+  {
+    "task_id": "page_fa3261585503ce362f93b620",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 4,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: the page clearly owns the workshop-shared RPC contract (api.ts + gatekeeper.ts) and routes adjacent material to Gadget Runtime, Backend Kernel, and the Change Guide via links, but it never explicitly states its exclusions in prose (e.g., that gatekeeper framework mechanics or implementations belong elsewhere), so it stays at 3. Grounding: excellent — nearly every load-bearing claim carries file:line ranges and quoted doc-comment excerpts (e.g., mint-or-null AdminApi at api.ts:705-712/919-928, validator division of labor at code-change.ts:32-41, toolchain pinning at pnpm-workspace.yaml:8-19), but a few non-obvious claims are unevidenced ('presence/outputs/action views follow the same shape', 'gatekeepers likewise'), blocking 4. Reasoning: a coherent causal model of capability-style RPC — why one WebSocket (in-browser sandboxing), why stubs must not enter useState (stubs are runtime-callable so React treats them as updaters), why createAccount is flag-gated (stubs can't report optional-method presence), why esbuild/vite pinning follows from Stage-3 decorators, why binding names are validated (plain-object prototype collision), plus security ordering (nonce replay, authorize-before-return, fetch-then-authorize exception) — meets 4. Change usefulness: names concrete files, the validateRpc requirement, and invariants (don't duplicate shape validation, dispose stubs), but gives no ordered edit sequence and no named tests or failure checks — the actual procedure is deferred to the linked Change Guide, which doesn't transfer; capped at 2. Style: strong opening and question-routing headings, but bullets are densely packed and some answers (e.g., disposal semantics) require careful rereading within long compound bullets; solid 3. Correctness: no internal contradictions found, and the page explicitly handles subtle exceptions (omitted resourceUrlPatterns ≠ [], auto-disposal of RPC parameters, fetch-then-authorize only for strictly read-only ops), earning 4."
+  },
+  {
+    "task_id": "page_fda5b69926556e1b81c8b157",
+    "judge_id": "fable-5",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 3,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page clearly owns the architecture-overview role and routes subsystems to their own pages via links ('Details: Workshop Backend Kernel', 'Where to go next'), but its prose never explicitly states its own in-scope/out-of-scope boundary, so per the promotion rule it stays at 3. Grounding: load-bearing claims (three pillars, router binding-scan discovery, WebSocket RPC session rooted at PublicApi, kernel review bar) all carry line-ranged citations with explanatory prose, but several table rows (configurator-ui, backend-utils, typed-storage) and the 'every deployable package carries its own wrangler.jsonc' claim are uncited, blocking a 4. Depth: at least two genuine causal derivations — GATEKEEPER_* binding scanning means installing a gatekeeper is a redeploy with zero router changes, and asynchronous approval via local simulation lets the agent keep working — plus the sandbox-isolation consequence; it does not build a full state/concurrency model, so 3. Change usefulness: concrete files and the kernel review rules (split kernel/UI changes, doc-comment requirement) give locations and a review check, but no ordered edit sequence or named tests, capping at 2. Style: opening delivers the ownership/flow answer, named sections isolate topology/object-model detail, edge cases (dev-router fallback, async approval) sit where they'd be sought, and links defer depth — genuine progressive disclosure, 4. Correctness: no internal contradictions; claims are consistent with cited excerpts as presented, at most minor unverifiable assertions, 3."
+  }
+]

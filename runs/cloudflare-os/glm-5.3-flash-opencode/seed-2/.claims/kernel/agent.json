@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:621fec76822aa822af6c23831ecd1b91b0e9c5ae72b7710fcb976515ee1d27e3",
+  "claims": [
+    {
+      "id": "claim_280409c69e694f8e93fff9c91b99d0af",
+      "statement": "A chat turn begins with sendChatMessage: the message is prepared (slash command or prompt, attachments canonicalized per provider support), the chat's uncommitted change rows are materialized into a durable changes message, and the prompt commit happens in one synchronous storage transaction that also sets activeAgent — the lock behind assertChatNotActive's rejection of concurrent turns; built-in slash commands like /compact run a turn with no prompt.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L5343-L5406",
+          "version": "repo-lines-v1:sha256:6eeaf25b8885d19956734ea6b1aa29b46e618603b17ec405887dafc525370db9:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YzM4OWIwY2EwMjY2M2M0NjJlNjQ5MWE1YzFhZTUxN2U3YWQ4NTJmZjllOTc1N2M5NjY1NjE2NDNkN2JkY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyOWY2MzBhMzcyODdkNWJhZWI0NjNlNjc3YjY5OTI0YjdjY2YzM2JlYmRmZjU5MTNiNzlkM2RkNzVmZTJlNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3NGQwMDg0NjA1MjRmN2UxNjg1ZDNjZmYwNWUwODExZjU4NDJjNTllM2IwYTEyMWFlOTc3NDJkYTU3Yjk1NGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_29aa86adc8ce498ebe23b1590c341830",
+      "statement": "Before a user-initiated agent turn, the overseer runs checkUsageAndBalance (a no-op allow when the Cloudflare limits flow is disabled): a block posts an agent error message with outcome usage_limit, and when the free tier is exhausted but the user has a funded Cloudflare account the resolved BYOK routing is reused so inference bills the user's account; callback-initiated continuations are exempt so outstanding callbacks are never stranded mid-flow.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L5740-L5773",
+          "version": "repo-lines-v1:sha256:ff399ac1357ee152521f5b6a77e3ad7b6d3fde57f0d16ea9c9e09d8fbd511ed1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNTc3OTc2Y2Y5OGU5NmY4ODE2MzgzZDZkYzlhNWMyN2UyOTk5YmM4YjgwMmM2MDZlNzZkMWEyMGU4NTExMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjY2U1NDdmZTg3MTczYTYyZTdlZThiYTQxNjRhYmRkYWI2MzAxMTFkYzAxMTA0MjkwNDIwZmFjZmQ1MGFhZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzMDJlMjgxYTZiYzYxYjE4ODg1YTA0ZDk3NDk0ZjcyZDE3NzYwMGIxMTcwMDFhNWFhZmFjMWJiOTUzNjBiMWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ec6e635ba70946b0957ff1b8d0202238",
+      "statement": "The turn loop reruns runAgent after committing a compaction checkpoint (bounded, because the boundary only moves forward), ends after /compact, and for callback-initiated runs keeps looping while callbacks are outstanding — nudging once with the outstanding env.PARAMS_<n> names and then rejecting all remaining callbacks and ending with outcome callbacks_stalled if no progress followed the nudge; the Overseer's alarm holds the DO open and resumes agents when the browser closed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L5788-L5858",
+          "version": "repo-lines-v1:sha256:d157035b7869b1cf7cea5c82974cb317b0db291c21b15a343a5163e0c5135556:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwNmYxOGZhNzgwZWVmN2FmOTlhZDEwMmJmMzY2ZDVlNjFhYjZkOTQwZmYyNTQ1ZGE5NjgxZTZjNTY2ODVmMTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2ZDcxZWFhNzVlMDZiOGQ5MjMxNDkyYzRmY2NhNmY1YjYyMzgyNzU2ODM0ZjFkMGMxMmE1MTYxNGYyMDU4OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViYmY2YzIzYjgwMWQyYzE0YzUxNWM3NWMzYzEwYWE4Y2U2OGEwY2FlMzQ3MDY0OWY1Njc1YWI0YmZjMDBmMDEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L8212-L8226",
+          "version": "repo-lines-v1:sha256:b061735b0ab22371b5af69ea1e429d6982f9d103a6a2061b68dc18c06e280e25:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyMzNhMmYzMTZjNGZlNWQ5Mzc5YzhiYjViMGNkOTg3MWY2YmY1MzQ5ZjcxZTQ5NWE1MzY3OTEzYzVlNmVjYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2YmY3YjNhOWI0NTM1ZjAwNTI0Y2U2ZDU3NzZhMDcwYjA1MGFlYTQwNDZmY2Q4MDMzYWE2ZTE2MmQzMmE1YWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d3a3421e42494fdd9a8752d51f6daddb",
+      "statement": "runAgent replays the chat log before prompting: it rebuilds the session code content (checkpoint pins, epoch changes, accepted rows), the chatBindings name map (seeded from the checkpoint), per-gadget observed heads fixed at first observation so one turn sees a consistent tree even if mainline advances mid-turn, and the proposed-changes state — replay rehydrates recorded tool outputs instead of re-running them.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L1024-L1123",
+          "version": "repo-lines-v1:sha256:d850ac6b4d66dce1bc3aca1a7d723ad6e3cbd401cbb957bd02ec89cb86dcf6d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkMmU0MTc0MmQ1MTg4ODRlNGQyMjI1ZmVlMWRmNjk5NjZhZWEyOTU2NzQxZGNmN2EyZGZhMGRjNDJkNjU0YzEwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwMDdjMDExZmYyNjdhNTExNjlkNjg1MWVmNTZhMWUxMWE2MzRhNTRiN2MwMGQwNDIzZjNkOThmNTg2MGVjNjY3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiMzg0Y2IzNDM5OTc2MzU3ZWUxNDZmYmIwN2E0YWRlYjgxOWU4MWVkZDc2ZWZmZWVhYTNjMjU0YjZhMTJkMjM4In0"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L1072-L1079",
+          "version": "repo-lines-v1:sha256:93292c031c7766c4e4ecdd5f37ca1a8dc266f052c5297e1a70512c88deddacd8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGM4MTI0Nzc1ODM1YTY3YmE3YjUzZmZkMDUxNTJjMjQwZWUxZGIyOWFkNzlmNDUwYWRkOWRiODQ4ZmUyYWIzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRkNTg2NjZiNzNlNzdhOGFiZWE5MWRmNzIyNjNhNTBlOWYxMzAzZDE3MjA4OWM3MTY4OTA2Yzk5NjkwMThjNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjc3MDAwZWFmMzVkM2FhNWJhZjYwNTA3MTY0NzI1ZGVmZjMzNzQ3MmFjMGJkM2QxZjZlMzY2Y2E0M2Y2ZmUzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjEzOGFhOTliOTk4YTYxODNiYjBiMTcxMGU4M2NkODE4YmVjMzY5ZWU0ODY2NzAxNGNlZjRmZTVlN2IxZjEwNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_88d9339901524e5b81e30e221b83248b",
+      "statement": "The system prompt is split into static and dynamic slots for provider prompt caching and folds in instance instructions, the workspace gadget registry and binding names, ambient capsule catalogs, connectable vendors, and standard output formats; the loop uses pi's runAgentLoopContinue with sequential tool execution, identity convertToLlm (replay already produces LLM-shaped messages), and a shouldStopAfterTurn that ends after the turn in which the abort fired or the turn cap hit.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2192-L2203",
+          "version": "repo-lines-v1:sha256:f869287b302e3ce4a5a4c6900d1d10c81fa1bc8d8f975f3baae37580879a6182:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4OWUwODAwOTUwZjZhMDMzYTJkYmRiNTA1Mzk2ZDE1NjRlMWMwZDAyZmY5OWEzMWQ1OGUwYWZiYzQ2ZjQ2YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NmYxYzc3OTQ2NDBiZDg4ZDU5ZmRkODI0M2I2NDFjYjMzMDU3YzZmNmE4ZDk5OGY4NDIxY2E4NWViYWU4MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiNmM5NmQ0ODhiNWM5YTA5MDI5YTQxOTlmOTljZmFmNWVjY2YzY2FlMzAzZGQxZTljZjA5NGFjNWI1N2FhMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkODEzZTFkZGQ1ODkzMzFjNmFlNTIxYTNhODVlNWJiZmJlZjUxYTA3ZjNhYTRkNWYzNGEzNTZhNDhkYjFlYjUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L3086-L3110",
+          "version": "repo-lines-v1:sha256:50605398148a9cf420566132d08e342054bb27a2e5e9ff019207c865c4e77802:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYWFlZTg1NWM4MjFhYjhlZTNmYzc0ZGNiZTFkZmY1NzBhMTRiMjAwNjZlYmVmNmRhMjViYmIwYmRhYTk5MGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhODA5YzQzYjdjMGFkODRhNmI4NzVlNDU1OTFhZWE1ODlkZjdkNzM5YzJlMGFiNDczNDQ0NTQ0MWExMTU4ODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxYTczMjdkMmMwZDFhZWY3NTMyZGNmNmE2MmE0ZWM2NTQ4NzJjMzRiN2FkZTBhOWIzZjE4NjI4ZGVjODRhMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3MTAzZTg2ZGM3NWFkNzg4ZWVhZDJhZjNhODUzNTVkOGRjNGIwYmUxZWY3NDlmNjY4ZTcwMDU5ZmYwY2YxOTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d73dfcc249d8451fba431d8c30c7f07e",
+      "statement": "The turn_end event is the persistence barrier: one transaction per completed model step persists the step's tool-call message together with its buffered code changes, created gadgets, and added bindings, making chat-content side effects durable iff the transcript record that explains them is durable; nothing from a failed or cancelled model request is persisted, and tool calls an abort pre-empted are recorded with the honest error 'Operation aborted'.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2960-L3070",
+          "version": "repo-lines-v1:sha256:6795444c34f6069ecdf3846c7f153ef23145ca41b03cfc797dc1b7d8d1223b4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTExLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmZGY2ODFkMTQwOGI4OWZmMmY4YzczM2E5Y2FlZDIxMGYzMmU3NDM3OGYyZDUwNDQ4ZTI1ZmJiMjQ1OTAyNThlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlNGU0OTg0NGRjOWUxYTU4Mzk3ZWE1N2E4YzViNTgyOGY0YTVjNDYwMmYxN2JmZGQzMjExMGI2MjJjYjYxNGQ3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJhNjM3ZmJkZWM2MGU4YmMwNWRkMjM5ZTFhYzMwMGNmOWU1NTA3ZTJlNTkxMWY3MzdmMmJhNzM0NGEzODUwNjg0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiYjIxNWFjODFhMzZmOThjNmFlZTkxNmY1Mjg0Mjg1YjUxMTFmODMyYmIxZTFlYzJiMmQxNzEwZTU0YTE5YzdhIn0"
+        },
+        {
+          "resource": "repo://plans/step-transactionality.md#L1-L24",
+          "version": "repo-lines-v1:sha256:b956b605cfe24bb260b9b6e60cbf8233bc1597f3126bf65ddf96c0d0c2cb1fdd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNjFlMWQ4NDM2NzM0Mjg4MzYzNjBiYzkwNWY1NDU4ZWFiYmY5NjVkMjRlNjc5ZDczZGNmOWU0NWJlMjZmMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0YzhmMTRjNGZiYzY5YmFjY2I0OWJlNTgzNTExZGI4ZTI5Mzk2MDUwMWFmM2YyMjgzNjI0OTJiZjY5ZTU4ZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2NGQyNmEyYTYzZDgxMjljYTdjODI2M2YwNzEyNDUyZDgwYTY3Zjc3YzMxMzU0NDMyMmQxYjFlZWVmOWRjNDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3ee1e04c1ca463cb68e02de0d796e16",
+      "statement": "Agent output streams to clients as provisional AiChatStreamEvents (text/reasoning deltas, executeCode toolCodeDelta, writeFile/editFile live edit previews) emitted from the loop's message_update handler and fanned out by subscriber.stream(); the client displays them and discards them when the durable message/row lands or the agent stops.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2896-L2915",
+          "version": "repo-lines-v1:sha256:549f4960e76c0377f2bf854a850317bcb69d3f43fb6d8d946b364016b7514d34:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNzZkNDk4YjU3MWU5NmE5NmM4OTUwYWFmNzA1YjNkMjVhODkyM2MyNGU1M2U0NDk0YjY0N2Y4NjM3NTYwMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjNjg1ODNkMTkyOWQ2YzgwMTQ4ZDdhNjExY2NhZTBlMDg5YzNlMTM1OGI5MmE1MTQwNTE4YmUyZmUzZjhmZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4OTJhYjUzM2U4NWNjMjhlNWVlODE5ZjU3YTJkODU5NWUwMmE0ZTU5NDVjYmQwNjA4YTQzNzc0MzEzYTBiMjAifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L7753-L7753",
+          "version": "repo-lines-v1:sha256:15199de167651876ce0b84f5226bcea8e7b5a2e84d5f2b81158a0334ca8e4929:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTUxOTlkZTE2NzY1MTg3NmNlMGI4NGY1MjI2YmNlYThlN2I1YTJlODRkNWYyYjgxMTU4YTAzMzRjYThlNDkyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTUxOTlkZTE2NzY1MTg3NmNlMGI4NGY1MjI2YmNlYThlN2I1YTJlODRkNWYyYjgxMTU4YTAzMzRjYThlNDkyOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2VkNWY5NTk5YzI3YWI5NGY0MmVmYTRlOTcxMzY2NGYxY2M0MzE4Zjc0Y2Y5ZmM5ODU2N2E3NTJjNGU4ZDk3YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzZjMTZiOTU3MzhlMWVlMzNhNTY4ZDRjNTQwZTc1MTFmMGU0YmIxMTc3YjkyZWYwM2FiZjdiZGY3YmRjZTViYSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L3243-L3367",
+          "version": "repo-lines-v1:sha256:bc012c7ae97d610c96335f0824f016863ce1f4856c3875eedeafa0388597cc9d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYWYyMmNmMDczMjU5MmMyNDcxNDFjYmU2MWVmYTExMDEyNjEyZjVhMzEyMmI5YWY5YmJhZjUyZjU3MjRkMTk0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhYTFkMWE2MzM5MDIyOWM3OTgzNDdlODNhMDQwNTQ0MWM5NDAwMDM1Mjg0YWQxNjhjMWJmNmNkZjFkNzBhMzcwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiY2RlZGJiOGM5MmM0MzM3ZmU3OWExMWU1NmVlYzM4ZTMxZjg4Y2IxNGFkOGI3YzVjODNlNGQ2MjVkMTczMmQxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2NDlkNzMyZmI2NzU0NWY1M2I2NWY0NGYzMWY3YjVlYzgyZTlmY2RkZDgzMGY2MTA3OWU5N2QzZTE4NWZiZjkyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b9f3ffcd9a1409daa353a80ad8df2c8",
+      "statement": "The executeCode tool compiles the model's code into a dynamic worker (LOADER) alongside a fixed harness with disallow_importable_env and globalOutbound null so executed code cannot reach the internet or re-enter ctx.exports; env holds the chat's named bindings as loopbacks with caller {from:'agent', chatId}, a self stub calls back into the thread, per-callback resolve/reject pairs are passed as callbackResolvers, and logs are captured through a tail loopback raced against a 5s timeout with uncaught exceptions appended.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L69-L106",
+          "version": "repo-lines-v1:sha256:f9807446c5c1580fd8ed00f6d0d9324fbab68956ff0407c18e16b6ba4af17f96:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNzU2OTk5N2NiMDA5OGM4MTFiZGI2ZWFhYWJmZTA5NmM4ODU0Mzg0ZDc5OTBhYWNlNDMyZmM5YzJlMjM3MDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhZDI5NTI1MzZmYzYwMDBhZDkxNTY2YmQ5NTNmMjViYzk1OTYxMGU4MTFhNTI5YTliZWY4YjRmMDdjMWM4Y2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwZGY0OTc4YzM0ZWMyNDNiY2U2YmJhYmM3ZmMxMGZjZjA1YTIxMjI5ODE1ZGYwMWMyZWE0OTdhNmVkODYxNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlODY4NTU3Zjg4YjM0NTNmNjU2YTczOTkyMDY0NWQ0ZmFhNDk1Y2JlNjlmODhkNTg3YmM0OTg1N2JmNmU0NTYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L7242-L7360",
+          "version": "repo-lines-v1:sha256:05994a034c168b4a78b8393baaa58393923925bd3125e50abc625639119a35aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3N2IyYThlYmJlNGFiNTJhZDg0MjRkNzIwZWRiYjUxOGI0OTMxMzQxODhmZjI2MTM1ZWU3MjljZTkzYTNjN2IxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzOTU0ODU4MjZlN2I5NmRiZTNjYTc1ZWVhOWFlYTk4YjM4M2I0M2M3Yzc0ZGY3ZTI0YWMxNmZkZTNlNTA1ZjNiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlZWY2OWFmZmMxMTJjN2JkMTE2ZTcwNzFmY2NjNGE4ZjU1Y2I1Y2NiMjZkMGM5ZWFmMmY2NWY0MWMzYmJhNGE1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_3053ec881ad041849b62eec337b3df67",
+      "statement": "A transient RestoreForgerImpl capability passed as a run() argument grafts the runtime restore symbol onto each gadget's service binding in env, letting executed code forge persistent gadget stubs for hooks; the capability lives exactly as long as the execution and resolves binding names against the execution's own binding map, so it conveys no authority beyond the env it accompanies — and invalid stored binding names are skipped rather than crashing env construction.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L187-L215",
+          "version": "repo-lines-v1:sha256:2e1eb60bbb540986e9c0b1200b10f05dc17c2edeb7e7af9b9a63d683bc3cd9ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2N2QwNjM2ZWJkZTkyYzYwZmJlZTJjNDlhNGRjNDZmZDc0NDU1ZDVlYWJhMTg5YjhjMTk3OGE1YjdhNzQ4NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyYTJhNmRlY2U0N2I5M2NlODdhMzAwODc2ZmZiYjU4MzRhYWVhOTc3ODhiYTQwNTc3MzgxMWQ1MTZlZjlkYTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4YzA1YjI4ZjRjYjg3N2FhNTc4MWE5OGI1N2ExMmZlMDNmOGQ5ZGU5MWUxMTc4YTRmM2RjNmFiN2YyNTVlYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExMDYzN2ZlY2E5ODI4YTcxYjYzMzk2NTk3N2QzZmQ2NmYwNWZhZTVhMDY1MTgzMTJiOGIzZGY5NDBhNmU3ODQifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L2748-L2792",
+          "version": "repo-lines-v1:sha256:577427cc5f82d401af711cccb348158435951546b5908c6c113f349157864c8b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjMDUyZTM1MTM0NTFjYWQ0MTY4MTAzMTg3MDA2ZTU4NGU5NzM4ZGY5MWQzMjY4MmNiNWFkNWUyYzJhMGVlMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkYzJmOGUzM2E1ODNmM2U0OTBlNTE0MDIzYjA0YWY0ODgwMzQxMzk3NDE5Yjk5YzI1MzY0MjlmZTM0MTFhNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1YjBiNjVjMDIyOGM0YjA2NWUyMmRjZTZmZTkzNmQyYzYxZjc5MmY1ZTViMTY0MDA0MWYxY2YzMDczMjVlYWYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L7320-L7325",
+          "version": "repo-lines-v1:sha256:e96c082acf8dc34b94512d592ba39c2e29586b6ffbfb2dfadc904a91cec7a0b6:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjNkMGY1ZmJmYzU5NDQzNTZhNjMxYjFkNmM3NDk5ZmQwMzY0OTYyN2RlMzVkMjY0YmEyODk0YmRiZjI5ZGQ2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2YyMzc4MTg2NzlmNTk1NzRlNTdlNDdhZmU4OTdjNDUzMDk1MzFiZGQ5NDAzNjhhN2QwN2MzNGVjNzBjYjFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDEzNDFkMGM1ODgyZTkxYTY2YzYwY2I4NjAyMGIyNDdmMGFmYzMzNmNkZjc2YzBhZTE4YmNkMjBhYzhmZTFkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFjM2M1NjlmZTdlNDAxM2IwODIxMGUwYjFmYjU1NGUyMmJiODAzOTdhMzA4NDQ4MmFhZTVmZWVjNzk3MTI3YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_75908a7535dc499095695b5299e4148b",
+      "statement": "The tool set is defined via defineTool in the tools record: file tools (readFile records observedCommit for staleness detection), executeCode, describeBinding (the prompt forbids guessing RPC APIs or enumerating env), createGadget (files into the chat's proposed changes), setGadgetBinding (provisional to the chat), listBlueprints, listConnectableResources/requestConnection, webFetch (agent-only, not callable from gadget code), observeUserChanges (never model-called; the system inserts synthetic calls on user edits), and giveUp added only for callback-initiated runs; spawned sub-agent chats get only describeBinding, executeCode, and giveUp.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2302-L2856",
+          "version": "repo-lines-v1:sha256:ccea05388960df6b3977a741d3ecc032dfa32cb6a9fed5c45b6f77d5846b78a6:eyJzZWxlY3RlZExpbmVDb3VudCI6NTU1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiNzhkNjQ5MjBmYjM5ZDdiMWRiMTNmMmRiMThmYTA1M2JjNTFiZTBmOTJiMGFjZmY0M2JlY2M0OTY0NTg4Y2I5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkZTZmMDNjNTI5ZjMzYjBhZDU3ZGQ2MTUzMGFhODMyYTk0NGQ2N2QwNjczYTdlY2Y2MzJhMDVhOGYwMjU1NzE4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2M2E1NTEyOTg4Njg1MTYzNmVmNzMyZjU2YmZmZDVkNjQwNmM1MjcyYWRlN2QxZDgxOTQ0ZTk1M2M3NDc3NzlkIn0"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2857-L2883",
+          "version": "repo-lines-v1:sha256:1f26a0dc32e36279ec1930fc2b7d13e1127b7cc1b73a214ddd608ce98861446b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NjE5N2E5YzgxZmYwNzVhZWExNTkxNTZiNjc0ZTEzYzEwNmNlZjM4NDcwYTNjYzM3NDg0Zjk5M2VkNmM2MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzNzFhM2I1NTA1MTA2Mjk5NmM0ZTM3ZWUwMTIzYTFjZTY3MWI1ZWY2YjQ4OWU5OTA4NGU0ZGEzYWRhN2M0OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlNzg2NDQ0NjU3NjUzN2YxY2FlYmE5NzAyMDNkNDYyOTcyNGZiZGZjMjBmOThjNTUzZWJkM2NmZWM1ZTRmMzIifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L826-L837",
+          "version": "repo-lines-v1:sha256:98370ca858ae464cedf3f7cb222b437b3148b079680bfc7fa28b33890dc727c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxZDBlZjNkNWRiNWRiNzQ2MTQ3OTc4N2QxMWI2MjlhMTVjZmY3MmNkYmQyNTkwMmJkMDZiYjg1YTNjZTdkMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkNzM2YWVhN2RiYThlMGUzZDRmNDgzNjMxZGIxMjZhZDBjY2UzOWM5MmE5YTc4MjI3NGFiN2U0ZDk1MGUzY2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3ZDAzZWEzYTVmM2UzYTliYjhhMzdmNmE5MDJlYmQzYzZiMGE4OWE3NWY1ZDIwYzIzY2E5MTc3YWQyY2FlN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0MzZiOTc5YzNlMGEwZjEzZDRjY2JmMDkzMmYxN2IxZTlkMTJhMjJlZjJmMGQyMzE2N2VmYTUzM2I1M2ZhMjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf86c48a2f6d48d1ad846f3ea272be7f",
+      "statement": "The durable chat log distinguishes message (user/agent/gadget with toolCalls/capsules/attachments), slashCommand, changes (sequence-stamped agent step with createdGadgets/addedBindings), merge (through mergeThrough, possibly epochBoundary), revert, action (captured approval-queue id), useGadget, error, agentCallback, agentNudge, and connectionRequest; prepareChatBindings and chatScopeNames reconstruct claimed names from the log — simulating the replay loop's PARAMS_<n> allocation — so a newly named resource can never collide.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L6262-L6273",
+          "version": "repo-lines-v1:sha256:557b07380fe86cc031e3df1f8dee9d3ec30e8ed48836448abcb9fb9cd34de111:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjMTlkMDFkNjBhZmZkMTk4ZTQ3NGZmNjVkYjg1MzUyMzUyNDA4NTU3MTkyOTczN2QxNDZjNGU1MTUyYmYwMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MzJiNzM4ZDY1ZDM3ZGU2ZDE2ZmQ1YzJkNGYxYTgwNmYzZDMyZjFmMThhZDlkNDc3NTM5OTA1NjZkNjQ3YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZjNlNzEzNGM1ZWM3ZTZiNzU2NmVmZjExMWM0YTYxMDllYWQ4MWZlOTdhNzNiNTBiZTJjMGEwZjg4NGY5NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0ZGYwNmM2MzY0NzlkYmI5ZjI5MTY3MWYxZDQyNGE3MDIwOGFkMTUxMDMwY2Y5NDkxOGU1Y2QzMGUzODlkMDEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L6397-L6556",
+          "version": "repo-lines-v1:sha256:09cca61f0441040990589a4b5f7c40165ab72fb0e8814e6841f4c01ab2a13c03:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZWQ5Y2ExNWU4ZmNlZmUxMjQyMWJjZjA4OWQzMjc1NThkZTA1MDViMTcxYjdjMDdiZDc3ZjdhZTM3YmFmNzE1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzMGFkMzM4Mzk5YTg1ZDIyYTcwOTdjZDExMjE0ZTM4NGIwY2ViYzA4N2FjODVkNDQ4ODViYThhYjc3MGU5ZDdjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmMWM4NGYwYjA1N2FkODkzNmU1YWFjZjA0MjM3YjdmNmVjNjYwZjY2MjUwZjI5MmZkMGI4OGYxMDA4MmU1MThkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhM2Y5MjQwOTM3MWY4YzZhMTg0ZGNhZmMzZmM3OTQ1MDg3MmFjMGQ5N2NkOGNhMGE0MDYwNjQ5OGVlOWQxMTU5In0"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L2559-L2810",
+          "version": "repo-lines-v1:sha256:3c476595509f0d6d61527702a331d76eccfac72226ae9c777afc1df152cefcd9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4Njg5ZmJjYTE0OTJlMGI1NjNiNWRkZjI5OTgzOTY2YTU3ZWM5NGFhZjcxZWY4MmU1NGI3NDQyNzVhMTlmZDk2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkODQ5NjZmOWI1ZTM5ZWNjNGY0NTMyNDk5ODU5NzdhYWFkMDAyZTZkNGIwZTM3MjExMTVlYTg3MzQ4ZDVjMzE5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5MDJhNzhkZmNjY2U2ZmMwZDFmOWE0NWUxODg3ZjM5MDQ4NTU1NmZmN2MxNDY5NjFmZjM3MGM0NTYzNDA3ZjczIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjYzhkZTI5ZDUyMGU1YzEzZjBjMzhkMzM0MzM0YTk1NGMyMTk3NzZiNjE5OTYxMmIxOWNmNTRkMjE0YTc3MWJjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_698eca1790e64207833f8cc689da4dcc",
+      "statement": "Agent callbacks: gadget code calling self.<method> inside a turn is queued as an agentCallback message with its storable args persisted separately; the next agent turn exposes the args as env.PARAMS_<n> with resolvers wired back to the pending queue. The agent spawner binding exposes spawn (fire-and-forget chat) and spawnCallable (returns a storable stub whose calls deliver into a waiting agent thread); spawned chats see only the spawner-configured env bindings.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-spawner-binding.d.ts#L1-L26",
+          "version": "repo-lines-v1:sha256:024d835aa373f044d055d3c26b9d0c16b86af5996d05e9046fccb43f0f9f9340:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0ZjgzZTc5YWRkNGVjZjg3ZjViOThlMGQyMzJlOGViODk1YjhlYmM0YTY5YzY5OTNlZWY0NDE5YTQ0N2ZhNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiYTM3OWY3OWFjZTUyODU0ZTBlNTBhY2RiYzhlNjY3MzNlMTc2ZjBjMjQ4YTgwYTliNzY1YTFkZjEzZDg0NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiNTU3MmE4ZGI5OTViNzUyYjNkM2UzMjRjNGUxODk4ZGQxMzQ1ZjQxYThjNjgxMjU5Y2Q5ZjUzOWNlNjY5MDYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L1228-L1232",
+          "version": "repo-lines-v1:sha256:5097ecfdb9efdf03d032bc750429e7cbb66ea56e92b79f70144a6ec013d8d499:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVmZWFlNDgyMmMyYjA5ZDYwYmRlYjFlOTIyNjc4MTM3MTcwZmUxNDAxZjBkNTUyYzgxZGQ3OWU1ZDQzYTFiMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmZlOWExOGNiNjMyMTE1Yzk2ZjY2YjAxOGI3ZDcwZWFmN2UwNjVkNjI3NTg3OTMzMmJlZGU2MzkwZGU2NWQ3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwMDFiOTAwOTQxNzkxYTdjOGRkYTFlZWU2ZjkzNTJkMjg3MjYzZDYxZjgxYTE4OWViMGNjZDNjYjY4MzBjYSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L7300-L7318",
+          "version": "repo-lines-v1:sha256:dfea216c188cd6372ee64a598cec313673f350dbc6b4adfa0506919c1ddbefa3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ZTcxNjIxYTZlZTMwODdmZmQwMGI1NTMwN2VmM2FlMDdkMjRhNmVhMTE2MGE4ZmViZjAwNzQ3YTAxMTgwZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1YjM5YzM1MzQwM2FlYjRkZGYzNWJhM2E3NTI1MTE0NjhkMmJmZDg1NmUxNzZkZTdjMmYwYTdlOTE0NGE3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzNTNiNzMxNzdmNGM1YWMxMDc3OTY2YzhhMGU5MjNhN2IwN2ZiN2U1OTQ1YTYyNzNkNDJjYzJmYWE5NDhlNDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_98b1fa73b13e4ab3b66564625b89adcd",
+      "statement": "Chat attachments are stored in the overseer's chatAttachmentContent collection, validated against per-provider support (assertChatAttachmentSupportedByProvider) and image MIME allowlists, delivered inline for images or on demand via getChatAttachmentContent, with a PDF bridge for Anthropic document payloads.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/chat-attachment-validation.ts#L1-L30",
+          "version": "repo-lines-v1:sha256:1e770b6720dcff862d310ab7fcc1fabb5ca1ba3ebcff634f459a170371565a41:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0YTZlNTg1NTQyN2M0OGI4NmY2ZTFlZGRmY2M4OWIwNDAwODNhMzUxYzFhZmM3NmZiYTAxNzQ5ZTlkZjE1MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzOTkzNjM4ODY4NWNmYTRiMzAyNTgxMDU2M2NhMmI2NDAzZDYwNGY0YzM1MjFjYmIyMzM0ZTk4OGY4OGUwODEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L4496-L4564",
+          "version": "repo-lines-v1:sha256:4c20ca56609926ee82a3d3439ad6c810fe6434020d63a4b4abc614756347528d:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxZGJjMWVlYmY5ZWI4YmM3MWE5NmZmYjdlMzBhODI2MWE2MDlhMDVmODk4MDMwMWM3MjE1ZjI4ZTFkYmZlMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0YmM0NDQ5MWM4NDUzZjAwMjY1MmVmOWRkNjZkMzkwMDdiZWY3YjIzOWM3NmFmN2I1MDg2N2M3ZmQ4YzljZDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5MTU1ZDFhODkyMDk3Zjk5YjA4ODE3NGRhNzk0ODVlMzhjM2M2NjQzYzE5NDc2NTdjN2Q5ODQyZGYyN2E3ODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjNTFkNzQ1Yzg2MWMzMDcwNDBlOTFiZGI0Nzc1ZjY5ZmYzYTA1OWFiZDgzZGM5MzAwNzhlOWYwMDM4YjIzODAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a76d8700416841a487117047ecdb0eaf",
+      "statement": "Slash commands are collected from every attached gatekeeper advertising a getSlashCommandProvider plus builtins (/compact); invoking a gatekeeper command passes an ObservationAuthorizer so expansion text derived from protected data is authorized and audited, and the result is stored as an ordinary generated user message.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/slash-commands.ts#L19-L53",
+          "version": "repo-lines-v1:sha256:9abbe849281c2e8e4efa70eb14b441ff41cca98efdd85c48ae9740da5cc6fe8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNWQyMDcyY2I2MDEzN2Y0NmFhMzVhYTI2NDg5NDc5Nzg2ODc2YTE5MGRkMDEzZjJlNDRjYTQyOTM4ODY2OGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkZjFjMjJlNzQxNDMyYjFhMDBjMmE0M2ZiN2VmNWI3NzgzMmQxZTU2NWRiYWVlZTkwOWFkNjZlOTM4MzliNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/gatekeeper.ts#L902-L926",
+          "version": "repo-lines-v1:sha256:876d1be5925b90de3393c212f584a5c66721f1e002411b592c1d138994a79f38:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NWQ3MDhkYTQ4MGExZTA3YjBlOGYwYTYyOGUzYjU3YWY1ZjY4ZjkwMjdjM2YwNTMzZmIwZmZlMWRjYTZjYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlZWNhOWFmY2U1ZjIwMzVkOTdjYjgwNGEwNjI4MmE0YTEyMjM5ZWM1YTI0YWJiNmFlZmVlNzAzZTQ4YjhjODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkZWNkYmI2ZTg4N2ViZGZhMDAyYTljMDY1OTIxMWE5ZjQ2ZjcwODA3ZDI3ZGViNjE5MzRmYjVkNjk4ODEwZmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0d062e637ffd41d6a31e7b4bc814f150",
+      "statement": "The webFetch tool does public-HTTPS GET only (no POST/PUT/DELETE, no credentials forwarded), relies on workerd's post-DNS global_fetch_strictly_public for SSRF protection (a hostname blocklist is deliberately unsound), converts supported documents to Markdown via WORKERS_AI.toMarkdown, caps bodies at 1 MiB default/5 MiB hard, and is a tool for the agent rather than something gadget code can call.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/web-fetch.ts#L1-L19",
+          "version": "repo-lines-v1:sha256:c12ec5a7dd2abb1bc605ae69719c8bdef4da4fd2c9b7b69d77385776a66ad800:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NDkzNTYxZTIzNDI3ZTg5MTQ1NTA1MWViNzA1ZmY4ZmQ3NmI0ZGY0NWVmMmRmOTVhNWNmMmVlMDExMjA3NjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3OWE0ODE5ZDcxNDAzYWJjOTlmNjAzMWJlYmUwNmExN2U3YzlkYmM0NDZkMzc5ZTYyZjU3ZTc2OWJkN2NlMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyZTg3NWYyNGJlYzQ0ZGZiMjllYTRiN2Q4YTY0NmE3ZjkwNDc1Njg0MjcxYjZlOWJkYzgxYTIzN2E0ZWI4MTQifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/web-fetch.ts#L52-L66",
+          "version": "repo-lines-v1:sha256:ed18bf35c1664de0a675f021f4cb04c60690c22602e3c8aa142d86b8d6b04bd7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlYWQzNGZiNzM3OTVkYzMyODdkYmQzY2ZhMWI4MTU3ZDk1ODgwNDljOTcyOWE3Nzk0NmI4ODc0MzQwYmY3NzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MjgyODNjNWMwMjEyMTFhNTdiN2ExMDRjNDcyYmRlMTRhOGE3YTE2NDFkZmYwMjllNGNiZDA1OTBmNzdhNTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2OTY5ZjBiN2Y1OWQyZDVlZDBkZDY1OTRhMGVjNzQzODMyNmQ2ZDQzNjAyY2NmNzViNWZhYWVkYmU5NDcxY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjYmIxNWUyODQ0NjU5ZTc2OWJkMjM4NTEzNjAxZDEzM2JlNGQ0YmUzMDVmNDBmMWQzZWU2NDk0YzA5YjU1YTIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

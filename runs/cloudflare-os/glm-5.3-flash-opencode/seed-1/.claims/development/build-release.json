@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:686008a1f1dde51aed990566a9f280c4ec40546a01ced0105d7346c29e7fcbab",
+  "claims": [
+    {
+      "id": "claim_ef3053c6377a45268d30b21981f3a2fa",
+      "statement": "Builds run through Vite+ (vp) tasks: a cached vp run strips the environment to a built-in set, so env reads must be declared on the task (workshop-frontend's build declares env: ['VITE_*'] because those values are inlined into the bundle), and a task may not share a name with a package.json script.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/vite.config.ts",
+          "version": "repo-file-v1:sha256:58b82ed7d88c324b8772c9791e5011b74931bd0c9c7dc7250bd5d937dcdba132"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/vite.config.ts",
+          "version": "repo-file-v1:sha256:d8279bba0eeccc462390db6a41317e1c551775497ddf4e6f410650fd9b202885"
+        }
+      ]
+    },
+    {
+      "id": "claim_b09fe9e3cbaf4e72ab2bbcd817603e78",
+      "statement": "workshop-backend's build and its codegen steps are cache: false rather than declaring FORMAT_BLUEPRINTS_DIR as env, because env fingerprints the variable's value rather than the contents of the outside-directory it names — edits inside the blueprint directory would otherwise replay a stale generated module.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/vite.config.ts",
+          "version": "repo-file-v1:sha256:58b82ed7d88c324b8772c9791e5011b74931bd0c9c7dc7250bd5d937dcdba132"
+        }
+      ]
+    },
+    {
+      "id": "claim_d5a73ec9293449fab6a9f600ddbad96e",
+      "statement": "Tasks that read a path they also write are excluded from caching: the frontend bundle task excludes its own dist/ from inputs (vp declines to cache read-write tasks) and excludes **/.wrangler/** workspace-wide because wrangler's randomly-named scratch bundles reach past the owning package.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/vite.config.ts",
+          "version": "repo-file-v1:sha256:d8279bba0eeccc462390db6a41317e1c551775497ddf4e6f410650fd9b202885"
+        }
+      ]
+    },
+    {
+      "id": "claim_aee5621b2b5741edaaf7bcfc77da57ed",
+      "statement": "pnpm dev-server generates dev-only wrangler.dev.jsonc files with dynamic service bindings, loads a gitignored .dev.vars file (shell env takes precedence), runs a vp pre-flight of build:configurator and build:app:dev, and defers app watchers until Wrangler is listening because the watchers cannot skip their own initial build.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L1-L50",
+          "version": "repo-lines-v1:sha256:55288d3e199f7d683eb35054a13f8dc5b1bf8832dd13fbb0e3ec5d9bc48707d7:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzk3MzgxZDZkNjUzNDcyYmNkMzcyNTRiYWQwYzM2M2RhZjJkZWIzZWVhNWNiNGQ4ZWIwNDYzMjMzMzg2NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzNmI4OWE4YmU2NWY4MjBkODBjYTlmMzRmNWU3OWE4OTkyZmIwYjYzMWFiZjZlOTU1MTBkNWNjOWNlNjdkMWQifQ"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L255-L276",
+          "version": "repo-lines-v1:sha256:761e0f8764413121d4adc0a546807eb9bd792b75bb227ae85452cc1d7b1a4449:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkZDM3NTA2M2JkMWJmZjczZWY3MmEwMjkyMjU2ZDQxNzg0YTczZWM0MzFmNmE0MWFiNDMzMzgzNTIzYmE3NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiNDA2MzM0ZjYyOTk2OGI2MjU1YmE2MTRmYWU4OGU0ZDUzOTI2N2JhZDg1OWI1MjBjZGYxYTRiMjRmMDc5YTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwNmEyOWQyZTcxNzY4MjIwNmIwYmZiZTlmZjEyZTE2ZmRlMjlhYjk5Y2E4YWI4ZDVjZjA5YTYxY2MzNDdhYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxY2JkMmQ2ZjY0MGJhMmQ3YTliOTI4NWYwY2NmNjliN2Q3NjA3NDU0ZWZiZDhmODk0NzVlM2I4NjE2YjQ2NzYifQ"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L563-L570",
+          "version": "repo-lines-v1:sha256:7d06741244d630858c7ddc53f3721257a2a203d0d4909bb0590f3a87d3c0a420:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhiNjQ0MTUzZDM3NGY3NWE1ZjBjYjBhZjEwMmFlMGY3MjEyOTg3YTMxOTJiNzA5MjgwOTRjN2VkODdiNDA0ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTlkNDE3NWJhZmY0NmRjZjBhM2QzNGQwN2I4ZmRjZWQ4MjEzZjcxN2ZlODczNTBiODA4NTMyMGU5ZDViZTllZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWVhYzI1ODU2YzYzNDViZmY5NTZjZTNlYjI3MjMxNGFlMDA4OGNiOTQwOWI0ODdlZTUyMzdmZjIxZjkxMzBiMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_665ee0aa1dee4e29947253e2607a2a96",
+      "statement": "pnpm run-local is the one-command local variant: it installs dependencies, builds only typed-storage and the frontend bundle, and launches the dev server with --serve-frontend-assets so the backend serves the built frontend as static assets.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-local.ts#L1-L13",
+          "version": "repo-lines-v1:sha256:0a9a97bc6ce1412902db889552826e4eabb9c78085ca0668c5fb84ca32287254:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2ODM3YzljMGE4NjUzMGUwNmVhOGNmYjVhODNkODljYTY2NDcyN2VmNmYyOGI1NTc4M2QxODdjMDQyYTNkY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhMTNjYzQyZWE0YzYwOTM1YTdmOWI5M2U2N2E1MGMyMTE2ZGNiNDE3MzNkYzUwZmI5OWVhMjQwMzk0ZDZhNGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bcfc851680454b18a06ff42ec3ef3baf",
+      "statement": "build-release.ts bundles every deployable worker byte-identically via wrangler dry-run with the repo's pinned wrangler, builds the Access-mode frontend, and writes a content-addressed output (modules/<sha256>, assets/<cfHash>, manifest.json last) with release ids defaulting to r<CI_PIPELINE_IID>-<sha7> in CI and dev-<timestamp> locally.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/build-release.ts#L1-L19",
+          "version": "repo-lines-v1:sha256:ec94453e304a7e403127fa66999a6f2f4337cfe808dafedb7877cb1f482baff7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MjAwOTY0YTk3ODYzNTUyMmIyYWIwOTBjNjUwNjVkOGVmOGU4NWM0NzMwYmIyZWIwNDYwZDM0YzY3N2RkYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3ZDQ3NWM4ZWM3Y2VkZTQyY2MzMGVhYmUxNDRmZWI1YWNhODRmNjhlZjVjMzQ2NTJiZThmMzUyMzBiNmU3MjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_81d27e75974f4393a70fd7f1486a92c1",
+      "statement": "upload-release.ts mirrors the release to R2 via the S3 API with content-addressed deduplication, uploading the manifest LAST so its presence under releases/<id>/manifest.json marks the release complete; with --candidate the manifest lands under candidates/<id>/, invisible to the deploy service until promotion.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L1-L16",
+          "version": "repo-lines-v1:sha256:be89d30581df1346f8599e81848638331aa2cd1c9257b11acf64819364f3bb35:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhZTcwMGY0ODgwNjgzYTk5ZDJiMGI2OGM2YzYyNmE0Yjk1ZGU2OWZlZWJkNDAyNmYzZmJiMzgyZmJmMmE3NDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4OGM0NGJiOWM2NGE3Nzk1MTEzODZmN2ZmMDk1YzQzZGMxZjU1NDUxOTFjYzAxNDc4OWI0ZWJmNGZjZjJiNWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_013f489f33794819ad784a6cb232b3a4",
+      "statement": "promote-release.ts publishes a candidate by copying candidates/<id>/manifest.json to releases/<id>/manifest.json — one all-or-nothing copy — but the copy is not isolated against concurrency, so callers must serialize promote runs; exit-0 guards cover already-promoted re-runs and candidates superseded by a higher CI run number (promoting an older candidate after a newer release shipped would roll production back), and a missing candidate manifest is a hard error.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/promote-release.ts#L1-L33",
+          "version": "repo-lines-v1:sha256:09013d821fff49f001cc021971d1d74916093f0d75a24906d474b4d4d094d7ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MWRlMzJkNGRhYTdjMmY1NjNkMjc2MmRlOTdlZWE2MDVhNGQzOTBlZDMxYjBlNWRiOTViN2Y3OTg1YWUxZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0MWUxMmZiOGMyMTE4ODJkM2FjZjAwYTBhNTgzN2E4NzZlYjAxYzUyMjVmNDAwZTAxNzA1MjZiMjUwYThlZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_74635434ca55422490db4b614a298411",
+      "statement": "The release manifest is the contract between CI and the deploy service: it parses each package's wrangler.jsonc and emits binding templates with account-specific values replaced by a closed set of placeholders ($ACCOUNT_ID, $KV_<BINDING>_ID, $R2_<BINDING>_NAME, $WORKER_NAME(<pkg>), $SECRET(<name>), $PUBLIC_BASE_URL); the deploy-side renderer fails on unrecognized $ tokens and MANIFEST_VERSION guards co-evolution.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:b6bc6d14a2125758432f2205d6d378eebe15b3c4361a47a9b9063b4be4897dd3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWE3NDA4ZGE5MDcxY2ExZGNlNjNjYmI4YjRjYjZmZWQyOTFjZjRkOTJlZTVjZmM3OTQ2OWQ4MGEwYjk0YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMWVhZDkzNmEyMjgxZDUzZGNjMDY0YjdlMmEyYWIwZDUzYjkyZWYzZWY3YjM0YjY2ODY3MzAwNzg5NWM4NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgwZDI4NGQ1MDJjMTgyMjUzNTFiMmNlZjMxZTU3NmEzNTY4MjgyM2RhMzhiZjk4NDU2OWE3NzJmMjhmZWM1NTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe6c71a2c34c49a787ce0e8ee4329e8e",
+      "statement": "Installable gatekeepers default to CLIENT_ID/CLIENT_SECRET secret deploy-wizard inputs overridable per-package by deploy-inputs.json; NO_DEFAULT_CRED_INPUTS exempts gatekeeper-context, gatekeeper-homeassistant, gatekeeper-scheduler, and the two MCP gatekeepers; gatekeeper-email ships in the release but is not installable on customer instances because Email Routing needs a zone.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-github/deploy-inputs.json",
+          "version": "repo-file-v1:sha256:cd8e3da15418f1a419fef84ee83381d36e9d6f7527d2a33ff4a3ca4aba50f9ac"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L259-L272",
+          "version": "repo-lines-v1:sha256:bb7377faa35104077eeee1924200323f6a9aa4301fba7ea13a01aa2defe266ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxM2Y1N2ZiNGQ4NTExMGNlMmVmNzcwYjEyZTZjYjVhMTM5OGZkOWE1MDA5NjFhMzYyOTk3NzUwNjEwZDhiODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZGVlMDM0MDE0ZmUyNGMyOWY4NDlkMWRlMDcxYjkyNmVlMWQzMDE2MTljNTY3MzJhNzQ1OTczOGE5MzJmZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2ZjZjY2VhNDc2NzBjNWJhYzRlZjNjNDNlMWY4NTJiZDIzZWE5NGMyMDRiNWYxMWI0YTQ4MjhkMDUyMmNmNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlYzEzYjA3OWVkNmVhMTc3NzM2OGVhNmE3Y2VlZmI4M2IzMjVhOGI1NWU4MWUyNDQ3MmIzYzkyN2YzNTA2MWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2416477b309a4c5894159c3a0f92e6b5",
+      "statement": "Some bindings are cut from customer manifests for account-capability reasons — notably gatekeeper-context's closed-beta artifacts binding — and the gatekeeper degrades gracefully without them.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L250-L255",
+          "version": "repo-lines-v1:sha256:f247969721c3515046d72b2bab012e42d47ca84b442bc176c7232f0779b252ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTIwNzExYmIxNGQ5OTBjMDZlOGUzM2FlNjkyYjViZGJkOWVmOTMzMTY3M2U4ZDliMzA5NmY0ZmExYjJjYjRhNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2IxMzBiN2UzNTgwYzgxNTZhNDBhZjk5ZmQ0YTFkZTJjYzRlZTk2MGE4MjRlYzA1MDc0ODYwYWY0NTc5MDMzZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjZmNmNjZWE0NzY3MGM1YmFjNGVmM2M0M2UxZjg1MmJkMjNlYTk0YzIwNGI1ZjExYjRhNDgyOGQwNTIyY2Y0OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fa361f2dd2134e829dcba7d252e06008",
+      "statement": "CI (lint, build, tests) runs on every pull request including forks, but preview deployments deliberately do not: deploying a preview requires a Cloudflare API token GitHub structurally withholds from fork-head pull_request runs.",
+      "evidence": [
+        {
+          "resource": "repo://CONTRIBUTING.md",
+          "version": "repo-file-v1:sha256:efce149edfd2708c47fd1a0136bcc706e11232f68710aef61f8fa08f16b4e0f8"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T05:23:12.377Z"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a22d817d911296b57edafffcaab57876f954d3f4bdede8a31eedbf1620f03be4",
+  "claims": [
+    {
+      "id": "claim_811e6c8b5fbf4d17b8ee68af2dbf826b",
+      "statement": "build-release.ts produces an immutable release directory by bundling every deployable worker exactly as wrangler deploy would (pinned wrangler, dry-run + outdir) plus the Access-mode frontend asset build, with modules and assets stored content-addressed and builds safely parallelized because each bundle touches only its own package.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/build-release.ts#L3-L16",
+          "version": "repo-lines-v1:sha256:7822dd7e16a06c77dd1f5084f57e8e53b86084fa8b83a25e795957fcdc9aa15b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkM2E1NzZlZTE2ZmM0MTZiMDc0YTQzNGNkMzJjZDJlMzViNTQ0MmE3OTcxZDA4ZDc1ODg2YjEzNWI5ZmJjOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMWVhZDkzNmEyMjgxZDUzZGNjMDY0YjdlMmEyYWIwZDUzYjkyZWYzZWY3YjM0YjY2ODY3MzAwNzg5NWM4NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhZWU0OTE4NDI2ZmFkNWRkODJmOTRjOTFlOWJkZTRlMTUwZWI0OGJkMjZmYTI1OTM4NDliZGFkZDI1NGNjN2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dff41b498e5d404689603b978c090b43",
+      "statement": "The release manifest is generated from each package's wrangler.jsonc with account-specific values replaced by placeholders ($ACCOUNT_ID, $WORKER_NAME(<pkg>), $SECRET(<name>), $KV/R2 bindings, $PUBLIC_BASE_URL), and the backend's PUBLIC_BASE_URL is the only templated var — instance-state vars are injected by the deploy service at PUT time.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L390-L445",
+          "version": "repo-lines-v1:sha256:359aa374f32fc9c2ab7524f73a99b51282cb7460086ebf1a769fc0306bee6a21:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmYzYwODE1N2Q4MDhiZjRiMjg0YWE5OGEyOGE4MDU5YTAwNDJiM2U4ZjkzOWVhYWY0YjVkMWMyYTYyZTA1M2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNDdmMmUxMDYxZGZkNDQ3MzQ1NDBlYzQzMDlkNDIwMmE4NDZmMjA0NzgzNzgxMDdhMzM4NWJmMjVkNDhiYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUxOWMxNDZjNmZjMmJlNjE3ZWI5YmJjYWRhYzgzN2U3MGNiYjg2ZjZhOTVhOTZiY2M1N2QxYTlmYzRjYmVjYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2ZGRlYzYyN2EzYmQ5MWNhZjQzYzUzMjU5ZDQ4OTEwNDhhY2ZlZjI2NmRiNTBkNzE0MWU5NzgzZTljNWFiMDcifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L9-L14",
+          "version": "repo-lines-v1:sha256:31834e82e7b242ec569a009298c47d85377426c612bded348d941a9b1b8ee3db:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTA5MjM2N2IwYjZjYWZiMjEyNGNhZDE3MDI5Y2I1NDQyZDMyMjYwOGY1NmM1YTQ3ZWJlY2IyNWViN2EzOGNiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGJkNDI3MGU2OGJkMDZkM2Y0YmVkNTM3NTk0OWI1YmY5NTk3ZjZlNjY4NTVmMGQwYzI1ZjNhZjI2YWE1MGY3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGY3OGY4OGVkODZmZDM4N2E2ZjI5NTlmNDE5YmY4OTY0MzBmMjA2NmVlYWFmN2Y4YzIwZTUyNzkwYzFiNDZmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmVjZTc4Y2Y5ZGYwNDM1MWVjMThlNmU2YmRmMzI5Y2ExZTU0ZGM5NWJkODZjZTE5NmViYzAyMWNmNmJjZWM0MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0aff7a95a36d44cd9fa6a2fc63ba816c",
+      "statement": "Deploy-wizard inputs default to OAuth CLIENT_ID/CLIENT_SECRET secrets overridable by a per-package deploy-inputs.json, with NO_DEFAULT_CRED_INPUTS exempting gatekeepers that take no third-party credentials.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-github/deploy-inputs.json#L1-L20",
+          "version": "repo-lines-v1:sha256:cd8e3da15418f1a419fef84ee83381d36e9d6f7527d2a33ff4a3ca4aba50f9ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZDJiMTkzNDkzMTY5MTY2OWNjMzVhODc2MTk1MTgwMTUzMzYyMTNkZGEwYTYwZmUxYjA5ZjliOGUzZTk5M2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NDE2ZTA5Zjc4YmEzMTZjMDMyNTY4MjEzYjg1NWVlNzU2ZTQxNTY1ZDkxOGYwOTUxOWM4MWZkNjIwZjQwNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L258-L266",
+          "version": "repo-lines-v1:sha256:99000b9208868c847c32f1b94096c0c43e27ad51d097c26868eacb9abd59ab8b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWE1ZTgyZGY5NTBlNWM0NjNhOTYyN2FlOTNlZDcwYWNkMTJmNGE4NTg2MjcwZDNiODEzMDY2MTM0ZmQ0YjViMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVlMjZjZDkyMzY2ZjYwZDhlZDkyZDAyMzlmMDdmZWY3NGNhYzE0YWE2OWFkZGY5YzJjYzBkMTFlYjAwYTQ2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTYyNzYyZWQwMTA2MThhNDgzMzhlMDMzZjg5MjAyOWQ4NWVlYjM0M2IwMzRiOWNjZGMyYzgyMWQxZGIzYmZhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDcwM2ZmNmJjNDY4YmQ3ZDhlODRhNmQxZDRiOWQxNDM2YTk1NTVhOWJhOTc1ZTUwM2Y0OGYzNjIyM2ZhYzNjNSJ9"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L444-L446",
+          "version": "repo-lines-v1:sha256:c342a7a384257c5cc25d8eb12b2d0c715dd425383a0f51d472f1fd0f50283d9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQ5NGJhNDQ4ZGNkODZlMTk1MGIzZWJiMzhlYjliNzliNjY2NzM2MjlmZDljODQ1YmUwMGVhM2M5ZjJjMDk2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY0ZTVlMGI2Zjc0ZGMwYzMxYWIwMjYzNDM3ZWI1MWIxNTdlMjcwYmEwZTE3YWZlNWY0ZWQzZTMzNzRiY2VmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2I2ODIwMDY1ZmE1Mjg1YmEyOWFjOGE4MDYyYTQ1NzZiOWFhYjIzMGJhYjBhYmEyZjA4Nzg2MGI2N2UzNzllOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjY2ZGE5MjU0N2EzMTI3MjI0YWZhNDZmMjNhNWQ4OTg0Njk4MjEyMjA5YTBmYTg3YjAyYmMyZjdiMTdlZjEwZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e743d26af36f4b94a1d558811e9f16ca",
+      "statement": "The manifest shape is pinned by a golden-file test, and intentional changes must be regenerated with UPDATE_GOLDEN=1 and reviewed as a golden diff.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.test.ts#L59-L63",
+          "version": "repo-lines-v1:sha256:d896479dba6a06363f257627539deba270abb5cbd59a82b9b6c72460760f02a3:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTdlMTA2NDE1OGRiZjlmYTQ4YTYzYjc4ZTE1YTdlZWU5M2Y4MjNkM2UyYWEwOGJiNjA1NTQ5ZjQ3YmNhOWMyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDYxYThmMzVmOWE5ODM4Zjk5ZGE2NzZhMjA4M2JmNGU5Y2NkNmE2ZjZiMzJkNTA4ODM3ZjBiZTkxZWY2MTRkYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTcyNTZhNGUyNmQ3ZDhkMmFmOWU5MzUzOWQyZWFhNmI5NWMzY2Q0NDZiZTZmMGY2MGUwZDYxYzA0ZDg1OTEyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmUyZWM1ZDkxNjJiYTg1YzQ5NzBkMDg5MjE3YzA0MzdjMWMxNTFjYTFjMmMyYTgyNjYxMzAzYTIyMDA0NDk4OCJ9"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.test.ts#L7-L7",
+          "version": "repo-lines-v1:sha256:6bf295e3479816ffece73a83fd761f05ccfd8e7ef2935e50c2a56c2f57ad229e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmJmMjk1ZTM0Nzk4MTZmZmVjZTczYTgzZmQ3NjFmMDVjY2ZkOGU3ZWYyOTM1ZTUwYzJhNTZjMmY1N2FkMjI5ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmJmMjk1ZTM0Nzk4MTZmZmVjZTczYTgzZmQ3NjFmMDVjY2ZkOGU3ZWYyOTM1ZTUwYzJhNTZjMmY1N2FkMjI5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTk2YjQ5ZDdlYjM0ZjI2MTM2ODI0NjViMDY4OGUxOWQ2MDNiZWFmYTA2ODNkYjE1MzgzMDM4MGRiM2IzZDQwZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODJmNGQ5OGExNGUxZDdmMGJjODRhYmQzZTljZTBjNGQwMDBhMWVjMTUwMWM0NmI4MTU3YTk3ZTExZTg2NzNlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a7fd523cc75445e92b4e870c83aba57",
+      "statement": "upload-release.ts mirrors blobs to R2 with HEAD-before-PUT dedupe and uploads the manifest last so a crashed upload never marks a release complete; --candidate places the manifest under candidates/<id>/, invisible to the deploy service, which scans only releases/.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L3-L15",
+          "version": "repo-lines-v1:sha256:0688b7edf2b9fc6691cca14cb059367378fe545323c324abf3cc2e3598fff9eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NTg5N2M5MDFhOWM5ZWFkODNjZWVmN2RjNmJlYjBjMmViZDUzYWY3YmZkY2UxMzAxZjJlOWY2NmYyZGEyM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljMTJjYzAxNTk1OTg3ZGNkODdhNGQ4MDlmNTA3ZWRiMTRiMTk3MzQxNjk2YzJmMjIxMTUxMGVjOTFlMDcxYmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNzg4ZjQ2NDg1NjVjZmI5MzFkYWRhYjZjYzZmYTUyZjhjYTZlZWQwODg1ZWQ2OGQ3MDc2ZjRkZjE4YTIwZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f2389af8fdd84647997ffe50e31362e6",
+      "statement": "Publishing a release is a single all-or-nothing manifest copy from candidates/ to releases/, not isolated against concurrent promotions (CI must serialize it), with idempotent exit-0 for already-promoted and a supersession guard that refuses older CI candidates because promoting one would roll production back under upload-time 'latest' ordering.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/promote-release.ts#L3-L46",
+          "version": "repo-lines-v1:sha256:32a564896b326428fdf4b2d09e3df699dd95b72bcea662acdaf6ab884bb000d0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMWRhZjE4ODYzZDU2ZjFjNWE1MjA5MDdjNTc3MzBmYTQyNDBhN2JhOTZiODZhMjFhNDA2MTFlNmZmM2VkMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxMTczODBmMTFhYzA0YmIwYTkxODIzYzdlMTU1Nzk1MjEwMWNkMTFlZjc4NDMxYjgxOGE0YmM4NjU5MDQ1YWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_099df596d6084ba599f331cffafe0445",
+      "statement": "Preview deployments are safe only because of their trigger — pull_request, whose fork runs structurally lack repository secrets — with pull_request_target/workflow_run/issue_comment forbidden; the if-guards and API permission re-check are fail-closed defence in depth, and author_association must not be reintroduced because private org membership reads as CONTRIBUTOR.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/preview.yml#L3-L29",
+          "version": "repo-lines-v1:sha256:91efa71220718e7dceaa38a5ad6a7c4a292a32d4afe79287c46cae797ec7b76b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwNjFhYTgyNDM2ODY4NGRiNzZhNzA4ODdiNWE0YTkzZTMyM2U4NDE1YjBjM2Q3MzQzNWU0NzljNTdiYjkyZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyZTc5MDU2NmMyODQ3NjUxNmU5MWE4OGU1NzVkNzIxMmM3OTdjMTcyY2VjNjllODg2N2NlZjhjYWQ3MDEzOTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmOWFmNTg1YTQ5NjNkZmZlMzI1NThmNzEzOWY2MWNkY2I2ZWQ0MTA1ZDQzMWJkOWVlZTU1OGU1ZmZjYjA2OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2YzM4ZjM2N2M1NjkwZDM1MGVhN2YxN2YyZmY3YjJlMWU1ZjAxZGFiMjJkY2NjMDk2MzkwMTE3Yzg2MmI5YzIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T09:47:13.931Z"
+  }
+}

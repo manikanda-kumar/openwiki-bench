@@ -1,0 +1,5 @@
+# Files
+
+- [Shipped Gatekeeper Connectors](connectors.md) - Survey of the gatekeepers shipped in this repo — the OAuth service connectors, Home Assistant (LLAT), Email (a gatekeeper that is the service), Cloudflare (sign-in + billing + observability), the auto-provisioned Context Library and Scheduled Tasks, and the two MCP connectors sharing mcp-shared's trust machinery.
+- [Gatekeeper Contract](contract.md) - The workshop-shared interfaces every gatekeeper implements — GatekeeperVendor (connect/nonce/scopes), GatekeeperUser (the privileged per-user adapter), the Gatekeeper session Durable Object with its approval semantics, observations vs actions, hooks, and the auto-approval drain — plus where trust in server claims is placed.
+- [Gatekeeper Connection Lifecycle and Policy](lifecycle.md) - How gatekeeper accounts come to exist — the OAuth connect flow with its nonce and callback bridge, the disabled/optional/enabled provisioning modes for ambient gatekeepers, disconnect/reconnect semantics, credential expiry tracking, and the admin-config chokepoints that gate capability minting.

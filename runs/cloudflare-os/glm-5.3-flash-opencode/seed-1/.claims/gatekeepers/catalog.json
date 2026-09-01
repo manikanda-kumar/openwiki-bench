@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e6b5604c2dc9918e558ae2ae25d86835aba4984eca992900ea9afbdcc220f482",
+  "claims": [
+    {
+      "id": "claim_a9b0f8a07e164a5594ec3ea9cd200227",
+      "statement": "gatekeeper-github serves both sign-in (minimal read:user user:email scopes, transient grant, verified primary email) and connections (full repo scopes), and requires a GitHub OAuth App rather than a GitHub App because only OAuth Apps honor the OAuth scope parameter that makes minimal-on-login/full-on-connect work.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-github/README.md#L1-L14",
+          "version": "repo-lines-v1:sha256:e003380ad81af6b8c82d65fae0860af4067a86573785a4993cabfdb41adf4a5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNmUwOGQ2NzJmYWY2NjdhYmY5YjkxY2VmNDkwMTgxZmIyNjA2ZThkODVkNTM3YjlkZDMyMmI3M2FlZDNhOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmM2JhOWQzZTk5MDMxNDQ2YWVmZTkxYjU5YjBjZmRmYTI5NzU0ZmY0Zjc3ZTUzNWU4MzhiNjk4ZWMzODJlNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyMmYyM2FkYzE0ZjI3YTJkNTQzMjA3MjNjMzQ4M2RmYjgxNmM4MGQ1MGQ0NTFhYTY3MWFiNGE5NGY2NjdjMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf28c5d2a24f48248b8273fd7e92ff8c",
+      "statement": "The Cloudflare gatekeeper serves three unrelated purposes from one connected account — sign-in (verified account email, also establishing the persistent billing-only connection), AI Gateway billing via getUsableAccessToken, and read-only Workers Observability — with account and Worker resource granularities both mapping to the single indivisible workers-observability.read scope, making the capability boundary the binding rather than the grant.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L1-L28",
+          "version": "repo-lines-v1:sha256:ff8d8077d356a087f675ad61d6f39bbda01fc35fbebc4c9aa882d0617431e2ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyNzE3ZDEwMGM1MjlkZTk2ODI5YTI3NDMxMjA2NGY5ZTM2MjgzNzkzNDYwZWEwMDJiNzFmOWZjZTlkZDU4YmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NDc4ODA0YTUzYWIzOTZjNjM4ZmE0YWRlNWJiMTgyZWNkY2QyMDY4NjRmOTFlN2QyODhmZWM3NTVlOGUxMGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5NThiZGQ4ZDVmZWQwYjJkZWVhMmI3ZjQ0YzAzYjJmNTRmYjRlMTNlYzdhMWFiNjk5ODNhZGYzZDNiZDYyZjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe112205f2fa4980aeb87c46a365adf7",
+      "statement": "gatekeeper-cloudflare's observability layering funnels every read through one path: observability-api.ts is the only module that talks HTTP, observability-parse.ts validates every response with no blind casts, and observability-session.ts routes all agent-facing reads through a single #observe so no path returns data unaudited.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-api.ts",
+          "version": "repo-file-v1:sha256:def59c9f5e37e822d2edde3b9383227cf6a4bd3b97a3bbce4121b668d795b4a3"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-parse.ts",
+          "version": "repo-file-v1:sha256:42509bbab21c73d1b7aec1e1c51fd6adbcf3a9a78ac3ad57211a0a3bdf73b5c5"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-session.ts",
+          "version": "repo-file-v1:sha256:a239a6225439b7a456adef7ed82f993206d465b7ce0f278424ff2f3e6633fb70"
+        }
+      ]
+    },
+    {
+      "id": "claim_1549c5f477d8476fa2aa35aeef1830f9",
+      "statement": "The repository fixes observer strategies per resource type (docs/observers.md §9.2): GitHub repo/Google docs-sheets-selected-calendar/Linear teams/Notion pages/Supabase projects use the single-unit ACL check (B); broad bindings with distinct sub-resource ACLs and a per-observer oracle (BigQuery, Linear workspace, Notion workspace, Supabase org, Confluence, Context Library, allVisible calendars) use data-set tracking (C); Gmail mailbox and ZoomInfo are private-only (A); Spotify/email/Home Assistant are low-stakes no-ops (D); Cloudflare exposes no resources (N/A) — and a broad binding uses C only when both distinct ACLs and an access oracle exist.",
+      "evidence": [
+        {
+          "resource": "repo://docs/observers.md#L504-L555",
+          "version": "repo-lines-v1:sha256:905c48882a6565a0e14bf4f115fa2c39830efcd229fe03dfeb705573dbdb272c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzM2YwNGUyZDZhYmI4MGQ0NGJhOGViYjcwNzBmMmJiNWU2NjJiOTgwOTEyZjFlMDhjNDg1ZTUyNjg3MDM4MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkODUwOTBiNzc3MjgzOTllMWZhZGMyNjdjM2RjNzViZGZmMWU4ZTk0YTc0ODYwNzY1ZjA2YjJhM2ZhZGJmNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczNGJmMjI0YzE2Mzg0YjQxMmNjZDZkYjQ1MjE0YWRiYWU3M2Q2MjllYmFhYWU0MjExMTNiMWFjMjEwOWQ0YmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts",
+          "version": "repo-file-v1:sha256:e8b70377830a3bd9d44514840970da9d3cbd5a741fc1e385ad75e4d7dcd31d39"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b5fd9861dfd48589fecc2be50cf4faa",
+      "statement": "mcp-shared is a shared library (not a Worker) behind gatekeeper-mcp and gatekeeper-mcp-portal, holding code where two copies would eventually disagree in a security-relevant way: tool classification, the scope grammar, the OAuth lifecycle, and approval-queue wiring; the two connectors differ only in where the endpoint comes from (user-pasted URL vs the admin-configured MCP_PORTAL_URL).",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/README.md",
+          "version": "repo-file-v1:sha256:ecf0e32157963adf8f8f6ce968e56ba42292e0b084adb60db3932f58074b343b"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L5-L10",
+          "version": "repo-lines-v1:sha256:c7c6c1b9ead1114251ac57e2c3a94b6b8a75158c12a846ed598fd3f4d8d489e5:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODViMjZlZGQ2NTEzMTQxNTAyNTQwYzE5YmJjM2M3NjRhNzA4MjBhYWI1MTM4YmUzOGVhY2E4ZDhlYWQ0NGM2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWMwNTJkMGU3ZDgwZDk2ODg5NTY4OGFhYzI4MjE0MjNhY2ZjYWE1MDMwNGYzOTI3M2QzNWJmMTc4MjY3ZTY4ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_93d051ffe58b4c0a9cefdb4b4116d480",
+      "statement": "MCP tool trust is tiered: byo (user-typed URL) honors only readOnlyHint for read classification and can never auto-apply a write, while vetted (deployment-asserted, requiring MCP_PORTAL_TRUST_ANNOTATIONS=true for the portal) lets destructiveHint:false + idempotentHint:true drive auto-approval; nothing outside tools.ts reads a tool's annotations, and unannotated tools are always approval-required actions on either tier.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L11-L27",
+          "version": "repo-lines-v1:sha256:bd79a4c8e22b0f42c3e0d8d070a20c1028ee69a096d2d22001cc49c251a3e94f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkODIzNDNkMGI2ZjljNmY2NjFjM2IxODlkOTNjNWI0YWJkNjIwZmE3ZWI1NzY1ODFiYTNlZjJlOTU0NTIxMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4MzAwMTkxODBlMWM5Yzg0ZGI1NWE3MDNlZTg2N2IyZjkxOTNiYWIyMmE1YTFjYzQ0NWQ2OTNiYTYwNTVjZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2Y2I1NWQzZWMzODc1NDZkMzhjZGRlNTE2NGRhZjc3MWZlNGExODNkOGNkZGI4OWQ0ZmNiOGNmZjA3NDFjZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4NWQ1ZDNiZTEyMjcwMDRmMTE3YjU2MzhlNDY5YjNiNzlkYTBiMDMxMjg1YTU1NjAxMGIyM2EwZjlmMjhkOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ccb09a9d975a4f38adf1538e36a69cab",
+      "statement": "MCP action application is at-most-once rather than exactly-once: an approval is claimed in storage before the call is sent and settled before the result is attached, and any failure not positively identifiable as server-side refusal (only 401/403 proves refusal) is closed as failed and non-retryable because the write may already have happened.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L29-L57",
+          "version": "repo-lines-v1:sha256:fd3ed3a6e75e4e6b8c537ce1c96970962537b911c49a6c2e89b8efbeee38a5a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkOTJiN2MwYzhiMDA1OWI3ZGFiOTIzOTUxOTEzOTk2ZWYxNGE3NTM0YzYyYzY2MWJiM2JjZTA2NzdmZDBiNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MTYxMzU0ZDIzMTBmMjhjM2FlMzViN2Y0NjUwOGUyNDFjNGQyNmQ3YmQ0MWYwYWE4MWQ1NGU4M2Q3OGU4ZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4ZDY3NTVmYWRhMDZhYWU2MDA1OTRjYWE0NmEzN2Y3MzM3YWY1MmYzZDIwMTQ1YjA4NWI2MmVjMGQzMWE5ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlM2FiZDI4M2FiYTNlY2NkNmY4ZmRlMjRlMTFiOTI5YzkxMDZhNGIxZWU0MDhmNjI5OGRkYWE0ZmIxOGRhMWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3621fa87d954d8e926abc2175b346b7",
+      "statement": "The Context Library auto-provisions accounts (no connect flow) whose AccountDescription declares both an agent singleton (tsType ContextLibrary) and a management UI; its worker exports three Durable Objects (ContextCollectionDurableObject, UserLibraryDurableObject, LibraryRegistryDurableObject) plus the vendor/account/verifier/gatekeeper entrypoints.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-context/src/index.ts#L1-L5",
+          "version": "repo-lines-v1:sha256:4812984379e48269e52e0257bfc065133b22a3419a14e06a5cdaef4f2539ef7e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTA1YmM1NTg1YTA3OWY0ZGVmZDE5NDBlNzYzYjNkZjI4MGMyMDQwMDdhM2FiMzUzN2ZhN2Y1ZmJmNDc1ZTJmNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwYzQzZjAyZmFjZDNmODA0OGE2MWU0ZTZlMjVjMGNkNTNmMDhjOGEwZjU2YzAzYjg4NjBlYWY0MWYzZjAwYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDQ5YWNkMDFmNjIyMzRkOWI1Zjc4NDY0MmVlODk1YzM0ODkyMmIzYTg4OWM0MGYwZDA1MDg1OTA1ZTM1NDE5YiJ9"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-context/src/library-gatekeeper.ts#L122-L136",
+          "version": "repo-lines-v1:sha256:79119e13b6407a0bf8b964b6403d66c3dcc62e4f03a24e87d62c77f06ea69c7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMTViNDcxM2RhYTNjMWQ2ZWMxMjE1NGJjZjMwNGE1YjVlOWRlM2VhYjkxY2UzZTliNTRhNjBlZGEwNzJmYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOTc2YWI5NDViNTM0M2ExYmFkODg1MWE2OWZhMmQ3YWI1ODRjODZmZDdlYmQ0ZWMyZDcyNDMyNTQxZDNhZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0NzJkMjJkMjlhZTMxZTJiOTU4ODQ1N2MzY2E1MGNmNjBlZDc4YTA0ZGVlNTZlMTJkMzRjYjMwNzhiZGYwOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlZWVmZGQ1MTEzZDk5MDU2ZjFlMTlkZTFiN2Q1YmVkZTZlMGEzMDFmOWU4ZjdiZTRlYWQzZjhmOGRhODY2YzgifQ"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-context/src/library-gatekeeper.ts#L184-L184",
+          "version": "repo-lines-v1:sha256:d885fafd68bb4715235fc9e61fd8d31a43d04479c1132df81cae23872f651eb0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDg4NWZhZmQ2OGJiNDcxNTIzNWZjOWU2MWZkOGQzMWE0M2QwNDQ3OWMxMTMyZGY4MWNhZTIzODcyZjY1MWViMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDg4NWZhZmQ2OGJiNDcxNTIzNWZjOWU2MWZkOGQzMWE0M2QwNDQ3OWMxMTMyZGY4MWNhZTIzODcyZjY1MWViMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODkxNjg1MWMyZTFlNzVmZTIyNTQzYjljMmI5YzJiNmQ1ZjQzOGY5NDE2YjE4OWI0NGNiMDI1MGIyOGU3ZDAwYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmIyMjk1ODczMzhiNjdkZDM2NGU5ZGU5MWJlOTRlYjdlOWZkMzBlYTVmNmJlMGUyOWQ3MTM4YjJlMGU1NTViMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e039f4be7a4b4cf99cd5a63811af038c",
+      "statement": "Context Library data is namespaced by a sharingDomain carried in the binding's props, so multiple workshops sharing one gatekeeper instance stay isolated; the namespace prevents accidental mixing between trusted deployments but is not a boundary against malicious peer configs.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-context/src/domain.ts#L1-L8",
+          "version": "repo-lines-v1:sha256:9f2b666f6137aa5cc06ea70f0e71acc94b36d91574e8ed77a2119b5b985cfd24:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ2MjljYjU5Mjg1YzI1ZTlhOGUwNDdjOThhMzg1NzcwMDc3N2EzODc2OTFhMzFlOGVlYTUzZThjZjJjZmQxNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWM3YzcxNzVmYTUwZjc4OGViNjI4NDQzMzQwNGE5YTRiMzkyMDQwOTRhNGM0NDIwMzE2Nzg2OWIxYTNlN2FlOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_be11af8277e44b16a7582b36d8af3f6f",
+      "statement": "The Scheduled Tasks gatekeeper is ambient: workspace code registers persistent callbacks for elapsed intervals, wall-clock recurrences (IANA timezone), and one-time runs; one account-scoped ScheduleDriver Durable Object stores enabled schedules and delivers from a shared alarm, hook enablement stays in the Workshop Connections UI, and its /gatekeepers/scheduler management app is deliberately read-only.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-scheduler/README.md#L1-L16",
+          "version": "repo-lines-v1:sha256:b9dd348de3e6f85eadd3c5687cbe1ce0ef5d36e93a65629103b6bb3d242ca6e9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1YmVmZmY4YWU5MWViMGY2MzIxMDc0YTRhNDg3Y2NiMTlhN2MxZWNlYWI2MGVlY2FmMDE2ZmY1ZTU4MjA2ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5MmI2YTExZTJlOWU0MTZjZDBkYWQwYzU5MWFjNzg4ODU5MDU5OGM3NjdlMDdkNjc0MWRjODg3MmQwYmYxYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmZGY1MjgzMjFiYTczNGZlNjFhOTFhNjk0MDlhMmNlNjlkNDM2NTA3ODlmMDI4MDVmOTFhYjU2ZWJiZDdmMDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bfae67b1bef94516a7022a964ceaaeaf",
+      "statement": "gatekeeper-email is a WorkerEntrypoint with an optional email() handler that the router forwards inbound mail to, and it is marked not installable on customer instances because Email Routing requires a zone that workers.dev-hosted instances lack — it still ships in releases so the entry stays auditable.",
+      "evidence": [
+        {
+          "resource": "repo://packages/router/src/index.ts#L62-L68",
+          "version": "repo-lines-v1:sha256:4d5505aebac35781296d39465cc6b50a17c58a9e7c5e7c970ad8756c049eabb8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI0NzFkMTBlMmQwNzE2ODAxMDgwNGQ2MTdhM2Y5N2ZiZTQ2NmVmMmEyMDE4ZTcwNWEyOTAzNzU3ZWRjOTQ1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTViMDVmMzBkOGQ3ZTYyMDRhMGNkMjY1YmE3ODJkYzk5MmFlOWI4ZjRkNjFhMDZjNDhkMTMwNGRkMDc3NjU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmMzZDgwMjMzODQ5NGUzYTJkZjBiN2JkZGFlNTNkNTU2ODVmYzkyYTRjYTIxNDc2NDVhMzVhYWI3NTE4NTM5YSJ9"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L270-L272",
+          "version": "repo-lines-v1:sha256:2a9d5399fbdd3fc7bf06bddc52263dd40d3b76193b3e7705400ceb3dabfdc8d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjIyMTU3ODg0YTg2MWYwMmYyZjVlMzJiY2MxNzMyNDg4ZjkwZThkN2M5MDFkMDM3MzIwNjBkYzVhZTkyNmUyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWNkZWUwMzQwMTRmZTI0YzI5Zjg0OWQxZGUwNzFiOTI2ZWUxZDMwMTYxOWM1NjczMmE3NDU5NzM4YTkzMmZmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDcwM2ZmNmJjNDY4YmQ3ZDhlODRhNmQxZDRiOWQxNDM2YTk1NTVhOWJhOTc1ZTUwM2Y0OGYzNjIyM2ZhYzNjNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWVjMTNiMDc5ZWQ2ZWExNzc3MzY4ZWE2YTdjZWVmYjgzYjMyNWE4YjU1ZTgxZTI0NDcyYjNjOTI3ZjM1MDYxZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_aa9544119ea349c384f4bf7c7080306e",
+      "statement": "gatekeeper-homeassistant connects via a user-pasted long-lived token and carries dedicated simulation.ts and approvals.ts modules for its action simulation, consistent with its low-stakes observer strategy (no per-user ACL oracle exists to verify observers against).",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-homeassistant/src/approvals.ts",
+          "version": "repo-file-v1:sha256:47421f8aea12aac4bd4022fa49796a53dc94ed9a40c3c12d54325c9d52e1b1d8"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-homeassistant/src/simulation.ts",
+          "version": "repo-file-v1:sha256:6fdd2b8ca91dd2cf3cdc9e8c467b8c2b1a44071e76dc63e1fbac9ca098f621fc"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T05:23:12.377Z"
+  }
+}

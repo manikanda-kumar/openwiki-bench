@@ -1,0 +1,6 @@
+# Files
+
+- [Admin configuration and deployment settings](admin-config.md) - How deployment admins configure the instance — the AdminSettings singleton DO, the reserved KV mirror, the AdminConfig shape (formats, gatekeepers, ambient modes, branding, signups), the format-blueprint install-on-first-request flow, and the deliberate split from env-driven auth config.
+- [AI model routing, gateway, and usage limits](ai-models.md) - How a chat's model is resolved and routed — BYOK through the user's own AI Gateway, the platform gateway free tier, or direct provider credentials — plus the LanguageModelGatekeeper binding, the usage/balance decision tree, and the pi-ai integration.
+- [Build system, dev tooling, and release pipeline](build-release.md) - The Vite+ task cache and its rules, the dev server's generated wrangler configs, PR preview deployments, the release manifest contract with its placeholder grammar, the R2 upload/promote flow, and CI.
+- [Logging, tracing, and error reporting](observability.md) - The observability stack — the backend-utils structured logger and its reserved fields, the per-package observability context, the traced() span helper, the ERROR_REPORTER issue pipeline, Workers observability config, and the frontend /api/client-errors pipeline with its gating bindings.

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:20558eb551e7082b50d3848519dea039f94a4163c198b7e5ee1f425ddc42d253",
+  "claims": [
+    {
+      "id": "claim_5fbdb11d2663445f9f1c4de5680b51bf",
+      "statement": "The gatekeeper contract distinguishes observations from actions: authorizeObservation must be awaited before any data is returned to the gadget, while submitAction resolves immediately with the action possibly pending for hours — the gatekeeper applies it only when the overseer calls applyAction, is encouraged to simulate unapproved actions so gadgets keep working and queue dependents, and may request a gadget restart on rejection when simulated state cannot roll back.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L73-L79",
+          "version": "repo-lines-v1:sha256:7fc49b2d4873270f160aa11bf9a09e28a5b60498a213382f30d7b86e0f63ea0b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUxOTY5YzNkMTVhYjkxYmViZjVjZDA1YTFkODNiNDBlZjQ2YjY4NmQxNTMxMWUyZmIxN2M4MDAxOTZhZjU0NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDY1NDA1YTM4YzhhZGU5MmQzM2U4OWE4YjdmMzc5Mzc0ZDExYzhlNjYzOGJhOGY0MDc2NzRkMDIzNmQzZTVhYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2M1Mzg3YWQ0MDQyZGE2NGQ2MWFjMWRjOTFhZjcxOWI5ZmMxZDliMjU3ZWUzNGIxOTg2ZDliMmE0MTQ1OGM5YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTU4YzQwNDQ1MTYwYWRiMDk3MTE5NTZjNzIyZjI5N2M5YTllNDIwZGE3NGVmZDQyN2U4ZDUzOWIyNWU3ZDU4ZCJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/gatekeeper.ts#L855-L1046",
+          "version": "repo-lines-v1:sha256:e63f4f352624631ab786de0a420b675affc3bc5c2f140981411f0c8ea5e4f1e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTkyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3YmFkOTkxYjVkZjA4MDhjN2QyMjAzZTA4ODlmMDIxNjc1MjhhYzU1YWZmMTdjMjZjMzYxZWFlZDUxMWQ3YWI5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJjOGQ3NzgwMDAwOGUwMjMzMjJkM2E0ZTE1NmNkNGZkN2I1YmRjNTg1M2QwNjkyZmI2MzE3YWFjMGI5Njk1ZmY5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1OWE4YzkwY2IzNzc1YzQ3NmZhNzQyMDM5MDk0Nzk3NGIyMzVkNjdhNWQxMjJjN2Y5NGUxMjQyNGYyYmJjNWFlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5YjU3ZDc5MjA3YzU2YWNlYzcyZDRiOGU4NWRmODE5YmI2NDdkZjNmOGJkMTZmMDA5MmVmYzJkNmQwOWE2YTY1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_20cacc6dd7f141af9fca2934a80e69b2",
+      "statement": "Every observation, action, and hook binding is recorded as an ActionRecord in the overseer's actions collection with a workspace-sequential id, gatekeeperId, caller, denormalized resource title/url (so display survives gatekeeper deletion), state, and appliedAt; observation records never traverse the approve/reject paths, and built-in agent tool observations carry the sentinel gatekeeperId -1 so no gatekeeper lookup is ever attempted on them.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L536-L600",
+          "version": "repo-lines-v1:sha256:eff28b48dab75ef328d9d5caa4819f250712b22b21b85003a40a12db95205168:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjMGQwMGEwZjcyOGNjNGExZjczM2NkODM3ZTkyNDVjYTY3ODgxNjI4YzQ4ZDM5NDcxODc4ZjRiMmYwOTg2ZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3N2U5ZTk2MjA4YTE2ZWYxMDhjODExZTQxNjUwMzBlMjExOWRlNGE0YTdkYmU0OWMxMWQ1ZjMwNjRiMTVmZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwMzZhZTYzNGI2ZTkyNDZmZTI3ZjUzYjk5NTk1YTY2NGJkNjZkZDAzNzFhZmU0NTRkY2ZkOTBjZWYxYzY2ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2OTg1Y2VlNzg4YTM1OWViYmQ1MWI1OTM2ZTkwZDhkYzI5MTk0MzZjMjQyOTAzMmUyMzBlYjc0ZWFiOTg2MDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e88c6c81374b4164b26ba21bdd68b86d",
+      "statement": "submitAction refuses actions entirely under prohibitAllSharing, writes the pending ActionRecord, schedules an auto-approval drain when the action is autoApprovable with an actionKind matching an enabled rule (deferred because applying calls back into the gatekeeper still awaiting submitAction), and suspends only agent turns that marked awaitDecision when a manual decision is pending.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L4665-L4709",
+          "version": "repo-lines-v1:sha256:03692c75e0175ffd9f778fe76176fa5fd5f04449f533ffeb963c21a0fb195dfa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjOGM4OGNhZTQ3ZTYzYmU2ZWNjYjg1OTIwNzg0ZDhhOGVmZmVkOGE4YjE4MjRlOTRiOTNhZTRjOGQyMjVmZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5YjQ2Y2FkYjA5ZjhkYWI0OTY5NTM2NGE2MDY4ZWQxNzBjOWIyMzQxNmU1YWZlOWFlYTg2Y2YxMzdhZjc5ZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3NmVkNzQ2NjM3MDBkYjI2NTdmNTM2MjYwNWE5NDIyN2U2Y2YyZmYyYWVmOTY1MDkzYjE3MDFhMGI0MjlmZjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0da47ab955d41f680681676c700d786",
+      "statement": "approveAction validates state, resolves the approver's identity before applying (so a failed profile fetch cannot leave an action applied in the world but still pending in storage), then applyPendingAction calls the gatekeeper's applyAction and persists the approved record with appliedAt/resolvedBy/autoApproved; awaited agent actions resume only after all awaited actions in the turn are decided, and clearing the manual gate cascades an in-order auto-approval drain on the same gatekeeper.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L4280-L4292",
+          "version": "repo-lines-v1:sha256:663d74420dd486e2339e055e146df677b6b5377904ba18d7ed7e67d4ff49bf87:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyZmM5MDIwOTBiNDgwOGMyY2Y3NGMwMDU0ZDViZjc4N2Q0ZjJmYTkwYmQ3ODMwYTY0NGVlZDYwYWVhMTZmZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczOTIyZGIzMmNiMmFhNzBmMjk2MDA1YWRkMTM1NDkzNTcwZjk5NDhhY2E5MGIwNzAzNDYwZGNkZTk1YTA5NzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3YTgwMTNiYzA4OTkyYjkyZjgzNzNlZDI1OGI1MjhlYjI3NDRlZjNmYzcwN2VhODkyYmZiNTRlMjkyZTlhOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjMzE2ZDhlNDg2YWU3Y2Q1MTI4ZGIyNTQwODRhMDQ1MjYzZTE2ZWI1NDAyZDBiZDVhYzA0MTE0ODFkYThjZWMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L9476-L9503",
+          "version": "repo-lines-v1:sha256:585311a071481fe4cf5be9019c7adf3bedbd5532255a4c8be6374ad2469f1770:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0OGYyMTNiMjJmMzYxMDRkYmZhNzMzZjcwZWIxZmVhNzI0YmM1ZjIwYjM4MDAxMzdiMjNjOWZkMGFhNzY1N2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5Njg4M2Y4NzY5Njk0YmMyOGZkNzk0NmYzYjA1M2ZmNDFlMDIxOTg5ZDRmZDI5ZmEwYWZmMGI1M2Y0NDQwMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlZWVmZGQ1MTEzZDk5MDU2ZjFlMTlkZTFiN2Q1YmVkZTZlMGEzMDFmOWU4ZjdiZTRlYWQzZjhmOGRhODY2YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NWRhNWEwYzA4NTUyY2FlMzBiODQ0Mzg4YzU1NDE1ODQ2ODMxODU3YjNlM2JlYjZmNTdmNjFiMWU5MmViODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_32874f4e4b6243a4884b03e74bad5594",
+      "statement": "Auto-approval rules are user opt-ins stored per gatekeeper per action-kind tag (AutoApproveTagRecord keyed gatekeeperId:tag, capturing who enabled it so each auto-applied action is attributed to that user in the audit log); approving a kind applies matching pending actions immediately and applies future matching actions without manual review.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L714-L738",
+          "version": "repo-lines-v1:sha256:0543759ff4d9e14c5117200f5db43e7ebd92b2a76bfac266a1682508cafd90d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5ZGEzZDU5NTQzOTZkOTUxOWZjNWQ5YWQ1NWM5MDZkZmNhNGViNjA1MjdkMmEzMjNlMTYwZGIwNDVjNjMwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMjg5ODM5NzgzZmVkZjVhMzYxYmY0NTRiOTE0Y2RhZWRkMjM1NjZiYWI0Yzc2MTMzNmYyNDEyYThkYTQxZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwOTA5M2NmMzkyN2Q1NDA5MmE1YWQ1MjUzMmVlNDNiOTVkODM1MmRlMzVmYmJlZjNkMzg5NjdkY2UwZDNiMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmNTI3OWY0OWM2MDAyYjNjZGIxMGYzMTY4YTc0YzgwMzE1YTk3MmU3MDVlZWU1MDk3ZGQ4NzJmMTRlNWI2YTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1810-L1829",
+          "version": "repo-lines-v1:sha256:1448f7b47bf6b046229846a5268799bdd7f84908812db69ba6464481b45b9118:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3NzVkMzliY2JkODJjMDA4NDAyNTAwMjJmNWVkNjdkZTE4ODIyNjFjOTRkYzU3MDkxMmUxNmM2ZTY4OTRjZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjMjZlNGM5YjlhZjBjZWZkOWQzMGQ1MDY2ZWZlMzFkODc3N2UzNzYxN2E0YWIwN2Q2OTM1MmZhNjYwMTc0NmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNDI3MTI5MTgyZWIxNTYwYjFiYWIyNmViNDBkY2FlNmM5NTJjYTdiMzRjM2IwZDA5MWRmNGQ2MWUzMjBiMjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_acc810142d1640f191efece6da7aaf71",
+      "statement": "The auto-approval drainer applies eligible pending actions in ascending id order with a per-gatekeeper single-flight guard (a concurrent drain sets a rerun flag rather than running twice, since the DO's input gate is open across the apply await); eligibility requires both the author's autoApprovable verdict and a user-enabled rule, the drain stops at the first manual-gate action rather than skipping ahead, re-reads each record before applying to guard against concurrent drains, and a failed apply leaves the action pending and stops the drain.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/auto-approval.ts#L1-L99",
+          "version": "repo-lines-v1:sha256:14577b3411a779ee70f5a4dbe8d82946fd095b33607d9315ca57801aedae9df0:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjRlNTY4OTQyY2ZhZGY3MmY2OTVkNzZkODZjZTgwMzM2MjM0ODA0YjczYzc4ODk0NTdhZTk1MTEzY2ExMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38c1a11c6d00489aa391be903c32d97c",
+      "statement": "The action log is read through listActions({beforeId, filter}) paging newest-first, with the pending filter as the query half of the query-for-state/subscribe-for-deltas contract; three indexes back it — byLastChanged (unique, resume-replay so a reconnect replays only records changed during the gap), pendingByGatekeeper (sparse, making the auto-approval drain O(pending on that gatekeeper)), and byHistoryFilter (keyed to the wire filter values so every filter is one ranged read) — all backfilled by the schema version 3 migration.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L1082-L1109",
+          "version": "repo-lines-v1:sha256:7970088a7ad1fb1ea1413a27711a16180fd3809029dc7558912752715f9a2ce0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MmQ4NzdlNzZmYjUyNzVhZTBlODllYzk3MDExNjQ3YTllZDk3ZmE3NWNmOWZiMjMxYzk0ZDJhN2I0MmZlOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxMWUxZWQ4MGQyYTI1NDZkMDg5YTY2YjI2NDE1ZDBhMmM1ZTljYmI5MDg2NmZlZWZhMzJkNWNmZTljNjU3OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MDk5ZTRiNDRiNGVkMGVmNzY3YjAyYmJiYjgyYTQ0YWY5M2I0NjFjYzQ2MmU1NGU3NTQxYjQ3NGEyNDBlNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUxNGVlNjFjMzFjNDM2MWE0YWNhNTY3MmZjZWU5OWE3MzIzYzE4OTUzYTZlMTU2OTNkODE3YTNlYzg3ZTJhZTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1768-L1780",
+          "version": "repo-lines-v1:sha256:2a284cd2bcbb343d98e53e79a82f43cfcb2289c5eebee6f37c45c8d097b7d2e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MjAyOWVkY2FmZjk4ZjZkN2Y4MDdlMDc1OTYyYTU4MzkzOGEwZDY0ZDY1YjkzOTExNTFlYjgyMDNhZDQ1MGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzNDA1NTg5ODUxMTE4NzM5MjM5YWI1NmY3YmIyNmYwOTgxN2M1M2I3MGE0NDdmMzA4MjhiM2Q5N2EzNjE5MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOWRkNjViZWJhY2YyNDYzMDUwNGNkYjAwYWViY2QyZTdhNzdmNWJjNzhlZDMxZTg3YTUyMzQyZmMwNTU1ZTEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T05:23:12.377Z"
+  }
+}

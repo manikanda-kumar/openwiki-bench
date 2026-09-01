@@ -1,0 +1,5 @@
+# Files
+
+- [Configuration and Admin Settings](configuration-and-admin.md) - The full configuration surface of a deployment — what env vars control, what the /admin panel's AdminConfig owns (and why auth is deliberately excluded from it), the three-state ambient-gatekeeper provisioning policy, feature flags, AI Gateway billing enablement, and branding.
+- [Logging, Observability, and Error Reporting](observability-and-error-reporting.md) - Server-side structured logging conventions and the reserved-field ban, per-operation observability context and tracing, reportIssue to the optional Reporter binding, and the separate opt-in frontend error-reporting path including the gatekeeper iframe postMessage route into /api/client-errors.
+- [Router, Release Pipeline, and Preview Deploys](router-and-release-pipeline.md) - How code ships — the router worker's binding-discovered public origin, the immutable byte-identical release build, the content-addressed R2 upload with manifest-last publishing, the candidate/promote gate with its newer-release guard, manifest placeholders and the golden test, and per-PR preview deploys.

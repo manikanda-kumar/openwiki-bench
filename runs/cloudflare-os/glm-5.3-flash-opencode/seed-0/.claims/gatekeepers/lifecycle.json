@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4fbe499e2274bd42f2f1ffa78ab341ede8022f604e2caac90a5eb2ab4d3bcce1",
+  "claims": [
+    {
+      "id": "claim_9245ed636978463aa118ebf7fa8c1394",
+      "statement": "UserDurableObject.connectAccount resolves the GATEKEEPER_* vendor binding, refuses if the deployment's admin config disabled that gatekeeper, allocates the next account id, mints a GatekeeperConnectCallbackImpl entrypoint carrying {userId, accountId, vendorId} props, and returns the vendor's OAuth popup URL.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1142-L1167",
+          "version": "repo-lines-v1:sha256:8905a2f14807872f8ee97dcbef7e97b2f8a1fceed33e92ffe00a465e8eb3fc4a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmZjM1ZGYwNWU5ZTkwZDM4NWJmYTM3NmM2NjBkNTk1ZWI0M2NhOTgxMGQwODljOTBkNjlkZWM5OTUzYmZmYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzZmMzYWFmNGNhNjc0YTMxMDhmNDZkZDhjN2JjMmZmYTBmNjBkOTA3MTIyOTA5ODhmMWRjMTYwNzhlMzRlZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmYjlmZDZiZDEyYTZhMmU0ODk5YmIyMTQ1NWEzZmI3N2Y2MDkwMzk2YmQwYjI2Nzg1ODMwZmUwMDVlNDg3NTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9bb113f53505433dbac7f6c4c38888f1",
+      "statement": "On OAuth completion the gatekeeper invokes the callback's complete(account, expiresAt?), which persists the account record (id, account stub, description, vendorId, expected credential expiry) via putConnectedAccount, while credentialsExpired/credentialsRestored flip the record's expiry flags so the UI can prompt reconnect.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1734-L1760",
+          "version": "repo-lines-v1:sha256:63e6fb57efb553d5d31d340aa356e697761d00698096a802897e17aabe3243ff:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzZjc3YzcwNTFhMTE5MzQxYWFiYzFiZTU0MTNjMDQ1YzRjMTFjNjZiNWY5YzZkNDk0N2VjYWNiZGZkNTIyY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0ODI3YmU5MTQwOGEzZDI5YjllMzI5MTgyYjI3OTgzNWM3ZmE2MTQ2NmFmMjI5OTJmOWQzNzAyNjkwZjA2MzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2OTM0OTE2ODY1ZjE4NTAyYjliYjA2ZTc5MGE1ZWIyNjlkOGVmYzgyOTZiNDc0NjRlNTZiOThjMDg5Y2EzZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwOGU3ZjEwYTEzYzBhYmM4Y2I5MGMzNjExOTdlYWY4N2FlMmYzYTMwZmQwMmNkMjMwM2IzZWE0ZDcwNDBiZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee8551da15cb4f839ecbc89af757e8d5",
+      "statement": "Connected-account listing skips records that fail to deserialize (e.g. a stub pointing at a gatekeeper no longer bound in the deployment) so one stale account cannot break listing, provisioning, or opt-in for the others.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1169-L1188",
+          "version": "repo-lines-v1:sha256:3f53b138401518e067e16719a566e79e2b4d3ca67a6a812cd5121feee5681eb2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjODFiZTliMjI5OWUzYjdkMzg3ZjQyZmFmMjQ4OTY0YWI0NmFmODRjOTliYjAwMTY5NzY2YWU2NzdkM2ZkNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyZTY3ZTJlNjNmMTk5ZmM1MDgyMmFkZmNlMDJkYmYzMjYyYjNmMWM5ODA4NjU3NWYwNDkwNGM3OTdjODY2ZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzYzA3ZjNhMGY3ODQ3NjNiNGQ4ZjlhYzZiMTE2OTcwMmZkY2E0Mjg1YTNkYmFjMjI4OTI5NDc2ODI4N2E2OTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b593f91ec828491ca0ba832b561e51ed",
+      "statement": "Disconnecting calls the account's revoke() (the gatekeeper's cleanup hook for its own per-user storage, best-effort for opt-in ambient accounts so a throwing gatekeeper never blocks disconnect) then deletes the record, clearing Cloudflare billing state too; a forced (\"enabled\") ambient account cannot be disconnected by the user; reconnectAccount delegates to the account's nonce-protected reconnect URL keeping all bindings working.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1500-L1560",
+          "version": "repo-lines-v1:sha256:84a9d9fd9ac9330882411dc04592d8826cfd087790d21a2cc49ae52c4082d946:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxNmFjZDFkZDk1MjgwYjgwZjgwM2E0ZWNkNGY3YjFjZDIzNTIzYTVmOWE0ZTkxNWZmYTM1NWUxM2MzMDY2YTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNDlkMmU5MjJlYWZjMjI2NjgyNDA1NjBjNmE5OWRmOTdkZWIxNWVhODZhMDAzOTU4NGI1YzA1MWQ5YWE3NDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlMTJiNjExODk0M2UzMGMwMDY4MzNlNzgxNjMwYTUzYjMyZjQxN2VmNWY5Nzk1YzNmMTJmMzMwODAyNGM1ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkYTc5OWI0ZDlmZTQ0YTg1ZDI4ODcwZjQyNzUxY2Q1NmE5ZjQ4Yjk4YzM3NDAyMmVlOTljMjBlMjk1ZjdjNzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e0a97bcb62745c3a1ca33ef0b731256",
+      "statement": "Ambient gatekeeper provisioning uses a per-vendor three-state mode stored in AdminConfig.ambientGatekeeperModes and resolved by provisioning-policy.ts as the single chokepoint: disabled (nothing provisioned, existing dormant), optional (user opt-in from Connectors — the default, so ambient authority is never imposed without an admin opting in), and enabled (auto-provisioned for every user, forced and not user-removable).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/provisioning-policy.ts#L1-L34",
+          "version": "repo-lines-v1:sha256:6dc39bd007588ac28493f07843e20e1a3e773d7c0474e62d4429c1daa7493473:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmMzA3ZTNlYzZjNWNkZGJhMWY4NTU0YTJjMjM4MDE0ZGZjYzQwZTY4Zjg4MmNhODVmOGU4Y2RlNjBiMTNlYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2e86e1bb3a6d4451bb0190f78a9ecca5",
+      "statement": "GatekeeperVendor.createAccount mints a connected account with no OAuth flow and takes no user identity — safe on the public interface because it only creates accounts and cannot look up or return existing ones; the Workshop persists the returned account like any connected account and treats it as the authority thereafter, resolving the description before allocating the id so a describe failure doesn't burn a slot.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1255-L1267",
+          "version": "repo-lines-v1:sha256:acf32a23e51ca6a1f7b20edb532479267d75cdac41f745b95ed4001ef9f9efa7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMTU1NGIyNWQ4ZDgyNTRmOTAyODc5ZWRlZDhlOGJmZDk5ZDcyYjQ0ZWNlNjJjOGUyZWVjYjM1MGRjODg0ZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjY2U2YTFlOGFmODUxM2Q4OTA4NjAzNzUwNTNiZGE5MTgwYjNiZTNiMTZiZTZjMzdjY2I4OWNkYmQ1ODQ4OGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1M2FkMWEzNWU4NTc3ZDlkMGQ0MDZhNDgxNzZlMWI4Nzc1OGIzNGJmOTJkNGM5NjNkNGE5NDEwMmRjZWIwODIifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/gatekeeper.ts#L514-L522",
+          "version": "repo-lines-v1:sha256:2c01756dc2b95fd16712cfd5016a793d021878f77e31204b28e8c898c6163f3d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyYTJmOTk2ZjA4ZTY4MGJkMjkyMTM1YTZmYTQ5NzhiZGEyNmU2MDJkODRmMzNjYjFkNTk0Nzc1ZDQzMDRiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTg5OWRkODBmMTg5ZDVlNzE5ZjdmMzA1ZTVmNWUyNWVjOTk4Njk3MTIxOGFhOGQyYWZlNzQ2ZGE2OWU0MmRhYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2Q0ZWNlZGIwMGQwZDI1YTRjNjUyNWRiNjQ5OTQwY2RjYWQ0NmQ1NTMzMTE4NjI5Mzk1ODUxNDU5ZWNmZTdjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTA2YzNhMDYyMTlkNTNmMjZiZjE0NGUwMWY1NjFiMzg0NzU1NDc3YWFlZDJhOTgwMDk0MDg1MTQwZjc2MmQ2MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_beb196e3a284487cb3614ca396ab0f90",
+      "statement": "Auto-provisioning is idempotent and best-effort per vendor (one failing vendor never blocks the others), creates at most one account per vendor, and is deduped against concurrent calls via a shared promise because the loop's cross-worker RPCs release the DO input gate and overlapping calls could otherwise mint duplicates; only \"enabled\" vendors are forced, \"optional\" vendors are added on demand.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1291-L1329",
+          "version": "repo-lines-v1:sha256:a822f948cb20a523252d25d05b648005e0b819ee611337da79091b13bca44ce2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwNjEwNzRhZTQ2NzJmMjcyYTdlZGY0YTE0MDlkNGRkMDRmYzJhNjAxODhlZjFlNDFkZmQ0OTBkMWM3MzlmNjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjY2Q3ZTY2MTdkNmE2MjJlMjllMGEyOGRlNmRlMjViMTAzMmNhZDhiZGJjMmY2NGJkMTNlYTczNjk1YmI1NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjMmIyMzNlODI2M2M0YjgzMjkwYmExOGE1YjI4ODUzNmZkNmE3ZTA3MTEzOWUxOTI0M2VmMDYxYzI0MGQwYzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_74e28460743c44c7b44257e4b64b6b49",
+      "statement": "Only Cloudflare persists a grant during sign-in: linkConnectedAccountFromLogin treats a repeated sign-in as re-authorization, revoking the stale gatekeeper-side grant and pointing the existing record (same id, stable UI references) at the fresh grant so billing doesn't break when the old token expired; the grant covers billing only, with gadget-facing resources authorized separately later.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1552-L1600",
+          "version": "repo-lines-v1:sha256:7c5cf77ae6e5eb15cc2ff4e8326d97cbf5117f9a95adccf79eeabcababd15839:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2MGNmZTgyMDU2ZWYxNjY2ZTQwMzY5Mjc2YWE5OTI2Mzc2NTI5NWJjNDFhODMwNTkzMTY4NTU2Y2FlNDIwN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZjMxOWM5ZTJmZTJhOTFiODA2NjA5OWNmZjU2YjhkY2Y2MTdhZmE2ZWMzYTc4NmEwMzM4MzI2NzkxMmNkZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0YTY1OTBjMmM0YWIzN2ZiYjk4NmRhMjMyZmEzMjQ1ZDBmMDExYzU0ZDZmYTk4N2Q4MWE4OTM0ZmJmODM5YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5MzBkNTc5ODgyNWFhNjc5ZjViYzljODFkOWExMWI1ZDY4MzJmOThlMzFjZDdiYjZlMmQ1MzFhY2FhNGQ1MzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_31839b3568ba4459a2cd8368e58e43fa",
+      "statement": "getGatekeeperClassFor is the single core-side chokepoint where a resourceUrl becomes a capability (reached only via user/UI-facing Overseer.newGatekeeper and blueprint instantiation, never gadget or agent code), and it blocks whole disabled gatekeepers and individually disabled resources (AdminConfig.disabledResources keyed by vendor with disabled urlPatterns) so a request bypassing the separately filtered picker/agent listings still cannot mint the capability.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1666-L1691",
+          "version": "repo-lines-v1:sha256:54e93c0b070abfe8a4c81d6fb9c91073172cc5f94979c5b867ed08c712aff52f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MWI2YzFjOTM3OTliYzEzNGMxNjc4NzNmOThlZjRiYzI4NTdkMWI4M2Y1YzdhYjg3YzAyNzBlOTJiZTllOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0MWE5MWM1ZjdlYzZjNzY4NjYyZDRmZDUyNjM4NmRmOGM2YmU3NzJjMDVlNTg4MDU3YmVjNjBhNzViYjIxZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5NWYyODNhMGE4MDg1NTkxYmIyY2Y2ZTRjNjEwZTg2ZGNlN2I5Y2M2MDRlODNhYzIzZTljNjM1Yzk1NWFlNDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_378988ca9a634db69312059dec9b3f27",
+      "statement": "Ambient modes also gate surfacing: listAddableGatekeepers offers only \"optional\" vendors the user hasn't added (backs the Connectors Available section), and listProvidedAccounts hides disabled-mode singletons while keeping their data dormant for later re-enablement.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1217-L1229",
+          "version": "repo-lines-v1:sha256:33bd82d332cec77352c698601a8a9eee75a7a70a134a6ca63df3ed26e09726ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiYmE2YmQwOTUyYWQwYjc0ODcwNWRjNTUxNDYyMjZiMWY5ZTY1MzRlNmIwNzEyZmU0NzVhZGJhM2Y1YjA1ZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhM2ViYTI0NzcwM2YzYTFjMmRjY2ZjM2QxOGE2NDg5MjM0ZjM2ZGQ4ZDMxZTE4MzQ1MjEwZjI3ZjJiNzczY2IifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L1330-L1347",
+          "version": "repo-lines-v1:sha256:d7d89a11de98b14de64f9aa64c289a2ef73a911c89c2d29260caaf3675439a40:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiMjdiYjMzZjFhM2NlOWY0ZWFlZDRlOTc3NGViNTBhYzMyNzI5ZDFiMmZkOTgwMmUzMWQ4ZjNhOThlNmY1ZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkYTY3YWQ0MDI0MWY5NTdjOTE1OTJhNTk1YjQzN2Y3Mjc3MDBkYjY0OWYzYTVmMDU1OGQyNGQ0ZmQ0MzI5Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyMDA0ZDAwMTk1Yzk0ODIzYTBhNjRhYmExZWFmZDBjNDkzMTNjNTRjMzBhMTUyY2YyNTRlOTQ2YzYwMzg2MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4NTA4ZjMxYzU1ZDQ4ZjNhNGE1MDM1NjFmNzlmNTFkYTUyZTU3YzZhYTA5MDU5ZjRiZDk4MjZjYzgyNDI4ZTYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T04:46:04.795Z"
+  }
+}

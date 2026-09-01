@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f7d40d7530ed9fc68cd1b4242c41347f3f7f74dc03a73497f99fd816cad9d705",
+  "claims": [
+    {
+      "id": "claim_4669c33cf8234b00937d264320d9d9f3",
+      "statement": "Each workspace's Overseer DO holds a real git object database — SHA-1, zlib-deflated loose objects byte-identical to what git writes — in the gitObjects typed-storage collection keyed by oid, with no ref layer (no branches/tags/HEAD): the refs are gadget records' commitIds, blueprint records, and chats' pinned commits managed by the overseer's workflow.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L1-L36",
+          "version": "repo-lines-v1:sha256:561e34821b644f47788ccff3959b10693497ef2d4edffa6086bdb38a15581927:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwYWFiYTNmYTcxNzIzMGIwMGNlMWFkODNmYmI0Y2YzOWEzY2VjMWY1YTkxM2E4NmU1NjM3YTkxMjQ2M2E4YWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MTAxMDZkMzU1ZTMwOWRjYTA4ZTVhNjkzZDE2MzExMjFhZDIwZjQ2YzQ3YWEzMTU1YTI4NzA1YmU0ZTU5YTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczMzAxNzc3YzI5NGFjNWE1OWFkMWY3YzU0NjQ0ZDc0NjMxZTJmZjNiYjBiNDMwODhhMzkzNDRkNjc1NmIxMWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d835a08caac8476cb027b64811e90036",
+      "statement": "The object store has no GC: dangling objects are created only by accepted merges, imports, and migration (never in-flight chats) and are cheap; if GC is ever needed its roots are enumerable (gadget/blueprint records, live chats' pins and compaction checkpoints, and chats' observedCommit stamps).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L30-L36",
+          "version": "repo-lines-v1:sha256:2c90724cc7ce25e4537703089c5bbd79aa51102474ba1f794db9e304898e23cd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRkNzYyMzQxZDdjMjViZTMwZDdhNzg0MzNmYjcyMDY2ZDNlZDA0YTEwNzhkYTY4MmE2ZjQwOTk3MWFhMDEyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzgxMDEwNmQzNTVlMzA5ZGNhMDhlNWE2OTNkMTYzMTEyMWFkMjBmNDZjNDdhYTMxNTVhMjg3MDViZTRlNTlhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGNiZjJhMWRmYzVhMDQzMjE4Mzk0NDZkMDZhZDg3NzliMjA1YzI2ZmIyM2Y4ZTc3N2M4YWQzZjhjOTgzMGMzMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzMzMDE3NzdjMjk0YWM1YTU5YWQxZjdjNTQ2NDRkNzQ2MzFlMmZmM2JiMGI0MzA4OGEzOTM0NGQ2NzU2YjExYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c55e0861be654ab5839e243d75fd8ca5",
+      "statement": "No stored object exceeds ~2 MiB today (single source files, small trees, commit headers); large blobs would require chunking records or spilling to R2, a change local to the fs shim.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L23-L29",
+          "version": "repo-lines-v1:sha256:5119bec95034a8a88ce29aac5e9cd0b18792a9ccad2c17d6a93f6e5b7987bda3:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI4NWVhNGUwMjdlNDQzNTk2MGM5MDNhN2ExYmU5YmU2ZTFlODE4MWRlZWExY2JmMDYzMTVjNmM3OTZiYmFiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE0NzExMGE5YzkwMDcwOWRlNzQ1NjYxZjhhMTA4NDZhMGNmYWQ4ZjE1Mjc0YmM2YjMxMzU5ZTkyMWM1MmY1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWJiZTNjZTExNWIzNjRmYTQ0NzhmYzU4NDQ4ODdlNDIxM2RhYjk1MjQzNjQ0OWE3NzMyYTZlNDA4MDVmOGMxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmY1MjY4ZGM3N2ZlZTZkM2E2YTQzZmUxMDQwNGRkNzM5ODMzNTdjMTU0NTA2NzBlYTIzZWYyMzE2ODEwMDA1ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e0e74582bfaa4611a515c20cbe17528d",
+      "statement": "Real git formats are used (rather than a custom encoding) so gadget code can be exported/imported to real repos later; only isomorphic-git's plumbing runs against a gitdir containing nothing but objects/**, with a virtual fs shim rejecting everything else so porcelain commands like git.commit/git.merge are unusable by construction.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L15-L21",
+          "version": "repo-lines-v1:sha256:ab56b4b098045abd3c353cf7de6639f598b837debf90ccd68a5f4068457c82e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDYwYzlkYWE2ODk2Njg1NTRjMDQ5NjE0N2MyNzBkM2Y5ZTI5NTAyOWE4MzFhMGJlYWJkMmZkNmY1MTgyZGYwNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTdlNWQ5MGY1NGY1MjY2ZDY0ODlmMzQzZGNkMWE5Yzk4YjA0MDhiMmYwYjM3NWU0NDU0NzhjMDg1OWZiMWMzYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmIxM2M3YmQyZGY2NjhlOTk2YzFhY2ViOWRiY2IyNzRlODVjYjUyODg2ZjJjYjhiMGFlYWQxZTMwNWUwNTc1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWI1ODM4NjE4ODhmZTc1MzUyMDkyYjRlZTIxZDBiYTY1NWEzNDhkNmI1MWQxMDkwNzNmMTA0Mjg3NDA5NjY3ZiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L79-L80",
+          "version": "repo-lines-v1:sha256:6edb6f259a9906042818cc57e793123bff3758c3dc1267543310274349882da6:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2I3ZWIxNDQwNWIwMjllM2NkZDRjYWYyMzNlMzdjYzdlNGE5ZDM3ZDJjZTk5OTk5M2Q1MmRhMWQyNWUwOWU1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjY3NGUwNjU4MDNhZGNhYmQyZjJjOTE1MmFmYTczYTllMGM4MzUxOTliNTA1MWRhOGM0OTFhNmFiNGNkMGNiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGZjOTlkNjU5YTJmYzAzMjVlOGQxOTAyMDJlNTI3ODIyMDBmNTQ4M2IxYzg2ZmZmZDkzYWI3YzZmNTY5OTkwYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTUzZmMwYjRiZTU4MTdlOTQwNjg2NmNhMGU4MDBjZmY3YzUxZTMyMWEyNGM5NWUxNDUyNjI0MWZkODUxYjZhNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f1f651d85cc24da89a5b00ecb65025e7",
+      "statement": "GadgetRecord.commitId holds the gadget's head commit and carries the invariant that every permanent gadget has a head; commitId is absent only while the gadget is still pending in a chat or was created outside chats and never accepted.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L342-L357",
+          "version": "repo-lines-v1:sha256:6e78d3ea8d498ec61f2d5681067f296fb4e402c98ca8c05211be1ed59d9a1844:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ZWQzNGY2Yjk5YWFmOGNiOTNmMzMwZjQ2ZjAzM2QzZWUyMTMyNzQyZmM0MjYyOTgxNTIwNGRiZGIxN2Q4NjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNTBkYzQwZWNhOWFkMWMwNjg3NzUzYzEyMWNiMzU5ZjNlYTcyYWEyM2NjN2JmYjEwNTI3OWZjMDI4ZTViMTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzMDJkOTMzYzBkOGQxYzQxN2QxZWQyODE2OWY0YzJhN2I0YmFjZmQwNjMyOWY2OTczOTMxM2YyMjlkMDhkZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiZGY4NzBkMjA2MTQ0NmEzMTA4MzIxMjVhYzY5YzlhNjRmOTM2MTcxYzNhMjA4OTMzODk4Y2E5ZDkzMDE1YTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ce6654baa99347fd8a9e26ea7ecd0075",
+      "statement": "code-change.ts is the single owner of the code-change invariants (wire types, application, composition, transformation, diffing, ingestion validation, priority convention); a chat's uncommitted state is a sequence of CodeChanges each expressed relative to a revision, carrying no base content, which is what lets them compose with git-backed storage.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L1-L24",
+          "version": "repo-lines-v1:sha256:6da3d42d0b6cf1a726ba8b29103e0cca396a912144fba2b058a868b6516e3358:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5YTI1ZTkwZTVkM2ZkMWI2Y2FmOTNiNGE1YTQxZmU5OTQ5MTlkMjdkYWM3YTk0MDI4MGNkZjRkMTFlZjA3NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMWVhZDkzNmEyMjgxZDUzZGNjMDY0YjdlMmEyYWIwZDUzYjkyZWYzZWY3YjM0YjY2ODY3MzAwNzg5NWM4NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjNzhhZmNjNmFhZmNkOWU0ZjI3NWUwZDllNTdhMTllZTVlYmU4ZjBjYmU2MjkzMzk5OTkwNzFiYzBkNGQ1NGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d0e9debd43c24fe0b24e423f4368d3ea",
+      "statement": "The text-OT core is @codemirror/state's ChangeSet with fast-diff for generation, both private to the module; the priority convention fixes that for concurrent changes against the same revision the server-ordered-earlier change's inserts come first, and only transformCodeChange may call the underlying map.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L14-L20",
+          "version": "repo-lines-v1:sha256:d7a1f45595fdad0ad62fe4f5a1d33a2e2d02d1a52a8e34dd64586cee6def84f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EyYWMzMmE3ZjIzOGQ2NDEwNGNkYTJjNDM3NWIwNTNjNDIwOTg0NzgyZGJkOWRlNTdmMTMzMTRjYjU3ZDcyNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTM2YTMyMTIyMzhhNTQ5ZmU2YjIzYTVkNzAyYTY5YWFlZTJhOThjYTMwNjE1MDE2YjQyMjg5YmQ5MjM3Yjg3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDJiNDJhNzZkNmU4NzkxOWI0YjhiMDg0ZjliM2VhNDdkMDUzM2RhMTBhNmY0ZDE5MmU3ZDZhMWQ4OTYyNWFlNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDVjMjBhODczY2NjY2M2ZTY5YjJkNjBiYTc1MTYxMjk2MzYyZGM5MjU3NDljMmNjZmNkZjhmNTg1YzY4ZmEwNyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L352-L352",
+          "version": "repo-lines-v1:sha256:3908134ddbdd7574ea29b589c38f570fa54d7a57d522e3135983769f076d124d:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzkwODEzNGRkYmRkNzU3NGVhMjliNTg5YzM4ZjU3MGZhNTRkN2E1N2Q1MjJlMzEzNTk4Mzc2OWYwNzZkMTI0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzkwODEzNGRkYmRkNzU3NGVhMjliNTg5YzM4ZjU3MGZhNTRkN2E1N2Q1MjJlMzEzNTk4Mzc2OWYwNzZkMTI0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQzMzVkNDY1OWM2ODk1ZDkzZmEzNzJmNTZkNDc5YmJmY2FjOTc5YTQxNWZkYmI1NGUyODc3ZjQzZDIyOTQzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjA1OTc2OGE0ZjM0MGNmNzE4MGRmZGY5Mjc2NTE4YmQwNDU2ZDU2MjY1MjdjZDVmOGQzMTBiMTQ1MWU2MDUwMCJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L9-L21",
+          "version": "repo-lines-v1:sha256:7a3490b4e4c69f8830d98d6303ca7a18e29bd93c001d300f8abaea1c3bb14093:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMWVhZDkzNmEyMjgxZDUzZGNjMDY0YjdlMmEyYWIwZDUzYjkyZWYzZWY3YjM0YjY2ODY3MzAwNzg5NWM4NjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1M2ZjMTA4NTkxOTNkNjUxYjdjNzY5YjhiNTg5YzlhMmIwN2M4YTI0MDJlZDRjNmQ3YzE0NTZmYTk0ZGZkMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlMGE2Y2JhYzNiY2RjYjhhMjg1NjQ5NzdiOTY5ZDNlMzA3OWFkNTAwMTUwZjgwMjM5YTRhMGY2MDIyZGY2ZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4MDQ5M2YwZjE4YmU4MGRmODlhNmQ5Y2YyNTE4NmVlZDVlMDZhYTc4N2NhODA2NzIwYzgwNTFmYzdiNzhmMmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_83384f11ad0a4452a04a320a49b4c36a",
+      "statement": "Change size caps (MAX_FILE_TEXT_LENGTH 512 KiB, MAX_FILE_PATH_LENGTH 1024, MAX_CODE_CHANGE_SIZE 2 MiB) exist first for correctness — composed changes are stored and travel in RPC messages with hard size limits — not as a DoS defense.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L126-L144",
+          "version": "repo-lines-v1:sha256:04354276babd3f335fefb3f8856a56593b699dced9bda1f862d27488a496d866:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NzY5MDYxNmJmMDA2ZDgyY2VjNmRlOTgwOGY0NWIzNGUxNzc1YjE5Yjk3MjE5ODg4OGE3MmQ1ODJiZjgwZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiY2E2MDEzYWJlNWE1YTRjY2FlODFmNGVhY2YyMWFjYzYzYTUwODRiZTViYWRkMGE0ZTY4MDVlNWIwNjQ1YjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzNjJhMzk4OWJiYjJiN2UyMzQ1YTZkZjRkMjQ1OTVlMzBhMjNiM2E4MDc4NmUxZWM2YzAyYzMyNGFjNjEyNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzNzgwMGU5OGJkNjk3MWVkZmFkOGY1NTFjMjMxYTQ1NjhlMzA1OWVhMzU3ODlkODFlODU1YmE1ODk1ZjYzNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_570cc0ff7d7144858fabfbbc47f1c7f7",
+      "statement": "Client changes are validated in two ordered stages: validateCodeChangeSchema before any transform (structural well-formedness) and validateCodeChangeContent after transforming to the server's current revision (lengths/boundaries against actual content); neither re-checks the declared shape because capnweb-validate's generated validator establishes it at the RPC edge.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L26-L63",
+          "version": "repo-lines-v1:sha256:8cb500838b7f57600ad693405e92d2232fec74e85cccc8898b11773433d62306:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxNDVhN2QyMTg1OTQwNTdhNzEwNTk1OTk1MzM0ODM2MGNhODM3Y2ExNzY1NzJlNGI1MmZlMWU3NDgzYjZhNDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDBhMTYxOWNmNjM3YjBjODdiMzM5ZDkxNmY3Yzk4YzgzMWFkOTVmYmRhMDQ4ZDUyYTk0NDkxNTQwODU3ODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1ZDc0MTJkYjRkYjIzNzRmNjQ4NWM2ZDc2MmY1ZGY5NmIzZGJiZTNlMDljZmRmNjVkN2RkNjc5MjhiYjQwODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjOTJjNWQ1NmRhM2FiZDM5Yjg5NDVmOTM3MzYwY2RkN2M0NTY5ODA2YjM0NmJhOGZkODdlNzUyYTJmYjRiYWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_22b2297963534f7ba2bd03f6cbcab3c2",
+      "statement": "The chat code-base model tracks pins (immutable ChatGadgetPin baseCommit fixed at first modification, with mutable mergedCommit tracking how far mainline has been merged), a change-stream generation bumped content-preservingly by merges or destructively by reverts/discards/agent aborts, an epoch-opening message sequence, and the current revision; accepting changes requires mergedCommit to equal the gadget's current head or the chat is stale.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L2293-L2350",
+          "version": "repo-lines-v1:sha256:b6c470faa188c618a554f873ce8bd89748104f6d1e701f385723c7f2b5180e4c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NTA3YTc1Y2Y2NTc0NzQ0ZDZiOWE4MzYxMDUxZDRhNmI1NWY5NzBmN2VjY2QzOGUxNGE1NjU2MjJiZDdkYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0MDkwZjQ0MmY3ZGFhMzYyODkyYTNjMWQxMWI2NjY3NjRlNjk4M2UyNjFiOWJiNmU0NDljOTNiNDZkNWRjZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjMGNhOTY0ZjM3ZDM2ZWIwZjQyZWI1NTgzOGFjMTM5NjMwYzcxZDJhYzA5N2ZlZThkMWE1NWE1YjlmNTA4NDAifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L2366-L2394",
+          "version": "repo-lines-v1:sha256:d0537da1a55a31818a650cecef75c5b6327834582e65fce7339151df6d4718e4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhN2QxMzQ2ZDg4OGE1OWRhOTBkMmZjMmIxNWZkZTlhODk3MzBlMjc2NzhlMzAwNjMzMTliZTJlNGJjYjI4MjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkNjkwZjA2NzEzYmM0MDM0MGJjMDNjYzJmY2RhMTMxMGE0ZDJlZGIxM2EwMzYyZTE3ZDUzZTlkYmUzM2FmOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmMzJjNTU3MDQyN2YyNjY1NjVmM2VjYWVkMDdmM2ZjZDEwNjkwNDA2YmQ2YWNmYTEyYjEwOTA2OGY0YTQyMDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_25c7328245ed4c5697694a499005b987",
+      "statement": "submitCodeChange() is the only way to edit code — committed code cannot be written directly and gadget heads advance only via mergeChanges(); the server transforms each submission over changes accepted since, answers retries (clientId+seq) with the recorded result instead of double-applying, and requires retries to carry the same seq and identical payload because OT does not tolerate double-application.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1690-L1723",
+          "version": "repo-lines-v1:sha256:8b11041c27e191846306062e1d68f83b48a1695ea07e9ac1449d0c4e8eb41dbf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NzMxZjdhMTdmNmQyNzY4NDNiN2ZiMDE2NzI4YzI5Njk0OGVjYjI2OGFjY2RmYjlmOWM2MDA4ZmM2M2JkNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwNWNjODJiZWI5YWFkYzQ3OTliOGQ1MWFiNTY0MjJiNGVhOTY0NjI3OTVhNjdiMDhjOGNiZDQ1YjljYzNkMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkMTcyYWJlMGY2ZDkyNWFhZTNkODNjZDVmMzlmNDk4ZTFiZDAxODkxNjkzYWMzOGQ0NWY0MjdhYzczMTM3YWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiOTk4ZjMzMWM2M2IwZGYwYTk4ZTk0MzU2ZTlkOTRjYzUwMGVlNTkxNjljMjAyMDVlYTI3MTVkNWEyM2VkNmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2bdfca157ee64aac90815d111536f6b4",
+      "statement": "threeWayMerge() merges base/ours/theirs file maps and never throws on conflict: conflicted files carry inline diff3-style markers and appear in conflictPaths; it deliberately replaces Yjs merging (nonsense across divergent bases) and isomorphic-git's merge/mergeTree (which throw on both-sides-added conflicts), with per-file semantics of one-side-wins, identical-both-clean, delete-vs-modify keeping modified content as a conflict, and both-side changes merged by diff3.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L452-L522",
+          "version": "repo-lines-v1:sha256:716d52204eea3af72d4ab81bbaee4266f4582ea00b00e8c1d0db0bdaec281dc4:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyMmUxOGYxYTE1NzczMWI3YWE1NWJlYTgzMzQ4ZTY2MTgwNGVhMzk0MjcwZjA5YmVjMGMzNzY2MTE0NzRhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiZDEyZjhjYWRlMWI5NGQ2YzRiMDc5NThhOTk2YTcwYmRjMWQyY2NmZTQ2ZTNmN2VjYmZhMWJiYmM2ZDFkMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzYjQwZmFlNzBiZDFiOTE5YjhjYTViN2ZhNjVhZjJlYjc0YzIzZTJmNTUwNzVkMmMyYTY2MjNmY2IwMzg1MzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9d0e3386bb6478abe7d4447f187d5d1",
+      "statement": "Line splitting is lossless by construction: only \\n ends a line, so \\r or U+2028/U+2029 stay inside lines rather than being treated as boundaries that would silently corrupt content using them.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L524-L545",
+          "version": "repo-lines-v1:sha256:5309f7723fbe2805f4fe8e4da1a5422ed01a3748ebb5b493494e127be77a16b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMWQ1NTQ0NDNmNjVmYjUzYzU1NzRkMmEyMGIwNjk3YTIyZDViYzNiNDI3NTY4NWNmODFmOTY4MDE2YTlkMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwYjNiMjJkZTk4OTc5NDRmMjkwZDNjNzcxNGE0NDA1MGUzYjliZTI4YWY3MjY5NWJkYzdlNTZiYjI5ZjEzOTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1YWNmMWE1YjFjODUzYjFiMDY1MTM2NzViYWY5MWNhOTU4Nzc4ODlkYzA1YmI2YzAyMTE5MTQ4ODAwODZlYWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f4f22fa0ba240acb2f2a6131527f9f0",
+      "statement": "The legacy migration replays the pre-git Yjs code log once, synthesizing per-gadget commit chains at merge-message versions, versions followed by >=1-hour gaps, the final version, and persisted pinned versions (resolved to the last code version at or below it); each permanent gadget's chain is rooted at a version-0 empty-tree commit so every permanent gadget ends with a head, and records referencing code-log versions are rewritten to reference commits.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-migration.ts#L1-L31",
+          "version": "repo-lines-v1:sha256:0414dcc45fd2d7f5fd838e1113d31d254bee674e918ee51a1e6dcd62ee42fd79:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5MGM4MzVjMGM2NjQ3NmJhNDNjNjFhNDQzMDNhMWJmNDIyNTJmMGM0NWQyMmRhYWM2OGE2MGE5MzEwZThjOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjMWU5YzAwYjVjNzQ0NjM0ZmM2M2E3ZTRkYThjZjBkY2I5MDJkMzA2ZTVlZTg0YTZkZTBhZmQxOTAzMWFjMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1NzljZjdjYWJjMjY3MWU3NDFhYjBhNDE4Yzk5MTQyOTY0ZGM5MjNmYzUwNmFjY2QyZjA2N2VmZDEzNDhiNmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f398c1c4957b4ec18eb492777c469f7e",
+      "statement": "Live pre-git chats are converted in place: the legacy doc is flattened once and the chat's uncommitted state becomes one synthetic \"changes\" message carrying a pin per touched permanent gadget; the boundary message is written even when nothing needs converting because ChatCodeBase.epoch points at it and replay keys pre-conversion read elision on it, with retired Yjs update bytes kept on disk as rollback insurance.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-migration.ts#L33-L50",
+          "version": "repo-lines-v1:sha256:dfdcf7227a08e5a6898ca230021bf646f033e999eb2a70e6f23d79b05f1d6976:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkNjAxZDE1Mjc0YzAxN2E5MzlhMmZhZjE5ZjhkYWQzNTBhMWZkMTNmNThlOGZiYjk2M2FkNzRiZWE3ODM1ODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NDI5N2QwNDY0MjlkM2RhMTliNWJlN2Y5ZDNjYjBhYTZmNzRkZTY3ZjFmYTBmZjJhMmU2ODUwMzdmNTc2MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmYTg4YmYxODhjY2Y2MzczZDJkZmZhM2Y5M2VhYThjNWIyOTllYTc1M2ZmMzQyOTQwYjgyMTUwZDQ1M2ExYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkM2U5MWYwMjkxN2I3NTU1OGViMTdhYzVkNjk5ZWM4Nzc3MTBlYmZlYTNjYzViMGNiMDM1MjM1M2JlODZmNjIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T04:46:04.795Z"
+  }
+}

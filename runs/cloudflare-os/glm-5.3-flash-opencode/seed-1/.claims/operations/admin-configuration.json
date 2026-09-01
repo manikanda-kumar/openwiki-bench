@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6e43415e997e157b95a1eaf4eb291a160efeb13d80adc8c14bc76cf947299955",
+  "claims": [
+    {
+      "id": "claim_4b3c69dfab314a1b960e51dd93d3ee45",
+      "statement": "AdminSettings is the deployment-wide singleton Durable Object that owns the authoritative AdminConfig and mirrors it to the reserved KV key .adminConfig so hot paths resolve it with one cheap KV get via readAdminConfig(env); every config setter writes both, with the read/modify/write serialized on a promise tail to prevent lost updates, and site-logo changes serialized on a separate tail.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-config.ts#L327-L329",
+          "version": "repo-lines-v1:sha256:15062a54a401177713239efdda15c588ab3ffb1eda0b25bb4f6824d74aa15baa:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODUyZjQ2Yjg4ZDAyMTkwZDlkYmU1YWI4NTZiYmJkYzEyOThkNTA0N2IzMmExOTk0MGZjNjk1NjE2NTk1ODQ1NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjk2Mjc0MDE5N2EyZjhhM2RlZWM3ZTg4NWY3ODkxZWQ2NTc5Yzg4NzQ3Y2MxYWJmOGFjZWRjZmFjZGJlZWE1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWU2YjEzNzZiYjFhZDkxNTFiNTg4NWI5NGQ3NTQ1ZjJmNzQ3OTFlMmFiZDZmODdhMDA5NGY1ZjAzNjhhNjdjMyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-settings.ts#L57-L66",
+          "version": "repo-lines-v1:sha256:1a281b1bdc896e7e83c16e39db056bd5566818d295de05868686facaee572ebc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwZDk2ZDg0NjhlYjZkYTM3MDkzMTMyMjBiNzZlODViODY4NTU3MTBiNmQwNzU5Mzk0NWYwNzlmOGQ0MGIyZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZDM2NGU5OWIxMmZiN2FiMjJmNmU2YWQ0NWU3ZmM4NjZiZGQwYjczOTQ3NDJiM2UwMzViNTFhOWE5NmQ1MjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZDRjNDhkYjBhYTk4YTM3MDNmNGZkMjY4ZjhkY2RjNTRiMjk4NGZiMjUxNmZkMTA3NGNhMmJlZjRiNzIwZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxM2Q4OGJhYWNlZmEwYTA5NmI2MTMxMWVhMzc5Y2UwNzNkYTQ2NjdjNDc3MTRkYzM4ZDc3YjljNmY0MTE1YzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6acb0a84355b461f87732ab336f820e8",
+      "statement": "AdminConfig covers only the soft deployment customizations (signups, branding, agent instructions, which gatekeeper connectors/resources are offered, ambient modes, and format curation); everything is enabled by default and the admin UI opts things out, while authentication/authorization configuration stays env-var driven so it cannot be changed by a compromised admin session.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-config.ts#L1-L17",
+          "version": "repo-lines-v1:sha256:531d32ee65f5674cb69e39fa850ad359edb9aa789d377e1b8434db2f91601022:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5MzU5ZDlkMThmYjQzODc5ZDMzYzE3ZjJkZWFhYjBmYTU4NWJmYzdiMmI4Y2E2Yjg3NjJjNzQ5MzA1Y2YzODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MWQ2MjlmYWFjN2ZhNzgzMTI2NGM4MGQ3NDMxMDMwMWY5ZTk1ZmUxMjE0MDU2ZWViYjFmNTE4YzAwZmY4NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4NDdhMTI2ZDI0MWNmNjcyOTM5MzNkOGFjNDUyM2QxOTI1MDM0NDFmYjRmZWU1MjNiYzBlNmEyNzlhZmI1NDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_84c3d31203534402952ff7c04f65090d",
+      "statement": "Admin status comes from the ADMINS env binding (JSON array or a string that parses as one) matched against the user's DO name; getAdminApi() returns null for non-admins and the #isAdmin() check happens once when the AdminApiImpl capability is minted, so the individual methods never re-check.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L100-L117",
+          "version": "repo-lines-v1:sha256:cf55ee06a64a167048e41b24b1b5eba767ce68a15bbc23159e00f46b69369c06:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZGMxZWMzZTFkMjc5NjljYmViMTk5YjBlYjQ2NDA1NTIxZjgyODUyZTJmOTgyODliZWI0MWJmMGI5MDMwNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzMzEwNzVjZTU2OTFhZWE1MTgzOTk4YzEwMzg0OTZiYmYwZmE4NjczMzBmOWNmOTVjZGUzMDgwNDAxMDJiMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlM2MzY2Q1ODM3YWQ5MDUxMzM4MGVhZWJlZTY3NzVjOWZlYmNmYTEzY2ZlMjc1MTI4ZDJmYzhhMDEzZmIyNjQifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L588-L600",
+          "version": "repo-lines-v1:sha256:547b9616a9d4d537114ff37287cb23c258f8d7192ba6d3278ae96996e8b9cdc2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkZDM1ZjYxNjg2ZWQ2MTVlNjg4MjFmY2M4Mzc3N2I3NGNkZmIxMTI1YzQ2ZWI0NGYxMDczNmQ5MzYzZDE5MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmNGE1MjA2NjFjNDFjMzk3M2NjN2M5OThlMTBhZTJkMmEwZGJhYzU0YTAyYWFkNjMxMTM2MjlkMjg1ODhjZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4NTMwMTJhYzc0YjY4Yzg0YzIxOWRmNmVmOGFmZDIzMzQ1MTE0YzM4ZDA2MDAzYWI0NmQ0ZTJmMzViYzliMmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de843deb5a244da09573041b6a0e272f",
+      "statement": "The bundled format-blueprint install is coalesced onto one in-flight run and stamped complete only once the whole manifest is live so a partial install retries, and bundled formats are promoted once ever — re-deriving the promoted list from the manifest on every startup would undo an admin's later removal.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-settings.ts#L77-L146",
+          "version": "repo-lines-v1:sha256:f71c5da38ee6f7b4085cdf750d884f2b2cdbc0f8b3020e6b3825a9b5827619cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMjQ1NTVkYjI1YTRlM2ZkZjlhYWUxMTI0NzNmM2YxNjMyNmNkMzNjMTQ3ZTZiMjBiYjRjZWMzNzUyZGFkZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMjQ4NTk3YzJjNjAyMTA5YmQ5ODM0NTM3OWM1ZWI4NDBmMTQzYjkwZDliYTk4MzEwMTJjYWY5NjI1YjY0MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMmM3OTlkNzkyNmNkOTQzOTU4MGE1YmU2Mjk0NjQzNjQ4MmEwNWU0ZDRhMTM2NTQ3MTJlY2ZmMWM4MzcxMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7dc911488e445a59f13fca3ff9ff1b9",
+      "statement": "Auto-provisioning (ambient) gatekeepers get a per-vendor three-state mode from AdminConfig.ambientGatekeeperModes — disabled (no account provisioned, existing dormant), optional (user opt-in from Connectors; the default), enabled (auto-provisioned for every user, forced, hidden from Connectors) — with provisioning-policy.ts the single chokepoint that UserDurableObject consults when provisioning, listing, and surfacing ambient accounts.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/provisioning-policy.ts#L12-L25",
+          "version": "repo-lines-v1:sha256:e2f44362beef10e0a0cd5f202fee43e5211ba9459415733b7e5a271fa2f61109:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMmZjNTI2Y2U4MjI1MjRhNGNjOTQzMDk5ODU2MzQ3MDViNmFhMTUzM2U1MzBlYWRlMTQ4M2EzMTY0MDQ4MGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0ZjA4MWRiZmU3ZTdlYjM3OGE3ZGQ5ZTkyMzdlOTdlMWI3YTVmNGJlNjIzMWRlNWU0MDM5ZDY4NGE4M2MxM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxY2JkNzdiYTNiZTU4OGUxN2U3YmZlZjI0NTZmNGVlNGYzYTcxNTJjNGQ1NWQyMTEwMjM4MzBmOWQ1YTNlODYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_67a1a9b8bf1f48959c873d48d911bcd5",
+      "statement": "UI feature flags are resolved per request: DEV returns dev defaults; otherwise a FLAGS Flagship binding evaluates each UI feature flag with per-user targeting, falling back to the declared default (with a warning log) on evaluation failure or a missing binding.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/feature-flags.ts#L1-L52",
+          "version": "repo-lines-v1:sha256:2a7cb0e344adc5875c525239271f51f0c8cfe8d18e79ed9268b2819ae67b4603:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MjAwOTY0YTk3ODYzNTUyMmIyYWIwOTBjNjUwNjVkOGVmOGU4NWM0NzMwYmIyZWIwNDYwZDM0YzY3N2RkYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d2d68922535f41ba98d46ef4bfc224d4",
+      "statement": "The backend's optional env vars include ADMINS (admin list), CF_ACCESS_AUD/CF_ACCESS_ISS (Cloudflare Access SSO, which disables password and gatekeeper login paths), AUTH_GATEKEEPERS (comma-separated sign-in vendor allowlist, each vendor also required to advertise providesAuth), DISABLE_PASSWORD_AUTH (only effective when at least one auth gatekeeper is allowlisted, to avoid lockout), ENABLE_CLOUDFLARE_LIMITS, DAILY_LLM_CALL_LIMIT, MINIMUM_CLOUDFLARE_BALANCE, PUBLIC_BASE_URL, DEV, and FLAGS.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/auth/config.ts#L14-L33",
+          "version": "repo-lines-v1:sha256:f2722f323f50630a424f4c850344b73c2557b7b9a3f1fda3fb3803ddd78122c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2NmFmYzdlYzVhYjVmODYyMmE2ZDcwNzdmODBhNDQzMDA3NmEyNzY0OThjODFhZDI3Yzg3YzcyMDA3NThhZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxZWQxNTIxOTEwZjlkMjFhMjdiZTczZjNhMWMzYzZhY2ExZjU1M2MyYTJjNGI5MTZhM2I4MzY3NjRjY2M0Y2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/env.d.ts#L11-L88",
+          "version": "repo-lines-v1:sha256:7ba9003e8c4ce191d0496e0f232ed14798935ca0bdb45926c078bfcb2cb06944:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1N2ExZWUzNGNmOWQ5OTQ5OWJlZTk4ZmMyODIzNDAwZDU4NWZkNmM1MTdlMDFhMDIxMjM4MWIwN2RmMWY1YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlYTY0ZmVlNDc2MzhiNDE0ODgwMTE1MTZhYzgyNTdhY2EwMjg4YTMzMmEyNmEzZDhmY2NiYjcwZTdjYmUyNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d4afe3d5638432abee1bde6f676d669",
+      "statement": "In release manifests the backend carries only $PUBLIC_BASE_URL; its other instance-state vars (ADMINS, DEPLOY_URL, CF_ACCESS_*, CF_AI_GATEWAY*) are injected by the deploy service at PUT time and never manifest-templated.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L416-L418",
+          "version": "repo-lines-v1:sha256:4b609d4e7901f0b55d48c0c2ad828fdee7219e42d668866f21d26ce8129497b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M5NDk2YWIyZGViODU5ODBiYzNkMjRlNDFjMDcxODcwMDBhNDE2ODkwOTllMDlhOGQwZWYwMjdjZGI0ZTQxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNhMjUwNzViNTgzYmM3MmJiNjUwOTExOTE5YjgwMWZlMTRiOWM0NGM0NTg3Y2UzNzMwZmViMTI4ZTY5Y2QzNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNiZGQzZDQ4ZWNhMzFiZjUxNjc3MDI1YTVmZTcwNDU0M2ZkYzA2ZjE4NWFkMjk5ZWVkNzU2MDUwYWJlNTM0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjE0ODM4N2MyMTRlNTBmOWNmYmY2YTU4ZDJjMmJkMGIxZjE2ZTVlMjFlM2I5YTU4NDU1YzM4NDE3MTdlZTU5OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7e8d67c84e9488581866aecbcfd9cf2",
+      "statement": "PublicApi.getServerConfig() aggregates what the client needs at boot — allowlisted auth vendors (each queried from its gatekeeper's describe() in parallel with order preserved), passwordAuthEnabled, cloudflareLimitsEnabled, and the admin-configured branding — and contains no secrets.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/deployment-config.ts#L1-L60",
+          "version": "repo-lines-v1:sha256:8dec517921c8c2c4afcc1ac8a36ccedac28ea6069f2e64b3540c64fe26ff05ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4OGNhYmY0NGU4OTliMDhkNmRhYThlMmM5ZDdmOWFlNzkzODIwODIwNTM4Zjc2YTJlNjlmNzAxYmExZmU0MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwM2U2OTBhNDlmNjg4OWM2MDQ0NjQ5MjJjYTllYTIwMDQxODM1NjJhMmU3YjhiNDU2MTY1ZmNmNWNkMjA2ZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNDQ2MmQwNzIyZmRmYzA2YmE3YmZlNWMyMTA5ZThhM2RlZDY0N2U3MGNjYTY4MTU1NzBhOWU4MzE1ZDBkM2IifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T05:23:12.377Z"
+  }
+}

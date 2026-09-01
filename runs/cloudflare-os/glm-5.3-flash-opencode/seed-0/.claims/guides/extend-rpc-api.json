@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ecebaca2537e4fc023f1c87b05c5f5f6f45d7db8b8a6d3b5169c9fa0a0359589",
+  "claims": [
+    {
+      "id": "claim_9e9407e56f4b454a82d4203234973766",
+      "statement": "REVIEW.md makes packages/workshop-backend and the workshop-shared public API the highest-scrutiny kernel: every exported member needs a doc comment (types, consts, functions — not just interfaces), hand-written interfaces mirroring RPC interfaces plus as-unknown-as casts are rejected in favor of deriving from the real type, existing mechanisms are preferred over parallel ones, and large kernel changes are split so backend/shared can be reviewed apart from UI.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md#L1-L22",
+          "version": "repo-lines-v1:sha256:ce3e3f6220ec07439ab7010b493fb96acbdde88497e051e72261c68152a6017b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2OGE4ZTg1Nzc0ZDNhZWZlMzU5MjNjOGI1MmY1YmVmNTA1MjBiZTdlOTY0M2I1ZWEzZTYxMzI1YWU0YWM2MTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwZGMxN2RmZGZkYmFjOTNkMDRmYzgwOTFiYTIzMzViNjUwN2NiOWIwNzE5OTg3YWM2YzI5ZWQxMWMzNDdkODciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1ZjdlNmE3MGIyM2QyNGUzM2RlN2NlNDkwNzJhODJhNDg0YWE2ODMyYzdlZjZhYzhkNTZlNWZmZjZiZDYzNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d4aa3b31b8ee40b6897847b7f3a91e1c",
+      "statement": "The sanctioned pattern for optional RPC methods is a derived view (Required<Pick<...>>) over the source interface rather than a re-declared mirror, keeping return types usable directly the way the runtime stub behaves.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/user.ts#L45-L55",
+          "version": "repo-lines-v1:sha256:34dfe1c3ff962d6539c546c31630112db9d4380ce9278b69662171df3ba28006:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmYWZkNzlmMmMyZWU2NmFkNzQ5NzY0OTlkOGEyNGQzZjY3MzE5YjA4YmFjYWNhNWYyOWU3OGQ3MWJhMGZlNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmMjc1YjhiMjkxMzY1YzA5ZTQwYzU2M2ExNjdhMTFmMGRmZjU4M2M0MGQ5MmZiNTEwMWVjMzg5OTY3MmUyY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZWNjNWIwZmE2MTg2YzM4MjViYjgzMGM5OGFiNmIzYjRjMTEzMTEyMjJjYzRiNzFjNTEwNjk5NmIyMjIyNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhMTM0YTQxNWZkYWU2ZDQ5NWYxOTk1MmMwYmQyYTJiMTg4ODAyZTNjZDU2NGVkZTFkZjJjMjBlYWQ0Yjg3ZjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_123bcc3d92164f69a19421754b2c722f",
+      "statement": "The narrow @ts-expect-error casts that exist in the backend convert between capnweb stub types and native runtime stub types at capability hand-off points (returning Overseer and LoginAttempt stubs), not type mirrors.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L278-L280",
+          "version": "repo-lines-v1:sha256:5230544b9d8227fb6de03a60bc3257c878bb1f58c18cf5896d84d07888d56ad9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTA4OGMyNjcyMGVjNWU4Y2IxOGExMzFlZDExZjlmYzA5N2VlMzAxZGJiZjc4YjJiYjEwOGNhZDRlY2I1MTdkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTExNjY0MmVhZDQ0NjNiM2ZmMTRmOWViNjQxNTgxNWNkNTIyYzkzNjdiNTRkY2I3YzJjMWE5YTdhYWY0M2U4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGNkMDFmMTA1NDBlMTM0N2I2NDhlZGI3NWY0YjRhODZhMmUwMzU2MzMyYTQ3NGUwNjA0MWExYTUwN2Y3ZWM3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg0YTRhNzkyYjAwOTg2NWI0OGJmNzQ2MDExNjQ3NzBjYmZmOGFlMGUxODE3NWRlODVmYTQxOGUyOTFhMTlhNiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L597-L600",
+          "version": "repo-lines-v1:sha256:569124045d8950c0a5308c86075c78fb246c92e3ffa184a146d21fc0555695c1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjVhN2I1MWQ1OGZkNDE3ZDQ4MzljNjgwNzI1N2MwNmFlNjBlNWY0ZDc2MDdlMzJlYjg4NTdlNmU0N2ZiMzdlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGEyN2JkNTdjMzEyNjBkYzkxMzVmNTE0Y2EyZGFmZjcwN2NlMTU2ZWExMTA5MGVkNWMzZTg5MGIxMWYyZDI2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDg1MzAxMmFjNzRiNjhjODRjMjE5ZGY2ZWY4YWZkMjMzNDUxMTRjMzhkMDYwMDNhYjQ2ZDRlMmYzNWJjOWIyYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f6e588d8d0f4fd4b8a30781741284b5",
+      "statement": "RPC implementations are annotated @validateRpc() so capnweb-validate installs generated runtime validation from the TypeScript signatures, applied at every server-side RPC target class.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L9052-L9053",
+          "version": "repo-lines-v1:sha256:13a8307b4595b8a96f70eba6a09c25d17df0fc3b52c1961868e1902e51fc028c:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3NzJhYjg4ODgwZDgzMjJjYmRkMGUyMjZhZDkxNTE1ODYyN2E5M2M5MzIzMDYyZjhiMmE2MGY3ODI1ODVlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAwM2ZjMzcwZGFiMmJlMjE3ZTI5ZGFlOGJjZGY0NWQxYzUzMWVhOTU1ZTUzZTgyMDdlYjEzOTk3YzA4NjI4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTIwNDBlMDk1YTk0ZTJhZGE3NGU0MjFmMzcxODc1MWE5MWE4MTBiZmQ2NmY0OGY0ZTkzOWM3Yjc0ODBlYjY3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdiYmVhNzlkNjZkNzM5ZmVlNzQ3ZDU3YjI5MmIyMGE3YzQyOGQ0NjJmMTRlNGI2ZDRlZGFmZjRlYzA0NDhhZiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L75-L80",
+          "version": "repo-lines-v1:sha256:5a7e44391381d1e9634778144ca3c278c36c9b688900fc683b3cef24bd1c07e3:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3NzJhYjg4ODgwZDgzMjJjYmRkMGUyMjZhZDkxNTE1ODYyN2E5M2M5MzIzMDYyZjhiMmE2MGY3ODI1ODVlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjNiOThmNWQ0ZjA2NTE4ZTk4MDVmNWMwZmI0MWVmMzZlMjNmMmEyZWYyMWRlYTU3OTQyMzVmN2MxOWE1MzhkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWUyYmQzOTVkM2FiMzUwZWQxNTJjNjEwY2Y2OWY1NTI2MzYwZGVhYjZkYzg1YmMyMTMxNmVjNTBlZTRjYzYxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGVjMGQ2YWQ3YjllMjIwNjkwOTZkNjI0OGQ5ZTBkYjM1MWE2MzBkOWY5MTNjODQ5MmVlMzZkOWY5NmZkMzRkMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_13a22ecd05a142d18a134b2808f56a03",
+      "statement": "New API methods should access user state through the fresh-stub-per-request #user getter (wrapped for DO-reset telemetry) and use retryOnDoReset only for pure reads, since a reset cannot distinguish applied from unapplied writes.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/do-retry.ts#L96-L110",
+          "version": "repo-lines-v1:sha256:78669dcb7908a70c4792fdf3db2b690473c30c86852647b8aef64711c15c6907:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3OTY1NzdkYzVjOTYxZjVlMjU5MmY0YWVjNzJlZDMyODA2N2I2YzE0ZDlkNWMyZDE4MmE5ZjQ3OWI4MDFkMTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzNTNlNjkxYWZkNWQ4NjI5ZGVjMTRmMGMxNTViMjkwNDc5ZDk3ZjIzMDljZDMxNzU2NjQzMTJjMjZlOTRiY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L94-L98",
+          "version": "repo-lines-v1:sha256:f4b74a80eae9fa89a87dade17cfe339fe1493b3593b6e7011bb99c405744fa63:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGMxNWUxOWNiNTgyMGUxNmUwNGUyZTBmYWViOTVjNDM0ZDQzODAzNGNiZGYxZGM0MWMyNjc0ODQyMWVkNjgxMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzE1Njg2MzMxZGEzYmUxNDhmMTRkYjhlNTk5ZDI4ZGJiZjZkNmQyMDg2Y2FlMTkzNDVmOWJiYWMwZDQzZjFiNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzE0MWVmZmYwZTg4MjgyYjhmNGNiNDJiNDI0YjY3YjVjZWQzYjgzYjdjZDcwYTY5MDhkODg4OWQ1MzJkOWJiMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd6cf207e7114437944049f2c20c4c35",
+      "statement": "New methods should stay pipelining-friendly (throw on missing targets rather than return null when callers pipeline on the result, like openGadget/getGadget) and express expected client-classifiable failures through coded error families (createXError/getXErrorCode like OPEN_GADGET_ERROR_CODES/AUTH_ERROR_CODES).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1662-L1666",
+          "version": "repo-lines-v1:sha256:ea67c8ef8e2d6b704861e91b4b25fcce837beceff49b6b6fd4fd39cd25319edc:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyYTJmOTk2ZjA4ZTY4MGJkMjkyMTM1YTZmYTQ5NzhiZGEyNmU2MDJkODRmMzNjYjFkNTk0Nzc1ZDQzMDRiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmZiNDg4Yzk0OGI0NDY4YjFkMTEyMTY1MDZjZWM2OGQ3ZTJjZmUzOTE0NDMwZGYxZjkyZGViZTlmZmI0ZjgwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQ4ZTI1OWU4MmZlYzg0ZGE0NjdlMTkxZDg2MzQ0YmI2ZGIwOTk3NmRlNzExMDYwNmMwZTcyYjIyNjZjOTQwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDIxZmRhZGZmZGM4ODMzOTI0YTcwMjg4ZTEyYzk3NTNkM2U0ZDg1OGE3MmMwYjYxZGUwNjU0YjE3NWI2MDNkNCJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L315-L357",
+          "version": "repo-lines-v1:sha256:3f5aadcb1be892a8ceaa26e36b51e996826ecd071731dee00470f9897b85d999:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkMDFlZmY2YTkwOTEwNTBjZGRiZmJlMTgxOTYxMmIxOTI4M2VhMGJlOTYwNGE0YmI0NzU4NDQ5ZDJmMzA2OWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2M2I2MWFhNjUyNGU5MzY5ZjRlMmRhNWEzYmM4MmFkNTcyZWRjMmUwYjI4OWEwMmJiNTViM2UyYTY1ZDc1NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjYTdiOTcyZjExY2NhMGMyMWE1MzYzOWFhMmMxZTdlODA1MTliZGY2NTgxMTg1ODcyOTBmNzFhYjc4NWYzMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlMTYyYmNhZDcxYzkzNDc0NmUwYjA5MTExOTMzMTY0NTI0YjcwNWJjYzUwYjlmZmM4MjIxMjkwM2ViODJhM2IifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L461-L479",
+          "version": "repo-lines-v1:sha256:8eb161494b2933e79a72ae9edf205b6f2b40d000e97b0d1f837aa76b865e2808:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzOGZjYmY0ZDA5YTg2YWQ1OTk3NjliOGZjNmQxZTY2NTFmYTEwZjgxZjhmMTg1ZGQxM2JkNGQ0NzQ3ZTAxZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMzdjMzU0MzU1YzVmOWYzYjBkMzM4NDA3ZjdkYmRiYjA3NzQyNTA5ZjdlODM5OTI3ZmZlZDhlY2MxOTMwN2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmZjUzM2RiMGVmZmU3Y2IwZjE5MWE4OTAxZDQ1ODFhOTBmZjY2ZTkxZjUzNTIyNzJhZDExNjFmZGRjZWJlYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1ZjI3N2RjMTgxMGM0MDgyZGFmOTZlZGViZGNlYjlmNjg1NzNiNjI2ZDlkNzI4MDYwYWI1YjlhYmI5MWViZTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_acdf9cbf02bf4aa4a855b8bcfd0cc594",
+      "statement": "Frontend consumers must wrap RPC stubs in objects before storing them in useState, dispose stubs they stop using (ideally in effect cleanup), and use cancellation flags for stale-result protection because disposal does not reject in-flight calls.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/RpcContext.tsx#L5-L9",
+          "version": "repo-lines-v1:sha256:e1b1cd6c8efbcb168dda55c856a4d9482647ea5a2d98504f557dc95269c8c982:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWZmOTBiZGE0NTM3NTQ4ODIzZmU3YWViN2I4YzQzOTNjMjE1MGNhYWM5OWY0M2Q3YzQyMjAzYjE2MjdmNTU0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODc1ZDM5NDNlZjc2NzYyZjkyM2YwZWU0ZjliNDlmN2E1ZTljMmU2YmY2YmU5YmQxZWRkNWMyNzA1ZjBlYWY3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDI4NTY5MjZkMDAzM2UwZmQ2ZmZhYjM2YTlkMTUyMDg5ZjRiMmQ0YjI4YmFkZGYwNzgxZDE4MWFkZjQ1ZWU4NSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/useAuth.ts#L41-L56",
+          "version": "repo-lines-v1:sha256:a72ef30862ef9b4f314d31666d7556cb750385cd40454864810feddf56947217:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjMzE0MzQxNzkyYTBhMjU4MWI4ZjBkYzBjNzAyZDJhZDMzNzdiNjY0YmIzYWQxODc1NDg3OTZjYWFlZWUxNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlZGJmYzY0ZjgzZDNjZTA2ZjRhMDczMjg4NTE0YTMxMTFmMThmZDhhNTU3MGFmOGY0YzZjYzJmNjYyZmUzYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhOWQ2Y2MwMWExMmU1NjYwMTk3YjYxODJmNGYxZjI1M2ZhZjQyNjQ0M2JlMGJhMTlmMjliODI0Y2M1YTU4ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyYWMxN2VmZDM1M2Y3YWRhZTlhOTFkMGM4NjM5MWNmYTQ4MGVkMDZkMjAwOGJhYjk2Nzk0MmUzM2E5YzRkNzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_96c7bb6d911e433c8a14cd1cfbc890cf",
+      "statement": "Signature changes regenerate RPC validators at build time because the backend's main module is the capnweb-validate build output under .wrangler/validate/, produced by build:worker; verification is pnpm build (type-check + codegen) and pnpm test.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/package.json#L7-L9",
+          "version": "repo-lines-v1:sha256:d26c7d6de79ee7c3f80739cf1f6b212c485341f34b9d58ad2f6f127d588aa481:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWE0Yzg1YjQ1ZGM3ZjRmZmNjNDM0N2IxMGRhZGY5Yjk0NGMyNmVmOWM3ZDIzNGRiNTFhNDIxNGFhNzE4MGNhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzM4ZjYxOWQxZDEwZTRmZWU0NDgxZTliMmQzMWY1ODRlM2Q5YmM4Y2Y4ODg3NjQ2ZjFhZTQ0ZmVhNzExZTQxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTViMjk5NWMyMGI1YWE4NzFhODcwOTVmZWE5ODkzNzVhZDM2NzE4YmQyNDUwZjM4ODcwZTQ3ZDc3OWE5MTQ4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTYyZmRmMDJhMzgxOTNmZjZjYjEyOTk1NmY1Zjk2YzE5ODBiMTAzNThkMDZiNDkwMDU1NDdjOGRhY2RmZDdlMiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/wrangler.jsonc#L5-L9",
+          "version": "repo-lines-v1:sha256:2c4cb109169c98c9d192e6ed755216dc9e7c91167a9df8717a06cc1875aa5ee7:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2IwNzIwMWJkYjZiYzA1OTIwODQ5NjM2ODE4NjFhNGZhMTRhZmRhNTkxYjZkNTY2MWI3NDU4ZDkyMWQ1ZDBlYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQ0NGIzZmUxNTkwYTRhYzFmMmY2MjZlOTAyNTU2YThmZjU2ZWM3NzEwODZhOWExNTZmZDgyODllY2IzYWFkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmM2MDM2ZmI0ZTRjMGJjYjU4ZDNkMmZiYTA0Y2MzZDcyNTNlMjZjZmZhMWFjMGIyZGU4ZWMwNWVhOWI0MGQwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmMyNzY1NTQ5MGQ1ZDllODRiYTkyMmEwYmMzZWI2ZWNlN2M5ZmE2ZGRkODRhNDhjNzRjNTk5MmU2ODhiOWQ3YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d8201306ea40448190bb6d182b86e285",
+      "statement": "getServerConfig is the worked end-to-end example: a doc-commented PublicApi method whose ServerConfig type contains no secrets, a backend aggregator querying auth vendors' describe() in parallel because the call runs on every reconnect, and a frontend refetch keyed on the connected stub.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/deployment-config.ts#L1-L40",
+          "version": "repo-lines-v1:sha256:0d2c626563e4dfb7048fe738d92cf2521659b2efa21a62e058e33cb9a2be04fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4OGNhYmY0NGU4OTliMDhkNmRhYThlMmM5ZDdmOWFlNzkzODIwODIwNTM4Zjc2YTJlNjlmNzAxYmExZmU0MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2NWY4NjJjMzcxNmY5OThhY2JhMmFiNjZiODJlZjEyODc3N2E5ZTM1Zjc5MjZjNzEzN2JkNjEyZmIxNzkyOWUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L225-L241",
+          "version": "repo-lines-v1:sha256:45e716fc8795b5ad58bd0a32aba32849c3d409fe9deddb2e507368f717f32f6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1NDllMDQ3NDMyYWFmZGMxNjEyYTZjNmNhODM4ZTQyMGZiNjhkNGY5ODlkZGVkMTRjZTQxYjEzNjE5NWQ4OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3NjkyMjYxNDUwZmU4YTI0MDU1ZDZiZGIxM2I5NzcxOTRlZDVmMGE1ZDNmMDU2NTRhZTEzMzA4YTc1MGZkMzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNjJmNjQxMDgwZjhhODdkMzQxMmM4M2U3NDBlMjBjMTk1MGE3NWIyOTM5M2YyYjNiYTZkNmYxM2U0NDI4NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlYTIyODlmNDMwYjdkZWFlOWQ4YzY2OWY2NjkzNDk2YTkxMWZiNGI5Mzg5YTg4MmRkOGIyYTNmMTRmMWFjOGYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L53-L57",
+          "version": "repo-lines-v1:sha256:a2458a44bb1fcaba6e88cac11e61a9cb5c54c078c5dcd8fa4f982929ccff9ba8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyYTJmOTk2ZjA4ZTY4MGJkMjkyMTM1YTZmYTQ5NzhiZGEyNmU2MDJkODRmMzNjYjFkNTk0Nzc1ZDQzMDRiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjUxYWQxNDkwNTViOGE1NTg0MWI3NTk4ZTk0NTlmMmJjMDYyNzY3YTU5YTAyNWMyYWI4MjdlNDYzYzM4YTU0NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjA3NTJkYzk2MjdlZjM3MzIzY2RkNGVhOWIxNmY3MzUxYzA5Yjk3OWRmOTI1MGE3OGM0ZWQxYmM5NjllNTZlNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjMzYTUzZjZjMjZmM2UzOGY3OGUwNGFlNDIwMzRmZmQ4MjNkMWUwODE2NDBiZGVjMWU3ZWVkMDdkMzk4YTliMyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T04:46:04.795Z"
+  }
+}

@@ -1,0 +1,7 @@
+# Files
+
+- [Agent Runtime and Tools](agent-runtime.md) - How the Workshop's coding agent runs — the pi-agent-core loop, its tool surface, the executeCode dynamic-worker sandbox, step-transactional persistence with size budgets, context compaction, and model/billing routing.
+- [Authentication and User Accounts](auth-and-users.md) - How identity works in the Workshop — username/password with client-side argon2id hashing, session tokens, Cloudflare Access JWT verification, gatekeeper-provided sign-in via the PendingLogin rendezvous, signup controls, and admin determination.
+- [Code Storage, Git Objects, and Blueprints](code-storage-and-blueprints.md) - How gadget source code persists (content-addressed git object DB in the Overseer DO), the code-change stream format, the blueprint archive and storage layout, bundled format blueprints, and the gadget export pipeline.
+- [The Overseer Workspace Object](overseer-workspace.md) - The workspace Durable Object that owns gadgets, chats, gatekeepers, actions, and hooks — its open/access flow, typed-storage schema, code-change state machine, action log, and loopback entrypoints.
+- [Sharing and Observers](sharing-and-observers.md) - The collaborator permission graph with lazy revocation, share-key design, the build/use role split, and the observer mechanism that makes sharing read-through — never leaking data a recipient couldn't already see.

@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:0b5ad68e7719585977bf3f24415c131f190bfdafd6b0822af3712b9dcbbfdf53",
+  "claims": [
+    {
+      "id": "claim_0dfeb7a062d04e0396cd4a8f89b31a2a",
+      "statement": "A cached vp task sees only a built-in environment: a build reading an env var must be a task declaring env (scripts cannot), env fingerprints the value rather than what it points at (workshop-backend's build is cache:false because FORMAT_BLUEPRINTS_DIR names a path outside the workspace), and a task that reads a path it also writes never caches — frontend dist and vitest/wrangler scratch paths must be excluded from input, with gatekeeper SPA exclusions workspace-wide or gatekeepers invalidate each other.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md#L71-L92",
+          "version": "repo-lines-v1:sha256:f7c19dec65da26fda915279e7bf7f21e488bbc3fa4f5dcb9a64ba5b12bbbff97:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4Mzk1MGJkZjdiMWU4OGY1MGJlYzlhMWFlZTUyOGM5NDM4ZTQ4MDhmYzllMmZjNWVmOWVjM2FiMzNlYmRjOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4NmU3MjMzZWJiNWQ5NWVmNDg2ZTM2NzJhYWQ2YzIwOGNmYWNhOTIzY2IyYjk5ZWUwYTlmZGE4ZTczNWEyZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MWE1YmQwYWUzMGE0MmMyNGM3NTc5YmU5MzBmMDVkMzU2OGMzYzBiMjliNTZhZjY3OTAzZmViMmY3NzkxNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMTNkNmY5ZGY2YTYyYzUzMWU1ZmRkZjM2OTg2ZTlhMGZlMjU2YmIwNzkxMzBhODhhNGU3M2MwNjc4ZjU3ZTQifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/vite.config.ts#L36-L75",
+          "version": "repo-lines-v1:sha256:569bde85caac3df59414724c00e30590e602c42030d4beeb19450fcbe3aa3a28:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwODNiMThiMjFiMjhhZjBjNTZiZTMyOTkzOGU3ZmRlNDc4N2U3ZDYxMjJmYWZhODQwYjJjMTI5MjhmMDViZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2OTBhNWE4YWZhNjEzMDNmN2IwZjIxZTBlZDNmNTY3ZWZjODJiODVlMGE0ZjhlNGQwYzgyYzNhMzE4NGM3M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhY2JlOGJhMWUzYjEwZTA4YjRkM2ZkYTBiZTRmY2VkY2ZlNGUzYWQ0OGM2ZmI4MTEzY2MyNjJjNzQ5MTY1NmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_68ad75bd8fca4d0a8020527be74f5b17",
+      "statement": "Repo-wide tooling rules: one recursive tsc under TypeScript 7 with singleThreaded:true (measured fastest and smallest), no incremental tsconfigs (tsbuildinfo would de-cache the type check for a net loss), no root script calling pnpm run --recursive, scripts/assert-workerd.ts must stay in workerd-pool setupFiles so a failed vitest-pool-workers start fails the suite, and lint is oxlint via vp lint configured in the root vite.config.ts with correctness+suspicious as errors, a repo-local gadgets/prefer-jsdoc rule, and the integration-tests capnweb import restriction.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md#L83-L89",
+          "version": "repo-lines-v1:sha256:3be4588c7b7e2a3b11f630cc2963f26deca2da4e6b5cbc6967e5df0937b297d5:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTI0ZWZlNTA3YzM0MTI0MDA1NmM1ZmMwZmE1Zjk3MTk0M2M0MzM4NDhiM2Y2N2Y1MzM2ZTIwMzliYTM0ZjE5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTIwYjZiNTIwNWYxYjNiMWNmYzU0ZjIyYzFiOTdlZGM4YWNmNmJkZTY3MzA0MDE1YWI0MjdkNTA3YTM1YjU5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmM3ODk1ODI5ZTc5NGI1ODAwMWJmNGEzYjNiMWYxODZmMzM4YzczNzMxY2ViOGIzNGUxYjljMzgxYWFjMDkxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmFmMjAyM2Q2MzdjODQ1OWQ3ZmFlYmM4M2U1ZjA0YmIwMGY4MGQ3YThlNGUzZWQ0YTg3NTY5ZjIzZTI3MzdjZSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/vite.config.ts#L31-L88",
+          "version": "repo-lines-v1:sha256:a4b82adc4f66d96928770b33ce354d78f26be313dec3c2b38a662c08f4fc0a2e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiYjNkOTVhYzdiM2FhNmU5MzlhZTIxYmYxNTY5MmRjOWZiYjAwM2U2NjNkOGZkNGY1MDY2NTYxYmU2ZGQ4YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZTcwMjA1MTgxNThiZGRhODRjZDU4NWUzYzQ4NGIxOGY2NmRhNTdjMDhhOTE5ZDMyMjY4ZGFjNTVhNDhkYjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4NWU3MzQ4MjMxNGY3MmI5NDA0MDRiZGUzZTEwZjA3ZDk5MjUyODEwOWEyMjc2MjY3NGEwOTFhMjFmOWMyY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyODJhOWUyYzRjZDZjZjQyNTY1ZDk4NmI1NmUzOTE0NjE0NzI5ZGVhYzJjZjBiZjU4NTIzMmIxMWI2YWRlNzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_535fb8432e044ca4976d001df321ddaa",
+      "statement": "pnpm dev-server generates dev-only wrangler.dev.jsonc files: it discovers every gatekeeper-* package and binds each as GATEKEEPER_<NAME> with entrypoint GatekeeperVendor (Context gets sharingDomain 'dev'), sets per-gatekeeper BASE_URLs, injects shared OAuth credentials and MCP portal passthrough vars, sets ADMINS=[\"admin\"], and forwards optional OAuth-signin/AI-Gateway env vars from the shell or the gitignored .dev.vars.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L385-L534",
+          "version": "repo-lines-v1:sha256:1742f58dbca1bb8342d0dac056a232cdbbbed25d2f95097bcbbfd80ae6fdfdb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhNmZiMDhmZGExYWNiOTU3YjYxMTZiZDM3ODExYTFmZTQxYTAxNjExYzA2MzFlZGJmNzg2ZDY4ODlhMjdhNTVjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwMzhjYTliNTczYjZkZDg2MTIxNzIxYTliZWY1M2ZjM2EwM2I5NWZjMmQ3NGFkZjI2OTNmOTQzZWMxNmUwZmRlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5MjViMjhiM2M4ZjlkMDgwMGUxN2ZhODRhYjA4M2JmZjZmMTM4Nzk4YWQ3ZGMzZTJhZmQ3MDM3OGQ0OGYxOTI3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c780e96a4474072852e0b668041b134",
+      "statement": "The dev server pre-flight builds the backend's format-blueprint module plus both gatekeeper UI groups in parallel (build:app:dev is unminified and must byte-match the watcher's unskippable initial build or Wrangler restarts the worker mid-startup); configurator watchers start immediately after while app watchers are deferred until Wrangler listens on TCP, and per-worker build commands are rewritten to spawn resolved binaries directly instead of via pnpm exec to shave process startup off the critical path.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L252-L321",
+          "version": "repo-lines-v1:sha256:c4f0aef1c537768932643b4f15eb1427049aa9dee0acf00cc70d25efaea06da9:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2ZDIwNDczZjE0MDg3NGQ5NDRhNTE3MGUyY2M2NTg3OGFiYjc2OTlmZmFlZDJiMDBlNWYwNTg4Y2JhMzdjMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUxZWFmN2MxMTdkMzE3MjZkMTg2ZDgwMGVmYjM4YzA1NDU1Yzg4YTE2MmI0YjM4OTNlMTM3Y2UyOTY2NmI3ZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0MTk3NzIyZmQ4ZTE0NGJkZTBjYzBkNWQ0NmZlNDA4YTkxNmViYTYyNjc4NmVhYzJhNmVlYzU4NDY5YjFkNGMifQ"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L329-L380",
+          "version": "repo-lines-v1:sha256:4b161340ade63f1a6e46d0df33be5d765de9e68ef4e5e487c1749d7268574fa9:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxM2RkOWRkMzgwOTEwZGE1MGMwYTViOWZjMTBjMzcyZWQzNmEwOTA0ZTg0OGY1ZjU0ZDI2YTk2MjZhNTgyNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMmJmNDgwMjU1M2ZmYmU2ZTNjZDlhOTgxYTdkY2Y0MjM2ODE1NzZlNTNlNzY1MDBjMTgxN2U4MmZlZDMzMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmZjU1NzM4ZTYwOTIwNDlhYTgzMzYzNmIzNGU5MTZhYmYwODQ0NGVjYzE4MjcyNGQxNDJmYWU1N2M5YTRmNzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bed54fdfd4d84c1f88f505b65f2eed20",
+      "statement": "pnpm run-local installs dependencies, builds typed-storage (the only package consumed via dist) and the frontend assets through the vp cache, then starts run-dev-server with --serve-frontend-assets so the backend serves the pre-built SPA — mirroring the production layout.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-local.ts#L1-L57",
+          "version": "repo-lines-v1:sha256:1101879b5424c797743b0a43a2743a8c3ee4de0c02b9bfe24bf30029d469d589:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ffca9dd867e94317a4371374d59432dc",
+      "statement": "Preview deployments create Worker Previews one-per-PR in three tiers (16 gatekeepers concurrently, then the backend binding them, then the router which owns the only public hostname while the other seventeen set preview_urls:false and are reachable only over service bindings, asserted at deploy); secrets are uploaded via the API between tiers and never written into configs because Wrangler prints config values and preview logs are public.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/preview/preview.ts#L1-L35",
+          "version": "repo-lines-v1:sha256:5dce66320b5984e08bc970aa837ace90b689891940af3f9d85164af82408f261:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkY2MzZjdjMjE0NDE3YTljNjA3NTgxYzE1MDhkMTFkODYyYTRkZjg4MjMxY2MyNWNmYWJlOWZiODNhZTI4YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwMzM3NjJlMTQ0Yjc2YzBiNTI2NTMyMzUyYjNiMWEyMDhiM2ZmNzgzNzU2MTZlN2IzMWMxYWUwNGNiMTAxMTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e559720e1654a739fd4b86e2270913b",
+      "statement": "The release manifest is the contract between CI and the deploy service with a CLOSED placeholder grammar ($ACCOUNT_ID, $KV_<BINDING>_ID, $R2_<BINDING>_NAME, $WORKER_NAME(pkg), $SECRET(name), $PUBLIC_BASE_URL) guarded by MANIFEST_VERSION, and the manifest generator fails closed on any wrangler config key not in HANDLED_CONFIG_KEYS so an undecided config shape cannot pass through silently.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L1-L25",
+          "version": "repo-lines-v1:sha256:eb0943324f5f1b34aad7e3a92716dcc0a8c0f408dcd2624acb3973d30e6c539c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWE3NDA4ZGE5MDcxY2ExZGNlNjNjYmI4YjRjYjZmZWQyOTFjZjRkOTJlZTVjZmM3OTQ2OWQ4MGEwYjk0YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1NzlkNTk5MDUwM2E1NDUwMTQ1MWM0N2JkODEzNzZmMmJhYjMyMTU3ZTUxMWMzOTU1NjI2MzBmMWMyNjFmZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlOTY0ZGVhZGQwMTFkZDgwM2Q1YWEyNTY2YjUxNGJmYzcwNDFhYTU3ZDA5MWE1ODQ0MGVhYzFhOTM5MWJlY2YifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L89-L94",
+          "version": "repo-lines-v1:sha256:e534e1679d8873158ed213db69ddfc5454aad042e1e9fc6ec7d4e35edc5ef65f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWRkYzMxYmJlMjc3ZjA1YzE2Mzc3Y2E5OTYwMDAzMjgwMmEyM2E2ZTcwMzlhNmNlYTBlZjhiZjMzZGQxZDRjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDFhNjdkNThjNmI0NzU5OTNjZDBkMWE3NWI3MWMwNTExMzFmNzE0MGEzZjMxZTUyNmU2ZDljZTc2NDRjYjYwOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzc5MjllOTFlMGY5OWMzZTgyNWRlNjliNDM1ZmI2NDg0ZDFiMGExZGYyZjQ2NTYxYWJmMWEyOWYwNDE4OGI4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTUxNDEyOGEyMGU5YjgyNDFiMGMwZTAyMzEwYjdkZmI5M2E0OGI2NjZkZmQzYWU1ZmZjZGViM2M2MDM4YTRkMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fac56d0698e2496e9f499449fe1b19f3",
+      "statement": "build-release.ts bundles every deployable worker byte-identically via wrangler dry-run with the pinned wrangler and generates the manifest, which is covered by a golden-file test that must be regenerated with UPDATE_GOLDEN=1 node --test scripts/release/manifest-lib.test.ts and diff-reviewed after any intentional change.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md#L88-L89",
+          "version": "repo-lines-v1:sha256:cf6aea264e2921d868b277403c0e8f5eaf6965e8425eaabf5c9a4bfb3b6ac0ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAyZDMwZTEyMGVhNWQ1NmU2NWIzYjk3Y2Y1YTlhNWUwNWQwZmIwYzRmZGNhZDRhNTJiYTM2YWEzMTNlZjMwMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTIwYjZiNTIwNWYxYjNiMWNmYzU0ZjIyYzFiOTdlZGM4YWNmNmJkZTY3MzA0MDE1YWI0MjdkNTA3YTM1YjU5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2QyN2FjYzAzZGNjYzM2YzE2ZWJiOTFhOTlmNGZkMGM3ZTdkNTE5ZmNjMzkzMmJkM2Q3NGNiYjIzZmRiNDY2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmFmMjAyM2Q2MzdjODQ1OWQ3ZmFlYmM4M2U1ZjA0YmIwMGY4MGQ3YThlNGUzZWQ0YTg3NTY5ZjIzZTI3MzdjZSJ9"
+        },
+        {
+          "resource": "repo://scripts/release/build-release.ts#L1-L106",
+          "version": "repo-lines-v1:sha256:1793257598eeed7b91f76a24dd3b608b73b8eea1a85ca59bb4afea5443ad5962:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhNTljNDc4NzJiNzFmMTI1ODk5NDI4OTI0NjRlNzY0YzBkYjM1MGMyMGI3MjIyODY0NTYxNWNjMzZlMGEwNzI1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkMTRlZDg1MDc4MzMwNDQ5OTdhYmIwNTFkOWU5NzQ2MzJiYjYwODU3NGZjYTlkYmE4MzEyMGE0NDZkNGQ3YTI3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyOTEzOTQxMDc1M2E5MzIzNTQwMjZjODA3Mzk5NDIzMzM0YWJjZGU3OGJlOWM0ODAzM2EzZGYyYmEzNGE3ZGY2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_abf8b2063c1a492bb980c10e8049bf9f",
+      "statement": "upload-release mirrors a release to R2 content-addressed with the manifest LAST, because releases/<id>/manifest.json is what marks a release complete and a crashed upload must never publish a partial one; with --candidate the manifest lands under candidates/<id>/ invisible to the deploy service (which scans only releases/) so e2e can verify before promotion.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L1-L16",
+          "version": "repo-lines-v1:sha256:be89d30581df1346f8599e81848638331aa2cd1c9257b11acf64819364f3bb35:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhZTcwMGY0ODgwNjgzYTk5ZDJiMGI2OGM2YzYyNmE0Yjk1ZGU2OWZlZWJkNDAyNmYzZmJiMzgyZmJmMmE3NDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4OGM0NGJiOWM2NGE3Nzk1MTEzODZmN2ZmMDk1YzQzZGMxZjU1NDUxOTFjYzAxNDc4OWI0ZWJmNGZjZjJiNWYifQ"
+        },
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L98-L108",
+          "version": "repo-lines-v1:sha256:fba004c69dc6b6d3d61e8925a68c15643f9d2aa4b9555a490dc26c183653ee4b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyNjZlZmYyYzAxY2I5M2NiMTA4NzU2Yzg0NzNjODBiZDY0ODFhZmFiOWNiZjg0YzllNTU0OGI0NzM0YWI5YTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYjU4MTMzNTAzMjhiODNjNGQxOGUwYWQxNmE3ZjA3NDk0YTUyYTEzODIwZmFkN2IxNDU4OWFjNmFmOWUyMDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZWMzZjRmODBiMDcxYWE5OTZhMTRkN2RhZDRhY2ZiMjhiNjdjZDhmYzkxYTI5YzkzYzAxYTBmNDgxNGY0YmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjNjc4MTdiYzM0NDQ1Y2JhNmRlM2EzOWNjZWE2MDI4NjJhMTNlYTgzNDZjNDVmZWEzN2U4MjA4YjA2MWZjNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4b4eb184d6c445688925b31ab8df2e70",
+      "statement": "Publishing is a single all-or-nothing manifest copy into releases/<id>/ by promote-release.ts, which is not isolated against concurrent promotions (check-then-act) so CI serializes promote runs in a resource group, and its newer-release guard skips candidates already superseded by a release with a higher r<pipeline>-<sha> run number.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/promote-release.ts#L1-L14",
+          "version": "repo-lines-v1:sha256:70de7b6434a2f7b3c9685d09fdd775f34323c264f0b6dfab1b88e31c97ed54f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4NDFkYTg2Yzg2MGI3MGQyYWZjOGI1ZjU5OTU4OGFjMzRlMmFmNDY3NmI1MmQwYjkyMjFiNmZjOGIwZDFmY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyNTE1YmZlNTAwYWExN2ZiMjk4ZjEyMGUyZmNkMjY1ODQ2NTZmMjMyNDdhNWQwNzc2YmVmZWJkNGM3NDUzMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7656af6e3abd460fa276e64b8049e9ac",
+      "statement": "Installable gatekeepers default to OAuth CLIENT_ID/CLIENT_SECRET secret inputs overridable by per-package deploy-inputs.json; a gatekeeper taking no third-party OAuth credentials must be listed in NO_DEFAULT_CRED_INPUTS because a spurious default makes it uninstallable — the deploy wizard blocks Install on unfilled secret inputs.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md#L90-L92",
+          "version": "repo-lines-v1:sha256:baf2023d637c8459d7faebc83e5f04bb00f80d7a8e4e3ed4a87569f23e2737ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwYjg1ZDlhYjQ3ZjY2ZDU0ZmI3MDM0ZDFmYTczOWQ3ZTMwMjNhNTBiZWJhMmIyMTE5ZWIwY2Q0MDlkOTUyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg2ZTcyMzNlYmI1ZDk1ZWY0ODZlMzY3MmFhZDZjMjA4Y2ZhY2E5MjNjYjJiOTllZTBhOWZkYThlNzM1YTJkMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2VmNjNmNGUxZjMwMTZhNjYzMmE3ZmZlYTc0ODJlMjI0ZTcxZWZmNDFjZDZkZjk3MWIzYjVlMjY1YzdlZTI4OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2YxM2Q2ZjlkZjZhNjJjNTMxZTVmZGRmMzY5ODZlOWEwZmUyNTZiYjA3OTEzMGE4OGE0ZTczYzA2NzhmNTdlNCJ9"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L260-L260",
+          "version": "repo-lines-v1:sha256:91ec4adfed251bc58738eddf745a51ab98d353107dd8cc8374f4af59be771143:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTFlYzRhZGZlZDI1MWJjNTg3MzhlZGRmNzQ1YTUxYWI5OGQzNTMxMDdkZDhjYzgzNzRmNGFmNTliZTc3MTE0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTFlYzRhZGZlZDI1MWJjNTg3MzhlZGRmNzQ1YTUxYWI5OGQzNTMxMDdkZDhjYzgzNzRmNGFmNTliZTc3MTE0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVhMDMzY2VmNjJmNGVkMjM1YmVlN2IzY2Y5OGQzZGFiMTkzZjk3NTBlZmQxMGUzNWM1NWQyYzAxMzQxMjcxOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTZmMWI1MGU0MzcyZmVhNWFlZjRhMDIxMjMxOWI4Y2VkN2U2NDczYTI0OTBhZDJhMmZjNDM3NzgzZTQ3MGRiNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b020217b959b4f6ca01f2747b1f6cdef",
+      "statement": "CI runs two jobs — Lint (pnpm lint:check plus the scripts/ type check, deliberately off the build hot path) and Build and test (pnpm build then pnpm test under a 20-minute timeout because a wedged test process would otherwise burn the 6-hour default) — using the setup-vp action with only the test job caching, and preview deployments are skipped on fork PRs by design because GitHub withholds secrets.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml#L17-L58",
+          "version": "repo-lines-v1:sha256:59cc43873d326847d99fe0f68aca10fa119f9b26c5ee8b1a6d8e2d5c85cdfc12:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhNmVjOWY1YTBmMmMwYjhlNjc2ODRjMDFhNGZhNTA3YzlmZmZlYWQ4Y2FlMmQzOWYyZTQ5MmJmNmY4ZDZmNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4Yzk2MzRmZmUxOWYyNGZkODJjMWVjMGFkNzhiOWE1NTBkZDMzMTU3YmRjODA1YjRjYzQyYTkyZjA5OGM2MzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0ODc1YTYzMmQ2NjY3MWYyODczMmJhYzU5NzEwMjc2YTk5MGJkZjc5ZjIwNjNhOGJhMzAzODJhMmY0ZDM3ZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyODY4NDZjMDk5OGY2Mjc5NDcxODA1NjIzZWUzM2ViNGFkZTFjODU5N2VkMWQ1YjVmZDgxZmNlYTMwMzBkZDEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

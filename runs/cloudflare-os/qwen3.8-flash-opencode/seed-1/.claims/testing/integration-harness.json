@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:02f4d7866daa610a909823789d56a23fa84e1becc27af2f4abd1d3246b0b8b44",
+  "claims": [
+    {
+      "id": "claim_a2cbebfd87e744a7ad9f5b100e699101",
+      "statement": "Integration tests boot workshop-backend and gatekeepers as real Workers in workerd via wrangler's createTestHarness with their checked-in wrangler.jsonc patched in memory, and speak Cap'n Web over a WebSocket to /api exactly like the browser — the code under test runs in another process and nothing but outbound HTTP is stubbed.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L24-L30",
+          "version": "repo-lines-v1:sha256:1a31555559e88b5e3e8a0cc960eb263389f9e6f469409de3940f20b7b66d2c6d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTA5ZTQ0YjUwYWMxMmM2YWQ5ODNkNTVmMzk4NDQ4MjY5NTg2MzBiMDljMjZmMGE0NGNjZmZjMjAwYmJjMjQzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDdmZjFjZjMwMjkzNWU3MDliM2E1MjlkOWVmOGRiNDI3MjFlNjEyODU1YWFjZDA4OTRkNzljY2I2YWMwMDg5ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDY3YjExMjY4MjhmMzU3MDE3NmZiNzFhYjlmZDQzOGNiY2EyMDVjNzY1YWI2Mzc2OTRkNWQ3N2JiNzZiNDkxNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4a67ec5362d74991aaec13975d45d187",
+      "statement": "Fake timers cannot work in this suite because they patch the test process's clock while the Workers read workerd's out-of-process clock; they remain valid only for in-isolate vitest-pool-workers tests.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L34-L42",
+          "version": "repo-lines-v1:sha256:05d774ea5498b57f66d3fdce76da83c926cd0499801d4eb5a68511b1ca768ff0:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjJhZGU5ZjhjZmIwN2QxYjc2YjA2ZWE5ZWYwYjlhZTAwYjRmNWIzZTQ0YjYzY2JhZmM3NDZjMDZiMmI1MjEyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA2MDAzYTdhN2NhYTBhZjY5ZWEyYmQwODI5MmY0NWNmNDlkZjNhNjRjMzE4OWIzYzAwODBmYWE0MWVkZDg4YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDY3YjExMjY4MjhmMzU3MDE3NmZiNzFhYjlmZDQzOGNiY2EyMDVjNzY1YWI2Mzc2OTRkNWQ3N2JiNzZiNDkxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGUxZmJjZmVhNTRmMGMxMjk2OGVjOGNjNTAyODRmNDc4OGU0MmRmNGFkNGE3MWQ3N2E4YTcwZmUxNzIxMjE0NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea78bbfb732c430bbdc377ccf587c9f0",
+      "statement": "Observer-logic tests use fixtures/gatekeeper-test — a real Worker speaking the real protocol whose verification outcome is set over an HTTP control route — because adding test hooks to shipping gatekeepers would stub the very state under test; the harness takes a list of gatekeepers and the interceptor pluggable handler modules precisely so per-vendor suites can be added outside the repo without forking.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L44-L63",
+          "version": "repo-lines-v1:sha256:2957bc6f2e3fa3a520c78cc981409353b5cd418a06f1ce8fbcb7aa4f24b198b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZmQ0NjQ4YjE1OTJhODY3YzZiZTIyYzk0NzE1NThkZjJkZTcyMmI0YmQ4NDZlYmM2YWRkMmM2NjIzZmJmMmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyOWIyYmU4YzE2YTBiMGY1ZjQ4MDdhNGQ0NWE2ZGQ4ZjdiMTU4MDg2MmViZTViMDJmNGZiOTFlMGJmZDA0NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0MDA0YmZhZWM4YTdiMWRiMjQ5MGI2YjYzYTg2NzI4NTgxY2I1YWQ1ZDg2OGEyN2I5NWI4MDJkNWM3NTE0MzYifQ"
+        },
+        {
+          "resource": "repo://packages/integration-tests/src/harness.ts#L1-L10",
+          "version": "repo-lines-v1:sha256:f50bd61fd05553d92b5eda22ddf572348bb4c8c734b7c7474e8ce4958f9f9d9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwZTNhMWMyMTVkZTJhNDNhZTA2Nzk4ODEyZTk2ZjE2YWYzMmIwNjA4NDkxZDQ0MzcwMWNlMDg4YmI3OGQ1NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwYWNiYWZiNzg3NGMzNDllMTRlYzg2NDk3YjIzZDJmOTU3ZTNlZDYxZmMzNWQ0ZDZmYWExNzM5MzAxYWQyYzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlZTFlMzNlMjZjNTQwNTRhMjU2ZTA0N2U1YjFiNjAzOTZkMjYyYjI0ODJiMWM0MTQ2M2Q3NjgyNGRmZGY4NjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_29928ab25d8143b083c19e2525cc229f",
+      "statement": "Storage persists for the harness lifetime (server.reset() costs ~3 s and tears down sessions), so no test may assume a clean slate — independence comes from fresh identities, per-test URLs, and helper-allocated labels, and the no-internet-escape assertion lives in afterAll because concurrent siblings share interceptor state.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L65-L83",
+          "version": "repo-lines-v1:sha256:8c58460f8ca61b0cf2d79c461b70fb8933c81b43aa2626ef8eee406a2d268165:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkNzQ2MDJkZmRmZDc4NjgwZjNmYTlkYjkyYzUxYzg1Y2E4ZmFiNzM4M2EzNDgxYmY4OTBiNzYwYTRiMTdkMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1Mjg4YTY3ZDU1YTkyNjU2YzQ1NWY1ZWMwNmNiM2IxM2M2ZmVkYjFlY2IzYWVhMjAwMzJhNjQwZTlmNmNiYjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3285fe45e1d44a41ac15c5cca2f44255",
+      "statement": "Cap'n Web stubs are only serializable by the instance owning their session, so a consumer repo with two pnpm stores can hit a two-copies failure only in CI; the toolkit owns the boundary by minting stubs exclusively through rpc-client's stubFor(), enforced by lint rules restricting capnweb value imports in the package.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L104-L125",
+          "version": "repo-lines-v1:sha256:34986b3d571d0c0d2704d6789884f8c04141cbb864537a85b8edd24f025ce6b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkYmVmZGQ5NjlhOGU4ZjFlYzhkOTQ1MzE1MWVhN2UwYzEwNDIzMTAxOWFlNzJiYWRhYjg1NTYzZmUyNDdjNDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjMTM0ZWVmNzM4N2Y2NTU0MTc5Yjk3NTBlZmUyYWQ0NWE2Mjg3YjllYTA3MzNlZWZjODllZTQ3N2NkNmIzMWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE0ZDY5MGUxN2M0YmRkMDlkYjEzMDFjZWVkZjA5ZTEzMzQ2MWRkMmM5MTkyNDQ1M2JjMWFjZmRhZDIwMzhkMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlYTA0OGQyMDE3YzQxZDJhMTUwNmE5ODkyMWQwOGVjZjkyZmQ1ZmE4NDczOTVkNWVmZDU5ZjkzNTI1MjI5ZTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_69bd00e08df945279a03b715dd624067",
+      "statement": "The harness's wrangler pin (~4.104.0) is coupled to the root workerd version override: a newer wrangler pulls a miniflare/workerd mismatch and the runtime refuses to boot on compatibility-date grounds.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L85-L102",
+          "version": "repo-lines-v1:sha256:6780fd22898a56691de6527d6ebabf43dc3aa25a6e4bbd396eba6e5af80c0e43:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNTFjMzBiZDRjZTYyNmJmNTFiMjc1ZTk0OGM4NTczODY1NzcxOTYwZWMzOWVjZTczMWMzODUwMTc1YWIyMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5OGQ1YjQ4OGIyNDE4ZDVhN2JmMThmODgwYjEwZmQ3ZmY1NDY3ZjE4ZjBjNDc0MzM5N2MzMzViOTcxZDA2ZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3MDc4YTBlZDBhZjlkMjRmZTEzOWZkOWU4ZTg5NjAwODlkZGZkNzdhYjJkM2VlMjJkMDBmMTM1NDZmNjg0MGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9daeda2f69e64bc684d54690450b1e3b",
+      "statement": "The interceptor patches Node's global fetch because createTestHarness routes Worker outbound fetch into the process; requests to the harness itself pass through and any unmatched request throws, making an unmocked call a test failure rather than real internet traffic.",
+      "evidence": [
+        {
+          "resource": "repo://packages/integration-tests/src/network-interceptor.ts#L1-L9",
+          "version": "repo-lines-v1:sha256:570365e99f21a67a388323bd89c38bd60a3ec540a249246f4b3bcad4c4ac2d88:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNhNDAzYTgxNTZlOGM0OWRlMTEzMjMzYjVhMjUzMDJmNDgwMWMxY2U1NDQ0ZjhlOTU4YTdmNjNiODM4ODViOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE0YWNmMmY1YmU3ZDY5MTEzZjNlMGEzNjc3YzU1ZTQ2MDEyNmMxZDg4MjExOTExNzZhZjU0ZmE3Y2M0MjRmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWEwMzdmMGU2YmJiYTMxMmRhOThhZDJlYTEzZmE4MGVmOWE5MjhhNjJhNzViNWI5YmRjYmQyOThjYmMxYTE3MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b7633006a3fe409eaa351e97675509ba",
+      "statement": "A shared vitest globalSetup reuses the capnweb-validate-generated worker entries for the backend and fixture across test-file processes, rebuilding them once in watch mode.",
+      "evidence": [
+        {
+          "resource": "repo://packages/integration-tests/src/global-setup.ts#L8-L22",
+          "version": "repo-lines-v1:sha256:0876ed1018291bc9237372f10d6d3ca56991a615ac0129c55c6a0365ca139913:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1OWNkNzZjNGIwZDg5NWQ5YmEyNTliY2VhYmU2ODg3NjEzYzYyNTljYmY4NTczODVkYjg0NjkxMTFjMTEwNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5N2Y4ODk0ZDZhYTBjYzk1ZjI3NDMyOWZiNzA2OTEzMDMxZDExZDliNmQ5MmNlZjY3NDRiZDk2NmE1ZGQ4YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1MGFkNzNjNGE5YmY3Yzg1NTkxNzY0NjQ1ZDMxODY1ZDM5NjY5ZDg5NTA4NTYwZjUzMGY0ZmZhODUwMjg1N2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOWE1NWRjNThhMTgwYWJjYjdlNGJmODExYjg1MzViYWZkYmY4Yjk0MWMyODYwZTk2ZWEzMzg3NDQyMWI1ZTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T09:47:13.931Z"
+  }
+}

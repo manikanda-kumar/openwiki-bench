@@ -12,7 +12,7 @@ Key decisions:
 - Hold the OpenCode agent + OpenWiki MCP runtime constant; vary only DeepSeek V4 Flash, GLM 5.3 Flash, and Qwen 3.8 Flash from OpenCode Go.
 - Official blind judging uses isolated Amp threads with GPT-5.5 `deep-classic` primary, Opus 5 secondary, and Fable 5 for tiebreaks/probes; OpenRouter artifacts are pilot provenance only.
 State:
-- P0-P2 framework and historical P1 evaluation complete; `smallstep-cli` execution and official rubric-v2 evaluation are complete. The ordinal agreement gate passes (linear-weighted κ=0.603, exact agreement=0.646, no unresolved tasks).
+- P0-P2 framework and historical P1 evaluation complete. `smallstep-cli` and `cloudflare-os` execution plus official rubric-v2 evaluation are complete. Pause before `extractthinker` for user review.
 Done:
 - Located five source runs and inspected claim, plan, page-manifest, and OpenWiki resolver formats.
 - Migrated all five source runs byte-for-byte, added run manifests and subject metadata.
@@ -23,13 +23,15 @@ Done:
 - Selected and pinned cloudflare-os, smallstep-cli, ExtractThinker, celld, and pi-desktop; removed guessed native configs in favor of a frozen future OpenCode + OpenWiki MCP invocation.
 - Added and verified Amp orb lifecycle setup: OpenCode 1.18.25, OpenWiki 0.4.3, user-level OpenWiki MCP integration, OpenCode Go credential aliasing, and a no-inference preflight for all three models.
 Now:
-- `smallstep-cli`: DeepSeek 3/3 complete; GLM 2/3 complete with one forbidden-delegation failure; Qwen 2/3 complete with one upstream HTTP 503. Official contestant spend is $2.585702. Rubric v2 used GPT-5.5 primary, Opus 5 secondary, Fable 5 tiebreak/probes; all 280 v2 tasks have exact model and prompt-hash provenance. The weighted κ gate passes at 0.603.
+- `smallstep-cli`: DeepSeek 3/3 complete; GLM 2/3 complete with one forbidden-delegation failure; Qwen 2/3 complete with one upstream HTTP 503. Official contestant spend is $2.585702. Rubric v2 weighted κ passes at 0.603.
+- `cloudflare-os`: DeepSeek 1/3 complete with two forbidden-delegation failures; GLM and Qwen 3/3 complete. One externally interrupted GLM seed-0 attempt is preserved under `runs-invalid/` and its clean rerun is official. All 56 GPT-5.5, 56 Opus, 55 Fable disagreement, and 112 Fable probe tasks have exact model and prompt-hash provenance. No unresolved tasks, but weighted κ=0.560 is below the 0.6 subject gate (exact agreement=0.661).
+- Scoring now retains early failed trials that legitimately have no `plan.summary.json`; regression test added. `npm run verify` passes 18/18.
 Next:
-- Execute, score, prepare, and judge `cloudflare-os`, then continue in frozen subject order only if its artifacts validate.
+- Stop for user review. If approved, continue with `extractthinker`, then `celld` and `pi-desktop` in frozen order.
 Open questions (UNCONFIRMED if needed):
 - Exact start/end times and resume counts absent from source artifacts remain null.
 - None.
 Working set (files/ids/commands):
-- PLAN.md; README.md; METHODOLOGY.md; src/*; bin/bench.ts; systems/*; subjects/*; runs/background-agents/*; results/*
-- Verification: npm run verify; npm run score -- --repo /tmp/background-agents; npm run bench -- prepare --repo /tmp/background-agents
+- `src/score.ts`; `test/score.test.ts`; `runs/cloudflare-os/*`; `runs-invalid/cloudflare-os/*`; `results/cloudflare-os/*`
+- Verification: `npm run verify`; provenance/model/prompt-hash validation script; credential-pattern scan over retained Cloudflare raw artifacts
 - Exhausted schedule: `81a72383-69d5-4b61-b6f0-283daabcfdd8` (fired 2026-08-31 05:30 IST)

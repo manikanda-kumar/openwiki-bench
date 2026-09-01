@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8f179361cc332be33e3e505e51ac4da27c9de44834b399ec67cc81bc215961dc",
+  "claims": [
+    {
+      "id": "claim_2b2eb7b644c74475bc0d04335e8114fb",
+      "statement": "pnpm test composes two layers: the root's node --test suite over scripts/**/*.test.ts, then per-package cached vp test tasks filtered to exclude the root package.",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L8-L17",
+          "version": "repo-lines-v1:sha256:cea6a55f4a613f9dd2d0074727c15dd3537f6cfcc0e1cdd11b4ede70351fb4a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZjEwOGJhZTdmMWU5YWZmMjg4ZTc1ZjRhYWRjYzllY2ZjZTNjNjI0Y2Y1YTNiOTM5ZmI1YTg2YmQ1ZTE1NTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwOTUwNTY1MmY4MDJhN2FlODQ2OTUzZWE2MGE4NDFhZGExNWMxYTI3MzM4OTUyMzQ4YzQwZmM2MDY5NDUyNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MjVmNjFlZmJkNWM5MTkyNDkzYzJhMWY1MjkwMjg2MDI4M2RhNzIwOWMxYjdhYjVmY2JjZjk4ODAxNDhmYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5M2RmNDIyYzJiNDM1N2I0YjNkY2MwNWRhZjk0YTFkODgwOWIyNzZkNTY3ODBiYmI5Nzg4Y2ZjNzI0ZTMzNDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8714aa9b90b24f47b0f185b0b35388ac",
+      "statement": "Scripts tests run under node --test rather than vitest, so the lint config orders a scripts/**/*.test.ts override last to give those files node globals instead of the vitest override.",
+      "evidence": [
+        {
+          "resource": "repo://vite.config.ts#L148-L155",
+          "version": "repo-lines-v1:sha256:51c80544345f53ece441ec4a27b7a6fae4f69c71405aeed5201bdecef7690d0c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU3ZTdmZDI4N2YxODYwYjhmMTMwMzQyM2VjMTAzMmNlZDhhM2FlYmRkMjgyN2U5ZjY3YmM0MzgwMTYzZjllZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWU2NzNhYmQ0NTdhOTdlZWExN2E2MDA2MmViMGZhZWE2YmRmMDk0ODY4Y2M2YjhmOGMwZWJkYTJmNjFlZDQyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTBjY2FlMjVkNjE2ZGQwYmQ0NTk1ODQ3Nzg1ZDlkNTEyZWM0MjA2Nzg0YTA1YzczYWM1MDNlODU5YzkwMzNjNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTNlNGQyOTZhZjVhNzM2NmJmNjI2NTY1NDFjYzIxZTA1YzBmY2FkZWUwYWFiNGM3NjZmMzBhNTE4YjUxZTIxOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6602aacf1174d31becdaf816070aedf",
+      "statement": "Every vitest package's cached test task is produced by a shared config that excludes the scratch paths vitest writes and reads back (results.json ordering data, timestamped .vite-temp config compiles, .wrangler output), because vp refuses to cache a task that reads what it wrote.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L1-L49",
+          "version": "repo-lines-v1:sha256:40dbe5b7285aa848b41ae93ac8bb1b2fc95de14b978ee92c459ee0cc20f723cc:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1NWUwOTI5Njc2ZThjNjJmNjRlNzNiMzM5ZjJjMmMwZDk5ZTUyMWU0YjBjMTI2YTY4ZmQ4YmRmMTEwMDg4NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1NmEwNWYxYzFjNmZlNjczYWJhOTc2MTJiNWNhOWQ3MGJhNGU1YzIzMjg2ZTQ4MDBmNDE2OGYwOGEyM2IyMTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd6d1cf9303f490690e4af35b232acaf",
+      "statement": "Every command in the shared test task runs under with-timeout.ts with 60s idle and 600s total bounds — silence is the detector because a healthy vitest run prints per file — since vitest's own timeouts die with the worker, teardownTimeout only arms after resolution, and a crashed workerd leaves the pool awaiting forever; a fired threshold kills the whole process tree and exits 124.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L80-L101",
+          "version": "repo-lines-v1:sha256:6a9546f6a5a04d4f5d0d07086e8de6ea6a7225efd867d87a901f31e348dac273:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjODZmMGRiMjRhMzdkMWFjYmRmOGQyNDVkMjRkYzc5YjlmMGVmNjJiYzAzYTVjZTI0N2IwOTkxZjRhMGYzNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NDhlNDcxZDkwZWNlOTI1OWViYWQ1Y2ZlNjAyODRjMjgzMWMwMzQ2YTM0MmYyYjU0ZDE0MWUxMjM3NjIwMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5YTk3ODE4YzNiM2YyNWU4YzhlZTljMWMxNWQ2N2JhYWNiNmQ3NzI4MjhjYWIyZjNmNmI3OTk0ZTliNTliMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzMjQ5MjE5OWQxOGExZDkwMjM1YmU5YTM0M2UxNzc4MTk2N2JiMmFiY2M5NmRiNjI5NjQ0NDVkNWI3MjI5YmUifQ"
+        },
+        {
+          "resource": "repo://scripts/with-timeout.ts#L1-L25",
+          "version": "repo-lines-v1:sha256:5c06d5c1d73a2e5673f308fb9b70571b6541b44d8d023ca65402d65e9093eb67:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZTkyNGY0ODQxNzA2YzFmMWU3ZTRkYmRhMzZjYzkwNmMwMTljYjE0MTg3YWI2MTEzMTg2YTI1MzZmZWVjNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5ZDY3MDI3ODA4Zjg5ODIwNjdiMGU3MDEwNGIxNmUwN2EzZmEzYjY0OTlmNWFhYTRhYWFmNWMzMzUzYmMwNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZGVlYjdkNzIwNTEyNjkxM2NlNDYzOGQyZWEwMTYyYjY0MzIxZDFkNjAxOTY0ZDkyZjQ0M2E3YjI1NzM5M2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6824c65d6a4d48819902b207d4c999d0",
+      "statement": "Workerd-pool suites load scripts/assert-workerd.ts as setupFiles, which throws unless navigator.userAgent is Cloudflare-Workers, because a pool that fails to start falls back silently to Node and packages importing no cloudflare:* module would otherwise pass while testing the wrong runtime.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/assert-workerd.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:ddc7c5c4f95e062951de5b4757bde9f0d24bb2849b3253881b31b3ddf9f640e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZDk5MjNlYjFiOTkxZWExZmQ2ODQxNWFmZTQwMzEwYjY2YjU0MjBjNDAzMTdmZmY4MWYxMTg0NWFhNWI1ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2NjlmM2YyNzQzMjU2OGYwNWM3NDQ5NzAzYTU1M2U2Mzg1NzVhOGI0MDliMjFhNjUwODE2NTU5NGJiNjM1YmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiOGI2MDBhNWI0NDhiMWU0ZDAyZGYwOTc0NmVkM2NhMzE3MmY3NWM0YWFiYjAxZGRlMDgwZTM2Y2FiMDc0YjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f5bcbfeaad94a73819edd3743664dd7",
+      "statement": "gatekeeper-cloudflare splits tests into two projects — Node for pure logic and workerd for RpcTarget/RpcStub/DO-props behavior — and reaches the gatekeeper DO through a TestHooks Durable Object because a DurableObjectClass carrying ctx.props is only instantiable via ctx.facets, exactly as the overseer does in production.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/vitest.worker.config.ts#L6-L30",
+          "version": "repo-lines-v1:sha256:0fca5a399d0225a25243f51fb72374e774ea1a711a864ef131623cc2b35ebe46:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NWNlNWRjZmFmYzI3ZTQwZmFkOTc2M2NkYzI3NGEyMjY2MzE4YzMxMjk2OTZiMGNhOTk4M2VlYTVmZGE3YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlNjczYWJkNDU3YTk3ZWVhMTdhNjAwNjJlYjBmYWVhNmJkZjA5NDg2OGNjNmI4ZjhjMGViZGEyZjYxZWQ0MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjYzk1MTI2ZTZkYTRlYmNlNmYwY2Q5OGVkNzJmOWFiMmJhNDRiODI0NTkwM2VlZjc2OTMxZjU1MTk3YjUwMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2NWVhMzk1YTE0MzkwZmVkMTE2ZTE0ZGFiZjU1NmU2ZDBlNDg3OTU1ZjM5YjM5OWFlNTdkNDQwMzAxZmUwNWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_30aa16d39d374dc8a57e1c018e4dfcf1",
+      "statement": "workshop-backend's workerd integration config raises testTimeout to 60s to absorb the cold workerd boot of the whole backend bundle and whitelists exactly the expected unhandled rejections (coded openGadget errors and DO-abort fallout), leaving any other unhandled error fatal.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/vitest.integration.config.ts#L20-L46",
+          "version": "repo-lines-v1:sha256:b81c3d1ed7860ce2c5839e187b4a14600543d1ef2a5248a9d35d7b31123a334b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNDEyNDgxYzhmZTdmYzU0ZDhhNjI3MGQ0Y2QyYzM5YTY0NDA4YmVlNDliMGUwY2IwMWUwMmRlZTc5YjBkZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0YWZhNTk0YjdiYWEwY2NlZjc0ZTdjZDAwOWRkMTQzZWRlZDdiZGY4NmYyOWRkYjc5M2VlMWFjMzQzZWIzODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_92580c007bf34ff48c41382218064204",
+      "statement": "The integration suite boots the real workshop-backend plus a list of gatekeepers as real Workers in workerd via wrangler's createTestHarness with checked-in wrangler.jsonc patched in memory (build.cwd pinned, main absolutized), and tests drive them over Cap'n Web on a WebSocket to /api — the browser's own transport.",
+      "evidence": [
+        {
+          "resource": "repo://packages/integration-tests/README.md#L1-L30",
+          "version": "repo-lines-v1:sha256:59da8811bd12aa1f24a546da77ddc26e06eccfeacd2bec08ffb0414e23de9a22:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMzkxMjA5OWEyYTU3MWI0MzkwYzFmNmJmMDQwM2IyNWI1ZDdiZmY4NmZmYjc5OTAwNmQwNDg5YmY1ZmZlYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1M2Q4YzVhMzYwY2IwM2IzMDIzNjVmYzA5NTdkODAxMjM2YWFlMTNhZWZiNjg0NGNkNTQ0ZDI5ZDc2YzBkMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3ZDE2YjUwZTZjNzRlZjUyYjEyMmUxNTdiZDM3YTEzMTE5ZjUxNDk5Mzg1MDc0ZWZjNGZhZDNjNGE5NjQzMWUifQ"
+        },
+        {
+          "resource": "repo://packages/integration-tests/src/harness.ts#L1-L80",
+          "version": "repo-lines-v1:sha256:86c5d03fe02d912b8a4a54ffd02555478db628b6f0bc3d4195595bbd2aad7a15:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwZTNhMWMyMTVkZTJhNDNhZTA2Nzk4ODEyZTk2ZjE2YWYzMmIwNjA4NDkxZDQ0MzcwMWNlMDg4YmI3OGQ1NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM0OTYxZjE1OTRhYzA1NmFkZWIwNzQyNDYyNjY3NjhkYWNlYTVmNDExMGRhNDNjMWQ4NjVhN2E3NDE5ZDkxNDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8772b0f88cd04d2691e6151d27910cd0",
+      "statement": "Fake timers cannot work in the integration harness because the code under test reads workerd's clock in another process (they do work for in-isolate vitest-pool-workers tests), which is one consequence of the out-of-process design.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L28-L44",
+          "version": "repo-lines-v1:sha256:0b7abc5d7ec86d0c8db4e6a37b9a32a645813bb43879da04965f23de993c54d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwZjRkNDQzYzkzZjE5MWUzMmEyNzM1YTQ5NTRhZDM2MDZmYWIxZDI5M2U1ZmM4ODU1MGU2NmMzY2Y2MGIyMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliM2E0ZWM0YzA1ZDVkMDBjMGQzZDAxY2M1NmU4ZWQ2ZDc5MmNhZGZjMDc4ZGU5NDJjOTlhOWNhN2NlNjY1MmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3ODA0YWVjNWFjMTM2Y2FiZDQ3N2Y4MzhhNDliOGVjNWNlZDI1NzEwYmI0YzJlNWYxZGFmN2I0ZWQ4MzEzMjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_87fc5fd491c74303a499a1c3937ced38",
+      "statement": "Storage is never wiped between integration tests because server.reset() costs ~3s and restarts the harness, so tests stay independent by taking fresh identities (nextUsernames, per-test resource URLs, helper-allocated account labels), and the no-escape assertion runs in afterAll because an afterEach would race concurrent siblings.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L60-L80",
+          "version": "repo-lines-v1:sha256:61eab86e57db093652ff27dcc85aa0f82f490eba96800eb717efc49ada2d4c50:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1ZmQwZjMxNzYzMjFjNmFlOTJlNjljYWYxN2Y5YzEyNThlM2M4ODA2YTdjMmI4MjI0YWU4NjIzM2Y1ZDJhYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5NzQzMjdkOWUzYzc4ODFkZWNhNDhjYzRjNmEyYmJjOWYzMTRmYWY0YzVlYzFkZGNiYjVjYTJlNGQ3MWM4NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYmJlOWNiZTUzYTEyZjYyZGVkNjY5NzFjMGY3ZmNkMWU2MThkZGYxZGYzNzI0OWY5NTAyMGY1MjhkYWE5YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzMTMyYmM0YzQyMjE4MmEwZThjZWU5ZTRmYmY1NWY2ODY5NmY4OTQzMjVhYWVmMTk1M2YxNDYxNmZmNDdkMWYifQ"
+        },
+        {
+          "resource": "repo://packages/integration-tests/README.md#L26-L31",
+          "version": "repo-lines-v1:sha256:cda02343c803c9fe16222991b4069650a4d64f2a946828da2f1a29179c010d18:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDAzOGE1MDZhY2ExMWJhMDJjMjIxMGIyM2UzMWM5ZGU2YzFlODE4NDIyOGUyYjZiZTRlYjY4Nzg3NTVkMDY4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2VkOTNmMmZkMTQzMzdmZjRhZmQ1YTA3NzMwMmE4NzRkZjI0MDYzZTc5ZjA0OTQ5ZmY2NWQ0OTIxMDVlMTM5YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQ5MTNmODA1YTliNTY0MTcwNmQwOTZmZWE1YTVlNzMyMTc1MDU5ZWQxM2Q0M2JmMzAzN2ZkZjgwNTIxY2YyNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzI4YzNlMGRjNTY4Y2VkMWM2YzA5ZWZiNjFlZWUzZWQyNGIxY2Y5YjBjYmUyOTYxZmJjZGVkODA3ZTM2OGY2MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a4fd8ea4176470280b4042635d4e5a6",
+      "statement": "The NetworkInterceptor patches globalThis.fetch where the harness routes Worker subrequests back into the Node process, passes loopback through, and throws on any unmatched request — a test physically cannot reach the real internet, and per-vendor endpoints live in pluggable handler modules.",
+      "evidence": [
+        {
+          "resource": "repo://packages/integration-tests/README.md#L14-L24",
+          "version": "repo-lines-v1:sha256:6605e035870846aa2ef7cdc9562c8d04cbc5cc8c62396ed9ae623dc7afb7fe50:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MDg5NDU5MTY0YmUxNDE0ZTkzYTc2MDliYWM5OGU4NWJiZTcxNDk4ODEzZGZlNjMwYzI2YjljNTJiNDkwMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMDg2MjNkY2Q3ZTliMWYxMDQzMTE3NTVhYTQ1NzZkMGYxZWFiNjUxOTFjY2ZiMzhhOWMxNDlhZDI0ODliMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMGZkYWU0NWQwZjZlMTVlMmVkNTM4NDQ0ZmIzMjRhMDhjODA1OWRlMGRlMTUwYWEyY2M5MTk0NzhjNjY4NzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9447737302b2492cbaf701447d7d9abe",
+      "statement": "The mock model serves OpenAI-compatible completions from a scripted queue for agent steps while classifying auxiliary quick-model calls (thread/gadget titles, binding names) by prompt prefix into a separate queue so they cannot masquerade as agent steps.",
+      "evidence": [
+        {
+          "resource": "repo://packages/integration-tests/src/mock-model.ts#L1-L30",
+          "version": "repo-lines-v1:sha256:85f1851892ceccaed3bac076864a6fb7d95f9a2c89178e99e5f4d197a2bf9f81:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNDUyODY0YjBkOTZlZmU4NjkxNmZmNzQ1YTBmNzdhYzcwYjMyNjU4NWMwZWFmNWMzNGY5ZTRhNGY2ZmJmNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MDU0NzljNWJkNzlhZDQ4YThlZTQxOWFhMWM0ZmRhMTNjZDc3YTEwNzIyN2M5ZTIzMWY2ZWUzZGRkZDFkNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5NDg2MjRkNGZmZDMxYWJiZDhhMmRiZmRkZmRkNWEyZDUxNzA2Y2UxNzlkMWMwOWUxZjY4ZjBhM2Y1NWZkNDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eec5aebb90d74be7b962655f473e7ddb",
+      "statement": "The fixture gatekeeper exists because overseer observer cases need refusal-on-command that real gatekeepers only offer at prohibitive mocking cost, and production test hooks were rejected as circular; the fixture is a real Worker on the real protocol with a single 'allow' control knob whose deny reason string carries the distinction the overseer deliberately cannot see.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L45-L66",
+          "version": "repo-lines-v1:sha256:855732df6975d843a4950f57559a57268c7759d0f615bd4b01bc95c668759e92:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkZjJiOTczOTFhZTJiMTM2MzUwMDQyMDU3NGE3OGJiMWU0ZGE1N2VjMGVkMTJjNjhmOTk4YTZiY2I5MTFmNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMTc4NzY4MjQ1ZGMzMDU1OGVhMmZhZTA2MDgyYzcwOWUxN2EzYzYwNjI5ZTdiYjRjYzg4MWIzNjlkYWIwODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmZjFhNGEyODNmYWZiNWRlNWY4YmMyZDk2ODA4NzhlY2M5NjBkOWI1ZDgxMWY5OTY5ZjhiNjMyZDM5YWM2MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhMzE5NjU0YTlkMjI2MGViMDMzY2JiZjhlMWNkOTg3MzAxOWZjZTNkMTk5Y2RkNmY0MTE3NDUyYjdiYTFmOTkifQ"
+        },
+        {
+          "resource": "repo://packages/integration-tests/README.md#L33-L52",
+          "version": "repo-lines-v1:sha256:a57395c8331baf7b822ee0a1894d5aec6c2242161c90bb7b3df439a57280e146:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwOGFhODBiYmQzOTU4OGQ2Y2E5MmQ0MjVhMGRmNTY5YWUwZGNjN2FhYmU4MzIzOTJkOTU2ZDQ0MTVlMmJmODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyNjZjN2Q1YjlmMzA1ZWM4OGFiM2I3MzZkYTI3MjdiNzFmMzA5ZTEyNWY1NmU3MGI1YTkyMDRlN2QxN2QxNjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmNDQ0MmU5YWI2YWRkZjQzMWZmYWJlNDIwZTQxMDdlMDM5YTI2ZjYzODdiZDliODVjOTc5MWRlNTgzOWJlOTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2be412897c5a4c4fb6d64b7dbf1618f9",
+      "statement": "The release manifest golden file guards intentional changes: mismatches fail with an instruction to regenerate via UPDATE_GOLDEN=1 node --test and review the diff.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.test.ts#L59-L66",
+          "version": "repo-lines-v1:sha256:46609d71c8f7213f156698c009b9dd229333cc784760b037363901972e0def87:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTdlMTA2NDE1OGRiZjlmYTQ4YTYzYjc4ZTE1YTdlZWU5M2Y4MjNkM2UyYWEwOGJiNjA1NTQ5ZjQ3YmNhOWMyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjVmNTdkNzE2NWQ2NTk3N2FiZjVkMmExNDliZTAwMGExYjcwYjg1MTMyNjg3NTkwNWI5NzFiNGI5OTVjZTRiNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTcyNTZhNGUyNmQ3ZDhkMmFmOWU5MzUzOWQyZWFhNmI5NWMzY2Q0NDZiZTZmMGY2MGUwZDYxYzA0ZDg1OTEyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2IwZjRjOWJjMzM5MzkyYTg0ZTAyYWNjZGQ2N2VjOGJlZjcwZjZkMDUwYzEyZWZjYTkxMWJmY2FlMWNhMDBjNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fe6ba0d255c4b7b8dc2e5afe6031c44",
+      "statement": "The contribution-policy test binds the automation to the repo's own artifacts, reading the PR template and workflow YAML to keep the enforced policy and the checked-in text consistent.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/contribution-policy.test.ts#L11-L26",
+          "version": "repo-lines-v1:sha256:a5c1f96c5075b1487d2591dddd72f629ad4255d4f141b7a8f08cf4fe75a3c3c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhOGIzYzM4OTRhMjQzOGJjYzAwZGNlYTYwNDZmNDZhMWFmYmNkMmJiNmI0OGIyMDVhNDBlMWU4MWJkZGZhZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4ODY0ODk3ZDAyM2JkZTM5YWUyNzY2ODVmNGFiYzhmY2ZlODBkMzExOGM5ZDMyN2ZiNWU1Y2RkMDZlNzg3M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3YzM0ODM5MWFlMmJiMGMwMjQ4ODViOWM1YzUxMmIwY2M4MzY1OGMwMGU1YTc1YmUxMGQwYWVjMTM4MzczZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwYmIzMjEyMmJkODBlYmI4N2I3MDIwZWY2ZjNhYzg3ZTgwYzk3MTZmNGMzYjlmNWJkOWJkNTAzM2QyZjczN2YifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T07:33:35.778Z"
+  }
+}

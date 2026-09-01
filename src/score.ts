@@ -1,7 +1,7 @@
 import { mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { scoreGrounding } from "./grounding.js";
-import { readJson } from "./io.js";
+import { isFile, readJson } from "./io.js";
 import { loadPlan, scoreStructure } from "./structure.js";
 import type { RunManifest, RunScore, ScoresFile } from "./schema.js";
 import { checkoutSubject } from "./subject.js";
@@ -29,14 +29,15 @@ export async function scoreAll(options: {
         .sort();
       for (const seed of seeds) {
         const runRoot = path.join(seedsRoot, seed);
-        const [manifest, plan, grounding] = await Promise.all([
-          readJson<RunManifest>(path.join(runRoot, "run.json")),
-          loadPlan(runRoot),
-          scoreGrounding(runRoot, repoRoot),
-        ]);
+        const manifest = await readJson<RunManifest>(path.join(runRoot, "run.json"));
         if (manifest.repo_sha !== subject.repo_sha || manifest.subject !== subject.id) {
           throw new Error(`Run manifest does not match subject: ${runRoot}`);
         }
+        const planPath = path.join(runRoot, "plan.summary.json");
+        const [plan, grounding] = await Promise.all([
+          manifest.outcome !== "complete" && !(await isFile(planPath)) ? { pages: [] } : loadPlan(runRoot),
+          scoreGrounding(runRoot, repoRoot),
+        ]);
         runs.push({
           subject: manifest.subject,
           model: manifest.model,

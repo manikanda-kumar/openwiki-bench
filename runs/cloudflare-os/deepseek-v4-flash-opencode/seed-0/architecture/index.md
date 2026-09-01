@@ -1,0 +1,13 @@
+# Files
+
+- [Agent and chat subsystem](agent-and-chat.md)
+- [Gadgets, git storage, and blueprints](gadgets-and-blueprints.md) - The gadget/workpiece model inside a workspace, the real git object store that backs gadget code, code-flow from proposed changes to commits, and the blueprint lifecycle from creation through propagation, .gadget archives, bundled format blueprints, and instantiation.
+- [Cloudflare gatekeeper](gatekeeper-cloudflare.md) - The Cloudflare gatekeeper serves three unrelated purposes from one OAuth connection — sign-in, AI Gateway billing, and Workers Observability read-only telemetry — with resource granularities, strict response-validation layering, worker-scoped filter guarantees, and scopes that fail closed.
+- [Context Library gatekeeper](gatekeeper-context.md) - The Context Library is an auto-provisioned gatekeeper that gives every user a private-plus-public store of context documents agents can read as observations, exposing an agent singleton session and a management UI, with sharing-domain namespacing and collection-level observer tracking.
+- [MCP gatekeepers](gatekeeper-mcp.md)
+- [Scheduled Tasks gatekeeper](gatekeeper-scheduler.md) - The Scheduled Tasks gatekeeper is an auto-provisioned account exposing an ambient singleton for registering persistent workspace callbacks and a read-only management UI, with one ScheduleDriver Durable Object per account running a lease-based state machine from a shared alarm.
+- [Gatekeeper framework](gatekeepers.md)
+- [Architecture overview](overview.md) - The system-level map of Cloudflare OS — the OS metaphor, the Workers runtime model of Durable Objects and Dynamic Worker facets, the three deployment tiers (router, workshop-backend, gatekeepers), and the capability-based security posture.
+- [RPC layer and shared API](rpc-layer.md) - The Cap'n Web RPC layer connecting the SPA, workshop-backend, and gatekeepers — the PublicApi/AuthenticatedApi surface, the gatekeeper interface hierarchy, @validateRpc validation, promise pipelining, and stub lifecycle conventions.
+- [Sharing and observer enforcement](sharing-and-observers.md) - Collaborator sharing and the observer security model — the permission graph with effective-role fixed point, lazy revocation, share keys, the build/use capability split, and observer verification that prevents leaking data a collaborator could not access directly.
+- [Workshop backend (kernel)](workshop-backend.md) - The workshop-backend kernel — the /api entrypoint, the UserDurableObject (accounts, sessions, models, connected accounts, blueprints, outputs), AdminSettings/AdminApi, the Overseer Durable Object and its storage schema, and typed-storage as the persistence layer.

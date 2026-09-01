@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6df7a2abe83e329052e9836798de48c96640170d5a8e9073d2cc3b8d6eeb22da",
+  "claims": [
+    {
+      "id": "claim_ac3021edc3fb4f8d9b30ba295950431c",
+      "statement": "A cached vp run strips the environment and a var can only be declared on a task: workshop-frontend's build is a task declaring env ['VITE_*'] so the flags are forwarded and folded into the fingerprint (a changed value is a reported cache miss rather than a stale replay); a task may not share a name with a script.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/vite.config.ts#L14-L45",
+          "version": "repo-lines-v1:sha256:a0a61d9314783caddcc3dde36d149fd068f21ff546bbe7e16577b71f8882d2c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkOGE1ZTlkNTRhODEyM2RhOWM3Y2ZkNTQxNzRiZjk5ZGUwOTRkYzI3ZWVjOTIxNGY1M2FhMmNmYzdjMmZkMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZjJkYmFiOGUxNWRhZjQ3Yjc0YzVjNmNjMmNlZDU0MGJhYmFjODEyOWRhZmUxOWMyNzhjNTgzMjdjMWFmM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZmFiNWJiMzI1OWZkZDU1NDY4YzkyNGQyOTJlODc5NWIyZjc2NjA3NjQ1NWIxZGFlYzVlMWU1ZmEyZGZhNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlNGQzZjBkYWYwMTExYmUxOGU4MGQxYjM4ODVlMjk1YTE0ZGJlNzEzN2Q5OGMyOTJlYjk1YjQ1NTMxOGVlNDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_437b9508269641f3b93dc1008d3e3fa3",
+      "statement": "vp declines to cache a task that reads a path it also writes, so the frontend build excludes its own dist/ (package-relative, because typed-storage emits to dist and a workspace-wide exclusion would drop a real input) and excludes .wrangler/** workspace-wide because wrangler's randomly-named scratch bundles reach past the owning package.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/vite.config.ts#L15-L36",
+          "version": "repo-lines-v1:sha256:7fd9508c7850fde627dc6ecbaf7417157b056a586e8c9ddcf7df17c4724bbbcd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwNTU1NDE4MTAzZjM2MTYzNGRkNTQzZGViMGM3MWJiODlhZjYyZWQ5ZmQ3Y2ViN2UzNWY2ZWM5MzExNDkxNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ODc5MjhhODE5YzNlNzllNjNmYWY5MzZiMDVmYTZiYWZhNDg1NDk3OGI3OTc2ODFiMWU3ZjA5MzZkOTk2MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViMjk1MWZjMTkwODhlMzBkMGM4MWYwYTUyZmFlN2NlOTA1ZWY1ZmVkN2FlMmM4NGVmOTU0YTBiNzI0OTI0NzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_df552ef92b064cb5ba5f39518c575952",
+      "statement": "The gatekeeper configurator build is a task so VITE_FRONTEND_ERROR_REPORTING is passed through and fingerprinted, with an uncached clean:error-reporting-artifacts dependency first (a cache hit restores archived outputs without deleting, so a disabled-reporting deploy could otherwise keep an enabled build's sourcemaps); deploy reaches it via vp run --no-cache build:configurator because deploys never trust the fingerprint.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/gatekeeper-configurator-vite-config.ts#L7-L40",
+          "version": "repo-lines-v1:sha256:8fc450ed973e2c677e045c7c87ad4ba4e40349deeb541fca7a88eb9cc1c4d3a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyM2NiNGMxM2Q2Nzc1OWQ1NGY3NjcxZDQ0MDM0OTcyZDA5MDNhMzlkMDhhZmFlNzNiYjk4MWViOWFiMGRjZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkNWZmZTAyN2NhMzQ3ZTJjOTkxMmM4YTE3ODY3MGNlYmRmMTMwNWI0OGEzOGY3MjIyNTI5OTIxM2NmYmQ3ODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZmExYTU0YzZiZGI5YzI1OTRlZTJmM2MxMjIwMTU1NzllOWJmOTkwYWMxNmZhMDNkYTI5NTY1NGZjMjRlZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkODA4ODJlYjdkNmIwOGJmNzlmZDIyYThhOWEyN2RlOTg0MTJiNzM0ZjNlZmNmYjhmYjkyNGNkNDFlNjEyY2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a63d5a6081f54a909e0b9901ff4f8b8a",
+      "statement": "Root commands: pnpm build is vp run -r --cache build (type-check plus codegen in dependency order with task-cache replay), pnpm test runs the root node --test suite then per-package cached test tasks, and pnpm lint:check is vp lint with the ruleset in vite.config.ts (correctness/suspicious as errors, type-aware linting intentionally off because RPC promise pipelining deliberately leaves promises unawaited, a custom gadgets/prefer-jsdoc rule, and browser/worker scope overrides).",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L7-L27",
+          "version": "repo-lines-v1:sha256:d242a36f2ff7472e2064edde17b052c4396f928a05e40586c18d29cbad35f711:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0ODMzZDU5NDljMDNhNDBjYTk1MjQ5MTYxMGE2NjU5NjQ0YjNhYTQ2NjM2MmY3OTkwMjBkYmYxOTgxNTQ3ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5ZmNkMzUzN2E3NDk0YWE5OWVhYTBlNGM1NDQ2ZTNlZjJhNzc0M2FlZDczZjg0M2YwODlmM2RiMzU3NDM5MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NDUwYzY3N2I5MGZkZTAxYzIwMjk1ZjJkZjM5NjI0NzU5NmZmZjI0MGQ3OGFiNmJlMGI0OWU0MDQxMmFkMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzOGI2YzA4MGNmMGY2NWMwOTM2ZmI2MGMwNGJhMzU0NDk0YjY1YmI5YzBhZmM5MWU4NmM0MDE4MGY3ZDU3YjkifQ"
+        },
+        {
+          "resource": "repo://vite.config.ts#L14-L90",
+          "version": "repo-lines-v1:sha256:5da517f83b7bb3fd3b95e813c0fc2b1954bc09dab7d26eca08d448f4e90b66ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjYjFkN2RiYWExYTQ4MzQ5Y2NmOTQ5OTlkOGQzMTlhMWI0MWJiOWU1MGMzMjhmMDBhMmQ5Yzk2ZGUyNGY4ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNmYwMGYwYzg0MDBmNDM0YjNhOGIwNjg3ZDI0MWQ2MjJjMjBkOWI5ZDI4ODdhNWQ2Y2E4ZTYzZWI0OWQyMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0N2M3YmRmOGNkZGNlNzQ4MGRlMjcyZGUyM2Y1YzkwNWU2ZWRlZTQ4MTRiNjRiMjg4ZTczMjI2N2MzZGQ0YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhN2YyYWQ0OTM1NmZmYWEwMmZlNTE2NDU0NGYxMGMxNWRjZWIwNzMxNGY3YThmMWQwYTc5MzU1YjBiNGRmMDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b5c8a547f004a4dbbbfb3d40aa2bf8a",
+      "statement": "TypeScript is tsgo 7.0.2 with singleThreaded: true in the root tsconfig (parallel checkers re-derive capnweb's instantiation-heavy type graphs separately, making single-threaded fastest and smallest); transpilers needing the JS compiler API import the typescript6 alias, and a lint rule forbids importing bare typescript for that API since TS7 ships no compiler API.",
+      "evidence": [
+        {
+          "resource": "repo://pnpm-workspace.yaml#L11-L19",
+          "version": "repo-lines-v1:sha256:a9b4ba68c5c68684e4c79c6b5d0e1564797da8f92fb60033d7c256ca47708e4d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDNhM2Q2YTBmZTA3ZDlkNGM2Zjg0N2U1YjNmMDBiYzliOTNmNGIwMmUzZGEyMDhkOGEzYjA5NTg5ZTdjMGFmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODE3Yzc4ZWI4NDM0NDEzMjkzZTY1ODlmNmNlNDdkMDUyYzkxNzllOGQ1YTA2Mjk0MWEzNDBlNmJkZTRiOTczMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2E2Yjc5NWVjZDdkODIzNjdlZmY1NmM3YTcwNTcxMGNlYjc2OTFkM2I0MDA2NjIzOWY0MjE3OTBjNzg2NmJiMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTA3NjhjOWMxYzQyNDZhMzI0M2FjM2NlNGEwNTIwMmRiZTg3MDEwZjI3MDdlMTZkYWY2MWU4ZDE5MWU4OWE1YyJ9"
+        },
+        {
+          "resource": "repo://vite.config.ts#L71-L84",
+          "version": "repo-lines-v1:sha256:ecfe21cf8ff3427aa51dd70bd5a02208685a6105b3929dca9621409fae96becd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5M2ZjOTc4OTQxNDA2MjMwOTZjYTlkYjcxNTQ0MjJkNDA0NGNkZGJmYzk1YWQ0MGRhYTc4NWY5YjkzNDJjZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2Mjc3ZmJhNzc5YTU5YzllNjY1ZGQxOTI5MDllZWM3N2U5MTQ5N2ZjNmM4ZGMzYjkzNWM4OTEyOGVmZDc1NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkNGNjNzA1YjcxYjFhYWQ5MGM2MzVmNWNjYmQyOTBkNThiZjA4YmUxYmM5NTQ0NmY1MTQyMzgxNmQzZjY2M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5NmIyZDM4OThjYzY4NDkxZDIyMDM2YzZhMjNiNjE0ZDBmMTIxZWJhMzI2NmFhMDdmMTBkZjZkOGQ1NDkyYjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_44df7950801646ac9d62da8283e44624",
+      "statement": "scripts/build-format-blueprints.mjs globs format-blueprints/ (overridable via FORMAT_BLUEPRINTS_DIR) into the gitignored src/generated/format-blueprints.ts, runs as part of the backend's build and test tasks, and rewrites the module only when content changes so repeat invocations don't invalidate downstream task caches.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/format-blueprints/README.md#L84-L102",
+          "version": "repo-lines-v1:sha256:9d32c4f7b3c176d110a13313f5dad023a0ad8b2bc3bd88b9013afd7bd3128515:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkZTU3YmE3ZmYzOTE2ZTVlZGY3YjkwNjc2NjJlMzhmNDVjYmE2NzgwZTM0M2E1M2QwMGYzOWZiYTFlZWY2YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiODdkNjYzYTU3YmE1NDE5OTk1MjNlZmNmMGNlYmMyMTk1NjNlNjA3Mjg0MWExOGExNDliZGI1N2FmYjI4MWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjM2U3MDgzYzQwNWE0MzI2NGZjZTU5ZWNiOWJkMmQzNDdlZGM4MmMyYjU1ZjVmMzY1M2MxZGU2MGYyMTAxMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjYjIwODEwNWQ0MGEzMWQ3NThiZmUyYzYzNTdlZmVlZDNkYzU0Y2IyYWY0YWQwZmQwN2RiNzBkNWEwZjNhYzUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/format-blueprints/README.md#L92-L93",
+          "version": "repo-lines-v1:sha256:edb923579414ebfad6972da14fe8d2b4b6fc00afaa82a9de4a73d155f8dc61d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjVjODk5MDI1MDJlNmE1ZmUyYmYwZTE5NzVhZjk4MzRmZjcxNWU5YjdmZTQ1M2I3MjUzOWNkNzdmODJlYmY0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjU4MTNhMjg3YzY2ZTkwYWQ3MWI1NGZhNDZmNmY0YjA3M2Y0ZGQ4ZTc2NmU5ZDQzOWQ0MmM3MWVmMzEwODZmNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWUxMDlhODYxY2ExNTIxNjlhY2QyNWZkNDc3MjVjODAxMDNjNjk1Yzc3YTNhNDI1OTg5YzYwOTQyN2Y1MGZhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdkYTdiNjViODAzOGUxODJkMjcxZGMwNzk4MjBhNGJkMWM2MmY1ZGM3ZTZmMzdkMDk3YjRlOGMyOTE3Y2E2ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b39eb09b617142cebfbca257067e8524",
+      "statement": "pnpm dev-server's pre-flight runs three concurrent builds: the format-blueprint generator, vp run -r --cache build:configurator --dev, and vp run -r --cache build:app:dev (the unminified app build so its src/generated/app.txt matches what the watchers' unskippable initial build will write, avoiding a mid-startup Wrangler restart); vp run takes one task per invocation, and a gatekeeper without one of these tasks is never built here.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L255-L285",
+          "version": "repo-lines-v1:sha256:5c505398904d9c95aabe3bd6391c15ea7965b680efab348363a82ad36e2624d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkZDM3NTA2M2JkMWJmZjczZWY3MmEwMjkyMjU2ZDQxNzg0YTczZWM0MzFmNmE0MWFiNDMzMzgzNTIzYmE3NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2NzQxM2FiNmYxYjA4ZGUyOTM3NTEzNjNhM2M2NGQ0YTdiYjVjOTI4OWI1ODdjMjJiZDIxODBkMTBiYzVhMGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwNmEyOWQyZTcxNzY4MjIwNmIwYmZiZTlmZjEyZTE2ZmRlMjlhYjk5Y2E4YWI4ZDVjZjA5YTYxY2MzNDdhYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3NWM3M2ZlMThkYzRlMzQ0NDUxMTA0YTlhMWYwZDM5MGFkNGY1YjhjOTg0MzYyMTM4ZjM5ZmRiOWYxZTdhY2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fbcd4da336884d4d91735f999a344da6",
+      "statement": "Watchers spawn only after the pre-flight (watch modes build before watching, so an earlier start would put two processes on the same src/generated files): configurator watchers start immediately while app-UI watchers are deferred until Wrangler is listening via TCP poll with a timeout backstop, because vite build --watch cannot skip its initial build and the app builds are the largest in the repo.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L110-L160",
+          "version": "repo-lines-v1:sha256:563eb486129ee2c6f91a2fd25d550d239b3ea24d3e85b3753d1238e334e8ca8e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiNTY5ZDZkMmFlN2Q2NGExOTE5MmE2MTE4ZjFjYjExYjQ4NmYxNzBiYTFmYmE3ZDNmMTQ3Y2RjMmYwNTYyYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzNmZDgyYTgzMjI0NWNjMDAzNTkyY2Y4NmZmMGU4YjM0NmRhOWFmODJlODMxNGQ1OWU5NjJkNjdiNDJkYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwMWQ1ODdlZDNiZjI1NTY0N2QxMTZlMjU2YzhkYmE2OTU1YmEwNGJkMDI2MmNhZmJmNGU1OGY5YzZiOGI0M2QifQ"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L290-L330",
+          "version": "repo-lines-v1:sha256:dd8d0c3936ebe37bfea8c600fe05f14e07367696974d5264c8f26216a2e2121f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiZDJhOWNlOGQwZDk5NDkwYWNlM2U1NzllMTYzMjQ4ZGY4MGFmNjVjNTQxYTAwNjU5ZmQ0NTRkYmU1MGM1MjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMWVhZDkzNmEyMjgxZDUzZGNjMDY0YjdlMmEyYWIwZDUzYjkyZWYzZWY3YjM0YjY2ODY3MzAwNzg5NWM4NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2MjkwYWZkZDg1YzA0MjRlZTgwYjU3MGZlOTk1MzcyODkwZWY5NzM2MTE2OWFiMGM1ZWFkNDUyMTA0ZTc2YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwMTNiOWQ2N2M5YWY0NmI2N2I1MGI1NjZiZjkzMzczMzA0MjQ0NGIyYWM3N2QwZGQ1NjBhMGEyODE5YTFiNjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d0df30c69bfe47c99fd43bab2c2dd127",
+      "statement": "The dev server generates wrangler.dev.jsonc with GATEKEEPER_<NAME> service bindings for discovered gatekeeper packages (Context Library additionally gets sharingDomain props) and, dev-only, rewrites each worker's build.command to spawn binaries directly instead of through pnpm exec (~0.33s process startup per call paid on the startup critical path and every rebuild), leaving unresolvable commands as written.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L100-L108",
+          "version": "repo-lines-v1:sha256:d5292318c373146bcff1965d6c58c2da80397ebb8613eed0c0c5022514055617:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTEyYmNlOTkyNjgwNjA4NDMwNWZmOWY2MTg4YWJjMGFhNGQ1ZjlhNDE4ODEwNTA5Y2NkNmIwNjAwNDUyODA0NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGM2M2JmYjRiYjA3ODRkNzUwNGQ0ZjNlNGQwZjZmODA4NzVlYzM4ZDY3MTUxYjJmZTFkYWMzODIzYzZmNmZkYSJ9"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L323-L323",
+          "version": "repo-lines-v1:sha256:476e4cb3c1678c0805eafec968fc32e2778dcd352991eeee7c51697f92879482:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDc2ZTRjYjNjMTY3OGMwODA1ZWFmZWM5NjhmYzMyZTI3NzhkY2QzNTI5OTFlZWVlN2M1MTY5N2Y5Mjg3OTQ4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDc2ZTRjYjNjMTY3OGMwODA1ZWFmZWM5NjhmYzMyZTI3NzhkY2QzNTI5OTFlZWVlN2M1MTY5N2Y5Mjg3OTQ4MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmI1ODBlOTY0ZjgzYTQ3M2Y0M2Q0NDM4NDYyOTQ5ZDY4YjU2MDBmZGE3ODdmMTYzNzQ1ZDAwZGU4OWNiZjM2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2VjZDZiYmY5ZjljMWM0ZGNjZTQyNzRiMDQ2OGM1ZjZhZjViMDMzZjJkN2M3YjdjNGFhNzQ0NGY4OWU4NjI1MyJ9"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L333-L360",
+          "version": "repo-lines-v1:sha256:a2bfdee8b1ed202d61e1ab4cbb617811106d62887b85307018fc8152b75add6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5NzYzYzkzNjY0MTU0MjE2MzYyNTA3YzMyYjIxNjIxMjI2ODg1Y2Q5ZTVhZmI1NTdjYjQ4YmY5YzgwNTg4YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyZGY4NmI0NzZiMGQ2ZGJiZDE2ZmExOWZlMTdhOGJlNzc1MWFiZTNlZTgwN2I1MTBmYjVmOGNkZDBkYWQxNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmMjJmMGJhN2E3MjlhNDZjYjBlMjA1YTMzOTBiYWUxMjNiOTc3NzUyMmQwNTY4MTY3YmY4YTM5ZGI0ODE0OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwZjZlN2Q2MjdlNTAxYTMzOTAwYjFmY2Q0Zjc2ZWE2OGU5NjBmM2VkNDI3NTg3OWQ0MzRjYzRjMGEyZThkMzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_61908afbdc1647038e13d89fb1e90702",
+      "statement": "Shutdown is driven by Wrangler's exit (Ctrl-C reaches the whole process group; exiting out from under Wrangler would orphan workerd children), with deep process-tree kills for watcher grandchildren a bare kill() would leave holding CPU and file watches.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L135-L155",
+          "version": "repo-lines-v1:sha256:2563c41af10bbadb34d54fc8878b953668bfafdbccb03bdc1cf9eaba3bd62658:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4NTk3MTM3YzI2NjMzMzY3ZDgxN2NhMzNlOGY5YTJiYzU3MzI4NDU4ZjM2NDRjMjg5ZjhjNDlmZWI2MGI1MGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMjlhMTU0MGRhNjFlMzU5YzMzNzdjNzU2MmQ0MGE5MmE3ZjFkMWVhODE5MzljY2EwMDRlYzE5ODRmNTFmYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0M2RiNjc3ZWFiMDg2NGRlZWQzMGNhN2EwNzVmOGVmNWZkZjRlMjE5OWYwYmU4Mjc1M2FmMWNiOTFhMzhjMjkifQ"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L563-L572",
+          "version": "repo-lines-v1:sha256:60772d33a4e31385e9006ffa78c8f038871d90cf19ce6f1d2ff9c24fd9e6f0f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4YjY0NDE1M2QzNzRmNzVhNWYwY2IwYWYxMDJhZTBmNzIxMjk4N2EzMTkyYjcwOTI4MDk0YzdlZDg3YjQwNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyZTc3YTJkYTRiMmJiZmI2MzM2YzMzMTU1ZGQ1MTQ5ZjVmNjc5MGI2ZTdmNmJiNmM3N2Y1NDY1NmFhMmU0ZDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZDQxNzViYWZmNDZkY2YwYTNkMzRkMDdiOGZkY2VkODIxM2Y3MTdmZTg3MzUwYjgwODUzMjBlOWQ1YmU5ZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlZWFmOWYxODdmYmNhYmRjOTA2YjNhOTUxYjhmZGE2ZGRmMzE5MzA4MWRiYzAzOWE3OTg2MjhhMjUzNGM2Y2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a0dd802e14a461c8f1314bb25177698",
+      "statement": "pnpm run-local is the single-command production-shaped local run: the backend serves the pre-built frontend bundle as static assets on workerd via wrangler (no Vite dev server), reached at http://localhost:8787.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L20-L28",
+          "version": "repo-lines-v1:sha256:fadb688697fef8724449f7935e5429fd317699083f2f857fec7bca20506f7425:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjI5YTQ5MDBlMjkyYzQ1NTRhNDA1OWI5ZGQxOGY5NjVjODFjMmYxZTEyZmM0OGU4NjgyYWUzMjYzMDI5Y2JiNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzA4ODdhY2M5NWJkZjIxOWRmNTc1YjI4ZDg3NDMyMThlYTUyN2Q4ZTM0NTI0MzVlMTA2ZGY2N2ZmNWU2MDNlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU2OGQ5ZWI2Y2Y1YjkwYmFkZDE0YTZlNmIzZmQ4Njg5M2Q5OTBhMjAzOTg0NDBiMTdhNmJmOTM4MTJjN2Q5YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmFjZWE0NmNiNTVkZDM2YzBhZWU2MWI2MGVjNGE3YjdhNmFjMGQ2N2E5MTcwMzMxNmFkMTQ0YWIzMzFiOTc4YyJ9"
+        },
+        {
+          "resource": "repo://scripts/run-dev-server.ts#L44-L46",
+          "version": "repo-lines-v1:sha256:44b49e772220d224d0b88c16e0005ec1d7294c9a1c15340245d82f871dd64df3:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGIwNDEwMTU0MzNkMDkyMjc0NDZlYTAyNzYwNDYxODU0YmFjMDkwMGMzZjJhMTEzZGE3NGQ4Zjk3YTg5MjIyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJiZjYwYzRiNzZlNzczYTMxYjZiZDA2MzNjZGQ2YjA3NDA3NzY0NjY5OTUzYWI2MGFhZDVmMjljNDQxZTM2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU3MjU0MjFlOWZmZmU2MWU0ZTAxNjk4NjBhOTBlNzkyNWVlYTI0ZDIyZjQwMGM5ZmQ2ZjMyODFmMjQxMzFhZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjFiM2U2MWIwZjhiZmI1Mjc3NTkwZmZjOTdkNzI0OGM4YzhlNzNhZGE0MDk5MTA5NTg0YWQ1OTk4MWFkZjkwMyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T04:46:04.795Z"
+  }
+}

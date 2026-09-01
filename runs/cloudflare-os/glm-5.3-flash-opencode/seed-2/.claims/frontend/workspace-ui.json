@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a7a2a7de209bb71a8b7731326ff90d2eeb5ee72c084ed8e738890e77bfdaa303",
+  "claims": [
+    {
+      "id": "claim_6655acec504a402a912c90ad3776e2fa",
+      "statement": "The client side of the chat code stream is ChatOtClient, a two-buffer OT client holding at most one in-flight submitCodeChange plus one composed pending buffer of newer local edits, both transformed against incoming remote rows; submissions land at round-trip granularity, retry the same (clientId, seq) with an identical payload on transport failure (the server dedupe digest requires it), and base content is only ever fetched from getCodeAtCommit or the displayed head tree.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/otClient.ts#L113-L115",
+          "version": "repo-lines-v1:sha256:e61b64a31536f4488ab20f84c747a9cab16b4aaf6987b92172417512f9b3ea0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjk0YjgyNGE1NTU1OTBiODQwNGY1ZTBhMzE0YWQ0Yjg5Y2ZjZjVjOTA1ODE2OGFlYzRjNDliZjg2MzJlMzBmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQyZmUzNDI4MDM4NTZmMzdjZjZiODQ5ZjhiZDM5MjM2ZDY0ODJjODk1YjI3M2YzOWUxMTc4ZjY2YzYxYmI0OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGUyY2UzZmRjMzI1MDM2M2FiYWU3NDAwZmUxNTNlYzg1M2IyYjBhNWFlMWUwMTI5NzYxMmIwYjdjYmI0MzI3YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQ2MDYyYWVmYjZlNDQwMWYxYmYxYmE0OWNhYzA1NGZjMjA4ZjZlOWRjZjgyODc0N2E0YmQyZDY4Y2Q3ZWQyYyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/otClient.ts#L9-L38",
+          "version": "repo-lines-v1:sha256:53653a853761b31a26b22ca24cfe89774a627f382054f707acbb10445c24833f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiYzhmYzgyNDZkOTc0OWU0YzJhNDlkMjI4NGYxMGM5ZmFkNDA5MWIwZjI5NTJlNmVmZTE4MWM5OTc0NjZhZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyZjNlODI4ZWIyNzlkZDJiMjBkYjM5MTBlZmE5MjI5MWNhZjdiNzk2NTU4ZDdiZWIyMmFjNGMyMDI4MDAzZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhMTU2NzQwZWEwNTBmODU0Y2ZkZjdmOTE5ZjdkNmU3NmMxNmFmNzZlMzc0NGQ4OWFlNjJlNGRkMjAwNmQxODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkYzliOTI4NGMyYTc4ZDQ4OTU2Yzc3YTAyMzA0ZDQ2NTcyNWJmZGE0MDU0NTk3ZjIxODcwNjhiODVjMmIzZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0fa9aec943f64f66ae58a1dcc6eb8dd7",
+      "statement": "ChatOtClient state arrives through three independent, order-safe paths — setDurableState (chat metadata + composed epoch changes, also how generation bumps are learned: content-preserving bumps hand local buffers across the boundary, destructive ones discard them), pushRow (changeApplied rows deduped by generation+revision so subscribe-replay is harmless), and applyLocalChange for locally-authored edits.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/otClient.ts#L19-L38",
+          "version": "repo-lines-v1:sha256:c3e2572b5ef931f74df914f46f6004ce955ec406e2fefa29569c89eaf2d4b902:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3NWMzMDE0MTZiY2YxOTZjZWQ4NmIwMTcyNzg0Zjc5ODQ0ODBhNzAxNGM1MDE3N2M1ZDkxY2E2OTE3YmQwNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyZjNlODI4ZWIyNzlkZDJiMjBkYjM5MTBlZmE5MjI5MWNhZjdiNzk2NTU4ZDdiZWIyMmFjNGMyMDI4MDAzZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiMTNlN2RmNmQ3MWIwN2VkODQzMGE5NzVjZjBiMjgxZGE4ZTRjMWI1NmM3ZWM0N2U4Mjg4ZDk5NTQzOTg3MTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkYzliOTI4NGMyYTc4ZDQ4OTU2Yzc3YTAyMzA0ZDQ2NTcyNWJmZGE0MDU0NTk3ZjIxODcwNjhiODVjMmIzZDAifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/otClient.ts#L41-L60",
+          "version": "repo-lines-v1:sha256:2effd38a0668a377d7a7ab4bc82c42e428aefd4f053cd63c54b53b7cc22ff4df:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzUxY2E5MzE0ZGY3MzllOTM4NmY3NDdkOGVhZGU4Y2VkMDFhYzFmMDgzNzNhNjVmNThhMWIyYjZmMThiZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3M2MzYjg5ODVjMDViMjhjNDBlMzBkZDViNTJiZjVlY2EyZWQwZDBiZjZiODZiYWZmMTk3NGRkOWI0NjE2YjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5MTNlNTFkMjVjZjA0YjQ0NDc1YTFmNTIyZDA0ZmViNjU1MDFiMTFiZDRjZGNhM2Q5Y2U3ODdjODRhZGEwNTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a8862b565e44327984b6479e7fd4aa1",
+      "statement": "The code editor is CodeMirror bound to an EditSession from the OT client; documents split only on \"\\n\" via EditorState.lineSeparator so CR/CRLF survives the round trip (the OT stream's offsets refer to the exact stored text), and programmatic/remote changes are dispatched with a remoteChange annotation excluded from local undo history.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/CodeEditor.tsx#L130-L136",
+          "version": "repo-lines-v1:sha256:d34ba84ce5b8aca3961efc230a97252db50d56eb4905ec5305e85090f4b629af:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODlkMGU3NTM5YmNhYTNjMGEwNDEyOTdhYzUxMGIwODA2NzI5Yjk4NTEzZWMyZjFlYTA3NWM0NGEyYzAzZjJkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWFjOGNkYzU0M2Q1NTZlZWZkYjVhOWRjNWI2NWQ2ZjcwMjNmMTM0OTlkYmM0MDVlMGEyYWVhMzMxZDkwNmU3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY0MjMyNzA4ZmEyYzczMGIzNTljZGM1Y2I0NTZiMTgzYTdhODExZGRhNGQ2Yjk4MjJhY2NhOTgwYTcwN2EwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjc3NDA5ODE2YjBhZGRlYmJlMWI4ODBhODA5ZDQ4ZjljN2M0ZTQyYWM1MTE5NTk0NTAzYWNmMzVjMDM3YjU2NyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/CodeEditor.tsx#L97-L105",
+          "version": "repo-lines-v1:sha256:11ba5f37fa055415b092fe70f49656a9f7520da1c48e603f6820f829932014e6:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWY2ZTI5YTM1NzljZTEyOGFiYTRjYWFmMDNiZGZhNmZhM2ZmYTk3Y2E0ODAwYzY5OGU2NjBmZWExODgxN2Q2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGNmOTVmMmEyZmY0NTQ0MmUxMzVkMDRmNjZmYjI1NGJhNzAxMGVlMzJiZThiM2FjYTAwMjczZTE3N2QwOWYyMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmM5YmRiZjZjOTY3N2VjMWQ0YjFhY2E0NGI3MWVhMGFkYjg4ZjljZmM4YzM3YWIxNGQ0ZjUxNDRhMjVjZmNlZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d46f7d4e11e4bc78cdba8128e2152ac",
+      "statement": "ChatInterface implements AiChatSubscriber: subscribeToChat is invoked without awaiting (its stub resolves on disconnect) and subscribe-replay redelivers every retained row for client-side dedupe; accepting proposed changes is mergeChanges (fast-forward only, stale results route to update-from-mainline) and reverting is revertChanges including the whole-draft case revertChanges(0).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/ChatInterface.tsx#L5360-L5468",
+          "version": "repo-lines-v1:sha256:dbf031f66bb9b7b6656234c53c8f4c3d31ce6e8a4da4df292708fb6e67bdf2cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiNGUxZTQ4MmJmNWRjZjU2MTY3MDEzOWQ1ZDk0NGQ5NzcwMzUzYmMxOGRjOGVkMmYzYjBlZjMzNmJmMjE3MWM5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyYWRkOTNlMzM3OWRkZTBlMjdlMzQ2MzJjMWZlZjM0ZDRiMTQ2NWNjMmIxYTZhNGU4ZWFjMDIwY2JjZGQzYzllIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5N2U0NmYyZWMxMWNiNDhkNWE0NGE0NTI1YWRmOGIxNjkxNjY0YzkyYmY3MzUxZDgxYjBiOTEwNjdmMjVkZmJiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjMzA0ZjZiOWU1NWE1YzcwNGM3YTE3MTg0NWIzZGU1MDA1NzBlMjUxNWM5N2VjZjgzNzk4NWFjZGIwOTk5NGE3In0"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/ChatInterface.tsx#L5706-L5709",
+          "version": "repo-lines-v1:sha256:8b93c2fb4caca8e834e9d89fc40b41ffa97321e331ce8b751376a7490811dd05:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQwY2UyMTBjOTY2ODQ2ZWQ3MmNhMDY1YmU0YWZiNDY1YTc3MzlmYzliZTUyMmVjOWVjMzU2MzI1MWFmMmRiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmJkZjg5NDVlNTM2YTBlNjE3NWJjZGE0Zjg0NGJmNmMzODQyNDA4MThiODI3NzI4OWY4OTA5MzliOWFmMmZjZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjZhYjU3YjBmODZjMDRkNTQxZjAxMmY2Yjk2MzE2ODA2MjUyNzJmMjBjMjM4YTE2ZDRhNDYzMjZmZGVhYjEwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzYyZTg3ZTAyYzYxZTE2ODBhZjFlODk0MjM5OGJlOWY4MDE1ODE5MjQ3OTRhZjRjMjcyOGNlOTg0MDY4NWQxNSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/ChatInterface.tsx#L6080-L6087",
+          "version": "repo-lines-v1:sha256:4a2056abc7cda1c971dd4bebd4664c38b8f7ed138e0d1d47b8a5c9bec5037635:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2JhZjgyODY0Njc1NjJjNzAwMTdmM2I3NWEzNmY4NTU0MDk4MDViNzZmNzkxNGVjYjM5NTBkM2NkY2I0YTBlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTU0YzdkOTg2ODRmZDUzYmVmZGY5ZGM3NTY3ZTZkMTFjYjBmNjQxYTI4OWU3MThjYmM2NWQzMzBmZDk2MTUwMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ4ZjhmOTQ3YWEwMTBlNDc1YTU5OWM3ODBkN2EzOTIxZDRhYjFjODYwYTY4NDc1ZjkwMTE0M2ZlYzg1OTZiMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmM1MWEzMzJhMmMzYTI5N2JhZGFhNmEzZjYxMGY3YTgzNjI4ZjViYTU4YmI4NjM3M2ZiOTUwYjE1OTMwMjI4NiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/ChatInterface.tsx#L6164-L6166",
+          "version": "repo-lines-v1:sha256:4278d2ff099e9410a2eebacd609ec34ce8cd77dc90ba27d9a10c43f3e49f4008:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQxMjQ0ZGU1MjljMDU1ZGNmNTk3ZWFhMWU4ODM5ODI5ZTk2OTcxNTczZDQzNGM0OWE5MWNjZGMyZjQ5ZjUzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYyNzEwMGE1MjdiYWI5N2I4ZjIzMTQ1OGU0NGIzMmJkMzJmYTA4MjVlMGViYjUwZWFmNzcwMTU0ODNkOTJlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWYwMTI1MmE5NjVjMWYxMzZjNjcxZjZlYzY3ZWJiYzZmZDFhMjM4ZTVjZTk4N2FkMTk0OGZhMmRhMDg3NWViYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDA4YjY4MjJiNmJhMzBhM2U2NmUzMDM1NWYwZDljNTIyMjdkYjgyMmIzOTgwNWQwYzA1YjE5Y2M1OGMyMmFmNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c9279db271b849a08ad44b0c3039bc9e",
+      "statement": "The action log client (useActions) is a ref-counted store per Overseer stub that registers the live subscription before paging pending records via listActions({filter:'pending'}), relying on Cap'n Web e-order so pages and live updates cover every record with live-wins folding; a store is settled only when pages drain AND the subscribe call resolved, and linkActionLog-parked watermarks replay gaps via inclusive startAfter upserts while failed sessions never park one.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/useActions.ts#L181-L217",
+          "version": "repo-lines-v1:sha256:b614f73d8fb4ed790d354182d6ea9f4b70da382303094b1ffb398c9fc02e048b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZGMxNzc5YzZkNTdjMjQyODFlZmU2YTk1YWIwZDgzNWIzNzM5ODFiODZjMjE3YjcxZTdlOTM3OTA4NzAzYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwY2Y2MGE5ZjY0NDlhODA4MmExMWRmNDJlNWQxMTdjMmY5ZDgyMWMzNzkxODBhZTA5NDViZTUzNTIwZGQxNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzYTliZWI3OWRlZTE2MDQ5MDliOWMzYTMyYTgyZWVlNmY0OGVjNGM0YzA2ZjkyMzNmNjA5YzI3YzFlZmMxOWYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/useActions.ts#L220-L233",
+          "version": "repo-lines-v1:sha256:a3dee154fbbbd0b2aaab03c5a6e51d114a472b2d24360be03fdfa7dd9ea4b260:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNjcyZWFkMGIzYjI3YTM2YmEyYzVmZmFmOWZkZGNiZmNiMjJmY2MyMzU5ODRiM2ZmMWRhNGQ5MDg2NzYxMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyN2E5NGVkNDM4YzYxZmM2YmEyYzg4NWJjMGI2Yzc2YTVmOGQ4OGViOTE3Zjg3N2E5ZDEzY2Y1Y2YwMDhmYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0OTYyMGZhNTQ5ZGRhN2NkYzM0OWY2MGIwM2FhZmZiY2E0OTRmYzI4ZjZlZmE2ZDNhNDY3OWExYzU0YzJlNDkifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/useActions.ts#L5-L16",
+          "version": "repo-lines-v1:sha256:e385a7eb8548b3dffcc18cab979025c76596406bf912670699360af6030e19a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MmEwNGFjYTdmOTcwYWUzNGU1Zjc4YjZjMzA4YWNhY2EyODg3NDFhNDBhOTUzZDJlZDBlMGY3Mjg4OGYwMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwYWJlMDZlOWNiNzZhMmRiMDQ0Njg0MmFhMDlmMWI5MzQyYWFmNWMxMTA3YzdjYWVkNWMxMjVjNjAxYTI1NTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4N2QyZTE4NjkwNTAxM2NlMjI5NmI0ZWMzZGI4YjZhYTkzMDZjODcyMTI2NDI4YzY0YWI1MTMzMTNiOTNmN2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlNzZmZThlM2Y1ZDUwNGVlODk0YzAzNGViNjg3M2E5ZjkzYTI2YTNkZGRlOTNjODQ4OGI1YWVjNWIyMGIwMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_614a60f6fd1a4523952d359249151d4a",
+      "statement": "Resolved action history is demand-paged one page at a time, newest first by id, with live subscription updates merged for records inside the loaded window and records below the window dropped until their page loads; the hook deliberately never uses startAfter as an enumeration API.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/useActionHistory.ts#L14-L47",
+          "version": "repo-lines-v1:sha256:eacf50950d279544695fc3c400df5c29dc27e32c39066e7b38f01fee81bc123b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MmE0MjkzODJiMmUxNDcxOGUwZTM3YjA1NzBhOGExNzAyOTkxZmNkODQ5OGNkODQwNjBhOGJmNGYwNTAxN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiOTM5ODkwYThmMmIyMjQ2YzU2ODI3NDI4MWNlYTAxYzVkMjY2ZjQ5YmZjMTZiOWY0OTkyMmUzZmVhNGFiNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzYWFkZjZjMmY0YWE1ODg5N2MwYmU5N2RkNzVlMDk2OWI1MzdmOWZhNTI2ZGEyMTg0NWU1MjdmM2IxZmFhMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyYmM2ZTk5OTk3NWM5ZDI1NTFjMzQ0ODNlYjdjZGRjNjIxNDg1MzI3YmEwNTE2OTk1NjBhZTY5MDE3MDg1Y2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d892f66c57b412db2cdcddac7bfff9b",
+      "statement": "The auto-approval UI merges the gatekeepers' PreApprovableAction catalog with the workspace's enabled rules keyed gatekeeperId:actionKind.tag, keeps orphaned rules visible so a standing grant can always be revoked, and toggles optimistically with a toast plus refresh on failure.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/useAutoApproval.ts#L7-L19",
+          "version": "repo-lines-v1:sha256:51245187f1b4c6a0420fe42f9a8050dbc6b1aca92b19390c15d42164ec1d3f8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5ZTUyYWE3OTdhM2QyYjc3ZGVlMmY4MDQwODM4MGYxZmI4ZmU0OTk0ZmU1MjcyNmNiOGVkNjBlOTEzYTU3YzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4MmQwYzQ5NzJkNGM3YjI4ZGRiMTZjNmFmMThiNTEyZTZmZDgwZmFkMjAxM2I5YmVjYzBjMGM4ZDhmZDhjMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxZjcxMjg5N2UyMTZlZGI2NjFmNWU2YzhjYmZkNDA5YjEwMGJkYjBhMmFjMDA3ZmY0YzliODhhYmU5ZDg3ZjgifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/useAutoApproval.ts#L73-L128",
+          "version": "repo-lines-v1:sha256:9893ee5b7800e1517b73692313b23357531f583a77103dcf1c0a5696dd09cf33:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjYWM0Y2RlYWQzMWZhN2RkZjE4ZDAwNWZiZGY4NzhjNzBjYzAzYzJiOWU5OGMxMTNjY2IyZjhjZDBhMDNhN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNWFmZDM3ZjEyOWRiODM0MzUxZmM5OTgxYmM2OTM1NWE4N2FiYmIyNjQ2Nzk4NmQwMDMwYTllYjI5ZmZlZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyZWE4YTFjMjZhYmYyOGIyMjgyYTUxOWNlZTQ4NjRiNTRjOGMzYWE5NTE5MDRlZjgwNDE3OTJlM2E3ZWE5ZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyN2UzN2ZkY2VlNDMyYjU0OWZhNjJiYzI5YjZhYWQyZGE4MzBhOTlmZWQ2NGJkMTQ5OTcwYTdiNmZjOWRlNzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5666a188145b46fbb2cbe6443c19a3b6",
+      "statement": "Resolving a pending action maps an approve/deny decision directly to overseer.approveAction(id) or overseer.rejectAction(id).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/useResolveAction.ts#L6-L22",
+          "version": "repo-lines-v1:sha256:10731f698507a538a805170b1922f23acae8a7a06d88b053e13755bd1aeb7a2c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzYjZjZGY2ZjFmZWVlMDU3NmNhOGVmYzI0ODQwYzRlNWMwNzhmN2U3ZWMxNDg5NDgxNTYxZjJkMmI4NzM2YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiMzM2MGE1OWVhZWVjNmU2NDg1OGYxNTQ0MjA5YjBhOGMyMDYxNjZhY2I4NzUyMjZlNDc4ZmJmM2Q3ZmVlMWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjYmMzNGZmN2ExN2JjOWU3M2JiODA3M2QxNmY4YjA0MTU2ZWUzNGZlMzc1ZGRmNDQyMDI2YjZiNzY5MjIyMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxYzU1NDRmZDNiNmU2MjI4MTYyZTllOWZhMGI4ZjMwMmI4ZjI5MzIwZThhZDQzODJhMTRkODNmOTY2NTk4NTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_52fc9b5507dd42eea21661b47de79d4e",
+      "statement": "Sharing in the UI: creating a link yields {key, linkId} and a URL of the form /workspace/<id>#share=<key> (the raw key is shown once and lives only in the fragment); removal and link revocation are two-phase (previewX returns dependents, then the confirm call passes keepUsers); on open, useWorkspaceOpen extracts #share= and passes it to openGadget(id, shareKey, configureObservers) so redemption and opening are one round trip with subsequent calls pipelined on the returned stub.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/ShareModal.tsx#L592-L622",
+          "version": "repo-lines-v1:sha256:9eb54fa575ad6b3bd885479ce4fc9c9ecdc9d69264be9303fed462d7e5ae7903:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMTg0MzYwZjJiZjgwMTRhNjRlOTMzYWNlYzk5MGRlY2RmM2UzNGQ0YWRhNmU2NjM1YTBlNzNiN2RlNTcyZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0YjdhOWUyNjY1MmNkNmY4MGNhZjE2NTg3YTkyZTFjMGE0ODE5NGZjZWUwOGI0YWJmMGI0NTI4ZjRhNWFlZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZjJiODM2YTZjMGFjOWJjMDUzNTg2ODZmNTVkMjEyMzJiMTZjZmMwNmMxMWVhYjQ5MjBhMTc5MGVlMWZjN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3ZjczNWNlZGNiZTdlYjAzNGMxOGIyNTViZmE1MTFlNjYwYThkZDJmNzFkYzFkMGFhZWU4MjAzZmFmZGIxZmMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/ShareModal.tsx#L649-L663",
+          "version": "repo-lines-v1:sha256:feb098052a7f1c49c69cb3b3b68673d250eeb2bbafc2d35bfb91be0ead661dd6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1MjQ4NjRkMWIyMjQzYzg4OTYzYjJjZTdiM2ExMTc4NTUzNWY3MjUyMDA0YWQzNTQxMmUwZjVhODlmNzE3ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMjAyMTYxNDQyMjE5MDMzYTg0YmE0ZmQ2NDkzOTcwM2RjMjBlYzVkNWUwMmFlOTkwNTRiNGQxNmYwNzEzMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1M2NiZTZjMmM3ZWQ4NTQ2OGRhNjBhY2ZiYmUxYmJhM2ZhZjZjNDI5NTE0YjY3MGJiMzM4MmUxM2FlOWY1ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkZGU0MzQ5OTM4MzgwNGJlMTRiY2EzM2FlYmUzZGVjZWQ5OTM2YWI3YjczYWY3ODNhMjhhOWViZTY2MGYyMDMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/ShareModal.tsx#L719-L733",
+          "version": "repo-lines-v1:sha256:67ea07edde5aa364c8f52624b2d1932d8575a0f6c9e292741ddb07074d4a990e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMWU5Y2NjM2M4YzA1YWQ4NDRhMWUxODVkOTU2ZGQ3YmViMThmNDU3M2Y3NTllYzc0NWZiZTFmODNjODY5N2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwZWQyNzkxNzU5YmIzYjZlZGRkN2FjMWFiODljMmE3NGQ0YjRmODY1OGE1OGQ3NzFkNGJkNzcwYWYxYzVhODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmNTJjMjg5ZDk2ZmZmOGRjMzYxMTEzMGFkZjQ3YzliYzIxMjRhMWYxMDZlMmZlZWE4MTE2MzUyZDgyOGEyYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiYTNiYjc3Y2Q1NzNlMzU0NTBhOTNjYWRhNWVjYmNhZTZjNThjZTA1MmMwZmQxY2Y1NmU0Y2ExZjlhMjMxMWEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/useWorkspaceOpen.ts#L93-L119",
+          "version": "repo-lines-v1:sha256:b6578c26a95119473d85336211e1549a3339a9d976cb52dcc4077efc8b8520da:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMmNlNjI0MGNmMjlhZTM0ZmQwOGRlOTU4M2I2ZDJmMDE3MjFhYjQxZjJjYjMyOTVlNTVhOTdiODE5NDQ4MDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNGY3ZDg2YzU1NDI0NDkyZmFiNDIxMDVjZjI1NGFmZmQ4NTFmOGJiNjA4ZWVhMjA1MGY4NjBjYjE5MDFhMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmYzMxNThiMjk2YzAyMjQ4ZmE1NmYxNDY3N2U5Yjc2YjMxZGVjZjMxOWJlZGQ2ZDI3MmIxNTEzYjhkMjQzZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlOTNlYWU3NDM1YmUzNDZlMjRkNDgyOTJlM2YyMTk3ODc0MGYzMDRlZWQzODg1ZWM5OGQxZmViMWFkZjVlYzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e292b7d23cd44c05987b97b422fe3f0a",
+      "statement": "The /workspace/$id route wraps GadgetEditor with validated search params chat (selected chat) and w (selected workpiece, parsed so 0 is not treated as absent); the editor lays out the chat panel and an App/Code/Connections tab set on the other side.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetEditor.tsx#L155-L178",
+          "version": "repo-lines-v1:sha256:61e45a6b000e9470980d2bbda0d1cfb0e8286ddf05410eb5e5dcb1803d189323:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhYWVjMTExMDRiNzJiYWJmZWU1MDRmZWI2MmJjODVkOWU3OTZlY2E5YTBhOWU5ZjA3YmE1ZGZjZDJjMzY3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNjQ4Zjc3ZmQ1YTljNjNiM2NkZDBhZjQ5ZGFhMTI5OTIyMGI3NTQxZTg4Y2ExN2VmZTFhNmExMTRiOWZmMmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1NzYyMzE2YjczNDk5M2JiZDVkNTA0NGFlYTQxOTZlNjYwNGMwNmU0ZjU4OWQ0YmFiYjdhYWMyOGUxNGE0ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlMDZkNWY5ODBhMWRkMjJlZjQzY2YxZDIzMDc5ODEzYjJmYzk2NmU3YjNhODVlMTBjNzZkNzMzMjQ3ZDI2NDAifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetEditor.tsx#L1658-L1658",
+          "version": "repo-lines-v1:sha256:54470a50a5551b0cda84a0a0b4dec901a41c4bfd01b4d79140181b4fdcd62250:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQ0NzBhNTBhNTU1MWIwY2RhODRhMGEwYjRkZWM5MDFhNDFjNGJmZDAxYjRkNzkxNDAxODFiNGZkY2Q2MjI1MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQ0NzBhNTBhNTU1MWIwY2RhODRhMGEwYjRkZWM5MDFhNDFjNGJmZDAxYjRkNzkxNDAxODFiNGZkY2Q2MjI1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzIxNWYyYmY0MzNiNDRkY2NiYmM1ZGMzZmFhOGI4ZjE1MzdkOGQ0NGQ1ODg4YzczYjAxNTAxYWE4MDRjZjcyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODNhYTU5NDRmOTZhMGE1ODM2NDg0NzcyMjcxOTgxZTQxNWViZGZmOGJlNDMwZjgzOTEyMmU0ZGVkMWUwNzdhYyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetEditor.tsx#L1720-L1720",
+          "version": "repo-lines-v1:sha256:ce30086b1d75b7fa002826d07ed905f8cf255a267a17181d8f76506a30a80c40:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2UzMDA4NmIxZDc1YjdmYTAwMjgyNmQwN2VkOTA1ZjhjZjI1NWEyNjdhMTcxODFkOGY3NjUwNmEzMGE4MGM0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2UzMDA4NmIxZDc1YjdmYTAwMjgyNmQwN2VkOTA1ZjhjZjI1NWEyNjdhMTcxODFkOGY3NjUwNmEzMGE4MGM0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjdlOWU2NWZlNzMwYjAzZWJiMmE1ZmQ1ZDBmMTA1ZDk1ZWZmYjU3M2IxOGJhYjQzMzY1ZDQzMzNiNTY3NjAyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQ0MGUwMTQ3ZjBhNGI4NjRlNTFhYTc5NTQ0MjBhZDI0M2Q3NjdiNTA4ZTI1ZGFmYzBhNmMyYjEyOGQ0N2I4ZiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/routes/workspace.%24id.tsx#L1-L28",
+          "version": "repo-lines-v1:sha256:658f2edcd4dcb5805d8d84d147467db4fcb5b1e735a64d7786e1e59e1afbaafb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNWVkNTk5MjlhYTkyN2RiZWVjZDA1MDQyYWY1ZjZiMGRlYmE2OWRhNDAyOTU1NzAxMzY4MjVmYzMyYzhiNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ODBiNzY1MThkYWU5NzlmYWViZDAyMzY3YTI5MjkyYTUwZDk3NjA5MjI1MWEzOGE2Y2UzMDg4MGJhNDI4MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

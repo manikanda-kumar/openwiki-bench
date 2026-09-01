@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5752818158f7c0e2bd64098063860de2ea259e66dcc4b7537d602ddf851d23e4",
+  "claims": [
+    {
+      "id": "claim_04012964b1244f4bbb9cc213c4e02a1a",
+      "statement": "The router is the public origin: it routes /api and /blueprint-screenshot to the workshop backend, /gatekeeper/<name>/* to bound gatekeepers discovered by scanning its own GATEKEEPER_* service bindings (so installing a gatekeeper is purely a binding change), and everything else to the ASSETS binding when present, falling through to the backend in dev.",
+      "evidence": [
+        {
+          "resource": "repo://packages/router/src/index.ts#L24-L60",
+          "version": "repo-lines-v1:sha256:ba8f6e275b1b8a0b704aef5821bf9edba7133a79b2560cfed3027d3488b03c68:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzMjdiNmMyNmNjYTI4MDRiMjY2YTc3YTJhNGYxMTU1NTBkOTNiNmUyYzI3MjI4MmJiMGJjZjY0OWQ1Y2MzMDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyNDBhOGYwZTViYzQ3MzE2M2YxOGE1ZmQ1NWQ2ZTc2YjY0NTQ2ZDVlNmRmMzhjNWFkZmQ4OGZlYjc0MDI1YjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjZjI0MGI4NjE0MzRmYmY0Mzc5NGE5N2NmYjMxMTI2MjA3MTdmMjEwZDQyNGI1NmJjYzdkOGVhMTgyOTAyNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b427f393c6794751b2a2fef675cee1dd",
+      "statement": "The router has an email handler that rejects mail unless a GATEKEEPER_EMAIL binding is installed; gatekeeper OAuth redirects land on the gatekeeper Workers themselves at /gatekeeper/<name>/oauth, so there are no backend auth callbacks to proxy.",
+      "evidence": [
+        {
+          "resource": "repo://packages/router/src/index.ts#L62-L68",
+          "version": "repo-lines-v1:sha256:4d5505aebac35781296d39465cc6b50a17c58a9e7c5e7c970ad8756c049eabb8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI0NzFkMTBlMmQwNzE2ODAxMDgwNGQ2MTdhM2Y5N2ZiZTQ2NmVmMmEyMDE4ZTcwNWEyOTAzNzU3ZWRjOTQ1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTViMDVmMzBkOGQ3ZTYyMDRhMGNkMjY1YmE3ODJkYzk5MmFlOWI4ZjRkNjFhMDZjNDhkMTMwNGRkMDc3NjU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmMzZDgwMjMzODQ5NGUzYTJkZjBiN2JkZGFlNTNkNTU2ODVmYzkyYTRjYTIxNDc2NDVhMzVhYWI3NTE4NTM5YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d642dd6d29944bb6b71a9d4fbf14ac84",
+      "statement": "build-release.ts bundles every deployable worker byte-identically (wrangler dry-run with the pinned wrangler) plus the frontend asset build, writing manifest.json (uploaded last; its presence marks the release complete), content-addressed modules/<sha256>, and assets/<cfHash>.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/build-release.ts#L3-L17",
+          "version": "repo-lines-v1:sha256:6c51b9d8f4002aa5c3af8de5f72d1cd96364c6e23511b85e97b860008047a119:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkM2E1NzZlZTE2ZmM0MTZiMDc0YTQzNGNkMzJjZDJlMzViNTQ0MmE3OTcxZDA4ZDc1ODg2YjEzNWI5ZmJjOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyOTM3YTliZjE2Nzc0ZDQzYTY0Y2Y0YmFhMWQ0ZDZlMDk4OWQwOWE1NjViMjFjN2UyYTU3ZDQ3NjAyZGYwYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxZGUyMDc5Yzk1ZDE2Njk1Zjc3MzA0MTI3MzhhMzIxNjI0ZmI1YTA1ODFiOGQzZDg4YzI5MTEwNzM1NDUzOWYifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L1-L17",
+          "version": "repo-lines-v1:sha256:dd1a0388a5fa939f460d46a646e7bb638f23fa7b74e11b18615a0b43ebedbdae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWE3NDA4ZGE5MDcxY2ExZGNlNjNjYmI4YjRjYjZmZWQyOTFjZjRkOTJlZTVjZmM3OTQ2OWQ4MGEwYjk0YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMDRkZGI3MzM4MjE2ZDMzOWJiZjdkZWU2ZTZlYjMxMzMxZjUxY2E4YmNkZTBiNWI3NGY2NTgzYzI2YTIxZTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYWUyNGIzODgwNzZkYzUxMGVkN2EzYzJkNTc1ZTgzNTAyOGM2NDlkNTA2OGM3ZTllZGY5YzU1NDQ5MWIwMjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0782682366dd4acbaf3338dea7c348c7",
+      "statement": "The release flow is: upload-release.ts mirrors to R2 content-addressed with the manifest last (--candidate lands under candidates/<id>/), then promote-release.ts copies the verified candidate's manifest into releases/<id> — publishing is that single all-or-nothing manifest copy, and the newer-release guard skips candidates a later release has superseded.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/promote-release.ts#L3-L24",
+          "version": "repo-lines-v1:sha256:7f056d324a5ab51302e1a06378a11cd3350116fc579774d5e7c533568631000f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMWRhZjE4ODYzZDU2ZjFjNWE1MjA5MDdjNTc3MzBmYTQyNDBhN2JhOTZiODZhMjFhNDA2MTFlNmZmM2VkMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZjkzMDlkZDQ1NWE0MTQ2NzllZTJjMmQ2YTNlNmZmNjg2ZTFiNjIxOTk0YjNlZGMyOTMxMzI3YmE5ZDhlMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4ZDU4NWRkYjc0NmM3MGJmNjdkYTI0NmY3NTYwNzgzOTcwOTYzNTA3MzFjMGViYjFiYmEzOGE4YTllMDczODMifQ"
+        },
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L1-L20",
+          "version": "repo-lines-v1:sha256:55c1a65849a0dd258069d5a609ffa4fbbaf81757cbaa4ecdf1c214b98925cdae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmOTkyNjQ1MGQzMjFlZjMwYzQyYjgzZTgxZjhhZGQxZDNkMDQ2NTkzMjM2NWM3MTcyNzZmMzkzMDk2YjE0OGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5N2VmOWU4ZDU3NzZlMTVjNDBlNmQzMTYyMWNhYzdiYzBiMjFlNjY5ODVlM2ZkMGQ3MmZmNTJlZTIxNzI3YjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b08f08ef8ca34779a820268c3db1efd2",
+      "statement": "The release manifest replaces account-specific values with a closed placeholder list ($ACCOUNT_ID, $KV_<BINDING>_ID, $R2_<BINDING>_NAME, $WORKER_NAME(<pkg>), $SECRET(<name>), $PUBLIC_BASE_URL) that the deploy-side renderer must resolve, guarded by MANIFEST_VERSION; the generator fails closed on unrecognized $ tokens and unhandled wrangler config keys.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L4-L17",
+          "version": "repo-lines-v1:sha256:0d9d9a61cc6911a5942957df43b46f31d1de17b7d522ce37e716b8af57489e65:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMWVhZDkzNmEyMjgxZDUzZGNjMDY0YjdlMmEyYWIwZDUzYjkyZWYzZWY3YjM0YjY2ODY3MzAwNzg5NWM4NjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMDRkZGI3MzM4MjE2ZDMzOWJiZjdkZWU2ZTZlYjMxMzMxZjUxY2E4YmNkZTBiNWI3NGY2NTgzYzI2YTIxZTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllOGFiNzBlYTY0OTZkOGZhOWU2YzMwODdlZDcwMDU1MmIyYjA5ZDkyZTI1ODU5NTQ0ZmYxMTIwNzQxZDBmNDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYWUyNGIzODgwNzZkYzUxMGVkN2EzYzJkNTc1ZTgzNTAyOGM2NDlkNTA2OGM3ZTllZGY5YzU1NDQ5MWIwMjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de544897297b4f348b5eb78ba147b56c",
+      "statement": "The backend's manifest carries only $PUBLIC_BASE_URL plus a hardcoded WORKERS_AI AI binding; its other instance-state vars (ADMINS, DEPLOY_URL, CF_ACCESS_*, CF_AI_GATEWAY*) are injected by the deploy service at PUT time, never manifest-templated.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L414-L435",
+          "version": "repo-lines-v1:sha256:22cb3c68f557d3de1cad72eae1a8f1fe717759ada49a863968cf2459c31e26de:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwY2UzMzQ2NjRhMzUwYTY2Mjk5YTVkNTkyYjM3NGE1ZDRkNWY4MzFkOTllNTg0YjAyYWU4MjhkMzQxMzMwOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZDdjMDBhNThhMmE4ZGU3NTg3OGQxMmU5NzBmYmJmM2NiNDJjOTQxNTU3YzdlZGNjODRkZTk4MTE2ZmNhNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMDc3NWE3ZDFhNTI2YjM5MTljYTVjOGU4OWEwZGNhMGI5ZWQwZWU1OWM2ZmNiOWJlYWFkOGM4NDFhMTA5NmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_243af4dfb8ac4769ba692c6f23eaf673",
+      "statement": "An installable gatekeeper defaults to CLIENT_ID/CLIENT_SECRET secret inputs (DEFAULT_CRED_INPUTS) unless it declares deploy-inputs.json or is in NO_DEFAULT_CRED_INPUTS (gatekeeper-context, gatekeeper-homeassistant, gatekeeper-scheduler, gatekeeper-mcp, gatekeeper-mcp-portal); gatekeeper-email is not installable (Email Routing needs a zone) but its bundle still ships.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L258-L275",
+          "version": "repo-lines-v1:sha256:69496870445b3106876ff96d3dc4e50a77e9aafe6f2b2e4e14684130379f331f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhNWU4MmRmOTUwZTVjNDYzYTk2MjdhZTkzZWQ3MGFjZDEyZjRhODU4NjI3MGQzYjgxMzA2NjEzNGZkNGI1YjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YWZhOGI3MGQ1ZTEyMzQ1N2EwYzMyOWIzYmRhMGRkYTYzMTc2YzlmNDI3YzcwMjZjZDc2MDk5MDM5ZDc3YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2Mjc2MmVkMDEwNjE4YTQ4MzM4ZTAzM2Y4OTIwMjlkODVlZWIzNDNiMDM0YjljY2RjMmM4MjFkMWRiM2JmYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0OGJlNzkwYzA4NWFiYTRlNjA4MzBkOWNlYjQxZDA0Y2UxMzBkZmNjYjQ5MWM4MjM4NGZlYmMyYTkzOTJhZjEifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L286-L298",
+          "version": "repo-lines-v1:sha256:b35919e9ae8e30df75d5af21f9b7836ae642384bc17352b7fbadf512387cfa72:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwMDU0NGY4NWIzZTY1OWNhMTBmN2FmNDM1M2FlYTViNTE5MDEwNTFlZTAzOTYyMzkzZWI2NjdjNzZiYjc4ZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNzRmNTc1OWMxMmYxMGQ1ODg5NzVjOTE1NTM2OTJjMGVmZmNkODllOTk4MWUwNjU1ZmM4NmY0OGNiOTJkOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNWIzMTEzMjM0MGVkNmFjMGZhZmM0ZDFkNTA3YmQyODc2Yjg5NTJkMzNkOWE3YTRlMDE1YWQ1MzFiM2JhZTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7be6607a66354c0d8df0423584a34731",
+      "statement": "gatekeeper-context and gatekeeper-scheduler are PREINSTALLed on every fresh core deploy (server-side, no user interaction) and marked SINGLETON (at most one install per instance), because their accounts declare an agent singleton and a second install would hand every user a duplicate ambient capsule.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L275-L284",
+          "version": "repo-lines-v1:sha256:ebe4b23477f4007920589f8723ffe477c3522db23c9a9ec18b260d9a933b6883:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YWZhOGI3MGQ1ZTEyMzQ1N2EwYzMyOWIzYmRhMGRkYTYzMTc2YzlmNDI3YzcwMjZjZDc2MDk5MDM5ZDc3YmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2OWU5OTUxYWJjYTc2ZTQxNDE1OGI1ODI5ODFkMjllOTY2YzNkYTMwY2QxNmIwZTg5Mjg3ZTBkMWU1ZjBmN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5NzIxYThkYjY5YTc0N2IxYzE4YTVjNDcwNDM1MDI5MzU4ZTE3MDljOWYyYzI0NjBmODVkNDAyZjgwMTI0YzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhOWIyNTU4ZTRlY2E5NjVkMzM0N2EwNjc1NWFkMjJkMzljOTE4MWIyYjZjZjY4ZDIwOWE1OGVkMmNiNDhjMzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8ea840beb53f44c58898780687b8c9d6",
+      "statement": "getServerConfig assembles the boot-time ServerConfig (no secrets) from the env-driven auth config (AUTH_GATEKEEPERS allowlist, DISABLE_PASSWORD_AUTH, ENABLE_CLOUDFLARE_LIMITS) plus the admin-config branding, querying each allowlisted auth gatekeeper's describe() in parallel.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/deployment-config.ts#L42-L62",
+          "version": "repo-lines-v1:sha256:e6b5ce8a0fa332cf8de546e1314fbe2d2d64339c848d04268a4a1cf057393ac4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYjFlYzFjZTZhYjNhNDM2NDZjMjZmZjNjZTVjNjI4MmYxNTZkYjUzMDg4NGU5NGJiNDgxMGUzZmJhYmUyZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZTJkZjc2MmZhZjBjMDk3NThhMjQ4Yzg0ZmI0NDFlOWFiOTgyN2RmNGRmZjFjNmQ1NmFiMGI1NTk3ZDlmMWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3f02fe6ad8d44b5d9e4b230bf0fa2af9",
+      "statement": "Deployment config splits into env-var-driven auth/limits (AUTH_GATEKEEPERS, DISABLE_PASSWORD_AUTH, CF_ACCESS_*, ENABLE_CLOUDFLARE_LIMITS) — deliberately not in AdminConfig so a compromised admin session can't change it — and the admin-config soft settings (signups, branding, agent instructions, gatekeeper availability, promoted formats).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-config.ts#L1-L9",
+          "version": "repo-lines-v1:sha256:01935000a011ff4375d0da884595c98e8ed208d68cd9b8dc2674938f9e1e51d7:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDkzNTlkOWQxOGZiNDM4NzlkMzNjMTdmMmRlYWFiMGZhNTg1YmZjN2IyYjhjYTZiODc2MmM3NDkzMDVjZjM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTc4Y2M0YmNhOGJiMTE1MmQwZjg1YjhmZGIzYjU4MmY2Nzc0MDc5N2ZjYzczMmFiMmZlMDFlYjI1NDRhYWY0YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjRkMDU0M2RkMzI3ZDgyNDk2NTg5MzAwYWQ1YjI2ZDM4YmJjZDc4ZGQ1MzQ0NTFkZWI1YThiZjUwMDkzNTA5ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9a5ab8343034470a12a52d8b856939a",
+      "statement": "The primary account key is always the user's verified email; signing in with any allowlisted gatekeeper that yields the same verified email maps to the same account, addressed by idFromName(email), the same scheme as Cloudflare Access.",
+      "evidence": [
+        {
+          "resource": "repo://docs/oauth-signin.md#L17-L22",
+          "version": "repo-lines-v1:sha256:97c79e028bc0988286b97a5be1ae5945e3c78ef18e755896a164312cb750a126:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmE4NDExZmQwNmY4OTI5NTM4YTBmZTUwY2E1NjdhYmU3MjQ4NDk3YjVmMGQ4MTFiZWRiYjU5ODgxMDI3NWY2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWYxYjc5ZTA0YTlkMzM2MzI4ZGFmYjAyMDYyOTk2NGZhNGJkZjUwN2QwMDY3NjJlZDBmNGFhZjczNDZkM2EyNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDViMGRmYmFkNTY4YmM3YzMyMzQzODE1YjFmOWQ2MGVkY2Q3MmFjMjEwNTg1MmRlOTg0MGEwYzllNTM2N2IxMCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T03:10:52.365Z"
+  }
+}

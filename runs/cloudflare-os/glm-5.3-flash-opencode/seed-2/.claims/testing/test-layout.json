@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:73ee75a209421ec9b3297364eb40624d0877dbc28ecbc306b232bbbeb3bd500b",
+  "claims": [
+    {
+      "id": "claim_2e37eacaf8654fe6b18f4556d5240bd5",
+      "statement": "pnpm test runs the root's own node --test scripts/**/*.test.ts suite first (scripts are deliberately off the build hot path and type-checked separately in CI), then vp run --filter '!cloudflare-os' --cache test — the filter hardcodes the root package name because -r would select the root and run its suite twice.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md#L84-L87",
+          "version": "repo-lines-v1:sha256:63af8ef43af4ad5710b600bcfa55a5dbeb5fbba8137b029f5320be68e60cb68e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZjMjI4ZjRjYWYzMjk5NDZiZmM5YmY4YzkwODQ0NTllMmViNzJiMjQzNDYyZWZkNzQ4OTJhNjIyMjUzYWIzMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2JmNDc4ZTkyN2Y3MTIxZTI4NmY4ZjBjODFkNTRjOTMwZTk3ODcxYzU5M2MxYzY5NGMyZmZiZDJiMWUyNmNkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTFlZGY1Yzg4Zjk1MDg4NzNmYjU3MTU5MDMzZDg5OGM1OTI2MzQ5ZWU3ZjdlZDg3NzkwMjFkYzM4YzI2OTA0MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2NmOGQ1NWM5YWQ1MzVkZGViYzU3NDQ0ZjU3YWQ1ZDQzZmI5ZmM5YTk4NDhlYzM4YzcwMDI5ZTc2ODNjZGYwNiJ9"
+        },
+        {
+          "resource": "repo://package.json#L10-L10",
+          "version": "repo-lines-v1:sha256:a1cd587457cb85cc0e5768222c798e5a891b4611fc090205a9067c1450a9c64a:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFjZDU4NzQ1N2NiODVjYzBlNTc2ODIyMmM3OThlNWE4OTFiNDYxMWZjMDkwMjA1YTkwNjdjMTQ1MGE5YzY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFjZDU4NzQ1N2NiODVjYzBlNTc2ODIyMmM3OThlNWE4OTFiNDYxMWZjMDkwMjA1YTkwNjdjMTQ1MGE5YzY0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzNmNTBkNjYwMzUzOGFlMDRmZjA4NjAxNDkzZmY5YzgwZmQ0NDBlMTc5NmQyOGEwN2JhYjU4NTA3ZWU4OTFjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzk5YWY0ZDA5N2ZiMGU5MzI3ZDU5MjIzYTQ1NGRkZTU0MWJkMDU2MWNmNTRjMmFmNjE2YTA0ODBhZWVkN2QyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2e3399afbf0f46b6a5c80edda5cf05e7",
+      "statement": "Each vitest package's test entry is a Vite+ task rather than a package.json script because vp forbids a task and a script sharing a name; run one package's tests via pnpm --filter <package> test:run (straight to vitest) or vp run -F <package> test (through the cache).",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L14-L18",
+          "version": "repo-lines-v1:sha256:5a6f57d2001fc38c6f493e49efecb10d25f57b8ec285df77c3210a3dadecbe0e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODM0Mzg1NGMwMTFiYjAxYWMzMTZhMzZmNjUwZThhNDNlZDllZTJmZmY4ZTk5ZDZkNjg0Nzg5MWUyNGNiOWM3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzc5YmVjMTg0ZTQ1ZTUwMDRlZGM5YzFiYjA1M2NkNzVjNTk5ZTU4MTM0ZjllMDQ0MTgwYmE2ODdkM2Q0NjUxZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWMyNmI3MTc1ODY0NTc0NDMzNDkxNDRmOTJjMTEwMzMxMzg1OGU0MDI4ODRkYTFkYTEyNWRhODk4YzhhNmM0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjM5ZDU4NDM2NTBhODNlMGU1ODE2YTA0M2U1MGYxOGQ1MzNkNzM4MzlhYjIyZTJlMjI5YjdlMTMwM2NiNDM5MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7263f8b3ade74dd297fe4d9c36b2027e",
+      "statement": "scripts/assert-workerd.ts is a setupFiles entry in every workerd-pool package and throws unless navigator.userAgent is 'Cloudflare-Workers', because when vitest-pool-workers cannot start vitest silently falls back to Node — and packages like router and typed-storage import neither cloudflare:test nor cloudflare:workers, so they would stay green while testing the wrong runtime; removing it to make a suite green is a review rejection.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/assert-workerd.ts#L1-L17",
+          "version": "repo-lines-v1:sha256:78454fffa9706408a99b50bbdf9ec2158b218d3f6dafc9be72093411f78cf38a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZDk5MjNlYjFiOTkxZWExZmQ2ODQxNWFmZTQwMzEwYjY2YjU0MjBjNDAzMTdmZmY4MWYxMTg0NWFhNWI1ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea96541366af4673997c03ab2ba06c40",
+      "statement": "Some packages run two vitest passes: workshop-backend builds its generated inputs (browser runtime, format blueprints) then runs vitest plus a second integration-config pass, gatekeeper-cloudflare adds a workerd config for RpcTarget/RpcStub/DO tests, gatekeeper-context adds a Node config, and gatekeeper-scheduler adds an app config.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/package.json#L1-L10",
+          "version": "repo-lines-v1:sha256:76ae13f1bcdde6a22fb8338f8efae3a04b7f590051c0f3eba8192906d67261cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzZDQ0MDA3Zjc3N2JlYTQ2YTYwMDRlYzdjMGMzZWQ5MTRjMTM4ZjBhZmU1MWUxNjg1ZGI1M2MyYTQxODhlMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlODI5OWZlYjk1MGNmYTJlMDhjZTQ0MDI4MzJkZDU5YTIyZGRjMmFmNTMzMDYzYmQ0ZDk4OTA5NzhlOGY4Y2UifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/package.json#L1-L10",
+          "version": "repo-lines-v1:sha256:877ed88162f054b9515701a0c48a1c9894712fd3f58ab3e68f5f4b2ae6d86667:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyOTdkZDlhZThiNzNlZGY2YTVkODVjNDlmMmVjOTYzM2FhZDdkMjc0MjVkNGI5NTA3ZjBlNWY1NWJmYjJlMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5ZDIxOGRhYjJlZTliZDYyNmI1MDJkNDIwYjRiNzNlNWZmMDYxNDI5Mjk3MWFmYjY1NzU0YThkZGViNGExYmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8188bb6e070e4cc1a11ca9dabc5c0338",
+      "statement": "The shared cached test task exists because vp declines to cache a task that reads a path it also wrote; vitest's scratch paths (node_modules/.vite results.json, node_modules/.vite-temp config temp modules, .wrangler validate tree) are excluded workspace-wide because tracking reaches past the owning package and siblings would otherwise invalidate each other, and vp run --last-details names the offending path when a task stops caching.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L41-L73",
+          "version": "repo-lines-v1:sha256:53fb5d47a07018534ab7d0e9228ee88fae816e3f1c7eff02e4fa81baf8444f9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NDE2ZTA5Zjc4YmEzMTZjMDMyNTY4MjEzYjg1NWVlNzU2ZTQxNTY1ZDkxOGYwOTUxOWM4MWZkNjIwZjQwNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjNTc1YjQ1MmU4NjRkMDM5MDMyZjgzNDFkMzI5MWFmMWVkNjM5MzhkZGIwNmMzZmE5NmY3ZTUyNjVlZjA0ODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_42db3217267f4fefb091b36923ffa9cf",
+      "statement": "Every vitest command in the shared test task runs under scripts/with-timeout.ts because nothing else bounds a wedged run: vitest timeouts die with the test worker, Vite+ has no task timeout, and vitest-pool-workers imports Miniflare without a crash-restart hook so a dead workerd leaves the pool awaiting forever; the watchdog uses 60s of silence (a healthy run prints per file) plus a 600s cap, kills the entire process tree, and exits 124 (GNU timeout's code).",
+      "evidence": [
+        {
+          "resource": "repo://scripts/with-timeout.ts#L1-L31",
+          "version": "repo-lines-v1:sha256:43f394f61cefb6033bfcd752973b9cc40dd8f33c4fa28ed928a94aaca792632d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZTkyNGY0ODQxNzA2YzFmMWU3ZTRkYmRhMzZjYzkwNmMwMTljYjE0MTg3YWI2MTEzMTg2YTI1MzZmZWVjNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmRkNGFjZmYxOTBhODYyODVhY2IwZDNmOGNhYjdmNGYyNzMwN2M1NGNlYWRhNTRjOTIyODQ5Mjg4ODgwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NjE4OTU2OGZiMTg0OTJiZDRlZDg5NzAyYjk4OTU3NTMyZjViOWRlY2EzYWM3YmVjZDNhYzQ2YjMzOTVlNjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d784a9a9bad64c1991a9ee6fd446d084",
+      "statement": "The watchdog thresholds are baked into the command string rather than read from the environment because the command is part of the cache fingerprint and a cached vp run strips undeclared env vars — a threshold override would silently not apply, so a policy change is a visible fingerprinted change.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L75-L100",
+          "version": "repo-lines-v1:sha256:a3dee1a5ea2f30099822889f00f7dd19144d67ffdc369fbfac4ebaf515dfb6d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZGZhNGFjNDk5ZTZiNmRiMWIwY2RlMzZjOTJkYTUwMWQwYmU5ZTc2ZDA2MTdmYzA2ZDE2ZDQ5MTEwMGU5NGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxOWY1MDVmM2Y2ZDk1NzkwNjBlNTM4NTliZjY5OTNjZTQ2YzFiMTdkZTEzOWE2ZWU2MzI3ZjU0OTI0ZTFkYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZDNkZWY1YzkwYTY1NWZkNWU2ZDU1MTVhNmUzYTlkZTZmOGM3Nzk0NzI1Y2IyZTBlZmU4MzU5Y2E1MjA2ZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_85669ac0070849a4a8d287159becc018",
+      "statement": "Type checking is a single recursive tsc with singleThreaded:true in the root tsconfig — measured both the fastest and smallest configuration against tsgo's parallel checkers — and reviewers explicitly say not to flag it.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md#L108-L108",
+          "version": "repo-lines-v1:sha256:72a5a4ecd0634d188c1d2a778d4b281a9756563ceee8348d173cf42d9a788a6d:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzJhNWE0ZWNkMDYzNGQxODhjMWQyYTc3OGQ0YjI4MWE5NzU2NTYzY2VlZTgzNDhkMTczY2Y0MmQ5YTc4OGE2ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzJhNWE0ZWNkMDYzNGQxODhjMWQyYTc3OGQ0YjI4MWE5NzU2NTYzY2VlZTgzNDhkMTczY2Y0MmQ5YTc4OGE2ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGNlNGFmNzBlZjY4ZTYzN2Q1ZmM1MGQyOTk4MmE5YzczYTY0MDVhYjM0MmZmYzAxODFiZDJhOThkNDUzZjgzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDJjZTVhN2E2YmQ2MmE5ZTY1YzY2MmRmYzFhMzk1NmQ5NGQ2MTYxNGYzNzE1NjllYzgwZWI3YzFmMGNkZTMwNyJ9"
+        },
+        {
+          "resource": "repo://tsconfig.json#L19-L19",
+          "version": "repo-lines-v1:sha256:fa2f8d6378f11aef0e5b1e16ea8286110ae1ef4d5645464d2edc9ee6abc07814:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmEyZjhkNjM3OGYxMWFlZjBlNWIxZTE2ZWE4Mjg2MTEwYWUxZWY0ZDU2NDU0NjRkMmVkYzllZTZhYmMwNzgxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmEyZjhkNjM3OGYxMWFlZjBlNWIxZTE2ZWE4Mjg2MTEwYWUxZWY0ZDU2NDU0NjRkMmVkYzllZTZhYmMwNzgxNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTg1ZmQzYTMyZTcwZGQzYTBjZDdkYTFiOWI2YTM4OWM4ZmE4MjRlYWQ2M2NlZmRlOTRhZTcxZThiOTM4ODQwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmI3MzI0NzY1YzZhZDg2NWJlNmQ1YWI4NjkzNDA5MTRiYjQ5NDE5NDZlZTYzNzk0ODYyNjRhZWJiMjU2NTNiZiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

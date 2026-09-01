@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d35f2c42804221b41ae077eeb62932847be403e068da2b38a9e42e131a317490",
+  "claims": [
+    {
+      "id": "claim_966ce94f69854773af7d991cd929f5fa",
+      "statement": "The Cloudflare gatekeeper serves three purposes from one connected account: verified-email sign-in, AI Gateway billing (the Workshop reads a usable token via getUsableAccessToken), and read-only Workers Observability bindings; unlike other auth gatekeepers' transient auth-scope sign-in grants, Cloudflare sign-in persists a billing-only connection because the backend passes {scopes:'full', resourceUrlPatterns:[]} for it specifically.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L1-L19",
+          "version": "repo-lines-v1:sha256:cc869e85b6393e01a95d6fa60f004cae2a452965948d01d9a99e9ae336fca28a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyNzE3ZDEwMGM1MjlkZTk2ODI5YTI3NDMxMjA2NGY5ZTM2MjgzNzkzNDYwZWEwMDJiNzFmOWZjZTlkZDU4YmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4OTgyZDM0YjY1NjljYjBmNTMyN2EwMjNkZWU2ODJmZTE2NzE4NmExNzhmNzUxNmU2NzZjNzBjYjQxN2EyMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2ZTAwMDk5ZTM0Mjc2NGVlNjcwZDM5NWQ1Y2ViZDhkOWZmNWJhNTlkODkyNWEwYmE1OWZmOWY1MWViYTkyYTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L636-L655",
+          "version": "repo-lines-v1:sha256:f36279c3e768ed3e2bb88813c745ad117a90a531e68fcc0f39e3c704dda333f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOTVlMjhlYzkwNDEzMDUyYjEyNzlhZjhhZWFkNzcyMmIzODU1NGJlYTIwMWQ1MDE3OTU5YTY4ZjgwZTczNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMzc4ZjgzNjhjM2VmZWY4ODExNjVmODA5ZjNmNDgxNzQzZWM1MjRjMThiNTFhODU4ZDhjMDcyM2IzZWI0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzNGM5NzkzYTMxZjkxYWVjMGVlMTIwNjRhYTI2MmVjODJmNDA4NmFmZDUwMGI0NzYzZGU2MzliOTI2ZDdiZmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_109c13fea6b548648e424fb2da5d9273",
+      "statement": "Cloudflare OAuth endpoints are hardcoded in the gatekeeper (dash.cloudflare.com/oauth2/auth and /token, overridable for staging); BILLING_SCOPES are offline_access, aig.read, aig.run, user-details.read, account-settings.read; AUTH_SCOPES for the transient sign-in grant are offline_access + user-details.read; openid is deliberately not requested because the dashboard OAuth client is not permitted it, so identity comes from the /user API.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/oauth.ts#L1-L39",
+          "version": "repo-lines-v1:sha256:f92dea6a8d026bb06342b1a9033c1e20af868e1ba09f88068e1a9ee21389f7b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyNDk2YjZiOTYzNmUwNzg5ZDI0ZTBkMWFjZjFlODhlYzU0NjY4MTRlZTliNjRiYjE3OTA0ODc3OWNjYmIxMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5NTdmM2M4N2JmOGUxMjM0YWQ2MzRhOTBlZTU1ZTU0Y2ExNGY3Y2NiZjgwMDljYTBlMTcyNWE5YjE5N2FmNGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_342cf017a38549fc92bb2c7b20fc9fd5",
+      "statement": "An omitted resourceUrlPatterns (all resource types) is distinct from an empty array (none): observabilityScopesForResources returns workers-observability.read for undefined or non-empty patterns but no scopes for [], so a billing-only connection cannot silently acquire telemetry access — the same contract documented on GatekeeperConnectOptions.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/resources.ts#L68-L81",
+          "version": "repo-lines-v1:sha256:f21a7749154fe212f411079392d5b26e3d7a1e4190e3a547277a1ba46422375f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwMGFhYmM0NzNjNmU2MmRhMDc0NzVjMjc1YmViN2I1ZDIyNWU1OGVmOTY5YzhlOGI5NDI0NGRjM2IxZDFjMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0YTNlNWQ2Y2E0NzRjMzIyZjA3ZjJmZjlmYjczNDMxYjk0MGJmZjQzMDg4MDc1ODQ2ZjI3MjM3NmVmYzRjZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/gatekeeper.ts#L440-L443",
+          "version": "repo-lines-v1:sha256:7b699f413bd62fb76263dde04b257cffcf88dc726b60c9bafa9418c7f5cb6964:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhiOGJhMTQxYzkxYjE1NjUxZjIzNjhlNGQ3OTYxZmIyYzI1ZDlmNjAzYTkzYzNjNTYwOTA1ZWVlZDdmZWFmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWExZDFhNjMzOTAyMjljNzk4MzQ3ZTgzYTA0MDU0NDFjOTQwMDAzNTI4NGFkMTY4YzFiZjZjZGYxZDcwYTM3MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjM3YjM3YmQ2MmE1MTZjMDM1YTYwNWEzODMxMzNkZjNjOGU3ZmIyMWQ5OGVmNzc1YjY5MzYwMDllNmVmZjgxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDljNTAxODRkZGNmZGU0NjE3OThmYmM2ODdlM2M5MmUzYWFlMjkyNGMxMDNjNDQ1YTRkZjk5YWNjYjA2NjE3ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e13777a452e4ca19cee27b34865c858",
+      "statement": "Two observability resource granularities (whole account via /workers-and-pages/observability, or one Worker via /services/view/:workerName/production/observability) both map to the single indivisible workers-observability.read OAuth scope; the binding, not the grant, is the finer capability boundary, and grantedResourceUrlPatterns is derived from the granted scopes with ensureResources expanding the grant only when a requested pattern is missing.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/cloudflare.ts#L389-L417",
+          "version": "repo-lines-v1:sha256:ed6a96e6d82b7825080fafb6bdf7cc5160fd667b6ec1d468678d9a871e84ced7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlYzljMjAyYjMyN2RmNDU4MjRmZWZiNmQ2Y2MzMmQwODU3OWVkMjUyM2JkNmJlZDkzMzk1ZDcwMWQ4N2VlZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0ZmU2ZDFiMzQ1NjQ3MjM0ZmMwMWFiYjlkODhjMGNhZWMwN2EyNjY3OTg0ZmM3Y2VmNTI0ZmY3ZTdiNGY0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3MzA2NWU1ZTM1NTZmODMxZDU1ZTc1NmNhZTNiODhjMmIyYWE2ZTVhNzk3OGY2ZmM0YmIyNGM2ZmNjZjc4MDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwYTU3NDE3NmViYjlmYzI1ZDE0NDdlNWJlMmQ1NTM3Yzk4ZWE0YmIzZmU3ZjVmOWM1OWY4M2ViMTI5NWVmNGUifQ"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/resources.ts#L7-L25",
+          "version": "repo-lines-v1:sha256:0387d08d428d087673dc9eb82953ab00440035334110fe32bed463a3516c00e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyY2Y5ZjVkYWE5NWEzNTFlZGQ4NWUwYTMwYjBmNWY5YThmMTBjMDk4YmI2OTkzZWEyMDkwMzJiMWY0MjhjNzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0MWQ4MjMzNTIyYjlkMmI2YTBmOWIxMjEyOWM5YmExNzkxNDcxMjRhMGFkNmY3MDdkZWUxMmIxZjVjZTE3OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2NzdkZGI4YWY1ZTUyM2M4MzcwNGRiZDVmNzliMDk3ZTc3NmE4ZjM1MDE2NjAwMWYwNmZjMWIwYjcxZjMzMGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d13310c46da4e309ca33bba73e32d2a",
+      "statement": "Every observability read funnels through one #observe wrapper that fetches first and records the read (with a bounded description) on the approval queue before returning anything — a read reaching the agent but not the queue would be an unaudited disclosure — and summarizeFilter renders filter keys/operations but never filter values, keeping caller text out of the audit trail.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-session.ts#L1-L6",
+          "version": "repo-lines-v1:sha256:a79719137015fb62e8503589c873c6e431b980f406b9bb52fc6d5827bb700fa4:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EwMTQ2MjQxOGE5NGEwNDQxZjIxNmNkNzJjOTBhZDE3ZWJhZWRmNGQ5ODQxODFmNTkxZDc3NGUyNDM5NjY0OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFlN2JkNjg2ZDNkNDFkOTk1Y2UxOWIzMGNjNDFlOWI3YzdlMzU2ZWI2ZDQ3MGMxOWYxNjZmNDFjMGQzZGJjNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDhjYWUxMzZlOWMwNThkMWQ3ZDcyYmE3ZjA1NzQwY2EyNDc0ODJmYjIyMzM2MmM2NjQyYmEyODBhZDFmNzZlNyJ9"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-session.ts#L32-L107",
+          "version": "repo-lines-v1:sha256:9f75499941eb52acdb90a11d6292ce7579f3587a0dc5a4f4057d5865385a9f65:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5MzJiYWUwY2I1M2JiMzliZTE4NDBkMzAxOWE2NGRiZWVkZjAxZWMxY2M1ODI5NzQxODJjODM1MGZhMjZjNmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0MjkyYTEzOTAxNmJkMTJhNTEyMmY0YjYwZDUwY2IyYjdmY2MwOTBhOWFjNDRkM2M3ZGJjY2IyZTI5MTJiZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZjQ1NzExN2Y4YzMxZjUwMDY5Y2U4YmUzZDY0Zjk2MDA3M2IzNjQ0YzU2YmJhYzE2OTViNTdjNDViN2ZmM2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_79fb2c0789874cb6968077b7f69872a0",
+      "statement": "Worker-scoped observability bindings prepend an immutable $metadata.service filter and re-filter results on the way out, because a filter the provider accepted is not evidence it applied it; a single dropped foreign event proves the filter was not applied, so the provider's count is withheld (it would count the whole account), the drop is logged at error, statistics is kept (it describes query cost, not match volume), and the pagination cursor is derived from the provider's raw events so a fully-foreign page cannot stall pagination.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L34-L60",
+          "version": "repo-lines-v1:sha256:252f9c71e28eea2d1fc36717efc851b3bcda9c3c1e02652cafc356b79389226c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiYzA5NGI2Mjc2MzNmZGVmNjgwNjVmNTBhNGE4MTk1ODA4NzczZTE5ZWEwMjg4NTQ3NWI0ZjJhNjg5MjViZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3OGI2YTA5NDczOWZhODI5MzJlNzEzNDVlNTZhZTFiZWYxYjg1M2QwOGMyNGEzNGNkMDYwMmQwMzQ4YjNlMjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMTg5ZjA1YTk2M2NjNmU1N2U0YWRkYzAyOWNmZTljZmY5N2FkMDI2Y2RhYTgyMmM0YjBmMTA5MTEyODQ2MDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhOGMwMzQ5N2FmYTJmOTJkYmFjOThjMDUwZDc5MmE3ZTYxNWRhZGU4YjM3ZTBjMjJiZWQzODkyY2UzYTZhNTQifQ"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-api.ts#L379-L406",
+          "version": "repo-lines-v1:sha256:343c5521e8fdfc8d9ba546d290c5d791fd86a39dcbb28a46fbda334348754a01:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmODY1YzI3MzZlYzA1ZTc1NDIzMGE1OTAwMzU5Njg3NDk1OGExMzg3YTE1MTQ4YWJkYWU3NzA1ZTc1NjZiZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwYjNjZGUwOTQ0NGMxZGJmYjI5OWY4NTAxZTQ3N2VjOTQ0MzFlM2MyMTIyNjViNWQ4ODk2OGMyZjI1NDlkY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhOTI5M2ZkODA1NGI2ZTQ3MjQ4MzczZjM5ZjRkZDc3ODAwMTA1ZWI3NTgzNDg2ODcyNTQyODVjZDEyODJiNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxOTY5ZGZiNWQxNzdjZjJmODFkMmFkYmM5YWIwODg5MWQ2NTQ0OTQyY2Y2ODEyMzY2YzFkODg5NTQ2ZDQ1MTcifQ"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-api.ts#L500-L527",
+          "version": "repo-lines-v1:sha256:f6a9ceeed4155eaab5eebc39642128d49973b0a671772c3fa95f586d24077f95:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhNGY2ZDcwNmYwNGY3MmMyNTBiOGE3MWM0N2ZhNmE4OThjYzRjYmE5YTkwZWQ5MmY5NDRjZWI3NWZkMjliOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MTBlMDU0YTkwMzY0ZDdiZjNjMjFiNDQzNDAxMWU2YmE2ZDM2YTQyMmJjMWVjOTQzN2I4YzBmZjQzYzIxZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4OTdlNDZkNTg0NTc0MWNmZmQ0NDhiYjdhY2JjMDdlYTAzNGRiODY5YjM5YWQyN2Y4MzZjMWIxNWE5NWVlNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYmI5Y2RhNjE3NmU2Y2U4NTlkYzU2YWZiZDJkNmRlZWNmYzdkN2RjYjkxOWFkYjhjYTJhYmRmNjJkMzQxNDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9d570853f81d44cebc1e329c1e44ecba",
+      "statement": "Cloudflare's telemetry/keys and telemetry/values endpoints ignore the filters they accept (verified against a live account), so constrained discovery (Worker bindings or caller-supplied filters) is derived from a filtered telemetry/query sample instead; separately, a log's own fields are returned nested under source but indexed under their bare name, so observabilityFieldKey accepts the source.-prefixed alias everywhere a caller names a field — a rewrite that cannot widen a query because the binding's own $metadata.service condition is a separate AND term that is never rewritten.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L62-L85",
+          "version": "repo-lines-v1:sha256:98133a474679e7d5c4ec03b325a1500ff5dd0beb3263470e32b279777b1685a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0OTY0ZjhlN2UzNTFiZTkzNzBjYjU0YWQ0YzE3NmQ1MzQwYThlMjZlOGY1NTE1ZTg4Y2E4ZTE1YWEzOWIxNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1OWNmN2VlNGZmMGY2OTU3MDdiNGUwNzE0NDgzYjhiNzQ1M2E3NTQ0ZTIwYjcxZjg3NWJmNjU3M2NiYTMzYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwOGUxMDI0MTE3MmJlMTg4MjFiYjA1OThjMTc3NDZkYTA2NmUyNmEwZjE2MDMyMjA3NTM5MmFhMWRmM2U3OTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1MWE0ZmY4MTk3ODhiMmNlZWNmZDhiMTFjYmJiMTFjMDNhNTE3NjA2Y2RmNDUzNTJjNjI3YTA0NzExZDE3ODkifQ"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-api.ts#L83-L118",
+          "version": "repo-lines-v1:sha256:e4378a768f1e3f7058a047673e8839a5f79c45bc35fc62bcd7d29b54d78854e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMmZmMzExMTg0MWFjMGVhZWZjZTFhZTA3ZGM2NDU5ODI3OGU0Zjk4N2QyZDM5MDhhOWFmYjgxNmNjNmIyNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxZGIwNzAzMDI5YWI2MTBmNGI5YzcxYjNhNWQzNDU1NmRiZTNkYWNkYWVjODcxYzcwYjI2ZmZjMDc2OTkyZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2NzM2YmIyODA3YTQ0NjlmNzE4M2U4MDQxNDhiY2UyOTRkNDVlYzhiNmRmYWEwMzg2MzBjODVkYjMxZTkzZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4MzNkZmMwMzI0OWExNzY4ODAyYTk0OTE2M2M4MjE1OTgyMzdmNDM5YzAzMzkwZTY3MTk5ZGYwYmY2YTdlMWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a617892bd7a4e40aa9bdcdff93384e5",
+      "statement": "calculate() is the one observability read with no second line of defence — an aggregate cannot be un-mixed — so it rests solely on the injected filter, an accepted and documented gap with the group-by fix left as a follow-up; trace summaries are account-only because their shape describes the whole cross-service trace, though a Worker binding can still fetch its own events for a known trace id.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L20-L22",
+          "version": "repo-lines-v1:sha256:96e00099e342764ee670d395d5cebd8d9ff5ba59d8925a0ba59ff9f51eba92a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFiZmFlODFkMGJlNjE5ZTNhZDg5Mjg5ZjgxMDUwMWIwNzAyZTc5ZTg3YWNlMmNiZDU0OTEyYTlmNWU3Y2IzOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWMzMDA1ZjY5NDNjMmJiZjRlMWViMjI4ZDMzZjkxYTliOTg4NGIyMmI5MjIwNjVjNjkxZjQ4ZDg1OTZlMjdkYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGJkODUxNzY4MjQwYzBiMmNjMjhjZjJmYzU3ZWZjZjNiZTAzMjRiOTZjMmNiODg0MjYxMzdhOWQ2Y2MyNGQ1OSJ9"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L52-L56",
+          "version": "repo-lines-v1:sha256:91686c502e66f11e13c0f72db723488c256d634e03f584d896bd4d22c19684c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI2ODQ2YWU4MWZkM2U2MjJmOWM1ZTJiOTg2MGIyMjE1MjM0Y2UxNGEzNDFmNzY1MmZlYzk5MDYwZGY4NDMyYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRmOTk3YWJhMmI5MDA1MmQ5NTQyYmY2M2FjOWQ3ZDQ4ODJmMGUwYzNhMTE0MjA2MmMxZTY0NzRiNjMwNmRjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjQyZDhmMDVmZGQzNzIzNDdjY2ZkMGE1ZGVjODQyMWM5MzZlMWNiZGJkYmU5YWY2OTQ4ZDcxOTE2NGFhZDVhZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjk5NTYyMTFlNTUwNGFlNjc3YTJhNzE0NjczYzU2NjI1ODU3ZWM2MGU3OGUwMDc4Mjg1MTI4NWJkMDM1MmViNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_99cbec299fd6411397e1ce71151f1562",
+      "statement": "Sharing a gadget with an observability binding is admission-gated on the collaborator's OWN connected Cloudflare account (addObserver checks their credentials, not the owner's), and deniesAccess classifies only 400/401/403/404 as credential-lacks-access — a 5xx or transport error must never be reported as a denial, since that would be a silent authorization decision either way.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L24-L32",
+          "version": "repo-lines-v1:sha256:ebd0e97b11a4ea0eeb16048a98447825215d44f6f5be2085d07685f0faeb8f6a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGUwODIxZjJmZDFlZmMzNjk0MTNiYjAxYzk0NzdhNjdlZDIxNjMzNzQ4MGExZjU0NjU1M2JkMTJmNmZiNjJhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2QxYjJkNmU5ZGQwMWRjOWNkNWU1OGM2OTliNGIwYzI0MmNkM2NiMjFiOTc0NjcxOWZjZWM2MjAyOGZmMjU3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWUzYWRlMTE4NjgxZDQzZGY5ZWEyMmZiOWM1Y2EzM2ZhMWY3N2RhZTg3NzNhY2NhYWVkYTdiYTQxZTY5NzUxNiJ9"
+        },
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/observability-api.ts#L36-L47",
+          "version": "repo-lines-v1:sha256:88989ca4a801d06b8b3671142ed9e74f4e496648add7378ef34d3edc01420ce9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkN2RjNGY4OTk1NDU1OGEwZWQxMmEzMWY3NjAzMTBmMmVlNTUwYmZkYWEzMGMwNTcwZGRmMjYxNDBhNWNmNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2MGYwYmFkOWE0OTIyNzE2MTFmM2U5ZmMwODVmMWI4MDFkYzdmZDE1ODQyMzY0YTk5OTRhZjY4MmEyNDEzNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwNzEzMzBhZDY3MWE1Y2NmNDc1NmI0NzZiNWNiMDUzN2E0OTE5NzM2N2Q4OGJkNDA2OTQ3ZDZkZjIxZThjMWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyYWFhYmE1OTY2MGMyMDY4NDVkYTU1ZDNjMzUwYjIwNTFiN2ExMDJlY2EwY2Y5N2E2ZjI2ZTUxM2FmNTY2OTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_14d3acc963a0429d81994b47e827362c",
+      "statement": "Provider error messages can quote a caller-supplied filter value back, so CloudflareObservabilityApiError carries Cloudflare's numeric codes for the audit log while the message travels only to the caller who caused it; because Cloudflare can return a message with no numeric code, the error separately records whether the message is the provider's or ours, and an uncoded provider failure is logged as a bare status (fail-closed).",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/README.md#L90-L101",
+          "version": "repo-lines-v1:sha256:45d2b545dc2c93230f8722e4230b5a4e956e0d1f6b460d3c04d35db1c947ed6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlZWI1MDk4OWViMThlZTA5Y2ZjMjViMmFkNjhmNmJhNTg2MzZiOTAyNWQ5NGUyNzVmYzRlZTAzMjBhZjFjODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOTc0YTY1Yzk0MzM5OTE2ZjVjOGMzNmY1M2EzMGJiYzc1MGRmZGUxNjAxNDJhOWVjMWViMjMzY2I5MGExYjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNzBhMWZhNDMxMTg5NmU3NjA3OWFhOGJlZDY2OTNlOTE0Y2I3ODVkMzc5YTVhY2NiMDRkNDI3NzIyNjBkZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkMTg4NGM1ZjE4OTNiYmRlYzdlODQ0NmQ3Y2Q1Zjg2NmFmYzdiMjI4MjRhOTFlODFjYjQ3YzEzOWE0ZTZmYWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d43bee18a4ef4176aead108a36f377bc",
+      "statement": "Cloudflare's /accounts endpoint pages at 20 per page by default, so the account walk paginates to the end (bounded at 500 accounts) with a mid-walk failure yielding the partial list — a single unpaginated GET would silently hide accounts past the first page.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-cloudflare/src/cloudflare-api.ts#L78-L107",
+          "version": "repo-lines-v1:sha256:5a989de298773f72a50b1be8b87acd46f6995eb605118b2e7fe1359a5bb9b5a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTBkN2MzNDAyMmRkYjMwMzI1NzQwMTg0YmY1MDFiYjAxMDM2NzhmNzI4Y2EyM2RjNGUwYjk1ZDYzMjAxNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkYjg5MGY5MDY3MzgxN2EwMGQwOGNiMjc5NzZlMTJiNDU1Yjc1ZmU0NzEzZmU2MzYyYjg3ZTkzZTk0NDI4YWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0NDc0NmY0NDAxNGM1NDhmZGRlMmU5M2NhZjUwYTM4OWE5YTdkMGEzYTFkYTU3ZjUzYzljNGZlZGU5ODFlNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZTZlZDI1MTEwMzZkOTBiNGVhNmY2M2UzMmZkOTYwYTZjMjdlOTM5YTRmNDBmMTI3MDZhNDVlZDliOWMzMjMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "plan_page_count": 22,
+  "deletePages": [],
+  "statuses": {
+    "complete": 22
+  },
+  "pages": [
+    {
+      "id": "9b9652b5-64a5-4454-a7fc-7561cc4bb73d",
+      "path": "/openwiki/architecture/agent-runtime.md",
+      "title": "Agent Runtime and LLM Integration",
+      "purpose": "How an agent turn runs: chat loop in agent.ts, executeCode sandbox and tool surface, model provider registry (ai-models.ts), pi-based invocation (ai-invoke.ts), prompt compaction, slash commands, and daily usage limits.",
+      "seedPaths": [
+        "packages/workshop-backend/src/agent-compaction.ts",
+        "packages/workshop-backend/src/agent.ts",
+        "packages/workshop-backend/src/ai-gateway-billing",
+        "packages/workshop-backend/src/ai-invoke.ts",
+        "packages/workshop-backend/src/ai-models.ts",
+        "packages/workshop-backend/src/slash-commands.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overseer-workspace.md",
+        "/openwiki/operations/configuration-and-admin.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "Cover model choice, BYOK, and gateway routing as implemented, not as marketed.",
+        "Describe Code Mode: the agent acts by writing/executing snippets; ground in the executeCode path."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8807af6f-b5a4-48b3-834d-3460824eac6b",
+      "path": "/openwiki/architecture/backend-kernel.md",
+      "title": "Backend Kernel (workshop-backend)",
+      "purpose": "The workshop-backend worker: server.ts entry and RPC root, session token scheme, UserDurableObject as the per-user state owner, AdminSettings DO, PendingLogin, DO migrations, and auth enforcement chokepoints.",
+      "seedPaths": [
+        "packages/workshop-backend/src/admin-settings.ts",
+        "packages/workshop-backend/src/auth/login-flow.ts",
+        "packages/workshop-backend/src/server.ts",
+        "packages/workshop-backend/src/user.ts",
+        "packages/workshop-backend/wrangler.jsonc"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overseer-workspace.md",
+        "/openwiki/operations/configuration-and-admin.md",
+        "/openwiki/security/auth-signin.md"
+      ],
+      "instructions": [
+        "Explain the token format and where it is verified.",
+        "Focus on ownership: what lives in the User DO vs the Overseer DO vs KV."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "045c003d-1abb-4c1b-8347-b9cde8c19992",
+      "path": "/openwiki/architecture/blueprints.md",
+      "title": "Blueprints and Output Formats",
+      "purpose": "Blueprint sharing: what is captured vs not, binding annotations, the Gadget DO -> User DO -> KV propagation and R2 content store, export/import archives, and the deployment-shipped format blueprints pipeline.",
+      "seedPaths": [
+        "docs/blueprints.md",
+        "packages/workshop-backend/format-blueprints/README.md",
+        "packages/workshop-backend/scripts/build-format-blueprints.mjs",
+        "packages/workshop-backend/src/blueprint-archive.ts",
+        "packages/workshop-backend/src/format-blueprints.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/gadget-runtime.md",
+        "/openwiki/operations/configuration-and-admin.md"
+      ],
+      "instructions": [
+        "Explain the blueprintId stability constraint and the generator's cache-avoidance behavior.",
+        "docs/blueprints.md is descriptive; verify against blueprint-archive.ts before claiming storage details."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5160b28b-5606-4382-9cec-de033204a260",
+      "path": "/openwiki/architecture/gadget-runtime.md",
+      "title": "Gadget Runtime: Sandboxes, Code Storage, Editing",
+      "purpose": "How a gadget exists and runs: server facet in a Dynamic Worker with no internet except bindings, client iframe with postMessage RPC, Yjs code-change merging (code-change.ts), git-store persistence, and typed-storage collections.",
+      "seedPaths": [
+        "packages/typed-storage/src/index.ts",
+        "packages/workshop-backend/src/git-store.ts",
+        "packages/workshop-backend/src/overseer.ts",
+        "packages/workshop-frontend/src/GadgetUI.tsx",
+        "packages/workshop-shared/src/code-change.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/blueprints.md",
+        "/openwiki/architecture/overseer-workspace.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "Cover conflict merging and commit flow at a mechanism level.",
+        "Explain the client/server split of a gadget and how bindings gate outbound access."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "6a6ef880-d6be-49ed-a2f3-5550b0346979",
+      "path": "/openwiki/architecture/overseer-workspace.md",
+      "title": "Overseer: The Workspace Durable Object",
+      "purpose": "OverseerDurableObject responsibilities: chats, workpieces/gadgets as facets, named bindings, gatekeeper facet installation, hooks/loopback, workspace outputs, and the Overseer RPC surface implementation.",
+      "seedPaths": [
+        "packages/workshop-backend/src/external-message-gateway.ts",
+        "packages/workshop-backend/src/overseer.ts",
+        "packages/workshop-shared/src/api.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/agent-runtime.md",
+        "/openwiki/architecture/gadget-runtime.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "State uncertainty where behavior is not verifiable from the file alone.",
+        "overseer.ts is ~11k lines; explain the major subsystems by name and line region rather than exhaustive coverage."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "43f34e92-37bc-4cc7-a018-aabbe921db2f",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "System Architecture Overview",
+      "purpose": "The mental model: Cloudflare OS as an OS (kernel=workshop-backend, drivers=gatekeepers, shell=frontend, processes=gadgets), package map, and the end-to-end request/data flow from browser through router to overseer, gadget facets, and gatekeepers.",
+      "seedPaths": [
+        "README.md",
+        "packages/router/src/index.ts",
+        "packages/workshop-backend/src/overseer.ts",
+        "packages/workshop-backend/src/server.ts",
+        "packages/workshop-shared/src/api.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backend-kernel.md",
+        "/openwiki/architecture/overseer-workspace.md",
+        "/openwiki/architecture/rpc-contract.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "Ground the OS analogy table in actual code paths where possible.",
+        "Trace one representative flow (open a chat, run an agent turn, call a gatekeeper) across packages."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "17b1943e-9e1f-435a-aa85-0d070d2443fe",
+      "path": "/openwiki/architecture/rpc-contract.md",
+      "title": "RPC Contract (workshop-shared)",
+      "purpose": "How client and server speak Cap'n Web RPC: PublicApi/AuthenticatedApi/Overseer surfaces in api.ts, the gatekeeper interface family in gatekeeper.ts, promise pipelining, @validateRpc runtime validation, stub disposal, and the useState-with-stubs pitfall.",
+      "seedPaths": [
+        "packages/workshop-shared/node_modules/capnweb/README.md",
+        "packages/workshop-shared/src/api.ts",
+        "packages/workshop-shared/src/code-change.ts",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backend-kernel.md",
+        "/openwiki/guides/changing-the-rpc-api.md",
+        "/openwiki/integrations/gatekeeper-framework.md"
+      ],
+      "instructions": [
+        "Cite specific interface declarations for each claim about semantics.",
+        "Describe the API boundary semantics (interfaces as capabilities), not a method-by-method dump."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ec0bdb17-a8df-4612-b0b5-deedc1383cca",
+      "path": "/openwiki/development/build-tooling.md",
+      "title": "Build System and Toolchain",
+      "purpose": "How this workspace builds: pnpm + Vite+ (vp) tasks and the task cache, env declaration rules, why no baseUrl/incremental, singleThreaded tsgo, lint via vp/oxlint, codegen tasks (format blueprints, configurators, worker types), and the gotchas catalog from AGENTS.md verified in configs.",
+      "seedPaths": [
+        "AGENTS.md",
+        "scripts/env-passthrough.test.ts",
+        "scripts/gatekeeper-configurator-vite-config.ts",
+        "scripts/vitest-task-vite-config.ts",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/development/testing.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Keep this about the build toolchain, not tests (testing page owns test tasks except shared config plumbing).",
+        "Verify each AGENTS.md claim against the actual configs; AGENTS.md is a secondary source."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "2f962380-1972-49ad-b2eb-5ce51e465ca9",
+      "path": "/openwiki/development/testing.md",
+      "title": "Testing Strategy and Harnesses",
+      "purpose": "The test layers: node --test script suites, per-package vitest (node vs workerd projects), assert-workerd guard, with-timeout watchdog, cached test tasks, golden files, contribution-policy test, and the out-of-process integration-tests harness with its fixture gatekeeper.",
+      "seedPaths": [
+        "docs/integration-testing.md",
+        "packages/integration-tests/fixtures",
+        "packages/integration-tests/src/harness.ts",
+        "packages/integration-tests/src/network-interceptor.ts",
+        "scripts/assert-workerd.ts",
+        "scripts/with-timeout.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/agent-runtime.md",
+        "/openwiki/development/build-tooling.md"
+      ],
+      "instructions": [
+        "Cover the fresh-identity convention for storage isolation.",
+        "Explain why fake timers cannot work in the integration harness and what replaces them."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "508bdbdd-76f2-4ca9-a70d-6db7b14e916a",
+      "path": "/openwiki/guides/adding-a-gatekeeper.md",
+      "title": "Change Guide: Adding a Gatekeeper",
+      "purpose": "A focused maintenance walkthrough for a new gatekeeper worker: package skeleton from an existing one, implementing Vendor/User/Session, OAuth + resource configurators, auto-provisioning option, router binding (zero-code install), deploy inputs, and test hooks.",
+      "seedPaths": [
+        ".agents/skills/write-gatekeeper/SKILL.md",
+        "packages/gatekeeper-github",
+        "packages/router/src/index.ts",
+        "packages/workshop-backend/src/provisioning-policy.ts",
+        "scripts/build-gatekeeper-configurator.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/guides/changing-the-rpc-api.md",
+        "/openwiki/integrations/gatekeeper-framework.md",
+        "/openwiki/operations/router-and-release-pipeline.md"
+      ],
+      "instructions": [
+        "Ground each step in files that already exist in an example package rather than inventing steps.",
+        "The repo's own write-gatekeeper skill is evidence of intended practice; cite it as a pointer, don't paraphrase wholesale."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e9131574-8cd4-459f-9adb-fad3687d163f",
+      "path": "/openwiki/guides/changing-the-rpc-api.md",
+      "title": "Change Guide: Modifying the RPC API",
+      "purpose": "A focused maintenance walkthrough: add or change a method in workshop-shared api.ts, implement it in workshop-backend without hand-written mirror interfaces, wire a frontend caller, run the right validation, and respect the review rules for the kernel and shared API.",
+      "seedPaths": [
+        "AGENTS.md",
+        "packages/workshop-backend/src/server.ts",
+        "packages/workshop-frontend/src/App.tsx",
+        "packages/workshop-shared/src/api.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backend-kernel.md",
+        "/openwiki/architecture/rpc-contract.md",
+        "/openwiki/development/build-tooling.md"
+      ],
+      "instructions": [
+        "Include the doc-comment and @validateRpc requirements and the pipelining/disposal rules as checklist items.",
+        "Show the concrete edit points a real change touches, using a plausible example grounded in an existing method pair (interface + Impl)."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "bf26749a-5a1b-460f-a36c-eeb92895ab2e",
+      "path": "/openwiki/integrations/context-library-scheduler.md",
+      "title": "Context Library and Scheduler",
+      "purpose": "The two auto-provisioned singleton gatekeepers: gatekeeper-context (three DOs, sharingDomain isolation, private/public collections, agent read session, observations) and gatekeeper-scheduler (ScheduleDriver DO, alarm delivery, ambient singleton bindings).",
+      "seedPaths": [
+        "packages/gatekeeper-context/src/domain.ts",
+        "packages/gatekeeper-context/src/index.ts",
+        "packages/gatekeeper-context/src/registry-do.ts",
+        "packages/gatekeeper-scheduler",
+        "packages/workshop-backend/src/provisioning-policy.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/integrations/gatekeeper-framework.md",
+        "/openwiki/operations/configuration-and-admin.md"
+      ],
+      "instructions": [
+        "Explain the autoProvisionsAccount + singleton + ambient binding path end to end using these two as the concrete cases."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "2934f303-a8b5-4007-bcc4-b9ddc0316705",
+      "path": "/openwiki/integrations/gatekeeper-catalog.md",
+      "title": "Gatekeeper Implementations Catalog",
+      "purpose": "Survey of shipped gatekeepers: representative architectures (github, google, email, notion, slack, spotify, zoominfo, homeassistant, confluence, linear, supabase), each one's OAuth setup requirements, and what binds them together (each has a README for vendor app config).",
+      "seedPaths": [
+        "packages/gatekeeper-email",
+        "packages/gatekeeper-github/src/github.ts",
+        "packages/gatekeeper-google",
+        "packages/gatekeeper-linear",
+        "packages/gatekeeper-supabase"
+      ],
+      "relatedPages": [
+        "/openwiki/integrations/gatekeeper-framework.md",
+        "/openwiki/operations/router-and-release-pipeline.md"
+      ],
+      "instructions": [
+        "Cite each package's README for vendor-config claims.",
+        "Do not narrate every file; identify 2-3 genuinely different implementation shapes (OAuth API proxy, resource resolver, non-OAuth auto-provisioner)."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "df987bc7-4b19-475a-b7d4-552f6c9b4f56",
+      "path": "/openwiki/integrations/gatekeeper-framework.md",
+      "title": "Gatekeeper Framework",
+      "purpose": "The shared gatekeeper architecture: GatekeeperVendor -> connected GatekeeperUser -> per-resource Gatekeeper DO; connect callback and OAuth handling; resource-URL scope grammar; Observation/ActionDescription contracts; configurator UIs; hooks; and the loopback entrypoints used for facet access.",
+      "seedPaths": [
+        "packages/configurator-ui",
+        "packages/gatekeeper-github/README.md",
+        "packages/gatekeeper-github/src/github.ts",
+        "packages/workshop-shared/src/gatekeeper.ts",
+        "scripts/build-gatekeeper-configurator.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/guides/adding-a-gatekeeper.md",
+        "/openwiki/integrations/gatekeeper-catalog.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "Document the Gatekeeper* interface family precisely: which side implements what.",
+        "Use github as the canonical worked example but keep the page about the framework contracts."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ea50c616-6a21-4bfe-9604-64f90ca82fcd",
+      "path": "/openwiki/integrations/mcp-connectors.md",
+      "title": "MCP Connectors (mcp-shared, mcp, mcp-portal)",
+      "purpose": "The two MCP gatekeepers and their shared library: endpoint vs portal trust model, scope grammar in resource URLs, queued actions store, OAuth via the official SDK, and the tools.ts trust boundary with readOnlyHint and vetted-endpoint auto-apply.",
+      "seedPaths": [
+        "packages/gatekeeper-mcp",
+        "packages/gatekeeper-mcp-portal",
+        "packages/mcp-shared/README.md",
+        "packages/mcp-shared/src/oauth.ts",
+        "packages/mcp-shared/src/scope.ts",
+        "packages/mcp-shared/src/tools.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/integrations/gatekeeper-framework.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "Check mcp-shared README against src before asserting behaviors.",
+        "Explain precisely why only portal endpoints can produce vetted annotations."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8521251c-38ce-4d33-b0af-37f4f9be1f66",
+      "path": "/openwiki/operations/configuration-and-admin.md",
+      "title": "Configuration and Admin Settings",
+      "purpose": "The full configuration surface: backend/gatekeeper env vars, AdminConfig ownership (AdminSettings DO + .adminConfig KV mirror), provisioning modes for auto-provisioning gatekeepers, feature flags, AI Gateway billing enablement, and site branding.",
+      "seedPaths": [
+        "docs/ai-gateway-billing.md",
+        "packages/workshop-backend/src/admin-config.ts",
+        "packages/workshop-backend/src/deployment-config.ts",
+        "packages/workshop-backend/src/provisioning-policy.ts",
+        "packages/workshop-shared/src/feature-flags.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backend-kernel.md",
+        "/openwiki/integrations/context-library-scheduler.md",
+        "/openwiki/security/auth-signin.md"
+      ],
+      "instructions": [
+        "Separate env-var config from admin-panel config explicitly (the security rationale matters).",
+        "Summarize the three-state provisioning policy resolution from source."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "526bb6c8-23c8-4038-a2a1-2e5fa8b5080d",
+      "path": "/openwiki/operations/observability-and-error-reporting.md",
+      "title": "Logging, Observability, and Error Reporting",
+      "purpose": "How failures become visible: backend-utils logger conventions and typed fields, observability context, reportIssue to the optional external Reporter, the frontend error-reporting package and the /api/client-errors endpoint, and gatekeeper iframe postMessage reporting.",
+      "seedPaths": [
+        "packages/backend-utils/src/error-reporting.ts",
+        "packages/backend-utils/src/logger.ts",
+        "packages/backend-utils/src/observability-context.ts",
+        "packages/error-reporting/src/index.ts",
+        "packages/workshop-backend/src/client-errors.ts",
+        "packages/workshop-backend/src/observability.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/development/build-tooling.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "Distinguish server-side reporting from the opt-in frontend path.",
+        "Document the no-secrets rules and the unverified reportedUserId caveat as invariants."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "0484ecc0-cf16-4de3-9d22-cceca6ba6c95",
+      "path": "/openwiki/operations/router-and-release-pipeline.md",
+      "title": "Router, Release Pipeline, and Preview Deploys",
+      "purpose": "How code reaches an instance: the router worker's binding-discovered routing, scripts/release build/upload/promote flow, manifest placeholders and golden test, R2 content addressing, and the preview deploy scripts.",
+      "seedPaths": [
+        "packages/router/src/index.ts",
+        "scripts/preview/preview.ts",
+        "scripts/release/build-release.ts",
+        "scripts/release/manifest-lib.ts",
+        "scripts/release/promote-release.ts",
+        "scripts/release/upload-release.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/development/testing.md",
+        "/openwiki/operations/configuration-and-admin.md"
+      ],
+      "instructions": [
+        "Cover why promotion is a single manifest copy and what CI serialization protects.",
+        "Explain deploy-inputs.json and NO_DEFAULT_CRED_INPUTS."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e1d31072-452d-449c-af7f-8f3521ef2e73",
+      "path": "/openwiki/security/auth-signin.md",
+      "title": "Authentication and Sign-in",
+      "purpose": "All sign-in paths: username/password (client-side argon2id with SERVICE_SALT), OAuth via authentication gatekeepers (AUTH_GATEKEEPERS, PendingLogin, transient minimal grants), Cloudflare Access mode, and how auth config is env-driven by design.",
+      "seedPaths": [
+        "docs/oauth-signin.md",
+        "packages/workshop-backend/src/auth/auth-vendors.ts",
+        "packages/workshop-backend/src/auth/config.ts",
+        "packages/workshop-backend/src/auth/login-flow.ts",
+        "packages/workshop-shared/src/api.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backend-kernel.md",
+        "/openwiki/operations/configuration-and-admin.md"
+      ],
+      "instructions": [
+        "Explain the email-keyed identity invariant and why auth config is NOT in AdminConfig.",
+        "Verify doc claims against auth/ source before repeating them."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "475409ee-13a8-4abc-b13c-422fb78b58dc",
+      "path": "/openwiki/security/capability-model.md",
+      "title": "Capability Security Model",
+      "purpose": "The security core: capability-based introductions, observations as audit/authorization units, approval queue with action simulation, lockdown/prohibitAllSharing, ambient vs bound access, and where each check is enforced.",
+      "seedPaths": [
+        "README.md",
+        "packages/workshop-backend/src/auto-approval.ts",
+        "packages/workshop-backend/src/overseer.ts",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overseer-workspace.md",
+        "/openwiki/integrations/gatekeeper-framework.md",
+        "/openwiki/security/sharing-observers.md"
+      ],
+      "instructions": [
+        "Distinguish the three enforcement points: gatekeeper DO, overseer, and admin chokepoints.",
+        "Explain the async approval design (simulate now, approve later) and its invariants."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "1b7344c5-8d12-477f-b662-e9a3d544b243",
+      "path": "/openwiki/security/sharing-observers.md",
+      "title": "Sharing and Observer Enforcement",
+      "purpose": "Collaboration security: share links vs explicit users, build/use roles, observer registration with per-gatekeeper verification via GatekeeperUserVerifier, forward exclusion, and re-check on open.",
+      "seedPaths": [
+        "docs/observers.md",
+        "docs/sharing.md",
+        "packages/workshop-backend/src/sharing.ts",
+        "packages/workshop-shared/src/api.ts",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overseer-workspace.md",
+        "/openwiki/security/capability-model.md"
+      ],
+      "instructions": [
+        "Cover the ObserverConfigCallback flow used by openGadget.",
+        "docs/observers.md is a historical plan: verify the implemented surface against sharing.ts and overseer.ts."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8309708b-1f70-419c-9d34-c8fa1f0bf1b0",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical entry point: install/build/run locally (pnpm run-local), split dev loop (dev-server + dev-client), what to try in the UI, package tour, and how to build/test/lint.",
+      "seedPaths": [
+        "AGENTS.md",
+        "README.md",
+        "package.json",
+        "pnpm-workspace.yaml",
+        "scripts/run-dev-server.ts",
+        "scripts/run-local.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/build-tooling.md",
+        "/openwiki/development/testing.md"
+      ],
+      "instructions": [
+        "Give exact commands and ports as found in scripts, not generic advice.",
+        "Note what run-local builds vs what it skips, per scripts/run-local.ts comments."
+      ],
+      "status": "complete"
+    }
+  ]
+}

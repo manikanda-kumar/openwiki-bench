@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6020eefeedf708dc00caec792c084cecbfed3b1504f544e2ffeeac1d6f08ced1",
+  "claims": [
+    {
+      "id": "claim_964c472213a245bcac24933658362e88",
+      "statement": "packages/mcp-shared/src/tools.ts is the single place an MCP server's tool annotations are read: classifyTool treats readOnlyHint===true as a read (observation) and everything else as an action for the approval queue, with every annotation test a strict === comparison so an unannotated tool can never auto-apply on either trust tier.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/src/tools.ts#L1-L16",
+          "version": "repo-lines-v1:sha256:81fd64b94388ea924e044616b4f8e1d9ff346a3d00ddbd945c6e26a24edd856a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyOGFmODg3NjU5MmIxMWZiMDEwNjE2MzUxMTc3YzZlYzQzNmQwYjZlZmE1MjM5OTU3MjkxOTJiMGNlZjdlYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyM2NiNGMxM2Q2Nzc1OWQ1NGY3NjcxZDQ0MDM0OTcyZDA5MDNhMzlkMDhhZmFlNzNiYjk4MWViOWFiMGRjZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyZTJjYzBhODMyMmNiOTAwZjdkYzBmODA4MjZhYWI0MTRlNzkwZWNkZGFiY2QwYzgwYzM2ODYxNWRkMzc3NWYifQ"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/tools.ts#L63-L80",
+          "version": "repo-lines-v1:sha256:ef1f884a755cd3853759c25a6d05c9b33f51c2665e2e61cc34b3e50ce1f0ecb3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjOGYzYTIxZjRkNTI0NmIwN2I2NDllZjkyNDFmMDJkMWY0NTA4NGM1YTAwMTU4NjNmNmMxNTg2NTBmNjhmMzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmODk2NDJiYjUzMzM2YjMwMTZjZWVlOGI1YWU1MGU3MmU5ZWIwOWI0ZGYxODAzZDQxYzI2NDI2ZTA4ZjE1OTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0MTkwOGVkNTE0NmYxZWI5NDlmMmUwMTMzMmI3MzJhOWE3Nzc3MWIyNjNiMTM2ZDM0YjhmODEzN2RiYzgwN2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c84df649d6c34cbeb472d28d40be6c26",
+      "statement": "Auto-applying an MCP write requires the deployment to vouch for the endpoint (ServerTrust 'vetted') plus destructiveHint===false and idempotentHint===true; trust is deployment configuration read afresh at each point of use so withdrawing it takes effect without a reconnect, and the portal connector defaults to 'byo', earning 'vetted' only via MCP_PORTAL_TRUST_ANNOTATIONS=true because a portal relays annotations from servers the administrator never reviewed.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-mcp-portal/src/config.ts#L33-L41",
+          "version": "repo-lines-v1:sha256:1a8acd70223e67f7617bcf56f89858495ad465c9bba89759588fa8c7a877af24:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVjMTcyNjAwZDBkNGEzYTQ5ODRjYzlkOTc5OTA3YjQ2OGQ3OTkwZDQ3MTc1ODUwZTEwNjRhZWY4YzQ5MDA1NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODkzMTVmZWNlZTZmZTEzZDlkNjkzYjY3Yzc4ZWQ2MzRiZjNkNjU5MGMzMTg4NTY3NGEyNDViMjI4NmVmYWUyMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTQxOGM3YTVmMTIwMTc5ZDgwOGViNjA3MzVlMzcyZDExZTdkZmVjN2M2OGU3YTdmN2YzMDM3NGZkYzBjM2YwZSJ9"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/tools.ts#L20-L33",
+          "version": "repo-lines-v1:sha256:759e5093dba81aa9abf105504c70983e2d0369e6afa6918fdbcc8d0192d4e566:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyM2NiNGMxM2Q2Nzc1OWQ1NGY3NjcxZDQ0MDM0OTcyZDA5MDNhMzlkMDhhZmFlNzNiYjk4MWViOWFiMGRjZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MmE0MjkzODJiMmUxNDcxOGUwZTM3YjA1NzBhOGExNzAyOTkxZmNkODQ5OGNkODQwNjBhOGJmNGYwNTAxN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyZTJjYzBhODMyMmNiOTAwZjdkYzBmODA4MjZhYWI0MTRlNzkwZWNkZGFiY2QwYzgwYzM2ODYxNWRkMzc3NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczNjkyOGE4NjIwNDA2NGQ0YzJiMzJjYmFlOWQzNjBjZmE5YzZkYzNhZDZlNzM1OTYzYjQ5YmNiNjkwZjBiZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d3bc025c4cd74f22896900c9f96d2e34",
+      "statement": "MCP accounts record a provenance ('user' or 'deployment') settled at connect time, which governs whether a server may rename itself over an administrator-chosen label in approval prompts — a decision that should not move when the annotation-trust setting does.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/src/account.ts#L102-L102",
+          "version": "repo-lines-v1:sha256:b4e5938330d3c10fe5b18e1edd514f681960e9050ae26549f0e0687f26b00a6b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRlNTkzODMzMGQzYzEwZmU1YjE4ZTFlZGQ1MTRmNjgxOTYwZTkwNTBhZTI2NTQ5ZjBlMDY4N2YyNmIwMGE2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRlNTkzODMzMGQzYzEwZmU1YjE4ZTFlZGQ1MTRmNjgxOTYwZTkwNTBhZTI2NTQ5ZjBlMDY4N2YyNmIwMGE2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjViZjA0MjdkYTBkMDBjOTdkYjBhNGEzNThhMWEyODQxYTE2ZjgxODFlNTU5OThjYzM5MmRmNTQ1YWRlNTlhNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDc1ZTY2ZjM5MTUzZWI5NTE5YTNlODAzYjIzZjIzNzMyNzFjMWQ0NjM0YjQ0NTFmYzhhMGFmZWY2YjQxYWY0ZSJ9"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/account.ts#L70-L70",
+          "version": "repo-lines-v1:sha256:abb9c63c0430aca583914bb1d54870d332012ccde6170f24df2d63ac70b583e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJiOWM2M2MwNDMwYWNhNTgzOTE0YmIxZDU0ODcwZDMzMjAxMmNjZGU2MTcwZjI0ZGYyZDYzYWM3MGI1ODNlMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJiOWM2M2MwNDMwYWNhNTgzOTE0YmIxZDU0ODcwZDMzMjAxMmNjZGU2MTcwZjI0ZGYyZDYzYWM3MGI1ODNlMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmI3MTVlNWI3YzA3OWU2MDMyMWY4MmM1OWJlNzUxMTcwZWIxYTc5ZWY1ZDE0YmUxZDg5YjE4NTlhMTRhZGMxNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmMyMGRkNjNjOTE1OTBkYmQxNjQxY2VhY2EwMDNjMDc0OTQwYWU4ZTNlYWVjZDQ1MzNhNDJjMDJmMjZkMzhlOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc1574c733334712a4eee4073143f3b0",
+      "statement": "An MCP binding's grant breadth is encoded in the resource-URL fragment (<endpoint> = whole endpoint, #server=<id> = one portal upstream server, #tool=a&tool=b = named tools only), with endpoint identity compared over the whole URL (path and query included, so /mcp and /mcp-v2 on one host are unrelated) and action-kind approval tags namespaced by exactly that identity; the generic connector refuses #server= as it is the portal connector's grammar.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-mcp/README.md#L14-L28",
+          "version": "repo-lines-v1:sha256:1e1fa3a887e8149f588c7fa55977de6d3fc26c6164a40eaf1a70750c1f928abf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4ODQyMmUyNTg0NTY4MmFiYjgwZTNjZTVjYzViMTBhMTMwYzI4YTU3MGFiMjgzZmJkYTlkY2U1ZjQxNGRkYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMTFhN2MyYjk0YTM3MjA3ZmFmOGEwYzYwZWJiZDEwN2QyY2U0NWExZWZkOTYyODNkN2U0Njg2MDdkN2I4YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlNDliOTM1YTA1ZjQxYjZiNzJjNjIwMjllMzk3M2VmZTZmOWMxNjI3ZWQ0YmU1MTY0ZmY1ODIwMmI3MGQwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0Mjc5YjIyNzQzZDdhODIxZmI2YjU1YTQ0MDFmYjI0MTQzYTZkODRlYWU1MDU3MWFiZjE0YjNmYzZmMzIwZDQifQ"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/scope.ts#L1-L16",
+          "version": "repo-lines-v1:sha256:754571a6662e316c97b9f5c80a9bfa6274ff3f129d07f2d76493c287eb7cc23f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4MGY5ZWZiY2EwYmFjN2FkODUzZmQ2NTE3MTZmZmNiZTIxN2E4MTcxNGE3MzkxNDQ0ZDMwY2Q4OTdhZmE4ZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyNDIwZTRkMTk0OGU3N2I3NzBlMDQ3OTUyMDM4N2JhYTJkYjQyZGM5ODA5M2UxOWIxODY1ZWZmZmQ0YTAyMmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0ZDk2NjA3OTkxZmQ4YzUwNTllZDc1OWVjOWFmYTM5ZjZlMmM1NzgwOGFmZjIyNmVjMTQ2Yzk2MDYwYmNlM2EifQ"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/scope.ts#L30-L72",
+          "version": "repo-lines-v1:sha256:8ce4e65ed84b272695082a20083fcdc02fc77660a058a44554c4411343d7b21a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNGNmY2MyNTVjYzQ5NmMwNGZmYmJiZDRhNDNlYTdjNjM1YWI3MDUyNjI5NzNkYzJmNjA5MmFjYjIwMGUwMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzOTJmYzhhZjc1ODUyYzI0MmZiZDA0YjQwNTkwMTgxMWEwYzcxYzhhY2M2MGFmNDAxN2U0OWUyYmVmYWI4ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwNmU3NWQ0ZDdlZTBlZDA1ZmZiOTkyMTNlZTljNDk0ZDE2MWMxZWEwNDhjZmFlYzkyOWRmYzBkNWE2ODkzNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkNWI4NTZjNDcwNzk0ZGFlNjA2MTdjZjgwNmU5N2FhODQzMGQzNjgwOTNjNzU5NWNmOTEyNjMzNzM0ZjM5OGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f3614fd5c764f1eac36be57440ab3fa",
+      "statement": "Approved MCP tool calls are applied at-most-once, not exactly-once: the approval is claimed in the facet's SQLite store before the call is sent (preventing double application), the record is settled in its own write before any result is attached, a fresh DO activation closes every 'applying' claim as failed/non-retryable with an outcome-unknown message, and callMayHaveTakenEffect fails safe — only a not-dispatched error or an auth-required (401/403-class) rejection proves the call never ran, everything else counts as possibly performed and is closed as failed and non-retryable.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/src/action-store.ts#L1-L55",
+          "version": "repo-lines-v1:sha256:d0218b5a8eebabaca829b4ff2a5b4c3cf83936e7abeda9f1c2f3b2f3e4a17300:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NGI1NGZhMTc3YWViZDNhODdhZmYzNzk2Zjk4MjU4Mzg2MmQ1MDdiZTc0YTFjMDZmMDgyOWMxYzBkMDk0MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMTI2ZjBmYzg0MTFhZDNlZjc5ZDY0ZDkzZmU0NmZkMWIyNzY4MWMxMzY2ZjRiZmJiYzI3NzgzNzZkZTM1MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1ZjBhODVjZjMwMTJmMDg4OTcxMmNlMDU2ZjkyMDQ5OGE5ZjUzOGE4MTNmZWI2ODRlNWMzOWVjMzQ0ZTNmYzEifQ"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/client.ts#L208-L218",
+          "version": "repo-lines-v1:sha256:079c875681464d62c5418a2551435f0d0abba2ffd4c426d8c12f95fc95ee7ef3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjMmRkMjRlNTllZmIwOTUwYTU3OTNlY2QyYjBjNWE5ZTJhYTIyNWFiZDk4MjQ4YjFmOTk5Mjg4MGQwNDZjYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2YTEwYWY3OTYwODYxOWQwZjRlNjU2NTk5OTNmNDkwYmNjMGNjMWI4MDZmODFkZDJkM2EwODM0ODk3MTAwMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5NTUzZjYzZjhhMWFlMTg4MDM0YjIwMzAzOGIwNGNjOWIyYTFmMGYxMDYxZTU1N2RlNzU1ZWE3YTcyNTliZGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d11f0fc00ace4f428b259dfae7645bc8",
+      "statement": "Every outbound MCP request goes through mcp-shared's fetch: redirects are followed by hand and re-checked at each hop (max 3) with Authorization dropped when a hop leaves the original origin, one 30-second default deadline covers redirects/pagination/streaming/retries, response bodies are buffered whole under a 1 MiB cap, and MCP_ALLOW_INSECURE (defaulting to \"false\" in both connectors' wrangler configs) is the single dev-only escape hatch for plain HTTP and private hosts.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-mcp/wrangler.jsonc#L33-L33",
+          "version": "repo-lines-v1:sha256:fbb22aaae773b2581daf1431cf984b0dbe8991d05a6b26aeab42778665321646:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmJiMjJhYWFlNzczYjI1ODFkYWYxNDMxY2Y5ODRiMGRiZTg5OTFkMDVhNmIyNmFlYWI0Mjc3ODY2NTMyMTY0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmJiMjJhYWFlNzczYjI1ODFkYWYxNDMxY2Y5ODRiMGRiZTg5OTFkMDVhNmIyNmFlYWI0Mjc3ODY2NTMyMTY0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzA5YjM0NDM0ZjdkNmM5ZDMxZmZhYWI3OTAxMDIxYTk1NWNlYTU0YWNmOWMwMWM5MzRmYTk3OTBmYWMyYWQ2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjZlNDRiZmI2NTE2ZDBhMzVkNjk1N2MyODc2Y2Y3MzVlOTQyNDBkOGIwZWNiZTJhZjRhOGJkY2MwNmQ4YTg5YSJ9"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/fetch.ts#L3-L27",
+          "version": "repo-lines-v1:sha256:758e49b3678a73069c096a18893de1b0c3ef2043fa1e77e9a6a7c0ff16966a1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2ZDYyZjRkYjc3NDljYzUxOWExNGNkMGRkMDUwMTE0MzIyMzBmZmFjYzIzMTNlODQzNTlmOTEyOWEwOGNkMjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNjk3MTRmOWNkMGVmZTkzZWZmMWYyZjk2YzViMmJiMWNjNjRkMDg3YTAyZDVhNmYwN2U1ZjQwYzVjMjJlMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwYzZkZTJiMTE0N2I5ODc3YTRjOWI4OTAxZWFlMjZlY2JjZTg2ZmFmNjk5MWY4Yjk5N2RlMTVlYzliZmYwYzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1YmQ4NWQ4N2Q3ZDkxZjQ0NWU1MGM4MmJkMmU0NDlhMjhmM2ZkNWNlMmU4MGJlZWMzOTk1NmY5M2Y1MDQ2MGYifQ"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/fetch.ts#L45-L53",
+          "version": "repo-lines-v1:sha256:1cf549dcb2c25e6a80e167cc74abd3c9eeffdae2c293bfa15cbe3607786cc19b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM1YTk3YTQ1MzJjNWJhY2I5YjQ5NjQzNjc1NmJjN2M4YTlkMTBlYTk1ZGJkNTUwYzIwNjAwNWYxOTBlNWNmYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRhOGQ0ZGFlZDhiMTA5Mjc1YjViNWM4YTRhZTFmYzk5Mjc3YzRmNjU2NDE4OTI2YTc3MjI5YjgzZWY4MzQ5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzc5MjllOTFlMGY5OWMzZTgyNWRlNjliNDM1ZmI2NDg0ZDFiMGExZGYyZjQ2NTYxYWJmMWEyOWYwNDE4OGI4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U3ZTJiMzQ2ZmFhMDMzZTZlOTcwMTUxYTMzMjUyNmVlM2M5NjdhMGI3NWY4N2NlMGY5MjY5YTlmN2QyMzI5OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd7aa9c6994446ed868f3620bc2fed5b",
+      "statement": "MCP bindings are owner-only: addObserver refuses unconditionally because MCP has no per-record authorization to consult — holding a connection to the same origin proves only that a person can authenticate, not that they may read what the gadget read on the owner's credentials — with the refusal message pointing at publishing a blueprint so each person connects their own account; writes remain allowed since writing back to the source server discloses nothing new.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/src/sharing-policy.ts#L1-L17",
+          "version": "repo-lines-v1:sha256:801eb6716b4cb6a43c832b771a29d49a081467d5ecec194b9e30c7a412395957:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MTU3NTdjNDc4YWM3NmJmYWMxMTY3ZWQwYWJkYzA1YWRlMWZmNDE5Mzg2ZjZkZmQ1MDNiZmU1ODQwMjcxMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a2ab6b1b5d9949f4be4a502c0bdfafc4",
+      "statement": "McpSessionBase is the gadget-facing capability every MCP tool call passes through: read-classified tools authorize via authorizeObservation before returning data, while actions stage into the action store and submitAction to the approval queue, awaiting applyAction before the server is actually called.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/src/session.ts#L108-L108",
+          "version": "repo-lines-v1:sha256:616064a5a7d0f663c602e88456e65c244d0ce88c167161183773b09a2c563ffa:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE2MDY0YTVhN2QwZjY2M2M2MDJlODg0NTZlNjVjMjQ0ZDBjZTg4YzE2NzE2MTE4Mzc3M2IwOWEyYzU2M2ZmYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE2MDY0YTVhN2QwZjY2M2M2MDJlODg0NTZlNjVjMjQ0ZDBjZTg4YzE2NzE2MTE4Mzc3M2IwOWEyYzU2M2ZmYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTFiZjM3NWNkYTE3ODE4NzhmNzFmMmY1MmYzMmM5ZjMxNTEwYWY2ODBkZDc2OTZkYTMxZjYzYWQ5ZTVmZGFkYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjMwNDNiNDAxMGJlMjk0NDJmNzIyNzYwM2Y4NzI1ZjUwZDg3MDllYzI2NjY0YmQwM2NjZjM0M2Y2MzA4MWRiNiJ9"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/session.ts#L127-L165",
+          "version": "repo-lines-v1:sha256:4d6bb91645f378a96a01f4e68e87371b9a90e7044b60374b491ff69ec99350cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyODY3MTJiZjlhNDhlMDIzZGFjNDg4NTYwMDE5M2EyZTRkMmVmYTVjMTBiYjM2MTg1YTNmY2JkZGFmODg1N2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiNjJjM2NhMjljMGRlZDJkOGJjYjgxNmY2ZmNjYWZjZmUwNjA3N2VjNmI0MDg2ODE3NWVmMWU0YjlkNTA4MGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1MTdhZjU5MGYyYjExYzBlOTc5MGRkYzIyYTZhMTQ3MDVjMDIyZTIzYjZiNDlhZDVhYzUyM2VmYWRjZGJhZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyZWZjMTgyMjUzZjUwMmQ0OTFlNmYwNzgxNjFlNmNhNjZlZjRjMzhjZGUxZWFiZWQwNmJkMDVjYTlmYmE2ZDAifQ"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/src/session.ts#L225-L225",
+          "version": "repo-lines-v1:sha256:f553448f2339b7a63fa62bf01e65f59c4fa19d7864d41007084dfeb3f70e01b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjU1MzQ0OGYyMzM5YjdhNjNmYTYyYmYwMWU2NWY1OWM0ZmExOWQ3ODY0ZDQxMDA3MDg0ZGZlYjNmNzBlMDFiMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjU1MzQ0OGYyMzM5YjdhNjNmYTYyYmYwMWU2NWY1OWM0ZmExOWQ3ODY0ZDQxMDA3MDg0ZGZlYjNmNzBlMDFiMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjY5M2Y3YmZhZGFkZTY2NTA1NDY3OWJlMTRjNDY4NjZkYWYwNWQ2YjE1NTBkODRhYjEzMDhhOTI0NGM2YjZmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2I3Yjc0Y2Q2Y2U3MDY4OTkxNDFkNDgxYTJhNTc3NGNjNGJhYzEzNTU3ZWY2YTc1ZjM1ZDY1MmZkOGI2YjVhOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_aaaacf12c61549eb95edaf164e5c2d0a",
+      "statement": "The MCP connectors' resource bounds are fixed rather than configurable (per mcp-shared/README.md): 200 tools per server, 96 KiB catalog, 50 tools/list pages, 1 MiB response bodies, 128 KiB retained results, 100 retained actions, 50 pending decisions, 600-char tool descriptions and 4000-char arguments in prompts, 3 redirect hops, 10-minute connect links, 1-hour unfinished-connect cleanup, and a 30-second outbound deadline.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L107-L131",
+          "version": "repo-lines-v1:sha256:64f6b06c3971caaac1397ed50727751a57d9495bd6dcf1c36ada88e39b6d860b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmNjZkYWFmZmE3NTg5ZGM2YzI1ZTQ0OWFjNDk1N2I0MTJkNzkyMjc2OWMzMWQ3MjIyYzZmMGIyODllZWJkNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MTNjYjhhNDAyNWI2MWNlMTZkOTY1MzM0OWU3OWEzYmQyNjczN2U2Mzk3YWI0ZTI3ZDFmZTYwODVlNWRjNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMTA1OTU3M2U4NmNhYTM2NzIwNzE1MmMzOWFkZTJhOTE3OTA2MTczYWM2NzE5MzhhNzYzZTAyNjIzMTg2M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkYzk0Y2ZlNTY1MTc3N2FjMGYzY2YwNDQ2OGY1MTY1YzYxMjJhZWQzMmFkYWFjMTJhNDIyMWFiMTY4YjMwYjgifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

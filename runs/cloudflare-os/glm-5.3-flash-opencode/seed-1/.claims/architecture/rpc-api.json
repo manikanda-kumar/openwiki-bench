@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:360c2e424102c0db23883590b298906e1d7cfaf16318875b7567e62bac3c8430",
+  "claims": [
+    {
+      "id": "claim_78a06b3a391f48ca986aa088c652b6dd",
+      "statement": "The client-server API is defined entirely in workshop-shared/src/api.ts as Cap'n Web RpcTarget interfaces over a WebSocket the client opens at startup and keeps open for the session lifetime; gadgets are sandboxed iframes limited to postMessage() with the parent, through which they receive a stub to their server-side Durable Object.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1-L24",
+          "version": "repo-lines-v1:sha256:1838e0177eaeb013e44ab9374d4b1ff3908cac932a0bc81b00a86f85fc85f87e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxOWQ3YjExOGJlZjA5MjYzZDNjYTk5N2I2ODE2Y2Y3NDIyOGM3YjljNDNmMDY2NTVkOTU5YjAzODU2OWU1YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZmZiY2JhZjNlMGVhNDQwYjEzYTkxNTBmY2JkMGEwZmUwMGI5OTA0Zjg5NDMzMjVjZWIyZDgwNTQ5NDhiYzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1MTc4NmNiMzBmZDQ1NmZjYzc0NjU2YjA5NjI0YzI5ZGQ0Y2M4Y2NlNzc1N2RhOWE1ZGI0NzVmNGJjMTc1Y2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7d2c594880124484a20779c95a827d4b",
+      "statement": "The RPC capability chain runs PublicApi (unauthenticated: config, blueprint lookup, login) -> AuthenticatedApi (via authenticate(token)) -> Overseer (per-workspace, via openGadget) -> GadgetClient / GatekeeperClient (per workpiece); each capability is minted only after the previous one authorizes the caller, and getAdminApi() returns null for non-admins with the isAdmin check performed once at mint time.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L636-L694",
+          "version": "repo-lines-v1:sha256:9496bfec67716fa16776aa9568639ffd230ecb841c746482ba2713b67dd063a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOTVlMjhlYzkwNDEzMDUyYjEyNzlhZjhhZWFkNzcyMmIzODU1NGJlYTIwMWQ1MDE3OTU5YTY4ZjgwZTczNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMzc4ZjgzNjhjM2VmZWY4ODExNjVmODA5ZjNmNDgxNzQzZWM1MjRjMThiNTFhODU4ZDhjMDcyM2IzZWI0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjNjk1NzQzNjZmNzM3ZTQwZGQ3ZDQ1ZTliYTg0YTliMDM2MTg2YTFiNzhlODMwMGZlNWNmNTNkYzk4MmQ1ZmEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L35-L133",
+          "version": "repo-lines-v1:sha256:694f15604e9614c5564ccdfa096588de86f2dd3bd7f121fd8798d556a9dd576d:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkNjljMzg5OGIxOGI5NGQyYmY1Y2U5OGYxYjk4NGYxZmViYmM4OWJiMGE4ZjdmMDc4Njg2NzYwNTQ1MGQwNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0ZTA0Y2M1Y2RjMmQxNzdmNjIwYzEyMTRlMjc3ZDAxZjFlZmJkYjJkNzVhNDQ3NGU0Y2YyZjcyZTNjZTIxNjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c7802bca94f4cf3a14cdceb06b29b17",
+      "statement": "openGadget(id, shareKey) redeems share keys and opens the workspace in one atomic RPC call, so subsequent calls can be pipelined on the returned Overseer stub without a separate redemption step.",
+      "evidence": [
+        {
+          "resource": "repo://docs/sharing.md#L44-L44",
+          "version": "repo-lines-v1:sha256:1825d4f4d0251a0f59745f810696740d781b6a1fba6eb611f79412b49d956e31:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgyNWQ0ZjRkMDI1MWEwZjU5NzQ1ZjgxMDY5Njc0MGQ3ODFiNmExZmJhNmViNjExZjc5NDEyYjQ5ZDk1NmUzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgyNWQ0ZjRkMDI1MWEwZjU5NzQ1ZjgxMDY5Njc0MGQ3ODFiNmExZmJhNmViNjExZjc5NDEyYjQ5ZDk1NmUzMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGQ5YjNiYjdjOGRkZmZjMjQyMjczM2I5YmVkNzk1OWMyZDljYjE2YzU3NTI0OTVkYWQwNzMwMDc1ODQyOGUzMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk1NTAwYWZjNjcyNTU4ZjI2NDY5ZTRlM2I1MTg2YmEwYjBkNGNjOGFlNTlhOGFhNzI3NzU0YWE1N2ZlYTViMSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L275-L281",
+          "version": "repo-lines-v1:sha256:b02246682f5730a4f7654e0a5848f36a596fa8476f3e4772c8662325a5f69069:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2VlMWFjZmNhOGM5N2JjNzAxMGUxZThkNzZiNTg0NDg1MzNjMjcwZGNkY2NjZmQ4ODcyNGU2NTE2Y2RkZjk2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGNmM2U3MTM0YzVlYzdlNmI3NTY2ZWZmMTExYzRhNjEwOWVhZDgxZmU5N2E3M2I1MGJlMmMwYTBmODg0Zjk1ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWFlODk3ZjE4OGI4NDQ3MDE4NzhiZjllYWZlN2E5ODU1NDZjMTQzNTA5YTMxOWI1YzVjN2RmMTM2ZDI0YTA1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_77dff4b4aadd44248e51fba5d9cd525d",
+      "statement": "The frontend reconnects by publishing an RpcPromise wrapping the next connection on onRpcBroken, so calls pipelined during an outage queue in order; a replacement stub must pass a ping() probe before taking effect, and the PublicApi stub is stored wrapped in an object to avoid React's callable-state-setter behavior.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/RpcContext.tsx#L7-L9",
+          "version": "repo-lines-v1:sha256:f6ff349a54722a53cde8a537d2322929e3fca4ad255a052929d5a05aeec6e137:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI0MmVjYmU3N2QxOGYzMDA0NmY2MDc3ODc0YjExMTdkMmE3YWRmMTY1MjJiZDU1MjhhMDQ5MjVhZGJhMDZlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWZmOTBiZGE0NTM3NTQ4ODIzZmU3YWViN2I4YzQzOTNjMjE1MGNhYWM5OWY0M2Q3YzQyMjAzYjE2MjdmNTU0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDNmOGNjZTMwNWFjMGUzYzc1Y2QwOWQ4ZGNhOTFhYmY3ZDBhNWMxZDg4YTI4MGQ4MTFmMzA4OGU5M2ExNDFiNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDI4NTY5MjZkMDAzM2UwZmQ2ZmZhYjM2YTlkMTUyMDg5ZjRiMmQ0YjI4YmFkZGYwNzgxZDE4MWFkZjQ1ZWU4NSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L94-L153",
+          "version": "repo-lines-v1:sha256:69ce33928fd171d43444537bd48091b72d2f2746188b7c9aac7674005071a6ec:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzNzg5OWNjMTE5YjllNzQ2N2Y3Y2U1NzUxYzRjYzc5NjY5ZDRkMzExMWQ0ZGY3MzIwNzEwMjg5MWRkYzZkYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2ZmJlN2E0NDhkZDkzNTFiNzdkNjViYTA4MWFmMDU1OTIwMDQwZGEyOTdhZDk3OGJhYjljNTI5YmU2NTk3Y2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2ZTU2ZjhmOGJlMWJkNDU0YzRmZmFiOTFkZGU0Mjc5OWJiMmUyY2UzZTBjNTczZTdmOWNkYzA1OGY1MWU3MzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b620c6e73d24f2d98038d8482f2b0b5",
+      "statement": "Server-side session teardown uses an abortSession callback that closes the client WebSocket; openGadgetInternal detects loss of the workspace DO connection by passing a notifyClosed stub to overseer.open() and treating its disposal-without-call as a lost connection, which aborts the session and triggers the client's reconnect logic.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L229-L273",
+          "version": "repo-lines-v1:sha256:5519d08adccffb63fdea4a5628148d3a6219fb7130453a6b727e78b8e963baee:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1NGI1YzRiZWVjODk0MjM1OGNlMTU0MjlmYTQyNzRjOTZkZjVmOTQwZDU5MDYxYmJkYjRiMGM1NDA2NzQxOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkNWZmNTQxNjZlYTVlYzE0ZTdmODAxZDE5ZDQwNzI0MTBlOTFlODJiNjhhYmI0OWE2MDE3MjNmZjU4OWE3MGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhZWQxYzU5YWUwMTAzN2VmM2VkNGZhODE3ZGViNTBkYzdlYWI4NmQzZGM4YzQzMTk5YmJkZTg3M2Q1N2ZkNzAifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L857-L868",
+          "version": "repo-lines-v1:sha256:022e735c0e41c5579de767250f011be97286a4a64da96868cbb54be23f8af5af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljMTJiMGQ4ZjQ3ZjQyZWI1MGJlOGQwN2I1ZTliNzZkN2E1N2M2ZTAyZGY5ZGE1M2YyY2IzNDQ5N2MxMjkwYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViMzM0MTUzZDBkMmZlZDZmNDNmMTRjNTg0MjAxODc2NmNmNDliY2JkZjRiYzk3OWFmOWI3YTNhMzViODFmNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzZTkwOGI1ZGQ3MDFjZGI4NWViODcwMTkxNjVkYjdhZmE0OWRmYTg5YmNhZDBlZWIxNGU0MDdkMWFkMGQzNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4MTg2YzA2MzI1ODJhZDJiNjEzMTY4OGUxNzVhMmU1NTdmNTgzZWJjYjhlNzVlYTExY2ZmOTk4NjFjNWQ3YTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51d20599d32c41cb949cdeac3bece28b",
+      "statement": "The /api endpoint also accepts HTTP batch RPC POSTs with CORS explicitly opened (Access-Control-Allow-Origin: *), justified because the WebSocket transport always allows cross-origin use and the API uses in-band authorization.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L887-L902",
+          "version": "repo-lines-v1:sha256:4705ca5c126ff85eb2bebb65eab485a77d223967132627e750fb1d478fd0412a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNjI2MDRkY2FlNTdlZTJlNGI4NDU2ZWRiOTAxNWJhYzI0N2NiZDNjZjEwOGY1YjM0ZWI0MDRmNTc0Njk5NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhZGIzMjZhMjdmODQ3M2RjMWMxMGQyMzI0YzIwYmUyMWZmMjg1NzFkNjQ0NWVjNWI0MGEwYzU5MTQxMDAyMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyMmZlYjIxNzA3ZTEwNjMwZTQ2OWIxNjYwNjk0Mzk0YjQxZTJiNzM0ODlhYTJhOTJmOTEwYTc2Y2ZlOWYxMmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d59928ec7c074d9c984aa17a8cca4118",
+      "statement": "RPC interface implementations are annotated with @validateRpc() from capnweb-validate, which installs generated runtime type validation matching the TypeScript signatures; this applies to PublicApiImpl, AuthenticatedApiImpl, LoginAttemptImpl, ExternalMessageGateway, and the overseer client interfaces.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L9052-L10552",
+          "version": "repo-lines-v1:sha256:bc5fb82485b4ba029de0042ba0d7e6a73f6b92048d1f3ba0c8bc549e7fe1589f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUwMSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3NzJhYjg4ODgwZDgzMjJjYmRkMGUyMjZhZDkxNTE1ODYyN2E5M2M5MzIzMDYyZjhiMmE2MGY3ODI1ODVlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTE1ZDEwNGYxN2E3YzQyZjk0NzQ3ZWU2NGNiNDAwOWU0NzE4MjAwN2VlNmM0NThmNmU3OTdmMTg3OTFmZThlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTIwNDBlMDk1YTk0ZTJhZGE3NGU0MjFmMzcxODc1MWE5MWE4MTBiZmQ2NmY0OGY0ZTkzOWM3Yjc0ODBlYjY3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjNiNTM3NjhhMTBmZTVhODMxN2FjZDgwN2QwNzYzYWM1ZDUyMjkzNTE2ZDhjNDBjOWRjYWQzMzE1MzBlYWVlYiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L75-L79",
+          "version": "repo-lines-v1:sha256:53ba841fb52bebe244fe13e9e9fef06be46b89b5bf7215df28f844fed3e568f5:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3NzJhYjg4ODgwZDgzMjJjYmRkMGUyMjZhZDkxNTE1ODYyN2E5M2M5MzIzMDYyZjhiMmE2MGY3ODI1ODVlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQyN2I5MjRiNjhlNjI4NmNkZjE3NTYzZjlmMTBlYTdlYmEzYzZhMDQ0NjRlY2RjMjI4ZTA0MzcwODNlYzUzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWUyYmQzOTVkM2FiMzUwZWQxNTJjNjEwY2Y2OWY1NTI2MzYwZGVhYjZkYzg1YmMyMTMxNmVjNTBlZTRjYzYxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjI0YmQ5MDI1MjM1OTg2YTE2ZDM5NTAyYWVlOGFhODlmODdlYTBkMmU3ZWVlYWI0MzE3MGQ2MGEzZmNmMmMwMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d662ac2eaf41412faba425c3c217f9db",
+      "statement": "Expected RPC failures carry machine-readable codes built by codedErrorFamily: OPEN_GADGET_ERROR_CODES (WORKSPACE_NOT_FOUND, WORKSPACE_ACCESS_DENIED) and AUTH_ERROR_CODES (INVALID_SESSION_TOKEN, NOT_AUTHENTICATED_WITH_ACCESS); each code's message doubles as the classification fallback for older deployments that lost the code in transit, so changing a message is a compatibility break.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L298-L357",
+          "version": "repo-lines-v1:sha256:5ba2a178dc3e31a63905773cabce4a6c649c6beecd9cb1a43388f158e4f1a728:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExM2QxYmVkMjUwNGQwYjk5MDQ1NGRjYzE0OGJmZjNkN2NjZjhmOGMwOWNlMmI1Yzg2NjQzMzc0NDczODA4NjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2M2I2MWFhNjUyNGU5MzY5ZjRlMmRhNWEzYmM4MmFkNTcyZWRjMmUwYjI4OWEwMmJiNTViM2UyYTY1ZDc1NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0OGQ5ZTVjODI4MzIwOGUzOGVhNTcwYzc0ZmYzMGUwZTFlYzAzMmQ2OGE0ODFjOWJjNDkxNjNlMWM4OTBkM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlMTYyYmNhZDcxYzkzNDc0NmUwYjA5MTExOTMzMTY0NTI0YjcwNWJjYzUwYjlmZmM4MjIxMjkwM2ViODJhM2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_492a7754a6f7484f8a7740ef694687eb",
+      "statement": "Changing server state is delivered via subscriber capabilities (subscribeToMetadata, subscribeToWorkpieces, subscribeToActions, subscribeToPresence, subscribeConnectedAccounts); disposing the returned subscription stub cancels the subscription, and the frontend disposes stubs in effect cleanup.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/useActions.ts#L190-L231",
+          "version": "repo-lines-v1:sha256:a5eb6c7a48df96e45718cfa698aa76dd56caa4fb29a8d7f31da6529798a4bd18:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MWIzOTM1NjEyZDNmYzMxYmZhNDQ5NzNjYTEwYTFjNGI5NTI3NzY3OWMxZWQ4MjE2ODQ4NDRlNTVmZjJiODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyNDg5YWJkNTVlZDc2NTRhMjYxNjVkNzgxNzdlMzAxZDJmZTExYTBjNDhiNDY3NmM0ZjUzMGI0OTZkNjkyNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZTdhMmM4YjQ0ZDA1MGRmZGUwNDBiNDJiMjQ1M2JiYTEwZmY3MzViYTQ2NTBlZDNkZGFkMDNiNDVmNmNjZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMTJjOGFlNGZlYjg4NjczZDY1M2NiNGQwMjhlYzIxOGIzYTRmOTlmOWUxNjExZGZlNTU5N2VkMDJmNTNiM2IifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1598-L1639",
+          "version": "repo-lines-v1:sha256:dc75a8018a635754770bd398245bb61518eddeca2393e7741294167122af3db6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjYTQzZWRmZWZhYzE4YTNmMWM5OTNiZTFiN2NjNjg4ZjljOTcyMDAzNmU0MjIwYmJiN2NhZDFlOGJjMTgxOTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3MjFhYzc5YTg4MmY5YjdiZmU1ZDgxNmQ5MGRjZWEyZjZhZjlmYjI1NWQyNDA5NjE2MGQ1ZWRjNjE2ODU4MzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzYmM3NGMwN2ViZDZkNjlkZjFiYjUxMWYzMWE5ODg5ZTAxMjdiOTEwNDE0OGY4YjI5OTU0YWIxM2I5OTJjMjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bbed2239c7e24a20950b6173aec48f09",
+      "statement": "The action history pairs subscriptions with a query API: listActions({filter}) is the query half of a query-for-state/subscribe-for-deltas contract, paging newest-first with nextBeforeId cursors and a pending-only filter.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1768-L1780",
+          "version": "repo-lines-v1:sha256:2a284cd2bcbb343d98e53e79a82f43cfcb2289c5eebee6f37c45c8d097b7d2e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MjAyOWVkY2FmZjk4ZjZkN2Y4MDdlMDc1OTYyYTU4MzkzOGEwZDY0ZDY1YjkzOTExNTFlYjgyMDNhZDQ1MGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzNDA1NTg5ODUxMTE4NzM5MjM5YWI1NmY3YmIyNmYwOTgxN2M1M2I3MGE0NDdmMzA4MjhiM2Q5N2EzNjE5MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOWRkNjViZWJhY2YyNDYzMDUwNGNkYjAwYWViY2QyZTdhNzdmNWJjNzhlZDMxZTg3YTUyMzQyZmMwNTU1ZTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef7528c122c445b885b437fb322c4a39",
+      "statement": "GadgetClient is the per-gadget capability covering the deployed UI bundle, connectToGadget() (the stub passed into the sandboxed iframe), file export, and binding management; GatekeeperClient is the per-connection capability covering describe() (the resource's RPC schema), openSession(), and getCreationSpec().",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L3867-L3965",
+          "version": "repo-lines-v1:sha256:f9936906a4c83a439b464927951bffc168beafc9a91f6c13a8b84729bfadb0bb:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNGNhOTY4Mzg5ODJmYmQyNzY3NTM1ZDllNzA4Mjg3ZTkxMWNmNDI0OTkxOTRjZmI1MDk2OTI5NDYwNWI2NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNzY2YmUxN2I4NTE4M2JjNTdkZGZlNzA5ZWM4NjQ3NjY2MzcxZGI5ZjQ3ZWIzNzc4NTc5MjA0MDFlMGE5ZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwY2NjMGJmYWY2NTYwNjUzZTk5YTY0MmM4NDE4MjhhZjM5MDY4ODdlZWFjNTFmNjE4N2UzMWRiMDIzMTYyZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L3973-L3990",
+          "version": "repo-lines-v1:sha256:f741911e67bf0b4f2f02df703d9bb5d4d87aff386fcb299fd49b6fd45d0c1ae3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4YmJlNjRkMzI1ODBjZGNmNzk3NTEyZWE3ZjM4ZDYxNGY2M2RmNTFkMjYwZDQwMmE1YzliYWUyNGE3MTQ3OTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NTgxOGUzM2I1ODU2OWZiMjUyZGQ3ZDRiOTQ5NDI3MjNmNjUxNzQyNDk1ZTJmNTMyMmNmMTYxMWY3OWQ3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0YTQwYTQ1NjQ2ZGJiNzU3MmM0YzQ1ZTg3YWY0NWE3ZTcyMDE0NTAzZmNmMzE2NWI2M2I0MzQ2OTY3ZDQ3MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzMzA5MDBkOWFmZmE5NmViM2YzZGQxODAzY2MxZGJlZTkyNTRhODgwOTVkMGNlOGRhYTQ0YTJlMjZhODYyYzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2659aad014b94fe0be847cfa270a3ede",
+      "statement": "Stub disposal is semantically significant: disposing the LoginAttempt stub abandons a sign-in and cancels the server-side wait, and frontend code disposes RPC stubs via Symbol.dispose in cleanup paths to prevent server-side resource leaks.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetUI.tsx#L196-L237",
+          "version": "repo-lines-v1:sha256:97b44d971f54f658d4559880f9cf529783d00ca46b023605feab71f8f282aa45:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjZDRjMDhmZDFhNzYzODFkNGRhZmJiYjc5MjcxMjFmYTJhMzM3MzRkNjJkODFiMGZkOTkwNzliM2MwOTUzOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzYTBlMDEwMTE2YjU4YWMyYWQ3MjUzZGVlOGQ1YmVlZjMyMmViNzJhMGI4ZTc1YTcyYzdmZTc0MDI3OGFiZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0N2FjMDUxZDNlNWUwYTE3MTM3Nzg5YTA4ZTNkMDc1ZDZhNDY3Mzk5ZjczY2ZlNjBlM2ZlODEwMzJiN2QwZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1MmNlM2Q1Y2ExN2NhNzliOWQ5ZWZjZGVhOGNjNzU2OWM1NzE2MzQ4MjA2MTkyZDk3ZTFlZGIyN2QzMWZjMmMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L39-L46",
+          "version": "repo-lines-v1:sha256:05d7e144b9aeaac924c25f66b9fe107c2d2b0c02f1fd3552dc6c3828528918ff:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjM0N2E2MTIyNmUxZmM0NzMwYjE3MTc5MDRhMzMyMTdhYmIyZjgwZmE3NzY0ZTIzMDM2OWRjNjJiM2I2MDdmYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQxY2IzN2Y3NDQwMmFiMTFkZWQxZGZlNjBlMTZkMmYxNGUwZTY2YWZjZWQzNzkyNjkzMmM3ODZiMGYwYmU5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNkODJiNDg1ZDNhYWJjYzdiNWRjN2I5ZjFjNDNhMmMyODVhYjkzOTMxYzJiNjI0OWEzNjIwYzJkYjFkZDg4ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d5dd7ab648f04d2190d7a3e657ab1639",
+      "statement": "Repository review guidance requires doc comments on every exported member of the workshop-shared public API and rejects hand-written interfaces that mirror an RPC interface plus an as-unknown-as cast, in favor of deriving from the real type.",
+      "evidence": [
+        {
+          "resource": "repo://REVIEW.md",
+          "version": "repo-file-v1:sha256:42afb761151922aab2540380c3df20252c5e6333cec386b76ce1ac5af64546d5"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T05:23:12.377Z"
+  }
+}

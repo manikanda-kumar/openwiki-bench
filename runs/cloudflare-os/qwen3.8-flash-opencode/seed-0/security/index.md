@@ -1,0 +1,5 @@
+# Files
+
+- [Authentication and Sign-in](auth-signin.md) - The three sign-in paths (username/password with client-side argon2id, OAuth via authentication gatekeepers, Cloudflare Access), the verified-email identity invariant, the session token design, and why authentication configuration is env-driven and never admin-editable.
+- [Capability Security Model](capability-model.md) - How the system keeps agents and gadgets safe — capability-based introductions, observations and actions as the two authorization units, where each check is enforced (gatekeeper session, Overseer ledger, minting chokepoints), async approval with action simulation, and the prohibitAllSharing lockdown.
+- [Sharing and Observer Enforcement](sharing-observers.md) - How a gadget is shared (collaborators with build/use roles, HMAC'd share links, the permission graph with transitive revocation) and how the observer mechanism guarantees a new collaborator could already read everything the gadget read through its gatekeepers.

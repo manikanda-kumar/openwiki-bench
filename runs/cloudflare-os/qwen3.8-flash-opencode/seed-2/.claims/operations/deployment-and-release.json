@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:1c827471c9db2cbee2dca8a45e8b6a139e01871a6c226944b3d729c2e1eb4a7f",
+  "claims": [
+    {
+      "id": "claim_bc3082ffce3b49ee8d278c501d27719f",
+      "statement": "build-release bundles every deployable worker via wrangler dry-run with the repo-pinned wrangler so release blobs are byte-identical to a wrangler deploy upload (the deploy service never builds), emits content-addressed module/asset directories, and runs the builds concurrently reassembling in package order.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/build-release.ts#L3-L19",
+          "version": "repo-lines-v1:sha256:83cac43720de3b10e0dc25a15eda06e2133d05e6678d07b7bd79a8f1c891643d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkM2E1NzZlZTE2ZmM0MTZiMDc0YTQzNGNkMzJjZDJlMzViNTQ0MmE3OTcxZDA4ZDc1ODg2YjEzNWI5ZmJjOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MjAwOTY0YTk3ODYzNTUyMmIyYWIwOTBjNjUwNjVkOGVmOGU4NWM0NzMwYmIyZWIwNDYwZDM0YzY3N2RkYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3ZDQ3NWM4ZWM3Y2VkZTQyY2MzMGVhYmUxNDRmZWI1YWNhODRmNjhlZjVjMzQ2NTJiZThmMzUyMzBiNmU3MjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_40596656a12e4b7ab2c494d83c532bea",
+      "statement": "CI release ids are r<CI_PIPELINE_IID zero-padded>-<sha7> using the per-project monotonic run number rather than the instance-global pipeline id, so promotion ordering reflects this project's release sequence.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/build-release.ts#L203-L208",
+          "version": "repo-lines-v1:sha256:45d4a933c018632fa1bab2e256709467729ccbc96f027c27dcdf8d92f5bdc1a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzRkZWMzYmYwZDQ3ZWQ0MTY3NTkxNDg5MTZiM2VhYmRhODA0MDM4OTg4NzQyZWM3ZjQ4Mzk4MmJhMjYxMDNhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjAxOGUzMTQ0MDUzZjJjNGRlNThiNDBmMDI3NjE3ODBkM2FmZWI3ZjUyYmQ0NDJlNGFjMjFhMzE0MjFjYjg1ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjFkNGQ0ODg5ZDk0MmI2Y2VjNjI0YjJlMmY0MmIxYzFkMTlkOTRkMzk2MjA2NmM2NzM4ODE5Y2U3ZTNmOGIxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTcyZjc3YmY2MjI5NGMyMzZiNTllOTlhMGE3ZWY5NGY4NTIxM2Q1Njc5ZmI5NWNlNDYzYWYxNzRlZmZmZWI1MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b6b2039f4c644d898ed654cf6d877e5",
+      "statement": "The release manifest is generated from each package's wrangler.jsonc with account-specific values replaced by placeholders ($ACCOUNT_ID, $KV_<BINDING>_ID, $R2_<BINDING>_NAME, $WORKER_NAME(pkg), $SECRET(name)) that the deploy service substitutes, making one release renderable to any customer account.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L107-L113",
+          "version": "repo-lines-v1:sha256:76ebe766062ecd2f151a866cc19f76d78e697948cd14530bef0e752ed91f76a2:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmUyY2FmNDFmM2QzNWIwY2Y0MjE4NDY0MWE5YTk2OGIzMzYxYzQzMWE0NmMzMzA0ZTA2NTdkYWRjMTVhNWQ0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI4NTUzZTgyZGFiNWQ5ZWRlMTA2NWNjNzQyZGYwZDhkMTNmODk5NDIyMDFhYzdiMzFhYzk3NDEwZDk4NzVhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGZlN2Q4MDQzMTI5OTA3MTZlZGYyYTZhYWQ1MjY2ZmI3NmM3ZDNkNzliYzE4YWYyMzY3Njc2Y2RkNjVmYWZlMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2IwMjA2MjU4YTI0ZWFkZWI3MzA5MWM5MGQ5MWQ0ZjYzMGUwYTVkOWFlODQzNWZiMTBlMzExMjcwZDI0N2IxMiJ9"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L9-L13",
+          "version": "repo-lines-v1:sha256:f1eab314c604e17fe1f259d0f2b287e9e4fcd4bba4461c145b9e219820213e0e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTA5MjM2N2IwYjZjYWZiMjEyNGNhZDE3MDI5Y2I1NDQyZDMyMjYwOGY1NmM1YTQ3ZWJlY2IyNWViN2EzOGNiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDg1ZDdjN2UyODllMDZhYjczMzdiYzY1OTkzOTVlOWE5NmI3MDU5OGYxMDQxZDA4MjYxNjU3MDE4MGY4Mzg4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGY3OGY4OGVkODZmZDM4N2E2ZjI5NTlmNDE5YmY4OTY0MzBmMjA2NmVlYWFmN2Y4YzIwZTUyNzkwYzFiNDZmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjI2ZjhmZWIwN2M4OTEzOWRlOGY5MDYzMDkwOWJiNGE5M2RmNzYwYjEwNjU1ZDYxMzUxZDBlMzNjNjdhNjQ1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5a5ca68c619485fae9cc03fdbe30e01",
+      "statement": "Backend instance-state vars (ADMINS, DEPLOY_URL, CF_ACCESS_*, CF_AI_GATEWAY*) are injected by the deploy service at PUT time and are deliberately never manifest-templated.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L416-L417",
+          "version": "repo-lines-v1:sha256:ca90465f62c6762e48819176a96c994ce6cf7a3b209772b28f14149fa36de700:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M5NDk2YWIyZGViODU5ODBiYzNkMjRlNDFjMDcxODcwMDBhNDE2ODkwOTllMDlhOGQwZWYwMjdjZGI0ZTQxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Y5NjQ0YzQwN2Y2NDJkMDNmMTc5MzY2ZTViZjRmNzBkNzJlNGU1MTAxOTBjNjM2MDAxNjhhMzZlMDQwMzhjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNiZGQzZDQ4ZWNhMzFiZjUxNjc3MDI1YTVmZTcwNDU0M2ZkYzA2ZjE4NWFkMjk5ZWVkNzU2MDUwYWJlNTM0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmU5YjE5OTVhNTdkYWI5YmQyOWM0NjQ2MjJjY2E4ZDYwZjI0MjBkNjcyNGIyOTY2ODZiYzEyZGVmM2Y2MzYwNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_21366be87bba4f50adfce2235ff2340b",
+      "statement": "The deploy wizard defaults gatekeepers to CLIENT_ID/CLIENT_SECRET inputs overridable by per-package deploy-inputs.json, and NO_DEFAULT_CRED_INPUTS opts out connectors with no third-party OAuth app — because the wizard blocks install on unfilled secrets, a spurious default would make them uninstallable.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L258-L268",
+          "version": "repo-lines-v1:sha256:db173f9dd3b91151f362be5454006a47f14763b694f62e8d6e88a8f0d3709a0d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhNWU4MmRmOTUwZTVjNDYzYTk2MjdhZTkzZWQ3MGFjZDEyZjRhODU4NjI3MGQzYjgxMzA2NjEzNGZkNGI1YjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ZjA4ZmVlMjYxZTRiZWI4NmVmMjQwZTU0N2ZlYTUzYmY2ZmI5YWUyYTk2MjY3Yjg1MjgzZjVkMWQ0MzMzNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2Mjc2MmVkMDEwNjE4YTQ4MzM4ZTAzM2Y4OTIwMjlkODVlZWIzNDNiMDM0YjljY2RjMmM4MjFkMWRiM2JmYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhNzkzNjAwNWE1MDg4ZjcwM2QwZGM4MDlkZTE2NjU4ZjkzMjdlY2U5N2U3MDgzYjAxYjcwZjVhOTJlNWYwYWQifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L446-L446",
+          "version": "repo-lines-v1:sha256:b64e5e0b6f74dc0c31ab0263437eb51b157e270ba0e17afe5f4ed3e3374bcefe:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY0ZTVlMGI2Zjc0ZGMwYzMxYWIwMjYzNDM3ZWI1MWIxNTdlMjcwYmEwZTE3YWZlNWY0ZWQzZTMzNzRiY2VmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY0ZTVlMGI2Zjc0ZGMwYzMxYWIwMjYzNDM3ZWI1MWIxNTdlMjcwYmEwZTE3YWZlNWY0ZWQzZTMzNzRiY2VmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTYxMGJmMWZmOTAxODE5ZTU3Yzg4NmFlYzk1NDliYmFmNjcyYTczNWM3ZmZiODNlYTYyNTE2ZDFiNzBkMjMwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjY2ZGE5MjU0N2EzMTI3MjI0YWZhNDZmMjNhNWQ4OTg0Njk4MjEyMjA5YTBmYTg3YjAyYmMyZjdiMTdlZjEwZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_182237e06c00483f9edfff29c97141fb",
+      "statement": "Release metadata marks gatekeeper-email non-installable (Email Routing needs a zone), declares context/scheduler as zero-input preinstalls, and caps singleton-account gatekeepers at one install per instance because a second would duplicate every user's ambient capsule.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L271-L290",
+          "version": "repo-lines-v1:sha256:391e86f98c585d9a603e6bfb99969fe5cc6b09de0bc2fafdbda90379c5bed4e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3OGJlY2E4ODExMTU2NDVmMDMzMzA3NWExNzdhZGYzZWZmY2NhYzA1ZDg1OTIzNzU5ZWQ2Y2YyNzY4N2MxZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzOGYyYzhmZmJhMmYzYTcxNDgxODk2ZjA0NWQ4OTNlYWQ0YjI5MDYyZjNjMDBjNjNhNjUwMzkzY2UyYzRlYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkOTQ3N2IxZWZjMjUwYjIwZTY0YzhlMzhkMTk0NjQ5Y2E5ZTRkNjJiYTFkMmYxZGQ3ZDMyZDJmYWM5Yzc0NWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_54f9cdb1a8034814ab8cfb9ef029d6cf",
+      "statement": "The generated manifest is guarded by a golden-file test that fails on drift until intentionally regenerated with UPDATE_GOLDEN=1, forcing a conscious review of contract changes.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.test.ts#L4-L7",
+          "version": "repo-lines-v1:sha256:f2859548a7553004b707818b348b61317dcba9c9642b39c945b079f0f1ee4f6f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RmMzYwMGY3NzJkNDU1YTY1MzAxYTMyZWU3N2VkMGZkZWQ1NTI1NGNhNWI1MmY1MDdlOGUzN2U3N2RkYWYxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmJmMjk1ZTM0Nzk4MTZmZmVjZTczYTgzZmQ3NjFmMDVjY2ZkOGU3ZWYyOTM1ZTUwYzJhNTZjMmY1N2FkMjI5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmQxMzNhZWNmYWM1YzllMzYzMjQ2NTAyNjc5ZmI5ZTQ1MTk1YTM5OTA1MGU1OTBlMWI1ZTdlOTFlOTIxM2RjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODJmNGQ5OGExNGUxZDdmMGJjODRhYmQzZTljZTBjNGQwMDBhMWVjMTUwMWM0NmI4MTU3YTk3ZTExZTg2NzNlNiJ9"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.test.ts#L56-L63",
+          "version": "repo-lines-v1:sha256:a0600dcc62b70e8966934a21b23eb33526c773026ece590f8ba348cf6be16726:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjljMzAwMTVhYTJhY2I5NDBlYmFkMjc2NDFkYmE2NWRkMGQwOGExNjY5ZjU3YzdkNDQ1MjU3MzNmNTdmOWIwNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDYxYThmMzVmOWE5ODM4Zjk5ZGE2NzZhMjA4M2JmNGU5Y2NkNmE2ZjZiMzJkNTA4ODM3ZjBiZTkxZWY2MTRkYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQwZjJkM2EzYWFkYTI3NTg2NDU3OGQwYTQzOTE1NjM4ZDU0M2ZlY2EyYzk0ODU4ZGI5NDEyMTFlODZjZWYyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmUyZWM1ZDkxNjJiYTg1YzQ5NzBkMDg5MjE3YzA0MzdjMWMxNTFjYTFjMmMyYTgyNjYxMzAzYTIyMDA0NDk4OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5a5ace714bf47d386faea8f17f789e8",
+      "statement": "Release upload mirrors content-addressed blobs to R2 (HEAD-then-skip dedupe) and uploads the manifest last under releases/<id>/ as the sole completion marker; --candidate parks the manifest under candidates/<id>/ where the deploy service cannot see it until e2e verification.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L3-L15",
+          "version": "repo-lines-v1:sha256:0688b7edf2b9fc6691cca14cb059367378fe545323c324abf3cc2e3598fff9eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NTg5N2M5MDFhOWM5ZWFkODNjZWVmN2RjNmJlYjBjMmViZDUzYWY3YmZkY2UxMzAxZjJlOWY2NmYyZGEyM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljMTJjYzAxNTk1OTg3ZGNkODdhNGQ4MDlmNTA3ZWRiMTRiMTk3MzQxNjk2YzJmMjIxMTUxMGVjOTFlMDcxYmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNzg4ZjQ2NDg1NjVjZmI5MzFkYWRhYjZjYzZmYTUyZjhjYTZlZWQwODg1ZWQ2OGQ3MDc2ZjRkZjE4YTIwZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7e48e52a6f5454286838cc5a05c2276",
+      "statement": "Promotion publishes a release by copying the candidate manifest into releases/, is not itself concurrency-isolated (so CI must serialize promote runs), and skips superseded candidates because the deploy service orders releases by upload time — an old promote would roll production back.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/promote-release.ts#L3-L24",
+          "version": "repo-lines-v1:sha256:7f056d324a5ab51302e1a06378a11cd3350116fc579774d5e7c533568631000f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMWRhZjE4ODYzZDU2ZjFjNWE1MjA5MDdjNTc3MzBmYTQyNDBhN2JhOTZiODZhMjFhNDA2MTFlNmZmM2VkMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZjkzMDlkZDQ1NWE0MTQ2NzllZTJjMmQ2YTNlNmZmNjg2ZTFiNjIxOTk0YjNlZGMyOTMxMzI3YmE5ZDhlMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkN2IxNzBiZjUyZTA4OTUxMDA4YmYzZWNjYmJiODcwYTI2YmUwYTFlNWI4ZTVmMDIwYmFmYmNmMzU5OTk3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4ZDU4NWRkYjc0NmM3MGJmNjdkYTI0NmY3NTYwNzgzOTcwOTYzNTA3MzFjMGViYjFiYmEzOGE4YTllMDczODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9fbb5c2b6ec34083b7c3489c9ded2292",
+      "statement": "Per-PR preview instances are deployed as eighteen Cloudflare Worker Previews in three ordered tiers (16 gatekeepers, then backend, then the hostnamed router), patching only preview_id values between tiers because every URL derives deterministically from the router's preview name.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/preview/preview.ts#L1-L22",
+          "version": "repo-lines-v1:sha256:9828d9600721f1704630804832f2a415a2e2ed1ad9a4594dd8a77127a19e276c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNjQxYjk1OTc2YWI4MzJiMWU4NzZhMzc5OTNkN2VjODZlMWY1MjQzNzIwOWMzOGVjMzM0ZTdkMjRlMjI0MDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3NDU5NTA2MmE0MDhhNjFjZjYxNjRiMDM4ODQ0NTMyNTI0NTAzMmUyMzI5NGE4MDk5ZTM4YmExY2YxNjY3YTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_81cec610c65c45c486ce6c81b7ae93b0",
+      "statement": "Preview security posture is asserted: only the router gets a public preview URL (the others set preview_urls:false and a leaked URL would bypass Access), and backend secrets are uploaded as worker secrets between tiers rather than written into configs, since wrangler prints config values to public logs.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/preview/preview.ts#L24-L31",
+          "version": "repo-lines-v1:sha256:3b6061b0b124b6ba2d89c022103ff6f7fb8670232d59a991f513bb80baffeb84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTAxZWFkOTM2YTIyODFkNTNkY2MwNjRiN2UyYTJhYjBkNTNiOTJlZjNlZjdiMzRiNjY4NjczMDA3ODk1Yzg2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM4MjgwNGRlYjViZWNjNTgzMTg0OTFiMTlkMTgwOTlhMTYzYzJjZjllNzAyNjJiYjk2Y2YwOWFiM2M4ZWRmOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVlMjQ5N2EwODc3OTk4NjNjNzVhYjI3NjNkZjFiYzZmZDliNDkwYWQ5MTY5OTAzMmEwNDljZjNiMzk4MjZjZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzYxZTcyZDIxNWZiMWE0MWVmZjY4M2E3Njc3OTNmZDg0MDhlODRhMmU0ZmIwYzFmYmYyNjZkOWRjMGRlODdhYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb4aa40e76604fb0a1e2105aa2384177",
+      "statement": "Preview deployments are deliberately withheld from fork PRs because the deploy token cannot reach fork-triggered runs, so a skipped preview job is expected behavior with a maintainer deploying manually when needed.",
+      "evidence": [
+        {
+          "resource": "repo://CONTRIBUTING.md#L13-L23",
+          "version": "repo-lines-v1:sha256:31951d0dfcb0372e6d099f599e3145d08a011a562ae5c20063f30cd4d97d2996:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NDM0NWVmOTMxZGNlZTgxNGZkMDc0MzYyMTM1ZWMyNzkxZWU2Njg5ZmJhYWFiYjUyMWFjZGMzNDc1M2QyYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwOTRkNWYxN2IzZWQ5Yjg5ZmZkODVjYTU3ZmRhZjM5MTU4YjYxZDRmOWUxY2FkYmQ0YzgyNWU0YmQ4YWE0ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0Mjk0OTc0NGU4MGE2MGZlNmE2ODViYmViZTIyOTMxYzZlODBiNzgzNGY2OThjMzI0NjUzODM4ZTZlYmFhODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T10:56:53.614Z"
+  }
+}

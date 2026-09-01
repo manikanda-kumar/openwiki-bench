@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c561ea7f8652327bc126f077623ddab4901b4dc0c8469c57a4eb0283ba10d52e",
+  "claims": [
+    {
+      "id": "claim_a67d396aa3294b97a5f55c268deeea92",
+      "statement": "Compaction triggers when the prompt reaches 85% of the model's input budget and targets a 30% retained tail; the budget is the SUGGESTED_MODELS context window minus the model's output limit (128k assumed for unknown models, WORKERS_AI_OUTPUT_LIMIT for hand-configured Cloudflare models), and the reserved response capacity is both withheld from the prompt budget and sent as the request's response cap.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L19-L37",
+          "version": "repo-lines-v1:sha256:8a7288f08dc91ce6486282fc99fe76591b0b71ab7aae3c326bb9dd7dc4a75a03:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlYzk1OTFkZmQ2MDM0ZWUxODcxNjNhYjFjZGQxYjc5YmFlYzU0MzE5NTM0ZTAxOWVjZDQ4YzUyODVhODc2MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjMTdjNDNiYzk5ZDA0MzljNjY5MzcyY2QyYjMzZGUzNThmMDE2OGNjOGE2YTVmMDc0ZDg0NDE5Y2RmNmRmYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmYWFkMDQwYWUxNmY2Mzk3OWRhMDhkOWU2ZWM2MmJhODAyYTY4YjNlOTI3YjI1ODJmYjY4NjJhNGU3NjE4MjIifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L8-L17",
+          "version": "repo-lines-v1:sha256:981a09e7aee80f75ea963a97762e44433363aa190afb48d9231605b3a974fe92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4OGIxM2RiMTc2ZjUwODc4ZGIzNTIyN2M3NzE0MDY4M2M1YTU0MTAwZDEyZTQ5YTE0OGNmNTkxMmY3MDY4OGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwODQ1ZDllMzQwZWNhOTRiZDA5N2ZlNDMxOWQ4OWEwZjFjYzY0M2NlOWM1NjQyZDczYTdmZmE4ZmZkNGZmZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2Y2EyMzU4YWI2MzU0YzlhMzA1NjUwNjcyM2VhNDliYjZiNGY0MmZjMDIxYjQ3NmJlMzlkMTMwZDAwNWIwMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzMzhkNzc0OGMxZDFjNjA5MTBmYmQ2MjUyNGQzYzZlM2FlMWViZjFjOTllMDg0OGMyZWRiMWNlM2NjNjYzM2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c416353f4633414791ee9d1be47cb6ae",
+      "statement": "Context size uses provider usage from the last measured step plus an estimate of what was added since (attachment payloads replaced by a marker because model cost depends on content, not bytes), falling back to a characters-divided-by-4 estimate of the whole projection plus the system prompt; the character weights only decide where the cut lands, dividing the measured token count among messages.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L237-L249",
+          "version": "repo-lines-v1:sha256:25363708c2bf50dc7119c33977a8b994a944e125e63ff379457529f2b79524b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxZTlkMzA1YWE0N2M5OWY1YzA3YTJjOGE2MDA1NjY1NTYzMTNmZDNkYzFjNzdiNDQzZmEwMTM3MjQ5NWM1ZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyM2UzMDlmNGQzYWVkODE3N2Q1ZjAzMDMxZjU2M2M5NTk0ODFhYjI0ODI3YTlhNTdiZDQxNWEyOThiNjcyZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjZDRmNDlkN2FlMmQ1ODZkOTEyOTVhNWIyYTNlNDU5OTU5YjJjMDc1N2RmZWIxNDdlZmJiODUyZDBkMWNlNTYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2214-L2222",
+          "version": "repo-lines-v1:sha256:80a432125d8de7674829d78047710906ab0b6a3ce43f7c2532e98d69be8fc56e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NjZmE5N2Y0YTllMWRlZmQ1ZjA0NjYzY2EwZjE5MGM3ZmYzNzRkZGQ5NDE0MDQ0ZTQ3NDc0NzlmOGRhNWEzOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjk0NmVlZTU4NjViNGUxOGJiYjA5YjQ1NDdlODFiYTk3MTVmYWEwYjY4YzI2ZTgyOWI1NGEzMmU2ZGVhYTg0OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDMxYTMwYWZiMTM5ZDA2ZjUyMTk3NDFhMWRjZjE5ODJlMGZiYzQzZWFhMzE1ODdmYjhiYjAxNTJhZDVmMzIyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTRkYmNlYzYyODFmZjZjODc1ZWZlNDQ2ZjJkOTNkNDdlMDMwY2JjY2Q4NTQ5YmNhZWM0NmIwNTM5MWRlNmUzOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b17bd05520ff4383a79a48907a359e8d",
+      "statement": "A /compact turn is detected from the log itself (isCompactionTurn checks the newest message is the builtin compact command), so a resumed turn behaves identically; /compact ends the turn without prompting the model whether or not the boundary advanced, emits compacted with nothingToCompact when no boundary was found, and surfaces errors where an automatic compaction would just log and run the turn uncompacted.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L66-L71",
+          "version": "repo-lines-v1:sha256:d4e9f35bcd35f2d74f2b9c27e315afa3951346d691e65d9bf5e5794ba5d4fbbf:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2ZjYzhiNmE3YWQzOTJiMWQ0NDAxZTBjODU0NTYzYTk2YTkwODAwYjBmNmIyZmRmMmU3NTE5NmI2OWQwM2MyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWFjOWZkN2E1ZGFjMjM0ZTE5OWNkZmU3YjFiMGM1NzA4YjUwOWEyMjY3NGVmYjRmZGNkNmFjYjQ2M2FiNmJjOSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2224-L2282",
+          "version": "repo-lines-v1:sha256:08293cbe542ae8228ebf3586c6d43ed335e49a47942926d8c295aa4848cb1d40:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMDk5MTI5Y2MzMmYxYWEyOGNjY2IwZWI2MmE5OWNjZWU0M2RkNjYyMWE1YjliNzczNDI5MmQ2N2JlZmI3N2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ODUzNzQ2MjU3ZWQ4MTYyYzk1ODhmOTEzYTlkZjI2ZTQ3NzE2YTYxN2MyNGZlNmVhNjI2MGJiZjg5MjkxZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhOTA4NmU3YTAzOGIzNzNjNmE4NmQzOGFjN2Y2ZjYxMDgzZDlhMDliMDA0NzUyMWU3ZGI3YTgxODNjYjVlZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmY2FlMzY2NzdkMjZmYWIwYTE2YWRlMDg4OTk3Yjg3YzQwY2VmMzA4YjAzYmQ5MzRhZTRmNmEwZGVkOGNlMTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d352e2883924d82a696331a75dc0896",
+      "statement": "findCompactionBoundary walks the projection backward until retained messages fill the target budget, then moves the cut to a record boundary (canCut marks the first model message a chat record contributes, so a tool result always keeps the call it answers and a record is never split); a boundary that cannot advance past the previous checkpoint returns undefined and the turn runs uncompacted.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L219-L235",
+          "version": "repo-lines-v1:sha256:950b3c2205db4c67a573b1629bc397c053599e02d882e35404939d44b4152c42:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0YmE0NzM5Y2YzMDI1MGM0ZTE3MmFmNjhhYjRjZDNjOTM0MTNjNzVjNGUxYjM1NmRkMjcwYzE2MTI2MTI3M2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2YTg0ZGI1ZTE3MjVhZjc4OGVhMjVlYTcxMWQxNjQyNTk3ZDE2ZDU0Nzc0ZWY5N2MwOWYxMjcxODBkMDJkYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5MTdjNDIwNWFiOTc1MTA4NDE4MWM3ZTk5N2I5ZWM0OTRiZDhjZmQ3NTg1ZjYxZTQ3MWViY2UxYTdlYTM3NmUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L315-L344",
+          "version": "repo-lines-v1:sha256:ab90ed7e01d7ea4ac98d6a47e21a94e4294f320413326d1454f6d4eb815cb1fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyMzUxY2RkYTA0YWE1NTE3MmY5Zjk5Yzg1NjU2MmJlMGIzYTFlNzZiZGYxMzk5ZGRkNTQyOGE1YzcyMzk0ZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiNTVlOTIyZjhjOTE1ZWM0ZjZhMTJkMTNkYjRjZDA3OGZkNmM5MDk2OTFjMTYyMzkxOTAzZWM1NjNmMDQwNGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlYmRjMGM5NjVmODc4NTA1ODAxYjc5NDk2N2ZiZmYzN2ExMzY1NWFiOTBkYTk3MTIxZWEwYzFkZTYwMGJhNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4eb7f9b1517446ec9cda3d8ff2633289",
+      "statement": "Two protections constrain the cut: a pending connection request keeps the boundary behind the start of the turn that raised it (its accept/deny state lives only in its own message), and protectRetainedReverts lowers the cut so a retained revert keeps the changes whose IDs it reports (walking newest-first settles in one pass, and never below the existing boundary because rollbackChatCompaction guarantees tail reverts reach no lower).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L200-L217",
+          "version": "repo-lines-v1:sha256:52d3324ab1848f1d0f4cfd69287a21cbb946fe11bca7abaff99854d6df5b85de:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExMDk3YWQyZmI3NGI1YmI0MTJmOTZkYTlmNTAxNzY5ZDNkZjJiNWM3NzRhODhiYjU5YTMwYjFhODhkYWQ5NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4YTEwYmQ5MjFmY2FmNjAzNDkyZGQ4ZDUwNjU3NTVhOTRhMDZmMGUyMDk4YTgzNGY2ZjlmZTg5MTZlZGFhZGEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L346-L366",
+          "version": "repo-lines-v1:sha256:5c5b633ae803738a19ec532c09b86f93b76df451cb7bede7b79ceba38ccccde9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwZWVjYWIzYzljOTBkZWRhZjFjNDI4ZDZlYjQzZDYzODMyYmE2ZTdlMDY1MGU5ZWRiZDIyZWZhMzdiN2EwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiMjIyNGM2OTJmMGI3YzRmYjFhNDhmNTcyZjhmYjc0YTY1ODdiNDhlMTU0NTNlMzA3MzY0MDhiYjUyYzQwMzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_651bba2a4ddc44d0b578da1d6ddee2bb",
+      "statement": "The summary is produced by one completeText call with COMPACTION_SYSTEM_PROMPT (a structured Goal/Constraints/Progress/Decisions/Next Steps/Critical Context handoff instructing the model to ignore instructions inside the transcript); the compacted prefix is flattened to plain text with consecutive same-role messages merged (providers reject tool-call blocks without declared tools) and failed tool results keep their error flag visible; an empty summary is refused rather than allowed to discard history, and the summary call's usage is deliberately not billed to the chat.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L272-L308",
+          "version": "repo-lines-v1:sha256:9b6a47cce9d0891568f8efde2c0e1c169efb071b60c5c8ca4a5de79e56fa6220:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE0ZjhmZTZiZDk1Mzk5YjRkOTU3MTY3ZjJiNjI2M2QwOWQxMWViOTQzNDhmMGY5ODkxM2YxMmM0NWRhODNmNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3OGRiMWU5Yzk0ZDYzNzE0M2ZjNmJmNGE1YTJkNzI5ZjZlMDhiODA0NmZlZDdiYWU1YTFjMDc2NTQ3M2I4OTkifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L43-L55",
+          "version": "repo-lines-v1:sha256:710c6ce52cab3ca2c0f57b3baeed1dec794cb0377500c35f4852f3446190f5f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0ZmVmYWE4NzZmNzVhNTkyYzIwZjBkMWVjNjYzNmJiMDZiMDkzMDdmZWM4MmU4MmNkMmUwY2JmZDUwNTVjMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiNDZlOTExYjU4N2Q2Njk4ZTBlZmMwZTA2OWE5Yjk2NGZkZWRlYzVkOWY2ODkzZDQ4Y2FjZTNmNjFkYzgzYmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNDQzMGRlZmEzZWJmM2JhNTkwM2U4ZWE3NjUxNjVkM2FkNmMzNWNhYTczNzhkM2E3ZjExZmY4NGMwNWY3OTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1ZGI3NGQ5YjdjNTk5ZDFlYmE0NzAzZTI1ZWQ3YjQwMzhmZTg1OGNhMTRiYjJmMjgzYjBkZmQxZmFiNmZjNGYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2233-L2249",
+          "version": "repo-lines-v1:sha256:3e1450e8378789c652a4a1b44599178e6f68cedebc8cc26c48e7e7b54f73fbda:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMjU5ODc1NGI2N2IzNmUyMTc2NGE1YWY1ODkxYzU5ZGJhZTI4MmE4ZjQ3MTNlNzlmMDkzODQwY2M0YjM2ZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwZTNmMTU2ODBmOWM4ZGQwZjJhMDQ4NDMxNDRkNDk5ZmY2NDExMWRiM2RlMTZiMDljMjFiNjIzNWMwODI5YTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0M2Y4Y2UyZDI5MTcyZTVhYWVmYzgyMjk2ZWM0OGQyNDcwNjBmYzc1OThhZjIyOTc3ZGYzMmI3MmQ5ZmEwYWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNzZiY2NhZTcxN2E1ZmFjMzJiMzk2MTQzMzBiMWQzY2JlMmE2NzFkNTA3NTgxYzBmZmY5YjVlOGI4MmRmNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c7ad7d21b58643d6b0d27bad6b4bb55e",
+      "statement": "Failure semantics: a failed summary logs a warning and runs the turn uncompacted (compaction triggers below the limit, so the turn's own prompt still fits), while cancellation always propagates and an explicit /compact rethrows; the UI sees compacting/compacted stream events around the attempt.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2264-L2279",
+          "version": "repo-lines-v1:sha256:4eb659499b54d211a233f3479cdc11b0a2e7112b96bb814d7c0f5ceee6c3eefe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxZGY3ZmI2NTEyZjc4MDc0NTBkYWJiYjFmODNiY2QyNjlkNTVkYzM0NGJkMzkxYTZlMTkwMWI4NTcxYjJkZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2NDU0NmUyOWY2MGIzNDI3YmU3YTBlMDY2MDdjYThhYTZlNGIyZjQ0NTI3MjIwNmZmMzZiZGY2YmM1ZWI1MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1YzlkNGM0YmI5OWE2Y2E5MDg0ZjAyZmMxMWE3Yzk2YTA1MGQ5ODRkMDg2YzE3ODE1ZmFhNDhiZWJmNzIxMmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb4463778eb5492d873b44f5b885766d",
+      "statement": "A CompactionCheckpoint is stored keyed chatId.compactedTo (so a chat's checkpoints sort by boundary and history paging can find the one before a cut) and carries the summary (injected into replay as a user message in sanitized <prior_conversation> tags), the chatBindings name map as of the boundary (seed layer + capsules + successful createGadget calls + accepted connection requests + changes-message createdGadgets + PARAMS_<n> callback names), the nextChangeId counter, the chat's pins and epoch, and the composed proposedChange of every still-proposed batch below the boundary.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L372-L414",
+          "version": "repo-lines-v1:sha256:32d702ec81b048cdfbe3dc6343b477051c211fbdd3abfe2825cddb1d6d1446d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNGFkYTRmZDg5YjQwN2UyZTBjNzZjZDNmODY0ZGFmNGRlMmRkY2EyMGVmMTc1MmU0YmU4OGZiMzliMDUwNjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhZTc1YWQ1M2UzNmUxOWZjN2ViNWY1NmRkNjUzMDNkZTdmZTRhNDg5ZGEyYTBiNGY4YTZlYzM2MTE4YjVjNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxOWI4YTM5MzE2YzViM2VjYzllNDdhYmJjOTZiZThhZTZjNmNiZGI3NTRlMjg0MjQwODAzNjJiMDYxNjYxMDUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L164-L232",
+          "version": "repo-lines-v1:sha256:e8e411fed9bb72a40437c44718d7a20f86ca0901ff5e4c3116f05cbee5b20585:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZDAzYmIwYjYzOWZjYWM2YmNlYmQ3Mzk1YzVkZWY5MGE4MDAzN2QwOTY5NThjMTNhNDcxOGIzMjA0MzdkM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2MDM4ZjAwMzBlMjA3OGUwNDQ3ZjcwN2Y1ZjExODg5OGMwNDE4ZTc2OTkwZWE2YjkzNjJkZGIxOGU2NWU1YjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkNzAzYmNjYWE5OGRkOGU2MThhODQ3YzZlZjc0MzAyNWFlMzMxMGJmYWRhNGYyMmE3ZTRiMmZiYWRjYTA0NWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlMjkzODI2NTU5ZTUxN2RhMWU1NjI0MzM1MzU1ZWZlM2U2ZmI3NjQ2ZTE2MDVlM2YxODc0Y2QxYmM3OTZiMjUifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L1144-L1150",
+          "version": "repo-lines-v1:sha256:fd9255cf359797ffde17110b466625b19756f014850d85f893d43d3dc1281959:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQxZDBlNGE1ZWI0ZGU2ZGY3NjUwMDY4OTM0MGI1MDIxOTVjMjhhZTkwOWE3ZDAyYmFjYjg1NTQyZDMyYTJlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3N2QyZjAzMWU5OGI1ZTkxMWM1YWQ0ZmI5YjIxODZhOTMyNTIyZThmNDZlZTQwYmFiZmFlM2RhMDBmYzEyMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTMzOTRhNDdhYTU4MGVmMjJhZmI2YWRhMjc2MWIzMjg1NmJmMWM3NjI0MWE3MzI4MGZmYTAxYjU2M2VjNjdjNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzMzOGJlZjc5OTMxOWEyNTM0YzJkZTA1OTRjNDAxM2ViNWEyNmFkY2UyNjA5N2IzNjZiMjE0YTAyMzk3NDBiMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2a30ea14c63e4f54b2621f688b14765b",
+      "statement": "The checkpoint's pins/epoch are folded from the previous checkpoint over the compacted span (an epoch-boundary merge or migration conversion boundary resets both), and its proposedChange is the composition of all still-proposed batches folded by foldProposedChanges — bounded by content size rather than edit count; the same fold seeds the UI's proposed-changes view via getProposedChanges, which scans the registry when the compacted prefix created gadgets or bindings with no change content.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L416-L461",
+          "version": "repo-lines-v1:sha256:74ce160c5c2179f6382fbcd442bd4a59061645510c5cb1950fc5647f64dfd8b9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhMmJhODkzOGY1MGJlMWUzMGU5Zjk5MmUyNGE2N2JlZTY3MDk3ZTZkNjg1M2RiY2YzMmQwN2QxNzBlNWMwMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L1358-L1365",
+          "version": "repo-lines-v1:sha256:53574de549767aa67a4304dc29a7759c0a945f8ec56a01f63588820963842fe2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzU1NmU1OTcxOWZjOGRlZTE2MGMxNTc0YzNiM2YwZjYyODM2YmFmZTk5YTY1YzAyNjliZTYxMjQ2Yjc3ZmY5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhmNjZmMjg2NWI1YzcwNzhkZWMwZTQ0MDkxODQ3MjVhNDkwNmRiYmFiN2M1OWViYzU4OWUzOWY2ZTMyMTkwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmFmYWE3M2Q1NmQ4MDU5MjcyMjVmNjMyMTQ4OGM2ZmNkMjBkNWYzYjFiYmY4ZmZhYzk0MTE0ZjI3OWNiOGFjZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGUzNTBlN2FiNWFmNzg1MzIyY2RiYTRjMDkyOTdlOTgxZjQwMDg3MzU5MDgyMmZkNzIyYjFmZWEwYzMzNTEwZSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L5055-L5074",
+          "version": "repo-lines-v1:sha256:e3733c1fdbbec461034efc665e2052d08c217d19721065687ef54178d39818c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MzkxYjkyMTYwOTdjMDNjOGZkMjkxNDNlYTJiYTMxMmU4YmI1YzY1MTU2NDU5N2U2NGNhZjlmNGQ5MzI2MGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyMTIwYjM1OTFmYWQ2OTA2ODIwYjdkYjRiMzJlNjAwOTVkOWI5NTY0MTAyNDQ1OTEyMjg1MzgzODYxZTlmN2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNTg2OGVmOTFkNWI4NjhlNGNhNzIxY2JiODE1YjI4MDRkYzY5MDJmNGYyYTlhMGRlOWQ0ZDYyY2Y5YTY1MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlY2FkMTI2NDlhYTAyMWY5NmRkZDVjZDRiZjQ0YzhiYTY4ZjA0MmE3OWEwNGU3MjkwNTY3MWM5ODM2NzBlZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9fb760018b274f0392f0a3cd0f3a1bc3",
+      "statement": "chatChangeStatuses is the single merge/revert status rule shared by agent replay, chat-doc construction, and the overseer's merge/revert guards: processed strictly in log order, a merge marks everything through mergeThrough as merged, a revert marks revertFrom up to the revert message as reverted, and the earliest marking wins.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L128-L158",
+          "version": "repo-lines-v1:sha256:29ac558fe59baf45eb7798f64ab307f33e675714d2bcbf52d93a7cc98834d170:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxZmUwYTg3MGJkMWJlZDk1YTYyZjMxYmVmY2ExYTI1Y2VlMjc0MDRjMzlhNjJkNWM0NTVlZjE3Y2FiYzc3ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4M2Y1NTRjZjA5NjZmNDcxNGVmMGE1NTY0YzAzNDA5Y2Y3NWU2NjRjYzdkZTNhNGYzNmM2MjVlM2M5MDRjZjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6b3640ae55e6440ca9cb948615efaeb8",
+      "statement": "Committing a checkpoint stores it and points the chat at it in one synchronous transaction that also deletes meta.totalTokens (so the shrunken prompt is re-measured and can re-trigger); a revert across the boundary calls rollbackChatCompaction, which repoints the chat at the newest checkpoint the revert leaves intact and deletes checkpoints that folded in the erased changes — which is what lets a revert cross a boundary at all.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L3897-L3897",
+          "version": "repo-lines-v1:sha256:8eea5efc6460c98f9155c25a05056e870fc4f04aff41f5af22e4b1426a12847f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGVlYTVlZmM2NDYwYzk4ZjkxNTVjMjVhMDUwNTZlODcwZmM0ZjA0YWZmNDFmNWFmMjJlNGIxNDI2YTEyODQ3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGVlYTVlZmM2NDYwYzk4ZjkxNTVjMjVhMDUwNTZlODcwZmM0ZjA0YWZmNDFmNWFmMjJlNGIxNDI2YTEyODQ3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjMzMjBkYThlNWFkYTVjODNkNzQ1MjI5YWEzNDljY2IyZDlhYTE3ZWZiMDM0NGEzMTUyMjEwNmY3YzViYzhjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTM2YTE0MTU3OGM2NDhkNWNiYWY0YmY5ZGNkMzNiMGQ5OTQ1NjA0MjVkYmQ1MWI0MzhmODY5NjY3MTQ5ZjNlNCJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L5640-L5659",
+          "version": "repo-lines-v1:sha256:4f800eb5ee02aa12e7c27bba75c0efe0494fdd302fe99793ed3854f17fb9c1f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkYmRlODlkYTViNjI2N2JkMjYwZWIxMTE0MWQwMDk1Y2U5MWQ3NDU1NzE1MTU5YTdiNDVmYTRhNjQ1Yzg2MjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZWExNDY2N2M2NmJkYWU5MjBiZDA2NTFjNGQzZWMzOTc0YTVmZGVhYjU2MGRiOWE5Nzc3OTg2ZDNjYzAzOWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MDQyMDE0N2M5MDA0NjZhZWFhOWViNmFmZGQzZmU3MTAyNGVlYmZmNDVhNzVkNjY3ODJkOGJlZjM4N2IzMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllNzJjZGRmYzg2MDg1NDFkMmFlMDk0ZWNhYjg4MTdhYTBhNjc0N2VkOWRhMjY3MTkyZjkzNDk3OTNhY2E3NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f8c72c2442748d1ba86be5aa2090845",
+      "statement": "Pre-git-storage checkpoints carry observedCodeVersion, and legacyChatBaseVersion anchors the legacy Yjs base at the MAXIMUM referenced version across the checkpoint stamp, tool calls' observedCodeVersion, and legacy merge versions — anchoring lower could silently lose content as Yjs parks unmatched updates as pending structs; this function is migration-internal.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L160-L198",
+          "version": "repo-lines-v1:sha256:b7e8fbf565bce74d1c1f47db38f39e04fa736c92f6f7f2dc42174fcda93171a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhOGQxNjQzZmZkZTRjY2EzYTcyMDE4MjIyMGVlNzkyZDQ3NTk4ZDNkNDRlMWMyYjAyMTE4MjFiODljYjZlMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyYTkzY2I4ZTUyYmY0YjkwZDdlMDk3NWYyYjY5ZDU4MmVjMDdmZTdiZmIxY2M3ZTI5OTg5YmIyYmU2YmFiNDgifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

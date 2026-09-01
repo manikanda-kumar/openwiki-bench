@@ -1,0 +1,6 @@
+# Files
+
+- [How to Add a Format Blueprint](adding-a-format-blueprint.md) - Ship an output-format blueprint with the deployment — authoring and exporting the gadget, the import script and sidecar contract, the generated module and its fingerprinted install, and the absolute rule that a blueprintId never changes after deploy.
+- [How to Add a Gatekeeper](adding-a-gatekeeper.md) - End-to-end checklist for implementing a new gatekeeper Worker — API design review, the three-tier object implementation, nonce-safe OAuth connect, sessions with approval queue and simulation, types for agents, configurator UI, bindings, and local testing.
+- [How to Change Agent Behavior](agent-behavior.md) - Where agent behavior actually lives — the embedded system prompt and tool definitions, admin-configurable deployment instructions, compaction and size budgets, and the env-driven model/provider surface — and what each knob's blast radius is.
+- [How to Change the RPC API](changing-the-rpc-api.md) - Safely modify the workshop-shared RPC interface and its backend/frontend implementations — kernel review bar, doc-comment and type-derivation rules, @validateRpc, promise pipelining, stub disposal, and the useState trap.

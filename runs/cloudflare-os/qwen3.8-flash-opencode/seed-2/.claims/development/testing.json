@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9a10ec80858611ee541e41340a69e16d5e9f1d9a66666b63cb008c59a0c11bee",
+  "claims": [
+    {
+      "id": "claim_02297cdf8fd141aeb186a4b6752dec3d",
+      "statement": "pnpm test runs the root scripts suite via node --test first, then the per-package cached test tasks via vp run with the root package excluded by an explicit --filter '!cloudflare-os' to avoid running the root suite twice.",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L10-L10",
+          "version": "repo-lines-v1:sha256:a1cd587457cb85cc0e5768222c798e5a891b4611fc090205a9067c1450a9c64a:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFjZDU4NzQ1N2NiODVjYzBlNTc2ODIyMmM3OThlNWE4OTFiNDYxMWZjMDkwMjA1YTkwNjdjMTQ1MGE5YzY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFjZDU4NzQ1N2NiODVjYzBlNTc2ODIyMmM3OThlNWE4OTFiNDYxMWZjMDkwMjA1YTkwNjdjMTQ1MGE5YzY0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzNmNTBkNjYwMzUzOGFlMDRmZjA4NjAxNDkzZmY5YzgwZmQ0NDBlMTc5NmQyOGEwN2JhYjU4NTA3ZWU4OTFjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzk5YWY0ZDA5N2ZiMGU5MzI3ZDU5MjIzYTQ1NGRkZTU0MWJkMDU2MWNmNTRjMmFmNjE2YTA0ODBhZWVkN2QyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3e3baa9c142b42bc9aae4807ebce32a8",
+      "statement": "Per-package vitest runs are declared as Vite+ tasks rather than package.json scripts so the task's input can exclude vitest's scratch paths; direct uncached runs use the test:run script because tasks and scripts may not share a name.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L14-L19",
+          "version": "repo-lines-v1:sha256:41ace801e004a58f9b0aa2bd6f9b77080dc1f77d20cb1e3226de80f12e479480:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODM0Mzg1NGMwMTFiYjAxYWMzMTZhMzZmNjUwZThhNDNlZDllZTJmZmY4ZTk5ZDZkNjg0Nzg5MWUyNGNiOWM3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWMyNmI3MTc1ODY0NTc0NDMzNDkxNDRmOTJjMTEwMzMxMzg1OGU0MDI4ODRkYTFkYTEyNWRhODk4YzhhNmM0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDJhMGZmZDkzMWU3MWVmYTM0YTJkODAzMGRlOTQ1NWFhMTExNjVkNGMwNTQwYTBkZGY3NzM5NGViYzY0OTZlZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_56302ccb1165422f838a020ea6ee9b8b",
+      "statement": "Test-task fingerprinting excludes node_modules/.vite, node_modules/.vite-temp and .wrangler at workspace scope because vp refuses to cache a command that reads paths it also writes, and package-relative exclusions would let sibling packages invalidate each other.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L41-L69",
+          "version": "repo-lines-v1:sha256:a5271351f5f26eca5f8d86b2507a37dcb34ba88087ad7088f268af66f4b223db:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlMTk5ODJjOTQ4ZGUzYjQ2NmRmNTdmNjc2MjUzNWRmNDRlNDEyODdiOWIzYzBhYzQ2OTU1Nzk2NmJkNzM5MmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlYWFjZDUzYmNkY2M5MmM5Y2M4OTQxNzdiZTJmZjM2YjY4MmYyOTE2OWQxMzM1NTgzMjI4NTE3NDJkOTQyZTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_570ac07e6e524cbf9c728e9385704c49",
+      "statement": "Every test-task command runs under with-timeout.ts with a 60s idle and 600s total watchdog that kills the entire process tree and exits 124, because vitest's own timeouts die with a crashed workerd child and vp has no task timeout.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/vitest-task-vite-config.ts#L70-L124",
+          "version": "repo-lines-v1:sha256:a0e68e84f003cfc69ca94f1e1b9ea5d97f228a4a6d0e3ce224f22378bb41ef25:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExYjhmZTE0MGNiOGY3ODBhNDJlNzdhZjIwMzg2MzM0NTNjNWNhMzY4NzEwZmZjZGJjYzM5YjI2MGE1MDVjYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1NTI3ODYzYjM0MmE0MmYwNTFkYWM2NmI3YzMxZTAzMDU1M2E5MDhmNTA2M2QwNmQ5YjA3NWY5ZDA4NmM1ODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        },
+        {
+          "resource": "repo://scripts/with-timeout.ts#L1-L30",
+          "version": "repo-lines-v1:sha256:0892c4ed1f34e674b506cbd14c5dee11413145ad18a2f2908d092a60082bc407:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZTkyNGY0ODQxNzA2YzFmMWU3ZTRkYmRhMzZjYzkwNmMwMTljYjE0MTg3YWI2MTEzMTg2YTI1MzZmZWVjNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0NWExNDI5OTdkNDY5MmMxYmZlMmVkZTU3NTI3MGNmZTU4MTUxYzJkYzk3N2Q3NzUxOTE2NGMyNGIxOTUxM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1MjY4ODhjNGE0OTUyYmUwZjU1MTY2NmI2NTMwMTk3OWU2NmE5Y2M4MzZmNmEyYWU2ODQxNzc3YzJlNWUzZDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_976a55f062b444d8876785da148c889c",
+      "statement": "Packages whose tests target workerd load assert-workerd.ts as a setup file that throws unless navigator.userAgent is Cloudflare-Workers, turning a silently Node-fallen-back vitest-pool-workers run into a loud failure.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/assert-workerd.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:ddc7c5c4f95e062951de5b4757bde9f0d24bb2849b3253881b31b3ddf9f640e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZDk5MjNlYjFiOTkxZWExZmQ2ODQxNWFmZTQwMzEwYjY2YjU0MjBjNDAzMTdmZmY4MWYxMTg0NWFhNWI1ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2NjlmM2YyNzQzMjU2OGYwNWM3NDQ5NzAzYTU1M2U2Mzg1NzVhOGI0MDliMjFhNjUwODE2NTU5NGJiNjM1YmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiOGI2MDBhNWI0NDhiMWU0ZDAyZGYwOTc0NmVkM2NhMzE3MmY3NWM0YWFiYjAxZGRlMDgwZTM2Y2FiMDc0YjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b55a2d442934841870baaa57bb269b2",
+      "statement": "Integration suites boot real Workers under wrangler's createTestHarness with checked-in configs patched in memory and speak Cap'n Web over WebSocket to /api, stubbing only outbound HTTP — the code under test runs in another process.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L24-L32",
+          "version": "repo-lines-v1:sha256:8acf38f045e31f73a5b459d9bf5855af53c0f643be339caeace929a0f5d36ca5:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTA5ZTQ0YjUwYWMxMmM2YWQ5ODNkNTVmMzk4NDQ4MjY5NTg2MzBiMDljMjZmMGE0NGNjZmZjMjAwYmJjMjQzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWY0MzQ1MTMyODRiZmI5MjUyZDZlYjIyNjAxODIxZWZiMTkwNGYyMmZmZTgxMmMxMmZlOTVjODhlNDU0NjNlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDdmZjFjZjMwMjkzNWU3MDliM2E1MjlkOWVmOGRiNDI3MjFlNjEyODU1YWFjZDA4OTRkNzljY2I2YWMwMDg5ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTk3NGNjNmY3ZmE5NTJmNDZiZjcxYzNkNTQ4ZTA2OTIzYjAwZmJhMzViYmNkZGNiNzg2MWNiNDA2ODQ1MzFjYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_23acc80d3bdc4cfea7e48d1ae48da6ae",
+      "statement": "Fake timers are unusable in the createTestHarness suites because the code under test reads workerd's out-of-process clock; they only work in in-isolate vitest-pool-workers unit tests.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L34-L42",
+          "version": "repo-lines-v1:sha256:05d774ea5498b57f66d3fdce76da83c926cd0499801d4eb5a68511b1ca768ff0:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjJhZGU5ZjhjZmIwN2QxYjc2YjA2ZWE5ZWYwYjlhZTAwYjRmNWIzZTQ0YjYzY2JhZmM3NDZjMDZiMmI1MjEyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA2MDAzYTdhN2NhYTBhZjY5ZWEyYmQwODI5MmY0NWNmNDlkZjNhNjRjMzE4OWIzYzAwODBmYWE0MWVkZDg4YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDY3YjExMjY4MjhmMzU3MDE3NmZiNzFhYjlmZDQzOGNiY2EyMDVjNzY1YWI2Mzc2OTRkNWQ3N2JiNzZiNDkxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGUxZmJjZmVhNTRmMGMxMjk2OGVjOGNjNTAyODRmNDc4OGU0MmRmNGFkNGE3MWQ3N2E4YTcwZmUxNzIxMjE0NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3c3410238536443eba5747b93e8a6d11",
+      "statement": "The NetworkInterceptor passes loopback through and throws on any fetch no handler matched, making an unmocked vendor call a test failure rather than real internet access.",
+      "evidence": [
+        {
+          "resource": "repo://packages/integration-tests/src/network-interceptor.ts#L1-L26",
+          "version": "repo-lines-v1:sha256:921f0467accfa6e587b12bc99e58e9c0fd3348958432406dd05ee1639b30a73f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYTQwM2E4MTU2ZThjNDlkZTExMzIzM2I1YTI1MzAyZjQ4MDFjMWNlNTQ0NGY4ZTk1OGE3ZjYzYjgzODg1YjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmZjNlOWYyMzc1MThiZGFlMjE4MGFmMTk4M2FkMTJlYjJjZjNmMzQxYzM3YmRlZDE0N2UwODMzYTg0ZGEyZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlNDRhZjA5MDI2ZTgzOTI3ZmEwYWUxNWQwZmI1M2NkZDQxNzVkNGFhMmY0ZDdiMzRmMGEyYzZlYzU2MzRhYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_44870502c797488695f108f8fcb44bff",
+      "statement": "Integration tests share one harness with persistent storage (server.reset costs ~3s and is a teardown, not a wipe), take fresh identities per test, and assert the nothing-escaped condition in afterAll because afterEach would race concurrent siblings.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L67-L83",
+          "version": "repo-lines-v1:sha256:13474194c020726d88f5a255a4d742e09500507e44b16562c3645e157348b7a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0MDA0YmZhZWM4YTdiMWRiMjQ5MGI2YjYzYTg2NzI4NTgxY2I1YWQ1ZDg2OGEyN2I5NWI4MDJkNWM3NTE0MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1Mjg4YTY3ZDU1YTkyNjU2YzQ1NWY1ZWMwNmNiM2IxM2M2ZmVkYjFlY2IzYWVhMjAwMzJhNjQwZTlmNmNiYjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c7351741f6794858af6e75f3ff950cc9",
+      "statement": "The fixture gatekeeper exists because overseer observer tests need on-command refusal that shipping gatekeepers can only produce at prohibitive cost, and adding test hooks to them was rejected as circular; per-vendor coverage remains the intended trajectory via pluggable handlers.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L44-L63",
+          "version": "repo-lines-v1:sha256:2957bc6f2e3fa3a520c78cc981409353b5cd418a06f1ce8fbcb7aa4f24b198b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZmQ0NjQ4YjE1OTJhODY3YzZiZTIyYzk0NzE1NThkZjJkZTcyMmI0YmQ4NDZlYmM2YWRkMmM2NjIzZmJmMmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyOWIyYmU4YzE2YTBiMGY1ZjQ4MDdhNGQ0NWE2ZGQ4ZjdiMTU4MDg2MmViZTViMDJmNGZiOTFlMGJmZDA0NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0MDA0YmZhZWM4YTdiMWRiMjQ5MGI2YjYzYTg2NzI4NTgxY2I1YWQ1ZDg2OGEyN2I5NWI4MDJkNWM3NTE0MzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac88fab6d9774853a14d6639fbd0a559",
+      "statement": "Stubs in the integration toolkit must be minted via stubFor() and capnweb value-imports are lint-restricted to rpc-client.ts, because a vendoring repo can resolve two capnweb copies and a stub from the wrong one fails to serialize.",
+      "evidence": [
+        {
+          "resource": "repo://packages/integration-tests/src/rpc-client.ts#L65-L65",
+          "version": "repo-lines-v1:sha256:ac900761ccd83aa7eb29b44a78bac67c211ce668793aad8a11a2e64fad181958:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM5MDA3NjFjY2Q4M2FhN2ViMjliNDRhNzhiYWM2N2MyMTFjZTY2ODc5M2FhZDhhMTFhMmU2NGZhZDE4MTk1OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM5MDA3NjFjY2Q4M2FhN2ViMjliNDRhNzhiYWM2N2MyMTFjZTY2ODc5M2FhZDhhMTFhMmU2NGZhZDE4MTk1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmE0ZmI0OWE5OWFmZjY0NjMwZDhhOTE1MmEzMTcxOTk4Yjg5ZDlhM2Y5ZDNjMjFlYmJiMjQ2OTA4ODQ3M2Y4NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2IzMDUwYzlkMzA1N2RkNTI0MmFhMTAxNDI2ZGYzNDRjMjk0M2Q4ZTU0N2YzZGJjNzBmYzJmMzViZTAzZmUxOCJ9"
+        },
+        {
+          "resource": "repo://vite.config.ts#L158-L174",
+          "version": "repo-lines-v1:sha256:8f9b11d18331f03810f7301ba5ff3abec16bf4f8ca1056e4e2db59db2e4d3d91:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MzNhNjI5NzAzZmFmNDY0NTNiNWU5ZWVlY2E1OTc0NmIxNzkyMGNkN2Q3NTU4ZGZlYTdlNDJjZWZkOTM0YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3NzYwMjFkY2YxNzg4Yjc3YTUxNWRmNzE5ODM5ZDE1NWQ5YzNjNzRmYjYxYjczNTdmNzA5ZjEyMzBmZTkzYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlMmU3YjUwNTliZmUwNTlhYmE1ZTBhY2Y3MWQ2NWUyNDU0YmIxNWUwNzZlNzFkYjhmYTQ0NDY2YTM2MWJiN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlNmQ3YzFhZjEyMjJiMzY4ZjYwZjg1OWU3YWI0ODBlZTQyMmI0MTA5ZjhjZmYwNGQ0YTU5NGM3MmZmOGFmYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c95d1c4e72694e09800974f2b029480c",
+      "statement": "The pinned wrangler version is coupled to the root workerd override: a newer wrangler bundles a newer workerd than the override supplies and the test harness fails to boot with a compatibility-date mismatch.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L85-L99",
+          "version": "repo-lines-v1:sha256:ea85e82bfd098fe565e16b5319a19b90d8cc9cb4823ff5a7bd020d5bcbd30b6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNTFjMzBiZDRjZTYyNmJmNTFiMjc1ZTk0OGM4NTczODY1NzcxOTYwZWMzOWVjZTczMWMzODUwMTc1YWIyMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYzhiN2VmZDVkNDFiMGVjN2ZlNmRlYTlhZmUyZmFjNjY1YmUwMzczYWM2MTM3N2RjMjQ4OTQwMDc0OTcyZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5OGQ1YjQ4OGIyNDE4ZDVhN2JmMThmODgwYjEwZmQ3ZmY1NDY3ZjE4ZjBjNDc0MzM5N2MzMzViOTcxZDA2ZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkY2YxNTcxNTg1NDlhOTJmYmQyYWVkNmEyOTE2MDAwYTExNzY1NjcwNmFkNGJkYjNmNjIzMGY3ODBmODMxMDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f50b9e2805ba4363917dbb008abc8ec7",
+      "statement": "Worker entry modules may export only classes and the default handler as values, because workerd turns every named value export into an entrypoint and rejects non-function map entries.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integration-testing.md#L120-L128",
+          "version": "repo-lines-v1:sha256:80ffd62b350c153aa08cf55e18dc4aa9f296c85440a35693ce115b8c8188efc2:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE1NmZmNWI1NWI0Y2JkODg5NmQxMDUxODc3NmI2NTA4ZWJmZTVlOTQzMGYzMTIyZDAyYWUyY2NiOGVlYjM1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjc1NzQyNjQxYjdmY2ZjOTliYjNkYTc0NjYzM2ZjMmQ2NGIyOWE5OTZjZTk0YjAxYWY1MTEyZWY2OTg0NjllZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzJhMGQ2M2RlMjA4OWQxMDQ2NTUxOGMwNTVkMTBkMDE0OThmMzE0NjZlZjU5Y2QzMjY5MWRhZDg5YmIxMDdlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c3a4f24ef61d44ee82d95135b1a687cd",
+      "statement": "CI lint/build/test run on fork PRs, but preview deployments intentionally do not, since GitHub withholds the deploy secrets from fork-triggered runs.",
+      "evidence": [
+        {
+          "resource": "repo://CONTRIBUTING.md#L13-L23",
+          "version": "repo-lines-v1:sha256:31951d0dfcb0372e6d099f599e3145d08a011a562ae5c20063f30cd4d97d2996:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NDM0NWVmOTMxZGNlZTgxNGZkMDc0MzYyMTM1ZWMyNzkxZWU2Njg5ZmJhYWFiYjUyMWFjZGMzNDc1M2QyYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwOTRkNWYxN2IzZWQ5Yjg5ZmZkODVjYTU3ZmRhZjM5MTU4YjYxZDRmOWUxY2FkYmQ0YzgyNWU0YmQ4YWE0ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0Mjk0OTc0NGU4MGE2MGZlNmE2ODViYmViZTIyOTMxYzZlODBiNzgzNGY2OThjMzI0NjUzODM4ZTZlYmFhODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T10:56:53.614Z"
+  }
+}

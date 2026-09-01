@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c0f0b817aecb8838c184fcc0f67e15453501e5bc9f975ea35f544b4940c6cab0",
+  "claims": [
+    {
+      "id": "claim_fbfa5df623a744d086aa2b266414de51",
+      "statement": "Each workspace's Overseer DO holds a real git object database (SHA-1, zlib-deflated loose objects byte-identical to git's own) in the gitObjects typed-storage collection, driven through isomorphic-git's plumbing only; there is deliberately no ref layer — gadget records' commitIds, blueprint records, and chats' pinned commits are the refs — and one store per workspace mixes all gadgets' histories, deduplicating related histories at the blob/tree level.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L1-L36",
+          "version": "repo-lines-v1:sha256:561e34821b644f47788ccff3959b10693497ef2d4edffa6086bdb38a15581927:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwYWFiYTNmYTcxNzIzMGIwMGNlMWFkODNmYmI0Y2YzOWEzY2VjMWY1YTkxM2E4NmU1NjM3YTkxMjQ2M2E4YWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MTAxMDZkMzU1ZTMwOWRjYTA4ZTVhNjkzZDE2MzExMjFhZDIwZjQ2YzQ3YWEzMTU1YTI4NzA1YmU0ZTU5YTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczMzAxNzc3YzI5NGFjNWE1OWFkMWY3YzU0NjQ0ZDc0NjMxZTJmZjNiYjBiNDMwODhhMzkzNDRkNjc1NmIxMWIifQ"
+        },
+        {
+          "resource": "repo://plans/git-storage.md#L14-L28",
+          "version": "repo-lines-v1:sha256:868ebf5f3f685a81b0bf7c355707450d7b0ae6e2311d5b2d0c1cc1839fc020cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkMTU4YWM3MGM5MTI2YWM4NzgwMDIxOGUyZDEzNmE3ZmMxMWE0ZWU4ZTFjMTU5YjM5ZjVmOTQ0MDQyNzczMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNWFjZWJiNTIyYzI1YjRiY2EyOGViNmFiMzhhNGQzOTYwNGY4NDc5ZTU2ZjZiM2M2MDU3MzlmZTYwMDIzZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjNThjYWNkOTYyODBjMzQwNzFlNjE0MWNjMmIzZDc1OWI3YTVmMjg2YzFjOTYwNzI3ZDBhOTg5MTkyNTBhYTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2ZDI1ZWRhMjg4ZDUyOWZlZDAyYmZmYWViNWM5MWU5NWY2ZmVkNmFkNzJkOGE5ODlkOTE1ZWY2NGQ1MzMwMDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_45f6a421bd2f430e84bced897f33b749",
+      "statement": "isomorphic-git's porcelain is off-limits (git.commit hard-requires HEAD/index/config and git.merge cannot represent the needed merge behavior); the fs shim maps loose-object paths onto the collection and rejects everything else, must implement all ten fs methods (bindFs binds unconditionally), must answer the promise-detection probe with a rejected promise, and must reject missing files with code ENOENT; object writes are idempotent and the DO's single-threaded execution plus output gate provide serialization.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L76-L116",
+          "version": "repo-lines-v1:sha256:dfc260b6de5a8dcb0cb81528c59ddf04fe072d5ea9e1677c520f34080ef572d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3NjJlMjM1NTY1MGRjNTgxOGM1M2IxNWU5ZGJhNzAyNzNjN2ZhMjExNzYwYTI1ZmFlYjczNjQwOTdiMzVjZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViZjI1MGY5ZGU1MTZlMGE2MTkzZjk0MjYwZjZiZjM2MGUwN2E5YzY4YTU2NGI3YjIyMzJiZmQ2NTFmY2MxODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZDI4ZmQwMTQ4ODAwOWY0ZmYyNGZmN2Q5ZDkyZmM2MDk1MjEwZjBiZjI2ZDdiZDk3ZWU5MTQ0OTYxN2ZhNzQifQ"
+        },
+        {
+          "resource": "repo://plans/git-storage.md#L55-L88",
+          "version": "repo-lines-v1:sha256:647a28b5a5f11fb4bbd3c8b800e45e4b55b601a23d834d0f28bc3796163c09a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MTczM2E3ZDZlYTdhMDJjMWZhYTc4N2M4YjRlNGM5ZWZhZmY5YWFiMjY1NTUwM2Y0YzZiNjk3NTJiZjI3NzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkYjUxMTFjYmY0YjE1ODdlMDMxNGUxMjNkZjQxYmE5Yzk5ODViZWIyMDQ5NzE0YzM4NmZlOGJhOWVjYTE3NDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiNDU4NjAwZWJhMzc1ZWNjNzg0ZWZmNDZiNWEyNzAzMDUzMDNjNDI5NzU3NzI3YzhkMmQ2NjgyMzVkOTg5ZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViMWM0NTc4MmFmYzRlMGZlN2RmMWMzYTQ3YmQyZWEwYzNkNjMxODZjNzFiNWI5NTNkZmEyYmRiMmY0YjViNzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7263d13e89e443a8a2b2c4d571da7990",
+      "statement": "GitStore provides tree-diff changedPaths (memoized per call site in the agent replay), readCommitLog walking ancestry in git-log order, tree writing with git's canonical entry ordering, and flattened file-map reads restricted to modes 100644/100755 (anything else throws), keeping the two views (oid map and file map) in agreement about which paths exist.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L283-L398",
+          "version": "repo-lines-v1:sha256:945ae395b0a9f2ba5721d4d0c2b3e692cd00f53d32985b8102eb4d39ca26af74:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkYzMxYmVkNGY4NjA3ZWFhMTVkNzhmMmIxYjQyYWRjNmQ1OTc2MDQwZjhlYmQwNDA1OWU1NDU3ODQzOTcyNWJhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyN2U1Nzg4ZDVkOWQ3M2QyNGE4MWRiYzBhNWE3NGJmYTgyYzljM2IzYWY5OWU1MmFmNzk2ZTkwYjQ2OGE4YTNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmYzc1MmM3YzA1YzY5MzNjZWM5ODk3ZTQyZWU2NTNlNWYxMjI5YTcxOWRhODczMzA2Y2Y1MzdmMGE1M2Y4MGE2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzZWRlMTE0MzMzYjQ2MDAyZDU3YmNlZGEwYzM1NDk0NDMzM2U1Yjc3OWZhM2VkYjZlNTU3NDQzNzcwNmE1MDQ2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_6b506039c6594bf6b4b01830f049a6e9",
+      "statement": "code-change.ts is the single owner of the code-change invariants: a chat's uncommitted state is a sequence of CodeChanges carrying no base content (only 'a change relative to revision N'), TextChange sections tile the entire original text so before/after lengths are known by construction, FileChange is exactly one of edit/set/remove (remove composable even against an absent file), and per-gadget entries are a LIST of [path, change] pairs because paths like __proto__ would be dropped from path-keyed objects by Cap'n Web deserialization.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L1-L23",
+          "version": "repo-lines-v1:sha256:d7ea7b6f28e759176dd0997862ae9643ebcefdfd1568922c79d07b272552a874:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5YTI1ZTkwZTVkM2ZkMWI2Y2FmOTNiNGE1YTQxZmU5OTQ5MTlkMjdkYWM3YTk0MDI4MGNkZjRkMTFlZjA3NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5MGRjM2MwNDY2ZTJmZmFjMGQ1ODMxMjZkZjZkZDdkMjQ2ZjMwMmZkNGJjNzVhZmE5N2NkZTRhYTE0MmEyOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0M2U3MGZkMWE3YzMzMDIwNjM0Zjc5OTkzMjllNzNjNzRmNTBlZmU5NmNiOWVjNjlhMmE2OGExOTMyYzg4NGQifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L55-L99",
+          "version": "repo-lines-v1:sha256:a30c9d7d4b83fc4b1a6093eeb48e798d8d2be28aac3aeabca297d07734a81a32:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5MTAwOTg3OWY5ZmM4M2Y2N2M0MjRlOTZkYjU4OTI0MGIyMmM0ZDVkOTZlYmYwZTdiNjFiYWFjNzRlN2NjNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxNzA5ZWQwYWM2ODJiODYyMDIwMTc2Yzk3NjBmM2YyNGI5MGFlYzhjYzFkODQ0MDQxNzcwYTlhMWE1ZWIyMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1OTRlYzRiNWUxYmNiM2JhM2RjOGMxM2FjZGRlZTc1ZGYxNjY1Mjc3ODdhMTFjNWJhMTM4NGU3M2JlMjJhYzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_04832bd3f88b4371bb5977b639e0af5f",
+      "statement": "The OT priority convention is fixed here and used identically on both sides of the wire: for two concurrent changes against the same revision, the change the server ordered earlier comes first (its inserts precede the later change's at equal positions), which is exactly ChangeSet's transform law; transformCodeChange bakes the pairing in and nothing else may call the underlying map.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L18-L23",
+          "version": "repo-lines-v1:sha256:b6f0e8eb54be9c3811e8a20505806058072fe0450f714bc4130d9a1c4fcbe03d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODBiNjM5NWI1ZGFhOWMzYWM5MTFmYTg0ZDJiYWJmM2FhNWQyZTQ4YTk2ZWRiNWVhNTA2MDJiOTE0OTEwZTA2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkwZGMzYzA0NjZlMmZmYWMwZDU4MzEyNmRmNmRkN2QyNDZmMzAyZmQ0YmM3NWFmYTk3Y2RlNGFhMTQyYTI4YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDFmM2ZiY2RmODAwMzU4MDBhNjlkMjg3NTBkNWY3MTM0M2QwNzBlYzY3ZjMxMTBiNWQ1N2QyMWYyMGJmZDJhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODQzZTcwZmQxYTdjMzMwMjA2MzRmNzk5OTMyOWU3M2M3NGY1MGVmZTk2Y2I5ZWM2OWEyYTY4YTE5MzJjODg0ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f038f20927b46bcb00f7033823d2cf4",
+      "statement": "Change validation is two-stage in a required order: validateCodeChangeSchema runs BEFORE any transform (transformation is structural and must only see well-formed changes), validateCodeChangeContent runs AFTER transforming to the server's current revision (lengths and boundaries are only meaningful against the content the change will apply to); the declared shape is established upstream by capnweb-validate at the RPC edge, so the stages check only what the type system cannot express.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/code-change.ts#L25-L47",
+          "version": "repo-lines-v1:sha256:5e2dfec5cf173466e966504cba78debed138b3849105161200b669431ce2536a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3MzI0NTI4YmZjZTEyMDk1MDRjYWE3Njg5NTFkOTZjMjUyNzhlNzRiODVkZGZmY2EyYzE0NzZiYzExYTNiYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MTA1OTcwNzM1ZjFjODUwMjY1ODA4YzdjOGE2MzdiMDA3MjZkYzY3Y2I3OWI4YmU0ZGRjMzgyZGQxMWZkZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4MDQ5M2YwZjE4YmU4MGRmODlhNmQ5Y2YyNTE4NmVlZDVlMDZhYTc4N2NhODA2NzIwYzgwNTFmYzdiNzhmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmYWMxM2YyOGQ0ZDM5MGFkZTBjMzM0ZTMyNDBkNjlkYjZiYWRhNDBlMTI5NWU0ODk0MjQ5MDYzM2JiNmM4ZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_01434526d55544d9aea926369f61a10c",
+      "statement": "ChatCodeBase describes the chat's stream identity: pins name the base commit each modified gadget edits against (unpinned gadgets track mainline head live), generation bumps are content-preserving (in-flight submissions transformed across) or destructive (clients discard and rebuild), epoch points at the epochBoundary/conversion message whose successors alone contribute, and submitCodeChange transforms over anything accepted since the submitter's revision while deduping by (clientId, seq) so retries must be byte-identical.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L2293-L2323",
+          "version": "repo-lines-v1:sha256:ae5161dff7e887c64935cd68fafa01d24049f148c48293a9c5cdf66e870e39b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NTA3YTc1Y2Y2NTc0NzQ0ZDZiOWE4MzYxMDUxZDRhNmI1NWY5NzBmN2VjY2QzOGUxNGE1NjU2MjJiZDdkYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNzExMjdmN2Y1ZjE3MTdiOTZlN2U5NzY5MGE3ZDE4MWE1MDcyMzdmY2FkMTg4NDBiYmIwOTM0MDIyYTkyMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0MDkwZjQ0MmY3ZGFhMzYyODkyYTNjMWQxMWI2NjY3NjRlNjk4M2UyNjFiOWJiNmU0NDljOTNiNDZkNWRjZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NWZkNmExZDY4YzgxM2NjYjQ3OTcyYjE1YzA3MmM0NTFjODVjODgzZDJiYzg4NjU5Y2E5NWFjMzY1MzA0YjQifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L2400-L2430",
+          "version": "repo-lines-v1:sha256:e2e898a69a6e72e09279cd9d669d2e6956086811effbe6e74116d680d4217d1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NmI1ZjUyOGQzMzZhYmI1MzA2OTczNDQyYzVkODIxNTMyZWY2ODU1YmQ2OTY0NDc1NDQyNzA5MTBkNjg0OGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2NzgwYjMzYjMwOGM5NjllOTA2YmJlOTJhYjJkY2Y0ZDdiYzYzMjk4YTgyMWI3MmU1ZWFmY2E0NDk4MWY4MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxYTIyMjM0NTkyMjhhNjE0NzJhYTczYTgxMzVkZTgyMzE2MDk2OTQ5MzBkYTMxYmFjMmUxZTQ1MmVkOGJhNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNzdiNTk5MDBjZTQ1MWVhMTZjMGRmYTI5ODdjYWExYjcwN2Y0M2VmNDliYjY2MTE2NDY1MTE3MDJlZTEzZjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_da9eaacf78444981a08d009e180b6eff",
+      "statement": "Accepting a chat is only ever a fast-forward: mergeChanges requires the chat has already merged the gadget's head commit and then creates a plain commit on head; if mainline moved, the user must first update-from-mainline, which computes a three-way merge of merged-head/head/chat trees and delivers the result INTO the chat as an ordinary change while advancing the chat's merged commit.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1994-L2057",
+          "version": "repo-lines-v1:sha256:3d1cdcc8ec04935b8701746cde8135ce80580d40af531c18d5677a50f6a2d61d:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxODJlYzcwNTNjZjZiOTFmMjE0NDkwOTlkMDVlZWY2MmMzNzgxZGE4YWM3N2EyMjJmZDRjMGEyMWM0ODJiNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiYWY5YjU0N2NmZGFlYWNiZDdiNDQ1NzQzMzhjMDZmZmVlNjdiNTkxNWQ2MDkzNzY5Y2JjNGVlYzBmNTYxNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2ZGZhMDdlN2MwYzYyNTYwZjA4MjY3YzMyZDZmNWY4MzNhMThlNDgxMjcxYzhiYjhiZTdlZmE5MGRkODYwYTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlNjIyNzk3OWQ4ZWMzN2UxMmI2MjMwNDUyMTNhOThhN2Y4MTBkMjkxZDI5ZmI3MDE3MGY1ZjhhNmQxM2E4ZWYifQ"
+        },
+        {
+          "resource": "repo://plans/git-storage.md#L33-L45",
+          "version": "repo-lines-v1:sha256:aba546a0cb4b221ce4f34f1ae6f3411ee35fd9322e8cae78e77ad6bcd00c63d6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MzQ5Y2UwODNiNDE2OTE2ZmFlYjliNGI4YTIwYTRjNzJhMTMyYzhkYjQzOWUyNGUxNGMxN2E5MjNkOTc5NDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViM2RhYzgzYmViZjI3MWViODE0ZTViOTI2YmU1MDk0NzhlYzk4MjNkODcxMjRjOTU4Yzg4MTQzNGQwODNjZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzYTg1Nzg3OTlhMzk4ZGE1ZDRiZWFlZDUzODlhY2ViYjU2YWU1YjQwYTdiZTIwYjVhOWIzOTA1MGM3ZGU4OGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzYWEwYjI0MGM2MDlkMjliNjViZWI0YzZmZmQ0OTg4ODc3MDU5ZGU3MTdkNjJhOGRkOWI0OTI4OWY5NWJiZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b65d5274302144b8a01a0349dd74dc43",
+      "statement": "threeWayMerge never throws on conflict: conflicted files get inline diff3-style markers and are reported in conflictPaths (delete-vs-modify keeps the modified content); it deliberately replaces both Yjs CRDT merging (nonsense across divergent bases) and isomorphic-git's merge (throws on both-sides-added before any merge driver), with the common ancestor always known explicitly as the chat's last merged commit.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-store.ts#L452-L510",
+          "version": "repo-lines-v1:sha256:b308f714ef9aebadd856359a1ad21c28a6e62436a68b41ec1ed9c16bc9eda233:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyMmUxOGYxYTE1NzczMWI3YWE1NWJlYTgzMzQ4ZTY2MTgwNGVhMzk0MjcwZjA5YmVjMGMzNzY2MTE0NzRhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyYmQyZTllMDQ4NWRiZWZhY2JjMjRiNDI4OGY0YTljOTk2YzY4YTdiZmNlZjExMmMyYmVmOGEwZDJlNjU5YTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiZDEyZjhjYWRlMWI5NGQ2YzRiMDc5NThhOTk2YTcwYmRjMWQyY2NmZTQ2ZTNmN2VjYmZhMWJiYmM2ZDFkMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhN2QwNTQxODg1OWRlN2ExNjZmYmZjODU5MGM0ZWFjMGIwODNhNTc0NmY3YzYxM2ZhMGUxZTA4ODNlZWY5ZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c50a8913c5174ae285d8bff7c2afbcee",
+      "statement": "Yjs is used only where bases are guaranteed byte-identical: seeding a chat's Y.Doc from a commit is deterministic because Yjs's only randomness is the clientID, which the seed fixes (with sorted file iteration in a single transaction) making encodeStateAsUpdateV2 a pure function of the file map, and Yjs's own collision handling makes a reserved clientID safe.",
+      "evidence": [
+        {
+          "resource": "repo://plans/git-storage.md#L90-L109",
+          "version": "repo-lines-v1:sha256:85421179c855a5a2a567e3305c0e23d2b453cb4dddde0842e887487fc4999a7d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjMmQxOGQ4NTYxNDE5OWI3ZjM5NGM5ZmQ0N2FjYjAzZjE3OTRmMjI4NzVlMDY0YmZjZTdmNzQ4ZTQ2YTIwNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYWU4MzQ5MDQxMTA3NzhiYjkwNmEwMDM5NWFjYmQ3MWY0MDM4MzZkMWY2NGQwYWVjM2FmYWEyYjgyZWQyNTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhODY4MmE2YjI2YzMyYTIxN2ZmZjAwOTJmMmYzM2RiM2Y4ZDBhYjk0MDRiM2VjNjY5MGRiMmI1MGM5MzljODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkNjRlOTVkMGMyNTdhOTdmOWZiNTNkMWRjMGMwYzgxNGQ3ZGMxNTVmYmU1YWQ2MzAzNDgzNWY5MWRmZmEzMWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d024f90fc6e14b39bebdce5fcaa760c5",
+      "statement": "The git migration (run in the Overseer constructor from the version singleton) replayed the legacy Yjs log once into per-gadget commit chains — commit points at every historical merge, every >=1-hour log gap, the final version, and every persisted pinned version, each chain rooted at a version-0 empty-tree commit so every permanent gadget left with a head — and converted each live chat in place into a conversionBoundary changes message (diff of the flattened legacy doc vs the anchor trees, with a pin per touched gadget); the boundary is written even when empty because ChatCodeBase.epoch points at it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-migration.ts#L1-L40",
+          "version": "repo-lines-v1:sha256:9bda036b0286a0a35d97ee46e3bf8dd2628be8189f35f51d2a6daee620f3b910:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5MGM4MzVjMGM2NjQ3NmJhNDNjNjFhNDQzMDNhMWJmNDIyNTJmMGM0NWQyMmRhYWM2OGE2MGE5MzEwZThjOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiYWY4ZWY5MzVjNjNlNzdmOWMwNjkzNTlkNTk1Y2IwZjcxMWQ1Y2NmNWNjMGMwYWJlMjgzMTRlZDAzZjc4ZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5NzUzMDhkMGUxM2FmZmIwNmViMmIzNDU1YmVjYjVlM2Q1YzZkMTZjMzczZmNhYmZiYzFmMGQ3N2ZkMTY5YzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1321470a5e7d4329b815ec962b04cee3",
+      "statement": "The legacy code/snapshots collections and the retired Yjs update bytes on pre-conversion changes messages remain on disk as rollback insurance but are read by nothing except the migration and stripped from client delivery (hydrateChatMessageForClient), and the multi-gadget migration's repair creates a permanent record for orphaned root-\"\" content before synthesizing chains.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/git-migration.ts#L34-L40",
+          "version": "repo-lines-v1:sha256:fffea2ef7e8bddef0114cd094a54b8174cb1045259cd78289f9d77e733644f8e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjA2ZmFmYmE3M2NlNzIxZTY5YTk1YThmMjg4Nzc1YjU3OGU4ODBhODM2M2JmYWM2MWRlZTJiYWIyNWQ2MmRkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmJhZjhlZjkzNWM2M2U3N2Y5YzA2OTM1OWQ1OTVjYjBmNzExZDVjY2Y1Y2MwYzBhYmUyODMxNGVkMDNmNzhkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjFlM2Y3NzI3ZjdhMmE0YzlkZWJkZWU5Mzk4ZmE1ZDNhY2Q2YWFiOGUyNWM0ZGVlNjk2YmJiMTQ0ODc2ZTJjMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjk3NTMwOGQwZTEzYWZmYjA2ZWIyYjM0NTViZWNiNWUzZDVjNmQxNmMzNzNmY2FiZmJjMWYwZDc3ZmQxNjljMyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L1034-L1050",
+          "version": "repo-lines-v1:sha256:d9d5a886757c11af03ec5f506030e828efa35b642c849422a0bf7970c561c4d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYjBjOTE1MTkyZjE0Yzg2Nzg2MjllYWQ1NmRhOTE5OTllMzQ4YWQyNjA0OGI5YjA4MDZkYjgzMzA1MmZiZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NzdkMmYwMzFlOThiNWU5MTFjNWFkNGZiOWIyMTg2YTkzMjUyMmU4ZjQ2ZWU0MGJhYmZhZTNkYTAwZmMxMjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyNmM3YzFjZjNhNDBhOTRkYzk4NzQ0OTVlNGJhZWUyZDA1YjA0YWJjODA1NzMzNDIwZDVjZGYyMDNlYWY4ZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMmUzMTllYzgzNTNmMWU3MGM5ODU2MDYwZTBkYzA4MWFkY2M3MjMzZmFlZjZjMjAwZDIxZTVmMGMxNDdmMDMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L4496-L4504",
+          "version": "repo-lines-v1:sha256:c9e746f12b1e276f07af886c257a58517bcc3947fd31f295c1b08a5e5cc7b096:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFkYmMxZWViZjllYjhiYzcxYTk2ZmZiN2UzMGE4MjYxYTYwOWEwNWY4OTgwMzAxYzcyMTVmMjhlMWRiZmUwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODIxODNlNGYzYTRkNDM4MTVhNDk1ZDg3ZjAzM2ZkYTRlNTE2ZmU5MjY0MjdhMzBhOThkZGRkM2IyNTQ0ZGM3YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzkxNTVkMWE4OTIwOTdmOTliMDg4MTc0ZGE3OTQ4NWUzOGMzYzY2NDNjMTk0NzY1N2M3ZDk4NDJkZjI3YTc4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWJmZjU2MWQzMWU0MmFhNjRmZGU5NzRjNTg5ZjA3NWM1ZGVlNDZhNDg0M2YwNGZiMmFmMGVkY2FmNzZkNDA2ZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T06:02:03.070Z"
+  }
+}

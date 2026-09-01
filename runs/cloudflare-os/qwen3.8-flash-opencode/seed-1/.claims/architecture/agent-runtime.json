@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ebe4dd83e0fcb66e1bd5007f24ba3e7b6b41acad8e29de2244f66b698eff767b",
+  "claims": [
+    {
+      "id": "claim_3b3f200982e0438495c64fb89b40d4a9",
+      "statement": "An agent chat turn runs through runAgent() in agent.ts, which wraps @earendil-works/pi-agent-core's runAgentLoopContinue; all workspace state is reached through the AgentHooks interface implemented by the overseer, and agent.ts must not import overseer.ts.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L1004-L1013",
+          "version": "repo-lines-v1:sha256:a52ea836c8e17ccb2f391bd58e8c0273b887f99c5b49dd8197eeadb2d7c0e460:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiMGFmYmQzNTkxYjExZjZiNWY2ZGYxMWVmNGE5M2EzYWVlMzhlZTEzN2FhNjBlMDc1N2U1MjU2ZTJhOTk3NGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhZTg2ZTIyMjlhYjhiYWZjY2NlNDdiMmI5MzBkYzZhMzkwMmYxZTA0MGI2OTk2YmUwNjEwY2NmNzZiZmY2OTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MzZlYmNiYTBjYmNjMzRmYjM3YThjMTZjMzBhYzJjYzM0YmFkYjQyZGExMjdhNDhmNjllOTQ4ZmQxYTJkZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2N2UxNjZkZTgxNDcyMmM1YWFhM2IzMmRhOGQ4ZmFjMDVhMWZhZGFjYzcxM2U3MmQ3ZTEwYTg4MGNiZDU3NjAifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L36-L49",
+          "version": "repo-lines-v1:sha256:d237f83b598d0c4a8dfc7b7967687d35f754f4a41422577bee4279a988255021:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4YWY3YTQ3NzI2MGYwYzYwNDkxZDEyMGY3ZGI1MTQ4YmEzZWE0YzUzYmU3YWYwMzg0OWUzOTFhOGNiMmQ0N2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2OGQ3MjY5ZTNiNDg2ZTgyZTgxN2MyMmVlZmVmYjk3NTRlNjBmZGM0MWY5OTQzMGFhYzgxM2FhYzNkMWRlZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwY2YyNzA4NDE1NTQ3MjgzZmFjMjI3MmZiMGIyYzhjMGQwODMxOWZjNDUxMDE2NDRiM2YzMzM2Y2Y5ZDliZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOTkyOGI3M2Q4NGI1YzJiNmNkNGQ3MzY4MGZhZGUzNjBiODg3NmE2MmQ2MDhhZmE0MzY0Yzg1MjAxZWQ2N2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2c30c37641d44b37afa9ceb253a818f4",
+      "statement": "The turn_end persistence barrier writes one durable chat-log step per completed model turn and the loop awaits it before the next request, so the chat log can never fall behind what the model saw; error/aborted turns persist nothing and are rethrown after the loop as AgentTurnError carrying the provider HTTP status.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2962-L2965",
+          "version": "repo-lines-v1:sha256:b5d5c22a1fe5e9693d8de5152cf1d11f8b0928b592da06375e91002ba13647b1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTI1OTcxZmUwNTM0ODM5NmI1ZjJiMDA3MmEwZGFiMTU0YjNjZmYzMTU1MDlmZGE5ZDljOTQxNmQ5MDAwZWU1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZmZDhjMTU3NWNlMGI2ZTI4OWMyNDA1YzJmOTYzMGE5ODU3Nzk1NTI1ODkxYTlmZWM1NDRlY2Q0YWMzMzE0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzE4MmNiOWMzYTM1OWIyMGQ0OWQ5MmFiNjAyYzI5NThkZTU0ZTA5ZDc5YWFhNGUxNTFiZjc2ZWU0NjAxNDFjYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTliNWYzMDM5Y2Y5NjMxZGY1YWEwYWI3ZmJhOTM4MjFmMzZmNGFiNzQ4NDc3Yjc2ZjhhN2YzNDQ0NjQ1ZWJiYyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L3135-L3140",
+          "version": "repo-lines-v1:sha256:90413bf71a851b926b98cf455beaabe6edcf8a0d3ebb0628ae942b948d2af843:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTcxMjg5N2RhMjZkNTczYTZiN2RhMjkzZmI1MTczMzA4ODdhNmE4NjMyYjE1MDllMWVkOTZlMzA3YWEwMTNjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ4YTJkMTZhNWZmNTljMTRmN2IwMjRhYTU1ZDkwM2M4OWQ4NGNjYzY1MGU2MmQ0MjI2YzljNjc5ODIzNGUxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmZjYmRiNzU0OTI4YjZlNGZiNzc0MWM0MzMyMTM3ZWJlYWE2YzE0NDlkM2VmYzkwYzQ1ZDAyOTIyYjAxZjBhMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9fee9d55a2646e19f6a8eba3f869c70",
+      "statement": "A model-completed turn is persisted even if the user cancels during tool execution (the 'effects iff record' invariant), and failed tool calls — including schema failures, blocked calls, and aborts — are detected centrally at the tool_execution_end event, where failed edits' code previews are withdrawn.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2946-L2958",
+          "version": "repo-lines-v1:sha256:1a7363057c28767b14c88d937d52e75967323b191ab54e96c307659cf7d97bf9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2YjI5Y2M3MjJhYzFkNjQ1NGJmMDljYjlhYjNmNDQ5ZDI2NzUzMGExNDEwNDg3ODkwZjliNzJhMWVjOTk2MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxNzQ4NTE3NzAyZTg3NWRkNWUyOWI3YmIwMjdhZjQ4MjI3NjcwY2I4YTQ4OGEyOTc0MGY1ZTlhYTg2OTAwMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NmIxYmE0Yzg4ZmI2MzdmMGIxNTY1ZTUwZmU4MWNmODc2MzM2MDhkYWYxNTlmOTY3ODNhY2Y1Yzk4YWU4MDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxODJjYjljM2EzNTliMjBkNDlkOTJhYjYwMmMyOTU4ZGU1NGUwOWQ3OWFhYTRlMTUxYmY3NmVlNDYwMTQxY2IifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2970-L2978",
+          "version": "repo-lines-v1:sha256:ebe9006207c943913a0237fa970d3d17d2617800907852c9e07c220a456f35d6:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQzNDhiNWQxMjFiYWMwYWJkZTNmY2Y5MGFiZTQ2MDIzYTNlNjI5OTcwMjNhMjU1NDliZjk0YTY4MWNkNWE0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTU4NWIzNTkxNjdkYzEyOWNlNjBkOTliNTkxMWY0ZGE1MGNmYjE0MzI5OGMzMzE3NTVjMThmNjQ2YzhiYWE2ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_950dadaf5d914d3c90c5ed09242d61ab",
+      "statement": "The agent tool surface declared via defineTool includes readFile, writeFile, editFile, webFetch, observeUserChanges, describeBinding, setGadgetBinding, createGadget, listBlueprints, executeCode, listConnectableResources, and requestConnection, plus giveUp only on callback-initiated turns.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L2303-L2882",
+          "version": "repo-lines-v1:sha256:d1d66846694f10eba03f4828ce1e9a17929ea036caad152594e130864c0ade5d:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkNWU1ODk1MjdkOWZmMzI1MGY2Y2M4NDUwNDFmOTI2YjI5NjA5MjQ2YTBhYzhlMDQwN2FiYzU0NzJhZmRkOWY0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhZDllMTI1NDY0MjU1NzZkM2RlYWU4YzliOWRiZjEyOGQ1ZDZkZGFmNWQ3ZmU4NTc5MzQ5MjdkZWZmYTNiOWRkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2NTcxZWE4OGEzNWVkZjZmYWEzZTJiZDhkNmVkMWFmMWEwZGE5YjI4ZDk5M2I3YjE3MjM1YzFkNzUxMDczNDYxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjNTlhYjRiYzc1MWJmZjBmY2YyZjIwNmZlZTY1YTY5YTZmNjM5MmJhZjUyMmI3NTBmNjRjOTMxZTM2N2NhYjQ0In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_e42a5594e9e0425b8c81355c705d5ceb",
+      "statement": "executeCode runs the agent's code in a throwaway workerd isolate loaded via the LOADER binding from CODE_MODE_HARNESS plus the agent module, with globalOutbound null (no network), disallow_importable_env (no self-looping), and a CodeModeTailLoopback tail that streams traces and output back to the overseer.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L69-L80",
+          "version": "repo-lines-v1:sha256:eaf7d384a0c449ec6cbf3de70f385b5ca737059e47898fa9d640872802fb8c8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNzU2OTk5N2NiMDA5OGM4MTFiZGI2ZWFhYWJmZTA5NmM4ODU0Mzg0ZDc5OTBhYWNlNDMyZmM5YzJlMjM3MDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmYThmZGJiYjdiYTI2NTc4NWQyOGVkY2ZmZDc3YjY1ZDNkYjFiOTM0M2RmYTczYTU2NjRjZjkyNGJkMzY2Y2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwZGY0OTc4YzM0ZWMyNDNiY2U2YmJhYmM3ZmMxMGZjZjA1YTIxMjI5ODE1ZGYwMWMyZWE0OTdhNmVkODYxNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4MDA1MTM0YTAyMWYxNzQzYWU4Mzk2MzJjNDBhYzg1YzE5MTA5MDEzNDIwN2U4MGI4YjQzMmFlNTRjZjI1OWYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L7242-L7289",
+          "version": "repo-lines-v1:sha256:4035dc355599cb567a10f43b917c9b69fd6d54d862804186dc784deaa45706d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YjJhOGViYmU0YWI1MmFkODQyNGQ3MjBlZGJiNTE4YjQ5MzEzNDE4OGZmMjYxMzVlZTcyOWNlOTNhM2M3YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4NWRkMDI3NmVlN2RiY2ViYjRkZGNhNGY3NGFjMmRmYWNmYmJjNWM5OWM0Mzk0YjU5MzU0YzkwNzMzMjA2YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5NTQ4NTgyNmU3Yjk2ZGJlM2NhNzVlZWE5YWVhOThiMzgzYjQzYzdjNzRkZjdlMjRhYzE2ZmRlM2U1MDVmM2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2MmE2N2RlOWY2OWE2OWU1MmY2MjQzMmQ4Y2ZmZTY4YWI2MTMyMDdiMGMxMGNiZDEwMzM1YmY4Y2JkYWIzYzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_57db6f26cf0a4dab8743031eedb4e905",
+      "statement": "Executed executeCode code receives a 'self' AgentSelfLoopback object that delivers callback messages to the chat thread using the turn initiator's identity, and a transient RestoreForgerImpl stub that lets it invoke gadget restore methods for exactly the duration of the run.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L186-L192",
+          "version": "repo-lines-v1:sha256:b9b017df34a33b1d23a2748a2b6fbb5eb10ece773bfe70152404f5d6c97d0c68:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWNlN2IzYzgwZDhkZDljZTVjM2I4OWJlYjYzMjlmYWRiMTFmMzJlYTk0MTEyNzNiNmIwM2NiZWNiMjkzYjdiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTliNTkyM2E4NzFhMjM5ODc1NjkwNWZmY2E2YWM5M2ViZmVmNTA3Yzg3MjYwYmNmZTIyZmM0MzYwOGQ2OTA2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzliNGE1OWE4NGIwOGExNzQ2NmU4NmYwZTUyNzk2MTA5MzI5YjA2ZGYyNjFlNjI4YTFjY2Y4OGMzNTJkMjQ1ZiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L7293-L7300",
+          "version": "repo-lines-v1:sha256:4c7ef5027cbccdef87236d57813613759b1c86a1c4f73b700649dba884cf20a5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTA4Mjk2ZmM4MDE3Y2Y1YzU0MjUyZDE2ZTgwNTU5NzliMjNjYTU5ZDhkMTgwMjg2Y2Q4MzY1MGYwMDVjNWI2NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRlNzE2MjFhNmVlMzA4N2ZmZDAwYjU1MzA3ZWYzYWUwN2QyNGE2ZWExMTYwYThmZWJmMDA3NDdhMDExODBkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTYyYTY3ZGU5ZjY5YTY5ZTUyZjYyNDMyZDhjZmZlNjhhYjYxMzIwN2IwYzEwY2JkMTAzMzViZjhjYmRhYjNjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGU1MmEyYmM1YTMwZjliMzdlZjEzYjkyZjFjMzk5Mjk0Zjk2YWZlOTEyYmQ1MTJmZjFmNmMwNzk5NDA5MDg0MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1815399325e14e29995a95bd27c05e30",
+      "statement": "The agent's executeCode env is built from a chat-scoped binding map that starts from the prepareChatBindings seed layer and accumulates entries during history replay and live tool calls; names are never rebound so resolution is replay-deterministic.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L1066-L1070",
+          "version": "repo-lines-v1:sha256:a18dd69a7d35e0bbbba55909d582f73ed4d79b1c8259c5fafe3efdcc49992b6a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM3NDgxZWQxZTE0ZGRjNzU0ZTM1ODk4MGVjYTg0NWJlMGQ1NDdlMGM0N2IyYjdjNmMxZGFjMmZiNTc3YzA1MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM4N2NhNWU2NGY5NGE1NzU2YzUyZmI5YWE4YjgwZWM3NTVkZGZlMjBjM2JlZTY4MGU3YWMzYWYxNmVlMjc3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQ4MzVhMzU3MTkzYmE5MTg5MjM1NDRiM2NkNzg2MWRjNGIyY2RmMzk4MmE4NDBlNGUwN2ZiMDNkZWJhYTJmYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2Y2NGViZmNjMzQ3MGUxYTI1MmE1ZWZmNDVhMDJkMGE0ZjZmNjMxZDZkOWQwZTY4MzM5NjkwNzU0Mjk5MGJjYSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L2748-L2748",
+          "version": "repo-lines-v1:sha256:7c052e3513451cad4168103187006e584e9738df91d32682cb5ad5e2c2a0ee07:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2MwNTJlMzUxMzQ1MWNhZDQxNjgxMDMxODcwMDZlNTg0ZTk3MzhkZjkxZDMyNjgyY2I1YWQ1ZTJjMmEwZWUwNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2MwNTJlMzUxMzQ1MWNhZDQxNjgxMDMxODcwMDZlNTg0ZTk3MzhkZjkxZDMyNjgyY2I1YWQ1ZTJjMmEwZWUwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2RjMmY4ZTMzYTU4M2YzZTQ5MGU1MTQwMjNiMDRhZjQ4ODAzNDEzOTc0MTliOTljMjUzNjQyOWZlMzQxMWE3OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzliYzBiM2ZiMWM0ZTJhNDc1OWNiYjU5ZjdlOGJkZmVkN2QzM2I5M2E1MmU4YTQwNzYwMzc1ZjY2ZWJhMmVlZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_17ed99b8bfe34fac8f6eb955a8257b45",
+      "statement": "Context compaction triggers when the prompt reaches 85% of the model's input budget (default 128k window for unlisted models), summarizes messages before a boundary into a checkpoint, and starts agent replay at that boundary while canonical history keeps every message for the UI.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent-compaction.ts#L6-L20",
+          "version": "repo-lines-v1:sha256:5bc9fee068653d4056600c7785b3158b3eb7efd2c5f96ae5386d79d31526ed9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjMDE2YTY1OGQ5ODBiMmExM2I5YzUxNzcxNzhiZjcwYmRjNTdkZWFjMTIyMjQxN2MxNDE2OTIwMWM2NGNkYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0YTI1YjNiYTg5YTUwNzk3NjgxNTllZmU2YzYyYjhjNTQ3M2Q3ZjcxMjA1MjMzYTFlZDI0MzhkZGRiMjRjYTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5MmYyNGEzMmRlMjlkMzljNzk0NDAxYmU3ZjdjYzdhNGVhODU3YzBhZjdjYWUxZTZhOWE0ZmNmZGZjM2I1NDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxY2RkOTdkMjdmMjhmNjdmNjU4MjcwNmVkOTg5MWU2NTdjYjIzNDNkMGEzY2ZhMjFlODIzZjYzMGI2YTkyZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_61c5328145ed4c6eaa1e86980244f07c",
+      "statement": "Code-change sizes are bounded in two layers: CHAT_CHANGE_MESSAGE_BUDGET (1 MiB) for composed user-edit changes and STEP_CHANGE_BUDGET (1.5 MiB) enforced at the agent's write call, sized to keep barrier-written changes inside the 2 MB storage record cap.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/agent.ts#L36-L64",
+          "version": "repo-lines-v1:sha256:fb1e0f30cc3ba519abb8fe9483c5ef362793c72ae92e0389bc4eabb8fb997d50:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4YWY3YTQ3NzI2MGYwYzYwNDkxZDEyMGY3ZGI1MTQ4YmEzZWE0YzUzYmU3YWYwMzg0OWUzOTFhOGNiMmQ0N2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwY2YyNzA4NDE1NTQ3MjgzZmFjMjI3MmZiMGIyYzhjMGQwODMxOWZjNDUxMDE2NDRiM2YzMzM2Y2Y5ZDliZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzZmRmOGVhNGJlYmE5NTU2NGM2MGM5ZTg3YjQzYWQzNzZmMDRhNmM0NDVjNTFiY2MxOTQ3YjdkYzVlZDA1ZDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8779ebc35098495796b42aeb03319814",
+      "statement": "Slash commands are collected from attached gatekeepers advertising getSlashCommandProvider (a failing gatekeeper contributes nothing), and an invoked command runs on that gatekeeper with an ObservationAuthorizer passed through.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/slash-commands.ts#L18-L53",
+          "version": "repo-lines-v1:sha256:b4bc6553e3239a3af5e379e5db4daf4345a9e9d7e4a674f136fb33f3c76c8950:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmNDhmOTE5YmViZDNkMjMwZTQyMGFhNzA2MjhjZDY4NTM2MGI0YzcwMTMyNTAzZjFlNDlhODdiYTIzNjAyNWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T09:47:13.931Z"
+  }
+}

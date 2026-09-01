@@ -1,0 +1,7 @@
+# Files
+
+- [Cloudflare Gatekeeper](cloudflare-connector.md) - The Cloudflare connector's three jobs from one connection — sign-in, AI Gateway billing, Workers Observability — its fail-closed scope model, per-binding capability enforcement against a provider that returns wrong-but-plausible data, and its layered module/test design.
+- [Context Library and Scheduled Tasks](context-and-scheduler.md) - The two auto-provisioned singleton gatekeepers — the Context Library (private/public context collections with an agent read session and management UI) and Scheduled Tasks (one account-scoped driver DO firing persistent workspace hooks).
+- [Gatekeeper Framework](framework.md) - The protocol every gatekeeper connector implements — vendor/account/session objects, the nonce-guarded OAuth connect flow, the approval queue with action simulation, observation authorization, hooks over persistent stubs, resource URL patterns, provisioning modes, and configurator UIs.
+- [MCP Gatekeepers](mcp-connectors.md) - The two MCP connectors and the shared mcp-shared library — the tools.ts trust boundary over server-provided annotations, the byo/vetted tiers, the fragment-grammar resource scope, queued-action durability, and the always-revalidating fetch layer.
+- [Service Gatekeeper Connectors](reference-connectors.md) - Inventory and shared patterns of the first-party service connectors — what resources each offers, how they wire OAuth accounts, resource facets, action simulation, observers, and the email receive path.

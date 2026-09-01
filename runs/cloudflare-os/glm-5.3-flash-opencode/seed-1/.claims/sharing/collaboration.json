@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a08a9ca7971c7f3c56f394322f6c0d94e0e0abe510fd71464d46ebb949f17e01",
+  "claims": [
+    {
+      "id": "claim_c90750bd714e4c76a00c5876c82b65ad",
+      "statement": "SharingManager owns all manipulation of the collaborators and shareKeys collections and the permission graph linking them, deliberately performing no RPC itself — anything requiring a User DO stays in the Overseer — and the prohibitAllSharing lockdown flag intentionally does not live here: it is a broader communication policy enforced by the Overseer, which only asks hasAnyShares().",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L1-L22",
+          "version": "repo-lines-v1:sha256:77626ebae0e6ecf726f951f198a5c9f1071abf26947f0d29010a117a0af5d5f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiNWUyMjQ3ZDJmMWVhZjcyZWM4ZTc4ODQ3YjJmOGJlNmQ0YTkwMzk4N2NkNWUyNGE2YmMxODU5ZmJkYjM1NTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmZjFjYWU2MTk4ZTllMDFmNzk0NzY4Nzg2OTIxYjdlZDJjNjU4NDk4ZGM0MGE2NmVhMzgwZWExOWJmZTY2YmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzN2M1M2U0ZGNkYzZjNWEyOWQ0NjRmODQ0NTM4ZGIwNjY2MWYwMmU1ZmYwYjZmOWYyNGVkMDQ1Y2Y5ZjkzY2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d55c0b5703d48ceb22def79fcc0ff10",
+      "statement": "Share keys are stored only as HMAC-SHA-256 hashes of the raw random keys under a fixed 256-bit domain-separation key (not secret, only personalization); a link record is keyed by its first key's hash and carries creator, role, and a soft-revocation flag, while later copies are ShareKeyAliasRecords pointing back at the link id — the raw key is never stored server-side.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L47-L65",
+          "version": "repo-lines-v1:sha256:24f724d81d234d071c46b47347fec81fd9ffff4876e063aa94868324c3c0503e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzMyNTk1ZmQ2MmE3Y2RjYzFlODllNzI3Y2FlZTk3MzdkZDFlODMwNTY4ZWNiOGNjMGNkNTE3ZDliMzFjMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjMGE1ZDNmNTIzOGM3MWY3MDdkMTA3NDkwNjY3NDczMGRjYzY1MWY5YzZkZDU0MjQwZjI4MTE3NTMxNDVjYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUyZmZjYTUzODI2ZTQxZGU4MWUxNGEzN2JlNTcyMjYwODI3MWUzNmMwYmQ0MTU4ZjdiM2IyYWI1MDYxMjE1OWYifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L81-L119",
+          "version": "repo-lines-v1:sha256:cb37e5e8b47dcd0f84546321accad42d2f00fa5af0348641d8ec551d013669cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyNDgxOWRlYmRkNDdkZDE4ZjAxY2YxMTMyYjI4NGRlMjlhY2NmZDdjMWRjNzQ3MmRlZGU1NTAyNjI5OTc5NTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZjAyOTBhYmFhNjM1YjhmZGU4YjNkYTJlMDYyN2Y4ODM5MWQ1MDJjMWYzZWEwZTM1YjkxYzgzODc1Njk2MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1MGZlMGJhYzY3OWQ0YTYzOGUzNmJkYmFjMGFhZWQ5MjhhYzhiYjFmNjgzZjdlNmIwOTkwZDhjMzQ2YjBkNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3Y2MyODliOTA0YmY3ZjhhZWVjN2I0NDJkNTE3ZDVhZTc4NTM2NGYzYWM5ZTZmNWMwY2FiNTk5NzIzZTZkZDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f70f6d684ed43ad89186ca8eca26623",
+      "statement": "Share-link edges reference the link, not individual keys, so a link's keys collapse into one grant: redeeming a second key of the same link is a no-op, and a revoked link's keys behave like unknown keys for redemption while the record stays so graph edges keep resolving.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L228-L250",
+          "version": "repo-lines-v1:sha256:71fdd10bc32994b57bb069f3213dfcd529abba0243ae1a38b9a1d4c52832dfea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmZGNhOGU3MDUxYmEwMjhlYTI3MzA5ZDQ2MGQyYTdjM2FlN2Y1MDJlNzRiZDI3OGNjODE0YmMzNzc5ZGJjYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3YzhlNDYwZThkNzA0ODk2ZWQyNzMzMjlhZWZkNTAxYzRlOTZlMjJjOWFmNTExNmMxMDZhYjc1NTc5ZDA5OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4MzRlY2Q5NzZmM2I2Y2Q5ODUxMzdkN2M2ZTM1MjQxYWQwM2JkOTNmMTRmMjUzNzBmODMwNjc4ZTEwODQ4NWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb13980e4a904aa0b612610810b04737",
+      "statement": "computeEffectiveRoles is the single source of truth for access: it iterates to a fixed point where each edge grants min(edge role, sharer's effective role) — the owner is the implicit build root, share-link edges grant min(link role, link creator's role) — and each collaborator's role is raised to the maximum across valid edges; roles only increase so the loop converges, and absence from the map means no access.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L567-L639",
+          "version": "repo-lines-v1:sha256:407ae9fa187e89a2767b12a59b8b815aa53d7953f61c56c885b710c45f64f9f8:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4ZGJkNTVjYjY0OTFlZDk2Y2ViNTM1ZjY4YjM3NGJhMjFjMGZhM2VmMjNmNmU4Mzk1MDZlZDM5NDQ4NzQ0NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNGZlMzU0YzRkN2VmZjFiYzgwMWUyODdiMjNmYTdkOGMyNDBlMGY4OGEwMDJlZGRjYmVkOTk4OWViMWE1NjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzYTcxNzU4Y2Y0ZDcxMGVkYTkxMmEzNjgyZGYwNmU1YTQ1NzYxYTQ2NDcwMGZmNzg5Mjc3NjA5NTVlMDQyNjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_47955ed6210b496d8c9b12359a93ed3d",
+      "statement": "Effective role is never denormalized into storage: it is recomputed live at every open(), which is what makes lazy revocation safe — severing an edge is enough to deny access at the next open even though unreachable collaborator records and revoked links linger in storage.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L203-L205",
+          "version": "repo-lines-v1:sha256:6269e05f12ed3d2b6eb427839e852531889ce89d5883315ac01354df7ea54d50:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE5N2ViZjYwOWE0NmFmZjJmOTI2MjFmMjNiNGRmMjY1ZTkyODhiM2IwZTM1NTM5MTFiOWQ2YWU3MTUxMWMwOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzFhOGI5MTgwYWM5NGE1YzYzMjYwMWM4NTlmYmYzMWUxM2ZmMzY4NmVhMGRmZDMyZDM3YzU2ZmZkNGQwNWZhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzU2NDdmOWJhMDEwMWU4NjA0MDkxY2I4MTAwNGU4OGI1ZjQyOTkzMWUzMGQzNGVlZjAxODE5YzU4M2M1ZWM3ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWE5MjkzZmQ4MDU0YjZlNDcyNDgzNzNmMzlmNGRkNzc4MDAxMDVlYjc1ODM0ODY4NzI1NDI4NWNkMTI4MmI3OCJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L9-L11",
+          "version": "repo-lines-v1:sha256:f4e635e2e713babb32870657c9295164de70fce24a5a95187bb3f8fb1e1fe3e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjlmMzUyOGNhY2U0ZDIzYzc2ZDU2ZDE5YzBkYzc4ZWViM2Q2YTA1ZDY4NGQyYjk5MTgwZmZiYzQ0YmE1MGRjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiYTc0NTFmZjE2OWRhY2NhOGJhMTMxMWVjMzkxNThjYTlkNTdiZDg2NzMxZGM1ZTVmNjExMGVhNTMwZjg1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjRkOTI3YWVjZjZjYjc4NTg1YjJhMGY2ZjkxODYyYWFlOWVlNTY3YzFiOWEwZDk5MDhiZTRiM2I4M2EwMGRlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2VhMWRjMWFlNTQ3ZjU2MTA2NmJiODE4N2JlNjczZTY3ZTcyNWI3NWM2ODJiZTA5YjZhYjNiOWIxZmMwYjUxMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c0d2e8b3fff4a319714a38ee4272f88",
+      "statement": "Revocation is preview-confirmed and lazy: preview methods recompute effective roles with a hypothetical removal/revocation and diff against the baseline to report AffectedCollaborators (old role to new role or null), removal severs only the edges granting the target access (a non-owner can sever only their own user edge), listings return only currently-reachable collaborators, and nothing is destructively pruned so re-adding a removed party restores them and everyone downstream.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L269-L287",
+          "version": "repo-lines-v1:sha256:8f0bda7010690c709e9beedc6854c8c7bc41ed056c339c55981ee4583212ef8d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMmEyZjk5NmYwOGU2ODBiZDI5MjEzNWE2ZmE0OTc4YmRhMjZlNjAyZDg0ZjMzY2IxZDU5NDc3NWQ0MzA0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3NWE5NmI4YWE3OTZkMWM4OGQ1MmFjNjNkNGNkNThhZjdhYzQwNmJmZmRiYzI0ZjUzNDlkZGE3MDkyYmQyOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5ZjAzYTFjMGJkZWYwNzRiOTNiMTE1ZTE1NzI2NjczOTQwMmQxOWI5MTIzNWVkYmUzOTMyN2RmMWE5MmEzYmMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L354-L357",
+          "version": "repo-lines-v1:sha256:bddb46daf15a26de3d0d646462eb69d2a9258e2727f3221c84142452cfffb1d0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTgxZmFlMzViOWYwNzhlOThhNmYwZmMyMGM4OTgwNzBlM2U4N2NmY2VjM2JjYmQ3ZDUyYmFiZDgxYzJlZGY2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmZkZWU4NTc3YzAwMGFkNGE2YjllNDEzZTBlYTEyMWI3MTVmODY4ZDljMGVjMjg5ZDIxMzE3MzM4Y2VmMGMyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDhmZjNjMDY0NTkwZWFmODQ0ZTJjNzA0ZDgxY2ZmNDUxNDFkM2EyNjA0YzU3MzAwZTVjZmYyMzcxMmI3M2FhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmEwMTU4MmU3NWFhM2UxYmVkZmRjODEzOWQzYmEyZjk0M2I1ZGFjMjFkM2I4ZDM4YTVmYzY5NDdjOWVjZTk2NSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L652-L674",
+          "version": "repo-lines-v1:sha256:15a977b4154faaa07268f0815ffb97e18102262d00d7e64b6b5d3384f685c433:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2OTFiNDRjMDQyY2ZiNDI0MGMwYWJiZTc3YmE5NjU5ZGZkMjI5NDhlMTg1MzlmYTFmYjBhOWMwZGMwZGJlOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3N2E4Y2EwMjA0ZDM5MjU0YTRhNTk3MmQxZjQ3ZTM4MGNmZDY5ZDE4M2EzYWRlODU3ZWJjYzQ0ZjRlNDllMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2NWRlMjcyMzIyYzJkMWExMWJhYmZkMGU2Njk3NzU2YTY0YjcxNTAyYjJlNzU0ODBhYmJlOWJlMzJjNTEzN2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4808d76bd7ee403ebe0bba580b14f84b",
+      "statement": "keepUsers re-roots spared dependents after a removal or revocation: for each kept user who would otherwise lose access or be downgraded, a fresh user edge is appended from the caller at their prior role, bounded by what the caller can grant.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L676-L689",
+          "version": "repo-lines-v1:sha256:f3dc0ad27d67e7d5ffbac54c0df6c2230d469d39a3d9f3b3d31ea177103d2be5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YmY1NGE4MWEzOGY2MTkxNWYwZjc3OWRiNWVkZmM5ZmEzNGVlOTZkNWZjOWM5MTFjZDY3YjUxNDNjZGZkYTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3ZDM3NTZlN2U0ZmVhOTRlODc2YjQ4MTA1MzU2YjY2MmYyMzA5MmUyZGUzZjQ2ZDY4MjFkY2UzOWUwMjI4ODciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZjNlNzEzNGM1ZWM3ZTZiNzU2NmVmZjExMWM0YTYxMDllYWQ4MWZlOTdhNzNiNTBiZTJjMGEwZjg4NGY5NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1N2UwZGVlMzNlOTExYzZmMzNkNDRiYzkxYzcwMzQwMzgyYmU1OTEyNDgzMmI4NDFmOTk0ZTg2NGJjMzBjMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_19a01dc943cf47e2a8b06f49d6d740b1",
+      "statement": "A caller may never grant a role higher than their own effective role, and re-adding an edge from the same sharer upgrades (never silently downgrades) the existing edge's role to the maximum.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L305-L308",
+          "version": "repo-lines-v1:sha256:e5d0c92bb24d11e6262bc9efeeeca8ccb124bbd979d309c519f46c50ac6d1ea5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODRjMzViOGM0N2FlMzM1OGM3NGFiODc5YmI2YmMwY2ExYzllOTJiNmQyN2JmZGM4MTgyMWM4ZTIxMTExYzY4NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODVkNzZhMjgyZTRkNWYzNDIyM2M0ZDBlNTdlMDgyOTQxOTUzZjIyNDJjNzMwOGQ3NzA4Y2UyYTdjYTVkNTQ3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjQ4ZWYzMjk0NDFjMDM4ZDk1NGY4MWE2YTQxNTk2NWUzODA4NjNiNThkMzQyNmJmMzVmN2ViZGExMWI1OTQ5OSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L320-L326",
+          "version": "repo-lines-v1:sha256:f07820c529192d49331a66831b375a93c9066ee4ebf9290645ccbdde6a055318:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q3ZjQ4OGQ0MTEwYTU2ZDg1ZjA3OWRkMzc4NjNkYmMwMmNkNWNmODkwMGE4MGY3YThiMjBlYmQ2NTNiNTI1NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODVhZTgyODg2MTYxNTI5ZjVkZWVhZTJiNjdlN2MxOTM0NDdkYTc0ODVlZGIyMWE5ZDliZWUyZjBiNDNjYjg2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzFhNmM4YzUxMmY5ZDY0YjFiY2VhNjA0OGZiZDc4ZWE5MmYwOGViYzYyYTdiMGYyMWNlYzdkMjIzMWE3ZDQyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjZiNWYwOTYxODAxMGIyMmUwZDE2OTQxNjk0ZDg4ODAwNTEwOWM0ZTY3MTM2OTNiZDQ2MGM2ZWQ4Y2Q3NjVkYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3a0efb05ae814126855f5f6ab9ff6be2",
+      "statement": "Authorization is enforced at open(): the caller's effective role is computed from the permission graph (no role means WORKSPACE_ACCESS_DENIED without workspace metadata), and a removal or downgrade that actually changed someone's access schedules a DO restart — flushing storage first with ctx.storage.sync() (because ctx.abort() does not respect the output gate), waiting ~100ms so the triggering response reaches the caller, then aborting so every client reconnects and re-runs open() against the changed graph; pure no-op removals do not restart.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L4998-L5002",
+          "version": "repo-lines-v1:sha256:902814dbe4d39635eac8b44a59d7ec5dfa71e03f679304571cee5060524c4906:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmJjMzY5OGFhNGYxNmQyYjkyYWU1ZTVkMjM0NDI0MDg3NTAzODk4NDVkYWZiZDA3YjkyM2M4NDFkNzFlYjEwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTIwNDQ0ZmUyMmMyZWM1MWI4MTZiYzE0NTBlOGI4N2RhNmQ0ZjM1NDg3ZDZmNzk5ZDc0MmMzMGI3ZDY1ZDU3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjhiN2UwNWM2YmU1YTE0NjRiYTM2NWM5ZTk3NWVkZWE5ZWRmZmRiOGZhM2UyZWE5NTk2MTdmOTRiMzFkNTRkMCJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L8320-L8360",
+          "version": "repo-lines-v1:sha256:21a7e7492295a9a859465dbdc5350520a3737c4a03485ff32d3f538dc5eddb87:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzY2RmZGM2ZTI2ZmNjNWNkOTUyMTE1OTQwZGJkNzE2ZDUxOWUwYjJmMWYxYmI3MmIxMmY4ODEwOWU3ODBjODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmYjU4OWJiYmUyNDYyOGM3OWRiMzZiNDdjMWU1NjdiNGIwYzRkYmFmYTY2ODY5YTk2MTQyMTM0ZDY5NjliYTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1MmIzOTVkY2M3MTg5YThmNGMwNDFhN2Y5ODE5OThhZmQwY2Y1NGE3YjgzZDk1MzY3OTM3NGZhYWM3MGFlNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkYzA1NDI0N2RhN2U0NWZlYWI3M2VlMDM5MWRjYWUxZThjNzkyOGFkMzc1NjI5MDNmOGJiM2FmYjgyMzAyMWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3a2805a39677431a8b172df5e560b15a",
+      "statement": "Resources are scoped to individual users between collaborators: build collaborators resolve AI models from their own account and add gatekeeper bindings through their own connected accounts (newGatekeeper calls the opening user's getGatekeeperClassFor, not the owner's), so no collaborator implicitly gains access to another user's third-party accounts; only the owner can delete the gadget.",
+      "evidence": [
+        {
+          "resource": "repo://docs/sharing.md#L140-L145",
+          "version": "repo-lines-v1:sha256:0fa8198ce6c4d9553f3181fedb095af342fb9bb21235c39be0b06dbd0349325e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTFlNWQwMDk0YjljN2JiOGVkOGNkNjkxMGVhNWUxNjMxZWY4OGRhMDNlOTQ5ZDM4M2NkNWUwMDFmNzI1Yzg3YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDYxOTg0ZWUzZTI3YWFiYjBmOGI3MTY3MDRiMjE1ZGI3NzQxN2Q4ODdkMjgzZjdkOGJlYTdjNGJkNWM5Y2U4MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzA1YWVjMDViYTc1MWNiM2VjOTg4N2I0NDEzZWJlZTdmNDVjMzZhYjEyMGM5MzViZjFlOTNkMDdkZjAzMjRlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTExZjA4ZDI1MzE1YjQxMmYxYTg2NTBjMjY3NWYwZTg3ZmZmZDBjZjUwNDA3ZWZiNjUyNDg1OTUxMGU0ZjU4YyJ9"
+        },
+        {
+          "resource": "repo://docs/sharing.md#L19-L24",
+          "version": "repo-lines-v1:sha256:cdb19b443caa0eab70c5a10d7ad3cafc2e057d1452fec16dc51c9c54d1a08d22:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzEyMDNmNmQ0ZTU0YmI2NDc5OWRhMTE0MjRmZjUyOGFkMzMwNzJiNzY1OWQ2N2U2NzU5ZDAzMmE5Mjk3MjI1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDBkYmQ0YTNlOThlNDM4MzU1ODY5ZmU5NzZhMmE3MmQwNWQ4MjE2MzlkMjUzNTg5Y2QzZmRiYzNkNDNlMTJhZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGJhY2MzY2ViYWI2MTdjYzVmOGEyODY0NWRlNjI1NzhjZGViM2Y3ZTEyZWMyNWYxMmFmMjQwZDk2NmYxZTU4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDViNWZhNWRhYzllYjc0ZDM3MGM3OWZmNTJhNTEzNDhkMjViZjdiYWQ5YWI5ZGJhNjljNzFlNzM2OGFkNGNkMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7289ab4af39544e0a1e2cd61d798efbd",
+      "statement": "hasAnyShares() reflects current reachability — a live path from the owner or any un-revoked link — rather than mere table membership, because the lazy model leaves dead records in storage; and an observation that would set prohibitAllSharing is blocked rather than applied when the gadget is already shared, so the flag only flips on an unshared gadget with no other sessions to evict.",
+      "evidence": [
+        {
+          "resource": "repo://docs/sharing.md#L159-L159",
+          "version": "repo-lines-v1:sha256:6313b74c728f4c71376c5373e26a96402f05b7657ea3c80efacfff8f622e2a15:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMxM2I3NGM3MjhmNGM3MTM3NmM1MzczZTI2YTk2NDAyZjA1Yjc2NTdlYTNjODBlZmFjZmZmOGY2MjJlMmExNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMxM2I3NGM3MjhmNGM3MTM3NmM1MzczZTI2YTk2NDAyZjA1Yjc2NTdlYTNjODBlZmFjZmZmOGY2MjJlMmExNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWFiNWYwY2M2ZDY0YThiOGYzNTg4YzhiM2EzNGRiMDNmYzMzYjkxMWFlNzdlYTA3YzQ3Nzc5MzFjNDk3OTgzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDlmMzRmMDM1MGQ5YWQ5NWY3NTJjN2E5NzU1MDk5MTkwMmRmYzQ2NGZhZDRhOWZjYjk0ZDc3ZTJiYzE2YjEyMSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/sharing.ts#L164-L179",
+          "version": "repo-lines-v1:sha256:31f0e33ee05b2fb3b37b22f12cf241fb822e2e6a2ffafb35d394a8b5cccae6e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZjQ0YjA0OGRiNDNlODUwMzc4MDU1NzE4MTEzYTUyMzdjZjAzYThlY2YxNDIzY2I1YTY0MWRmODZhODQ2MmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwZTQ4ZDYyYTI5MjY2NTFiYzYzODAzZjM1NTMwNDIxNTIxYzc4YWE5NWI2MGYxYTc4YmEzNThjMGNjNTUzMjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzYWIxY2I2ZjE4ZmRmNmYyM2M4ODJhZGM0MmRiNTZlZjY1YTJiMDQyNjNlZWE2MDBhOWEwNjIyM2Y1MDI3YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1NDA3MDY2NDFhYmIwYjcxZmY0NjY0YjM4OTRkNjg2NTY5MzBjNjU1YWUyMGQ1NjI1OTQzMjg1NjM3Nzk5NDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6ce0c608e9364744ae7c0a433eefa27e",
+      "statement": "Share-key redemption and gadget opening happen atomically in one RPC (openGadget redeems inside open() so subsequent calls pipeline on the returned stub), and a collaborator's home-page record is written on first open (with cached title and owner profile) plus refreshed on later opens via a fire-and-forget recordSharedGadgetOpen/syncOutputsTo sequence.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L8330-L8338",
+          "version": "repo-lines-v1:sha256:94bf59d412a983584debdf9e71835f366644ef59eb7316e4c4c4de0d7be75217:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzZhM2E5MjA4ZGY4MmNiOWI3NjYzZmNmODkzYzY2MzA0MDBjODBmOGNhYWQzM2ZkOTdiYmE3ZWY3YzY1Y2QyYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI2MmY2MGQ4NTkwYTU3OWNmNDZmOGQ2NzM3OGM0YzU3MmI5NjJjZWNjZGI5MGM3YTVmN2I0MmI5NjA3ODJhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYThjMTFkNmQ5MjY3MDU5MjZmMWI2ZDNkNmI2OWQwZDI4YTkzM2JmMTdiYTM1YWYxZjdiNzUzNjJhMGFlZTVmYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDE2MDQ4Zjg0NzQyMzliZTc4MzNhMjc2YTlhZTc2NTQ2MzNiYTQ4NjQ5YTQzNDM4YjczZmExNzU0MDJiZTEyNyJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/overseer.ts#L8362-L8379",
+          "version": "repo-lines-v1:sha256:560caec8bae5319e3110ef7a6380322b077df38b4a6912014d5a14a716d9f7fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmODNjM2VlY2ZiNTkyYTkwNGZmMzBkNjFiZTUyMzdiYTlhMmNiMWQ5ZGJmMTE3ODlkYmU0YjI0NTM4N2M5MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ZGEwNGQ3NDk4YTMwN2ExYTNlZGRlNGUwZGVhNTUzMjQ2ZDdkODgzYmNhMjk4N2NhNGRlYmU0MmUwMjgzZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2MTBmMmRmYTMyYmM3NDJjYWMxNzUzY2ViYTFjMWM5M2Q0ZTU4M2Y3MmVjNTRlY2E1OGQ4YmNkMzU5YTY3OGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZkMjhlMTEyNTg4ZTYyMTFjZGNhM2RjY2UxOTRiNGU5MDQ0ODQxOGYyYzliMWViZTI4ODIyNDBkMWM3ZGNkNDIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T05:23:12.377Z"
+  }
+}
