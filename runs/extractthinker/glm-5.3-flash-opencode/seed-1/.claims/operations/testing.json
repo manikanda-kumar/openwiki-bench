@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8a701b6507faa11fdd8b90d8c4f88fa637279048ee5a30c5746b54245d2bfa7a",
+  "claims": [
+    {
+      "id": "claim_af0457468ad74e5d9b4360b052fe3dad",
+      "statement": "CI runs only tests/critical/ (test_critical_extraction.py and test_critical_classification.py) with a GROQ_API_KEY secret injected, followed by poetry build; these critical tests perform live model calls, making them integration-style rather than hermetic unit tests.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/workflow.yml",
+          "version": "repo-file-v1:sha256:c0641e5d119c97104163826ed9ae3ade0220550239cf3803d52803119ebcdd9a"
+        },
+        {
+          "resource": "repo://tests/critical/test_critical_classification.py",
+          "version": "repo-file-v1:sha256:22df98575032624a188cf1679c5a3825fd9629fd93de12184f3aee709bd71967"
+        },
+        {
+          "resource": "repo://tests/critical/test_critical_extraction.py",
+          "version": "repo-file-v1:sha256:f23e1bd4a7635d6dd1da1beec0b9922b41a3bbf52cb9f3e95cee6450048ce05e"
+        }
+      ]
+    },
+    {
+      "id": "claim_93fbca4af75a491aa1ca2c3789cd64fc",
+      "statement": "The workflow.yml test-python-versions job does not run tests on the matrix of Python versions 3.9–3.13; it only poetry-installs and executes a script asserting the Python version satisfies >=3.9,<4.0.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/workflow.yml",
+          "version": "repo-file-v1:sha256:c0641e5d119c97104163826ed9ae3ade0220550239cf3803d52803119ebcdd9a"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5fad508bfbc4e8b8fc0e1d6ed6af643",
+      "statement": "Concrete loader tests mostly subclass BaseDocumentLoaderTest from tests/test_document_loader_base.py which asserts basic load, vision-mode semantics, and a strictly faster cached second load, using fixtures from tests/files such as CV_Candidate.pdf; core behavior is tested by test_extractor.py, test_process.py, test_classify.py, test_batch_extractor.py, test_llm_backends.py, and test_ollama.py, with pytest.skip used for missing pydantic-ai or missing fixture files.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_document_loader_base.py",
+          "version": "repo-file-v1:sha256:24381baf89cb4e20a185f1439ec65245151293d0f2ce4ffe99145fb03c6e2546"
+        },
+        {
+          "resource": "repo://tests/test_document_loader_pypdf.py",
+          "version": "repo-file-v1:sha256:d8235d3cee5e3bc2f4f5f8011886d582d9553ddbc0448700bac39c30cf5c9356"
+        },
+        {
+          "resource": "repo://tests/test_extractor.py#L370-L420",
+          "version": "repo-lines-v1:sha256:079a3c91c0d05379591ef71deb0c38ee5853423f1430fb328098fa3701b0ef9a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYzc0MTVhNTRkODZmZTVhZTBhZWY5NGQwODFlMGMxOWZjMzEzMDU4YjJkNWQxYjg5MzA1NTkwYTk5NmRmYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4ZWE5ZDIxNWM0OTE2ZjEwYjljNWJjOWIzNjRlMDE4NzUwMTllZTg4YTZjYmM5OGE3NzMzOWQzYzc0ZmE2ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhNDgzZDFjNjgxZmU4ZjVmZjY4N2ZiMDNlNTE2MTlkYzJhYWUwY2ExNTc5Y2IxYmI3NmQ1MjU4MDgyZDc1ZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5M2E4ZGQwNThlYTc3ZTc3OTBjNzk5MWJkZTZlNmU0OThhNmZlYTg2ZWUzMTlkMmE4YThjYzA2NjAzNWM5MDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b219ea03e27c45c6b8069fe43ecb3b96",
+      "statement": "Publishing to PyPI is manual via workflow_dispatch (manual-publish.yml), optionally bumping poetry version from the input, building, and publishing with pypa/gh-action-pypi-publish@v1.4.2 and the PYPI_API_TOKEN secret; there is no tag-triggered publish.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/manual-publish.yml",
+          "version": "repo-file-v1:sha256:9d3ad533c9eeb48927c6b4ad301d985fb948e6e46c59b346d6d1e583d2589a7f"
+        }
+      ]
+    },
+    {
+      "id": "claim_164b4bfe944f427fb24a37be9771822d",
+      "statement": "The build backend is poetry-core per pyproject.toml, a small requirements.txt exists for a lighter install path, the MkDocs documentation site uses mkdocs.yml plus docs/ and requirements-docs.txt, and lint/style configuration comes from .ruff.toml, .flake8, and .pre-commit-config.yaml.",
+      "evidence": [
+        {
+          "resource": "repo://.pre-commit-config.yaml",
+          "version": "repo-file-v1:sha256:e1cb35be9202c74aa9797f35bd0d21bde8d92ddf009eced416b78f7f4293e87f"
+        },
+        {
+          "resource": "repo://mkdocs.yml",
+          "version": "repo-file-v1:sha256:0167d9bf97f47e655bbabf41cf0e4670e5b5c844bd01f2c11f709c5423c27f12"
+        },
+        {
+          "resource": "repo://pyproject.toml",
+          "version": "repo-file-v1:sha256:8b741435ad4582ec7c8aceaebf565abbb67a41fd105f0050bb0b51279ec939a1"
+        },
+        {
+          "resource": "repo://requirements.txt",
+          "version": "repo-file-v1:sha256:b0c907b5e017a2aed2642a4bc6b36c5f8f2c02d48ffdfcc44d137244a1c430e7"
+        }
+      ]
+    },
+    {
+      "id": "claim_89b492c14e5341c896a2de3ed5a079c8",
+      "statement": "The repository is a library with no server/deployment process defined; runtime environment variables referenced by the code include OPENAI_API_KEY for batch jobs, TESSERACT_PATH for containerized Tesseract, and API_BASE for local Ollama-style endpoints from README examples.",
+      "evidence": [
+        {
+          "resource": "repo://README.md",
+          "version": "repo-file-v1:sha256:fb69cab3753b23d317be14596ec996d6abe08daf6d38f020c1de63d1d649d63e"
+        },
+        {
+          "resource": "repo://extract_thinker/batch_job.py#L11-L27",
+          "version": "repo-lines-v1:sha256:f059dacba474b10184de03651707133a77410d2957959020121ce66b9f254003:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5Y2UwZWE1MjhiYzYxYzgyNjUyZDcwOWI1ZWNkZjEzMTc1YWM2MDRjZjBlZGM0MmIxZTBiZGRkOWRjYjg5MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2NTFkNTRiY2ZjMjRhMDk2ZjEzZGZlZjdlOTI5ZGQwMDU4NGNmNjM1OTk3YWJhM2ZkMGQzYzg1NzQyN2ExYjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4OTNmYjJhMWNlM2YyNjg5MjA2ZDY2ZjQ4MmNjZGZjZDRkODZjMGQyYjRmMDQ4MDVjOGE3OGM5ZWNmNjNmZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhZWNlNDFiNzlmZDU4MmQ1Y2Q0MmFkODg1NWI3ZTVlYmU2ZTdiNDNlMjQwYjhkMGQ5MzI4ODdlZmY1OGQzMGUifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/document_loader/document_loader_tesseract.py#L136-L147",
+          "version": "repo-lines-v1:sha256:79482c8de4ade58d392fa3aaebf94ed9a00d5badbc6e6a84c47816fc25e58a3f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNTI3MDA5ZjcwNDA4MjFkZGJhZThlZjcwYTc0OTlmZTMxMDVlZjIxYWFhYmI1MDVmOGFlMzViOTRmMWIwMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyYTZhNTljMmEyMjJhMjQ5NTA5YTE4N2Q2OGY0NzI4ZWY4M2Y4ZDU5OWFmMjkwN2EzOTNiM2UxNjhlYTQ2YWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3YzM0ODk2ZjIzMTBhNzQxY2U5MmFhNWQ3ZjJmNDZmZWI0M2Q5Mjg3YzZiYmFiMmJmN2Y2NDJkN2EwN2Q2ZTAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T09:40:03.572Z"
+  }
+}

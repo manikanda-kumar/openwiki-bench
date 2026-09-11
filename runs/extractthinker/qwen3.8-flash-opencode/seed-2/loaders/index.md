@@ -1,0 +1,5 @@
+# Files
+
+- [Document Loader Framework](loader-framework.md) - The DocumentLoader abstraction: SUPPORTED_FORMATS capability detection by extension and python-magic MIME, vision-mode and page-dict output contract, PIL/pypdfium2 image conversion at 300 DPI scale, Playwright URL screenshots with vertical chunking, TTL caching in CachedDocumentLoader, and how Extractor/Process consume capabilities.
+- [OCR and Cloud Loaders](ocr-and-cloud-loaders.md) - OCR engines and cloud document-analysis loaders: Tesseract and EasyOCR local OCR, DocumentLoaderLLMImage as the vision fallback, and Azure Document Intelligence, AWS Textract, Google Document AI, Mistral OCR — credentials, config validation, retry behavior, and per-page output shapes.
+- [Text and Structured-Format Loaders](text-and-structured-loaders.md) - Non-OCR document loaders: PyPDF and PdfPlumber PDF text/tables, Txt, Doc2txt Word, Spreadsheet sheets, BeautifulSoup web/HTML, MarkItDown and Docling multi-format converters, and the DocumentLoaderData passthrough — page-dict shapes, configs, and the shared lazy-dependency pattern.

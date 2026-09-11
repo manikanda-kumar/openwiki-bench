@@ -64,7 +64,7 @@ provider/model, captures raw and normalized telemetry, and refuses to overwrite 
 
 ## Semantic evaluation
 
-The checked-in pilot judgments used OpenRouter and are preserved as dated provenance. Official evaluation runs blind tasks in fresh, repository-less Amp threads using GPT-5.5 through `deep-classic` as primary, Opus 5 as secondary, and Fable 5 for tiebreaks and correctness probes. Exact resolved model IDs must be recorded; Amp routing may not silently substitute another model.
+The checked-in pilot judgments used OpenRouter and are preserved as dated provenance. Current official evaluation runs blind tasks in fresh, repository-less Amp threads using GPT-5.5 through `deep-classic` as primary, Grok 4.6 as secondary, and GPT-6 Astra Medium for tiebreaks and correctness probes. Exact resolved model IDs must be recorded; Amp routing may not silently substitute another model. Earlier Claude-panel results remain historical and must be rejudged before they are compared with current-panel subjects.
 
 ```bash
 # Prepare opaque, deterministic page and claim tasks
@@ -72,15 +72,15 @@ npm run bench -- prepare --repo /path/to/background-agents
 
 # After importing Amp results, select only primary/secondary disagreements
 npm run bench -- judge disagreements \
-  --primary gpt-5.5 --secondary opus-5 \
+  --primary gpt-5.5 --secondary grok-4.6 \
   --primary-judgments results/evaluation/judgments-gpt-5.5.json \
-  --secondary-judgments results/evaluation/judgments-opus-5.json
+  --secondary-judgments results/evaluation/judgments-grok-4.6.json
 npm run bench -- judge aggregate \
-  --judgments results/evaluation/judgments-gpt-5.5.json,results/evaluation/judgments-opus-5.json,results/evaluation/judgments-fable-5.json \
-  --judges gpt-5.5,opus-5,fable-5
+  --judgments results/evaluation/judgments-gpt-5.5.json,results/evaluation/judgments-grok-4.6.json,results/evaluation/judgments-gpt-6-astra-medium.json \
+  --judges gpt-5.5,grok-4.6,gpt-6-astra-medium
 
 npm run bench -- probe aggregate \
-  --labels results/evaluation/probe-labels-probe-fable-5.json
+  --labels results/evaluation/probe-labels-probe-gpt-6-astra-medium.json
 ```
 
 Aggregation rejects missing/duplicate probe labels and duplicate judgments. Judge identities are checked against contestant models. `leaderboard` refuses publication below linear-weighted Cohen's κ = 0.6, with unresolved judgments, without probes, or below three trials × five subjects per system. Exact agreement and unweighted κ remain visible diagnostics.

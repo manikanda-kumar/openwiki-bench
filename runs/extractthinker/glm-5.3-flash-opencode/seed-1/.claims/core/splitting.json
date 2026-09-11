@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6a3a79c39a2406eb3e2701959e3eab6c41586f0d554caa9a078677a6cce3cec9",
+  "claims": [
+    {
+      "id": "claim_e36f135c8ea94b7f89b2bf1d1d294539",
+      "statement": "Splitter splits documents by sliding pairs of adjacent pages (page_per_split=2) and aggregates per-pair DocGroups2 verdicts into final DocGroup objects: belongs_to_same_document=True extends the current group's page list, otherwise a new group with the pair's page2 classification starts.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/splitter.py",
+          "version": "repo-file-v1:sha256:3aadeff5bb3bf8fdbc8e1de994bc5706fd90163a086c428614a9b8bef4d6fe2b"
+        }
+      ]
+    },
+    {
+      "id": "claim_865643e2c1da48fe806069918b861dc0",
+      "statement": "ImageSplitter constructs its own internal LLM from the model string at construction, so splitter and Extractor can run different models; lazy splitting compares consecutive page images pairwise while eager splitting sends all page images in a single request requesting a DocGroupsEager with groupOfDocuments {classification, pages}.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/image_splitter.py#L11-L15",
+          "version": "repo-lines-v1:sha256:f8565445f4b0004ec17c772cf36c39f2199e5c44d0afa065aceb526c022ffd4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGY2YTQyNTBkNTBjODAzNWI2ZDk2NWIzZTRkYjFkZTA1ZmNhZTdjZGJhM2VhNzYyZDBkNzE2NjY2NWNlNWZiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTg3NjU1NjYxMjFlMzkwZjgzMDZiZmNjZTU3MWQ3Y2YzMzNlYzcwMDBiNWViZWY1NzFmOThkNmZmZWJjNjIyMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTZlMTM2OWU2ODgzYmZjMTU3Y2QwMzVmOWE3YjMwMTVlNmI4MjFmMjRmMDRhMzVjODk1YTVjYjQxMjJlNWNmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I1NjY0YzIyOTZlYmI5YjMyYzdhYjU5MDNlOTA1MzU2NzI2NjdkYzk4MTM4NmJjYjhhYmE0MmE3NzkzMDUwYSJ9"
+        },
+        {
+          "resource": "repo://extract_thinker/image_splitter.py#L115-L222",
+          "version": "repo-lines-v1:sha256:eab9229d2b7da5a2f0c3e35e5cbe24425ee193711a05e6ed9407d2394cf3af92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2ODBkZmE4ZDc4ZWFjOTQ2YTdlZGFlODQzZGEwNThjYTRhOTI0ZmVlOGM0MTM3NGQwYTNhYzEzYWRmNzQ3NGYwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmMDc2ZDlmZTIwZTU4MjhjYmY5MmI4MTY5OWU2OTJkYTdjYzJmZDZmYmU4M2U0ZDUwZjM5ZDYzMzAxMmEyYTU3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyNDdlNTJiZjUzZTU0NGVmNzk1N2I4ZDNlMTY3MzQwMTQyZjljMWY1ZmY1YTZlNjA2ZWVhOWUyNzFjNTI2NjljIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiYTkyMzhiYWZiMWE3ZWVmZDlkMGM0NjA0NWQ1MjVkNmUxNmE3MjUzNDRhMzJkMzNkMjFmZjQzZWVjMDBlZTM1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_9f21416e3d5144d5841ef12f1c83a57b",
+      "statement": "Eager splitting has a dead-store bug: the loop appending classification reference images to the messages variable is overwritten by the later messages = [{...}] reassignment, so reference classification images never reach the LLM request.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/image_splitter.py#L167-L191",
+          "version": "repo-lines-v1:sha256:b539e39a0b017cc8d7c08c4403ffd2d995f369d916656c6876536f110d0c1ede:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MDhmMGVkNjNhZWFkNTBjNzc0NGQ1ZmMyZDdlOGU1ZmVkODE5ZTIwY2JkNjc4NGVhYTA1MGI1ODQ0NzQ1YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNjA3ODI4ZDQxZDU5YjhjM2Y0YmZmOWQ0ZWQyZDRkODYyMzRlOGZmOGE4M2U5OTQ4OGYyMjhjNWQzMzMzZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5OWJiZmE0MGYxOWFkNjUzYTFlMDRiYzk3Y2VkZDJkYmNlNzY3OTlmOTU3YmJiMDgyYmQ1YWI5NTdlODMyMDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MjdhZDM4ZTBiYjZlMDg4MDBkZDczOGQ5ODk0YmYxZWNkMDViYjM1ZDJiYjE2ZTRiZjEwYTMxZmZmM2NiZTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9d595f5eb2154ec39675fdfde14bb042",
+      "statement": "Both splitters fail open on LLM errors: lazy comparison returns belongs_to_same_document=True with the first classification name; eager falls back to a single 'unknown' group for all pages — which can later cause 'Extractor not found for classification' if no Classification named 'unknown' was supplied.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/image_splitter.py#L107-L113",
+          "version": "repo-lines-v1:sha256:f17c758a1ce3f8015ce5a6ae24cbeb6fd3f17d47c9f84d9387f5aa79a0fa190b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2M4NGVjZmI0MGVmNTk5ODI1MTg3NWYxYTg4ZTY1YWE2MDRiYWI3OTA2MDliN2Y3YWFiZjIzMTY4Y2Y5ZjI2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTEwMzQ4MWM1N2QwZjBkYzBmNzZjZDJjYzhiMzYwNGM0ZTgyOTZkYTQxMjJhZGQxOWU4MTc0NWRjN2UzMzFhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTcyMGY4YWIyYmJjY2MzMzk3MTg4ZWE4MGRlMTYzOTZjMzRmYWQyMzNiZGJjNzIxYzcyZGY5NjYyZGE4YmNmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYThiNThmMzI0ZWIzYTdjYzVlNWFmOGU5MjU1ZDNmZWE2NDVhZDY3YTZkYWZkZTM1MDU4YmFkMmJkNWI1YWM1MSJ9"
+        },
+        {
+          "resource": "repo://extract_thinker/image_splitter.py#L215-L222",
+          "version": "repo-lines-v1:sha256:39f8fcd897b0d23cbf9b67948dffbd52997e9871f0312414a54a15f8281f9410:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2M4NGVjZmI0MGVmNTk5ODI1MTg3NWYxYTg4ZTY1YWE2MDRiYWI3OTA2MDliN2Y3YWFiZjIzMTY4Y2Y5ZjI2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA3NmQ5ZmUyMGU1ODI4Y2JmOTJiODE2OTllNjkyZGE3Y2MyZmQ2ZmJlODNlNGQ1MGYzOWQ2MzMwMTJhMmE1NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDYzZTM3OTYyZjU5OTQ2NzFjY2RjYmI5OTFiOGIxZGViMGY4YTI0NzQwYjkxNTYxMTUwZGVkYjg2NTQ3MGQ1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmE5MjM4YmFmYjFhN2VlZmQ5ZDBjNDYwNDVkNTI1ZDZlMTZhNzI1MzQ0YTMyZDMzZDIxZmY0M2VlYzAwZWUzNSJ9"
+        },
+        {
+          "resource": "repo://extract_thinker/process.py#L259-L262",
+          "version": "repo-lines-v1:sha256:c9aee717a22959d675c534a0f3e6ad267e871870c0b4b00361c08bfff2f52cb8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWM0ZjU0OTI4ODIxMDY2N2U0NjNlM2VmYTE3YzZiMjg2ZTYyMzcyZjg4NTNmY2U4ZWZlMzg2Y2MyZDU0NTZlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGVkMTE5ZmRlOTFiNWViMjAxZmIwZmFiODQxNGEwODI2OWM5Zjg0OTY5MTk5OTQ1ZmI4NjNlZDhiYTdjZmUzZSJ9"
+        },
+        {
+          "resource": "repo://extract_thinker/text_splitter.py#L66-L72",
+          "version": "repo-lines-v1:sha256:f17c758a1ce3f8015ce5a6ae24cbeb6fd3f17d47c9f84d9387f5aa79a0fa190b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2M4NGVjZmI0MGVmNTk5ODI1MTg3NWYxYTg4ZTY1YWE2MDRiYWI3OTA2MDliN2Y3YWFiZjIzMTY4Y2Y5ZjI2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTEwMzQ4MWM1N2QwZjBkYzBmNzZjZDJjYzhiMzYwNGM0ZTgyOTZkYTQxMjJhZGQxOWU4MTc0NWRjN2UzMzFhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTcyMGY4YWIyYmJjY2MzMzk3MTg4ZWE4MGRlMTYzOTZjMzRmYWQyMzNiZGJjNzIxYzcyZGY5NjYyZGE4YmNmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYThiNThmMzI0ZWIzYTdjYzVlNWFmOGU5MjU1ZDNmZWE2NDVhZDY3YTZkYWZkZTM1MDU4YmFkMmJkNWI1YWM1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf05920f44454b6f96a2b99d8289d9b0",
+      "statement": "TextSplitter compares pages on 'text' keys (no images required) with the same fail-open fallback, and is exported from the package but Process's vision-mode toggle in load_splitter applies only to ImageSplitter instances.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/process.py#L42-L63",
+          "version": "repo-lines-v1:sha256:6a547e78cd623df060bc367eb506e16faacb100d34cc571db6290638cfa5a472:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZWFjYTA2ZDJmYWY1ZDVmMzczNWVkMzQzNGEwNWE0OTc0MzU2OGQyNjhjNjA2MmY5ODFhMTAwMDljYzZjMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWIwOTBiY2QxNjIwZmE2MmVhZWUxNTdhNzRmY2E2MzVhYTI5ZTEyY2JmZmQ2MThiNTc5MmQ4N2JjMDNhM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkZWZlN2JmY2RiMjQ2MWUyZGZjNTA0N2EyZmRhNzhmNDFlMTJmNjc5M2JmZjVlYjgxMjlkNzVkNTZiYTc0MmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2YjZlMTI0NDY1NThlMGQ1ZmQxZTE1OGFjZWQ2MWFjMjRlMGUyMWNhOGVkZjdiMDYwNzE5ZjUzMjA0YWU3NWUifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/text_splitter.py#L9-L80",
+          "version": "repo-lines-v1:sha256:b882e92642f734d0ef636c9e894a97e43d1e0af56da84a22addec5b36a00807b:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2ZGJlOTYwZTg1ZTcyYjQyODYxYTJmMzA1YjRlNDFjMGU4YzFlODgzNGMzMWFkNDZlMzM1ZDQ0Yzc2ZGI0YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzMjY1ODc3NmUzODEwZWZlM2Q0YjNiNmYzMzRjN2NhNTI5YzVlZjg5YmFjMzBhOTE3ZGQ2MDExZDVjMmY2MWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZTEzNjllNjg4M2JmYzE1N2NkMDM1ZjlhN2IzMDE1ZTZiODIxZjI0ZjA0YTM1Yzg5NWE1Y2I0MTIyZTVjZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2MmNmZTk0Zjc0MzBmZDJhNmRjNTE0YjZhY2U4ZDM2NWIxYWQ2NmI3ODQxNmEzZmNmZTU1Y2E1OGM5ZTk4ZDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba6ad3a89fa84aa9a61574a10d67c7a4",
+      "statement": "Process loader configuration is mutually exclusive: loading a default loader raises ValueError if per-file-type loaders exist, and vice versa; load_splitter switches all applicable loaders into vision mode automatically when an ImageSplitter is used.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/process.py#L31-L63",
+          "version": "repo-lines-v1:sha256:33563e2f76c56ee4a17fd4b2569a5553abf6597904d9d426f16c03345acb44fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjMGFiMjRmYWFkNjExNzY1ODcwZjgxYWE2Mzk1OWI2MmI5MGQxNjBlNDRkZDQ0OWYwMjU3ODE4Y2UwOWFjOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWIwOTBiY2QxNjIwZmE2MmVhZWUxNTdhNzRmY2E2MzVhYTI5ZTEyY2JmZmQ2MThiNTc5MmQ4N2JjMDNhM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0MjBmYjhkNjdkMjU0MjNiZWEzYWU2ZmNjMGU1YWZhNGNhMDRlZGFkYmY3MDYzZDI4MmVhNjBmZWY1MTA4ZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2YjZlMTI0NDY1NThlMGQ1ZmQxZTE1OGFjZWQ2MWFjMjRlMGUyMWNhOGVkZjdiMDYwNzE5ZjUzMjA0YWU3NWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2cae6e44214498baeb644d5b94b7035",
+      "statement": "Process.split requires a splitter, a loaded file, at least 2 pages, and a PDF-capable loader for the LAZY strategy (raising 'Document Type does not support lazy splitting. for now only pdf is supported' otherwise); extract() resolves each group's extractor and contract by matching classification name, prefers extraction_contract over contract, and 1-indexes the page references when slicing.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/process.py#L205-L293",
+          "version": "repo-lines-v1:sha256:bfc818475d8daae7f4acf12b1f16e7c30bdba4836c7707270dd22123b7c30b37:eyJzZWxlY3RlZExpbmVDb3VudCI6ODksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMWU2YzhlNTg1ZmQ0NGE3ZDZiODJmOTZjZDlkZWM1MzZhZWMwOGFmNjMyNTA5MTEyMDcxYzYyMjlmYmRiNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzYmE5OWQ0ODc1ZDA1NDE0MWE2NjYxYjE5MmM4YTBiZTYxYjEwMjNkMWU1ODE1MDEyMDgyY2QwMTRjYzk1YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjNDZmNDlkODExYjMyNDg0ZTIxOGMxMGQyOWVlNTZjOWU2ZWFlNTZmYTU3YTk5MzZiMjRjYTAxZWM3YzUzMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2ZDIwNjU5MTcwNjMzYTRhM2NkN2E4NzhkNjllNmI5YmM4ZDIwYjcyOWI4MDhhNTA4YzM0ZDE5ZGQwMzMzMWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_20b8f300e3644387b6b30830a8513801",
+      "statement": "Process.extract wraps group extractions: it sets extractor.set_skip_loading(True) before extract_async and resets it in a finally block after each group, then runs all groups concurrently with asyncio.gather via loop.run_until_complete, printing the error before re-raising on failure.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/process.py#L277-L309",
+          "version": "repo-lines-v1:sha256:230f3003aca0649ba98c6e7d59da655b8cd0052a429aeca27518e6bf115e6cac:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1Mzg5YWFhYzBkZDIyYTNmNjgxZTllMzNjMmQ1YmE3MTA4NjcyNGQxMmJlZDc2MjI2ZmJkZTgzMjUzMjNlM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmMjQ3MTJiMGQ2NTcwMmNkMDgxYjkzMWU1MGQ2NjhlYjczODAzZDYyZTA1YjBiNmY4NjU5NjE0NmEwZGQ1NWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZWNhZDk3OTc5ZGM0OWQ0YWMzYWFiODBiNDIzMDA5NjY5ZmJjNjQzNTA3MTg0ZmUxYWFhYmM3YzA4MTUwZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T09:40:03.572Z"
+  }
+}

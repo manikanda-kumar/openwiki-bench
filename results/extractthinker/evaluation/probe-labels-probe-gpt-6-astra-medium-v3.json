@@ -1,0 +1,582 @@
+[
+  {
+    "id": "probe_76b58bb786792415a924c7d0686d6932",
+    "label": "supported",
+    "rationale": "The code checks the primary loader, extension-based lookup for strings, registered loaders via can_handle, DocumentLoaderData for lists/dicts, and finally DocumentLoaderLLMImage if allow_vision is enabled, in exactly that order."
+  },
+  {
+    "id": "probe_fb8674641ba345efebc712c1a2377d2c",
+    "label": "unsupported",
+    "rationale": "The excerpt only declares an abstract load method returning Any; it does not establish an output list, page dictionaries, required content keys, or optional image bytes and metadata."
+  },
+  {
+    "id": "probe_6ebabc7bda1695dc097d3a1a133c159f",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes TTLCache caching keyed by source path or bytes and vision_mode, but not requirements for new loaders, SUPPORTED_FORMATS, per-page content dictionaries, image bytes, or use of cachedmethod."
+  },
+  {
+    "id": "probe_278e59e17fdae2feffcc9b133dc1cad8",
+    "label": "supported",
+    "rationale": "The excerpt exposes loaders and configs through package-level imports and lists them in __all__, establishing the pattern for adding them to the public API."
+  },
+  {
+    "id": "probe_e7a529c685bfb7fa57e858bf2edc3acd",
+    "label": "unsupported",
+    "rationale": "The excerpt confirms the loader lookup, vision flag assignment, vision-mode enabling, and wrapping of dictionary content lacking an image. It does not establish that get_document_loader_for_file selects by extension then capability."
+  },
+  {
+    "id": "probe_04f142923ac1be516993a17d5869f450",
+    "label": "supported",
+    "rationale": "The method classifies level by level with extractor_groups[0][0], accepts int or float thresholds from 1 to 10, raises ValueError for None responses or confidence below threshold, matches classification.uuid, and descends into children when present."
+  },
+  {
+    "id": "probe_29d8425da4cc500032f1c1e395483db7",
+    "label": "unsupported",
+    "rationale": "The excerpt defines the CompletionHandler ABC, its abstract handle signature, and an initializer that stores llm, but shows neither concrete subclasses implementing handle nor handlers constructed with an extractor's self.llm."
+  },
+  {
+    "id": "probe_66260f92e2b9261532a77c973427ebc6",
+    "label": "supported",
+    "rationale": "Source 1 explicitly wraps IncompleteOutputException under FORBIDDEN with the stated message. Source 2 shows the same wrapping for IncompleteOutputException and validation or JSON decoding failures."
+  },
+  {
+    "id": "probe_4bc74245c54de4b74672ed1839784a42",
+    "label": "supported",
+    "rationale": "The evaluator runs both extractors on each dataset document, stores separate teacher metrics and results, and its comparative-report method calculates per-field F1 improvement percentages and document-accuracy improvement."
+  },
+  {
+    "id": "probe_7acace763ed7f3a257cf4614edb22cb7",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the item contract (document ID, source path or content, expected result), JSON label loading, and glob-based document discovery, but show no ValueError for unlabeled documents or detection of labels without matching documents."
+  },
+  {
+    "id": "probe_58498c733222733e14e9d1c6860627f3",
+    "label": "supported",
+    "rationale": "The excerpt defines all five named getters: the first three return Gemini 2.5 Flash preview, get_gpt_mini_model returns gpt-4.1-mini, and get_gpt_o4_model returns gpt-4o."
+  },
+  {
+    "id": "probe_df3eb7ae1b5b5ff0066861fea1744eda",
+    "label": "supported",
+    "rationale": "The method accepts a Router and raises ValueError if self.backend is not LLMEngine.DEFAULT; otherwise it assigns the router."
+  },
+  {
+    "id": "probe_ccc5c1f27949fb813bb60953511dea32",
+    "label": "unsupported",
+    "rationale": "The excerpt only instructs how to format Markdown and JSON; it provides no information about MarkdownConverter, allow_verification, or verification behavior."
+  },
+  {
+    "id": "probe_89510a57ef5b1d6406a2de9f50c950e3",
+    "label": "unsupported",
+    "rationale": "The excerpts establish Markdown plus a certainty-scored JSON breakdown for the first prompt, Markdown-only output for DEFAULT_MARKDOWN_PROMPT, and image-placeholder replacement for both. However, they do not identify the first prompt as DEFAULT_PAGE_PROMPT or its schema as PageContent."
+  },
+  {
+    "id": "probe_7d1d3c3e4b4cb0e445759fdcc38716e3",
+    "label": "supported",
+    "rationale": "load_document_loader assigns the supplied loader to self.document_loader. load_llm uses an LLM instance directly or wraps a supplied model string in LLM."
+  },
+  {
+    "id": "probe_8d0cb075c7a6995ae93e4a47f18cb1b5",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the input, classifications list, vision flag, and ClassificationResponse return type, but do not establish that the response contains a name and confidence ranging from 1 to 10."
+  },
+  {
+    "id": "probe_a7dccf74dca429eff90a80520d3110b4",
+    "label": "supported",
+    "rationale": "The vision path evaluates each classification individually, uses document-only prompting when no reference image exists and comparison when one does, retains the highest confidence above its initial zero, and returns Unknown if no result is selected."
+  },
+  {
+    "id": "probe_195750d9c458c8e2ad90b65e50985914",
+    "label": "supported",
+    "rationale": "The tests cover consensus and threshold strategies, classifications supplied with contracts, image-mode classification, multi-level tree descent with UUID matching, low-confidence ValueErrors, and a two-layer mixture-of-models setup asserting a high-confidence resolution."
+  },
+  {
+    "id": "probe_04b7125b3d6afe4497b319ad5737300b",
+    "label": "supported",
+    "rationale": "The CLI reads config with json.load, calls setup_extractor(config), dynamically loads a Contract subclass from config['contract_path'], forwards LLM params when api_base is present, and defines both --detect-hallucinations and --track-costs flags."
+  },
+  {
+    "id": "probe_25c1f3d93bd99ca352acc7455e9028ac",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes re-raising unless skip_failures is true and otherwise returning a failure dict with the error string, but not that the result is recorded or evaluation continues."
+  },
+  {
+    "id": "probe_428be97dbff89a3f9177062abca67e6d",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes optional fields, parallel page processing via ThreadPoolExecutor, and scalar conflict detection. It does not show a CONTINUE JSON prompt, unique-key list merging, or an LLM conflict-resolution call returning ConflictResolution."
+  },
+  {
+    "id": "probe_24a31edab26ddd5ba21cfca10bda1427",
+    "label": "unsupported",
+    "rationale": "The excerpts establish type-based registration and ValueError for other types, but do not show _extract or an intercept(self.llm) invocation before the LLM call. LlmInterceptor only declares process(messages, response)."
+  },
+  {
+    "id": "probe_1d483fc911aebb284a5bee7dba03e1c6",
+    "label": "unsupported",
+    "rationale": "The excerpts show content and thinking calculations using named constants, but do not establish their numerical values. They also do not show token_limit overriding the cap; _get_model_max_tokens unconditionally returns DEFAULT_MAX_COMPLETION_TOKENS, though its docstring recommends token_limit for a different limit."
+  },
+  {
+    "id": "probe_1adbcf34391eca49ff1b7e02895eb347",
+    "label": "supported",
+    "rationale": "The tests check LiteLLM and PydanticAI backend wiring, expect TypeError for an invalid backend, and assert load_router raises ValueError with the PYDANTIC_AI backend."
+  },
+  {
+    "id": "probe_19f77b0cd35de3ea5ea26be19eb95bdb",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the DEFAULT backend using instructor MD_JSON over litellm.completion and the PYDANTIC_AI backend, but do not establish that LLM is the single model adapter."
+  },
+  {
+    "id": "probe_5a2b0a405c4096a6ed1fc95940da8b53",
+    "label": "unsupported",
+    "rationale": "Contract is an empty Pydantic model, but the excerpts do not establish its role as the base for extraction outputs. Classification defines the listed fields and generates a UUID by default, but does not establish that the UUID is stable."
+  },
+  {
+    "id": "probe_2e7ca9d6534710e0c3555883f6d0d170",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes TextSplitter’s DocGroups2/DocGroupsEager response models, conservative fallbacks, and eager PAGE BREAK separator, but provides no ImageSplitter code to establish that its prompts and behavior match."
+  },
+  {
+    "id": "probe_76a4cc24d346ba870d0a788d0ec1be5f",
+    "label": "unsupported",
+    "rationale": "The excerpt shows eager and lazy tests for both splitters with contract-type and expected-value assertions, but does not establish that MULTI_PAGE_DOC_PATH is tests/files/bulk.pdf or that the code is in tests/test_process.py."
+  },
+  {
+    "id": "probe_7381add8ae298ebea33a30558662a26c",
+    "label": "supported",
+    "rationale": "The excerpts accept file paths and BytesIO streams, specify lists of page dictionaries with content and optional images enabled by vision_mode, reject unhandled sources with ValueError, and wrap caught loading or processing errors in ValueError."
+  },
+  {
+    "id": "probe_445bd20d96e6566cd2af49407aad2459",
+    "label": "unsupported",
+    "rationale": "The excerpts show can_handle_vision reporting vision support, but do not show a base convert_to_images method or its reuse to render PDFs/images into page byte dictionaries."
+  },
+  {
+    "id": "probe_432395d49f2f2d11c5f2f2a4cb93afb3",
+    "label": "supported",
+    "rationale": "The excerpt imports and includes in __all__ every listed API group: Extractor, LLM, document loaders and configs, Classification/ClassificationResponse, Process, splitters, Contract, strategy enums, BatchJob, and MarkdownConverter/PageContent."
+  },
+  {
+    "id": "probe_c97d293c4e677624991727c43ec92e36",
+    "label": "unsupported",
+    "rationale": "extract_batch returns a BatchJob, rejects PYDANTIC_AI, and checks can_handle_batch(), but the excerpts do not show async get_status/get_result methods or establish that DEFAULT and membership in BATCH_SUPPORTED_MODELS are required."
+  },
+  {
+    "id": "probe_bea9e6e4c639dfbcd98ea87c8161dc62",
+    "label": "supported",
+    "rationale": "The excerpt uses asyncio.gather for per-group extraction, matches classifications by name, selects extraction_contract or contract, sets skip_loading to True for loaded group pages, and resets it to False in a finally block."
+  },
+  {
+    "id": "probe_725b1cdb5955606ee8a92646742dfbae",
+    "label": "contradicted",
+    "rationale": "Content tokens are capped at 120000, but the thinking budget uses one third of the uncapped page_count * 1500, then clamps to [1200, 64000], not one third of the capped content tokens."
+  },
+  {
+    "id": "probe_e2494b64891912e5a3c106a44ea3582e",
+    "label": "contradicted",
+    "rationale": "In vision mode, page content and extracted values are appended only for dictionary-valued pages, so non-dictionary pages are omitted rather than every page being included. The excerpts show the ConflictResolution call and ValueError handling, but not creation of conflict markers for divergent scalars."
+  },
+  {
+    "id": "probe_6dee4688095e1652e664b4a7885515e7",
+    "label": "unsupported",
+    "rationale": "The excerpts establish case-insensitive merging by a selected unique key, the stated _merge_two_models behavior, and flattened-list fallback, but do not establish that the candidate keys are country/region/id/name or how they are selected."
+  },
+  {
+    "id": "probe_a4b19b020c9390dc10b2c2a292758070",
+    "label": "unsupported",
+    "rationale": "The excerpts confirm both call implementations, shared parameters, direct max_retries=1, and reasoning checks when thinking is enabled. They do not establish that requests select the router path when a Router is loaded and the direct path otherwise."
+  },
+  {
+    "id": "probe_652d6982f22eedde1bf994c44d2eb611",
+    "label": "contradicted",
+    "rationale": "Explicit token_limit is also capped by DEFAULT_MAX_COMPLETION_TOKENS via min(self.token_limit, max_tokens), so it does not bypass the default cap. The excerpts also do not establish that the constant equals 8000."
+  },
+  {
+    "id": "probe_e8d45a8baaaadaadb256152429526ee9",
+    "label": "unsupported",
+    "rationale": "The excerpt shows ruff with --fix and the stated path filter, plus a local mypy hook piping a commit-pinned remote script to bash. However, ruff-format has no stated path filter, and the excerpt does not establish the repository’s extract_thinker layout or that the referenced files are absent, so the vestigial conclusion is unproven."
+  },
+  {
+    "id": "probe_fb125620e606534b1c13a320e93cae81",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the CI commands, secret, Python matrix, version check, and installation smoke test, but does not establish that pypdf is lazily imported by the PyPdf loader or absent from declared dependencies, nor that this explains the poetry add step."
+  },
+  {
+    "id": "probe_97ab4c2f370191353e1f3f2712feb77e",
+    "label": "supported",
+    "rationale": "The split method rejects a missing splitter and fewer than two loaded pages, calls split_eager_doc_group for EAGER, and gates LAZY splitting on can_handle_paginate(self.file_path), raising the quoted error otherwise. The supplied pagination check accepts only PDF extensions or PDF MIME types."
+  },
+  {
+    "id": "probe_1c8e68acd67601c0101075eadc85c857",
+    "label": "supported",
+    "rationale": "load_splitter checks isinstance(splitter, ImageSplitter) and passes the resulting boolean to set_vision_mode on the default document loader, if present, and every file-type-specific loader."
+  },
+  {
+    "id": "probe_b1aa0e673fa114bcaa2f5c7a0158bfd6",
+    "label": "unsupported",
+    "rationale": "The excerpts show Poetry installation, CI running tests/critical/ with GROQ_API_KEY supplied, and skips for a missing Mistral key or optional dependency. They do not establish that GROQ_API_KEY is required, that all of test_llm_backends.py is offline, or that most other modules make real billed LLM calls."
+  },
+  {
+    "id": "probe_05aff314786dce9b750517590f6821a4",
+    "label": "contradicted",
+    "rationale": "The chained pipeline is shown, and the LAZY error message states PDF-only support. However, extraction explicitly prefers classification.extraction_contract over classification.contract, so returned objects are not necessarily instances of the matched classification's default contract."
+  },
+  {
+    "id": "probe_43acbfc7bedd045f3f5b5c9c018fb36c",
+    "label": "supported",
+    "rationale": "Both exception handlers return fallback results rather than re-raising or reporting the error: pairwise analysis keeps pages together using the first classification's name for both, while eager analysis groups all pages into one document classified 'unknown'."
+  },
+  {
+    "id": "probe_537e5857073cf87f4084aefe14204ec7",
+    "label": "supported",
+    "rationale": "The excerpt defines all three abstract methods with the stated return type, uses page_per_split=2 for N-1 overlapping pairs (with a singleton special case), and aggregates comparisons into DocGroup page lists by extending on True and starting a new group on False."
+  },
+  {
+    "id": "probe_3baa1ce0781fedb59449f6a897229524",
+    "label": "unsupported",
+    "rationale": "The excerpt confirms the critical-test command, GROQ_API_KEY secret, and Python 3.9–3.13 poetry-install matrix, but does not establish push/PR-to-main triggers, that CI runs only critical tests, or that contributors manually exercise the broader suite."
+  },
+  {
+    "id": "probe_b585abce3124d44fd22f67096440e533",
+    "label": "supported",
+    "rationale": "The Ollama tests configure API_BASE as http://localhost:11434 and load an Ollama model for extraction, indicating use of a local Ollama server."
+  },
+  {
+    "id": "probe_f7fd17fc86322c57a8d1109ef369a061",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the state and temperature changes and conditional thinking parameters with warnings, but do not identify the two parameter-building blocks as router and direct request paths."
+  },
+  {
+    "id": "probe_79f2dba3c60e9a93cb4a4537c7c04275",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the described prompt construction and parsing when self.is_dynamic is true and a response model is supplied, but do not show that set_dynamic(True) enables this flag or that the request helpers pass the resulting None response model to instructor."
+  },
+  {
+    "id": "probe_91a809dadfd358bcc4f10b1733c368cc",
+    "label": "unsupported",
+    "rationale": "The excerpts show the specified error wrapping and concurrent chunk/page handlers that print errors and continue, but they do not establish that FORBIDDEN is the default completion strategy."
+  },
+  {
+    "id": "probe_c884857350ba92d9c469f1f8abee2f00",
+    "label": "supported",
+    "rationale": "The excerpt specifies version 0.1.14 and lists Python >=3.9,<3.14, pydantic >=2.11.5, litellm >=1.71.1, and instructor >=1.8.3 as core dependencies."
+  },
+  {
+    "id": "probe_9e4a6f798f185eb661994166b361dbbd",
+    "label": "unsupported",
+    "rationale": "The excerpt shows image annotated as str with a False default, but does not show whether the repository explains this mismatch or whether image is passed unchanged to extractor.classify."
+  },
+  {
+    "id": "probe_28e1253dd3d8ce1aba2b31ec78352245",
+    "label": "supported",
+    "rationale": "Source 1 defines all listed fields, validates non-None contract values as types, defaults uuid via uuid4, and checks image paths with os.path.isfile in set_image. Source 2 selects extraction_contract or contract and passes it as the extraction response_model."
+  },
+  {
+    "id": "probe_e4dcd9918ef8bcd849de9514b32dd26c",
+    "label": "supported",
+    "rationale": "The code selects the first model field in ['country', 'region', 'id', 'name'], merges items using lowercased keys, extends list values, keeps existing non-null scalar values, and assigns missing-key items synthetic no_key_N identifiers when a unique field is selected."
+  },
+  {
+    "id": "probe_dc96c51f5ed0cc81c757f73c1d695895",
+    "label": "unsupported",
+    "rationale": "The excerpts establish recognition of scalar conflict placeholders, an LLM request using ConflictResolution with page and candidate context, ValueError with a context-size hint on request failure, and first-candidate fallback (or None if empty). They do not show scalar disagreements being converted into those placeholders."
+  },
+  {
+    "id": "probe_89158585531735d94b72e07d879cdff2",
+    "label": "unsupported",
+    "rationale": "The loader excerpt gates image attachment on vision_mode, and vision message assembly calls an image-adding helper. However, the excerpts do not show that text processing excludes image bytes or establish that all document loaders attach images only in vision mode."
+  },
+  {
+    "id": "probe_713a0187b8e753c65340238f754acb17",
+    "label": "unsupported",
+    "rationale": "The excerpts show dependency checks and ImportErrors with exact pip install commands for pypdf and pytesseract, but do not show that checks run at construction time or that all loaders behave this way."
+  },
+  {
+    "id": "probe_f7ebf209575a6fbb10f245905b32f609",
+    "label": "supported",
+    "rationale": "The code creates overlapping adjacent-page pairs with page_per_split=2 and aggregates DocGroups2 results into DocGroup objects, adding pages when belongs_to_same_document is true and starting a new group classified by classification_page2 otherwise."
+  },
+  {
+    "id": "probe_fa8c7be0900e1b594544f74f5cb4f12f",
+    "label": "unsupported",
+    "rationale": "The excerpts show text-only comparison, a fail-open fallback that keeps pages together, and vision mode enabled only for ImageSplitter instances. They do not establish that TextSplitter is exported from the package or that its fallback matches another splitter’s."
+  },
+  {
+    "id": "probe_35f8a32cc3a14d5a594a88ef22293176",
+    "label": "supported",
+    "rationale": "The test-python-versions job covers Python 3.9–3.13 but only checks the Python version range and installs dependencies with Poetry; pytest runs only in the separate build-and-test job."
+  },
+  {
+    "id": "probe_1fc72f049223ccb3c7c6d801122f4ab1",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes a manual workflow with an optional Poetry version update, build, and the specified publish action and secret. It does not establish the filename or rule out a separate tag-triggered publish workflow."
+  },
+  {
+    "id": "probe_4d8b8e4edb5030217aa3db3e93c77c37",
+    "label": "unsupported",
+    "rationale": "The excerpts show case-insensitive name matching in text-only classification, all three layered strategies, a 1–10 integer threshold, and level-by-level tree traversal using the first extractor. However, they do not establish that returned confidence values are constrained to 1–10; confidence is copied from the LLM response without a shown bound."
+  },
+  {
+    "id": "probe_578035029921585a956ede5a5d231fd3",
+    "label": "unsupported",
+    "rationale": "The workflow installs pypdf and runs tests/critical/ with GROQ_API_KEY from secrets, but does not establish that the key is live. The batch test uses gpt-4o-mini and tests/test_images/invoice.png; neither excerpt establishes a paid-account requirement, committed fixtures under both directories, or per-engine dependencies for most other tests."
+  },
+  {
+    "id": "probe_a6de0f82d04c9d9b785961604f622273",
+    "label": "supported",
+    "rationale": "The code raises ValueError for fewer than 2 pages and, for lazy splitting, when the loader cannot paginate the source; the error states that only PDFs are currently supported."
+  },
+  {
+    "id": "probe_579ba2e37e02c9d26291269952cf4c49",
+    "label": "contradicted",
+    "rationale": "The method rejects unsupported input types with ValueError, so it does not normalize any loader output. Dictionaries already containing 'content' are returned without enforcing string content or adding metadata. It does join page texts and collect page images only when vision is enabled."
+  },
+  {
+    "id": "probe_aedd007d82adf096c1a61c9fe17fc406",
+    "label": "unsupported",
+    "rationale": "The excerpt shows an outer handler wrapping exceptions in ValueError, but does not establish get_result behavior, empty-list indexing, or whether such an edge case is intentional."
+  },
+  {
+    "id": "probe_6b97d7e4d76053ff80da2732b3dd4d52",
+    "label": "supported",
+    "rationale": "The code defaults to input_<uuid>.jsonl and output_<uuid>.jsonl in extract_thinker_batch under the current working directory, and raises ValueError if either resolved path already exists, including caller-supplied paths."
+  },
+  {
+    "id": "probe_a53e0869991e61a9aff58b14c1f107c3",
+    "label": "unsupported",
+    "rationale": "The excerpts show a PaginationHandler and a make_all_fields_optional declaration, but do not show the handler calling it or tolerating partial per-page results before merging."
+  },
+  {
+    "id": "probe_b506e943fce03266f558207e31b14718",
+    "label": "unsupported",
+    "rationale": "The excerpts show existing loaders imported and listed as exports, but do not establish that every new loader must appear in both places to be part of the public API."
+  },
+  {
+    "id": "probe_f5d3f4fb5f7f5ce2d97ba88a54a6e91c",
+    "label": "supported",
+    "rationale": "The method gets a loader via get_document_loader_for_file, calls set_vision_mode(True) when vision is true, loads the input, and returns self._classify(content, classifications)."
+  },
+  {
+    "id": "probe_681c3e1e697a8eabd57e63dd9ea73bca",
+    "label": "supported",
+    "rationale": "Process.extract matches each doc_group.classification to classification.name, uses that classification’s extractor, and passes classification.extraction_contract or classification.contract as the extraction response_model."
+  },
+  {
+    "id": "probe_3b0fca4950f94b467065dc0eac5add6b",
+    "label": "supported",
+    "rationale": "The excerpts select country, region, id, or name as the merge key, compare key values case-insensitively, and otherwise concatenate lists. Scalar handling preserves one distinct non-null value and creates a conflict structure for multiple distinct values, although the candidates entry is cut off in the excerpt."
+  },
+  {
+    "id": "probe_fcd058b2d730ac8b9e31bea96a898694",
+    "label": "unsupported",
+    "rationale": "The excerpts establish a single llm.request call for FORBIDDEN and the stated error wrapping, including JSON validation errors, but do not establish that FORBIDDEN is the default, that messages contain the entire merged content, or that the request is instructor-parsed."
+  },
+  {
+    "id": "probe_e823657a7524be787ce3d611514c9907",
+    "label": "unsupported",
+    "rationale": "The excerpts establish image_url entries, one user message carrying the vision content list, text content joined into a string, and the shared system prompt. They do not show text entries being added to the vision list, so mixed text/image_url content is not established."
+  },
+  {
+    "id": "probe_e6bf09f56ec8a6d9f41acbf7b146702a",
+    "label": "contradicted",
+    "rationale": "The function processes list items and removes 'images'/'image' keys from dictionaries, but its dictionary comprehension makes a shallow copy, not a deep copy. The excerpts also do not establish non-vision mode or execution before merging."
+  },
+  {
+    "id": "probe_1c4bf699c1d15ef21502014e16a0970c",
+    "label": "supported",
+    "rationale": "extract_async awaits asyncio.to_thread(self.extract, ...) with all its parameters forwarded unchanged and no exception handling, preserving extract's results and propagated errors."
+  },
+  {
+    "id": "probe_9ca6c042fea3fa026787cb15a447fa1d",
+    "label": "unsupported",
+    "rationale": "The excerpts show example scripts and a notebook, but do not establish their stated filenames or that fixture documents ship in-repo. They reference examples/files/ and tests/test_images/invoice.png, not tests/files/."
+  },
+  {
+    "id": "probe_4874cf9fe7e24371d21b8359cc1d0edc",
+    "label": "supported",
+    "rationale": "The LAZY branch requires document_loader.can_handle_paginate(self.file_path); otherwise it raises the stated ValueError, whose message says only PDF is currently supported."
+  },
+  {
+    "id": "probe_6cbd9affb9e762bee5a6977db8d7cdbe",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes page loading, a ValueError for fewer than two pages, strategy branching, and storage in self.doc_groups, but does not establish that DocGroups map page ranges to classification names."
+  },
+  {
+    "id": "probe_98caf08026eae4b98d1a93ba34cb7fff",
+    "label": "unsupported",
+    "rationale": "The excerpts show reading metadata.num_pages and calling set_page_count to recompute the content token limit and thinking budget, but do not establish per-document page-count sums for multi-source merges."
+  },
+  {
+    "id": "probe_5e6e9d14fc007432c6120ac66344a38f",
+    "label": "unsupported",
+    "rationale": "The excerpts show ExtractThinkerError handling for incomplete outputs and validation/JSON decode errors, but vision conversion checks whether e.args[0] is a litellm.BadRequestError—not e itself—and requires a truthy second argument. They do not establish that a direct BadRequestError during vision is converted to VisionError."
+  },
+  {
+    "id": "probe_cccfa8fdd55c5e9dc757b1a0681c19b1",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the ConflictResolution request, ValueError on request failure, and first-candidate cleanup fallback. However, _identify_conflicts is not shown, so the _conflict trigger is unverified; the vision prompt also omits non-dictionary pages rather than necessarily including every page."
+  },
+  {
+    "id": "probe_f94e244262455982411feb87ab0711e5",
+    "label": "unsupported",
+    "rationale": "The enum defines all three strategies, and extract() defaults to FORBIDDEN and returns extract_with_strategy for non-FORBIDDEN values. However, the excerpts do not establish defaults for all extraction entry points or show the subsequent normal load-and-merge path."
+  },
+  {
+    "id": "probe_bde9e8cb13bacac54d8cc672cfb4868c",
+    "label": "unsupported",
+    "rationale": "The excerpts establish acceptance of the listed source types and Extractor routing of lists/dicts to DocumentLoaderData. However, list and string loading delegate to helpers whose implementations are absent, so unchanged page-list pass-through and raw-text wrapping are not established."
+  },
+  {
+    "id": "probe_aa7815b4d64bc20044bfc5caaf721311",
+    "label": "unsupported",
+    "rationale": "The Azure excerpt shows the analysis call, polling result, and feature parsing, but AWS only lists supported formats, not block-tree parsing. Google exposes processor and parsing options but does not show a processor call or use of those options."
+  },
+  {
+    "id": "probe_2ae5ab204fb3a77c1e9658ea4a7d3f47",
+    "label": "supported",
+    "rationale": "The excerpt loads each list element separately, sums page counts and passes at least 1 to llm.set_page_count, joins text with the specified separator, concatenates images, and records num_documents in metadata."
+  },
+  {
+    "id": "probe_b40631b63ee3f384096ee4b14eeea768",
+    "label": "supported",
+    "rationale": "_handle_vision_mode enables vision on the existing loader or creates DocumentLoaderLLMImage(llm=self.llm) and enables it. The vision setup caller wraps ValueError as InvalidVisionDocumentLoaderError, which subclasses VisionError."
+  },
+  {
+    "id": "probe_ebe11be42bc2418ad21b5941df5dee4f",
+    "label": "unsupported",
+    "rationale": "The excerpt confirms max_retries=1, the configured temperature, and self.TIMEOUT, but not TIMEOUT’s default or units. The token cap comes from _get_model_max_tokens(), with token_limit or a thinking-specific limit applied; it does not establish DEFAULT_MAX_COMPLETION_TOKENS=8000."
+  },
+  {
+    "id": "probe_38f6ff26cf14c2ff8aa3c13fc65a391d",
+    "label": "supported",
+    "rationale": "Both excerpts join message contents into one prompt, call agent.run through asyncio.run, and return result.data. The first uses response_model or str; raw_completion uses str. Both wrap exceptions from the run or result access in ValueError with the stated prefix."
+  },
+  {
+    "id": "probe_2daba0daa0495e8fe51156f7f6da9271",
+    "label": "unsupported",
+    "rationale": "The excerpt defines the property and its backing field but shows no package-wide usage evidence. It does not establish that no code path reads the property or that it is an unused extension seam."
+  },
+  {
+    "id": "probe_159b851a0e5548aae1c0b8f41d5f69a5",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the LLM requirement, passing both True and False vision values to the loader, basic-conversion fallback for outer loader-path exceptions, and returning the raw request result in a list without a loader. However, they do not show that page processing uses DEFAULT_MARKDOWN_PROMPT or that _basic_to_markdown is non-LLM. Individual page exceptions produce error comments rather than triggering fallback."
+  },
+  {
+    "id": "probe_bdb0b92ad0e2d6c29371d3277d30014b",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the ruff hook’s file filter, but not that the package directory is named extract_thinker. The relative import does not establish its directory, so the claimed exclusion of library source is unproven."
+  },
+  {
+    "id": "probe_e50b3179610b6a5f74f9f8d3bb879c69",
+    "label": "unsupported",
+    "rationale": "The excerpts show os.getenv reads for several vendor settings, but do not establish non-CI test context, load_dotenv usage, MISTRAL_API_KEY access, absence of skip markers, or failure rather than skipping when settings are missing."
+  },
+  {
+    "id": "probe_3697ec30011dfbbe1078445118bd1078",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the chained workflow and split's requirements for a loaded splitter and at least two pages, but do not establish that extract returns exactly one result per document group using that group's classification contract."
+  },
+  {
+    "id": "probe_3f9475b8b3267a6d58f0640a554dfd21",
+    "label": "contradicted",
+    "rationale": "The classify signature uses vision=True, not image=True. The excerpts establish Classification fields and a ClassificationResponse return type, but not a 1–10 confidence scale or visual comparison against per-classification reference images."
+  },
+  {
+    "id": "probe_c9dca543280f28d03422bcb5447902e6",
+    "label": "supported",
+    "rationale": "When vision is enabled, the handler enables vision on the existing loader or creates DocumentLoaderLLMImage(llm=self.llm) and enables it. ValueError is caught and re-raised as InvalidVisionDocumentLoaderError, which is defined as a VisionError subclass."
+  },
+  {
+    "id": "probe_620c8df1943c90cc97e4b4129dc283a8",
+    "label": "supported",
+    "rationale": "The list branch loads and maps each entry separately, sums metadata.num_pages (defaulting to one per document), sets the LLM page count to at least one when an LLM exists, and makes one _extract call with separator-joined text and concatenated images."
+  },
+  {
+    "id": "probe_a3b9bf209c790315935aa802a393b0f1",
+    "label": "supported",
+    "rationale": "The mapping explicitly matches all listed statuses, defaults unknown statuses to 'failed', and get_status returns 'failed' when retrieval raises an exception."
+  },
+  {
+    "id": "probe_cf4d7859765617f399185946552d1c77",
+    "label": "supported",
+    "rationale": "cancel() invokes self.client.batches.cancel and then _cleanup_files() on success. The cleanup method removes existing input/output files and their parent directory if empty, and __del__ also calls it."
+  },
+  {
+    "id": "probe_3ec5b3229f36984171404594da398a38",
+    "label": "supported",
+    "rationale": "Both methods explicitly enforce mutual exclusivity: setting a per-file-type loader raises when a default loader exists, and loading a default raises when the per-file-type loader registry is nonempty."
+  },
+  {
+    "id": "probe_eebc99427de6314b2a0f08592a6117d8",
+    "label": "contradicted",
+    "rationale": "The request includes all page images and uses DocGroupsEager, with an unknown all-pages fallback for exceptions inside the try block. But classification reference images are appended to messages before it is initialized, causing an uncaught error when present; messages is also reset before the request, so references are not included."
+  },
+  {
+    "id": "probe_21cdcb58fd1669fa2e017ae603112218",
+    "label": "unsupported",
+    "rationale": "The excerpts show Pydantic DocGroup/DocGroupsEager models and strategy-specific assignments to self.doc_groups, but do not establish that EagerDocGroup is a dataclass, the splitters’ return element types, use as an LLM response shape, or consumption exclusively through .pages and .classification."
+  },
+  {
+    "id": "probe_7ce688ec71dbd6f1569a396cbbc8e578",
+    "label": "supported",
+    "rationale": "The class requires name and description strings, validates non-None contract fields as types, defines optional image and Any extractor fields, checks the image path with os.path.isfile in set_image, and generates UUIDs using default_factory=uuid4."
+  },
+  {
+    "id": "probe_97f221e2b09815fc11fe0e9903716b4e",
+    "label": "unsupported",
+    "rationale": "The excerpt defines the splitting methods and confirms that aggregation keeps the first scalar value on conflicts, but it does not show the live extraction pipeline or _build_classification_message_content, so it cannot establish that these methods are never called by that pipeline."
+  },
+  {
+    "id": "probe_8dcea6e72be8e95dd86ce6f0bc97f649",
+    "label": "supported",
+    "rationale": "The method checks the file-extension mapping first for string sources, then performs capability checks, and raises the stated ValueError if no loader is found rather than returning None."
+  },
+  {
+    "id": "probe_fb7b29f1b1cc5e5bbdad689945ef16b2",
+    "label": "supported",
+    "rationale": "The routing uses bitwise &, which evaluates is_vision_error(e) without short-circuiting. That function accesses error.args[0] without a guard, so an exception with empty args raises IndexError during error handling."
+  },
+  {
+    "id": "probe_1824166ab0700d0792ccfd2f6c814e53",
+    "label": "supported",
+    "rationale": "The excerpt explicitly constructs ClassificationResponse(name=\"Unknown\", confidence=1) as the fallback when best_classification is None, rather than raising."
+  },
+  {
+    "id": "probe_5af473c2afc5373d210aadfd167d6d4a",
+    "label": "contradicted",
+    "rationale": "The job also asserts sys.version_info >= (3, 9), so it does not only assert the upper bound. The excerpts do support that it runs no tests and that its <4.0 ceiling is wider than the project's <3.14 constraint."
+  },
+  {
+    "id": "probe_cc8f12fd22facd8f83eed977643a6891",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the stated Python version, commands, order, and secret, but does not establish that tests/critical is the only test slice executed anywhere in CI."
+  },
+  {
+    "id": "probe_be5d2fe07c475478dce5b6ca007d5ab6",
+    "label": "unsupported",
+    "rationale": "The excerpt shows an explicit Tesseract binary path, a PNG invoice, and gpt-4o, but does not establish that it comes from examples/extractor_basic.py or mirrors the README’s scanned-image flow."
+  },
+  {
+    "id": "probe_398ccd8061cac15f963ad733780e2c30",
+    "label": "supported",
+    "rationale": "The excerpt explicitly sets API_BASE to http://localhost:11434 and passes 'ollama/phi3' to LLM to load a custom Ollama model."
+  },
+  {
+    "id": "probe_cbe14d7789cab1b7552833aab72a1f1e",
+    "label": "supported",
+    "rationale": "The PYDANTIC_AI branch catches Exception from the agent call and raises ValueError with the stated message, replacing the outward exception type."
+  },
+  {
+    "id": "probe_f7b1a3dae42f691d0de37d699ed6e185",
+    "label": "supported",
+    "rationale": "load_router raises ValueError whenever the backend is not LLMEngine.DEFAULT, which includes PYDANTIC_AI; it assigns the router only for DEFAULT."
+  },
+  {
+    "id": "probe_d9c0612989456d8a11beb186abea5631",
+    "label": "unsupported",
+    "rationale": "The excerpts establish a pytest tests/critical CI subset and component-organized documentation navigation, but do not establish the extract_thinker runtime package, a docs/ MkDocs Material site, or examples/ scripts."
+  },
+  {
+    "id": "probe_88d1f0213de924e1f8764d0c4fe72a18",
+    "label": "unsupported",
+    "rationale": "The excerpts support the page-dict format and show DocumentLoaderLLMImage preparing images with vision_mode=True, but do not establish that no loader invokes an LLM or that a vision model is invoked later by the Extractor."
+  }
+]

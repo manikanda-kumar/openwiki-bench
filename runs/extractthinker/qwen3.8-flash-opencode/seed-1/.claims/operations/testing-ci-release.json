@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c23d60d807acb35478e8b74a4839001e40fc14ba389950356334db95a440141b",
+  "claims": [
+    {
+      "id": "claim_1ae15d077ca447ae909beda0a23051cd",
+      "statement": "CI's build-and-test job (Python 3.10) runs poetry install, then 'poetry add pypdf && poetry run pytest tests/critical/ -v' with GROQ_API_KEY from secrets, and finally poetry build — tests/critical is the only test slice executed anywhere in CI.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/workflow.yml#L12-L32",
+          "version": "repo-lines-v1:sha256:105fe48cc4901d4695d81b34f6d5db3f8365f83bb5888ba3bd29087f3d458b0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5NmI1OTNjZmIyM2VlMWQ5NjQ2Y2UxNDRhNWQ5YWEyZWIwZjIxNTRkNDdmYWU2OTI1MDkwNzg0ZmVmOWYxYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzYjI1ZDg2YjEyODNkYThjMWVkYjNhMjM4ZmMxNDVjNjIxMWQ1NjUyZWYwMDJjNWRlNDljOGY2ZTUwYjQ1MWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2ZWNhNThiMDhkOGJlMzg1ODJhNDI3MDc4NjBiZWJkOTYxMWM0M2Y0OWIzZWM1Nzk5OWU3ZjdlZjZkMTg5NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkN2I4NDExZjhkMmM5YjA3NmE1ODFlN2ExMGRjM2I1ZWJmMGU1ZDBkNTM1MWMwYWM1YmY5ZjU0YWE4ZDIzZjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d1cbb7d421d4209b67dec5704065ffa",
+      "statement": "pypdf is not a declared poetry dependency; CI installs it ad hoc with 'poetry add pypdf' because DocumentLoaderPyPdf imports it lazily at use time.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/workflow.yml#L29-L29",
+          "version": "repo-lines-v1:sha256:16ccbe3637ccc703071f5f0789e37097e3a557dfe9ca22bcb0c342813a533c26:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZjY2JlMzYzN2NjYzcwMzA3MWY1ZjA3ODllMzcwOTdlM2E1NTdkZmU5Y2EyMmJjYjBjMzQyODEzYTUzM2MyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZjY2JlMzYzN2NjYzcwMzA3MWY1ZjA3ODllMzcwOTdlM2E1NTdkZmU5Y2EyMmJjYjBjMzQyODEzYTUzM2MyNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDJlNThhNzA1YzM3NjJiOGRmNzVjMzNhODJiYWUzYjYyNTUzMzZmYzMyOTRlM2QxNWU2YWIzMGQ1M2Y3ZWNlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2JhZDc2MWQ2ZDliNDFhNTkyNzcyYWM1ZmFkMTNjMjFkODlkZDcwMWYwN2YzNWQwYTRhYTc0NjU2MGQ3MDQ4MCJ9"
+        },
+        {
+          "resource": "repo://pyproject.toml#L8-L21",
+          "version": "repo-lines-v1:sha256:fb290088895a4ef26c212f8be37a80f30061e0950b883b154bfcb2b5c24a857c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZjlmMzczYWQ3NzRkOWY4MDdhYzJkZTQzMGFhZjgxYWM3ZTZiMWZlNWUxMGNhMTBjNjY2NTA4NDlkMTM2NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNjk4MTU3YTJhMDcyMzYxMTM3MjdlYTJiYjA5ZTU3YmNmNjIzMWMwZDM4MWE0NDg0OGU5NWFjODEzY2ZjMmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMTM0YmM0ZmM5ZTViNjFmYjk5N2E0ZTE2ZmM1MDNlNmIzZTQ0MjUzMWViZTdmN2E2NjIzZjViMzJkMWZjMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMDU3Y2EzYTVhZDc3ODMzOTJjNDBiYzY5MDVkNGZkZmYwNDA2NTcxOTdiYjNmZDdkNzU2YjY0MmEwOTI0MWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e1fd1e9c0c344cf9990cf3063a7a6a2d",
+      "statement": "The test-python-versions matrix (3.9-3.13) only asserts sys.version_info < 4.0 and runs poetry install — it executes no tests, and its allowed ceiling (4.0) is wider than the project constraint python >=3.9,<3.14.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/workflow.yml#L34-L59",
+          "version": "repo-lines-v1:sha256:6ea9025f29dbded9773e8f5839ee5a1729f36c632dc58831ec873cca60709c80:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2ZmYwMDNjMGNkMmNlNWYxN2EyNjE3MDAwNzFkNjlkODJhOTU1OGExZmE3YmZkY2Q0MGYyMmVjOTk3OWRhMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzM5NDVjNzJmZmUwMDg4ZWRmMTg0OGFiNWZkNmNkNDJmOWI5MGRjNzlhMDBlOWQ0MzkzNmY5NzA5OTFmNDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkYjg4NmFmYTkzYjA0NDBkMjE5YjY2NTdjYmJhZjgyZWJiNTY3NGJlMGYxMTRhOWM2YTFmYjU1ODcyNTQyMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://pyproject.toml#L9-L9",
+          "version": "repo-lines-v1:sha256:d772dfaca23a60f8e3291df4f42ac038f458e769dffff80456d1d3089407c8b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDc3MmRmYWNhMjNhNjBmOGUzMjkxZGY0ZjQyYWMwMzhmNDU4ZTc2OWRmZmZmODA0NTZkMWQzMDg5NDA3YzhiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDc3MmRmYWNhMjNhNjBmOGUzMjkxZGY0ZjQyYWMwMzhmNDU4ZTc2OWRmZmZmODA0NTZkMWQzMDg5NDA3YzhiOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjc1OTA3MGYyY2Y0MjkyYzFjNjViNTg5MmZiY2M2YWRjZjIxMGE5YzRkMjZkYjkyYWYyZmFlOWY3YjBmZmJiOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmUxOWQxYzE5NjkzZGJmZTMyZDhhODg0NTY2YzA2NThiMWNiMGJhMGIwYzZjYWZmYjEwODdiZDVkMjEwYTc5OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc746d1ece8842ecab5a0faa5422808f",
+      "statement": "PyPI publishing is a manual workflow_dispatch that optionally sets the version via poetry version, builds, and publishes with pypa/gh-action-pypi-publish using PYPI_API_TOKEN, with no test execution gate before publish.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/manual-publish.yml#L3-L38",
+          "version": "repo-lines-v1:sha256:dbba0d4f38e50ddb870612dcd63f283a308cc90b559d37f8caa4353e37cbf929:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NmRjNDgxNDlmNWE4M2QxZWQ2ZGJiMzliYmM3ZTJiOTAyYWEzZDM0ZDZiZDVhZTRiMjkxYjY4ZGYwY2E3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyMDFlNGYzY2I3NGM2ZjdjZTQ3YThjZDI4MTJmMWI3NDkwNTZjZmMxNWM1ZTEyZTQ4NzBhMWYzYTY1YjA4OTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzMDRhNTY4YWIxZWQyZTgxOWE1ZmIxY2FjMzU5ZmM5YjNhZDc5MzhiNmMwYmFkMTNhNzIyNzEzMjA0ZjVhNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c75da9c3b5b4e4a8d6e434ab801cc67",
+      "statement": "The mkdocs documentation site is redeployed with mkdocs gh-deploy on every push to main.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/documentation.yml#L2-L24",
+          "version": "repo-lines-v1:sha256:5e149d563eaf2602b856019e34c98ce07d6a8b886da55c395ec479be967e1fc6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NmRjNDgxNDlmNWE4M2QxZWQ2ZGJiMzliYmM3ZTJiOTAyYWEzZDM0ZDZiZDVhZTRiMjkxYjY4ZGYwY2E3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYTQwMDlhZTM1ZWI0ODUzNjRhOTA3YzAxYTNmMDQ3ZTEyMGY5MTIxYzVhMGM5MzgzZTBiMjgwZWRkNDk4MzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoxLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmY2EwMTkwOTI2MmIyNzA3ZGFkMzZhNjg5ZDUyNWM4OWQzNDFlZDAzYTY0NzExMzAyNjUxOWJiMTNlZWE1Y2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZjg3ZWQ1N2YyOWQyZjkwM2M5MjMxMGI2MGUyYzQxZGY3YmE3M2QzODg3N2ZmZGJiODRiYjZmMDY4YjdhZjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1245930c26164c61a6de7be26cd12914",
+      "statement": "The ruff --fix lint hook is scoped to ^(extractthinker|tests|examples)/, a pattern that never matches the real package directory extract_thinker, so library sources are linted only by the unrestricted ruff-format hook.",
+      "evidence": [
+        {
+          "resource": "repo://.pre-commit-config.yaml#L5-L8",
+          "version": "repo-lines-v1:sha256:b29977ce94a96de4b9384ed3de88c8224cc9e4ea84254a668cc7f67d8fe6d1cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWRjMWMzMDc1ODAyY2IxNjBkYzlkYWM2MzBhYWRjMWFiMWRiZWZiOWEzZDkzMDM5ZDdiNGU4YmU5MWYyZjYwZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZlYmVkYjUwNWZiNzdiMDRlODVhODA4YWJlYzA2MmJjNDkzMWIzOGNhNjFiZGI2YmJhMTI4YjNjZTY4MTAzNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWMwNGQ5MWJjNTFiOWFmNTk2MzllYWQ1ZWU0NzQ3OTBiYjkyYThhMmFhNzkzMmEwNmYxYWM1ZWYyMGFiM2Q5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTA2YmMzZTU4YmI1NzUwMTIyNTYzZmM0YzdmMTE3ZjUzOWYwMmJhM2I0M2MwN2FiYjM1N2Q4ODcxNDFmYzQ1MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9a5ce055add140339dee70c837bd1009",
+      "statement": "The pre-commit ci_type_mypy hook curls an external omniverse script and targets extractthinker/_types/_alias.py and extractthinker/cli/* paths that do not exist in this repository.",
+      "evidence": [
+        {
+          "resource": "repo://.pre-commit-config.yaml#L13-L20",
+          "version": "repo-lines-v1:sha256:b11c43e1b3c1c5174203ade0866d9954036aa301e2019758e2ba04d750b9e048:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjNkOWQ4ZmQxYmVkNjk1ZWVkMmNmYjZiYWU4YzYwOTAzYmU4MTBkYTExZTk1M2I0NmMxY2FkMTI5Y2RlNDc0NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjgzZTA5Mzc3Yjc4MWY5NjYwNTE0NTYwMjIyMzlkOGY4YWJiMzk2M2U1YjRiZDhkYjNhYjNlZjdjNDIxZTNhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJkZTA5YTQ5ZGRkNDQ5NDgzZWE5ZmI1NjljMjA2NjIxNmJjMTZkYjE1NmI3NzRhMzNjMzQ5N2JlZTllODQyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I3NzM0OTc1ZDA0M2ExMWJlNmZmM2U5ZWEwMDRjNjlkNTBkMjQyYTQ1N2I2YzhiZWFkMzBmMTViM2RkODg1MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c3aa84c6075424fad8dd3344b0ec6f6",
+      "statement": "The critical extraction test builds a live extractor on 'groq/llama-3.3-70b-versatile' against tests/files/invoice.pdf and asserts exact field values, so CI green depends on a third-party model service returning stable output.",
+      "evidence": [
+        {
+          "resource": "repo://tests/critical/test_critical_extraction.py#L38-L55",
+          "version": "repo-lines-v1:sha256:41a811eb12f788573eee975ca83e2902d8809184178d769df155bd4b9c6269f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYjM5NjBlODhjNTBjNjdmMjNkY2EwZGQzMTBjZTJiMTU0MDBkZjdiZjE2NjMzMGRiMzEyZGE0OTIwYmU2NDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxNmM4OGNjYjk0OWQ1YjIxZGJkMWFlMDVjMDVhYjA3N2RhMDliMzA0ZDc4MjE2YjY4N2E3YmZiMzQxNmE1YmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhNTE2MDE3YjMyMjc0MTI5NzlmNGMwMjMxN2E3NzQ2ZDhmZGMwMTM3MTc3NWFlMzMyZGUzMzY4MGE5OTMxYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_74e9ab65baeb476cac4777ac6e624b9d",
+      "statement": "The loader suites (txt, pypdf, and siblings) subclass BaseDocumentLoaderTest with local fixtures under tests/files and make no LLM calls, making them the offline-verifiable tier.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_document_loader_pypdf.py#L1-L22",
+          "version": "repo-lines-v1:sha256:8462f7aa622e71e2ef4139c28ac904903234d20dc2eaedc4f86a94927d07317d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3MjdhZGZmNTI0ZTA2MTYwMjJlYWRkOGY0YWYyMWEwNzc4YjI5ZmM0Yzc3YmRmZWZkMWFmY2UyY2JmNWU0YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0ZGMyMDRkM2M4ZTM4NzVlYTYyMGQwZWRkMmQ1MGVlOGNhYTNhZTdiYzllZGQxMDU0NmY5MTE2MDdmMzc1MzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmOGEyZTgwOTRjYjc1N2EzMGU2MGI3ZjQwNmZkOGQ5OTEwYzE1MzVmMmU1M2M4ODg1N2MwYjg1YmIwZTZkMmMifQ"
+        },
+        {
+          "resource": "repo://tests/test_document_loader_txt.py#L1-L24",
+          "version": "repo-lines-v1:sha256:1cba3157194f2c2a521dc8c0c456b8ea344ccdcde9cc0e074d8bd13152471a71:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3MjdhZGZmNTI0ZTA2MTYwMjJlYWRkOGY0YWYyMWEwNzc4YjI5ZmM0Yzc3YmRmZWZkMWFmY2UyY2JmNWU0YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwODExNWY1NDEzZTU0NmQ2ZWJkMmI2ZGE4MzJjOWJmZTI3NDMwNTBiYmYyZWE3YmYwMTNmZjI3Nzg2ZWE4MDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyYzhkMTFjZWM5NDQxNTg0ZjcwYTcwYWNkOGJiMTc0ZGVmZDBhYzNkNWFiY2NkOWYwZjllMWExNDJmMGQ1NTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0ea6d9517f124b1c857dff7e8c49b0fe",
+      "statement": "BaseDocumentLoaderTest.test_vision_mode asserts a legacy dict-with-images result shape and enables vision unconditionally, a contract that current list-returning loaders do not satisfy without overrides.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_document_loader_base.py#L20-L34",
+          "version": "repo-lines-v1:sha256:68c396e2fe78315b93caae1ab1a88b51515c59e7f258934a61e2a8f256378ca2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMjVlM2NhOWRlNDM1NmMwYWQwN2NiOWI1YTVmYWYwZjAwZGI0ZmIxMjJmYmE0M2M3OWY4YmNiNjM5ZTY4MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNGE5YzkwNzE0ZDM2N2YyNmUyMjllYjlhYThkODVjZDQ0MjJhMGFjMTlmMTFlYWExODViZDhkM2RhMWMyZmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxODhhZjVlYjE4MDU3OTZmY2JkZWU2YmJlZjMyYTA3NzU3YTRlZjJjNDIyYTk2NTMwZTE1ZTcyMDM2ZmY5ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhMjU3MTQ1MzQxMjY4ZjEyMzUzZDIyMDkwOWNiMmQyM2EyODhkMzk5YjE1ZGZhZTI4NGFmZTIwMjdlNzQwOTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_14113c744d06406bb978eb987902d1a3",
+      "statement": "The project defines no pytest configuration or shared conftest; individual tests bootstrap imports by inserting the repository root into sys.path.",
+      "evidence": [
+        {
+          "resource": "repo://pyproject.toml#L23-L32",
+          "version": "repo-lines-v1:sha256:d70b0db13edacbd39f1b73d15ea53ed8f86df7a41384e984a177821b3d6ff892:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmN2ZkYWRiYWEwZWQzZjUwZjliYzg0MDQyOWM1ZTdkODkzZGM0NDVmOThiYTJmOTM4NDk5NTY1Y2UxYWVjM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxMzc5NGI1OWU5YzVlNjUxMTAxNGFkM2FhMDM3ZDk3MzVhZmJhODA1MGM2NmM1MDg5ZTIxZTFhYjI1YWNkM2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2MmFmMmI4MWJjMGZiYzg1YjVlZGI5YTk4YjQ2ZmJlYWYxNGRkNjJjN2FmMDUxODAwZTk2ODc0YTAxMTE5OGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_process.py#L1-L3",
+          "version": "repo-lines-v1:sha256:8a393611f0327883ac19465ec4e08dc3e6269083b8bd49da2897e6bf515cb71b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzcyN2FkZmY1MjRlMDYxNjAyMmVhZGQ4ZjRhZjIxYTA3NzhiMjlmYzRjNzdiZGZlZmQxYWZjZTJjYmY1ZTRiNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE0MmIyMTk5ZGY5ZjQ5NTUzOTdkNzU2ZWM1Y2ZlNTY2ZTYyMzI5MDUwZWU4NzRhODVlZmE3OTRmMWZmMzAzNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2M5MmJhMjZmYTU1NGI2YWJhNDA5OTdiNmUwM2Y3NDc4MTNmYzg0YjdlODY0NmJhNTk1MTkwZWY1OWEwZmIwMyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T10:24:25.212Z"
+  }
+}

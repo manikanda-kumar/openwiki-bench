@@ -162,8 +162,8 @@ Wiki score = mean of page scores, penalised by `coverage` and `completeness`.
 
 Protocol: strip model identity and shuffle directory labels before judging; two judges plus a
 tiebreak; never let a contestant judge its own bench. The official judge transport is **Amp**,
-not direct OpenRouter calls: GPT-5.5 through Amp's `deep-classic` mode as primary, Opus 5 as
-secondary, and Fable 5 as disagreement tiebreaker and correctness-probe judge. Run each blind task in a fresh isolated Amp thread with
+not direct OpenRouter calls: GPT-5.5 through Amp's `deep-classic` mode as primary, Grok 4.6 as
+secondary, and GPT-6 Astra Medium as disagreement tiebreaker and correctness-probe judge. Run each blind task in a fresh isolated Amp thread with
 no contestant repository/project attached, import only its JSON response, and record thread ID,
 Amp mode, resolved model/version, and execution time in the private judge manifest. Preflight
 exact model availability before the matrix; never silently accept Amp routing to a replacement
@@ -277,7 +277,7 @@ export is failed because its cost and loop data are not recoverable afterwards.
 
 ## 9. Remaining execution work
 
-1. Judge and gate the nine completed `smallstep-cli` trials using GPT-5.5 `deep-classic` primary, Opus 5 secondary, and Fable 5 for tiebreaks/probes.
+1. Rejudge completed subjects with GPT-5.5 `deep-classic` primary, Grok 4.6 secondary, and GPT-6 Astra Medium for tiebreaks/probes before final comparison.
 2. If the gate passes, execute and judge the remaining 36 trials one subject at a time.
 
 ## 10. Resolved design questions

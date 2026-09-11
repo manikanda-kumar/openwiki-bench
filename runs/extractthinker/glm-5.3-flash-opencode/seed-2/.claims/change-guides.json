@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:44ea990528c6bf065dfe96f57adbb95d89c989dab750c9abf88da6a85d2a4c44",
+  "claims": [
+    {
+      "id": "claim_2bc91a45145e4663b98f71ad3dae256e",
+      "statement": "A new document loader should subclass CachedDocumentLoader, define a validated config dataclass, declare lowercase SUPPORTED_FORMATS, use both config-style and legacy kwargs initialization, lazily check third-party dependencies at construction, and decorate load() with the cachedmethod/hashkey(source-or-bytes, vision_mode) caching pattern.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/document_loader/document_loader_pdfplumber.py#L11-L105",
+          "version": "repo-lines-v1:sha256:88f8ce51125828e9297307cc87a5d60e886f9d0f73eae21e384b4d320bbfe3eb:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ZmJhZTBiOTFkNDRmYzBkNDlmNWRlNjkxZGE2ZmM0MzFmMjYwMTM0YmY3MzFlMGUyMWY3NjQ4MDk0MzM0Y2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2MTBiZTY3MTFkMzU5ZWRhMWZkMzJkOWVmYzhjY2FhMjM3MzJkODgwYTA4N2RkODc4YWExYmRkZTYyMmU2NjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlZTY5YjA3YmRiZTQ1MTZmZmE5NDMyZjA1NWU2NjQ1MTVmY2YyNjdjN2U0NGFlODk3YTc4ZWI2ODk3ZDkzODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2MmQ2NDg4YTJjMWZkZmMxMzdkMDZhZGM2Mzc3MTVmMjRkN2YzYmNjODI3NWQ1MDIxMzY4ZThkZThiYTUxMTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_27ad351ffa354e398eaa23f520f84fdd",
+      "statement": "can_handle is driven by SUPPORTED_FORMATS via extension lookup for file paths and python-magic MIME checks for BytesIO streams, so a new loader's SUPPORTED_FORMATS determines which sources it accepts.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/document_loader/document_loader.py#L49-L82",
+          "version": "repo-lines-v1:sha256:96500729856c3947eb047f4364a499f6406d35a31387e435529685452444f935:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjNWJjNjA1NTE2MTkyN2QwOTUxYjMwMDJkNDNjZDcxODY0NTFiMGM1OWJlMDViMDVhMGM2MDUyOTg5MmZmY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmMTFlYTExZWYwMWUyZTk2OWU1ZjRjNjI3MmYzZGI2NmRlNWY4ZTU0ZDFjYWFhNGFmZWYyZDIwYmJhMmVmMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxODEzMDk4ODM2MDJhYTE1NmIxZjAwZmJhZmU1NTAyZTY5MWMxOWNiZmIyYTI0ODg0ZTk1YzU2ODNkOTEyZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1OWU4Yzg1MTFmMGE2Yjk2M2ExMDEzYzExYTkzMTk5ZWM3ZjM1ODYzMDE0OTEwNzlmNjdhYzgxYjJhMjkxMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1419996ea7834ddcae95e6b95235d1b1",
+      "statement": "Loader output is consumed by Extractor._map_to_universal_format, so new loaders must return a page list whose dicts carry 'content' and optionally 'image'/'images' (in vision mode) and may include 'is_spreadsheet' data.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/extractor.py#L337-L432",
+          "version": "repo-lines-v1:sha256:d9998d39faefdb28c73dce807ba71c7d28b49f164ff25de014e5828d3a5504d1:eyJzZWxlY3RlZExpbmVDb3VudCI6OTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZWEzNmM5NzQ4ZDc4OWVjNmYyZjFhMjdjZjEzMTFmZDk5ZGUxMjllZGZmZjIxZDE5YzczNzk2MWRkMDMzYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2UzYTk3ZDVlMjI4NDEwNWJiMmYyMWFhMTA5OGJhZWRlNzBlN2UwNGRhMWIyYmRkYTg0MDEwNmRhYmU5Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YzQwNDc0MTk3MmVmNDdkZmEzNWEzYmE4NGUzOGEzZjBhNDc1MGYyZWZkMGM2MzdkYmM1MmY3NDllNzA5OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmNDNlYzM5MGY0MTFhYzM5OWYyMzUxZmJmYzE1YjFmMTdlMTk3NGRjMjJhNzA2MmE1NDc5NTNiMmQ4Mjk3ZDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c3d11fc2a9194d968867967292709f7e",
+      "statement": "New loaders must be registered in extract_thinker/__init__.py imports and __all__ to be part of the public API.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/__init__.py#L1-L26",
+          "version": "repo-lines-v1:sha256:2b5a3877dc71047dc0c8d66e034b8e70b66def2331c1c39f00734bab79362e13:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhOTM2NGM2YjgwM2IzZjRkZDg3MWY5M2E4NTc4ZjQ1OWI4OTA4MWY0NDkxY2U2YTk2OTU3N2MwYmIyNjkwYzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1ZGQyMTk3MDFmNWMzMmY5ODkwMDBlOTViNDQzNzY0NTRiMTUwZDZjZDYzZjkwMGZkYzIwZDE4MTllZDczZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NWM0ZTIyNTNlYTJjM2MzN2U0NmMwNWM3OTE2N2U2YWU0NzVjODk4MTRhZTY0MzZmNWRjOWI2YjhiYWYzMDkifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/__init__.py#L44-L89",
+          "version": "repo-lines-v1:sha256:1ef601abdff2feb3ddc1706523a740222864f884560c055daef4ae53fa5c1b6c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2ZGViN2Y4MmFiZDAwY2QzY2Y0MTQ1ZmVkMDJlNTJmMjMxMGMzYTFiNzMzYmFiZGExYjk1ZDkyMDc2NDBmMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZTBjYTg4MjVmN2I5NTM4ZmQwMmI0ZWQ5M2NiYjJhOTJlNGM5MTc5MDVjYWJjOWEyNzc2NDk1MjI2NGRjYzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1MGM4YzlhYzcwNzFiMWY5MWNlNTIwMTBmYmNlYTY2MmE2NGE5OWM5MDE1MDIzNmI4OTcyZDI0YTZjOTdiNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmYWUwZDQyNDhmNzE0MmY3YjE3ZjgyNmNkN2E1MTkyODBlMzEyNTc3NjkwZTk1NzgzMGQyM2RjZjM1YTNmZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a80dab9ba8245759404678e01fd4501",
+      "statement": "LLM-layer extensions branch in LLM.__init__ for client construction and LLM.request for the call path; the PYDANTIC_AI branch joins messages into a single prompt and wraps failures as ValueError('Failed to extract from source').",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/llm.py#L183-L236",
+          "version": "repo-lines-v1:sha256:775c5ab54814aee8355897ac22a743afe0f26aa329de1d4fe5a9b129feace594:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjZmQ3ZWYyZjNhZjUwY2FiZTg5MjY3YWU2M2E5NDIxZWMxNzgxZmIyZTFhNzQyMzc1NDE4OGQ1ZmIxZjRhZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxOGIxMTQ5NWRhOGY1OWRjOTUxZDYxZTExMWRlM2QzNTJiMjUzNDQ3ZTY5MTQwYjIzZDgzMTBlODE2N2JiY2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNTIyNzdiNTFhZWFmNTYxY2ViY2I1MTE4OGM0OGZkYjAzMGFhOGQ2ODczY2IwYjM0MzY2YTIxYzA5MTljZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1YTY0NjU2NWEyYWM5MzBmZjY5NTg0Yjg0NzQ3YTg2ZGUxYzRhN2FkNzczYTQzNTMyZGNhM2I4MWVjNzhmNzgifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/llm.py#L55-L97",
+          "version": "repo-lines-v1:sha256:34fd3b18cdce1f7d375df38cd9dec8f2e42baa55f822ea7a549706c63a7bf77d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmZDdhMDdhODNkZDE5OTZmYjUxNjg0YjQyYWVjYWY0ZTkwZmI3OGJhNzIzMGU1NDJlZDdiZDAxZDQyMzAxYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjNDhmZjAyMWEwZTk1YTZkMjI3ZWViM2QwMTFkYjBlYmQwYjA1NjJkMTM0N2VhOTJlZmFiM2M1ZmM1ZDY4ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1YzRiMWY4YzhhYjBlN2E0OWFjMTAxNWYxZDQwMTQ4ZDhjNmVjZWY1YmI5OGMyNWJkM2IzNmNmM2IwN2FkYjIifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/llm_engine.py",
+          "version": "repo-file-v1:sha256:00ddc3befc67f49dbaeaab544248deb0c83a3eee86a060f97916f954b28d976c"
+        }
+      ]
+    },
+    {
+      "id": "claim_78ae4c8e03f049c8ac74329c9b14540d",
+      "statement": "The default completion-token limit is 8000 (DEFAULT_MAX_COMPLETION_TOKENS) and is overridable per instance via token_limit=, with _get_model_max_tokens as the single access point.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/llm.py#L344-L355",
+          "version": "repo-lines-v1:sha256:d8eb5177a4f863e8a5860564289550039d29022b043d1bc7ca52110df2298cae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4MjkxYzY4YjlhMjZkZjFlMWFjY2QwODIwMmIwYjc1OTZmMTdjZjljNmQ2ZGY4YWZkNWI4M2YzYTY4YzJjNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwNTM1OTE3MGFmOTQzYmQ2MmMzZWIyNGM1YTYxZjU2ZWVkMmNkM2RiOGE0ZDU1MWI4ZGExYzA4MjQwYjJiZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmNTc4OGQ5OTk4MTZmMDAwNGU3Yzg1OTRiZDc2YzI5MDQ0MzE2MTZjZDFhYzEwYWY3NWEyZDY0NjJhN2FjZjMifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/llm.py#L50-L53",
+          "version": "repo-lines-v1:sha256:63a3ca72a44b6ff910ce418bba4e7707f2e007cfcc1045e6a401122f2e03903e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFkN2ZmODUzN2Y2ZTgzMTc1NWE3ZDUzZjExN2Q3NWY3NmIxZWQzNzBkN2M0ZThhMWNjNTMyYjU2NDE1ZThmMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGMzOWJiNWQyNWMxNDVkNzUyNzM0ODNiY2JkZGFmYjhiZWUzN2YzODVlMWYxMjc3NDE3NjJhMDhmMDc4Y2MxZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2VlZGQ5NjM1ZDA2ODI2ZWQ5NDM1NDEzNDliNzUxMTkxNGJiMDI2ZTNmZDA1MzdkODRlMDUyNGMwOWY1ZWNkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDMzMTA5NWQ1ZmQ5NDk3ZjQzZGQ2OTAxYTkzZjc0M2JiNjU1NTA2YTA1MGUxNWMyODE1YmYxYzlkNGYxMzI5OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2528b5a511994e6092b203e627ab9382",
+      "statement": "LLM supports four behavior knobs relevant to maintainers: page-count-driven thinking budgets (1/3 of estimated content tokens, clamped), dynamic parsing that bypasses instructor parsing and uses extract_thinking_json, litellm Router fallbacks limited to the DEFAULT backend, and a per-instance settable TIMEOUT.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/llm.py#L121-L125",
+          "version": "repo-lines-v1:sha256:6c7dafeacbaf91f9b26424eab17456fc34046297a9c76f196486cc2f7e565ad9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ZmZmQ2NjJjOTg4NGZhMmU3YzVlZjhmMDczZDI0YTg3MTUxOGYzOTkxNzY0MDQ1OWVlNjI3NWU0YWM0ODYxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQzMjEwZDlmYzNmMTljYTI2NTAzZTYxYTczYTYwNGE0YjU5Yjk0ZWFiNDE3MGY5NTkxMzY0YzY1ZDYzMWMxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWJmNDhlODllMzc3N2E2MzA1NjljZmQ0ZjdkYjM4Y2ExNTI3Mjk1NDZiMDQyNGRhODY5YWZlNTBjZGQzOWMxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmJlNjc5MzM4NjIzMzI0YjYyZmI3Yzg0NzZiZTViYzZjZDQ0YWE3ZTUzNGVhNjk2MjY5MzgxNmQ2YmQ5ZjczOCJ9"
+        },
+        {
+          "resource": "repo://extract_thinker/llm.py#L155-L181",
+          "version": "repo-lines-v1:sha256:60665ec670bad1cda6b0ecc55d2a1ea5e8bf5a0e944ed2460509644ec9817d21:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlY2ZjNzFlOWVjN2Q2YTc2Zjg2NDVmYTc2NjYzNzU0OGVlZGFkZGE3MDM1MGE0ZjY2ZTVmYmRmNDhhMWQxOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1YmRjODNjODc1MmM2NmRmN2VjNTEzNmE4NzEwNjg2ZTU4ZDcwZmI3MTRhYzA2OGUzZmU3NmM4NjM5M2E0MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyMTc2M2JiMDEzN2NhZDQ0OWVlZDg4Mjc2ZTI3N2Q2ZGNmZTcwZjY4NzY3MmI1YjdkNDVjYzc2NzI3YmY0YmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1NGVlZjkwNDFiNTUzMzM3YTlhY2VjZDdhMTVmNGNmOWZhNTZmZjRiMTk5YmNjMjNhODVjMWE2YmY0NWMyNmUifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/llm.py#L183-L236",
+          "version": "repo-lines-v1:sha256:775c5ab54814aee8355897ac22a743afe0f26aa329de1d4fe5a9b129feace594:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjZmQ3ZWYyZjNhZjUwY2FiZTg5MjY3YWU2M2E5NDIxZWMxNzgxZmIyZTFhNzQyMzc1NDE4OGQ1ZmIxZjRhZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxOGIxMTQ5NWRhOGY1OWRjOTUxZDYxZTExMWRlM2QzNTJiMjUzNDQ3ZTY5MTQwYjIzZDgzMTBlODE2N2JiY2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNTIyNzdiNTFhZWFmNTYxY2ViY2I1MTE4OGM0OGZkYjAzMGFhOGQ2ODczY2IwYjM0MzY2YTIxYzA5MTljZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1YTY0NjU2NWEyYWM5MzBmZjY5NTg0Yjg0NzQ3YTg2ZGUxYzRhN2FkNzczYTQzNTMyZGNhM2I4MWVjNzhmNzgifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/utils.py#L479-L479",
+          "version": "repo-lines-v1:sha256:317ea8a5ad3a2f1a42f6335c848cc1d574b9106e980bb266c2f651bcadce6f1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE3ZWE4YTVhZDNhMmYxYTQyZjYzMzVjODQ4Y2MxZDU3NGI5MTA2ZTk4MGJiMjY2YzJmNjUxYmNhZGNlNmYxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE3ZWE4YTVhZDNhMmYxYTQyZjYzMzVjODQ4Y2MxZDU3NGI5MTA2ZTk4MGJiMjY2YzJmNjUxYmNhZGNlNmYxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NjMWZmOTM1MTYwZWJjM2I5NzgzYzk1ZmQxYjJlOTg1NTM4OWU1YTkwZDM3YmM3YWU2MGNlMjIxZWQ1NTZkZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmZhYTdmNDU3ODc3MjgwYWUyYzYxNGMxY2YyNDUwYzQ4YTk1ODg3MTU0ZmQ2YWI0ZDRmMWUxZWEyZjhkMDU5MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_46d2a7a0dc094204a58bdc2c3209205f",
+      "statement": "Completion strategies are dispatched in two places — Extractor._extract after message building and Extractor.extract_with_strategy before the universal-format path — both raising ValueError('Unsupported completion strategy') for unknown values, so a new strategy must be registered in both.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/extractor.py#L1132-L1147",
+          "version": "repo-lines-v1:sha256:2610da2208977442cd80c5e7526b063dbc114d0997e243ce77decddc2d4ebe86:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5OGRkYTEzYzQwZGVlMTY0MDY0YmIxNDU4YmIzMDNhNjI2MTM3NWY3NWU5NjA2YTYxMDZhYzRmYzg0MzJiYjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0OGZmY2JlOTNjZjI2NTYzODVmZWJjZjUwZjkyZDUxZjQ2NWNkMTFkZmU3NDY1MTU3ODI3M2ViZTQwNWQxNmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwYjExNTQ4NmU1NzVlMjYwMWQ2M2NiNjE4OWRkZjgzNDk4ZGUwMmRmMjk4YWE5NTJlOWNiMjgzYjY4MDhiNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUyMGExNjUwYmFhNzYxMmE3NTczYmIzMGNjOWE4Njk5MmIwZWQ3NWNkYTI1OGVjM2U2MjZhOWQxYTY0MjQxODUifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/extractor.py#L464-L504",
+          "version": "repo-lines-v1:sha256:1e4730a98647b6f9a14e91c14b36ca5ca5c046fee5707993a3cee3d440500563:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MjU0NDhlMjRlMzE5MGVhOGEwMmEzNTBjYmQ5YmMzZTQwYjBkMzhkMDVlNmQwMWZmNjVmNmE4MjU0OTkxYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZmQ0YzUyYjUwNjFkM2U0MjhlMGY1ZDFmOGRlMjIwNTk3Mzk2N2Y1ZWE2NWI3NGRhMGJmYmQ5NjZhYmRjMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNjE1NmY5ZmIyNGVhNDU2ODU4ZjFjYTcxNTIwMmI0YWYyMjE2ZDJiYTVjYWY3ZTM1YmEyZmVmZWU5MTY5N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxMjFkZWNiNGYxYmVjYmE4YmRjNWMwZDFlYjU0Njg1ZTdhMDgyZjI2ZDkwNzVjODY5YzI4ZDdmZjQyYmU0NjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1dadb612622349cbb4a8e03d9fab926b",
+      "statement": "Paginate-style handlers make all contract fields optional via make_all_fields_optional to tolerate partial per-page results before merging.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/pagination_handler.py#L16-L29",
+          "version": "repo-lines-v1:sha256:c58da838972d985a987043f661c9e3a7ca8fc252d9f2dfa6aeaf34e232557e42:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NGQ3ZDhkMWI3Nzg5MTUyZWE4YTUxOWNhMDhiNzgzMDVlZjYyYWJiYTMwOGE4ZGUxNTA0NDJlZDliMWFkZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3MzJlZTVlMDM0MmMyMzdjMWJlODZlNWE2ZTRiYTNhNTJlZWM0Mzg5MGYzZjVmNzkwYTM1MTY0MjJkZmMzNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5ZDNjYmQ5ZmZhYzhlMTE3Y2NkOGI0NzIwM2RhODYxOWMyZWQzNTA1NjJmNDgyNmQ1YzZiZTFhNjg4Zjk2OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0N2RiOTkwY2ZhYzliYmFjY2YzODZkMDUxMmY2MDUzNTE0Mzg1YjE2NmQxZWM3ZjY4YTVkZWI3MzMzZGE2NTcifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/utils.py#L247-L247",
+          "version": "repo-lines-v1:sha256:2f2a9c2a6b8780f0e53958ae60a92004cd75df480ba39a06fa22960134582b71:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmYyYTljMmE2Yjg3ODBmMGU1Mzk1OGFlNjBhOTIwMDRjZDc1ZGY0ODBiYTM5YTA2ZmEyMjk2MDEzNDU4MmI3MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmYyYTljMmE2Yjg3ODBmMGU1Mzk1OGFlNjBhOTIwMDRjZDc1ZGY0ODBiYTM5YTA2ZmEyMjk2MDEzNDU4MmI3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDlkYTVlNDdjZWFjYmE3YzQwNGJkYWJhNDFmNTZmZDIyNmZhNTFjNmIyZDA2Y2M4M2MxMDJhMTU3ZGM4ZTBkMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdhZjAzMzMxOWU0NTQ5MTg0ZDkwYzdjNGE4YmUyOWZhOGMwZTU5ZDRmYzdjM2I0NGI2ZDAyM2I0ZmU5NWFmYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ec7dad97e8d4c73b3cabc0c264f995c",
+      "statement": "Many repository tests are live integration tests requiring provider API keys (e.g., OPENAI_API_KEY, TESSERACT_PATH) and hitting real cloud APIs; maintainers should verify the dependency/credential guard pattern in each test before assuming CI coverage.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_batch_extractor.py#L10-L25",
+          "version": "repo-lines-v1:sha256:35a31138058e0dee2ab77edf430ecf6021ecb4ef50fd2a04960247f0518f8cd2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOTE1YmEzZDdkYThmMDcwNTRjNTEzYjRhMmUxMjVmMGY2NjJlZjE0MDIxOThhYTQ2MDEwYTIzMDI0N2M5NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjM2UyY2I0NGE4ODE3ZDVjNzc4ZjhhZDUxNDVkZmI5YjAyZjdkZmI4M2E0YTkzYjY4OWM5OTUxMjNiZTgwZGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0NmViOGYwZjdiNWQ5NzVkZWUyYjRjNmQ3NGE0YmYzYjk2ZjAwZTlmOWU4NGEyNjg0OTgwNDU3MzI0YjNiMTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTliZGZhMDBkOWJhYTk5Yjc0YmM3NTkxM2ViMTdkNDg0NmM2ZTAxM2Q2OWZhNDJkNWVjZDY0N2JmYjk4NDcifQ"
+        },
+        {
+          "resource": "repo://tests/test_extractor.py#L43-L60",
+          "version": "repo-lines-v1:sha256:ce75fd9aec38f5908a22178ab19ac3bd1f0b4d8d7f1e9b2b1c1c8189a793e4c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNDdmYzA0YWNhMGIwMGYxMjY1OTQxZTYyZWVmZTA2ZmY2YmE1OGIxNmM4ZDUzNmYwMTQ1NzQ3OTBmYTc0NjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiN2RlYjRlNDczOGIxY2IyYWQ2YmNmNjcyYTk0Y2YzNDgwNzdjYTUyNjE2OWQ5YmFkMDg5NThkZjA1ZTliZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyNzIyMjUxZTRiNWM1NzM4YWU4MjdiNzIzOGNlMDk0Yzg4ZWRmNDZhNWM5NjUzZDQyODgyYzZhZjlhMmY1YjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5YjZkOGE0NDVhOGUwMzhlZTE0NjMwMTY4ZWQxZDM3N2UwY2MwYWRjNWNkMmFmNzg0MjFkZTllM2VmYjk5Y2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0e62545b2b484ad780d2e482f51da1c7",
+      "statement": "Adding a new LLMEngine backend or CompletionStrategy enum member changes expected values in tests/test_llm_backends.py and tests/test_extractor.py (pagination/concatenation/forbidden strategy tests), respectively.",
+      "evidence": [
+        {
+          "resource": "repo://extract_thinker/llm.py#L183-L236",
+          "version": "repo-lines-v1:sha256:775c5ab54814aee8355897ac22a743afe0f26aa329de1d4fe5a9b129feace594:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjZmQ3ZWYyZjNhZjUwY2FiZTg5MjY3YWU2M2E5NDIxZWMxNzgxZmIyZTFhNzQyMzc1NDE4OGQ1ZmIxZjRhZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxOGIxMTQ5NWRhOGY1OWRjOTUxZDYxZTExMWRlM2QzNTJiMjUzNDQ3ZTY5MTQwYjIzZDgzMTBlODE2N2JiY2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNTIyNzdiNTFhZWFmNTYxY2ViY2I1MTE4OGM0OGZkYjAzMGFhOGQ2ODczY2IwYjM0MzY2YTIxYzA5MTljZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1YTY0NjU2NWEyYWM5MzBmZjY5NTg0Yjg0NzQ3YTg2ZGUxYzRhN2FkNzczYTQzNTMyZGNhM2I4MWVjNzhmNzgifQ"
+        },
+        {
+          "resource": "repo://extract_thinker/models/completion_strategy.py#L1-L6",
+          "version": "repo-lines-v1:sha256:711285ccde2a35d22e46b8477620f14ebbbefe54173ed7107d037d504abf7bea:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDkyY2VkZTYwYmZlOTJjYjM1M2QxZTM5NzkwNTFlOTcyYTU2YWM2MjNlNzQwN2QwMzBlZGM2NDgzZjkzZjk2OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE5MTQ5ODhiNTMwYjE1ODA0ZjE1MWRlMzFjODE0NmZjMDMzNTZkZTY5ODc4NzQ4NTU4OWEyMGE3NWQ3NWVkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjc1NTBlYmI0MGRhNzAyYWJmMzA3ODgwYTExY2U4OTI3ZjQ0MjM3ZjNmNTA1ZDE1ODVlNWI2YTM3YWRlMTIzMCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T09:45:03.808Z"
+  }
+}
