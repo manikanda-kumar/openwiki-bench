@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:bc9eafb39dd653ec79d03f71d0cfd4b5282df7ba54dbe284bf3fcaf3a23f498e",
+  "claims": [
+    {
+      "id": "claim_c919c551f0df4077851be9dfb75b3bd7",
+      "statement": "celld embeds V8 through rusty_v8 directly with one isolate per cell; DO storage is async in JS but synchronous underneath, with sync Rust ops wrapped in async by the JS harness.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L1-L8",
+          "version": "repo-lines-v1:sha256:540ac565052a67e85b6ae73bc7175b2371d0fd32347dd38cce74bb658d43e424:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYyMThkNTYxMWQyNDBhNjE2MzlhZjU5ODdjNDA3NTc2NDRmZTBjYzRmY2JmY2ZjMzMyYmIzNmVmMGUwNGNhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFiNDg5NThhMDc2MWY4NzQ3NzRhYTUyMDg5MmFkODRmYTE2MjE4NzViOTY2NDc3ZWU1MGI3OGJiMjYyNzQxYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTExNTU4MDBkNzQxMmFlYWFlODViMTVjYzEyMzk3YzRlZThjMmUwNDY0YzBjNWM2MDlhZmViY2YwZDU3YmU4OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd452f8a96254b33af8c14e80c8abfd9",
+      "statement": "Isolates belong to no thread (v8::Locker installs the entering thread's per-isolate state), and every pool path takes the slot's async permit before the blocking lock so the lock is uncontended by construction.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/pool.rs#L16-L20",
+          "version": "repo-lines-v1:sha256:0226718d6223c524371b17453fa019db67bb97152fd2b9c5c4c87b66e631614b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjQzOGM3MzNjYTFkMWUzYmQxZjZmNGJjOWM0MDRlZjBmOWU5YzYzYmJjOGU2YjUwODE3ZDgyMDliOGNiYjY4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzMyMzMzYmI5YTNmMTljY2UzZTNhOTQ0NDhlMmY1YmExNzM3MGE3YjQ3OWE1MDYwOWU4ZDZlNzQwMjlkYTA1OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmI3ZmNlYTAwNzBjOWNlZGUzOWQxNjhlMjE0NWM5YzJlZTNkZmU1MDE0NzI4NWMyNjVlM2NlMDE1NzZiNDQwYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU0YmE0ODE1ZjVkNTljOTY1ZGRhNWUxOWQ5NWI5NjhiYTJiMGM3NjM2ZjNhYmEyZWVhM2ZkZTBmM2I3ZDVjNyJ9"
+        },
+        {
+          "resource": "repo://crates/celld/pool.rs#L7-L14",
+          "version": "repo-lines-v1:sha256:93b10349054d10d3125b6c1b28bfd9296eea6e7a322e693fd162ed908cb054aa:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY3NjAzZTg3NmVmMTBhNzMwZmEyZDk5NWZhZDJkZTJiNzQwOTg0MjE4MWM3MTI2MGRlMDY1Zjg4YWEwYjBlMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzI2NTkyYTVjNjRjYTFlMzMxYWJkYWE1MDJkMGNjMGUzY2U3OGQ4ZWMyMzgzNjcwODdkNmRhNTNlZjM1OGJhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjYzMjFiNWY1ZjZkZDgxOGRiOGRjMzc3OGE1Y2E2ODk0YzYzMTNlOGIwYzJjOGY5NWI5NGEyNzA0ODA4NDkyNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU4Yzg1MTVhZWZlMzE1YTFjOTVhYmEzMzYxY2FjMDYwYjJiMTI3NDZjMjFhYjc5Mjk4NjE5ZDQ3YzBkMjM4MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_40d1faab79ec4d3f83dcdc6532775771",
+      "statement": "The turn scheduler serializes work per lane (stateless or one per cell), so a cell isolate runs one event at a time and a stateless isolate drains one turn before the next.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/pool.rs#L67-L120",
+          "version": "repo-lines-v1:sha256:2370b4434d95d4a9c95007b13b536c6119c1558db10e2fae5e3c12b7d898133e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwZjY5YWJmOTY1N2NmMWIzZTI3N2M2ZWFlY2UwYzU0N2E3OTAwZDg0OWNkYTM0ZWEwNjMzMTE3MTJjNWM2YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyOTQwMTk0YmI0MTUxYjgwNDI2MjAzOTgzN2U0YTA5M2E4OWNiZTlhNTBjYTZlM2ZmZTA2YzMzNTU1OTVhY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjM2Q2ZmRhODczZTBlMDQ3MWU2YWU2ZDM5MjFhMjQyY2ZkMDZmZGUzNzBkNjM1OWY5N2IyZTdkMGU3MGJjYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliMTZlMDczNzZmNzg5ZjcyZjdlYTlmYjUzMjRjMzRlOGY1Y2UzZjEzZWE1NDA2YTdiNzc3YjhhNzcxOTM3MGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6fabc8ded56d429da42ffe9c7380c661",
+      "statement": "The prelude and JS harness compile once per process and are cached, while the per-worker bindings (env, routing table, compatibility flags) are built every time.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/bootstrap.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:74d4c37aa918380199fbaeccc36e5208f9580c365545267a3db9e4851a2ff970:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQwNThjYWZiZmNiOGMxYzg0YzVjYTI0NDE0N2FiNjkzNTVhOTM0YWJkY2VjNzhjYTBjMDg2NDgxM2NmYzhkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQ5YTRlZDNmNzYwMDUyMWYyMjJiNDJhM2FjZTE1ZWVhZGIyMTMxYzNkMzAzNTJiMjlhN2FjMDc2YmE3MDYyNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWQyZWQ4M2E3NmRiZWI5NTExZGE2OGZlYjBiMGQ2NzM3NWVlODUxYmIyYmI5ZDZjMTAwYTg4YjIwNTMzM2UwYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_009c03642b72462ebbd6e573bf86ddd1",
+      "statement": "A module specifier is either a builtin (most compiled lazily, so a worker that never touches a builtin never compiles it) or an import of another worker resolved through the loader.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:9bed57565fc003f502c43b47e330681c01d9e4d9f7b13225bfbcd17dc1b3c1d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc4NWVlYWM4ZmU5MDM3MDZlZjUyZTAxM2ExYjIyNmNiYTg3MzAyYzZiNjM1ZDgwM2Y3MDIzODg4ZGJhMGQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFkNGY5ZjBhNWE4YzYyMGU4Y2U4Mjc2OTUyZjE4NDM2ZTdmMzljZmU2Y2YyNGYwZmNmN2QwYWJkODgxMjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhjNThiY2ViOGQ4MTdlNTgxYTFkYTcyZWVlM2ZjMTM5ZjllMWNjZmNkNjJmZjkyYjI4OWJjNTAwMzUxM2YzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b774c5f2d25b48718725a9a2704c480d",
+      "statement": "The RuntimeManager owns handles and filesystem paths, never lifecycle policy; StartRuntime, Publish, and StopRuntime decide when a cell handle moves from starting to externally dispatchable to closed.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/runtime.rs#L7-L12",
+          "version": "repo-lines-v1:sha256:77b63e2f9b042e414f073fd784ad551ee064a7f5f6c3e972ea2ecce576a948c1:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODE3NzI3ZTc3MWM1YWY0NWFjNjk3NDVjZGU5MDFkODYyYzBjNDc5MTU1NWIxYTA2MTAzMmQ3NDRlY2U4NWMyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQ4MWY5NjUyM2Y3YmI0ZDc0YWZhYTYyMGFhYmIxNDI0YjgwMzZjYjJlMzQyMzk2OTA1ZmFmYmRhZmIwOGNlMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U2MGYwZTRhZTFhYzkzNDU2MjdjZmVlMDhiZjE3MWViNjc3OTgzN2FhNDQ3MWQ3YzgxYTkyOTAxMmQ1NTcxZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_16368dc6e96f47f8bac6fb092d4cfcdc",
+      "statement": "A cell target may hold at most DEFAULT_MAX_CELL_REQUESTS (64) concurrent cell fetches before celld refuses excess work.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/runtime.rs#L38-L45",
+          "version": "repo-lines-v1:sha256:41291628b6fd522a7567422942938f02d0998fcecfd7e133b12c394b044aff63:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQ1MThkNjk5NDk5YmYyMTBkODU2MzJjMjJiNWRiYTcxNGViZjM3ZWNhY2M5ODU0ZjljZWJlZmViMDAwOWM2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmMxNjY0OTliN2U2MWM5M2E0YTkzZDg1Yzg0OTBjYzllZTgzODU0Nzg0YTg1YWZhOWIxMzE5NzQwOGE2NzRjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWYxNDBjNDkzMDE0ZjlmODZhYzBmMjQ5YjVmNDRkYjAzMDg5YWJkYjVmODhmNGQ5YTU0NDA2M2M0MDg4MTBlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYxMjJiNWFhNTk0M2U4ZDM2MmI4N2RjYmE4MmZiYmEwYWExMjM1Nzk1YTNjMTE2Nzk5OTg0NDUxNzE4MzNkNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_22a791eec9974f8a88a8ad1f96a4f721",
+      "statement": "celld::asyncrt is a cfg-gated production execution facade that delegates tasks and timers to Tokio and obtains nondeterministic host values, allowing a deterministic simulator to replace the execution backend.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/asyncrt.rs#L1-L7",
+          "version": "repo-lines-v1:sha256:af1d5108e11e1d556e51c897faa74a606640b0c54d73b8d64418634399c13ff2:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYyMThkNTYxMWQyNDBhNjE2MzlhZjU5ODdjNDA3NTc2NDRmZTBjYzRmY2JmY2ZjMzMyYmIzNmVmMGUwNGNhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVhNTI4MTlhZGVlYTZjNmYwMDM5MzcwYjg2NTFmZWI1N2VjYTJkYWJhYWIwNTNkZDJiNGZkNjQ3MzMzY2MyNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWEzNmFmYTlkOWVhYjMxOWU1ODI2NmViODY5MWJjYmRiNWNhYzhjNzhhZjM3NmZmMGE1Y2RiOTE1ZTdhMTk3OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_547d122f591b41a69f12706870c47467",
+      "statement": "A .wasm import gives the compiled module, not the bytes; deploy marks the deployment with the wasm-v1 feature so a node that predates it refuses the deployment, and celld compiles each wasm module once for the whole process and reuses it across isolates.",
+      "evidence": [
+        {
+          "resource": "repo://docs/wasm.md#L20-L28",
+          "version": "repo-lines-v1:sha256:4d3cd15af20530e64661453c85fab7df2ed8be343813582d1ac0c69a38e97d0c:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODE2MGY0OGEwYTUzZjhkNjUyZTJiOGYyOTI0ZGMyODEwZWE3MzdhYmFlODhkMTIxYjFhZWI4ZTQxZDVmYmFhNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjhkNzAwYjM5ZDE0ZWE5NTc1Y2Q5MTdlNGI5NmM4ZWYxYjM3ZDFjNGNiOWNiY2YzNGJkMjFmZTBlMTE0ODExZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2YzMDkxOTgxYTc5YTk3NzFjN2JhZWM2ZTk1M2FlMWU2ZjlmZmU0NDUwYTcwNDcwOWY0ZGYxODYyMTg0OTk0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZmM2Q5NTYxZmFiMmQ5Y2FmZDQyZTc0YTRlNTYxMDcxZjdhYTY5OTFlZWM1NWQ4M2ZmYjAwZmRiYTYyOTExYSJ9"
+        },
+        {
+          "resource": "repo://docs/wasm.md#L3-L7",
+          "version": "repo-lines-v1:sha256:af842890d33ad75006fe8490044b093483d1891d1be9d7ed4bd31b43a80d4dc0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDc3YjExOWQzZWM2MDJlMDZiYzcyNTQ2ZTRkZDc5NjBlNTQ5YmNiMjFmZDYwZmQyMjI5NDZjYzQ2MjVkNzI4NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjY0NDk1NmYzMjgxNjA5OTRiMjJmMzI1Mzc3M2NmNmY5ZGY0ODc0ZGQ3NzM4OGE0ZTAwN2U5OWM5OWI3MWU4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM3ODk3NzliZmY4YWZiMzlmMDJiODI3NjUyYTQyZTVjODNhZmExNDBhOGFmMGU4ZDFkMjU3YzM4ZDY5YjFkYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_55a519e0cefa44418b70945b24f904a5",
+      "statement": "The Worker Loader is experimental and off unless CELLD_WORKER_LOADER is set; the __loader_load op builds a WorkerConfig from the supplied modules and registers its asynchronous load state.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L5736-L5748",
+          "version": "repo-lines-v1:sha256:1ffe7022065c59c45c69e384c061afb40a4c20c56825844592447b4a871b0a0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMWViNzUyYmFhMDdiNDJlMjM4ZDAwZTc2YmE1YWNjMmQ0ZjM5YTRiODc0NmE5MGRiNzJmYmUwYTE1ZWIwODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NjE3Y2IwNmRlMTdkOWNiMDU0MjBlZGMzYWRkNjk0MDA1YTllMDcwZmE2MjA0NjhjYWNlMzNiMjFhOTE5YTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0YmM1NzY2NzI3NjM2OWFkNmM0Y2E3YzZkMzhmN2U5NTU0NWE5OGNiZGM0MjVkNjg5ODUwNDE4ZWRjNWU2NDIifQ"
+        },
+        {
+          "resource": "repo://docs/README.md#L685-L685",
+          "version": "repo-lines-v1:sha256:e353848bf952913a4fa85a5977fd078042bdb47b07b6a9ae5382a99a79734343:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM1Mzg0OGJmOTUyOTEzYTRmYTg1YTU5NzdmZDA3ODA0MmJkYjQ3YjA3YjZhOWFlNTM4MmE5OWE3OTczNDM0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM1Mzg0OGJmOTUyOTEzYTRmYTg1YTU5NzdmZDA3ODA0MmJkYjQ3YjA3YjZhOWFlNTM4MmE5OWE3OTczNDM0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODc0MTI5ODc3YTJkODVjYjYwNDY1MjFkNmYwZGVlZWY2N2M1ODU4ZDJjNzExNWVkYjgwNGIwNjZlMTg2MzRjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTIzYjhjNTVjM2E4MDk4NTQzZmE3MDhlMTM2ZGExOGJlZmY3MGZmMjAwZTk3MjBjMjFkMzlhNzQ5M2Y3MjlhMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_23a91115281c4bb6b4cac817098ad33a",
+      "statement": "Queue producer work is capped per cell at MAX_QUEUE_PRODUCER_EVENTS_PER_CELL (2), so one producer event can execute while one successor waits and producer work cannot hide the alarms and settlements that drain the durable backlog.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/pool.rs#L39-L42",
+          "version": "repo-lines-v1:sha256:619c2233e9591357b7163cfa0c9903b538e0cb5f27bea49103085b7fa20becd7:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTUxMzhlMTRiODRjNDZmNDg4ZTljMjgzODlkMDJmZjg3ZDJiMmY1YTRjODM2Yzg3NTU1ZDdiZDMwN2U5NjAwNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYxOWNiNTkwYjY1NTU5MTdmY2I5NzI3NjZhZmI2MWE1Y2EzNDE4YWMzNzM4Mzg0OWI3YzJhNDM5YjFlNTkzMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDliMDYzNGY4ODc4NjJmNzdkYWIyNjIwMzQ2YmRmMzg4ZjQxMmZmOGVjNDg4OGI2NDRhMTczZWQ5YmQxNmZiMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODM3NTAyNzY2YWZiY2NiZWYyMmUzMWVjMDgxM2UyZWI4Yzg0NzdhZWYxZDdhZDlhNDlhNWJlMjg1ZmEzMTBhNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_934df94bf8344e69b4b30af501914874",
+      "statement": "A top-level Worker fetch takes the resident-isolate fast path only when the isolate is idle; otherwise it is rescheduled to the stateless Worker pool, never run nested, carrying its request identity so the reply still lands.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/schedule.rs#L3-L10",
+          "version": "repo-lines-v1:sha256:2ee7f0cecea4736595c3af0e9d2ededd59d90de61f9620c7f53a4c63218e2dee:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODUwMzdhZTNkZmY0Njc0NWNiYTRlODk1MGJhZjI4OTgzZTkwN2U5MDZhZjliOTg5ZmIxZGI3Yjk3ZTI2N2U0OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDhjODRjMzdmNjFhOTMxNTVkZTM0MzJkMTE0MmNmMzYxYTIxY2Q1OWE1N2M5MTdlNTY5YmY3ZTU5MWM0ODU2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2MwYzIyZjNkMWM0ZDNmMWI0N2M4NzcwNGIxMmRjZTQwOGJkMTc4MDM1NTRiYzFiZmNkNjFhNTJlOGRlMzQzNCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:20:08.241Z"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4320b91d46809527413bcbb166cd80f1331aee10015e2644b70fef6717f5fe76",
+  "claims": [
+    {
+      "id": "claim_8ee25dc52bc94e82a7e5a5ff3eed9e75",
+      "statement": "celld uses one object-store client for the whole engine, the object_store crate bound to one bucket, and every call site uses in-memory Bytes because no call site streamed a body.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L3-L5",
+          "version": "repo-lines-v1:sha256:8d71989876e7d19eca7e85ceab4868af31e883a859f0c1da807c9b290ff3d91e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmNhY2ZlMzM2YzA3ZjkzMDc0NzRiZWI4ZGZiMjdiMjdjNTMyZjVhNGMwOTFjMzg5ZDliYzFhNjhjZjUzNmYwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzIwZjk0ZjMzYThmMzYxZDE4NGNjMjk2OGNiNDE0MWQyZTM1ZDFiMjhlMGQ1ZThiM2FmNzY3YzUwMjI3MzZiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmZmOTFiMGM1ODEwMjYxYjM0NTY1NzE0N2U0MGQzNTY1ZGQ2NzA2ZDcyMzViYWUwMDA1ODg2NmVjYjkyZmRmOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_49bcb5d98a334b0782873051305a2304",
+      "statement": "celld requires three properties from the object store: a conditional create, a conditional overwrite, and read-after-write consistency.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L18-L24",
+          "version": "repo-lines-v1:sha256:0ee14b099064e1ad2123065d06a0badc62f2d722507d8d37ca55fa4ceb66897c:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDc1ZjJlNDliODE2MTNjNmRhMjVjN2M5NjA1NDRlYWZkNzdkNWQ0ZTEyMDQ1ZGY4YzdhZjU1NmJjY2E4ZTY1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNThjZmY1MDA5MTJhMmYyZTk5MTE5M2YzNDhjZDczOWFlZjZlNDRiMjAxMTEzNjFjMTYyZDhjMTc1NzJiNjQyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzE4ZDRmNWQyM2RlNzNlZTBjM2E1MzdhY2M2MjZiMDMwMzc2ZjcxYzQxNTgzNGFkNjVhNDE1ZTM2MmFhYzVkZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjRhNmYxYWZiNmJhZDc3MDI1NDkyYWJhZmIxOTAxNDU3MDIzNDYzNjFmYWY1OGI3Y2FiN2JjZjQ0ODEzNGMyNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_12e1c75cca184927a3bda051a8a7c9db",
+      "statement": "Amazon S3, Cloudflare R2, Tigris, Google Cloud Storage, and Azure Blob Storage qualify; Backblaze B2, Hetzner, and DigitalOcean Spaces do not implement the required conditional writes, and MinIO passes the storage test but is not qualified for production.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L26-L41",
+          "version": "repo-lines-v1:sha256:909c40e2451c0a13f9348161bff3b2d047fac5faab3b0ac7181df2ae8ad231a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3YmJmNjFjMmRiYjI1NWVlMGY5ZTE3YTNkMzYyMDQ3MDg2ZWY1YjBhYjczNWNiYjFmNDg1N2VkNGQzMTUwYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyYTU0ZDlhYTVmODkxMGI1NDZmODZkZmI4YmUzZTExMzJmODk0NzQ2ZjE4NzU4MWQ4YjUzZTQ1NjAwYmVlMzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZmVmYzVhNzQ0MWVjYmUwY2VmZjFiODIzN2E0MzI2ZDc1YTNkZWQwZmNjODAxMDIyMTcwMTA1MTdiNGI3ZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3ZWJjODYzYzRlMTZjMzIwNGZjMmJhMzI0MGIwYmM0ZTE2ZDgyODJiYTUyYTg0MzEyOTMwNDBmMjljOTdiOWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9546b324948c4b7bad36982c411e33fe",
+      "statement": "Two conditional-write dialects share one surface: S3 (and Azure) use the etag as an If-Match / If-None-Match CAS token, while GCS uses the object generation as x-goog-if-generation-match.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L3-L24",
+          "version": "repo-lines-v1:sha256:dcd7b8c6ce353a485a1ceaaa8eca3d3b00d243eda35810dbd9f5aa64240a234f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjYWNmZTMzNmMwN2Y5MzA3NDc0YmViOGRmYjI3YjI3YzUzMmY1YTRjMDkxYzM4OWQ5YmMxYTY4Y2Y1MzZmMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmOTIwYzljOTFlNWM4ZGE2NmQ3ZWE5ZDk4NDRkNzYxYjE1ZDQ0Y2RkYjUyNGNiOWMwZjE5NGU1Mjg4ZGVjNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxYzFiNWNlZjNjMjgwNDQ1YTYyOTNkNjI1MDUyYjE5ZWNlMTc1NWVlNDQ5MjUzN2E1ZmVjY2U5ZWFmODZjZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0a0dc70b80447368be2f94998e00ea7",
+      "statement": "split_spec parses [s3://|gs://|az://]NAME[/PREFIX] into the backend, bucket name, and a normalized key prefix; on az:// the NAME is the container and the storage account comes from AZURE_STORAGE_ACCOUNT_NAME.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L190-L214",
+          "version": "repo-lines-v1:sha256:146023f29e833424cdee2c5f11c1744a70441472ca6e0cca958aee765633bec9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlNzE3M2U3N2Y4NGJhYjg4YmIyMjM5OGM1NmUxM2FhNGQzNjRhYmE2MjkwZmI2NDgyNjI1MjIxOTUzN2ZjZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5NmY4Y2IwODNmYTgwMGE0ZGNkMjk2OTcyMmQ3YjkyNjg2YWRkOWViZTM2NTU0OTJmYTY3MmIxYTdjZWQyNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkMjgwMjFiMzg3YWI0ODBlMDZjZTk1ZWU4MjU3ODAwZDI0YjE0NGJlNzdiZTVhMTA3YWY2ZTgyYjE4ODFiNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8473cd6c69af4cc59175cf44f9f11fc2",
+      "statement": "The Bucket keeps a separate conditional-write store built with retries off, because a retried CAS put can land on the first attempt's own token change and report a clean 412, converting may-have-committed into a false rejection.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L155-L159",
+          "version": "repo-lines-v1:sha256:55966316b6e34f7d770501c27990c9a4c0f31e2395636900e25a4bf0e8a181a4:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjNkMjk5YmRlMmEzOThmNjI2ZWJjMDUyMWZjMTA1YTBjNzNjNjFlMWRiYjJiMGMyYzZjZjRlMjYwZDAxNDJlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWIzMWI3OTVjYTNiNmYzMDE0ODA3ZGM4ODc5MWEyYmFjOTQ0ZGUxYWUwMjYwMDQ4MDMzYzNkM2FmNjAzNTNlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODRhODc2NTYyYTE4ZWM1YjQ3NTI0N2FmYjM0YTY0NzBiZDc3MjZlMzgyYjk2ODMwMjEyZjdiNTJhODE0ZGRiMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOThiNGViMjVkMzRlOGM1NDIwMDljOWUxZmVlZTc4NWIyZDI1ZDI1OGViMjQ4MTIzMzhhY2YwOGYyOTFkYWY0MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6c5b3c37f4c4a69bcc9112020747662",
+      "statement": "The Bucket keeps a paginated-listing handle because ObjectStore::list_with_delimiter drains every continuation page into one buffer and cannot bound a listing's cost.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L146-L154",
+          "version": "repo-lines-v1:sha256:ab14a1c852d001119202db0cfe12cb58bf7176854345319a34789a251dcf6bcc:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FiNmYzOGI3MWNmYmNkZGIzODVmZTA1MTUzNzBkNWJmMGY3NjlkZTBmOTRiYWJhM2FmZTc1MTQ5ZDczZjAxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTBhYTIzYjMwMjg4MWE3ZGQxNTcyZmUxYjE0MTdlYmIyMTQwNjc2ZTM1MzEzYTYwOWIyOTFjMDljYjA1ZjNjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBkY2U0NGJlZTg2YjgzOTVmZjM2MjliNjUzYTY0YTFhZjRhM2RjNTBkOTk0MDk3ZmI5ZmNlNmQxOGYwMjc5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTNmYmRjOGEwN2JmZTgxMGVjMmFlYmRjOGYyZGM5ZTZmNmZkZDlhMmE1ZGViYjZjNTA0ZGJiYTI4MjI1NzU5NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c495e11639fe4f8289a8ffcd26d60400",
+      "statement": "put_cas answers Ok(None) only for a clean 412/409 rejection; every other failure is ambiguous and surfaces as Err because the write may have committed.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L20-L24",
+          "version": "repo-lines-v1:sha256:87a60adc0e4f479dd4365a62475a2c87612ec70a014849fa56ebd9b221395daa:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FhNDk1NDFhYTY4MWY0ODNjNmY2M2EwNjE3YzQzNjcxY2NmZjk0MjQ2YWFiYWM4NTE3MDQ3MzA5ZTFkZjZkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY5MjBjOWM5MWU1YzhkYTY2ZDdlYTlkOTg0NGQ3NjFiMTVkNDRjZGRiNTI0Y2I5YzBmMTk0ZTUyODhkZWM3OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk5ODlhZWE4ZDEyNGMyZWNjNGJkNzA1YzhlYTk3Yjc0MTc3NGNiYzllMmYzOGQyZDQ1MTdmMDZjZDk5ODM4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFjMWI1Y2VmM2MyODA0NDVhNjI5M2Q2MjUwNTJiMTllY2UxNzU1ZWU0NDkyNTM3YTVmZWNjZTllYWY4NmNmZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7535f5356f9449a4885a944a12b57532",
+      "statement": "is_clean_cas_rejection treats Error::Precondition and Error::AlreadyExists as a clean lost race, because Azure reports a failed If-None-Match as Precondition while some stores report the same conflict as AlreadyExists.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L178-L188",
+          "version": "repo-lines-v1:sha256:b41d72fa34a9d07d5a8d52d40a3f82035b7cd36e2ba57534c17b6a54a81b7ef6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MjM0Y2M0OTVlOGIyODMwMzVkNTY0NmY5ZThiYzU3NzgwYTY5MTNkMDQ4ZjMwOTZkYmJjZmI1ZGI0ZTM4MGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2YjUyYzBiNDI1MjhhMmI2NWYzYmRlM2E3NGMyNWQzYmM0NDRmZGZhNjQ4YjNjMTlmYzBjNDRmNTZhMmI5OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiZTQ5YTY5NmFhZDdjY2NkMmFmZGVlYWI3ZDdkYTI2OTg4NTQ5ODEzN2ZiNGQ4ZGU4NWFkMWI0NjdjMzRiY2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a4e4711e6089430d911a6a7d254da794",
+      "statement": "A response that carries no CAS token is an error, never an empty string a later conditional write would trust.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L93-L109",
+          "version": "repo-lines-v1:sha256:c4b6deb1c9bae36c2f89d243fde8e7ced8595c3f171b8491cb767d4224cc62e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5Zjg5MWQxODgyNzBlMmVkY2Y5MWU2YmM0NTEwYmViMWQ0MGY3NTgyYzQzZGI1MjM3ZDNiNjExNmY2ZjNlMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNTgyZWU3NmRjNmUyMmY1MDFhMWQ4MDMwODg2NjA4NDE2OGViYTM3MTkxYmQwODcwMzkyMGFmN2YyNmVjZmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e15c662b159446a0b8db4c01bcd171c4",
+      "statement": "A gs:// bucket uses Google Application Default Credentials, takes no S3_ENDPOINT and no AWS credentials, and celld ignores the storage region.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L142-L156",
+          "version": "repo-lines-v1:sha256:4084dae8d8ccdb12cc150d7d7570a86103d645c831e24062482416d63669692d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ODcwNTQ2OWJjMDg0NTEyMTg3MTk4ZmMyNTFjOWI2MzFjMjZhMmJjMzIwNTRiNjIwZWU1ZGE2OGRmMjI2YmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwNjM3ZDIwOGE3MjliNTljNGQ1NjE4YzM0ZDBmNmM4MTg4NDM3ZjM0OTU3NTQzZjdmZGU4ODM3YThkN2RjNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNThmYWVhNjc4ZjgzZjEzODAzNTQ3MzhlMTgzODNlMDBhZWE0ZjhiYmExYjAzZTQ3ZGQxYmFhZTRmMmY2ZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkYmI1ZjM1YTEwYThlY2ViZWNiNTE4ZTViODAzNTk0MmZlYTk4NDA2YTg4ZTQwN2UyNzNlOThlNTc1OTAxNDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f62ec8e1f76c4a1c821859d678b056c4",
+      "statement": "An az:// bucket requires exactly one of three credential families — a storage account key, a managed identity, or a workload identity — and a managed identity from Azure App Service or Azure Container Apps does not work, so a workload identity or account key is required there.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L158-L199",
+          "version": "repo-lines-v1:sha256:394f4bcde5d3759fdaf18f9b703a061127cb7bec114011013830c910b126bac7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliZmMxMmU2N2JjMzk5NDcxM2EyZmUyNGI2MGYxNTljZTk2Yjc2ZWQwYzM5MWZmZTVkZTMyMDdmY2I0YmY5YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiODQ5YWQ0NmE1YTU0NzAzNjcxYjhlZDVkMTJjYzY4MDE1ZjUwZTk1MTU0MjAwZjE3OTQwMTAwNjg5NTk4ZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjYmIyYjc0ZDJlMWNkNmQ1NWU0Y2FlOWJhYWY5YjI3YTYwZTg3MGM2NzU5NjZhZWMxYWZjMWJkODZlMzUwMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhMzM5MGYyMDZjYzc0YTE4ZGFkN2I2YTQzOTE2NGU0OGU3OWU2NTk4ODY0MGM2ZjcyZmQwNjc3OGZiZDY4OWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d86e8cae542e4364b3e9a78f8ffe3e90",
+      "statement": "A bucket value can add a key prefix (s3://BUCKET/PREFIX) so two fleets share one bucket, and a value without a prefix keeps objects at the root so an existing fleet never moves its data.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L205-L208",
+          "version": "repo-lines-v1:sha256:27f8f2a511591e76e3712bd4a0f6d3e611d43e2793dc7659828198016ff5908b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNkNGUyN2Y2ZDg5NTBlZWYxYTk0MTRkODJjYjk3MTliY2Q0NDI0OTc3N2E4YTA4MzI3MDE2YmJkNTcyZjE3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNmOTI4NDQwNmI0YjQzZTcxMjQyZWM0NTI2ODM2ZWJhMDEzYjVkMzk4NWFkNGQxYWRhZTdkMWMzM2E3YzUzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q4M2I2NGI1ODc1ODk4YWYwNTQzNTM2ZDkzMThlNjUyMTkyYmZkY2Q5ZTNmYTQwODEzYWFjNWIwMThmN2I4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2UwMGEwZDM5NTBiNDNiZmRiMDkyYmEzODFhNTQ2ODlmODI1NDUwNmU5OTFkM2ExYTJlYTQyOWRkZjgwZTlmNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2cfe0c2b28c45ad9818ed0b06fa76c7",
+      "statement": "celld reserves the prefixes probe/, cells/, nodes/, node-cells/, fleet/, deploy/, deploy-blobs/, wake/, and telemetry/, and an application must not write under any of them.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L76-L81",
+          "version": "repo-lines-v1:sha256:28e4ebe8191c8f39ccb58276626797178e8671a63f5c0d66d66f10b52323c107:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRiZWYzYzYzNjEzMjM4ZWYyYzIyNjRhOTQ4MGE4NjkwZTVmZTJmYjhlOWJiYjZlNjNiMDJkODBmNDNjMDYxZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVkZjdhNzc5ZTEzMTM4MzAyMzIyNDQwNDM1ZDY3MjE4ZGUyMDRkNjEzYThlZmJjMjBkMzMxM2UwY2E5YWYyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTFhOTcyNWNkMjZmYTlmNGViNzEyZjI0YTVkYjZjYzQwNGYwNGI2YTc0OTAxZWFjYjI0NGNiZjc0ZTM4YjZkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdkZjY3ZGFlMDhmZGJlOTBmYTZmY2VlYTZlZjEwNDBhZDEwZmM0NThkMWY4ZWQxODFmMjE5YTEzNDdhNzYxOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2db0592e935e4f80a34916e771ece7c8",
+      "statement": "celld diagnose sends four conditional writes (create, reject-create, update, reject-stale) to the bucket; two must fail, and each node repeats the test once at startup and stops if the store is broken, unless CELLD_STORAGE_PROBE=0 or a read-only diagnose.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L59-L75",
+          "version": "repo-lines-v1:sha256:5c63f14361f2afee2cde5e1e05aeadd1854433194954e16ef34c40121d1e69df:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwYTIxYjVlMDdmYmJmZjU4MmFmYjRiNGMxNDg2MDViNzg3M2I4YjE4ZDM4YTdjOWM3Mzc3NzJiMDIxOTUxYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxZTI3ZDRkMDMxMTlhZjc0ZTM4Zjg3ZGI5N2Q5MTM3YzRiYzYzNDAzZDliMTQzY2UwZDA3YzdmNWY0ZDQ2OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhZTFkNTU4OWVhYmNlNGNlOTc4NTI4NDRlNmM1N2Q1YzZkOTQ3OGQyYTI5MTY5ODc5MzZjYjVjYjY4MjkzOTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_56b950dc3aec441cac1a2c7ebfb73ba9",
+      "statement": "celld dev uses a local SQLite object store opened through the narrow Bucket::open_dev bridge selected only by CELLD_INTERNAL_DEV_STORE, so no regular subcommand can select the local backend.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/dev.rs#L27-L32",
+          "version": "repo-lines-v1:sha256:763a003efd8bf8fa13648e5e38b962527484582de7802a6dc2b121d2bb38c010:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ0OGY0NmYwNjQwNTkzZTU5ZTgwZTYyZmU0ZTA2ZmQ5MWY1NGRlNWZlZWZmNTcyZmExYjNkNWViOGY4MzU4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjljYjU3N2NkOWJiYTBkYjM3OGQzNzg3NjVkODQ4YzNmYWM4ODRmOGQyMDNlODM1ODljZDIzZjAwYzNjM2U5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGYzZjMzNjU4YWRjOTc3ODYxODVhNDA2MzFmOTliZTc2NmQ2N2U4MmRjODQyNDcxZDYxOGE4MmFkNDFkOWI1YiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:05:17.667Z"
+  }
+}

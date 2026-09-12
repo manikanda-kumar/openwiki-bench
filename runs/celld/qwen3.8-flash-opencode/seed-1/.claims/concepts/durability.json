@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4a280664c56cd3ab59f896fc78504c190a569341a192b43ba378be08a2313c81",
+  "claims": [
+    {
+      "id": "claim_e7e951bc42f04b2481614932a2970138",
+      "statement": "The RPO=0 and single-writer promises depend on the object store providing conditional create, conditional overwrite, and read-after-write consistency; Amazon S3, R2, Tigris, GCS, and Azure qualify, and celld is explicitly incorrect on stores without working conditional writes.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L17-L34",
+          "version": "repo-lines-v1:sha256:eab3b00be254567d0b16e3622969d363a066b0474b8a028324efa4b26b264d00:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiMDI1OTc5MzEyOWJjYjJkYWY2Y2NkZmJiYTAwN2VhZGRiNDRiMWNlN2MyNTUxMGNmMWZmNmU2N2VhZDJhMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4YTdkMzY3NDIzYjU1NGE2NmM0MGM5Mzc1YmVkNzkzOWNiZThjYTQ2NTkzYjI0OWMxYzU2MDE4NWMwYTM3ZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5Zjg1MDdiZmMyMzM1YzU2YjUzNThjMGFiYzYyZDk1NmJhY2U3NzBjMDI2N2IxYTBkMTRiMjIzZDhkM2E3MzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5fd5e5ade4ab4a389afa84ab7cbe1357",
+      "statement": "The output gate holds every egress that can reveal cell state until its writes are proven durable: the shell sends Event::Output with the committed WAL position, State::output stores the Channel without branching on it, a write opens its own barrier with AwaitDurable, and a read-only output trails the newest open barrier on its cell or releases immediately if none is open.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L5-L10",
+          "version": "repo-lines-v1:sha256:4188d2499e1b70a8046ceec398e39ee51f78ed020028fe1364877151fc4aa940:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDRjMjNhNDZhNDBhNmIyOTk4MzQwNjkyYWQzMzFhMTk4Njk4Y2IxNjgyM2RlNWNiNTg4Y2U1ZDkwZGUxZjBiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdlMzgyNDRjMDBhYWU1NzI5ZjZjMjNiODQxNTYyMDU4Y2FiYmY4NjZmZTA5NzdiMGI4OTRmNTA1MDBkYzA0NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWI0ZTE1MWEwZjc2MTk1NGZhZTQ0YzdlMTRmNzBmYjdlYzdjM2IwZTA4YmQ5ODk5MWY4NGZiZjdhMzM0MGFhNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzVlY2VhNjRjMzVjYTMzZDFmYWVhMDkwZmQ4MTg5MzQ2MTgyZWNkOGY5ZWFkMjY4OGRjMWZhNzM4Zjg5MTcyNyJ9"
+        },
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L68-L95",
+          "version": "repo-lines-v1:sha256:6c7073b9403e61aefb98cad0417dc829b285763184dbdffeba5d779d42b51257:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwY2E5ZWQ3NGVhMjQzYTkyYjhkNzQzNWQ4NGJjYmU0ZjAyOWQwMDY2YjI5YmE1MTZiNDUyZTA5ODg5Njg3MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0NDRiNjBlY2Q2NzI4YTIxM2JkZjIwMmExMzk5MTVlNzI2ODliNDgwZjFmZWE0NTExODI1Nzk0MDQ2MzI3NjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0MmFiOTBmZmUwOWE1Njk4ZGY2NDAwYzMzNzM1YjE5OWJhZjk3MGYzZDA2YTBlNWM2ODVlOTM0Mjc4YWJjNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c948740421a348d990a48579d9047ae4",
+      "statement": "Alarm commits open barriers in the same per-cell map so readers trail an unproven alarm write, and a streaming response body is gated once at release rather than per chunk.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L42-L63",
+          "version": "repo-lines-v1:sha256:ccf57ea8b00a0921cdbb7ae991734fec8af043420b444cf701054b061a8fb981:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzY2YwN2I5NWEyNjZlZjM3MTQwOGIzZmE5MTQ0ODU2ODZlMDMzMTg5ZDMwNDNiYTAxMWNjYzY0ZDM3ZWZkYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4YzU0NGQyNzM5ZWQwOTg3MDQyODYwYmIyOGZlZDZhYzU3ZDkzMzQ0YWUwNGI3YmE1ODMxNzgwYjVkODMyNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyODYyYTVhMGNmNjkzYjYyZmU1YzQzZjAzYmIxYTg5ODJiMjUzYjAzMGU5N2VmNmFjOGU2YWJjYmIzOTBhNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1ZjQ0MzQyZmQyNmVlMjNhMmQzODhjOTVmN2ZiOWI2OTk4ZTI0ZTM1YzkwN2ExMWVkYTE0NjdjMWNjYjA1NDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d1e31fff8f8d4d9b859bbf33d0cf7970",
+      "statement": "durable_reached acknowledges only when the proved position covers the gated write; a bucket proof must additionally pass a VerifyOwnership read proving own.json still names this node at this epoch, while a fleet proof settles without that read because takeover sealing of followers arbitrates it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L167-L196",
+          "version": "repo-lines-v1:sha256:42681acc77860cbbc5e6e7d9efecfcdf36e532d4a04c98b0733e28f11be98e09:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3MWQxMzM4ZTJlZjdjYTJkOWZmMTFlOWJlZGI2ZmY0ZmYwYWVlNDEzNGM3ZjVlMWQ4NWZlMDlhYjg2ZjRhM2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1MWZjMzNmN2YxYTg4NTc0ZWMxZmMyNjA3NTM1MGJmZDM4M2JkMDViYmI5YzIwZWNjMTkyMmJmZTgwOGE2ZjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_db953165d0ab4136a1d98d35592f236a",
+      "statement": "An unproven or ownership-failed gate releases with DurabilityUnproven and resets the cell (StopCause::Reset: stop the runtime, keep no local snapshot, restore from the bucket), because after refusing the write, serving its local state would be divergence.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L232-L284",
+          "version": "repo-lines-v1:sha256:101327e127ee63278946c3aec3c4d2403dc22c516cb4a902dda946a199037591:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1YzIwMDcxYWFmODA5MTM4ZTIwMDg5NTZjZjRiYzhmZWQ4NzgwMTM2MmVmNmY0ZmI3M2ZmNjg5NGFiYTExMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        },
+        {
+          "resource": "repo://crates/logic/types.rs#L941-L946",
+          "version": "repo-lines-v1:sha256:58a991603da1e259007d80588452c6a7644cb394dc3e7a44b01549cc6af23bc5:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODIxY2Q2NzJhNzgwN2RhNWFjMGE0MThhNWFkYzFlZjZjZmUwYWYwYmU1MWU1MjRiY2IzZDg2NTczOTBhMTU4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWZkYWRhM2I4MmIxOTUwZDQzYTIzOTE1MWVhMmZiN2ZlMzBiYjM2Mjg4OWY4NTQwMmU0ZTc2MzY3YmIwMDNhNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDU0YzcwYWVmZjQ2YTU3ODEzOTJkM2JmNjcxYjg0MDdhOWQwYjlkODVhODQ1MTFhYzE2NzY2ZGMyZmM1MjU0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmFhMWE1MWZhZDZlOWQ1ZDFiYzI3YTRlOTNmNjFlNTkwMDI0ZTI3MzA1NGVjMWNjM2VhZTYxMjZmMDE3OWQ0OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_78dcef328a284dcdafd100fb5a04d548",
+      "statement": "Fleet durability is write-all/ack-all over the leader's follower ensemble at its fragment epoch, and each process session creates its conditional log record before its first fleet-durable acknowledgement.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/log_tier.rs#L127-L138",
+          "version": "repo-lines-v1:sha256:e350aabaf405057ef4d6b0d7e8ccf672d9847ccc0020310e7880c5f17f45a782:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkNTljMDhkY2M5ZjhiNmMxZDc0ZmE2NjZlYmQyNzdhZmY0OTlmYzE0Yjg5YmQyMDE0NzU3NTE0OWYyYmZmNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwNTQ3ODk0OTMwNjAyMGVlMDBhNDM0YmNiNmRhMGJjYjUzMmI2MzgyY2Q5MzQ5ZmI0NzMyMDExZjNlZDJlNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyMGU2ZGExZGU4NDQ4ZTNiYTQzNTFjNDU4MzRkYWU3NmVkNzQyYzNlMDdjMTlkYTQxMDBiYjk1ZTE4MjZhYmIifQ"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L170-L178",
+          "version": "repo-lines-v1:sha256:cae5251105ef0a8fb94b1292cf7812613341b9db57e6c9028f53020471fa9203:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcyMDM4YTVlYzdmMTRjOTRkMWM0MWFjMTRlM2E4ZmJiNmRlMDk2MTg4MWIwZDU3YzFmYTI4MzA1NmMxYWM2ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmM4OTAxOTBmMWZmYjY1OTY2MjViY2VmYmI1NzcxYzA1YmY0Y2QzNzMzMzZmZTQxMTBjYTgwMzMwZDcwMDMzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzQ4MGNhYTU3YzgwNzA4MTYxMmEwNGUyOGVmNWIzOWI1MzViMzk2NzViYjYwZTIzYmRlMjRkODUwNmQ4NTVmYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5ff4733de2a847f7b24a04853dd615a7",
+      "statement": "A fleet of two or more nodes is required before any node can complete a fleet proof; a node recruits up to two followers and keeps acknowledging while one remains, degrading to bucket-proof acks until a periodic re-recruit CASes a fresh ensemble, and the session's log state is folded into the nodes/<node>.json lease record.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/node_log.rs#L12-L22",
+          "version": "repo-lines-v1:sha256:1338d9dd5d7d775b158368f25cc512a6cbfa8c4376c32e21565cc805bdfcfa0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwNTlhNzU1NTU5MDI1ZmUyODZjMzBmNzk0N2ZkMmRiYjM1OTU3NTY5NGVmYjcxY2I0MmI2MmE0YzJhZGE0ZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljNzU2MDczZDRhMGIyODYyZDk2NjhhNWUyZjdkZDVjMGNiNTA1NDdkYTBmMDk0NWRjNDUxYTViNzFlZjRlZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5NzhhNmQ3MGE4YzQ0MTBiYjRiMGRjNWYzYzRhNWJkZmI2YjU4ZTU1YzQyNjI2ODEyODkyOWIxZjBkODZkZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3ZWZkYWJkMzgyZjljOWYyMjJmMWFjOGVmMDY0NTIyNDJjZGJjNjFkNzVjMGMwNjRiZDA3Yjk5MTU4YWU3YjEifQ"
+        },
+        {
+          "resource": "repo://crates/celld/ownership_store.rs#L48-L56",
+          "version": "repo-lines-v1:sha256:6a12577d66b66cf653d9ced6f0cd863553b311dda07dc4b1e7b3bbc56c10fb86:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjljOWFiODg2MDBmYmQzOWJiZWM1NzBlZDFmOWYyNmFjZDU2YzgzYWY3ZDQyMzEyYTNhYzM2YjNlZGU5ZTdmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmU1OTJhZWRiMWIyYjQ4YmZkNjkzZGU1YzAxY2FlMWRhZTJlNzk2ZDc5NTExMDgzYTFlOGZiMmQzNmM5NGIxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmRiNGJlNjVhYzExNDJjM2QwMTlkMjY2YTY4YWQzMWZjZDJjNDI0ODQ2MmM1YTVjODk1YTVmZDc1N2UwZTBlOCJ9"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L151-L167",
+          "version": "repo-lines-v1:sha256:eb245ff4ad1ea390df353aa38d2ebb6a52afc2733b5578dff742499c2e66d139:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlYTgzNTkxY2U0ODg0NTdkNDA2NjAzMjI5NTM5YzkyYmVhNjczZGQ5YTBhMmRlMmFlYTRmYzlmN2M1MjdkYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyZTcxYjdlZGUxMTk5ZDA5Y2E2YTkzNTc2ZmYzMTBlOGFmMjUxYjFmNmU0MWUxMjQ2ZGJiZjgzZTg3MzE1NmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4OTc1YjZjM2I3MmI3ZDE4YjJiZmVmNWMzMjg1Y2ViNzZkODk5M2Q5NDY1MGU5YWIwODU3ZDJlZWJhNjVmZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjZGRkODMwN2Y2Zjk2MTViOWViZTllZThkNjUwYmMwMzE1Nzg1ZDg1MjMzZmRhMzJmYjUzMDVlYzJmOGQ5NjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c0f8cb29c5a442e7aca55d449ff67b8d",
+      "statement": "Slow followers are evicted by a pure windowed rule (append-latency tail above max(absolute budget, k times the sibling median), or a hard outstanding backstop) with reconfigurations rate-capped rather than the member excluded, and the leader hedges a slow append adaptively (default 4x the slowest recent append, floored at 250 ms) because appends are idempotent per sequence.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/log_evict.rs#L3-L12",
+          "version": "repo-lines-v1:sha256:f3ee49c0fc36745e31805bfc5e1beaa93f66f8657c141fdbc1c495646b1a5072:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1MTA2MTI2ZDNhYTY5YWU0NDlmZTQxMjlkZDJkYTQwOTEwY2Q4YWYxNzg5YjhjYTFjZDI3ZjQwNDk3OWRmNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZDU2NGQ3ZjIzNzk3YTkzZTk5ZDg2NDMxOGMyZDVhNTAxMzViZGY3YTk0YzYxOTcxOGU0NTM0NjVjYjkxYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzNTRiZDg4OTc4MjdmMDEyN2VjZTRhN2I0YjE0YmQxZDljZmU5Nzk2ZDZjYTFkZTk4MjdjMTI5NzYzOTI1NWYifQ"
+        },
+        {
+          "resource": "repo://docs/README.md#L694-L694",
+          "version": "repo-lines-v1:sha256:f427ea704433953c50d231275be12a05a1bd373a4629d119c71d6b403c1afe76:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQyN2VhNzA0NDMzOTUzYzUwZDIzMTI3NWJlMTJhMDVhMWJkMzczYTQ2MjlkMTE5YzcxZDZiNDAzYzFhZmU3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQyN2VhNzA0NDMzOTUzYzUwZDIzMTI3NWJlMTJhMDVhMWJkMzczYTQ2MjlkMTE5YzcxZDZiNDAzYzFhZmU3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDlhNTI1MzE2NzE5ZWJjNjY1NWMxMzg0MWI0YmNkNTZlYjZmZDNiZjAwMzBmNGJkMjNkNDFjMThlZGQwYTk1ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjM2Mjg4M2JjYzkxOWVmMWYxZWU0MjUzMWJlMjc0ODc0MWY5NjVkYzhiNTAzMThiNzE0ODBmYjFjODIxZWZiMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a5f2c5a28945480a833aef1f9106ace4",
+      "statement": "A cold takeover gates on the prior owner's log state: an absent or sealed record means the bucket is complete, while an open or recovering record forces recovery first — CAS-fence the record, seal reachable followers, upload their retained segments and bundles into per-cell prefixes, then mark sealed — before any restore.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/log_tier.rs#L208-L220",
+          "version": "repo-lines-v1:sha256:1853b7f1a762003a5c333296a99133ab668fa77ae229ff4f42e9b5e53f1eb952:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYWZlNDczMTExZGUwNzA4N2E0MzgwYzc5NGQ5MThmNzkzNzhlZjhkYjI3YWYyMDAxMzhlNWJmYzkyM2Y3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkZTZiYzEyYjNhZmE0MTYxNmU4ZTI1MWNkZDJlNzQ0MjViZjM5OTI1MTgyOWVmZDFmNjZmMjM4Njc4NWQ3MWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ODY1MWQyYjlkYWI1NTAyYjRkYWE5ZDUwNzFmZDdmYWJlNTc3NDk0NTI3ZjdlNTI3ZTE0MjlhODY0NzZiNGIifQ"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L178-L184",
+          "version": "repo-lines-v1:sha256:a3bdde44c3703bd7c22239f4e1659f044d048c9a7a51424f2016e6c0d11d7e43:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcyMDM4YTVlYzdmMTRjOTRkMWM0MWFjMTRlM2E4ZmJiNmRlMDk2MTg4MWIwZDU3YzFmYTI4MzA1NmMxYWM2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzU3NWZkOTcyNDZhM2Y2N2RmODZlZDE1MTg3ZmI4YjA3ZDVmOTAzMmFjNmY2Nzc2YjhmZmIzYmY1NWVhMTRmMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGExZWMyM2FkNjEwOTVkOTE4OTc0MmUwNTUzZDhlNTI0YzUwODAyOWRmYzZkZTY5NDFhMzdjNTVmMGQ3ZTllZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_be41d88e28ce4d49ba43203615310c17",
+      "statement": "A restore selects the newest nonempty epoch prefix under cells/<cell>/ltx/ and replays the full contiguous chain from transaction zero, because a recovery or bundle drain can append an acknowledged tail after an earlier restore; celld no longer writes epoch seal objects and legacy seals do not limit the chain.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L1195-L1197",
+          "version": "repo-lines-v1:sha256:0b6e29016f2592bf16e1088a89baa0235bf6875ee91ef7d8f79df72d38fca6d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTE3ODhlNzA3YWZiNzFiZjA5N2JkNjU3NTlmYWZmMGViMjcwZWQyYjJhNGVlMjI5NmVhZGUyOGNjMzA0YmZkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjhkMjQ1NWU2Zjc5ODlhMDAzNmRlNGI1MmY5MTQwMzJiNzEwYjU1YjQ1MzFhMjIxNTdjMDcxNmZlYjU1YmQ4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmMzY2ViOWI5ZTM3MDc0ZjI5ODBlNjU0MzJkNGE1MTM2Mjc3OWQzN2UxYTg1ZTdkNThhZGUyMmVhNTgyMTMwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTA0ZjlmMGJlMGFkMTI2NWI4ZjU5MTJkOGNlODU4YzZlYWVjODBlNDBmYzI1MmE3ZGQzOGRkNzk1MDdmMTc1NiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L1309-L1340",
+          "version": "repo-lines-v1:sha256:4bf9c59482bd38d2911fc92fcd36f543636d103920dc0b06b356a0173ff012cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ZjRiZmMyYTMxMGU1YmNkNTljZWIzNzdhZDNiODMwNDYyMzIyMGQzNmE0ZjEwMGRjMmM1NTk0ODBiMDg4MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMDhlZDIwNTFhNWFjM2U5MTEyMTlkYTYyYzNmOTBlZjUxZTQ0YzBhMmNhOWI0ZDIxZTgxYmUxZjUxNjgyYWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExNWRhYWU0MzI2MjcyMDZhODlkYWMzOTFjMzg0NWRiMWExYzI3NWRhZjFmYWVmNjZlYzMwZWJmZDZjYTg2YzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYTM1Y2Q3ZDJhYTQ4OGYwNWI5Yjc2MDMyMWVmNTAwYTgxMjQ2MTE2MTdhMTE2MTlmNzA5YjY0NjViOWM0NTYifQ"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L188-L198",
+          "version": "repo-lines-v1:sha256:4093e86a062d06d96430077d7b032efcbe2db6b59a0b86cd0d5b088cf47f73d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkMzM4ZmE0ZDQ1MjY5MDVmZDA3OTljZmU5YzEwNWZlMDcxZGJiNDM2ODhjNDdjM2Y3ZGRlZTg5MmFlM2UyZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyMTA5ZTY5YTc1OTVhNTJhMGNjMzY2MGE3MzIzYzlkNTg3NTgyYmFhOWU4ZTlhY2Q5ODI1YmQ2NGE5M2VlZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhMWVjMjNhZDYxMDk1ZDkxODk3NDJlMDU1M2Q4ZTUyNGM1MDgwMjlkZmM2ZGU2OTQxYTM3YzU1ZjBkN2U5ZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3M2Y4YmQyYzMwY2NiMGFmMTIzZDljNDliZWFiZWI1MTZjZGZlNjUzZGRkN2VhMmYzODRjYzQyOGRkNjQzYjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53676b090a7a4fe484aa77d61a0bd021",
+      "statement": "A node renews its lease at one third of TTL, retries while the published expiry stands, and self-fences terminally when the expiry passes or the record is replaced/removed: the Actor honors Effect::Halt with a SELF-FENCE log line and exits with code 3.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/actor.rs#L3729-L3738",
+          "version": "repo-lines-v1:sha256:9faeed6f9f6526ce5afa136d69ad816b24d0bd36bf8a1880f5e72e3cfd13c164:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzZGFmODJhNWMwOTk5ZDA3MmNkYzllOGE1YmQxYWY0MGYzNjg1NTFmNjA1NmY3MTdkMThmZWNkN2ZmNDNkODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MjMwNjUyYjE3MmQ1NmY4NDI2NGE4NjhmZTA4NjRjMGUzNzhlNTlkZDExOGU5MWU0NTM0OGFkYmRmODM4YjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhMmMyYzI5YjA5YjRiOTk5OWEwZDZiNGQ3OWMwZDFiNmQzMDM2N2MxNGJjMzRhYzk1OWU1NzczOTY5ZDJjZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhZWExNTE0ZjA4NGM1NmE4ZWU1ZGJlMzU5YWE5ODVkNjFlNDRkNTU0YmMzMmQwZTBlY2E3M2RmOTRlOWUzZDUifQ"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L200-L224",
+          "version": "repo-lines-v1:sha256:ceecdff1e02f2c68eec0e7cd0636ebf9b65f8c267c20a6cfbe950ec62f758f3f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYTljYTNlYTc1Njg0OWQ1NTM1ZjRlZjRhMDJkNjUyODBjMTkzMjU2OThjOTdjZTgyYTMyZjM1ZWFkMWRjMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiOGVmMmZjOTQ2ZTIwY2IyYjZmYzdmNjE5NGYwY2E1MjI5NGYzMDMxMTliMWE1NjNjMzk4YTE0ODYyNmFjNmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1NWU1YTEwYTYxZmI3MzJiYjE2NDBiZmMwNzEwOTcxY2UwZmI0ODkwYjg4OTE0NGVmNjA5Y2UzNDYzMGM5MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwZTI1MzU3NjllNmQ5MThhYzBiODM5NzQ1YzI5Y2FjNWVmOGM4NmJjOGM2MWNiZjRkZmRlOGJmMGUyY2M5ZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8371cce9d57f40deae5718c82b151730",
+      "statement": "CELLD_OUTPUT_GATE=0 disables durability acknowledgement by making the shell never send Event::Output, which is documented as accepting possible loss of an acknowledged write.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L21-L27",
+          "version": "repo-lines-v1:sha256:1aec4a1c09fc1831c1d557713240d53271719fdef15bec8bae6a9a4f3816c8dc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODVjM2ZlZDUwYThkODUxODZjMDkwMDQzNGEwNTE0MWI3NmIyNzZhYjZlYjgxMDA5ZmEzYWM0ZGM0OTZkZTJjNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFhYjkyOGRhMThmNjkxODZiOTdiZmM1ZGZmNGEwNDM4Zjk2OGFkMGRjZmI2NjM2M2E4ZGQwYzA4ZGM5MzI3ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUxYjQwOGRlYjg2MGE1ODhkMWZkMWE2NGMxODU3MjgwMzIxNjkzZjZhMWYyZGNmMzkyNzE5MWQ2ZmM0N2Q5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQxMzI3ODY2NjAwZGZkMjQ5MjdhZWNjMjcxMTJmMGU5YmQwNDFmMGQxNDExYThlMjY3ODZhMzJmZmQxN2VkNiJ9"
+        },
+        {
+          "resource": "repo://docs/README.md#L690-L690",
+          "version": "repo-lines-v1:sha256:38e60f2dd8c177a0b42aeb4041f61ba83141baae9b89a328040046fe57d96b95:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhlNjBmMmRkOGMxNzdhMGI0MmFlYjQwNDFmNjFiYTgzMTQxYmFhZTliODlhMzI4MDQwMDQ2ZmU1N2Q5NmI5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhlNjBmMmRkOGMxNzdhMGI0MmFlYjQwNDFmNjFiYTgzMTQxYmFhZTliODlhMzI4MDQwMDQ2ZmU1N2Q5NmI5NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzMzZDdkNTg1Y2IzODRjNmJiNmMwODlmOGE2NDdjYjg4MTkyZWY0ODczNTYzMDM0ZDQwYTE0NGFiY2RiNGRjYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDlhNTI1MzE2NzE5ZWJjNjY1NWMxMzg0MWI0YmNkNTZlYjZmZDNiZjAwMzBmNGJkMjNkNDFjMThlZGQwYTk1ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4974243cc5854e7f97090941f849e03b",
+      "statement": "Measured properties of the protocol include one writer per epoch across 5,500 contending claims, zero bucket operations for warm resident requests, and a lab fleet acknowledging at ~25 ms with a fleet proof versus ~600 ms for a bucket proof.",
+      "evidence": [
+        {
+          "resource": "repo://docs/testing.md#L157-L178",
+          "version": "repo-lines-v1:sha256:d12ff30f110d61a8001a886cec7d11daf250b52cc171ea3f3f79aad07a33afe9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYmFjOTljOTU1YzRlYjQyZmQ2MDk4YWE3MWE1YWFhODExMjY0YzFkYTU4YjI0OGFkMzA1Zjk4YzczZWMwMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YjEzYTBmODJlZmM4MGEwZDQxZWNiYjUwY2JlZmQ1Y2RmOTRjNjcyZjYyMjg2M2ZiNDY3ZmVkMzJhOTY3YzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmZTUzZGQ3MDAxNzE1MGQzMmU2ZjhmMjEzYTczNzhjOGNiNGFjYjgwMWRmZTU0MGIyMzFmZjYxODg5N2QxZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1YjA5YjJlNTRlZjBmNjQ2NTUyMGIxYWM4MjI5NTVmNzI1Yzk1ODQ0ZGVmNmM3Mzc2YTMzNjZjNjFkN2RjZjYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T16:58:20.256Z"
+  }
+}

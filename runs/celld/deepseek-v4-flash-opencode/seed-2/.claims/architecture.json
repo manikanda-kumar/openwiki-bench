@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8e549029770684765e2ed1ea8af76d717da905506938f9653817e11aa4683aa0",
+  "claims": [
+    {
+      "id": "claim_2d5d8663540047fba90a60412fa4a85d",
+      "statement": "The workspace splits decision logic from execution: crates/logic owns all behavioral state and decisions, and crates/celld is only an effect executor and adapter host.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L2",
+          "version": "repo-lines-v1:sha256:37e5549e11581997134f50a261bd592d07d9cab16474fbcecaa213c4f9e06735:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGRiOTJlNTdlYTc5ZmJkNDI1MmQzNzgyODZlZmJlZTUxM2Y3NTIwNDI1MTAwNTNjMzFmZjQxZTdjMTE1NDkxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTg3MzExYzg5NTQxOTJhNTA1NDEwNzBkZWMzMDQ0ODk4YmNlMTM2YzQ1MmFiNWY5MjgxNDIzY2RiYzA4YWU5YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGYyYzY5NmY4YmE2OTZiZDM2MzNjNTRmOTczODM0NWMxNzcxMWM1ZDdlZGYwMjhlY2U0ODRlOTM5NDYzYTRlMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a282789a08a84cc7bcfa0ec702a74fd4",
+      "statement": "celld-logic is a pure decision core: on_event is the only way behavioral state advances, the production executor and deterministic simulator both feed it events and perform the returned effects, and no adapter may mutate State directly.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:d17ba561785ca7348bb778cc922706279fc2c8177e57be65f95ad2d2ff6c06b8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FkMjM4Y2FjYWE5Y2VlN2FiOTNhMDEwMGE1NjdhODhhMDhjZjFlODYzODBlMzk2NDhkZDY1MmJhNDVmNjcyNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFkNDVjNDEwMmRjMTBhZWE5YTE4NGVmNjZjOTJmY2FjNWRhN2Q3OTQ5NjdjZWYyYTdiYmYwZjM3N2E1Yzg4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U3OGM0NGRiNGEyZTM0YzQ3NzkwNWNiMWQxZTRjY2EzMWMwMjhhMjE4ZmM1Y2Y0YTViNDVmZDQwMzFmYmEyYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_03e3b3b78d544533ad869328b8a0b1ad",
+      "statement": "The celld executable runs one serial actor that is the only caller of celld_logic::on_event; adapter futures never borrow core state and send versioned completion events back through the actor's mailbox.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L5-L9",
+          "version": "repo-lines-v1:sha256:bf8b37a9ee1fc07e9a574b6df6d477168c0bbc44e5b215ec8e9fdf483a7c6986:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E0ZmU4Y2E4ZTA0MDc3YjM5MWYwMzA3M2I2ZGRkMDNkYmNhMjk4ZWZlOTBiMmRlMzA2OTJjZmJmOWIwOWI0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmZjMzRlMzc2NmE4NDYwOGFlZDI5MzI2MTI4OTUyZTI0ZDk0Y2I3MzVhNzY4Njg0NDZhM2VkM2MwMTZkY2QxNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTFkZDcwN2Y0NmJjNjUyNzZmNDU5YWIwNmRmOWVmNDU4NTVlYTMyMjE5M2RiOTFhZDFiYmEzNDlmN2UzZjlhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFkZTY1YmMzZTFmYjI5ODg0MGJiN2FkYmQyMzU0Y2Q1MDJhNjQxZTQ2NjE4NTRhMjRhY2VlN2Q3OTZhMjBmMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3181536cd73f468bad37ce3ab402ab0a",
+      "statement": "The single actor polls its mailbox, timers, and in-flight effect futures together, a shape required so monotonic lease ticks can fence the node even when a storage operation remains hung, without spawning a task per effect.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L7-L13",
+          "version": "repo-lines-v1:sha256:dcc94b14b405e22b257e4c31bf22918758e33f9f52c136d9ec19349f0d062815:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmI0NjAxMTg3Nzc4OWM0YjBiZTIwNWFmYTVjOTY3ZDNhMjZjM2JjMDZhMmQ4YzE0MjEyYzFhNDVkMTcxY2Y3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ2MTFiOTY4NDAyYjRhMzdiOTM3ZWM3ZmZkNzk4NWYzZTljZjhhOWY2MDM2MGEzM2RiZWMxNjg3MDhjYjY1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDQwYWQ3MDA0YThmYmJiNTQ0MDUyOWM5MDdjNmMzOGYwZjcxZWU3YjcwMzg4NzJhOTA5OGI2OGM2M2VmNzA5YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c6df6114053840219395f5c95f7134be",
+      "statement": "celld-ltx is an embeddable streaming-replication library for SQLite, a from-scratch Rust reimplementation of Litestream v0.5.11 with the block format following LTX v0.5.2.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/lib.rs#L3-L13",
+          "version": "repo-lines-v1:sha256:42f836c5aab710f1907aca4f7fcf364967cca174eb5fc6fa59c0912efa84fee2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YTA0MWI1ZmVkNDYwZmIwZTkyMzkyZTg2YzA2YzA1ZDhjYjYyOWUwNGRkOWZlZTdlYTMwYjM4ODdlOTQ5ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiMTEzZTg5OGNmYjIyNzgyNzc2OWU4YzQ4ZmQ5NWYzMTdkMWI4YWI3YmRjYTJjYmI0NjYwZWU2OTA4MmQ0M2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3MGJkMTEzYTFkMDM0OWIzNjA0OWVhOGRmYWMxNzlmZTA4MTQ3Mzg2NmI0ZDMwNDdkYzA2NDg5ODIxYTg3ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmMTJlZThjM2ExNTI3OWJlY2E3YjEwMDBjZWM1YmJhN2YwNWMyNGMzMzQ3ZTk5OWZmMmU1M2QwNmQ2ZmY2MjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6bed11fa6e304c8cb89b01cad212ce3d",
+      "statement": "The core is an event/effect machine: Event is the only way in and Effect the only way out, both defined as data in crates/logic/types.rs.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L401-L402",
+          "version": "repo-lines-v1:sha256:b480b5378674b2b8a1ea00fab27a07f4491d69302f1f0059a8336f6d1590d324:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTcyM2M0YzRmMjVmMWNlMzJmY2FkZDk5MWMwNzIyMjA0NzBiZjgzMDUxYmQ1YWQ1ZjI5MzlkODExY2Q3NzAxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE3NTJjZjdlMDdhODU1M2UxZTI5ZDdhNzViNTMxY2QzMTYwZTU1N2JjMTBjMzFmYTcxZTczN2M3NTBjMDkyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmU5MDQxMDUwMGNmN2RjYTAzZGFhOTc4ZWYwMWMxNGRmNWRmNTI4MzVlMWRhY2YwYzgxZjI5NDhlNWNiNWE4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjYwY2ZkNDhjMTBmMzZhNzlmYzQwMzM3MDkyNjBmNDFkMzM5NGU5NDcwMDc2MGU5YzY4MzgwNGZlOTE4ZjZiMCJ9"
+        },
+        {
+          "resource": "repo://crates/logic/types.rs#L737-L744",
+          "version": "repo-lines-v1:sha256:192519c856f93735a48d940303ae874ff5b632cc9bd8a894415446b5e3523fa9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU1NTFiZWRhOWYyMjY1MjM2MmNkNGFhNGM5NjE5YjY4YzMwY2JjMmY1OTYwZWQzNDZkMzdkYmFkMzRhYmE5MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwY2RiOTcyYTdiZmI3ZWQyNDZmOWZmNjcyMzg1ZTU1ZjQ5NjhmYzExMDQzZGM1YjY4NGQ1MWRmYTMxZGJjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzRlODJiNjY1Yzg0MDdjZGQzZDgxYjJmMWVhNjlkNGFhNmViM2E2NmFjZDI4ZmFlYzE0MDc1NjRlNTcxZTdjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWRjM2U1ZTRlYTNkN2E1YTEyOTFlZmU5MTE0ZjEzMDI2Mjg0NmZmY2Q0YjU3N2E2MTcwYWNkMmQ0M2Y5MWZkYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_09471b776d9a442abb645db6ad09e98a",
+      "statement": "Every asynchronous effect is versioned by an operation id; completion events with an obsolete op are ignored.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L737-L744",
+          "version": "repo-lines-v1:sha256:192519c856f93735a48d940303ae874ff5b632cc9bd8a894415446b5e3523fa9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU1NTFiZWRhOWYyMjY1MjM2MmNkNGFhNGM5NjE5YjY4YzMwY2JjMmY1OTYwZWQzNDZkMzdkYmFkMzRhYmE5MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwY2RiOTcyYTdiZmI3ZWQyNDZmOWZmNjcyMzg1ZTU1ZjQ5NjhmYzExMDQzZGM1YjY4NGQ1MWRmYTMxZGJjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzRlODJiNjY1Yzg0MDdjZGQzZDgxYjJmMWVhNjlkNGFhNmViM2E2NmFjZDI4ZmFlYzE0MDc1NjRlNTcxZTdjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWRjM2U1ZTRlYTNkN2E1YTEyOTFlZmU5MTE0ZjEzMDI2Mjg0NmZmY2Q0YjU3N2E2MTcwYWNkMmQ0M2Y5MWZkYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2330d7ce3d61424fa97cf901d18e6150",
+      "statement": "A node is one celld process and the nodes that share one bucket are a fleet; any node can serve any cell, and cells share no database.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L8-L21",
+          "version": "repo-lines-v1:sha256:9781fb98e7d95f41e69d05c1d57d0515701490084cb0f46d5a03ab51f63d05ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5MWE1OTBiZjYxMDU5OTg5MGU1MmI4MjUwY2E0YjQyZTU0NTAwYzU0MWMwNWQ0MmViMTFiNTkyZGY0OTFkYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4ZDFlMmQyZTczMzg2NjMwMjIwODNhZDJkNzM5MzY3NWMxMmQyMGQyMWMyYTYzYmRmODg0YWRiZjk3NDA3MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0ODY0ODQ5NDM4NDliNjVlMjAwMGI1ZjIwOWVmYTk0NTg2MzE2MGQ1MzVkYzU3ZGVjMWI2MjRkMWU4MTc4ZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a170ccd6d4e34ff1a080498a544c03aa",
+      "statement": "The fleet bucket is the root of fleet authority: it stores the deployments, the SQLite replicas, the ownership records, the node leases, and the shared peer-authentication secret.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L138-L145",
+          "version": "repo-lines-v1:sha256:2134de828af5dcac9e279377ac8b245084afcad0cb002dd7cdd0cbaabac33dff:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzJjYjhmNWVhNzIzODA0YzdhNTYxZjJhMDI3NDg4M2VjYmVhNjQxZmVhMzE3NDMwNTE2YWVhZmZhYjQyNTY3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmMwMmNiYzgwZjI1MzM5ZTgwN2RmZTE0ZjU4NmIyMWYwMWQ1MzJiYTVhZmE5MGJhMjJhOTVmMDdkZmQ1ZGYxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDllZmQ3MDU3NWNlZDhlZTFlYjE3NzU0NDg3NDZkNWNiOTk5OTBkZmVkZjZhODQyYjQ5YmJiY2U2ZDdlZDU2YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c712a55449404015a33d4301161ca5f8",
+      "statement": "A cell's committed SQLite writes are captured as LTX data and uploaded to the bucket under cells/<cell>/ltx/e<epoch>/, and the epoch in the object key is the fence that keeps a stale owner's later writes in a superseded prefix.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L10-L15",
+          "version": "repo-lines-v1:sha256:0affd08bfbbb5593c23a60b939d27cacf3bd16a49f676fd56f1df3ce2e43327c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTY1ZWQ5Yjg2Y2EzMTk2M2ExZmJmYjIzOTRkMTU0YjhiYjkxZDAxNzgzMmZiZGVkYmM5ZmU4MDVjY2JkODVhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjZmMmNiNWIwZmQzYzI0ZDdhMTFkMjQ0ZTM0YzM1ODMwZDUyZWVjM2M0NGJjZWJjNGJjZGFlZjNiMjE5N2ZhZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWFhNWI3MDZiNWUwODMxMWJiY2UzMzAyNjJhMzY5MDI5MGQ5MjU2Nzc2NjBlOGMwOTc5NTFlZmFjMmE3OTk2NCJ9"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L120-L128",
+          "version": "repo-lines-v1:sha256:0c7ea0b8a9de921d82d3d2ebf02c1bbf4e2b15d8545052517581f200eb5bb3e6:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y2ZDhiMTU0YzA4OTE2YWI2NWUzZjIzYzU5YTdiZmU4NDEzOTc5YjYzNGNkY2RjNjUxNWRhYzVjMTlkOWEwMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjgzYWVlMDFmYzFkNTlmNjFmODJkMGUzOGY1YmIwMDQ0MmM0OWUxMDU4MDY1MjM0NzUyZWE1NmI1YzQ1NGRhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDE0NjI5ZWFmZTU2NzVjZjNhMThmZTA5ZDY3OGQ5YTUyMzI5MjBmNWY3MTYyMGE0ZGE4ZWMyYTVmMWFmZjc4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGJhZjIzYzA2MTJhMWYxNDQ4MDU3ZWJiZjc4NTUzYmM2ZWM3OWUzYjcwYjgzZjY0NDMxMDFiNjM0N2Q3ODRhMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7eb83ae932b34906929a19ac4325c279",
+      "statement": "The decision core routes a request through a phase machine (reading owner, reading node lease, acquiring, restoring, starting, publishing, resident) and places a cell owned by another node in a Remote phase.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L113-L190",
+          "version": "repo-lines-v1:sha256:f68255aeb75be45c7dd346b0c6462df455938d814b2cc4b8d48dba818b166552:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmMDU0ODYzYjExZjc3N2EwNTY4N2QxODQyMjU3NDY4Mjg5MTYyMTJkMTlhMGM3ZjcyMmMxZmI4NzRiOTRiMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3ZTg1ZTIwZTljNjIzNGRlNTNhMGZhY2JhN2JkZDJhM2I2MGY3ZDU0MWFjNGE1ZTQ1ZTBiNTFhM2FiYThkYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxODlkYTViM2FiNWFjMDNiNjRhNTdiYzJlOGE2ZWMwZTAzMzI1MjBjZjNhZGUxNmYwMDEyZmVmNzdmYzNhZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb77ac209afa484e8c312907c97dc65b",
+      "statement": "The core Config type carries the admission ceilings the core enforces, including max_resident, max_activations, max_evictions, max_releases, max_outbound_websockets, and the pressure configuration.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L62-L136",
+          "version": "repo-lines-v1:sha256:355ca682da5e8d937a67adbadd140ced2940b88d7cf1f784757af77ca4850b7d:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwMTgzZGRmNDY5YmI4NmRkNGVhNWZmMmI1ZGM5NDgwMmE1YTFjN2EwYjI4MGZmNWEyYzY0MzM3NWQ0MDNjZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhZDM4MDk1N2JiOTc3NjVhYzZjYjY0ZjkwNWU5ZWNjZGI1ODRkMmYzMTk2YzQ4ODY5MzA1ODI5YjU5ZWY4NWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3e31e73530014e78824a13ea072dc4c7",
+      "statement": "The celld process uses jemalloc as its global allocator, chosen after a measured throughput comparison against glibc malloc on a 16-core host.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L44-L50",
+          "version": "repo-lines-v1:sha256:d7af7809e44b5b7bbc8d421dae32b1b229de08f175b7f85d1f8e7b0f6405a705:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ0N2JlMDkwZTFkZDE0YzNiYzk5OTc2OWViYzYxZWZiZjYyMjVlOTM3MDZkYmJkMGYxYjJiZDAwYTJlNTczYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ2MzEyMWFhNTNmYjJjZWU5ZWIxYzRhYzViZWRhMDhjMjI1ODVlNjRiZmFhM2VmMDY4ZGE4YzVmM2ExNmE0YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNiZWRmMjc3ODAyMDEyYWZiODM0YmI3NGQ0NzljMzRkYzIxN2E4M2Y1OTU1Yjk2ODE0MmEwMDQ5MTdlMmJlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTc3ZTViMGIyMmQ1M2E4YTU1Mjk3NzAxOGRmNzNjMzhmZTZiZTA1MDAwZmNmMmI4NjExZmEzMDM1NmZhMjg1YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_35c8be15a5164295b70ed5dc8bc0b191",
+      "statement": "A node opens two HTTP listeners: the public listener serves the deployed Worker and reserves only /.well-known/celld/health, while the internal listener serves the peer protocol and the operator API.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L21-L34",
+          "version": "repo-lines-v1:sha256:293a1dd8f99d300535f6ca91b7b9c13c75eca540a229fc838242376fe0b63bb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3NTk0MWNkY2I2MWNhNzFiYTYyNWM3ZTE1NGNlYjQ1MmFlM2QwYmEyODVhNWUwMTFhNzgwMjE2MzM2YmUxMTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5M2Y5N2MyZmU2MDRmOGVmMzM1OGVmYzNiZTM0YmMxMTY1MjAwMDRmYzUxMDlmN2E5NTI0YTEyMjgzYmEyYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3ZTEyNmU1N2I3OTU4NGUxODZmNzY0MWUxOWYyYjlmYjYzMTFmZDZmODY4MWQwYmVlZGY5MmEwYmU0N2RjNjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7794a83bb7e0485c99b33e4ff36538aa",
+      "statement": "Each node holds a bucket lease it renews after one third of its lifetime; when its published expiry passes the node fences itself, fails its outstanding requests, and exits with code 3.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L201-L224",
+          "version": "repo-lines-v1:sha256:b55e39cd8fca3f30fd7b1e8ac6669575c149bd8f269bbd22700e1a190b464498:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiOGVmMmZjOTQ2ZTIwY2IyYjZmYzdmNjE5NGYwY2E1MjI5NGYzMDMxMTliMWE1NjNjMzk4YTE0ODYyNmFjNmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhNTBlN2EzNzEwNDc0NWEzNjcwNjRlOWFhZDQxMTg2NTE0ZmVlYmU1YWIwMmNiNjZlZDM5MmY1YWY5OTM4ZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwZTI1MzU3NjllNmQ5MThhYzBiODM5NzQ1YzI5Y2FjNWVmOGM4NmJjOGM2MWNiZjRkZmRlOGJmMGUyY2M5ZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3c35fa879a8d4a37800ac89a357883ca",
+      "statement": "A non-restore operation is bounded by CELLD_OPERATION_DEADLINE_MS (default 15000), so a swallowed effect cannot park a request forever.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L112-L120",
+          "version": "repo-lines-v1:sha256:510a4ef940bd80c0d6aedf00526a26600fb33970fd143b2fabbda8ec1b599a68:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTA5MTI3Njg3MTMxYjEwNTMwNmZhOTI1ZDBmOTcwZjgxYzg4N2EzMWNkNjM1YzA0ZmM0MzliNWZlOTBhYTcwMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc4M2E0ZGMyYjhiODQxMzEwYTEyZmZlMWNiMWQ1YWJkZTk1ZDRiYWNmYjNhMDRlMDVhYTk4OTBhZGIzNWIwNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzljNTc3OTJmYTg4ODJmODM2NGUzYzkwY2E5NzkwY2E1MDUyM2IzYzgxZWY1NzhkZTI4YzBlZTI2ODY3NGM2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGUwNDlmMDgyODYwNmNmN2RlZTNhYzYxYjMwYjRmZTFkOGYzNjM1ODZkZTVkN2ViZDRmMTMzMWMzOGNlNjM5ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_48d8dfe6edd0423e84e7f1e24420b0cb",
+      "statement": "The runtime supplies four reserved Durable Object classes, __D1Database, __Workflow, __KvNamespace, and __Queue, so D1, Workflows, KV, and Queues run as cells rather than as Worker code.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L58-L81",
+          "version": "repo-lines-v1:sha256:a2bb80fe05999e636025fe978f49938ec7a1f6d1cf93c44a5d4eccebd4bde937:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjMDJjMTEwNjZkZTc2YTY4MTdlYjEyOWE1N2M1OGY4NmYyY2FkMDFhZmM5MTYxNTEwY2YxOTA3MDJjMDhkNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNTQzMzMwOGYxNTgwNDM1ZjU3ZjFiYTY2MGE3ZGI0Mjg5NTc3ZjdmYmNjZWEwMjNkZjQwODc5MGQ1ODAxZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxOGU4ZTVlM2Y1Y2I1ZTdhMGNlM2IzNjcxMmMyYzNjMzI4ODY2NDhmNTY4OThiZjgyY2UxOGVjODYwNGJhYzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljNGQ0MDYzOTczOTBkN2EzOGEzMWYwNDkwNmZiNGI1NWYzNTFkYThmYTEwZmE0NTVjODg4OTg1N2IxYjdlNzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e0b71d9f7a8c4894a07b0bf134553e53",
+      "statement": "The crate split is exercised by simulation and conformance suites behind the celld_internal_tests cfg that drive the same decision core with a simulated store and a simulated clock.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L394-L418",
+          "version": "repo-lines-v1:sha256:70c0d44ab351af4514d975ba4f31bd35b03c69b2a23785e14299f23afef7ac5c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0MDM0ZGRjNDkxNTgwZGVmZWM0OWMwYTA0MzgyYjZkNGRkNmNlNGRiMmM1M2VhMDk0NzY0MjcxNTMxNWExZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxNjRlODg4ZGFhM2IyY2I3OGZhYTQ4YzZmYmIzNTM3YmNhOTRjZjJkM2ZkMDQ2NmExYzI4YTM2NTc5ZjQzYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwNTQ3YTc1Y2M0OWEyOWNiMDNmODI0ZTQwNzJlZDYyOGQzZGViMWQxYjgwYzkxODBkYWU3OGU5Y2IwNjlhNGIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:05:17.667Z"
+  }
+}

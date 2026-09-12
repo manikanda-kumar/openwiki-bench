@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:069477cd811731ab6968f6c1a185078be766f9b23d3362b3ea8567a41e6d1ceb",
+  "claims": [
+    {
+      "id": "claim_a85c9e6c1bcb43f4832d4728419d1620",
+      "statement": "The Durable Object storage API is backed by per-cell SQLite: async in JS but synchronous underneath, with sync Rust ops wrapped in async by the JS harness, and each cell owning its own database file and epoch-fenced bucket prefix.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L6-L14",
+          "version": "repo-lines-v1:sha256:70efb51767a5944f51fe86cb6ba9c9e77e1d0b44753431b624eafda074c770a4:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgyMTYxZTVmOTYyNDBmYjBmNjgzN2M2NzBlYzUyYzgxYmJjMDRjODNiNzEyOWI5NGQ1ZmExMzY5MjRiMjFjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc0NGNkOGMyYzM1OWM1ZGMyNTQwYWIxOTMwZTRiNjNhM2Y4YmVjOWZmYTQ2MzkyNzNhYjhjYjY4ODNhYWMxMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWFmOGYwZWZlNWYyYzgyOGU2YmQwYTdlNzdmNjJiY2NjYjgzODc1ZjljNzA3NzMwODZjNDgxNGU2MTg3NThjZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmExOGUxYTg4MDkzMTc5YTYyMDNhZWVmOTlhMTk5ZWYwYmFhOTU0OTJhMjEzMmU5ODBiMzE2NTM3OWI2MDc5ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_96bf9d3535874c718e6b0c69f4feda29",
+      "statement": "Cell storage state belongs to the isolate, not a thread, because a cell event's turns run on whatever tokio worker holds the isolate; no synchronization is needed because a turn holds the isolate lock.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L22-L33",
+          "version": "repo-lines-v1:sha256:2e51a6e757a89997357e57c46af40a38d425b7923d2f828bd839d117261c9d12:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNDdkYWYyZTdmNDBiMjczNjhlYTcxMzZlMTJlNjVjYTM5NjA3MmM4NmM5ZjA2MGYxOTJkYmMxMmE5MzIyMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5YjE0NTg0ZDg5ZmY0MzcyNTgzYzBjZDZjMDI2ZDI2YmU5ZmVhYTUwZDI1YTA4ODM2MmIzMzI3ZjIzNmU5NjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxNmQ1OGUxNGIxNTBjOGJiMWRjZDI4MWFlM2M5YjI0MDRiNjVmZmI2NjY0ODg2NWI0NTY3NTFlNTk5Mjc2ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNmI2YjdkOGM3MTRiMmFmZWJiOWJiMmYwN2UzMTRjYjMxMTc3MmM5Yzk5YWNjNDEyMGJmMDAzMjNhYWE2ZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c4dde8a4ecd546b7aa436893e3124e20",
+      "statement": "Each open cell couples its SQLite connection with the ownership epoch that authorized its activation, one residency invariant that prevents asynchronous work from recovering an epoch through a later ownership lookup after a takeover.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L52-L60",
+          "version": "repo-lines-v1:sha256:0aee592c5655ca94f7a60d89cfe0c73b0d7f14485d7750992756f8a7017742ee:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWI5YjlkZTgyZjZmMTc4ZjI1ZTU4NjI1NDBhYTNmNjBjMjU4OGUwZDgxYzU0MDQyYTg4MTI0MTA2MDlmMTk5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQ1NTY4M2YwMmQyNmMxM2E3ZjcxZjQzYjkxMTBiMmM5YWY0MjM5OThmOGYzNDJhYjJlNGJlZmM2OGQ0ZmFiNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGYzYTJkNGRmYWIzNTg2MGVhODY5ZGU1NGQwYzk5ZGFhNTE5MTg4Mjg5N2ZjZTk0ZWE1MDhiMjdmNmQxYWM3NyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ff211f9186a4d5ab6238b58153678dd",
+      "statement": "The storage ops surface converts V8 values to Rust, calls into storage, and converts the answer back; the storage semantics live in storage.rs and the value serialization format lives in storage_ops.rs because it is what JS can see.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/storage_ops.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:5ca4a3526d6627c2ba4cc1b3581dc46c41b918be8e3fd5132db5d566bdc53731:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZjMDA3ZTcwNTRlOGE4MmUwYjcwZjE1OGUwNWI0YWQ0ODA5YzExZDg1ZDQ2OTk0YjMwNTY4MTNmMDM4MDFjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTA3NDQyZTExYTdlMmQzYmFkYjdiMWVkNWQ3MWIwYjk1NWJmMTE3OWZjNjY3ZDgxMDQ1OTk0ZTA0NjliOWMyNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWE1ZTk1MzVlMzUyMzE1NWExMmQzNTZhN2QyYTQzODRmNDU4MGM0ZTU4MDVlYzM4OWMwZWQ3MmRjNTMzMWI1NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_60c38f37f58141afa71d26e884df3211",
+      "statement": "A schema cookie caches PRAGMA schema_version because the pragma takes a shared pager lock, and a handler that touches no storage would otherwise pay two locked reads per event.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L62-L80",
+          "version": "repo-lines-v1:sha256:beecdf1f9bd78a70d0af124b8fcabf6abbdc81f856489c65eca791910f8a1229:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MDc0YzlmYjJiZjEzMWUwNDNkODk3NjAzODM2YmZkMWE4NDdmZjllOGQ2MWYwMDBiZjY4NjhiZDA2MTIyOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkMGMxNTMwMjU4ZmUxMGU2NTI1OGZhOTk0MTA0NjIzNDE5ZDZiNDZhNjAzMjAwMzNhMjc3MjE5MDhlZGJhNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxOGMyZmZhMTY0ZDM2M2FkMGIyMDYzMDk2ZGUzZDBmZmM1N2M4MmY2M2FjODFjNDFjOTI0ZTYyMzZkMTRhYmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bce189de689749ad9c794fd8509e2280",
+      "statement": "A failed SQLite operation poisons the actor only when a critical engine error (SQLITE_FULL, SQLITE_IOERR, SQLITE_NOMEM, SQLITE_INTERRUPT) coincides with a destroyed transaction (autocommit re-enabled); anything else recovers.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/sqlite.rs#L15-L28",
+          "version": "repo-lines-v1:sha256:ef604ef62b0f43c0766fca3fd0f412c48cc1300ffbfd3c3dcddaeb5501ae2e76:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3MTZhYTUwZTUyMGU5YzRlYzIyZWFmMjZjZjlhNTQyOTBjYzQyODYwZWZmNGJlODVlYjc2NzFmMWIyNmNlMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2YjA4ZGQ1Zjc0OGNiN2EyMmFjMTlkODEzNmUxOThiYzNmNDFiNTQ4ZWZkNjhmMjNhMmZlNGNkMWUxMDZmMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1cb38cf68a7a4ad28c9c3693e72db716",
+      "statement": "A KV namespace is a cell (__KvNamespace) whose bounds ship as data the JS harness compares against; keys are at most 512 bytes, values 25 MiB, metadata 1 KiB, expiry below 60 s is refused, and a list page returns at most 1000 keys.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/kv.rs#L3-L17",
+          "version": "repo-lines-v1:sha256:f611a4a3f012d7bf8c9542d6e2ad91bbd7ee1984e97bae117211e0aa21bb3e6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNzgwNTU3YWY0ZjJkY2UxZThiOTVkNmNmNDE2YjgwYWEwMTlkOTA5OWZhYmUxNDlmYzZkZDg0MWNiYWU4OGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YzFkODkyNWI2Y2RkODk5ZGQyOGRhYzc3ZmUyZGM2YjZjYjhkODUzMDg4OTM1NWNlODIzN2MyZTg0ZTJkYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1NmM3ZTUxMjg3YTkyY2Q5MDgwMGRhYTBmYzg4ZWQ2MjBiODcyNmQ4MWU2YmUxNGViNWViNWUyYmZhNDhlM2EifQ"
+        },
+        {
+          "resource": "repo://crates/logic/kv.rs#L37-L65",
+          "version": "repo-lines-v1:sha256:9a23b19f7a21c2fb174fcd5be3240fed88ef43f66e1bcca3cace806ff1b14cdc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxNjJhOWE1NGZlZjc4YzAyMjdjMTczNmQ4ZTlkYTc1Yjg0NTQyZDdiMWJmMzk5NmU2ZTMxYmRhM2IyN2VlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxYmYzYmFhYTY5YTk0OTE5YjY4ODczZmEyYWE4YTNmMDA1MzQxMWIwYTMwMzRlZTk5MThhMTU3ZjRiODEzMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1NmJmYmRmZmEyNjc0MWQxMTVjYWNiMjlmYTA4ZDczZDIzZmEwMTc1Y2JiNDBmMTUxMDQ5Mzk3MTIyOGJmYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhZmFhYzdjZWQwMTlmNGYzOTU5ZjViMGYxODdjNDA2Y2ZiZDQ1MmUxNWMwMGIyNmIyZjcxYTA0NDJmODI2MzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_71a9e352f801401eb44389b74704fefd",
+      "statement": "The largest value stored inline in a KV namespace cell is 1 MiB (MAX_INLINE_VALUE_BYTES), chosen by a measured latency crossover; larger values go to the fleet bucket and the row names them.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/kv.rs#L41-L56",
+          "version": "repo-lines-v1:sha256:b1f8b22bbc8989ffc6176bc2698eaf2f8f43022154bbe3cf1b6c855fd30a4252:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyZWZmNTdiNTcyZDkzNjg5NGQ1NWJjN2I4YzNjNmIzNzZjMzVmNDVjMDEwMTYzMGZhZWZiY2I0MjZkOWYzY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMDM4ZmExZmFlMDIyYWM4ZGI0MjQzMjE4YmViZmJmMzNlMmVmMmI2MzQxMDM0MzhiZDUxOTI5ZjVlZjc3NDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExOWE2YTVlYWNjZWY3YzFmNmQxOTgyNjllYTI1ZGQ2OWM5MTY0NzAxMDkwN2I4YTM4NzRiM2I4NDBkODY4MjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZDdmMTM5ZjllOWIwOWUwYjM4YTZjZGZiMjhkMDIzYmQ2OGE0MGQ5ODE4NzQwOWQwMjI3NWEzNzZiMDQxYWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f533d1832aeb43b3baf5aa9ceef7d8e7",
+      "statement": "Large KV values are epoch-qualified references (v2:e<epoch>:<digest>) stored under kv/blobs-v2/<cell>/e<epoch>/<digest>; a new write must use exactly the activation's epoch, and only objects from the collector's epoch or older are collectable.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/kv.rs#L169-L208",
+          "version": "repo-lines-v1:sha256:b924d872cacd1a2b216a373177d5b1e98fdfeef1167f5a77ce6fdad667496c0c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MmJhMjViNTAzYmM1NjFiYzg2ZWVkMjM5ZjM2MmM1OWYxODVlZGZiZjgyODEyYmEwNDg3NDkzMzc4OTQ2NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0OGIyZDMyNzdhOTFmMmZlN2M2MmY2MmFiMjY3MDM1YzJjN2Q3NGNjMTI0M2NmNjRiZDVjYTk0Mjk3NWVkZTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5ff2416c377e469b8db1f71aaf1efbe7",
+      "statement": "A D1 binding result can contain at most 100,000 rows or 32 MiB, and celld refuses invalid UTF-8 from a SQLite TEXT value.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L110-L116",
+          "version": "repo-lines-v1:sha256:a22c49ba6cfbc3f053f9d7a6c74dfedbb3551d35ece17f0484e800ceecb33845:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYzYmE0YmVmYWZhNzFjOGM1NDQ0YzlmM2MzY2Y4ZmE2MjgzZjE0YWY1MGMzNGIwMDQwZmZiMjE5ZGJiMzI4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRiZjRiMTk0Y2RmZmUyNjI4YWRiNDBkMGYzZjgxZTZiOGZkYzMzYzUwMGQwNWEyNjZiNGUyZjFmZWQ1NzViMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzM5M2FkMmMzYjU4N2RmMmM5MzRmZTIwMjJiZjM1OTI2YTRiN2FmNDZiMjlkNjk0MWE4Y2NlODBlMTI0NDg4YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzU5Njc3ZWY5N2Y4Yjc1NzkwOTU3MGVmNThlMWEwODQ3ZTEyNjliZmJmZDI0Nzg5YzJmYTUxYzViNDNmNTMyOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f90c29faedde4d10860ff33ac26a1cb8",
+      "statement": "Each cell database is opened in WAL mode with wal_autocheckpoint(0) and a long-running read lock, and the ltx Db captures each committed write as L0 LTX segments at <watch>/<cell>/ltx/e<epoch>/db.sqlite.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/db.rs#L5-L32",
+          "version": "repo-lines-v1:sha256:60803d35c6fffb5df8771fb8fac45fdd5cf78d102ae6954638c1e9156954a778:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlN2VmMjU0ZGFmYzU1OGEyNjI5ODI0MTI1NDM5OTM0Yzk2MDllMWJmMGZhNmFlZWQwYjU2N2UwNDY5YzBjMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlZTI3ZDNjMDcwZGJmOGRhOGUyNzYxODJiMWFmZjI1ZTUyYTU5YmVjZGFkMzA2MjlmNGJlOTczOGNlNjJiY2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlZDQwOTMxMTc5OTExODg3Y2JiOThlZTUyOTM4NGI0MTQ3Mjg5YzljNDlkZTc4MWI2ZGMxM2M2ZTE2NzViZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjM2I0NzJhZjNhZGIwN2U1ZDVlYjRiNzZjY2JjN2JhZjMzOWMxMjJiZTRmNGMwYWM1MjkzODdhODAwZDY5NzEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:20:08.241Z"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:de477b2ae535019973d4bd9f93824f3648207b22e2fc37f5e640981eb5a84cee",
+  "claims": [
+    {
+      "id": "claim_2682631a030a4f7cb4e5fc60ca4134c7",
+      "statement": "celld runs JavaScript via rusty_v8 with one isolate per cell; DO class instances are created once per id through env.NS.get(id) with storage backed by the cell's own SQLite database.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L8-L15",
+          "version": "repo-lines-v1:sha256:a3d6723fd7461ff73e7bdc96a3de3ba2066f8cf9005123a51731700b09dd97a2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFiNDg5NThhMDc2MWY4NzQ3NzRhYTUyMDg5MmFkODRmYTE2MjE4NzViOTY2NDc3ZWU1MGI3OGJiMjYyNzQxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc2MmE0NzM3ZjEzOTQyMDJlMjI1ZDU1NWQ5NjQ5NjUxZTVhNWRkZWQyYmRjMjVlNWVhNDlmZTFhZDA5YzYyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWNiMTU4OWNkMWE2Y2VjZmY1YmU0NDBiYjRjN2JmODUzNTIwNWIxYTAxNWNhM2Q5NjdlMzYyOGY2YmQzNGVmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY2MDM2NTVmMDdlODkxYTMxYzk3MjhkYTI1YjY0NjcyMjVjOTJhNTEwMDIwZTJmNjE5YjRhNzg0YWYwZWFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_346fffe906df498fa3c1ff97c035a76a",
+      "statement": "DO storage appears async in JS but is synchronous Rust underneath (local SQLite ops wrapped in async by the JS harness); each cell is its own db file with a replicated epoch-fenced bucket prefix, connections opened on activate and closed on evict.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L5-L14",
+          "version": "repo-lines-v1:sha256:ca0a255a194734a1a658b8aafe790f22ba111e92f548afb5efdd653fda3a25bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3NDRjZDhjMmMzNTljNWRjMjU0MGFiMTkzMGU0YjYzYTNmOGJlYzlmZmE0NjM5MjczYWI4Y2I2ODgzYWFjMTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1NmM0YzM3ZTliNzgyZTFjMzQ4ZjZkMDhjZDRjMWVlODBkZmYyYTY1NTgwMzM4YzY2MjQ0Y2QwNDg3OThlODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMThlMWE4ODA5MzE3OWE2MjAzYWVlZjk5YTE5OWVmMGJhYTk1NDkyYTIxMzJlOTgwYjMxNjUzNzliNjA3OWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d9fccb845984d7ebd74b10b756716b7",
+      "statement": "Builtin module stubs are lazily compiled per-isolate and keyed by specifier (node:*, cloudflare:*, bare node names); the stub registry is an isolate slot, not a thread-local, because co-hosted isolates share tokio workers and a thread-local produced invalid handles under D1.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:f887b449ae8b962f47c8f320fca6385a05e6bce45e905daab6f489722b309230:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc4NWVlYWM4ZmU5MDM3MDZlZjUyZTAxM2ExYjIyNmNiYTg3MzAyYzZiNjM1ZDgwM2Y3MDIzODg4ZGJhMGQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2I4ODRmZDlkNzYzMWJhNDZiNjMwZjRiYzAxNmM3YjBkODhmNzRiMTA1YjYxNGYyYTgzMTVhZjhmZDNmMTg5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWQ4MmNiN2ExNDg4NDRiY2Y1ODQyYTE3NjJiMjFlNTRjOGNlN2I5Y2YwOTM2NTVmY2E3N2JmM2IyMTZiMWZhNSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L36-L44",
+          "version": "repo-lines-v1:sha256:f940ccc0a37811a8c2a9e5b3833e2a83eca9cc73ea8da715ef3ef50e2b3b3366:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ViMWY3YzViMDZhNDNmNjE0YmM4MDBkZTU5NmNlMTA5ODdmN2UzOTE1ZGYxNjY4MjVkNTU3MTYxN2UyZDQwOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFkYzk5ZWI0NWUwZGYwMmU0NzgwMmVhNjc1MzBkNTJlNzFhYzg4Y2QzNDMyMDMyN2QwMWJkMDc3YzVmMzAwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjkxZDRiYzFiZTRjNTEyNWVlNmEyZjk4ZTk4YWIwMGJjYWMwMGM4MDY1ZmZjOGY1ZjkyN2YxZjhmY2QxZmRkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQ0Yjc1ZmVhNTljMzQzYzBhNGI3MWMyZGNjOTJkMmRkMmNmYTcyYzMyY2ZhZmY2MWFhNWVlZTkxYzIyNmRjZCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L56-L62",
+          "version": "repo-lines-v1:sha256:f52e9741d01bbf7f36c6006e0f87db284819e3eeec6472dbfe512a43c2e63a01:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZThhMTE2MDA5M2Q3MWM2M2M3ZTliYTY0ZWNkYTcyZGIyMDFhMDRmYjFhYzIzMDU5YTRhOWQyYTY0YzRlZWE3YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjE4NWE0YzFhOWY4YTRlMzQxNjY4YzJhODk2YmYzODdkOTIwOTRiZTAyODE0MGIyNDFmMzM1MTYxNDk3MTE2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2VlNjQyYjdhYjM1NTM1NmFlMjMyMmI5ZGRiOTY1M2MzYmVhM2UxNWQ0MjU4MDc0MjEyMjAzN2EyMDZjZjk1NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_185eac11e1c446dbbfe1abc75c0522e1",
+      "statement": "asyncrt is the swappable production execution facade (tasks/timers via Tokio, cfg-gated replacement), and HostServices provides per-incarnation host observations so production and deterministic simulation install different service sets.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/asyncrt.rs#L5-L8",
+          "version": "repo-lines-v1:sha256:519322fd39f06bb069106dcef40bc17846ebd143b777eb85db0b545e2409ce2f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYxNWQ1MTIzOTMwYjM3MWRmZjJjMWVjZGU5MTU3ZGM2ZDdjZWU4OTM2ZjUxNGFjNWY1ZjlmMjU5YzJmNzBjYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGZmOGRhZWQ2ZDA5OTYwYWEyYjZhMmQ5Zjc1ZWQ1ODQzYTA0YWQyNjljNGQwOThmYTU4ZmVhZjg4Y2EyMTY3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmE5YmNmMDUzMjMzMzAyY2EyMmE0YTkwMjE2NTkzZjc5YjU0ZDdhOTBmZjA1MTZhNzg1OWRiMDFkNmJhNzNiOSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/host_services.rs#L3-L6",
+          "version": "repo-lines-v1:sha256:af4259d4c6d85b23803ed5e7407e07ba3673af124c39fa2a9b433140e3dda640:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzY5MjFlZjIyNzFlMDgwZjEwNGI5YTU1Y2RjNmU0NzEwZjc2ZDllZGQwMThlODEyNWVmOTQ0ZjJlNDEwZGY5MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTk3MzY4ZjViMzljYWE5MWYzNmRhNTlhZjU2ZjBmYjgxNDA5ZjdlNmZiN2E3NzZhYzA1ZDE0Yjg2NjJjYzZlYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGNkNDFjOTE1YzNjMDAyNGM3MDRiMGZhNjA2YWQ2YTQxNWJkZmU1OWVkMmU2MWMzNzAzYzk2ZTdhZDcyYjBiOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_717e7baa71fc4dc2820dff656f384a8e",
+      "statement": "Per-worker compatibility switches derive from the manifest's compatibility_date/flags mirroring workerd; defaults are all off, with date-gated behaviors like deprecated fetcher get/put/delete (2024-03-26 threshold) and queue JSON messages (2024-03-18).",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L1680-L1710",
+          "version": "repo-lines-v1:sha256:79c6b5c3fb41e8ed7d010153d5df700e81564b426c82726321545a97bc46f4a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5Mjc2MmI2ODFjZmM3NWY4YjY5OTgzOTkwMzllNDZjNzhhZDYzNzk0Njk4ZmMzMTEzN2E2NDg5NDJmMzdiYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhZjU1ZjEwYmY0ZjJiODhjZGM1MWVhZjU2YmIxMmNmOTIyYjU5MDVhMDIyMGMyYTRmM2MwZGRlZGIwYTI1ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiN2NkZmYxNjI5NzQzYjE3Y2VjOTMyOWNkNzMyMDIzMDhhMDRjZjM4M2Q3ZDJjYWQzOGM5YzZlYmNkOGRmMzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6c5fa9ba7e3463a9d6c505760785527",
+      "statement": "celld must reject an unsupported configuration or API at deployment or first use — an unsupported feature that fails silently is a defect; per-service Yes/Partial/No status is tracked in docs/cloudflare-compat.md.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L3-L8",
+          "version": "repo-lines-v1:sha256:6d0668ad743cecb4ea87fbbc946df1d17631500083ae5a1f48df41222417db7c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzZhNjdmYzM2M2YwMzA3ZGVhZjJkZjExNTYwZjA0MGYxZDUzZWJlZDA5MDdlNzk3ZGE2YTM1Y2RiMzJiZTE0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZlNWQ1NGJlM2I2NTA3MzFiYzA1ZWQxNmNkOTQ3NWNkNDM5ZDBiYjZkYWFhMzlhMmMwZGRmMWRmMGNjMmZmNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA2OTliNjI0Y2EwNDRhMjVlNGFlY2IyNTc5ODgwMWMwZmQ3ODQzZmFkYjVmYWI4MTYyZWYxYTk5OTY5ZTcwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzljNzA4NWI1MmRmYWU2ZGY0ZDc2ZTVjYWMzMDEyMzc1ZDI5NWRhMzRhYzJjYWE4MmY5OTE2YTgxOThkYTFhYiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:23:20.669Z"
+  }
+}

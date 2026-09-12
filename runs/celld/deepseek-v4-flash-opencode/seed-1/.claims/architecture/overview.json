@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c8a429b445d0384d13664e94cff7699a84d15b0a43cdee902f383d8987e2fc7b",
+  "claims": [
+    {
+      "id": "claim_bf8e04d20af04ce9a8ac5283573dd475",
+      "statement": "The workspace is split so that crates/logic owns all behavioral state and decisions while crates/celld is only an effect executor and adapter host; crates/celld depends on both celld-logic and celld-ltx, and the dependency direction is always toward the pure core.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L6",
+          "version": "repo-lines-v1:sha256:9501701014fd210b5f13bbb744e253dbc7ff477b1a6521371b4a06dca1165019:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGRiOTJlNTdlYTc5ZmJkNDI1MmQzNzgyODZlZmJlZTUxM2Y3NTIwNDI1MTAwNTNjMzFmZjQxZTdjMTE1NDkxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2Q4OWU2OGViMjcwOTI4MTBlOTAxMjQzNTEwOThmOTdlMTU2NTUxN2NjMzg4OTU3MGNiZWJhYzQyZmRjYjUyYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_136d1caf1db4410b97b00ed38f6f3cd3",
+      "statement": "celld-logic is a pure decision library with no async, I/O, clocks, randomness, locks, or dependencies — its manifest declares no dependencies at all.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/Cargo.toml#L8-L11",
+          "version": "repo-lines-v1:sha256:f35bd628b74f4b5b7b185b65a0e58c23ebefc4f1b1ef49a27a8c89167bfc58b4:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ4ZWRmZWVhZTUyZjcwOTA5MzRiYzE0Y2EzZmI4NDg0ZDYzYmQ3MThiNTZhMWU1N2YwODk0MjMwZTdhZjU3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTBkOGZlZTRlN2Q4N2FkZWI3NTdkOGQ4YzVmY2M4MTVjZDNmNGQ5NTYwN2MxM2MyN2ZkNTcwMjZhYTQ2MTdlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmZmYmMzNGRlYWM0NzA3YWIwOTBjNTY0YTViYmQ5ODVmZTkwNGU2MGRlOThlN2ViNDMzNmQ1OTk4NTAzNTg5MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGZkM2Y5MzNlYmRiOTlkZGYxMjgxNzFhNmUwZTEzMTc1MzVmZjE5N2RmMDIxOGNlNDMwYmUxOTQ3NDY5MTRjYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_110eaa70abe04460914f950b84639ff1",
+      "statement": "celld-ltx is an in-process SQLite to object-store replication library vendored from Litestream and LTX and evolved by celld; it captures WAL data as LTX segments, reads and writes replica storage, restores databases, and compacts levels.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/Cargo.toml#L1-L15",
+          "version": "repo-lines-v1:sha256:9d7754a36555a0d3c8da9ab640462eae2cdfe2e0ce91d69ec2297e90ec87d8d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlNWE4ZGY4ODA1MTg1ZTdhM2YwMDJiZTgxNmZkYWIwMjhhMmNkODkzNTc2ZTkwNmEzZmE3MjY1YjBiYzMxODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1MTNlYjU1ZTU1NDljODIwOTE4MjcwODRiMGQ5ZTg1N2ExZjMwN2RkZTJkM2ZiNDExZmU1M2RhODBiMmE4MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhYTllZDZmZDFkM2M0MDA1NTZhNzM3MzIyNWYwN2E4MmYwMTZmZjgxZDA4N2Q4YTdjYzVmNzJjZjFhZjg1ZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_77814b281a8c4c4c90e13a1df4c17cf4",
+      "statement": "The core vocabulary is Event (the only way in) and Effect (the only way out); on_event is the only way behavioral state advances, and the production executor and deterministic simulator both feed it events and perform the returned effects so the two cannot diverge.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:d17ba561785ca7348bb778cc922706279fc2c8177e57be65f95ad2d2ff6c06b8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FkMjM4Y2FjYWE5Y2VlN2FiOTNhMDEwMGE1NjdhODhhMDhjZjFlODYzODBlMzk2NDhkZDY1MmJhNDVmNjcyNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFkNDVjNDEwMmRjMTBhZWE5YTE4NGVmNjZjOTJmY2FjNWRhN2Q3OTQ5NjdjZWYyYTdiYmYwZjM3N2E1Yzg4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U3OGM0NGRiNGEyZTM0YzQ3NzkwNWNiMWQxZTRjY2EzMWMwMjhhMjE4ZmM1Y2Y0YTViNDVmZDQwMzFmYmEyYiJ9"
+        },
+        {
+          "resource": "repo://crates/logic/types.rs#L5-L7",
+          "version": "repo-lines-v1:sha256:0ff8e603067726767d27c3c1cf697c49c81dc97451ac969ef32fbbd655044725:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZmY2RhMmIyNTEyNDM1ZmQ0NjY0NzcxYzM5YzRhZTY5NzRmMmRkMmMwMjgzMDdmNTBmZWRmYTUyNGU3MDJjNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWU1Yzg3YWE4ZmY0YTE2MWFhMDI3MmI0ZWU5M2EzNzFiYmFmNmRiMDI0Y2E2NWRlZDdmNTdiMDg5ZTNjMjZkMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjIyYWVlMjg3YzdhZWZjZTdhMzM1NDI4Y2VkMmFiYjVjZTJlZTI3ZTUzZmI0OWIxYzJkOTBiZTdkM2Y2MmJkNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c903fa701d0a4b8cb993667bcdc283f2",
+      "statement": "Every asynchronous effect is versioned by an operation id, and completion events with an obsolete op are ignored, so late completions cannot corrupt a newer decision.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L737-L739",
+          "version": "repo-lines-v1:sha256:a0cd7a81f010a3c22f88777ad5de371d239c0cca69b8302917489deedeea8502:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU1NTFiZWRhOWYyMjY1MjM2MmNkNGFhNGM5NjE5YjY4YzMwY2JjMmY1OTYwZWQzNDZkMzdkYmFkMzRhYmE5MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTcyM2M0YzRmMjVmMWNlMzJmY2FkZDk5MWMwNzIyMjA0NzBiZjgzMDUxYmQ1YWQ1ZjI5MzlkODExY2Q3NzAxOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzRlODJiNjY1Yzg0MDdjZGQzZDgxYjJmMWVhNjlkNGFhNmViM2E2NmFjZDI4ZmFlYzE0MDc1NjRlNTcxZTdjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmJjOTZhYTBmNjU1ZWQ1NWY4Y2Q5MWZkZDBmZDZjNTU4MDEzZjRmNDFlNjIxZjYwZjMyNDcyYjNlOGNhMGU2NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_791848702aef42b9ab4418535f6cf904",
+      "statement": "The executable runs one serial actor that is the only caller of on_event; the actor polls its mailbox, timers, and in-flight effect futures together so monotonic lease ticks can fence the node even when a storage operation hangs, without spawning a task per effect.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L5-L9",
+          "version": "repo-lines-v1:sha256:bf8b37a9ee1fc07e9a574b6df6d477168c0bbc44e5b215ec8e9fdf483a7c6986:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E0ZmU4Y2E4ZTA0MDc3YjM5MWYwMzA3M2I2ZGRkMDNkYmNhMjk4ZWZlOTBiMmRlMzA2OTJjZmJmOWIwOWI0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmZjMzRlMzc2NmE4NDYwOGFlZDI5MzI2MTI4OTUyZTI0ZDk0Y2I3MzVhNzY4Njg0NDZhM2VkM2MwMTZkY2QxNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTFkZDcwN2Y0NmJjNjUyNzZmNDU5YWIwNmRmOWVmNDU4NTVlYTMyMjE5M2RiOTFhZDFiYmEzNDlmN2UzZjlhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFkZTY1YmMzZTFmYjI5ODg0MGJiN2FkYmQyMzU0Y2Q1MDJhNjQxZTQ2NjE4NTRhMjRhY2VlN2Q3OTZhMjBmMiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/main.rs#L7-L12",
+          "version": "repo-lines-v1:sha256:7c96cfb878b49f568bcdd78345f398b740999dd1427d3cc6e23ebf43b0775005:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmI0NjAxMTg3Nzc4OWM0YjBiZTIwNWFmYTVjOTY3ZDNhMjZjM2JjMDZhMmQ4YzE0MjEyYzFhNDVkMTcxY2Y3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGYyMDNmYmRlMTU0NjhkOTk0ZmQ3MmE0YjA4MTUzNjI2ZTk4NWE3ZDllZTcyOTFjZjdlNzAzNjkxOTI2YjY1ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ2MTFiOTY4NDAyYjRhMzdiOTM3ZWM3ZmZkNzk4NWYzZTljZjhhOWY2MDM2MGEzM2RiZWMxNjg3MDhjYjY1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODNjYTg1YjQ1MDc4N2Q3YWY4ZjlhMmI2NzA2ZGE3OTYzY2M3M2VlOTljODgwY2Q5ZThiYTFmZTczOGMzYmE2OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf3d8f077c624c368293317315fcfd7e",
+      "statement": "The actor mailbox carries Messages such as Request, Output, WebSocketOpened, ActivityFinished, ReleaseAll, and GenerationChanged; adapter futures never borrow core state and instead send versioned completion events back through the mailbox.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/actor.rs#L327-L416",
+          "version": "repo-lines-v1:sha256:c4485f66046a77b757dd6db9317ac6f1d2ca7d5e7af281dab5e9e2bc551bba8c:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YWYyMjM1MWE5NTU0NDgzNWFjYzhiZTliYWNiOWMwZjNjYWY0YmYwMDhhNjJkMzc2ZDQzMWEyZWY5ZGUzMzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3Y2MxMmRhN2FjMjRkODQ2ZGE2NWMwODZhM2Q0N2UxYzIyNGE1NzQ3NTkyY2ViZDZiNmM5Y2UwNTU5Y2VkMzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhOTA4YTMzZTJhNjlmYWY2NGQ5ODU5YzMyMmRmNzY5Yzc1NzUxOWNhMmEwNTk3Mzg5MDdmOTRlZDNlMjYwNTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_416cb56db217471c9290fdd5c32e8c85",
+      "statement": "State::validate runs after every event and checks the structural invariants, including that activation permits are held only by cells in activation phases and that the occupied counter agrees with a walk of the cell map.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L1073-L1137",
+          "version": "repo-lines-v1:sha256:475ec56540f2c34b1f1ef540d730d8699e78e511921ae5e26c1f5bf362918e64:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMzllY2UxMmFhOTU3ZDEzNmI1M2JhOThhNDRhOTc0ZmJkMGI5ZGFhOGIwOTM2ZThjNGI2MjhjM2MyOGNiZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MmVlNTdlNDFhOGMyMGFlMDE2NGRmMjYxNDM5ZGNjNDk5ZDM1MjA4MzQxNTE1MTZkMDQ3ZThkZWFlOGE0NjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmYzRhZmEzMmE0NzY1ZDBhMDVkZDk2NzY1Mzk0OGYyM2E0MDE1OGY0MWI4ZjYyYTA1NGRkYWE0MjQwY2QwNjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8ab38433d0954c1a86efa8ab3dfda682",
+      "statement": "The core keeps the concurrency bounds (activation permits, eviction permits, capacity waiters) as replayable State fields rather than executor task counts, which is what lets the deterministic simulator drive the same decisions.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L528-L558",
+          "version": "repo-lines-v1:sha256:53b436c1e1619bd5176606477a29508f5a99ab14bef15f174e7d197084180b55:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNzllNDIxMjYwNzNiY2FmNjUxN2FmOWQyOWRkMzZjYTM0ZTkzNTlhMTVmZTRiMjlmNDIzZmI5NDUyYzRhNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1MmZlMGJiMzI2NWY1MWNmZWJjNmYyNDA3NDkxYTQ2MTM2OGFhYzQ3Y2I1MDJjZjQ2ZGY4OTI1ZDBkNWM2OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiNzk4ZTI2NGY4ZGIxMDZhZTIzYmRjYmE0OTQ1N2QyNjZjYzI3YzIxNmQxNTQ2MzIzYzU1MDYwYWRkNmRhMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiNGM0ZTllNmRkZjNmMTlmNzllYmRkYjkxMjk4NzhlYWMzZmE0NzY1ODJlYWYxNmQxYTBiYWVjOGM5NDE3YmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_08f6972be5fb4f79b4f41acbede4eee6",
+      "statement": "celld::asyncrt re-exports Tokio select machinery behind a facade with a fair select! and a source-ordered select_biased! requiring a reason string; under the internal-tests flag it is replaced by a simulated asyncrt so conformance suites see the same simulated world.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L11-L29",
+          "version": "repo-lines-v1:sha256:0ab376b65cf47d86b5c53f55b4d4040604d0678fc8ea5fe95342e21bd51024aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4MmNmN2Q3M2MzZjQ2Y2QyYTcxZDQ1ZjY4N2IyNzFkOTc1NTg1NTVkYjk2MDY1ZGI3ZDE4OWZkMjdmZjdhNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMmZlOWM4ZTA5OWM4MzQyYjU0NGQ5MjVhYTM1NjhmMTRkNTE1MWI1YmYxOTE3ZTVkYTNlMGViOThjMzk2ZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMGVmMjBiMmJmZjljYmM2OTcyMDkxZDNmMWMyN2JiZDY3OWFiMzY1OTI2ZWQzNzc0MzZmNjgxNTcxZjhlY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YWI0MDFhNzY5NWNhYzNjZWIxYzMyZWE3NzczNmM3MTUwNjg2NGJlYjQ1MDVjYjRiMjRkMGUyZmFjOWExMDcifQ"
+        },
+        {
+          "resource": "repo://crates/celld/lib.rs#L305-L320",
+          "version": "repo-lines-v1:sha256:887cd3396814302861abe1e5d1d882224dba5329940580f5e949874202eab24f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiZDk5YTgyZjY4YjI3ZDc1ZDAzMWVlMWZkOGMxYmFlMDE1MDI5NzE2YTc2YzhjMTA4YTI0Y2EyYWZlZDUzZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4NmJkMTZlZTgwMGY4ZmYyOTNmMDRiZTY4Y2Y4MTFjZDAwOThlMDc3YTVhNTJkZWQ1YjUxODEyY2E2MmRmYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzZDJhODRjNGFjZTc1NGI1OTgzYTUzYjJiMDUxZGE5MjhiY2UzNzgzYjUwMDk1NDI1NDUyNGU3YzZlYjNhYTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b40a639774514d90a03c86048d1b78e0",
+      "statement": "The binary installs jemalloc as the global allocator for throughput, validates the environment, parses telemetry config, installs the rustls ring provider, initializes V8 before any worker thread exists, and runs the async main on a multi-threaded Tokio runtime.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2988-L3005",
+          "version": "repo-lines-v1:sha256:67bfd62c27b6e790556d6fc8205678d7c704cc35eacc6ad51898966d731a4ec8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlY2U4ZGIxYmFjZmMzNzY4OGM0MjdhYzI1NmRmYmIxNjhkYjIzOGE5YjI3YWNmM2Q5MDk4ZTA4NTY3Njk3Y2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4MzNjYTNiMzY0ZjcyODM5OTdiMzE1YTJkOGZhN2ZiY2I2MTEwYjExNTI2NTAyMjVkYjRjMDk2MzAwMzdkNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzN2VkOGRjNjE4MTZiNGQ0Y2I0ZGJmODg4NmNjNTBlZWVhOTdiZDgyZTU3MzM3YzJjZjMzMDNlYTE2YjEyZWEifQ"
+        },
+        {
+          "resource": "repo://crates/celld/main.rs#L44-L50",
+          "version": "repo-lines-v1:sha256:d7af7809e44b5b7bbc8d421dae32b1b229de08f175b7f85d1f8e7b0f6405a705:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ0N2JlMDkwZTFkZDE0YzNiYzk5OTc2OWViYzYxZWZiZjYyMjVlOTM3MDZkYmJkMGYxYjJiZDAwYTJlNTczYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ2MzEyMWFhNTNmYjJjZWU5ZWIxYzRhYzViZWRhMDhjMjI1ODVlNjRiZmFhM2VmMDY4ZGE4YzVmM2ExNmE0YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNiZWRmMjc3ODAyMDEyYWZiODM0YmI3NGQ0NzljMzRkYzIxN2E4M2Y1OTU1Yjk2ODE0MmEwMDQ5MTdlMmJlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTc3ZTViMGIyMmQ1M2E4YTU1Mjk3NzAxOGRmNzNjMzhmZTZiZTA1MDAwZmNmMmI4NjExZmEzMDM1NmZhMjg1YiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:40:45.922Z"
+  }
+}

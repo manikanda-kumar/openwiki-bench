@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8a6cdbfb60f79eea4a79c41c8ae952d27d99907294b8ec5395ab6f204144eb66",
+  "claims": [
+    {
+      "id": "claim_95dc6eb327524f25ae938c1c8b693b78",
+      "statement": "celld executes Workers on rusty_v8 directly with one isolate per cell, instantiating exported DO classes per id with storage backed by the cell's SQLite, on the v8 = 152.1 dependency line specifically because shared isolates need v8::Locker and Send Globals.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L136-L140",
+          "version": "repo-lines-v1:sha256:00caa9697ea792c1d5b255a8a5daa3957a6b42f1727003ce7cff664a5268c972:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGUwNGI2NmNjNTQyMzRlNTBhMDI5ZjAxYzZmOTUxYzJjMmI0ZDIyMWRlYWYxODUxMzMyNjE3MWU0ZDQ3ODY0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjFhYTlkNmVmNTVjYzJlZTU4ZDQ5YTlkZDE1MTdiMWM0YWUzZWFlN2YxNDk4MzdkMGVjNjdhOGQ3MTFmZTU0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTVlOGY3MDNhZmZlODFiZmY1NGE0NjE4NmRhZDM5MTM5Yjc4NzczYjhmZjc3OTVjNDBhMGJhMzdlNmRlNzAzYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjBmOWMyZmMwODc3YWIxZjkwODUwYWY3OTZiNWZjYjJmNTY4OGUxNjBmNzBjYzIxZDk3MjE2ZTZjMWM0NzBmZiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js.rs#L8-L16",
+          "version": "repo-lines-v1:sha256:7af259a9bd8433736c21cbe3592904cf8354cacc8497c8d95d3502b1d7dbf32b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFiNDg5NThhMDc2MWY4NzQ3NzRhYTUyMDg5MmFkODRmYTE2MjE4NzViOTY2NDc3ZWU1MGI3OGJiMjYyNzQxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDM4YzQ1ZmNmM2Q3N2IyNjY3ZWUxNDhkYjhlNjA3YzVjNDUxNzE5MzFjYWRkYjA2MDFmNjQ4ZTBlYTA2MWMxZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWNiMTU4OWNkMWE2Y2VjZmY1YmU0NDBiYjRjN2JmODUzNTIwNWIxYTAxNWNhM2Q5NjdlMzYyOGY2YmQzNGVmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzJlNGNiNDI5MGE4ZjNhODI2ZDYyODBmN2JlMzdmMTAyOGRiNjQ2MWRkMzVkZTgxNzVkOWRiMWE2M2MzNmI3ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_00a0d62c21a847fd8d23364ca6f637e4",
+      "statement": "The RuntimeManager owns handles and filesystem paths but never lifecycle policy (StartRuntime/Publish/StopRuntime decide handle transitions), and the isolate pool runs isolates unbound to any thread via v8::Locker with an async permit taken before every SharedIsolate::lock so a blocking V8 lock can never park a Tokio worker.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/pool.rs#L7-L20",
+          "version": "repo-lines-v1:sha256:7902e474f5bb600a444576d13baf3cb51c8e12a1ef08348a4c6a9587245af534:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NzYwM2U4NzZlZjEwYTczMGZhMmQ5OTVmYWQyZGUyYjc0MDk4NDIxODFjNzEyNjBkZTA2NWY4OGFhMGIwZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzMjMzM2JiOWEzZjE5Y2NlM2UzYTk0NDQ4ZTJmNWJhMTczNzBhN2I0NzlhNTA2MDllOGQ2ZTc0MDI5ZGEwNTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MzIxYjVmNWY2ZGQ4MThkYjhkYzM3NzhhNWNhNjg5NGM2MzEzZThiMGMyYzhmOTViOTRhMjcwNDgwODQ5MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NGJhNDgxNWY1ZDU5Yzk2NWRkYTVlMTlkOTViOTY4YmEyYjBjNzYzNmYzYWJhMmVlYTNmZGUwZjNiN2Q1YzcifQ"
+        },
+        {
+          "resource": "repo://crates/celld/runtime.rs#L7-L11",
+          "version": "repo-lines-v1:sha256:545758ee7e65d71680794964a145066fbb9d91bff9f0645b04e4aa55ffdeeb3e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODE3NzI3ZTc3MWM1YWY0NWFjNjk3NDVjZGU5MDFkODYyYzBjNDc5MTU1NWIxYTA2MTAzMmQ3NDRlY2U4NWMyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRjMTllMzU5NDM2NDk4NzljNGJhZTUyMmU3NWJjNjYyNGY3NWIxNDQ0ZTQwODBmNjk3MjI2OWNmNzMyNGFmMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQ4MWY5NjUyM2Y3YmI0ZDc0YWZhYTYyMGFhYmIxNDI0YjgwMzZjYjJlMzQyMzk2OTA1ZmFmYmRhZmIwOGNlMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTliZDYzMzU2Njg3YjA1MTRmZTM0YzczNTE5MzcxZjVhMzU0OWNmOTg5ZDYyMmFkN2Q1MGI4NWZjYTA2ODgyMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_86a8213c368148d7813fd5a239197790",
+      "statement": "Bootstrap prelude and the ~23k-line harness.js are compiled once per process and cached so each new isolate pays execution but not compilation, while per-worker env, routing tables, and compatibility flags are built on every isolate; the harness implements the Workers/DO surface including the reserved runtime classes.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/bootstrap.rs#L3-L15",
+          "version": "repo-lines-v1:sha256:4c615c265740fddfb9e623a610ae185cd63999d7e51c065a02ea267dee4acab1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MDU4Y2FmYmZjYjhjMWM4NGM1Y2EyNDQxNDdhYjY5MzU1YTkzNGFiZGNlYzc4Y2EwYzA4NjQ4MTNjZmM4ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1NTdhMWQ5ZDFmNTYxY2YwNTIxYWVmN2YxZGFlNmU5OGQ2OGM5N2Q1Njc4ZWEzODQ3MjlmZTRmMzQ5YTllODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2N2JkMmU0ZDkwNjUwYThjYzQ5ZjUyYjlhYjU4NmZlMmNhOGRjNWM4ZDljYjI4ZTc2NTQwNTMzNGIzMGYwOTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fa8dadaaccdc47f988243a9ebc9b1acd",
+      "statement": "Module resolution distinguishes runtime-held builtins (lazily compiled so untouched node:* modules never cost) from worker imports, and bare Node builtin specifiers left by the bundler are an explicit allowlisted list.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L30-L50",
+          "version": "repo-lines-v1:sha256:adbb0c77bafa0e9b020742655563511a830bbe11f37eeb0a67b73cd07a9a8d22:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzZmY2UyN2FmYzcyNDY0YzIyMmFmZjcyNjYyNDY1YWFjMmZjN2U0Njk3M2U0Njk2MTJjYzBhZmY3ODVhNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0MTM1ZTBhMTc4YjQwZGIzNjI1OGMxYjVjYTQ3YmEwOGIyOTlhZWM2YTBlNzcwNWJmMWQ5ZGRjOGQ5OWE1ZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzOTk3ZGRkMTQ1YzVlY2I2MDEyOGRjNWE3N2E4ZjUwMzI3OTVjNWQyNDBkOTgyODlkZmRjYTY5MDNjMDJjZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4OTRhOGI4YjZmYjJkMjVkNmY0YmViOWVhMTI2ZTA3M2Y0YTBmYWY5YjI0ZDE3ZjFjNmVhMzFmNDM1Mjg5YzQifQ"
+        },
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:f887b449ae8b962f47c8f320fca6385a05e6bce45e905daab6f489722b309230:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc4NWVlYWM4ZmU5MDM3MDZlZjUyZTAxM2ExYjIyNmNiYTg3MzAyYzZiNjM1ZDgwM2Y3MDIzODg4ZGJhMGQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2I4ODRmZDlkNzYzMWJhNDZiNjMwZjRiYzAxNmM3YjBkODhmNzRiMTA1YjYxNGYyYTgzMTVhZjhmZDNmMTg5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWQ4MmNiN2ExNDg4NDRiY2Y1ODQyYTE3NjJiMjFlNTRjOGNlN2I5Y2YwOTM2NTVmY2E3N2JmM2IyMTZiMWZhNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_80434d34592b4525ac6b21082074e8bd",
+      "statement": "Durable Object storage is async in JS but synchronous Rust over each cell's own SQLite file (its own epoch-fenced replicated prefix), with the JS conversion layer explicitly deciding nothing — semantics in storage.rs, serialization in js/storage_ops.rs.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/storage_ops.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:cbf4affb39b3508ff5181da4c19bd5fed1f1a68311487758514976f556aa1817:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZjMDA3ZTcwNTRlOGE4MmUwYjcwZjE1OGUwNWI0YWQ0ODA5YzExZDg1ZDQ2OTk0YjMwNTY4MTNmMDM4MDFjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzg0ODBmOTRmYzQwMjNmMDlhZWNiNjNhZjVhYzAzNDgwZWMwNWFiMTJmM2FiYjc4MDBiN2I3ZWFmMDExNTc5OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDE1ZWM4MTBkYjQ3OGNkZGVjODBjNWU0ZTlhNTY1YmMwOTUzNGMyZTg5N2QwM2NlM2E4NDQ2OTllOTk3ZmVkOSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/storage.rs#L6-L14",
+          "version": "repo-lines-v1:sha256:70efb51767a5944f51fe86cb6ba9c9e77e1d0b44753431b624eafda074c770a4:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgyMTYxZTVmOTYyNDBmYjBmNjgzN2M2NzBlYzUyYzgxYmJjMDRjODNiNzEyOWI5NGQ1ZmExMzY5MjRiMjFjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc0NGNkOGMyYzM1OWM1ZGMyNTQwYWIxOTMwZTRiNjNhM2Y4YmVjOWZmYTQ2MzkyNzNhYjhjYjY4ODNhYWMxMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWFmOGYwZWZlNWYyYzgyOGU2YmQwYTdlNzdmNjJiY2NjYjgzODc1ZjljNzA3NzMwODZjNDgxNGU2MTg3NThjZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmExOGUxYTg4MDkzMTc5YTYyMDNhZWVmOTlhMTk5ZWYwYmFhOTU0OTJhMjEzMmU5ODBiMzE2NTM3OWI2MDc5ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d4f254600bca4d4fa64caf41bdaa8b17",
+      "statement": "D1 runs through one typed host op with prepared/exec/migration modes, capped at 100,000 rows and 32 MiB of result bytes because a result materializes in the database cell's isolate and clones into the caller's 128 MiB default heap.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/storage_ops.rs#L431-L442",
+          "version": "repo-lines-v1:sha256:9391b0572cf6793c0480d2514ac20388a4f49b48ebd0559a82a3df0fe768f617:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MzZkOWRmNGYzMGJiYWFiMTZlYzUyMmNkOWUzYTI3NTNiNjJmYTg3YjBkZTVmMTUzNjgxMGE1NDQ0YWFmMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ZDY1OTIxYzZmYzhlNDA3NTQ5MzNiZDFjN2M4NDNkZDcwMzUwODY0NTYyNGRiNDkzZjZlMjA3YTA5NjE0ZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3NmYwNDUwYzkwNDNmZGVhZDdhMTkxODEwYWRhMDI1YWViZjc5MDVlMTdlZDg3YjJjZDhiZTM2YTQ3MTU4ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MmUzNjgwNTE0MTcyMTNmNjRjYTYxMzUzM2JkYjVhYWVmOGJlYzFiZDczOWM2YThmMjUzZjRlMTA3MWM3ZDQifQ"
+        },
+        {
+          "resource": "repo://crates/celld/storage.rs#L1600-L1615",
+          "version": "repo-lines-v1:sha256:57573dab1995e5f4ec1cbea4a75cbc925ea10aede5da5e2d8c49312d6aeb343a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMmY5MGFlMDM2NDViYWQxMDBmY2FmYWFjZWI2YjlmOTVjNDdlZGExMTg0ZDA5YjZhNWQzYjNiZmRjMjQyMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkNDljNTJjNzlhNDQ4ODM4MmJmOGRhMmQyMzE3NGU0ZWY4YTA1NzRiOTdlZjllMWE1YzgzZTAyZTJmNTAyZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyNTdkMGI1MGNkYTA4ZWY4ZGQ3ODJlZDYyZDFhMTljMjBjNjhjM2Q5ZDEzYzQ1YWI3M2VmNjkzNmI4ODRhNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhMTdmYWRkYWM2YWI2Zjk1NTM2YWFiNjY1ZGJiNWM2NGI2MzZmNzk4NTkwMDRmOTY3YmQzYjJkMGE5NDdjY2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5986143d1b264d189f2a2bb999abe916",
+      "statement": "In-isolate WebSockets live in a registry keyed by the ids JS holds because sockets outlive their events; frames produced inside an output-gate region are held by the gate, and hibernatable client state lives in the isolate heap, so the heap limit decides how many clients a cell carries (about 50,000 at 128 MB).",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L299-L302",
+          "version": "repo-lines-v1:sha256:4723e21fed3d9a2f6b7f01e42964ef77e15c4600444795524391b291c983c0d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjY4ODQwZWFlMDE0YjdiN2EyNmRiOGZmYjdhYmYzZDVkM2U2Njg5ZTM5MDBkOTdhNTUwYjUwZjgzMDA5ZWUwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzZjODUxZjkzMjZjNWZmM2U1NWQwMGYwMzM3NjFkN2ZhZDU2YzAxNTNjN2Y3ZjQ3MjBjYjQ1MTRiNTgyNGRjOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q5OGJhYTYxOWQ3ZDEwNTZkNmFjMGE1ZWJhMDE0NGI2ZmY2NzkwOTQ5NDIyZjUzOTFiZmE5YWRhMGM1YTk0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDU4ZWRiYzllYzViMGViMTcxOTU4ZWE5MWIzYWNhNTE2NzgzODUwYjExZWI0MGI1NzkzNGQyOWFlMjczMGU0ZSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js/websocket.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:4d67e55534c093860e9882de4464c57869b32e9868e82d268ca53edde8336957:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBkMzFkMDM1NmNmZWIxMGYxNWU0NDk0ZTM1NzY5MzU4ZjVjMDU4ZGMwZGU5ZjBjZjkyNGRlYTE0NTViMjcwNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTAxNWRlMmRjODliYTE1YWRhODk5M2JkOWNlNjk5NWFiMmJkNTQ2ZTM0ZDk5YTY3MGMxMDNmZTMxOGYyZjJiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjY0YTE2YmY0NDhlMTA4MTI4NjlhOWVhNjAyOGFlYjljNGJkNGNlOTU0MjY5YmIwYTRhMTBlMTFmNjZkMWZiNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4fad859898f14385b2db8ffefddbe3d1",
+      "statement": "Crypto primitives assume JS-side argument validation and own key formats and ops; compression has a one-shot op plus a chunked streaming backend; R2 bindings are served from the fleet bucket under r2/<bucket>/ with the node's existing credentials rather than a second blob service.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/crypto.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:c6b9b283e7e4d5f5272de4ce42e6bd79429c7f98af3fac7a3381c1a3602da396:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWUyY2IwZmMwYjk4YmJlYTBkMGFkOGMyYjc3YzIzMDhkNjgyZmFiMjRkODJmZWUxNTRhZWVhODk5MjA2OTVmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDk5ODA2OTRmZDJlODRiZWRhYTgyNjQzMzE0NjRmYTkwZmUzODIwZmQ4NGIyNzgyNDM2NWY5Nzc2YWI2NDNhMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjY3YmI3ODk3NDQ1ZjFiMjBkZDc4N2JkN2ViNjBkNzk3OGMxYzNmYTEwMzlhODM1NzdjN2FlODE4ZTcwMGExNSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js/r2_ops.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:dad17cef2f5d58e0fa5f2220f52322d9752ee7e4f107839029b993c7ef9c72e0:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjJkNWExZDQxNjE4MjVkNTQ3MTcyMzJhOTE0MmI5ZjUxMWRjNGU4NTY5MDhiYmNjNTI1MGVlN2JiYTY2MGMwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTE1MjYzZDAzNTllN2RjZDJiMjhiZmFmNWY5YzljY2VkMTczMWYzNzA5ZjY3NWFhMmQwYzM3YzA3ZTIyZWZkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjVjZmNlMzlhZTZlZmJlMzYxMTBhYTRlZWMyM2JjNjhjOWFiZGUzYjk3MzM2YmZkNDI5NmRjNDg1ZDc4MmFhOSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js/zlib.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:ca54c735866ed3ad59266701392a3a505e4ee858255c6906f16c4658ed32ca02:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjg0MzZiM2M3MDFhNGUyZTU3ZjU4ODBmNjA3NTg3YzI5YWFkNTFmOGYxMDEwMmUyNWJiYjIxODhkMThkYWUyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDU0ODAyNGU4MjVkMmI0N2UyZjIyODBiMDMzYTQ5YTZiOWY3OTUyYmNmMDNiMGUyOGZiYjEyMGQyODVmMWE3MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY3MzVjNWVhYjBlNzJlNmQ3NjkxMDk5MmQxMGNlNDIyNzFiNTFmMTRlYmJlYWY0MTNhNmIxNGM4ZmU0YjFiZSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/main.rs#L3316-L3322",
+          "version": "repo-lines-v1:sha256:058f260764e127c9a0587dab1e47a70345bd5880b889ce5c7774175962f4e1d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWQxYTFjMGJjNzNhZGExMzRjMWZhYjYxZjAyMDI4M2U0OWY2MzAyODA0ZTUyZmU5MjA5YjZlOTFmOWUxNmY3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjk4ZjViZGQ1MGYwMWI3MGMxMmRjYjI5YzlhZDdlODJiM2VjMDY5MGE2M2VhMWE4NDdhMjBiY2M5NmI3MTQyMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTM2YjhjNDRiYzk4M2FiYWNmOGM4YTBhY2FiZTY1MmMzMzUxNTg4MDJjMDg0ZGE4ZmQ4NTdkY2M2YmE3ZDhiOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2M4ZDYxY2Q2Njc1YWY2NzMwN2I2NzQxZDEyNTI0ZmEyNzk0ODkxMjA1OTA3ZGNjYTE1YWZmOWU4MDlmZDZlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3759f485f4b4487c9a9f492fb1b58e8b",
+      "statement": "The experimental Worker Loader (Code Mode) is off unless CELLD_WORKER_LOADER names its binding, and loaded workers are capped by CELLD_MAX_LOADED_WORKERS (default 256).",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L5870-L5871",
+          "version": "repo-lines-v1:sha256:1894828ee968219c3a44fc6b0c0d6c50fec50b6b6fad22be0c3e7e56990d8a6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjJjZTI2OTIyMmVkNTAzY2JhMmJkMmU2ZGE3YjI1OTQ2YzJjZjI2YWVkNzg2MDQ0MmVkY2E5YmViZmI1YzhmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg0NGFiOWY5NzhjNGI1NDhhYzk1ZTQxZTE1ZDdjOTExYzA0YTllZTBlOTkwYzU2ZDc4ZjVmZDUxMGE5Yzc4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmMxMDFmNjcxOGUxNmNmMjE5ZjEzYjRjYTVmNGE3YmVjYTE4MGNlMDIwOTI2ODhhYjE5ZTQ0NDVhNmJhNDVjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGIyYmI4ZDZmOTYwMzJlYTJkYWU1MWMxMWZmMjMwOWUxYmU5NzExNTYyYTVlZGUxOWRmZTYyNWNkYjViM2RjNSJ9"
+        },
+        {
+          "resource": "repo://docs/README.md#L684-L685",
+          "version": "repo-lines-v1:sha256:61b07a475072821d3ef03166a85117e447d581e0b66c422e2c2c60121fc3a14e:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTJhODk4YmFiM2EzNGQzMmRmY2U1NTllMGJjZTk4MGM0ZDY3ZDg1M2NiNWRlYjU4YTE1MmY3NGU4ZjA4ZWI5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM1Mzg0OGJmOTUyOTEzYTRmYTg1YTU5NzdmZDA3ODA0MmJkYjQ3YjA3YjZhOWFlNTM4MmE5OWE3OTczNDM0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzE5MGM1MzUwYTg3OGIxOTkzNTk3YzM0NjY0OTBhNDZhYTk1MGM3NzNmYjZlZmVmN2ZhOWFiMzlhZDQ5MjNmNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTIzYjhjNTVjM2E4MDk4NTQzZmE3MDhlMTM2ZGExOGJlZmY3MGZmMjAwZTk3MjBjMjFkMzlhNzQ5M2Y3MjlhMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d0584e39fb747748426ad7ab48feee7",
+      "statement": "Per-isolate V8 heap limits default to 128 MB (CELLD_V8_HEAP_LIMIT_MB): new hibernatable WebSockets are refused at 90% of the limit while the isolate still works, SQL result-set materialization stops at the limit, and service resumes only under the 75% recovery share with forced rate-limited GC because idle isolates otherwise hold a dead heap; a process restart is not the remedy.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L304-L312",
+          "version": "repo-lines-v1:sha256:201e55f2af7d06a49b9cb894d085fa7139cdeaa48546b621e2564b7cf635c039:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjg1ZGVhNDFlZDY5ZGI1NWZiOWZjYTdkZWMwZGJkYzY4Zjg2NzU5YWE2NDVkM2E0MzFkODQwYWU1YjRhOGUwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ2NDIxNDAwNjA5OGRhNWM3MmFjZTIxYzEwNjIwNjNmNTkwYjUzY2E4YjNmNzI1MzU3MmI4ZWJlYTU2ZjgzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjc3ODk4ZDY5N2U5ODUwZjBlYmVkYzk3OGQ4NDAwMWMyZjdiYmY1NDMyODFkY2E5OGJlMWJlNTA4ODAzZTQ5NiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js.rs#L2115-L2135",
+          "version": "repo-lines-v1:sha256:330b66ef8ab1798ddc574f6167f673c31f4f396e8b42a5b573c622d81beb466d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2YTFhYzcxYjg5NTQ2ZWVkNmI3ZTBjNDBjZjQ4ZDIzNWQ0N2JiMjA0MTQ5ZGNiNjdiODYxYmEwZWY2MmQwYmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0OGNmMzkyNjRkYzRhOWZmMDczMDNmN2NlN2IzNGJhOWEyY2ViMDIxZDRlZjU0MTU0NjQxMDkwZDMzNTc0ZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyMWVhMWIzNjkzYWFhZTcyYzU5YjlkYWRhNDJiYjM2Y2MxMjQ1YzY0ZjU1NDgxZjA4YjBkMWJhYjIwYTA1NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyYzQwODQwNTBhNzI2MzU1OGEyZGUwMTk5ZDgwZWIyN2Q3OWU5ODU0OWFkNjZlNzYwNGY0MjBkZTYxNzRlZWYifQ"
+        },
+        {
+          "resource": "repo://crates/celld/js.rs#L2362-L2365",
+          "version": "repo-lines-v1:sha256:ea866fe33a6e9b845bb1cdbb580a8988db3b64c47bb6e793fe1e1d1106e257df:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzhmZWJhZTMzY2M2NmU0OGVhNTU2YmQwN2Q3ZjE3Njg5MmQ4ZWNkN2ZlOGMwMDkzYjE3ZjZkYzhhYmNkZTgzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGMyMTU1NzNlNWEyYzEwNGZhZmRhZGZjZTYxYWMyMDgzYTQwYjQwNzZjMTc4ODZmMTBlYTliNjQ4OGQxOGVjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZjMDMzODgwNjM2NDY0OGZkNWI0Zjg0NDQwZDQ0ZTYxM2U5MTY0NjJhMTY1MjIzN2JjNjcyYzVjYjVhNmVlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTdmNmEyMDk4YmRmMWM2MGI0MGU1ZDQ5MDY2YzdmYjU5NjNiNTMyNDUzNmQ4NGU1YTRkOTNkNGYwMTFlNTVjMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_64ce7edf54ae4098a3c2aa70fbfe51cf",
+      "statement": "Wasm imports become modules whose default export is the compiled WebAssembly.Module (Wrangler's CompiledWasm rule), deployment marks wasm-v1 so old nodes refuse at deploy time, and each module is compiled once per process for reuse across isolates.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L1714-L1717",
+          "version": "repo-lines-v1:sha256:de790064f4c326340587fa2fbcebe47a452604b809283208653fad7d7c107047:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDgyOGRiYmYxZmRkOWRiYzAxOTY1NTlhODQ1ZmNkYmE3ZGFmYjRmZGYxZjU4ZDU3YjAzN2Y2MTg5YzI1YTNlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDQ5ZmNmMDhlMjlhODBlNTQ0NGI1NjhhOTZiMmJjYjQ4MmIwNzVkMjRiNmJkMDkwOWYxYTZjYTdlMjU5MjBmNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmI3Y2RmZjE2Mjk3NDNiMTdjZWM5MzI5Y2Q3MzIwMjMwOGEwNGNmMzgzZDdkMmNhZDM4YzljNmViY2Q4ZGYzMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzRjZmE4M2JlOTgzZGJiM2ViNmMwMWU1ODJlMWYzYjQxYTE4NTUwNDAwNzZlNzZiOGNmZDMyNjc3MzY2ZGY3YyJ9"
+        },
+        {
+          "resource": "repo://docs/wasm.md#L3-L33",
+          "version": "repo-lines-v1:sha256:ad694177437f7e7ea9a44dcdf7b10a563179d44bf6ffe7b123faa782e7596e5c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3N2IxMTlkM2VjNjAyZTA2YmM3MjU0NmU0ZGQ3OTYwZTU0OWJjYjIxZmQ2MGZkMjIyOTQ2Y2M0NjI1ZDcyODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNzhhYTQ4N2IyMjlkNWJmMjVhYzRjYTk5MTEyNjJmZmIzMTIyY2VlZjcyYzY0YTRlMTA0NGI4MTYyOWQ3MzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2NDQ5NTZmMzI4MTYwOTk0YjIyZjMyNTM3NzNjZjZmOWRmNDg3NGRkNzczODhhNGUwMDdlOTljOTliNzFlOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMGY0ZDJmOTA3MzM3OTY1YTFkN2I3ZWYyMzc3NjczNGRlZjIyZTU1N2VjODgyMDM3YjdlZThhZmNiMjVjYmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cfef53068c774f0bb1705af9fe924c61",
+      "statement": "The JS surface is contractually tested by differential execution against workerd with equal-output fixtures (corpus external to this snapshot), and recorded gaps include the rule that an RPC stub cannot cross an isolate boundary.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L45-L50",
+          "version": "repo-lines-v1:sha256:05a2a442ac8a8dcfac32d661ecbee9c4e6be25260e10dc9460242f3db2459318:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWI2Zjg5NzJkYzlhOWFjYjc3ODgyZmI1YWNiOGIyYTVmMDAwODhjZjBmNTM3NDIyYzgyMGQ2YTViM2YwZjc1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGQzZTk1OThmMWJmODZlY2JjMDQyYjgyMTA2YTg4OTJkYzI0MGE2NjZhNTE2N2QyMzkzY2I1ZDYyMzU1NWIzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWE1NWI4NWI3MDg2YTQ0MGMyZWQxZGJhMWU0ZmEyZTBiNzE4M2EzYmVhMWNlZGM3NzczNTU5YjYzMmIzY2NiNCJ9"
+        },
+        {
+          "resource": "repo://docs/testing.md#L17-L33",
+          "version": "repo-lines-v1:sha256:c47ebc43b502e7d92c50b8d493c59cf3110c8d81f1102c59d3885328338e5900:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxYjNjMTYwYjVhODA0YzdiMjk2ZGViZmZkMzA0ZmMwYjA3Zjk4ZGU5MzZjODg4YjE5YmZkNjJhYWJhYmQ0MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZGNhMDRkNWYwYWVkYzI0MmExOGQwNDI1ZjJkNWZjODNiMzJjNTk3YjNiMzQxY2E2OWFhMjM5NDVmNWY4ZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiYTkzYWMxNDVlNWQ0NzAzMmE3ZGZhZGQxZTIwYjVlNTE5ZDI4ZTcwMTg1ZWFiN2MyYTE0ZjhkMzJiZDczM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzZDRiNTEyMjgxMTMzYTliMWU1ZTFjYjc0ZThmM2FjNWMwMjBmMmZmY2ZlNjhlYjlhZmQ5NjQ0ODFmN2ZjZDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_baa213bfb61c40f9954b2062014db236",
+      "statement": "The V8 adapter and its child modules sit outside the actor execution domain behind an explicit clippy allow, with Actor-reachable wake and WebSocket state injected through HostServices.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L3-L6",
+          "version": "repo-lines-v1:sha256:6af73672c48a37650765efd11f28dedd2d95c7495e07274da17d8f408600a46a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTIwOTc4OWE0ZTk2MzBkMmI4NzE0YjlmMThmZDA4MzRhYjdkNjcyYzY2MWVjOTk0MzA4Yzc3MDFiMTUzZDNkZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYxNWQ1MTIzOTMwYjM3MWRmZjJjMWVjZGU5MTU3ZGM2ZDdjZWU4OTM2ZjUxNGFjNWY1ZjlmMjU5YzJmNzBjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmJlOGIyYzNiYWIxZDY3NDFiMGY1OGRmNjZmNWI1ODkzMThiN2RmYTU5NmI4M2EyZmFmNjMxOGYxOGM2Y2JkYSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:57:20.671Z"
+  }
+}

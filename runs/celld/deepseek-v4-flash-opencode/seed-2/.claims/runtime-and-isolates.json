@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e4ef7468dcd037a931ab54850ebbc558be0860e706fc67445d271f64a3912949",
+  "claims": [
+    {
+      "id": "claim_a8f178d12cf344f6a736c9df53fa2151",
+      "statement": "celld embeds rusty_v8 directly with one isolate per cell; a Worker's default-export fetch receives an env whose bindings are Durable Object namespaces, and env.NS.get(id).fetch() instantiates the exported DO class once per id with state storage backed by the cell's SQLite.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L8-L15",
+          "version": "repo-lines-v1:sha256:a3d6723fd7461ff73e7bdc96a3de3ba2066f8cf9005123a51731700b09dd97a2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFiNDg5NThhMDc2MWY4NzQ3NzRhYTUyMDg5MmFkODRmYTE2MjE4NzViOTY2NDc3ZWU1MGI3OGJiMjYyNzQxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc2MmE0NzM3ZjEzOTQyMDJlMjI1ZDU1NWQ5NjQ5NjUxZTVhNWRkZWQyYmRjMjVlNWVhNDlmZTFhZDA5YzYyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWNiMTU4OWNkMWE2Y2VjZmY1YmU0NDBiYjRjN2JmODUzNTIwNWIxYTAxNWNhM2Q5NjdlMzYyOGY2YmQzNGVmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY2MDM2NTVmMDdlODkxYTMxYzk3MjhkYTI1YjY0NjcyMjVjOTJhNTEwMDIwZTJmNjE5YjRhNzg0YWYwZWFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_09d409e3203f410781a62dfa7f924204",
+      "statement": "Durable Object ctx.storage is async in JS but synchronous underneath because it is local SQLite; each cell is its own database file, so the JS side keeps a scope-to-Connection map that opens on activation and closes on eviction.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L6-L14",
+          "version": "repo-lines-v1:sha256:70efb51767a5944f51fe86cb6ba9c9e77e1d0b44753431b624eafda074c770a4:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgyMTYxZTVmOTYyNDBmYjBmNjgzN2M2NzBlYzUyYzgxYmJjMDRjODNiNzEyOWI5NGQ1ZmExMzY5MjRiMjFjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc0NGNkOGMyYzM1OWM1ZGMyNTQwYWIxOTMwZTRiNjNhM2Y4YmVjOWZmYTQ2MzkyNzNhYjhjYjY4ODNhYWMxMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWFmOGYwZWZlNWYyYzgyOGU2YmQwYTdlNzdmNjJiY2NjYjgzODc1ZjljNzA3NzMwODZjNDgxNGU2MTg3NThjZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmExOGUxYTg4MDkzMTc5YTYyMDNhZWVmOTlhMTk5ZWYwYmFhOTU0OTJhMjEzMmU5ODBiMzE2NTM3OWI2MDc5ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_25b0eab3556246b88973b7d7928921ff",
+      "statement": "Cell storage state belongs to the isolate rather than a thread, because a cell event is driven by a tokio task whose turns run on whatever worker holds the isolate; a turn holds the isolate lock so exactly one thread reaches the maps at a time.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L22-L33",
+          "version": "repo-lines-v1:sha256:2e51a6e757a89997357e57c46af40a38d425b7923d2f828bd839d117261c9d12:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNDdkYWYyZTdmNDBiMjczNjhlYTcxMzZlMTJlNjVjYTM5NjA3MmM4NmM5ZjA2MGYxOTJkYmMxMmE5MzIyMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5YjE0NTg0ZDg5ZmY0MzcyNTgzYzBjZDZjMDI2ZDI2YmU5ZmVhYTUwZDI1YTA4ODM2MmIzMzI3ZjIzNmU5NjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxNmQ1OGUxNGIxNTBjOGJiMWRjZDI4MWFlM2M5YjI0MDRiNjVmZmI2NjY0ODg2NWI0NTY3NTFlNTk5Mjc2ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNmI2YjdkOGM3MTRiMmFmZWJiOWJiMmYwN2UzMTRjYjMxMTc3MmM5Yzk5YWNjNDEyMGJmMDAzMjNhYWE2ZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_236afcc685904c95bfc127e130449dc0",
+      "statement": "The database connection and the ownership epoch that authorized its activation are kept in one map entry, so asynchronous object-store work cannot recover an epoch through a later ownership lookup after a takeover.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L52-L60",
+          "version": "repo-lines-v1:sha256:0aee592c5655ca94f7a60d89cfe0c73b0d7f14485d7750992756f8a7017742ee:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWI5YjlkZTgyZjZmMTc4ZjI1ZTU4NjI1NDBhYTNmNjBjMjU4OGUwZDgxYzU0MDQyYTg4MTI0MTA2MDlmMTk5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQ1NTY4M2YwMmQyNmMxM2E3ZjcxZjQzYjkxMTBiMmM5YWY0MjM5OThmOGYzNDJhYjJlNGJlZmM2OGQ0ZmFiNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGYzYTJkNGRmYWIzNTg2MGVhODY5ZGU1NGQwYzk5ZGFhNTE5MTg4Mjg5N2ZjZTk0ZWE1MDhiMjdmNmQxYWM3NyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2dfff6e6d8554ed59c99878db457900b",
+      "statement": "A module specifier is either a builtin whose source the module holds or an import of another worker that resolves through the loader, and most builtins compile lazily the first time something reads their global.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:9bed57565fc003f502c43b47e330681c01d9e4d9f7b13225bfbcd17dc1b3c1d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc4NWVlYWM4ZmU5MDM3MDZlZjUyZTAxM2ExYjIyNmNiYTg3MzAyYzZiNjM1ZDgwM2Y3MDIzODg4ZGJhMGQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFkNGY5ZjBhNWE4YzYyMGU4Y2U4Mjc2OTUyZjE4NDM2ZTdmMzljZmU2Y2YyNGYwZmNmN2QwYWJkODgxMjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhjNThiY2ViOGQ4MTdlNTgxYTFkYTcyZWVlM2ZjMTM5ZjllMWNjZmNkNjJmZjkyYjI4OWJjNTAwMzUxM2YzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b142ec8e7044e8e966f92774c9f3b76",
+      "statement": "The module registry is an isolate slot rather than a thread-local because its Global<Module> handles belong to one isolate's heap; with several isolates entered from the same tokio worker, a thread-local let a new isolate wipe a live one's stubs.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L35-L54",
+          "version": "repo-lines-v1:sha256:e900625aa98ef8e598cd0436bb69f2b56abbb644608b7c8a933fdf13791bb393:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5NDczY2YwZDI3ODU0NWRmYjUyNmMyOWM3NDhlNmZmZWU4NTc1NTU0OTA5MjdkZGM1MjJjNTU4NTEzNGNkOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0ZDk2ZDU5MjY1OWNkY2VmZjBhYzU0YjY5NjZkZmM5YzAyMjgwMzQ0ZjY5YWEyZjZmN2E0MTViZTAzYzE3MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmYWM0MmY5MTY1MGJhMWM4NDM2ZDJhYzc1M2RjZjc3NjIxODA3Yjc2ZWYxNDMwZGI2MzNiOWY1NzhkYzkxMTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a852a8d8b474c5fa8c4e73df4aaa248",
+      "statement": "celld implements node:assert, node:async_hooks, node:buffer, node:events, node:path, node:stream, node:timers/promises, and node:util; node:crypto lacks Diffie-Hellman, streaming signatures, ciphers, RSA-PSS, and DSA; node:zlib implements only synchronous gzip and deflate; node:fs returns ENOENT from each read; and each other Node.js module returns an inert stub as a known silent gap.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L279-L291",
+          "version": "repo-lines-v1:sha256:d3dae072810d59b148388c57d343cd5df832d6bb7a09cfbfd738e0f23883098c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyNDRmMTA4MjUxNDc1MGVjMGM3Yzg3NjM4NWNiNjEyOGU4ZTBhYjQ4YTUwOTVlMDk1MTBkY2UyOGJiZjkxYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwOWZlMzEzN2M1YmI4OWJjNjIzMGMyZjJhOTczNmM2YmVhNzdiNWYxNjYxMmMwZjY5MTg5NjgwMWFmODE2NjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5MmVkODU2NWEzNjYyNzMyOTZlNzdkNTgzNzVmOTgxYWY3MTFiYWExNTg1OTIyNjkyNGY0ZTAzYTM4OTlkYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhMDk2YWY5YzVjMDBhMjE2MTQzZDlhNGRmNzYzMGRmNDcyN2QyYmEwOGU4YThmZTUwY2Y1OWU4N2IxYWNjMGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_27da19ad3e8c4ae3a34ab59afef82666",
+      "statement": "A wasm import gives the compiled module rather than the bytes; celld deploy finds each wasm import, uploads the file beside the bundle, and marks the deployment with the wasm-v1 feature, and a node that predates the feature refuses the deployment at deploy time.",
+      "evidence": [
+        {
+          "resource": "repo://docs/wasm.md#L1-L24",
+          "version": "repo-lines-v1:sha256:273efcf9437a164ff785fbde42d5092d1359a7050876ab00f1dae625cb8fc875:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MjhjMzRjZDJlMzgzNzAxYTQ4MTFlNDIwNjFlNDA3ZmUzZGM5MjEwMTcyNDFkZTg1Y2E3ZDdlYzk5OTU2YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwZTk0Y2E2YmI1ZDIwZWQxYmM0OGQyMjcwYTNlZThkZjAzZjFiOGUwY2E1OTgxNmUyZDdmNjliN2QyYTc3OWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiN2ZjN2ZiOWRhZWExMmVkOWEyMzU4MzAyMzQyMDY0NTkzMTUyMzNjNWIzODdhYjRhNmY0OTJmNTQxMTQ5ZmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_173917b9c13a4de2872f3c4014ff2da5",
+      "statement": "celld compiles each wasm module once for the whole process, and every isolate after the first reuses the compiled module.",
+      "evidence": [
+        {
+          "resource": "repo://docs/wasm.md#L26-L28",
+          "version": "repo-lines-v1:sha256:f2dad4d74b70bbec675aab4b6ad1038bf5d4811f1efd8fb56109d7990977c8d6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDIwMzUxZGQzN2EwODM1YmVhNGU3NTY0YjdlYmIzYzg1NDkwYzA5MWI0MTk2MjI1ZWM0OWQzOGFiODA5MWY4YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjhkNzAwYjM5ZDE0ZWE5NTc1Y2Q5MTdlNGI5NmM4ZWYxYjM3ZDFjNGNiOWNiY2YzNGJkMjFmZTBlMTE0ODExZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWIwOWVmZWZiZGE3NDg4NjE3MjZlZjBiMDNlMDI3ZWU5N2JiYTI0MThkOGUxZGFlN2NlNmVhOTQ3NWY0MDg1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZmM2Q5NTYxZmFiMmQ5Y2FmZDQyZTc0YTRlNTYxMDcxZjdhYTY5OTFlZWM1NWQ4M2ZmYjAwZmRiYTYyOTExYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_217c9dd171984ce5800848a6c430f359",
+      "statement": "Worker Loader is experimental and requires CELLD_WORKER_LOADER=LOADER; globalOutbound Fetcher is not available, a loaded Worker cannot receive a capability stub in env, and awaitable and pipelined properties are not available.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L70-L77",
+          "version": "repo-lines-v1:sha256:910e47d26ec62a8c9a160a407b37af7f384202845b27d3d230a8a8bbdf785dd9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmEwM2UxYjQ0MzM3NzcwYjkwNWU3ZWJkMmI0MTAzN2E4MGU1OWQ1ZmJlOTE4YTkzYjI2N2JjNjc0ODZiYjJkZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWMyNTNjNmNkZmM0NDlmYzE4YzNkYzA3M2M1OTMzOTIzZmNhZDc0ZGQxNDZlMzFjMmYzYjQ1N2U2NTgwNTRmYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzEwNTA0OGRkN2RmZWRhMzg3ZjFlNzc2NGE2MjFjOGI1NGVlNGU0Yzg5MGFiMGU3YmQ4YzFjOTUzYTExODE4ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjhlZThmNjYwYTM1N2MzMmMxNjI3NzllN2ZiN2NmZDcyNTM0ZmMzY2FmMWVjY2MzYThiYmFiZTljY2RkOGMxNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_22ad73fc3c814a53926b2390bb7c3fbe",
+      "statement": "The WebSocket compatibility boundary includes: getTags() is unavailable, a caller must call accept() on a subrequest upgrade, an outbound Worker socket closes after the response and waitUntil work end, celld rejects a non-101 upgrade, removes Worker-supplied protocol and connection headers, combines repeated values for one header, and acceptWebSocket() throws above 90 percent of the V8 heap limit.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L232-L245",
+          "version": "repo-lines-v1:sha256:73dd44ad9c9be71137f3ca0af18769c5e23fe72a359356217c6b984c45c77222:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhMWY5ZWQwZGJmYWViNDZjMjBiNjRhYjhhYjQzZjY0MjExZTc3NjAyMWFlMTJhNzQ4YWFkMDcyYmM2NTA1MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ZDBkNGZkMTUyNGJlZjEyMjg1MzQ5MDIxZTQyYjI1MmYwYTExMDc0Mjg1MzJhMThiM2RhYjhmZTI2YjY1MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4ZjhlMWViMmExN2UxNzE1ZjA4MmJiY2UzZmM5ZDA1ZGY3ZWRhYmEwZThmYjcxOTM5MWM5NWY5MGI2ZDNiOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhMGYxNWZmNjdmZTJhZGM0NGI4YzMwYWNmZTI2YzUwOGMxNzgwNmM1ZjU2ZmNjMDhkZWQxN2ZiZjM2OGUzMTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_29ee2f4bc7e34077831574a45a0cace7",
+      "statement": "An outbound Durable Object WebSocket keeps its cell resident and closes if the cell moves to another node, so the application must store the connection intent and reconnect.",
+      "evidence": [
+        {
+          "resource": "repo://docs/limitations.md#L38-L43",
+          "version": "repo-lines-v1:sha256:1226ee87b0880f3924f4f5d198ac2124699bd8ebe8f0461eb4f3c334d5703d33:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjdmMDE4NmY3NTU1YjgzOWZhMjk3OGNiNTE0MWVmYjZjMWI1YTVhM2VmYWNiOWIwZDNjMmYxMDE1NWQwZWIzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODdlNTA0YmVjNWVjNzlkMTI4MzE0MmZkZjY0NmI2N2VmYTAzOTk0MWYxZmJlZWFhZGFhNTQwMTJjNmQ5ZDAyOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODliMjBjMTk0ODIyN2QyZDJhMDdmMGRhN2RjMzY3ZTk4Y2JlYThlNTI0MWQwZDFiY2ExZTM4MzE4YzNlMTg1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjM4MzJlYTU2OTljMjNhNzU0Njg0Njg2ZjI1ZTBkMDU5OWI3NDQ0MDUzNWQxYjRkYzI5MTM0OWE2NTBjYjdiOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b04631c37dd34b9e9c3c8dba7fb9889a",
+      "statement": "celld honors the delete_all_deletes_alarm, js_rpc, fetcher_no_get_put_delete, sqlite_vec, websocket_standard_binary_type, and static-assets navigation flags, accepts each other flag without effect, and reports only honored flags through Cloudflare.compatibilityFlags.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L305-L317",
+          "version": "repo-lines-v1:sha256:968925eddd7341978787d8817371451342f7dda5892952239a84264112549baa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjZjcyMzAxNDBkMGRjY2QzNThmMDZlMjY2OWUzZjZmNGM5MTI2YjZiYjQ0NGQzYWUwY2YyMjU2MjY2ZDFkNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyOTk1MzA5OTYzNzI4ZDQ1ZjI0M2MyYmI1NmRhM2NmMDgwMmZmYTM2ODU5ODcwZTQxNDNlYjdhYjU3MTkwMTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZDRhMDA4NGM3Mjk4NzBjYzRkMmNmYTgxNWFlMzM0N2IxYzdiMGY1ZDczYzY0MzUwMTRmMTQ0M2YwMGNhYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2ZDIxNThiOTM2NDMxMGQ3YTBlOTI1MWU2MjBjZWE0M2M4YjRhODJmZmE1YTJjZDFjZGI0NzkyNGYzZmE4NzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_14b36ca796d44678ba3e1c7e69fedc48",
+      "statement": "The compatibility page defines Yes as the complete applicable API, Partial as a missing listed input/operation/behavior, and No as unimplemented; celld must reject an unsupported configuration or API at deployment or first use, and an unsupported feature that does not error is a defect.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L3-L13",
+          "version": "repo-lines-v1:sha256:bdf1c2675f42be2c418ef762aebd4c2a49f4a46eb1ea6dbe64dcd29a0d29ec21:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2YTY3ZmMzNjNmMDMwN2RlYWYyZGYxMTU2MGYwNDBmMWQ1M2ViZWQwOTA3ZTc5N2RhNmEzNWNkYjMyYmUxNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOTA1MDFmYjkxODAxZmQ2ZTZiY2UyYzAzN2ZlMGUxODE4YmQ5YzkzOTViZjg1M2ZiNmY0NWFkNjk0MmYwZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNjk5YjYyNGNhMDQ0YTI1ZTRhZWNiMjU3OTg4MDFjMGZkNzg0M2ZhZGI1ZmFiODE2MmVmMWE5OTk2OWU3MDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiYzU4Y2YyZWM1NGY3YTNlYTgyNjkzYTgwYmQyYzNkNTc2ODkyNzJiNjQ1MzQ4MTRmMGExN2QyYzkyOWI4MjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_85c6139c81f54ca4bcd68051581e8151",
+      "statement": "The service table marks Static assets, Encoding, and WebAssembly as Yes; Workers, Durable Objects, Cron Triggers, Worker Loader, KV, Queues, D1, Workflows, and R2 as Partial; and Workers AI, Vectorize, Hyperdrive, Browser Rendering, Email Workers, and Python Workers as No.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L17-L34",
+          "version": "repo-lines-v1:sha256:d17b0b5289e41ef359aa25e4a5637e9907e0e44a6dad954e52eff0fbb88fc5fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3ZTBkNWRiYjUyNjg0MWY3NDI3NGY5M2M0ZTBjMDU5NjZkMWM4MzZmNjlmOGZjZmFhNTRiOWYzMDQzZGM0YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNDYyNDFiOTY4ZmU2NmVhNGU1MzhhYTk1YzE3OWY3Zjg1YmI0M2Q2ODdjNTZlOWM2MDcxYWU4MDk4YzZkMjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiYzU4Y2YyZWM1NGY3YTNlYTgyNjkzYTgwYmQyYzNkNTc2ODkyNzJiNjQ1MzQ4MTRmMGExN2QyYzkyOWI4MjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlY2FlZjJlZTZkYTdlYzc3ZjJjZmVhZTIxZjYzMmMzMTFkOTBmYzBhMDY0ZjIxOGI2NDJiZTUwMTVjYTg1MDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_113145f9180041ae9e49c1af743ab459",
+      "statement": "celld admits at most 64 concurrent fetch events for one Durable Object or Queue broker (CELLD_MAX_CELL_REQUESTS), returns HTTP 503 with Retry-After: 1 and X-Celld-Overload: cell for the excess, and writes a cell_overload_refused log event when a target becomes saturated.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L638-L657",
+          "version": "repo-lines-v1:sha256:9c2412b7a20b427edec6d6aa58b59898c8e0a6456c88ebc3cc1dcc6eb9020a57:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MGFhZTRkM2I0NmMyN2VmZDhhYzk1MDliY2IzNDFiZGYwZWMyOWFjYTE4OWNkZmMyMmFlODFlODgxZGNlY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3Y2NhM2ZlZDBlZDI5YzFiMDE5NzU3ZDQwN2Q2ZmY1MjY5ZTM2MDY4NTE2NDJhMjFhMTM2MWJkMTNmNDQ2OWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlYzc0NmQwMWRlZTg4Yjk2NjNlYTdmZDk5OGM0YzY1Y2EwZjQzOWRiOWIzYWE1YzI1MDc2MjY5OTI2NmVhMGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f2eaaba07d14f2296297df8ace3a6cc",
+      "statement": "A resident isolate is reserved for a top-level Worker request through Event::WorkerRequest, and the shell falls back to the stateless Worker pool when no resident is available.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L483-L488",
+          "version": "repo-lines-v1:sha256:93381281fbcd9cf6b0494bc935563c19212467a48f104976ae8328bb91e55f7e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhiZjkwN2EwNzM1M2ZlN2I5NTVjYjMwN2Q4YzQ0ZWY2MjI3ZjI3ZmY5YTMxNjAyYjUyYWRlMzgyYmEwY2E0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwY2RiOTcyYTdiZmI3ZWQyNDZmOWZmNjcyMzg1ZTU1ZjQ5NjhmYzExMDQzZGM1YjY4NGQ1MWRmYTMxZGJjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzM0NGExNzY1NmY2YjIxMmQwMmU4MTY4OWFmMTA2YWE4N2JhODliNGU5NWYzMzk2Njc5NWIwNzM2NDJkNWNlNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2NhNTBiY2VlMzliNjk5NDQzZWVhZTZkM2FkOWFjYzI3OTk3NjNjZTE5ZmUyNGE5MDQxZGZmZWMxZjg0MGVjOCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:05:17.667Z"
+  }
+}

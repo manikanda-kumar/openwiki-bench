@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:27b9984bcc28543cff5cabc883306772c7f2079e3089d6c39dede3a1215a4539",
+  "claims": [
+    {
+      "id": "claim_71122d31b42e4bfabe6d986d435fa949",
+      "statement": "Telemetry is off by default and the off state is structural: init never runs, start_trace answers None, and no event is ever built; CELLD_OTEL=1 turns it on.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L6-L12",
+          "version": "repo-lines-v1:sha256:03ec58ec5a1168d8cde3fe3edad1d6350088821664df6453ed9be482f8842bd5:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGVlNTI3YzFmZWFlOGY3MjM1NGE4YWU0MjgzMmJhYjRjY2I0MWFkMjVmZjAyYzg1NmEwMmMxODEyMzM5N2ExZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQ3YTU2NzZkMTBkNDE2ZTM5NDFlOTU1ODc2OTczOTg1ZGU3MmM0YTFhMzJhNWJhM2VlOTJjMTBiYzkzZWIwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmRlZGI3ZDgxNWVhOWQ4NjAxOWUzNDU5MmVhMzgyMGM2YzVmZjNiNzM3NTI2ODNjMWMxNjIxZjI2MDcyNGMyZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGZhMzBiYTkxOTU2N2JhYmNjYjk3MzQ3ODgwN2MwODZlM2RlN2ZhNGQzYTY3NjZjMDQxZWUxZGJmM2M5MGZmNyJ9"
+        },
+        {
+          "resource": "repo://docs/telemetry.md#L4-L5",
+          "version": "repo-lines-v1:sha256:32b51799b71ef6f065157db9f6afd8c165b2dded4996388fe02caa47e9a8655e:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGRmZDlhZTNiNzNlY2VjZTBiYTA5MDJlYzU5YjM5MDIzNDAyNDIzNmQ1ZjQ4YjIwOGJhMjczZWMzZTg5NWYxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDE5ZmY2ZTA2ZmNkZGQwYTA2MDAxYTU2YjRlMzg2OTEzZTBhMzljNDJkODc0ZTI3YjVjYWY5YTg2Yzc1NjI1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGYxYzQxZThmY2VlY2Q5ODgyYzRjOThjOGY5NTZkM2U1YjgzNDU2OTJkMzc1Y2Q4MzNiYzI0OTAwZjlhMzY5MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmQ2MjAwNmE4MGM1ZjQ0ODAxNWE0NjhjNzg3YzFkZWJiYzEwMzZhNDgyYzkzMTU1YTc3NDBjMzk4Y2QwNjlmNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_29824a7e80294f449bf35360cd254f64",
+      "statement": "The telemetry hot path never blocks: record is a try_send, and a full channel increments a drop counter, so under saturation celld sheds telemetry, counted, never requests.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L14-L19",
+          "version": "repo-lines-v1:sha256:1ce47b0c21e6bf2d931542407575120c8dbc8f00a63058debb7c1d80c971b28e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmVlMDJhNzMwOGYyNTAzMDYxZTI5NTYzMTNkMTljNDMxYWE3M2JlYjZiZjdlNWVkM2MzZTA0NTQ3N2JkNzYwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIwOWVkYjBjZmM3NDg1YmUyZDFjYjkxNTVmOGM5OTgzMTM1ZDUxNjgxM2FjOTZmMTBmMGYxNjE2MjZiOTIxMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzA5NTI0MTJhMjg5ZDEyNzNlNjc2MDIxMWQ3MjJjM2E5YWNhNTI2YzhjNWU3MjZlYWY2YmU3ODcyYzc5ODcwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQzOGYwZGY3OWI0MmVhMTI0YzQ4MzAzNjg3OGQwN2Q1ZjhjNTY2OTgxMjM0Zjc2OTA4ZTE3NDQ1ZjUwZWY0ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f7d833b3d1884c26affeb5d4a967f814",
+      "statement": "The default bucket sink writes Parquet files under telemetry/traces and telemetry/logs, partitioned by node and by hour, so a fleet with a bucket has observability with no other service and DuckDB can query the files directly.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L31-L33",
+          "version": "repo-lines-v1:sha256:e353a3f1eae07665cd2dddae325466fc8d4ebfd91d81f2f10ed5faa1b325a735:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjk4NTQ1NTc4NjQ2NTI0YjQyZWFmMzU5YzVmOThkYWI5MTRhNmVhYTA0NzliNjg3Y2JjY2RmN2Q1NDE3MjAxZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ1ZjY3ZjIzMTczMDBmMGQ0NzYzM2Q4M2ZhOWJiZWJiYmRjNGJhZmEzNTNjODc0MjAzMjE2ODRmYjc4N2IyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTAyMjRhYTA2MmM2NjYxNjAzMjAzNDIzMzQxZjliNzUwNWRiM2NlOGQ0MGY2MzY4Y2UyOTU0ZDAyY2JkZjYxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTg4OWFlMWEzN2FjMThiYTQ4NzVlOWUxN2Y4YjM4OThkZjAwMzNjYmFmYTdkODdiMTkxNTAzYmZiMWYyNmFhOCJ9"
+        },
+        {
+          "resource": "repo://docs/telemetry.md#L6-L10",
+          "version": "repo-lines-v1:sha256:fd7d56a0fdb09dd870cf03f5d56342ec88010d4dab6b5fedb20b31d43c36ff90:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGJkYmFiNDNjMDY5ODA2MjZkMWM1MmM2M2QwNjg5YWQ3Y2UxMWQ2MjY1MGEzZDhhY2VjMjYxZWY1ZGIxZWViOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWJmNDIxNGZhNTI2ZGFkYTFjZDViNWVkYjVmMjYyOTY4ZjE0MzlhODQ2MDczM2ZiZTE3YzRmODI0YWFhNmU1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWE0OGNjNjhkYzM3Yjg4MWQ0ZjFlMDM4OTU1Nzc1YTMwMWY2NmVmOTA4MzAxMWJlMzQwYThmODljYjRhMDViYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d73d312d6f4844c898056ea275f296e0",
+      "statement": "The OTLP sink sends the same data as OTLP/HTTP protobuf to a collector, hand-encoded so prost, tonic, and the generated proto crates stay out of the binary.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/otlp.rs#L3-L11",
+          "version": "repo-lines-v1:sha256:a4e6e6a1aef111cedd47149df8da55f6bab45f0c6552d6acc0c3ded40d8e9c70:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNlNzQyYzY4OTcxODM5ODhhNTNhOTk5MzBiMmEwNDNhMzdmOGRlNWY4NmM2Zjc4ZWMxMDNkZDI5ZTYxZDBiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EyYjY2MWIzYWNhZDkxYjYyNTgyMGM1YjhhMGUxYTcwM2RhNzk1YzZhOTAxYTRmNDkzZjdlYzUzMGQ1YzE0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzcxODIxZTA3Nzk4OTczZTlkOGFlMjVjY2MwZWE3NzBmN2M2YTUzYTRhYWU4MjZlM2U2MDBlODAwMjZmOGFhMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_10652b70f8254769b1e1b253905269a2",
+      "statement": "The telemetry schema is version v0-unstable and each file carries the schema version in its object metadata.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L41-L43",
+          "version": "repo-lines-v1:sha256:78007de068e0a5df91d79afc45b1cd1394a56b2737adfbdf226b0dafb39c686f:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWY3OTljMjcxZGQzMjU4OWJmNmRkNmNmMWEyNDcxYzc4YTc3YWE4NGJlYTEzYWY0ZTBjYmE5MWRhYjFlMmIxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2QzNzA1MDljMDRmNzQ5MDZkMjk5OTdkMjcyNWUzODBlOTQ5OGUxOGMxZjI2MmUwYTZiZmU2OTEyN2Q4OTA3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTA5Nzk5ZDJkOWQyODZjM2I3ZTQxNmY3NDlmNmY2OTllNzYxOGZiNGQ1ZmMzOTk0ZGM5MmEyZDhjZjQ5ODQxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjg4NzJiZjA0ZWY2MjUwYmJmY2Q2YTY0MGZhODc0MjkwMDhkNGQxYTM2Mzg4NzBmNjczNGNlYThmNTRhNWRjOCJ9"
+        },
+        {
+          "resource": "repo://docs/telemetry.md#L12-L14",
+          "version": "repo-lines-v1:sha256:38c8ea3d475195d33f24bacf0b575d3ace2578b30bf0ff09fff3b1a778618c29:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDc0NTBhZGJlZjg3N2NlNWEwZGNjYTVlYjJjZGRkYjQ5ZGNlNmJlM2JlMTkxZmUxMzQ3ZTM1MWYyYzE2YTFjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDE1NWJlMjJlYjliMjBiZWMwZjA0ZmM3ODk0YWRlZjMzODFlYTZkYWVlNGFlZjA3NmRmMmViNzRlZWZlY2M5NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODNkMjdiNzYzYjgzMTJmNDFmM2Q2MjcxODJlNmJjMmMyMzQ5ODM2ZjlkMDY2Zjc0ZGY0Y2U5OThhMTJjMTYzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTdkN2FmMzgwYzBkNmU2OGI3ZjRhOWFlYzVjMzA5M2QzMTc5YWQ2M2RkZDNiZDJiYTE1M2JlNmEwMTBlNjI2MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3b5195f5baf941ea9b82c623e6ebe8be",
+      "statement": "celld records a span for each Worker request, cell event, outbound fetch, and cell start; console.log lines become log records joined to their handler's trace and span ids; it reads and sends the W3C traceparent header so downstream systems join the same trace.",
+      "evidence": [
+        {
+          "resource": "repo://docs/telemetry.md#L34-L50",
+          "version": "repo-lines-v1:sha256:8d84e6cf1101b035270c9fa379b5943e229f2f8497236a1c7e1e6d1985568167:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4MWU2OGI4MTA1N2RmNDY0YTNmYjgwMWY1ZWMyNjQzZDg3YzFkMDFlYjk2MDkwYzQ4ZTVhYTIxNDhhZGY5Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2NzVmOGExNjViODYxMTgxYTk5MjBlYTM5M2I5MmE3NDJhOGYzM2Q5NzAxZmI4OTBmYjdkODFmMGE1ODkyNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkNzU0ZjEwNzQ0OTI5NDJjODNlOTEyNzE3MjhjMjNiNTkzNzBkNzg0YjA0NjYyY2M3YzVjMGJlZjFkNDRkYTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_263fca34780c487e8248801ede220392",
+      "statement": "A console.log body larger than 8 KiB is truncated, because log records are telemetry, not blob storage.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L35-L39",
+          "version": "repo-lines-v1:sha256:879b9d6e7b1885baa78d8c0ba70b0be55daa9ea21fa9a86074f7323332474acf:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBjZDhhOThlN2IyYWE5NTE1MzE3YzY4MTY4YjI4NjQ2ZTg5NTU2N2MwYzRiZTk5NzU0N2RiYmQ2YmFlMTc0NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIxNjk0YmFhNjM4YzU1MmQ3NGU3NzczMWI5NWM0Yzg4OTc5NTMwYmJlMjc4NDhmNGFiZDIyOTU4ZmE4YTE4NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTljZjY5NTQ2OWRmYzc4MjY5YTRlYWFlZjdjZmZiZTRhNTFlNWRlN2ZhZTllYzlmNTFkMmU1MzA2NzI5ZmUwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTdkM2UxNTdjMjJhOTI0ZmUxMGU5MTI2OTIxNjYyMzE4YWE5ZGQ4NjQ1NjNjMDAxMzAwOGI4MzhlOTI0NTY0YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_686eb081922446848f1e1290df9f6a3a",
+      "statement": "CELLD_OTEL_SINK selects bucket (Parquet, requires a fleet bucket) or otlp (collector, works without one); retention defaults to 30d and flush to 5 minutes or 5 MB, whichever is reached first; celld never compacts its own files.",
+      "evidence": [
+        {
+          "resource": "repo://docs/telemetry.md#L18-L31",
+          "version": "repo-lines-v1:sha256:14fd4cf667aaf79728e56b05582f491b4fe1b68fdc9dab274b63df840ef5492e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMjAwM2FhZGQ0ZWZmNzg2NDkzYWM1N2Q0NGMwOTYyYTFkNTFkMzNiMjM5MzkzMDY5MDk0ZjkzNzczYjIwYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMTdkMWI5ZjA5MzhlN2UzMjM4MzMyMjdlNjk4NzAxM2ZjODEzYjYwZTVlZjI5NWNlYmY3NzNiMTFmNmRmYzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3ZDdhZjM4MGMwZDZlNjhiN2Y0YTlhZWM1YzMwOTNkMzE3OWFkNjNkZGQzYmQyYmExNTNiZTZhMDEwZTYyNjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExMWFkYzdmNGE3OGViZjAzNjg4Y2FhYzk2Y2YwMTQxNGY1OTE4ZGZjMjEwNThlZDRkNTYyYjk5YTA3YjFjZDIifQ"
+        },
+        {
+          "resource": "repo://docs/telemetry.md#L91-L111",
+          "version": "repo-lines-v1:sha256:fea3718500b481d4d2110990e020e2b8d77b97b32a0d8bd93194c33502ffe9d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzI1NWNmNTk2NzU2NTU3Y2QyNmU2MzIzNjRiMjE0ZjUzZmNkOTI1NmZlMDAxNWQ3ZDNlYWQxOTMyMDQ5MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3YTdiM2FlMGE5YmFkYjE0NDA3MjFiZDMxOGViYjA3YjlmYmFkNDIyYzEzOGRjN2VhZTk4YjllN2Y5MjFmMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3MjViYjcyNzE1ZTlkZjFmNzI5YjgyOTczYTY3MWYxYTYzNDAyYjQ0ZjRlZjQ2YmVjZjlmODMyZTdmYzZhNTQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:20:08.241Z"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fe1080e17e702121791be46b8da7380ec4dd81fbd6bfb039d97eb21e316ab7b2",
+  "claims": [
+    {
+      "id": "claim_a10dea6e090f4a97937d5455348af70a",
+      "statement": "The object-store adapter implements two conditional-write dialects behind one surface: S3 and Azure Blob Storage use the etag sent as If-Match / If-None-Match, Google Cloud Storage uses the object generation sent as x-goog-if-generation-match; and put_cas answers Ok(None) only for a clean 412/409 rejection while every other failure is ambiguous because the write may have committed.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L1-L25",
+          "version": "repo-lines-v1:sha256:d63a1cc655e23e0612dd9d0a739a9a66c55d066ab420595e27628dd4b558dcfe:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjE4ZDU2MTFkMjQwYTYxNjM5YWY1OTg3YzQwNzU3NjQ0ZmUwY2M0ZmNiZmNmYzMzMmJiMzZlZjBlMDRjYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1Y2I0ZGQ0NjE5ZjZkMzFiZTc2ZDg3YTU3NTQ4ZGJhZGU3ZDIzZjkwNzJkNTE3ZjAxYzM4ZDgxNjc2ZTdhODYifQ"
+        },
+        {
+          "resource": "repo://crates/celld/bucket.rs#L67-L137",
+          "version": "repo-lines-v1:sha256:c528e144a6d911821a319e946a96a1a50fe8ca0cf72a0b8a8a3b73076c9f0958:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyODBlZDZlNDY4NTYzZmE1NGI5YTU3N2VjNGJmMjc0MDcxMDM3MTgxZTk2NWIzYjg0YTdiNjVmYjQwNDdiYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExMDM0YjNkMTU0ODhjNTVkNjFhMjM4NzA0YTE5YjFkMjI4YTI0OWU1Mzk4NWM0ZWJhNDY3OTg2YjEzMjU0ZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmZThmZDRmMzNiNTY1N2MxMmU0YjFkNWMyYzA0MTc5MjE5NjUwMTU4ODAzY2Y2ZWYzMGQ2YTliNzIwMDg1ZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a375e005e644055aac54c4eca867eb3",
+      "statement": "Each cell has one ownership record at cells/<cell>/own.json naming the owner node's session and a fencing epoch; a node acquires the cell with a conditional write so the object store accepts exactly one acquisition, and every activation (takeover or local wake) advances the epoch.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ownership_store.rs#L288-L420",
+          "version": "repo-lines-v1:sha256:e934983f1db214fae113788119255b039e63217029245257e9aa51a03bddb451:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYTg0MWI4NWYyZjJlNmQyMzFmODZhMmJiZjIxZGUwNGQ5NDZhZGM4YWM1NGJjNDk2MjEyMDc2NDk1MmY2MjVjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5ZjMzYTRiOTg5YjcwYzEwYWJiNWQ5ZmI5ZTEwOGNlMGE0NjU2ODViNzk5ZmI4YTRiNWEzOWZiODEyZmNiOGZlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyMDQ0YTU4MjMwMTQ1YTU0MjEwMGNjNjAwMjBiZDIwNDhlYzRmMjM1MDIwOTViYTczZGY1YTE0NjNjOWY4M2MxIn0"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L1469-L1478",
+          "version": "repo-lines-v1:sha256:eab3bb25a8fcc57f41549001cec391772fe2848220e5721114a9085265fcf3dd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YWJkZGEwNjA5NzNlODM2NjhhOTg0NzljZDNiN2IyZDFlZDY0NjNlOWNmODg4NjlhMDRmNzdkNTEyYWEyNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyN2E3YWMzYTRmNjZhYjFkMjY4ODFmNjkzYTkzNDFiOGE4YzhhMzAzMzZlYmNlYTlkZTFkNDhhMjk2NWY4NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOWU3MjAwY2QwNDRkZjdmMzc0NmYzNjRkZjRmYTg2MGQ4YWJiMDEyMzgzMWYxY2FmODhjMWYyNDc2ZGNiYjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ab1df2887aaf4f79b13e40830adf103a",
+      "statement": "State::output is the single choke point every egress channel passes through: nothing that reveals a cell's state leaves the process while the cell has a write it cannot prove durable; the core stores the channel but does not branch on it, so all channels share one rule.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L3-L40",
+          "version": "repo-lines-v1:sha256:53f4d903ee08d3c69ca81eff4abdcfbb00a425217083f1ad035ac4be0187e95b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkYzMzYWZmOWFkYTRmZmM1YTk5OTc2M2NlZGQzZjU0YjVhNWU0Y2U2NjI2ZTNiYTBkOTNhZjNiMDhhNzJlMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMThmNmVhOTZlYTgwMGE0MGIyNzZiNzRiMGJkZTc5MzZlMDEzYTI3MWQxMjYzNWRlNGI2MjlmZTA4NTk2NTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4MTA0ZWM5ZjRmM2FmYzRjNTZiZWM2NTI0NWVlMDgyNWEyYTE1MGYyNzBhYzcyYWUzOTBiOThlNTRhY2Q5NzMifQ"
+        },
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L83-L95",
+          "version": "repo-lines-v1:sha256:81dd592e57b8616a138dcbe75d5ba20ecdaf80a12f1a592e72ba09fb0f1a5216:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NWY1OGUxNGY5YzhiY2E5NTQyNzA3ZDA5ZDQ0ZTU5NGUyNDlmZmVhODI2ODNmNWMwY2FlYTAyNjEzYjA4MGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3M2JmMzcyNzMyZGQyZDQxNGQ4MDAwOTBmOTgzZGRiYWE5ODA2NWY1ZjAyODAyZWRiY2FlZDJjY2Q2MmQwYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0MmFiOTBmZmUwOWE1Njk4ZGY2NDAwYzMzNzM1YjE5OWJhZjk3MGYzZDA2YTBlNWM2ODVlOTM0Mjc4YWJjNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f5150e59271b45bc8b9ec283cc223da2",
+      "statement": "A write opens its own barrier and emits AwaitDurable for its committed position; durable_reached acknowledges only when the proven position covers the gated write's position, and a shorter proof fails the write rather than acknowledging one the node cannot actually restore.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L173-L196",
+          "version": "repo-lines-v1:sha256:dd5f8f6ad3f0e796ce2fb7089162aed6e164da24cd2480086845ae3be8dbe832:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwZmRlNGUxYTg3MTY4NzgyYjI0ODNhZjRmMGYwMzU2YTU1MDZhNTM5NjhiY2Q1ZjlmMDJlYWQzMWZjNDY2YzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiNWU4YWRlZTY2MzY3MDFkOGVjOWFjZTEzNmQ0MGMyNTdjYmI0MTUwMDlkZWM5NTEwYmQ5ODUzYmUzYmIwOGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1MWZjMzNmN2YxYTg4NTc0ZWMxZmMyNjA3NTM1MGJmZDM4M2JkMDViYmI5YzIwZWNjMTkyMmJmZTgwOGE2ZjEifQ"
+        },
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L97-L135",
+          "version": "repo-lines-v1:sha256:2b25fbdb2d629fc4d8f2c578eb4a6eff5cde75ca410f9dac4ac96c458a4a7548:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMDc0ODE3YmU0M2IyZjFlNWY4MTUzMTg2MDU3NmUzYjM2ZmRiNjBhZTY5YzQ3NzcxZTM0OTc4ZWY0MGIwMzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNDBhMDViYjFlZTRlMzFhMjJiNmE2NjQzZjk5ZDMyYzMzMTFlNGI2MmIzNTc0NzY3ZmY4MzJhMDU3NTY3MzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_17b34d8f0a00494da1f18cf3d8e415da",
+      "statement": "A read-only output trails the newest barrier open on its cell, because a reader can start after a write commits and before its proof lands; with nothing outstanding it releases immediately, so an ordinary read pays no durability latency.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L137-L165",
+          "version": "repo-lines-v1:sha256:f0c327a654b1a61d8f3f1596b9dcc19f6d1ee8d1e4fef3402c65c8b202a96e35:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkNDMzZjk0ZmYxYjBiYmQwNDEyOTg3NDliMzg5YzQ1Mzg5NzUwOWE2ZmIwNzg3OTBiMDJmZThkNzMzOGZjZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4ZGFmNDAwYzJjMGNiZWY3NmYwZDY2MzAyOTAzMWNiM2YyMmExNWRkODA5MWViNTc1YzJjYzJmY2Y0YmJjNWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d162dbdbce0c4d0289a064e03c0b2902",
+      "statement": "A bucket durability proof reveals nothing until ownership verification confirms the record still names this node at this epoch; a fleet proof needs no read because the ensemble arbitrated it — a takeover seals a member before restoring, so a stale owner's ack-all fails closed.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L184-L212",
+          "version": "repo-lines-v1:sha256:1803fc702a97e67cc99c0fbd8d63a2fdf4a1e094e8301b6db11f232a8fa7519c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwOTI0MzE3NmY2YWExMDkzYjAzMWM3NmU1YjEwNGEzYzZkOGZjMGZiMzllYmI4OTQyMTI5YjFkMTZmNWVkODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0ZDQxOGQ1OGE4N2I0MGJjOThmNzJjYmI5NTdkM2I1YmNmOGNlOWQ5ZWMxZmU3ZTRhMDk4MDNiNzY2ZTk0YmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0YjI4MGU1Mzg1NWUyZmFkMTRhYTMxYjA3NzRjYzVmMDNlYWNmZmQ2ZGZkZDdjOTYzMjhiYTc5MWUzNTAzN2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ef8d77f49c24400a31df0b2b7b4504d",
+      "statement": "The gate also gates alarms: a firing alarm's consuming commit opens a barrier owned by GateOwner::Alarm, which settles by replay into the core (ordering the consume-side wake-entry delete after the proof) rather than by release to the shell.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L248-L274",
+          "version": "repo-lines-v1:sha256:fde7c5399148322951d51e8b5261c1b4ac6be80582e4d13d4f32ac6d7fa218a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZDc1NTQyMTAwYzNhM2RhYjczYzg4YjdmODRlZmYzNDNhYzExYmIxZWY2YjQxNjU1ODVhYzFiOTM5NDFkNzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzOGNkNTJlZDU3NmFjN2ZlNjcyM2Y5NWU1NDU5ODY1NjBlNDkyMGVhM2NhYWM4Y2IzYzVjYjllN2Q1ZDRlNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2NWQwMmI2MTQ3YmU4MzIzZjI3YmUwM2NiZjgzNmU5NWVmNDc2YWQ2OTUzNmYwYWM5YjBmZjczN2FiNjlhNzMifQ"
+        },
+        {
+          "resource": "repo://crates/logic/output_gate.rs#L44-L57",
+          "version": "repo-lines-v1:sha256:f14e7774d471383ac80b0b5c448c3f5e9c407ba8a891cd928083481f5ce3cfcc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzM2E5MTY2ZmRlNmI4NWMxN2RiNjJhMWNjY2IzZjk0YjgzMWVmMmRkNjYyMjRiMTI4NWIwZmZkMTU3MTE0Y2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmZmMwZDEyOTY0YjkwMDYzMzNkOWM0NTk1ZjdjNTVmNjk0NDk5NDBjM2M4MzI3M2FhZTNjM2RlYTZmZTM2MWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4MTA0ZWM5ZjRmM2FmYzRjNTZiZWM2NTI0NWVlMDgyNWEyYTE1MGYyNzBhYzcyYWUzOTBiOThlNTRhY2Q5NzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzMDFhMzhlZjFhNDMxYWQ2ZGVhNDFiMjQ2NzdhMzVhODIyZmFkOGRhYTY3OWIzNjljZGYzOWFlZTE1ODMxZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b25380b548b249ddbd460f53403207b9",
+      "statement": "In fleet durability mode a node streams each per-cell L0 LTX segment it captured but has not yet uploaded to a small follower ensemble over the signed peer transport; a write acknowledges when every member holds its segment on disk (write-all, ack-all) or when the ordinary bucket upload proves it first, whichever wins.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/node_log.rs#L1-L24",
+          "version": "repo-lines-v1:sha256:ef0da3986ab2c62be668d0180b0991e605c2dccbcfbf62d50e839970e1c07a29:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjE4ZDU2MTFkMjQwYTYxNjM5YWY1OTg3YzQwNzU3NjQ0ZmUwY2M0ZmNiZmNmYzMzMmJiMzZlZjBlMDRjYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4Y2RhMmE5Mzg1MTA4MGM5ODVlMWM1NTlkNjQwMGQyMmE1ZGMwYjU0MDgyYWFmYzI2ZGQwYzk2NzAxMTE5ZmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f588d92604a448986bc7a763c2125d5",
+      "statement": "The node-log record lives folded inside the node lease record (nodes/<node>.json carries a folded log object with state, epoch, ensemble, and tiered offset); the record is created before the node's first fleet-durable acknowledgement and never deleted, so a takeover that finds no record may treat the bucket as complete.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/node_log.rs#L235-L248",
+          "version": "repo-lines-v1:sha256:36861973e7f43c2a70efba7a7510f115fff22f15e0ec676f446bf004c1c3daee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0OGExYzkzYzA3OGZjMWRmYWRmMzJiMmU4MzM2NzY1Y2ZmMWEzMzBiYjhhMzA0YzJjNGZmYWVlNzkxYTg4NGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiMTNjZTJjZjU1NTkzZGUxNjU0ZWU5MGE2NzI5MTZmNDEwNjc5NTBlNDRhNjUwMjJkZTQ0NjYwOTA0NGJjMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwMTFkMjE2NzcyZDM3N2IyMDI3ZGM3YTM4Y2JlN2I3NGVhZDdhMDIyOTY0MWQwZjg4M2YyMTdkOWQ4NWY4NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiMGUxNWNkZTUxNzI1OGIyOTIzNWIzM2IxMzQ0NmIxYTNhY2IxMmI4ZGVkNmJjMzY3OGVjMjU1MjY4MmRkNmUifQ"
+        },
+        {
+          "resource": "repo://crates/celld/ownership_store.rs#L57-L67",
+          "version": "repo-lines-v1:sha256:9e816f65a5de2c7831ac95d2c87562f68abcd7d98f013b7d7da025896a996c29:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyMzZiMzJkYTI1NjJkMjQ4ZmQ4N2I2MzQ3OGFiOTQ1NDhlNGEzZmYzNjU3ZjZkMWQ2M2JkOTQ4NGI1YzIyNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwMGYyNWMxZGM0YmRmMTI1YzQzODc2Nzk5ZWRiZGFhODQ5NjlkZTE2ZjQwYWYxMmI2MmY4OWJhZGIyNWEzYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmNTIxYzA0YzUyMmFmODE1NWI1OTRlMjc2ZDI1Mjk3ZDcyNjQwNjRjOWVmNDZhMjBjODA4MGJkZjI1MTA2NTIifQ"
+        },
+        {
+          "resource": "repo://crates/logic/log_tier.rs#L1-L19",
+          "version": "repo-lines-v1:sha256:09724c1212965e7c81548c2037633fcda24e9bb81a275bc06269057e7dd022c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjE4ZDU2MTFkMjQwYTYxNjM5YWY1OTg3YzQwNzU3NjQ0ZmUwY2M0ZmNiZmNmYzMzMmJiMzZlZjBlMDRjYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzN2E4ODM0MjU3ZTFmMTkyZTk4ZWViZmQwNjRkMjQ1M2ZhY2VjMTYyYzM4NTc5YWU5Zjk5YmYxN2Y0OGJkOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNjU4Nzk2MWE0ZGMwMDA4ZmI3MzE1ZjI3MTBhMGZjYzgwZTFjMjM2NDIzYTM4MzEyOWQyMjNiOWM2NWQ0ODAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_788d614069574946adf26cf4ae59f105",
+      "statement": "A cold activation checks the prior owner's log records before it reads the bucket: an absent record proves the session never acknowledged past the bucket, a sealed record proves recovery completed, and an open or recovering record runs recovery (fence with CAS, seal reachable followers, upload retained segments into the per-cell prefixes, mark sealed) before the cell may restore.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/node_log.rs#L676-L702",
+          "version": "repo-lines-v1:sha256:28ce31c9fde8724ffe319fc67afbe5d3363b6709d3dc896d0acda9ca17136620:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1ZDQyNTI5YWM5ZDRhMmU2ZjNjMzIxNzgwZjdiZmQ0MDcwY2I4NmNmZDhhNjQ3YmVjNGIyOGM2MzVlMmJlMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiNWNiMThmNTNhOTkwMGJiZWY5NjQyOTUwMWU3NDVjNzJlODEzNDYzMTI4MTA4NWVmNzYzNWZiNGRhYjc2ZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0Mzc1MGMwMzFlNTM4MzJiYTkzNmY2MGM4NzVhMTNlZTVhYzEyMDgwZTNhMjAxMzFhNWI1NGU1MGE5MjY5MzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyYzE4ZDgyN2M5ZWU2ZDUwMjVmMmFmY2Y0YWVkNGYzMWQ0Njg2NzdjMGM5NDk0M2ZkN2M2YzEyNzZiMDk2MzUifQ"
+        },
+        {
+          "resource": "repo://crates/logic/types.rs#L769-L778",
+          "version": "repo-lines-v1:sha256:bbc958651583b11b33a1be0ea032357d5b64d0945acbae8098f887be186aaf86:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MTMxNDJlYzA4Njc0YWZjNDgxMTA1Yzc3OTc4ZmUxNjdiMDIxNjJhZDk4OGE1ZGRiMjFhNTI0NDNlMDNhYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwYWU4NDAxNTUyZWE3M2QzODljMDhkMzk3OTJmODIyYmI1N2UxZTZmZGFiNzUzMjE2Y2NhODEzOTI1YTFjYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxY2Y4NzAwMmExN2Y4NGZiOGUxNWViMGZhN2I0OTUyZGQ0NmNmNjAwMDI3ZmQ2NWM3NjQxMjk5MGI1OTEyYTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_46acabb2684a4a3d953883c063648a2d",
+      "statement": "A restore selects the newest epoch prefix that contains LTX data and reads the full contiguous chain from transaction zero; celld no longer writes an epoch seal object and a legacy e<epoch>.seal.json object does not limit the chain, because a node-log recovery or bundle drain can add an acknowledged tail after an earlier restore.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L185-L198",
+          "version": "repo-lines-v1:sha256:706453cc7954b75b23743bc2151b8252348b1152253ed70663ccbef623504817:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2OTRlN2Y2OGJiMTM3Zjc5NWY2MDFjNzcyOTg0ZTIwYTUxNjM2MjAxZDM4NTFlYWNiOTg4NDE1NTY5NGNjYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyMTA5ZTY5YTc1OTVhNTJhMGNjMzY2MGE3MzIzYzlkNTg3NTgyYmFhOWU4ZTlhY2Q5ODI1YmQ2NGE5M2VlZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwYTc3OTZkYjhjMDI3ZjNmODg0YTczMTUwMDQ1NDFlNTcwOWFlYTk5ZjQ2MmRlYzIxZjE4MDlkNmE2OTVjMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3M2Y4YmQyYzMwY2NiMGFmMTIzZDljNDliZWFiZWI1MTZjZGZlNjUzZGRkN2VhMmYzODRjYzQyOGRkNjQzYjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c790e8fb8d184544908ed6d4fc108750",
+      "statement": "Each node holds a lease at nodes/<node>.json started once at process start and renewed after one third of the TTL (CELLD_TTL_MS, default 10000 ms); a renewal that lands at or after the prior lease's expiry is a fence, not a hiccup, because peers were already entitled to seize the node's cells.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L1798-L1837",
+          "version": "repo-lines-v1:sha256:eb79818db6befc7248990de560fff4bd45f71dc120e4a2c05666bf539634406a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmMjVhYjk3ZWY2NzgwN2JkMGRhYTE4NGFmZGM0MGU3ZjA5NjMwODNjOThiYTM0NmM4ZWQyM2UzZmNjZTUxODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlZmI3YTI2OGQ1Njg2ZWI4NWY2ZDg0OTNjMWVhMjZhYTAyMzk2NTBmZTEzYWQzODgyODVkMTY2NDJjZjZjYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4Mjc4MzJiNWFlNjQ4NmNiMGE0OGVmMjU5NjQ5NTkzNDZjNzM1MjE3ZTQ3MzViMWE0ZDU5MmM3MzY4MTZmZWEifQ"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L1857-L1911",
+          "version": "repo-lines-v1:sha256:b5d6b9f325cc58a71b6bc4dc3d302de0eda2480a78e1c3b250afcbaccf4599cd:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhYWE5MmQzOTZmMzkyN2FhYWVmYzg5YjJmYjY3Yjk4M2Y0YzdiZmNiNmI3NjU1MjI5Njk2YmI4ZDJhNmM5N2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YjBmYWQ4ZWIzODg4MWI4NzQ3ZWMyNmY2YzEzMWVkYmZiYWIyMmE2MTZlOWIwZDNhYjZmY2NjMmYyZTQ4ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkYzdkZTM5ODViZmJiZTIzNjVhNDg4Zjg4MjBkNTNlZDY4NzM4ZTRjNWY3OTllMmEwNWFiNzEyODgyOGZlYWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3deebb3455cf47bbb4866ee910f7ef0b",
+      "statement": "node_authoritative evaluates the lease's published expiry at ask time on the monotonic clock, answering false the instant now_ms reaches expires_ms even before the fence timer fires, and the NodeLeaseFence timer uses >= to match the predicate so they cannot disagree.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L2398-L2408",
+          "version": "repo-lines-v1:sha256:be5be9327a55fb605b39110210fad8937b7ffbe06267fd13f3637dc403613bee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3ZjEyYjQ5MWMxZjc1ODk3ZDgyNDdhY2U2ZDRlYTQ1MGZlMGU1NWY1ZGZlM2Y5MjIzOTkxZWVjYTgxNzRiNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3NDc5Y2E0ZGU3OWJkMDFlN2JkMTIxODM0MmRiNjQyMDQ0NDk4ZTA4MjI4MjQ0YzQxYWU2YjNjOTNmMTliZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4MWYwMDlmMjQ4NmRlMGZkMjc4MmI5OGYxZGRiNDA3NzE3M2I5NjY1NGVlNzI1NjNiMTdjNGZiNjkzZjg2YjkifQ"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L714-L737",
+          "version": "repo-lines-v1:sha256:6085ed359ef13e7c64247f04dc411bad80b8d85a8dee6fe0eaa9b9e982fbee5b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNzc1Zjc0OWE5YTA5MmRjNzdjY2Q0ZWEwOTM0M2ZhMWQ3NWNhNTRkYmQzOGZiMDJkY2ZlOGY1OTRlZjVhMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjNTMzMDNiZDY0OGVhMzQ0YTE3NGIxYmZiZWJmN2NjMDgzNDI2ZmE0ODU4NDRjNDQzMGEyYjdlMDcxN2FlOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZWRkZDI4ZWQzYjJhMzAzYmJiMWEzMzAwODZkYWZhZGU2MTBiYzY4NThkODNiYjRhN2M2NDYxOTIyNGYzM2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_37d39a4d06fd44968894259eb99728b3",
+      "statement": "fence_node sets NodeAuthority::Fenced and emits Effect::Halt with code 3; the fence stops each active cell, fails every uncompleted request with NodeFenced, and drains every output gate to a failed response atomically, writes nothing to the bucket, and is terminal until a restart.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L2810-L2817",
+          "version": "repo-lines-v1:sha256:b14fbf93e3e005bc05bc1b37aebf69e668d3b0425c46f9084a0db08fa8826a68:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdlYjY1Y2FmNDVjZTI1N2RjMmVjNTI1Y2NlYmUwYTdhYjBhNGE2YmNjZjNhOWZmNjE3MjI4YTQ5MTE3MjU3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTk5YmRlZmVlYWNhNjM0MGUwMjkwZGM4NmU4ODljODlkNWUxODlhYTViYTQ0YjU4NWIzYjcwNzM0ZjRhNjJkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgwOWUxMjYxYTZmNTA5OGFkOTVhYmUyYzgwN2FjNjBlYzNmNTRiZjNkMWI2YWMzMzNmNmUzN2ViNzFhMzM2YyJ9"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L5076-L5135",
+          "version": "repo-lines-v1:sha256:39f31cd6547f053854d400dc251a8e02375e89cd5e5a1bf6e0546e9f3969dbfc:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjOWQ1ZWRjYzI3ZDNlYTI3NWNmNTcyNTkzYjczZTAyNTcyYjc2YjRiNzU4ZWQyNWIzOGFkYTdiMGJmMjBmNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMWY3NjE3NjQzMDU4ZjQ2YjI3NTBlYzQwYWY2MDJlYmY0NThiMDY1YmI3OTJjMWE3OGU5NWU1OTNiMjgzZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NThkNmFlYWZhZTBhOTYxNjE2YWM3NmU2M2Q3NmQxNWEwMWUyZTE0MTcyZWUzMTYzMDdiNTM1OTExYzk2NGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0e421976b9844b9aaa827d7dce7e344",
+      "statement": "Each node tests the store's conditional-write contract once at startup (two of four probe writes must fail) and stops on a broken store; CELLD_STORAGE_PROBE=0 disables the test, and celld reserves the probe/, cells/, nodes/, node-cells/, fleet/, deploy/, deploy-blobs/, wake/, and telemetry/ key prefixes in the bucket.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/fleet.rs#L281-L305",
+          "version": "repo-lines-v1:sha256:dada50e072da19d38edfee292f41092aff09962f6325e493fb9eea2a06dc02cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhMDA4YWU3NTk0ZjI3OThlMGRhZDViYzdlNjA4YWJkNzI0NTVmZmE2OTdiNjFlMDBmYzEyMThjYzk4NzQ0ODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmZjdhNTkzODM3YTk1OTc0ZDIxYWNlZDU3ZTY2YmRhMGVjZDgyODU2NzM1NDFmMjMwYzI5YWJjZTFmY2U3ZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3NWUyNDBiNDk3Y2FiYWUxZTNlZGZjODY0ZTlmYWE2ZWI2MjA0YzA3YzVmNTMyYWQzOWIyNDM3ZWYwNDZkNGEifQ"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L59-L81",
+          "version": "repo-lines-v1:sha256:f7e2531e1f57b597d3efecb387e8b994a007005c48b5d1d1dab5c83e896234d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwYTIxYjVlMDdmYmJmZjU4MmFmYjRiNGMxNDg2MDViNzg3M2I4YjE4ZDM4YTdjOWM3Mzc3NzJiMDIxOTUxYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlZGY3YTc3OWUxMzEzODMwMjMyMjQ0MDQzNWQ2NzIxOGRlMjA0ZDYxM2E4ZWZiYzIwZDMzMTNlMGNhOWFmMjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxZTI3ZDRkMDMxMTlhZjc0ZTM4Zjg3ZGI5N2Q5MTM3YzRiYzYzNDAzZDliMTQzY2UwZDA3YzdmNWY0ZDQ2OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3ZGY2N2RhZTA4ZmRiZTkwZmE2ZmNlZWE2ZWYxMDQwYWQxMGZjNDU4ZDFmOGVkMTgxZjIxOWExMzQ3YTc2MTkifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:40:45.922Z"
+  }
+}

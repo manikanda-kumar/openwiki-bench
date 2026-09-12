@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fd0a299c02c732c0c40d1177200dae3ccd1685910f5d153308479bda8d25923f",
+  "claims": [
+    {
+      "id": "claim_e465ad85e8c54eef95f1674548ecdb9c",
+      "statement": "Maintenance changes must respect the workspace layering rule: crates/logic owns all behavioral state and decisions, and crates/celld is only an effect executor and adapter host.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L2",
+          "version": "repo-lines-v1:sha256:37e5549e11581997134f50a261bd592d07d9cab16474fbcecaa213c4f9e06735:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGRiOTJlNTdlYTc5ZmJkNDI1MmQzNzgyODZlZmJlZTUxM2Y3NTIwNDI1MTAwNTNjMzFmZjQxZTdjMTE1NDkxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTg3MzExYzg5NTQxOTJhNTA1NDEwNzBkZWMzMDQ0ODk4YmNlMTM2YzQ1MmFiNWY5MjgxNDIzY2RiYzA4YWU5YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGYyYzY5NmY4YmE2OTZiZDM2MzNjNTRmOTczODM0NWMxNzcxMWM1ZDdlZGYwMjhlY2U0ODRlOTM5NDYzYTRlMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_150a1b7edfab4a6db568c4b2e8a3e832",
+      "statement": "Decision-core changes must stay free of async, I/O, clocks, randomness, locks, and dependencies; the purity contract is declared in the celld-logic Cargo manifest.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/Cargo.toml#L10-L14",
+          "version": "repo-lines-v1:sha256:20276ed40d10fc1791c21e649a78dee1076a90b42bb461dd3293c2fc213f5a2d:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTAzZTRkY2M0YTgzY2M1YzIyMDkzNzBkNTgzMTAyYWY4NDBiMDIxZjM2ZGJjMTVmYzIwOTFlY2U1NGM5NmQyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzM1M2MwNTJmNzAxZDRkMWI3MzhmMDJhMWIwOGJjYjYzMDE5ZDg5MGY4YzgxMDAzZTU3NTNlNTgxNjJlYjE0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2U5YzdjYjRjMTQwNzI2Mjk1MzFmNDg1YzA2ODNhODY3MmFlY2JiMTE3NTNiYmZlYWM4Nzk4ZmNmMjVhMmVlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDFiMzM5NjFlNjYyMjI2OTYwODlkNGJlMTY4YmY3MWE5YTU4NjM2ZmU0ZjM5NzU2MDFhMzZkYmYxMTAwNzJhOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bea484d490be47639096a9f807f9c0c4",
+      "statement": "The raw V8 adapter and its child modules are explicitly kept outside the Actor execution domain, with Actor-reachable state injected through HostServices instead.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L1-L3",
+          "version": "repo-lines-v1:sha256:66d850dd2aa537a312ca0ea7fd1ece0d6ddcce07684d3810715b61e5980ed7e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYyMThkNTYxMWQyNDBhNjE2MzlhZjU5ODdjNDA3NTc2NDRmZTBjYzRmY2JmY2ZjMzMyYmIzNmVmMGUwNGNhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTIwOTc4OWE0ZTk2MzBkMmI4NzE0YjlmMThmZDA4MzRhYjdkNjcyYzY2MWVjOTk0MzA4Yzc3MDFiMTUzZDNkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzhhOWY3ZDY5MjMwODI5ZjA0ZGQ0MDE3OTZhNTI0MWY5MTg4ZDZlZjMyMTUxYTE1YWI0NzBmMGY3MjhlZjlhMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7d1c2056c0b479c9e20b2537188d547",
+      "statement": "New execution-domain code must route spawning, sleeping, timing, clocks, process identity, and filesystem access through celld::asyncrt or injected adapters; the clippy disallowed-methods table forbids tokio::spawn, tokio::time::*, SystemTime/Instant::now, rand::random, and std::fs::read/create/open inside the execution boundary.",
+      "evidence": [
+        {
+          "resource": "repo://clippy.toml#L1-L30",
+          "version": "repo-lines-v1:sha256:1a89bb5e485460de8d7af9d0869c82cda29024e949f8313e919010c7411a8c60:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0NjdkNDY0YjhkNzA0YjZhMzU1ZWE2MGUzYzljODhhMDMwOTBmMWU1M2Y1MjZkYjljZjZhNTNiYzY2YmNhNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4NTIzMzE2YmQ0NDNjOTVkMzZmNTE2NjZhMDAxMmIwNTgxNTM4MDJmOGJmNGVlYzg4NjNkMWEzNDViZTE5MWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1YjQ5NzhlMDdkMDJlNWNlOWQ4NzhjY2M5M2U5YjE4YjZiNTFhNDczNjM2MzAyMDRkMDdhZWQyMzcxNTJkMzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b87719d7c4e24992b9ead10e1bd6630c",
+      "statement": "The conformance and simulation suites (conformance_core_loop_tests, conformance_world_* gates, simulated asyncrt and cell host) compile only under the celld_internal_tests cfg flag via CELLD_INTERNAL_*-driven include!s, so a normal cargo test does not build them; validating decision changes requires that internal-test build.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L299-L435",
+          "version": "repo-lines-v1:sha256:9f8790ed19538ff73016d709bdf19a4f12cb64226c18c38e7a02f71d5b9fa9b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiY2FlNTk0NWExY2IxM2NkZDU4OGNiMTNjMGNkNzk5ZmRmYTMxMzA5Mzk2YjAxODFjZDBlMTBmZjI1Mjc4OTQ1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI3OTRhM2E3ZDAzNjIzMTc0MmJjNjk1MzdiMTJiYzIxOGFiMzg3OGVhMDJlNzk0ODg3YjcyM2Q3MTBiMmQ0NWVjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5NDY3Njg3NTUwYmMwOTI4Y2FhZWIyNTQ5OWM2M2Y4M2E2MDc0MmM2YzE2MDBkZmUwYmJiOGJiMTI3NDI1NTk0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyMDE5Yjc1YmRjMjBmY2I5YjMyZGQ4MTViYTIyODM0MDhhNGJkODZhYmUyMGY4ODk3NWU3ZGRjMTMyNDE5Mjk0In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b091c703f2a43179fe8fa667f242ca1",
+      "statement": "The release Dockerfile's test stage installs the sqlite3 CLI (required by the ltx fault-injection oracle to diff databases), then runs cargo test and cargo clippy --all-targets --locked with -D warnings.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile#L31-L45",
+          "version": "repo-lines-v1:sha256:ac9b42a59d8782ddf3eed4b0e6c4a608089a63bb4f66c79aecd448f5920ff26c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3ZGNkM2QzN2MzMjA5MjQ3Yzc2YmUzZDhjZjRjZDFlNDcyOWU1MjE5MWYxZGVmNWQ5ZTUwYmIxYjgzODY3ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2OGU2NjZiM2E1NThlMWExMDFkNGEzNjU1MTMxNjBmNmJiOWYyZGFkZTFhN2IxZTZjOTNiOTEzMDY1ZDgxM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkYTEzMzYwMzQxYmUzYzc4ZmRhY2RiNmQ5OGYxNWZhZDk3MjA1OWY2NTlhMzI4YWYyNWQ4N2U3ZTA4NDMzMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2MjE1ODZmMjQzODIyNDdlOGJlNTlmZTc0ZjEwNzgzNGM2ZTUwMGU5NWM4OWVlNzYxMDYxYzA0MWQzOTFmNzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2a650ecaa9d74a37b570443f83af792b",
+      "statement": "The release profile compiles with panic = \"abort\" and fat LTO, so shipped builds cannot unwind; new code must not rely on catch_unwind recovery.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L9-L13",
+          "version": "repo-lines-v1:sha256:7eb4c1e8d8dba258d90c8826b1d472f99c0a1554d3c9857ebb7ed4421d38fe45:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYxYjk5MGFkOGY0Mjg0YzM1NGNkOGY5YjZiMWIwZDAxNTY1MDJhYmIwOGFiMjlhYjUwODI0OTRkN2EwNzYwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzUwMTVhOTA3ZDgzNzZiYzNjYzEwM2ZiMmIwZDM4NDVhMTc1MDA4M2E3YmMzMDZkZjQ2ZmQwYjY5YjNmNzhiYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzkwMDMyMmJlYzdmY2IyNzk1ZjVkYTdiOTZkOWI2NThiODAyMjBlNTMxYmZkOTA5NGQ0YWI3ZjZlMzQ1YThhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2MwNTJhMzU1OWUyNzQwYmM4NTRkNGJkOWM0NDJhZWRiZmRiZjQzNjU5OWI0MzdiYjhhZDMwNGZkNzQ5MWZkOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0d120039887343ba98597af48cc11c4c",
+      "statement": "Operational knobs are parsed in crates/celld/machine.rs (lease_ttl_ms_from_environment, ownership_on_evict_from_environment, pressure_config_from_environment, local_cache_max_bytes_from_environment), typically via the celld::env_vars helpers.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/machine.rs#L53-L131",
+          "version": "repo-lines-v1:sha256:ebe56f4ab90e11c965eb34c95981b46bb2b09496763a4a0d1982c85aaede8d0a:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4ZDBiZTU1NTJmYjU3YjE0NDZjOWQ1NGM4MDI3MDU3YzQ2MzRiYzRkNTUzZjg1ZGEyNDYyNzhlYzU4YThmYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MDg1ZmQ5MTgwYTlhYzdjY2UyYmU4NTBmYmIzYmEzNGIwNWRmNWZlNGI1OTQwYTliYjk2M2U5YjQxNDZmMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiNmMwMjZmOTc5ZmIxNDQ0YTg3YmMzY2JhMWRmYWNhYmNjNDE4NWU5Mzc1Y2JlMzM5MWI0Mzg1NjA0OTIxNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwMDlkYzE5NTVlM2VlOWQ2ZmZkNDM3NWZmZjMzNjFiYWQwNTgzM2Q3ZjBmNzNjMzNjMmZjZDMzNTBkYTBlMDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f4364c2228f4d55b489032f6b77ee81",
+      "statement": "crates/celld/env_vars.rs validate() iterates over allowlisted CELLD_* variable names, parsing boolean flags (CELLD_CLOUD, CELLD_OUTPUT_GATE, etc.) and positive numeric settings; adding a new operator variable means extending this validation layer.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/env_vars.rs#L16-L36",
+          "version": "repo-lines-v1:sha256:736fb5193ecb241d9b10ca2f4b3909debffde2913192fd74ce766635588d92c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNzRjNjg1ZjFhZTk0NzYzODAxZjMyYzQzMWY0M2E0M2RkM2RhZTlmZDk0NTg5YjFhM2JlYjg5NTAwNWEzMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjOTY0NjYxYzEyNzFmYWJkMjgzZWE2MGVmYzVkYTI2NTIxMGFlY2QwMmUwZDY4Mzg0ZjgzNzhmZDMwZGQ3YzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3NzFjZGFhNDcxMzM2NDhkMjlmZDZjYjliMDZmNjUwYjUwZmNhZDQ1M2RhZDM3OTBjZGVjNTU5OTRjZjAxMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjMjQxMjIwZjRkMDA3NzA1MjBmODc3NTAyOTZjYjAyZGVlM2I1M2RhNDJjNWE3NjhmZDcwZTY3OTJmOGM3MjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d661622e220c48c8bbec87e0a205959a",
+      "statement": "docs/README.md's environment-variable table is the user-facing configuration contract; it documents the primary settings and states that an invalid value exits during startup and boolean variables accept only 0 or 1.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L665-L708",
+          "version": "repo-lines-v1:sha256:0379bcec31e67ac675bdad40dc7288419f80bf3c7d3507f9d595363020ae353d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2MmVlNWRmYTBiOTI0ZGE5MTM2MWQ4YTZmYzUwYmY2NjBlMDhlYzM2NDZmNjFhZWFmYWZmZTg0Y2RhNjFmOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjMWYwN2IwZDkzZDdmN2JkNjIyYTE4MDM3ZjExM2ZhZjIwMzZhNDQyNzRkNTkyYzI4NDYyYTBmYTY5MGRkM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzMzUwNGYyMGJjMjE5ZDAyNWVkZTA5ZTU5OTE3NjY3OTE0NTdiM2Q2ZDQzZmRhYzFmYzE3NTRjNTA1NTRhNGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_35a3c61697ea42c1b9f754c3b2100b90",
+      "statement": "The compatibility contract is verified differentially: each Workers/Durable Objects program runs on workerd and on celld on identical bytes with exactly equal output required; workerd acceptance proves the program is real Cloudflare code, and equality proves celld obeys the contract.",
+      "evidence": [
+        {
+          "resource": "repo://docs/testing.md#L10-L33",
+          "version": "repo-lines-v1:sha256:9fc86c8f4cb8fdc479b00f30d2802c65078a665a0ce3518561292a206be18e85:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NGI4YzQ0OGViMTgyOTFjM2MzZTI5YzU0YTgwYzBiOTc0MTZiNzJhZDk1Mzg0MmE5ZmRjODU0ZDAyNDdkYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZGNhMDRkNWYwYWVkYzI0MmExOGQwNDI1ZjJkNWZjODNiMzJjNTk3YjNiMzQxY2E2OWFhMjM5NDVmNWY4ZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2NWEyZGQxZWRlYmQ5YTU2ZjZjM2FkMDhhZmEwZGJiNGY1ZTNhYjBiMGRkZDA4NDI2MTgzMmEwMmU5YmYwMTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzZDRiNTEyMjgxMTMzYTliMWU1ZTFjYjc0ZThmM2FjNWMwMjBmMmZmY2ZlNjhlYjlhZmQ5NjQ0ODFmN2ZjZDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_44a1801a107243688812d48066ee462c",
+      "statement": "Per-worker runtime behavior is driven by the Compat struct in crates/celld/js.rs, with per-worker compatibility switches derived from the manifest's compatibility date and flags (workerd compatibility-date.capnp), read from wrangler config by deploy.rs.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L1811-L1826",
+          "version": "repo-lines-v1:sha256:f82e7e101ff81f99aef08a6e4edd66a38603426dbfe50c78e3636bec69536d65:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4NTA0YTllZTg2N2U4YTkyNTYzNTY5NWU1MGJjNzVmZGRkYWYwNjlmMmQ2MjM1ZTRiMTBkYzExZWQ4ZjUyMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3ZDc2NTcwZDQ0YTM1Njg2YTMzMWNkNWU5MDg2ZDlmY2RiMThkMjdkODhjYTM1MjA4NzcwY2NjMWQ2NzI0YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlNzBhODliMDUzOGU5MWRmM2VkOGQ0ZTczOWQ3MjU2ZTAxMGI1YTI1YTExOGI5OTkwOGM2MWNmM2JmODgzM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxNzg1NDc5Y2EyMGEyZTc3ZjM1MTllZTg3ZDNhNWM3MzZlNTMwOWJkN2QzMDkxYmE3YjEzM2ZkMzA5NDRmNTYifQ"
+        },
+        {
+          "resource": "repo://crates/celld/js.rs#L1680-L1700",
+          "version": "repo-lines-v1:sha256:52d30a3222be2e5a37af91cefe1b66d9478eeb1cf43ca49ab73719dc4a4d2927:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5Mjc2MmI2ODFjZmM3NWY4YjY5OTgzOTkwMzllNDZjNzhhZDYzNzk0Njk4ZmMzMTEzN2E2NDg5NDJmMzdiYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4ZDVkZDIzODMyNDg5YjFhYmM4ZTI0NzgzMzlhMDE4MjE2ZGU4YmY4ZTM0YWQ1YTYyNTdlY2QyMDYyMDE2MWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhY2U5NmQ1OWY4MDMzNmIxMjk0YWI4OTM4NDNmODYxZjQ3Mjk3MDQ2NWViZTBjZDEzY2IyMzA4ZjEyZGE4MzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8e5f7b437a274411b3697ac699c31448",
+      "statement": "docs/cloudflare-compat.md is the compatibility contract: celld must reject an unsupported configuration or API at deployment or first use, and the page lists every known exception, so an implemented API surface change must update this page.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L5-L12",
+          "version": "repo-lines-v1:sha256:35321bd1ab4161908fcc865d253790878e9f158d2b4842f4c073fa5ba8deb1dc:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdkYjE0ZDVmZTcxMzNhZjMxOTIwMzRjOTEwNTI0MWI0NDgxM2FhMTNhYWNjZTY1OWZhYzk4ZWNlOGY5NjJkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2ZhZGRmNzFmNjU4MDYxMzNiM2Q0NzMxZTZjZTA1NzY5MjIzNjIzMjYyYjZhYmQ4ODcyM2YyMTUyYzNiNzVkZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2Q5OWUzNmY2M2U0MjYwODkxOWUzYjJiYTMwMTRkNjJkNDNiZGVjMzE0OTM2NzgwNDE2Y2I0YjAyNzA0YWFiMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9726b8161ecc4a899615ff58603e546f",
+      "statement": "The coordination protocol is guarded by two invariants — one writer per epoch and no acknowledged write lost — checked exhaustively at small size by TLA+ model checking and differentially by deterministic simulation; a design-stage check produced an eight-state counterexample against the pre-redesign ack fence before the fix shipped.",
+      "evidence": [
+        {
+          "resource": "repo://docs/testing.md#L52-L68",
+          "version": "repo-lines-v1:sha256:99b5b48e78798da5c75b2b1f87289fc3f79073f87d9f61d335582a1a2152b430:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxY2NhNjcxOGIxODIyNWE3YTAyYzhkNTFjOWMzNDU4YjZhMTU2YTk3NDBmMTQ0NGVkNmQ4OGU0ZTI1NjRjM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiZjAxZmU2MzVlZmY1NDRjNmU3MDNlYjgyM2QxZWMxNjNmYzllODUwOWViM2U2OWI4ZjQ5Y2FmNTczZmQyY2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjOWQxMmI2N2Q5MzM5ZTFlMWZkMGNmYWEzMjc3MmE0MDk2YzAyODgzZDg1MzU0MmI3ZjhkNDY4NjI4MzQwOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxZTNlODYxNzAwY2U1NWQ4NTgzYjBlZTE4NmNlNjcwNTU2Njg4YjNhY2U0ZDlhOWE1MmZjNGQ1MTVkOTIyZmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_138565bd071445bcab223da4da205f87",
+      "statement": "Most checker verdicts are pinned expected failures modeling historical bugs: each failing configuration must produce a counterexample, and a configuration that stops failing has lost its tooth — maintainers must not weaken or delete these pins when protocol code moves.",
+      "evidence": [
+        {
+          "resource": "repo://docs/testing.md#L58-L61",
+          "version": "repo-lines-v1:sha256:c453ff05a9e902bfd69412b4e7d25d931560c9a7f89e8c27d024a23fd9e1d56e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBmZWUyNWY3NDlmM2E4ZDYxNGJlNmU1MTNiYTY0YmIzN2JiZDk2ODk0ODNjY2ZjNGM4MzJiYTMwYmQ2YjM0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmQwOTI0NGEyMTc5NjIwNmU2YWQwYmFkMzRhZTA2MTAxZTZiNmU2YzAwOGUzNTBjOWY5YTljYjY1OGRlZGZlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWVmNWZjNjY3Nzc3ZmM4NTY3OWY4NjU0ZDg2NTJjODM1MmYyYTQ3YzkzNGRmY2M5NjNiYmE0NDM2YWM3NjNhOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b9f5aa7090b14669b97c31b99a78c1c9",
+      "statement": "The bucket conditional-write properties can be verified against a real store with celld diagnose's four conditional-write probe (or --read-only to only observe), and each node repeats the test once at startup, with CELLD_STORAGE_PROBE=0 as the opt-out.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L88-L102",
+          "version": "repo-lines-v1:sha256:ec95db4186deedb1df0e373baa4c35e1530ff5bbd4278725fc074e9d66142585:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NTRmZDg2MTAwZmUzYmM3M2RhY2M1YjgxODMxNDg0MzFlYzM0Y2Y2NDdjODMzYWI5N2E2NDlhOWViNzNjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0YjNiN2I1OGM4YzU4NDhiZjA0MjFjN2RmZGEzMjU1ZTU1ZjUyMzQzZGZjMWIxZmFmZDM5MGYxMDM1ZTIxNTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNzI5NTA2YjEwNjcwNWJjMDg4ZDE0ZGJhOTk4YTkwOTdjNzdlMDEwYWYzYWZlNjU0OWIxYmI2ODg5ZTYwMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2NmUyNjQyMzU2Nzc3NGQ4ZWM5NzgxZjI2MGVkZDY0MWIwM2MzNGZmMzlmNDNmMTQ3MmE5ZWY4NjRkMTUwZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0110544d92e840b29c1fa8ad4f7a8060",
+      "statement": "Deterministic simulation drives the decision core under adversarial schedules with seeded reproducibility; properties (safety and liveness) must survive tens of thousands of seeds, and the core protocols have run through millions of schedules.",
+      "evidence": [
+        {
+          "resource": "repo://docs/testing.md#L92-L105",
+          "version": "repo-lines-v1:sha256:2a412a4b48fcd0f5f935d7ae2f5adf3abda097ba17b8734530fd252863316e84:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNTNkYmQ0MDZiODczYzYwNTZhZTY0M2FjMzEyODA5ZDdiMjRlMjVhNDkyYTBlOWI1NWE0YzZhMDY0ZmFlNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwOGY4YWVlYTg5NWI2MTUwMzhjZDZmYWY5ODIyOTljYTNhMDdhZGYxNGUxNzVkZDU0YmU1MzlmNTdmYTg5ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlYTJhNmRkMTRlYTdiM2Y2M2U0MjVmYWRjMzJkNWJjNWQzY2QyZmZjZjdkZTI3Yjg2YmUwZTBhYjI4YzZmYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0YWM5NjhhZGM2M2U1N2EyZTM0ZjVhM2ZmYTY5MWQ3YTg3ZDI0NWVjY2UxNjVmZjYwMzk3OGQ0YWFlNmQzZWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_56b0d281f12144a89bd7517e4f6a9c52",
+      "statement": "examples/ contains small Wrangler projects (counter, d1, kv, alarms, WebSocket, RPC, workflow, wasm, and more) deployed with celld deploy from the example directory; the counter example routes by the name query parameter to demonstrate independent cells.",
+      "evidence": [
+        {
+          "resource": "repo://examples/README.md#L27-L33",
+          "version": "repo-lines-v1:sha256:863760b8e7da0bcceb210ceda42445091359557fc7815602eaf86948bfa5fec0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTU2ZDA3YjQ3ODQ4YWRmNDJkNTU0NTVhNGY1YjQxNmNkNmQzOGI5YTIxYmM1Mjk5ZmU3NjRhMmNjMmI1ZDBiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjZhMWJjNmE0YzRjZTI3NzBmZWE4YzU4NWRiMTllMWQwNjMyZWE3ZGNiOTllMTk0YTE2NDFkOGU0NDFlY2FkNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWI1ODBmYjRkNjdhODgxYjI0Y2I1MmMzMTY4NDJkMDg2MzA4ZDRlZGZhOTY4Yjk2ODk0YjczNDZhZTdmZjA5OCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:47:04.277Z"
+  }
+}

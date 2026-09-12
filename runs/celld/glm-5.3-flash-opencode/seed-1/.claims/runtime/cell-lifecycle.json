@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e83ba3a80b9177427f662062099f452b4d7f7e331c6c57963215fb9b7f142732",
+  "claims": [
+    {
+      "id": "claim_1218d607781245af879a1235cc9c9711",
+      "statement": "A cell has the same states as a Durable Object: inactive (no node holds it — only a bucket object; every cell starts there), resident (in memory — active while working, idle while waiting), and hibernated (removed from memory with hibernatable WebSocket clients kept connected on its node); a cell keeps nothing across transitions, so the constructor runs again on the next event.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L22-L33",
+          "version": "repo-lines-v1:sha256:45dbbc01b100a7fd1755e978f43b147617c3ef58d0ce9e01d6cb0a1808373598:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZGYwYzNhYjJkNzBiNDEwODk4ZjYwMzc0ZGY4MGFjNGEwMzFlMWE2YzY3YWM4ZWJhOTc4ZjFiNWYzMzBlNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwODczM2E4OWNjOWE4MzQyYTJiOTc5NDBhZDk5ODBmYmJjYTU1MjVjY2JkODM1OGM2NDNkMjc1NGM0MWFjZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2MTBiYWM1YWI5ZjhmOGJjZmVlNjEzYTY0ODcxZjM4ZDdhYmQ5N2MxZTRjYzBiODVlYzJiMjBlYTQyODhlOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2NmY3YTg5NTFiNTllM2MwZTQzY2NmOTU3NGFlODM4NzYwYWQwZTllZWNmM2ZhMDFiYTQzYzA1Y2FkZWQzODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a231af5d3d9648a2b145d4189d05a4e5",
+      "statement": "All behavioral state advances through the logic core's single method on_event(state, event) -> Vec<Effect>; the actor is the serial lifecycle executor whose request-driven event loop performs the returned effects — it imports the full domain-type surface (AdoptedCell, CasGuard, CasOutcome, Channel, Effect, Event, OwnerRecord, Phase, Route, Timer, WebSocketKind, etc.) from celld_logic.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/actor.rs#L3-L26",
+          "version": "repo-lines-v1:sha256:d2ff57cf29e5960b5f418293a874d433b7ea223a7a1e54f392271f4d83d6e1bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MjRhMWIwMmNiZTI4NzRhYmU5MzgxMWEyNzM0NzU4NTA3MmNhMzZkZWExNTgyNmI1YmEyMDFlYmEyNzcxY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNTQ2MTMyMjUzMWU3OTA5YmEyNzlmMDFiMjg3OTFhYWU1NGM0Y2EzMzEyMzI1ZmI3ZjY1ZmNmOWQ3YzJkN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlMjdiNmVlMjc1Nzg5ZTRjMDRjYzI0YTkwOGZhZTVkNjg5MjMxMWU4NDZhNTViZjEzNjQyOTM5Nzk2MTFlOTUifQ"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L4-L7",
+          "version": "repo-lines-v1:sha256:321b45bb0634b2b2b761ef7a95f7a24ae8ca5eee9293ab97a901c80b03a75538:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFkNDVjNDEwMmRjMTBhZWE5YTE4NGVmNjZjOTJmY2FjNWRhN2Q3OTQ5NjdjZWYyYTdiYmYwZjM3N2E1Yzg4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjllN2YwMjJhYzJhOGU5M2I3YmE5Y2Q1NDNkNjJmMjc4OTMwODU4ZTQ2NmEyMmUxMjJhZjQxZDg5M2I0YjExOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U3OGM0NGRiNGEyZTM0YzQ3NzkwNWNiMWQxZTRjY2EzMWMwMjhhMjE4ZmM1Y2Y0YTViNDVmZDQwMzFmYmEyYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d633c6fbfdf24403a88fe735916a36bf",
+      "statement": "The actor's timer slots deliberately do not coalesce by key where it would cancel safety: cell alarms coalesce to the newest arming, but OperationDeadline is keyed per operation (a shared slot would leave every activation but the most recent with nothing watching it) and QueuedActivation is keyed per cell and generation; non-restore operations carry a deadline, CELD_OPERATION_DEADLINE_MS defaulting to 15000 ms.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/actor.rs#L29-L65",
+          "version": "repo-lines-v1:sha256:bceef23a7b1feed6eedd6c29574d67eda48fa78740b1c08f02619d01c8644329:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkYzdkZWZkZmZlZjE1MTJiNjBiZjZkMWY3MTk5ZDAyZWY3Mjg4ZTZkMjQ2Yzg0MzA4MzA0MmQ3OWNmYWY4OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0YTM2NWE5MGVjMTFlOTA0MzI3NTJjZjkzNzZlYzVlZDM2YjgwYmE1ZThlNjg1NGZjZjk4OTcwZDMwNDQ0NjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c709be43d0c846d4aef28dfef02bea11",
+      "statement": "The isolate pool is sans-IO: an isolate is not bound to a thread (v8::Locker installs the entering thread's per-isolate state so any worker can run a turn); what it is bound to is its JS state; two load quantities answer different questions — turns (queued+running, CPU demand for placement, counting the queue because an isolate serves one turn at a time) and requests (affiliated, memory demand, because a request's promise lives in the isolate heap so every later turn must come back).",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/isolate.rs#L3-L27",
+          "version": "repo-lines-v1:sha256:8b0c294de01bbf16e860632649e4e2d66243f1e012132bfd8cf8dc2a0aa27890:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ZmJhOGZjYjI0ZTE3MGFmNzkxMmVhMWQ2MmQwOTQxZTMzNTE4YjEwOWEyMmM1YjY0ZWY1YWRiMWUyYzc5NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNWJiYjEzMGFhODA1OTUwNjlhOGY0YmZlZGNmMTE2NDI3NDkwM2U4YjA5NzUwMDY2NGI1MjhiMGE4OWNjOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5M2M0MGMxYTEwYjhkMWQyYzBjMzBmMWE1NjNjOThjZmZkM2YyMmQ4MWQ0ZTI4NTVlNWMyMzdiZDE2MTU1YjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ce403be975af40e783b99eb9b92f96e7",
+      "statement": "Alarm wake for inactive cells mirrors committed alarm state into the bucket as wake/<timestamp>/<cell> so a wake hint survives fence/crash/deploy; the system prefers a stale entry (one spurious wake) over a missing entry (a lost wake); boot-time orphan scan and a periodic waker tick list the whole wake/ prefix on the 5s sweep tick; alarms due sooner than the stay-resident threshold keep the cell resident when residency is cheaper than a wake cycle.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/wake.rs#L3-L39",
+          "version": "repo-lines-v1:sha256:b3684dccf6181348d16d39e9d699c5dd2a6441041176ce555580f6bc8cc90428:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MGExYmU5YzI2OWMyM2M3ZThkNjRkODYyM2Y5ODMwZDIxNGY3YzVmMTkyZTRiZjk2NmZkNzBjNmE5YTg5NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxZTU5OTg5MzY3MjA5YWFjMDYyZjk5OGFhZjFjMDQzZTdkYmQ5MzViZWMxYjI2ZDFkZmExYWEwNWJiZjZiZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjNTc0ZWQ4YzMwOGFiNzA2ZjAxZWZiM2NiMTZhZmNiMjViMmM2YWMyZmZiYzA5ZWYyMmZkMDZkODBkMDU0OWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_edf33bf820a6413a8c90127b8e853a31",
+      "statement": "The alarm response-boundary rule: an event cannot succeed with its response while an alarm it armed before the boundary is not yet covered by a durable wake entry, and a later waitUntil alarm never delays another event's response.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L66-L70",
+          "version": "repo-lines-v1:sha256:ab5cadad86cf0c9a1cafe6d0aeb8ba3445a3d4c0a5f218ec022c2760c5542c23:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzFiZGE5NWZhOWI2OWQyMTYyMWNkN2YwNzQ5YzA2ZTExMTBmMWUzNzI0OGNjNzM0M2I4NTJjMDcyYjQwMTgyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGRhYjgyZWZlZWQyNTUwMDUyYzA3YzEzZDczMmE1YzQwMWY3NmVjYjYzZmQ5ZGJmNGViNmMzNDdjYjRkNjQwMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e0ba2f3515154d07a85725ba804bb806",
+      "statement": "Deployment moves at safe points: an adoption builds the new deployment beside the current one and moves a resident object only at a safe point (no running request, no running alarm handler, no output awaiting durability, no regular WebSocket open), preserving storage, epoch, and hibernatable WebSockets without touching the bucket; an object that reaches no safe point within CELD_DEPLOY_MAX_AGE_S (default 60; 0 forces immediately) is forced — work cancelled and regular WebSockets closed with code 1012 — and during the window adjacent versions must accept each other's calls.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L258-L272",
+          "version": "repo-lines-v1:sha256:fd7d4430fe75bb4a11e3a025b322ae3e5581f24276d4fe8d8afde86550ad0c50:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZmMyYTA3Y2Y3M2NmYzhkODczOGQyMTAwN2U2NjcyYjgyMWRlYTdlZjA3ZThhMzY1OWYxOTc4NzRhOTQ2YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NDUzODViODEzMmJmNGVlZmMzYTRjZTRmMGI4Yjg2MzU4MDdmY2Y0MzQxNGU3ZjU5YWU3Nzk3YTM1MWI5NTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4MTRiN2RiMzJjODIzODRlOGJhZDQxYzNkYTJiYjEwYzY5ZTI4ODkwMzFjY2JlYWNmOTU5ODA4MTBhMTE3ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyOGFkZDhkNjlhMjZkOTZjOWY0OTQzNDU1ZjRjYjk3NTA4MmQ4ODA0MzZlNTVjMTY4NjliOGNmMzRmODUyZGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf8eb0ec9afb41bf89493ce42a5153f7",
+      "statement": "Cold activation is capacity-budgeted by CELD_ACTIVATIONS (default min(CPU count, 128)); diagnose reports each node's restoring count and an operator waits for restoring=0 on every node before restarting the next in a rolling update.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L573-L577",
+          "version": "repo-lines-v1:sha256:44da30fe45954a7b398e813e5266e82663144a8f9b40195b7ecb0466148270da:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGQ5ZTkyZGQyNTQxNTg5ZDE3Mjc1ZjhlMWE4NGVhZjk5MzhhOTEyNGZkZGU2ZDZlMWQ1OWU1ZDVmMjVlYmE5ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGVkYjhkZDYxY2JjZjgwNjE3NDZlZjI3MjQ1NmFlN2U1MTY3YTJiOTY2NGQ0Y2MyNWYxYWNmZDkyZTc5NjU0OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmQyZjE1NDA4NWY4ZmExNDFlYzUwZWY5Y2Q4NGI2MjVmM2VlYmJkMWZhYTkzMmQ3NjBhYzNjMThhZWU5ZDQ3OSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:33:19.973Z"
+  }
+}

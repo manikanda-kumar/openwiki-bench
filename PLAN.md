@@ -267,7 +267,7 @@ runs preserve OpenCode JSON events and session exports, reject model substitutio
 tokens, reported cost, latency, tool failures, page completions, and verified claims. The five
 historical runs stay `null` and are labelled as such.
 
-**P3 — execution contract frozen; first subject executed.** Five repositories are selected and
+**P3 — execution contract frozen; four subjects executed.** Five repositories are selected and
 pinned. The runner captures immutable artifacts and telemetry, enforces one model/session with no
 operator retry, and the leaderboard requires three trials on all five subjects. The historical
 dataset cannot satisfy this gate retroactively because its prompt and telemetry are unavailable.
@@ -277,8 +277,9 @@ export is failed because its cost and loop data are not recoverable afterwards.
 
 ## 9. Remaining execution work
 
-1. Rejudge completed subjects with GPT-5.5 `deep-classic` primary, Grok 4.6 secondary, and GPT-6 Astra Medium for tiebreaks/probes before final comparison.
-2. If the gate passes, execute and judge the remaining 36 trials one subject at a time.
+1. Execute and judge the remaining nine `pi-desktop` trials.
+2. Rejudge `smallstep-cli` and `cloudflare-os` with GPT-5.5 `deep-classic` primary, Grok 4.6 secondary, and GPT-6 Astra Medium for tiebreaks/probes before final comparison.
+3. Aggregate all 45 outcomes and publish recommendations only if every statistical gate passes.
 
 ## 10. Resolved design questions
 
@@ -286,3 +287,11 @@ export is failed because its cost and loop data are not recoverable afterwards.
 - The official subjects are `cloudflare-os`, `smallstep-cli`, `extractthinker`, `celld`, and `pi-desktop` at the pins in section 3.1.
 - The official contestants are DeepSeek V4 Flash, GLM 5.3 Flash, and Qwen 3.8 Flash from OpenCode Go, all driven by the same OpenCode agent through OpenWiki MCP.
 - Split-model routing is a distinct agent system if added; it is never merged into a component model's row.
+
+## 11. Version 2 candidates
+
+The reviewed patterns from Warp Factory Benchmarks, SlopCodeBench, Harbor, SWE-bench, and OpenEval
+are consolidated in [V2-CANDIDATES.md](V2-CANDIDATES.md). They are explicitly outside the frozen
+v1 protocol. The recommended v2 direction is an iterative repository-understanding maintenance
+track, backed by replay locks, content-addressed artifacts, append-only rejudging lineage, an
+independent verifier, and a read-only trace/evidence viewer.

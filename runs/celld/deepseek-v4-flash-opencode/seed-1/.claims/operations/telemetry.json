@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:7413fc91fdc6334780e51188c82109acd72b55443ac9a1b5dd04274dc1b1bb61",
+  "claims": [
+    {
+      "id": "claim_da530a8fdc69452c849844bfaab1d38c",
+      "statement": "Telemetry is off by default and the off state is structural (init never runs, start_trace finds no globals); when on, the hot path never blocks because record is a try_send and a full channel increments a drop counter, so under saturation celld sheds telemetry, counted, never requests.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L6-L19",
+          "version": "repo-lines-v1:sha256:b599138098b089f6be5d91a7c8744eb1322f1b78a6d8ffb1b2403aab96357165:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZTUyN2MxZmVhZThmNzIzNTRhOGFlNDI4MzJiYWI0Y2NiNDFhZDI1ZmYwMmM4NTZhMDJjMTgxMjMzOTdhMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiMDllZGIwY2ZjNzQ4NWJlMmQxY2I5MTU1ZjhjOTk4MzEzNWQ1MTY4MTNhYzk2ZjEwZjBmMTYxNjI2YjkyMTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkZWRiN2Q4MTVlYTlkODYwMTllMzQ1OTJlYTM4MjBjNmM1ZmYzYjczNzUyNjgzYzFjMTYyMWYyNjA3MjRjMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkMzhmMGRmNzliNDJlYTEyNGM0ODMwMzY4NzhkMDdkNWY4YzU2Njk4MTIzNGY3NjkwOGUxNzQ0NWY1MGVmNGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ffeb93252e9444cb5a924443aa24f76",
+      "statement": "The telemetry schema is version v0-unstable and stamped on every object's metadata; there are two sinks — bucket writes Parquet under the telemetry/ prefix of the fleet bucket (requiring CELLD_BUCKET), and otlp sends the same data to an OpenTelemetry collector over OTLP/HTTP.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L41-L43",
+          "version": "repo-lines-v1:sha256:78007de068e0a5df91d79afc45b1cd1394a56b2737adfbdf226b0dafb39c686f:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWY3OTljMjcxZGQzMjU4OWJmNmRkNmNmMWEyNDcxYzc4YTc3YWE4NGJlYTEzYWY0ZTBjYmE5MWRhYjFlMmIxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2QzNzA1MDljMDRmNzQ5MDZkMjk5OTdkMjcyNWUzODBlOTQ5OGUxOGMxZjI2MmUwYTZiZmU2OTEyN2Q4OTA3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTA5Nzk5ZDJkOWQyODZjM2I3ZTQxNmY3NDlmNmY2OTllNzYxOGZiNGQ1ZmMzOTk0ZGM5MmEyZDhjZjQ5ODQxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjg4NzJiZjA0ZWY2MjUwYmJmY2Q2YTY0MGZhODc0MjkwMDhkNGQxYTM2Mzg4NzBmNjczNGNlYThmNTRhNWRjOCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L66-L73",
+          "version": "repo-lines-v1:sha256:3cf0a04eca2f13c335051faa90a6f46f2af52dbb58c34f682ed0e825ee0fc2d6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZThmZjg5YjYzZTA2NmQ2MGYxMWE1NjM5M2E3NTcwOWY5MGRkYjdhOWNlZGFmMzk3MDA0OGIwNWQ0Mzk2MmQwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTllNzYzNTVjZjExOTk0ODBjM2Y5OTgzNmIxNDg2Yzg0MWQ4OTFmYWFkOTA0YzYwOGUwOTMwMjJkMzc1N2FlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDA3YjFkNWIxYjMzY2YwNDExYjI2NTJmOTQyMmVkYjhiMDlhODYwY2FlOTc2Mjk0ZGI3MWVlOTIxZDk5NmVmYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b52150fcc3244faa1f5f7e61f20a991",
+      "statement": "The OTLP/HTTP protobuf encoding is written by hand so prost, tonic, and the generated proto crates stay out of the binary, the same trade the Parquet sink made by skipping arrow.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/otlp.rs#L3-L11",
+          "version": "repo-lines-v1:sha256:a4e6e6a1aef111cedd47149df8da55f6bab45f0c6552d6acc0c3ded40d8e9c70:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNlNzQyYzY4OTcxODM5ODhhNTNhOTk5MzBiMmEwNDNhMzdmOGRlNWY4NmM2Zjc4ZWMxMDNkZDI5ZTYxZDBiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EyYjY2MWIzYWNhZDkxYjYyNTgyMGM1YjhhMGUxYTcwM2RhNzk1YzZhOTAxYTRmNDkzZjdlYzUzMGQ1YzE0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzcxODIxZTA3Nzk4OTczZTlkOGFlMjVjY2MwZWE3NzBmN2M2YTUzYTRhYWU4MjZlM2U2MDBlODAwMjZmOGFhMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c79d76b90e64658813d46f4d2b3feb6",
+      "statement": "celld records a span for each stateless Worker request, each cell event (fetch, alarm, RPC, WebSocket message), each outbound fetch, and each cell start; console.log lines are recorded as log records carrying the trace and span id of the handler; the W3C traceparent header is read on incoming and sent on outbound requests; and celld records no metrics yet.",
+      "evidence": [
+        {
+          "resource": "repo://docs/telemetry.md#L33-L59",
+          "version": "repo-lines-v1:sha256:7471a83464e49410c25a47c59e151b291f0e74e121f1f4d35f771e39a53ad1a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkMzEyZDlhYzZhMDEyOGUyNjg5Zjk2MGRkZmJmODRiNWU1NmQxNTM3NWM4ODFiY2Y3MTUwOGZlNGVlNWExYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyNTFlZDM5NGNkOGY2NWM3YTJmNWEwNjdkYzk5M2M5M2M2MDI1NDhkZTZmNTBiZjU2YmVkMGRhYjExMGZiZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2NWI3N2YwOGMzOThjZTUyOTViZDkwOWE3Yzc5ZDFhY2ViZTc4Mjk3NTBhNGQzNWRiMDFmMzhmZDg3MDA1Y2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkNzU3YWVmZjJhZDVlNDE0ODc3NGY1ZDkxNGQ1ZmE1MWY1OWZlODJkYTM2NzdhMmVhNmI3ZjAzYmE3N2U3M2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a19fbd2355e54841b47a8194f5d87f83",
+      "statement": "The Parquet files are partitioned by node and by hour (telemetry/traces/<node>/<yyyy>/<mm>/<dd>/<hh>/<id>.parquet), so a query that reads one day touches only that day's files.",
+      "evidence": [
+        {
+          "resource": "repo://docs/telemetry.md#L87-L89",
+          "version": "repo-lines-v1:sha256:962ab3d8430cab10740a6ed54521c76ed35495f69d8cc34d47adb33345e25b34:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcwNmE0ZGQ4MzI4ZmYyNDlkYmNkZDZlNGQ0MDQzMzc5NzMzODNhMTY3MTIxOTdlYTBlN2Y5ZWFjY2YxY2JmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU2NDY0ODFiYTFjYjQxOWQ2OTg5NzQ5MTQwMDZkMGVhNTgyM2NmNGI2M2QyNWU2MThkMjNlZDcyOGU5YzJlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFmNWRmMzA1ZDIwNzgwYjY4ODM2NTc2ZmVjOThmYzFiZDY3MzFlN2Q3YjRjYzAwMTEyOTU1NTQxOTgwOWY0MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDA2YmUzOWUzZTM5ODRlZmY4ZGZkOTNlOTdmMjEyOTRmOTI3NjAyNThhZjk0M2ZhNGJiNDI4NGI2NGJhODFkNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bedbd3de04c9469e8bd1ae391b4d5214",
+      "statement": "celld does not compact its own telemetry files because the serving path must not do storage maintenance; a compaction job on a maintenance node rewrites one past hour of small files into one large zstd-compressed file and then deletes the sources, while CELLD_OTEL_RETENTION controls celld's own deletion sweep.",
+      "evidence": [
+        {
+          "resource": "repo://docs/telemetry.md#L112-L134",
+          "version": "repo-lines-v1:sha256:7b0e44941f12e40a93fa9e63eb8402a4e183b4fdfcade9f08a11084ec1ca23d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhNGUzOGIwOGZmMDA1MmJjOWFiZGRkMGU2MzMyMjg2MWUzYjRmMDllZWQ2MzcyMTg1NzA0MDI0ZTQzYWZkYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExZTljYmVmN2EzYTc1OWNjY2YzZTY0MzExNmQzYTQyNTYyYzZkMjBjNTNjMjgyYWQ1OWU5Y2UwMjQ4ZWVkYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyY2U0YWVhMmZhZjhiZDk4YjY1MTMzMDY2Y2MyYzc1MTk5MDc1YTEyZjExZWNkM2NiZDI2NWI4NzU1ZDE1NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:40:45.922Z"
+  }
+}

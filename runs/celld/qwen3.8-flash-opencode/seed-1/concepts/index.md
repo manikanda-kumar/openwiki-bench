@@ -1,0 +1,8 @@
+# Files
+
+- [Cells, Ownership, and Fencing](cells-ownership.md) - How a cell moves between inactive, cold-activating, resident, dormant/hibernated states; what the bucket ownership record and node lease contain; how epochs fence writers; and how routing, release/handoff, alarms, and cron wakes drive those transitions.
+- [Cloudflare Compatibility Surface](cloudflare-compat.md) - What celld implements of the Workers/Durable Objects API, how supported services are built as reserved runtime cells (D1, KV, Queues, Workflows) or direct bucket bindings (R2, assets), the rejection contract, known silent gaps, and the examples corpus.
+- [Durability and the RPO=0 Protocol](durability.md) - How celld keeps its two promises — one writer per cell and no acknowledged write lost — through the output gate, bucket and fleet durability proofs, ownership verification, node-log takeover recovery, full-prefix restore, and self-fencing.
+- [Listeners and Peer Networking](networking-peers.md) - The two HTTP listeners a celld node runs, the routes each serves, the pooled plain-HTTP peer tunnel, the fleet HMAC that signs control and operator requests, protocol versioning, and the three WebSocket transport shapes.
+- [SQLite State and LTX Replication](sqlite-ltx.md) - Each cell's private SQLite database behind the Durable Objects storage API, captured as LTX segments by the celld-ltx crate — WAL capture, L0 upload under epoch-fenced prefixes, L1 compaction and L9 snapshots, bundle objects, and the restore path that rebuilds a database from the bucket chain.
+- [Workers and V8 Runtime](workers-runtime.md)

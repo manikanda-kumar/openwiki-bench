@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:13a687e88b1c9e1dcc484b4312130bccbc9b7760878b9df2018bf8d4518c2aae",
+  "claims": [
+    {
+      "id": "claim_c5b94c841c234f7e9e3e5857578f40b7",
+      "statement": "celld deploy does config, identity, and durable bucket publication; bundling is esbuild's job and no wrangler shell-out or Cloudflare API is involved.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L10-L13",
+          "version": "repo-lines-v1:sha256:760cb592e558c6b1045cb7886ec65de26712a3971d5b26612f0ce5e4b80ef6b2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZmYzRmMTZhNTlhNTVjNWQ4YTNkM2UwZTA2M2Q0NzU2MzYwNDM5YjNlZDBiYjgwNTJkMDhiNDczYzA5NjRhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmU5M2NkZTYyZmNiZWNhOGY4OTkzZmQ5NTcxYTMwN2QyZjE1MDU1Yjk4OWFjY2MyMGNlMTI5NjI3N2Y2YTk0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWMzY2ZkMGY3OWQ0YzdhYzcyMWMyM2I0MWZiNDA2NjZiYTdjZjI3MzM5ZWI1NWRjOWMzZjg4MzgzMzZmN2I3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTk3NDdkOTg0NGE1ZDM0ZjBlOTA2MGJmYzQzMmIyMDkyMDgyZjllMWRkZmVlMDlhYzlhMTBmMjhlYWIxY2IwNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0e8a0156959a4883b2fc79fec8c6399a",
+      "statement": "Wrangler config keys are an allowlist (SUPPORTED_KEYS); any unmodeled key is a deploy-time error rather than being silently ignored, because guessing produces confusing activation failures.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L36-L57",
+          "version": "repo-lines-v1:sha256:2cdc96b1d7cb6cca3019d5d234d57076ce17e26a45c8c42cc3a239f5ac15902f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxNTcyMDYzMTlhMmM1ZmVhOTUxMTZmMDgwZDg1MjQyNDE5MTc5YzgwZTQ4ZmRmOWJlYWViYzU1M2U4ZTlhZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzNDI2NjZhNTEzYjY5NWU4NGJhOWQ3YjJhYmNlYWJlMDEzNzcwNjUwZDc1ZmE0MmNhN2E4YjM4Yzk4NTMxMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkNDRkNmJmNWJmZTlkOGM0ZTZkMWU5NmRjYzVhZjc1ZmEzNjNmZDBhYzkxOTU1NDk0Y2M1YzFkNDJkNTRhZDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f3787c929f504beb8808fcccf2fb17e3",
+      "statement": "Runtime-supplied Durable Object classes (__D1Database, __Workflow, KV, Queue) cannot be user-defined class names; the workflow class is script-scoped while D1/KV are fleet-wide, and the classname separator satisfies JS naming, cell-scope parsing, and valid_cell_scope charset constraints.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L60-L110",
+          "version": "repo-lines-v1:sha256:e6b84212e20bd8ec1bc763cd759b57b26c407fceb5279acea50ca9ddab7a4e82:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNmRkNDBkZGUxMjZiMTgzNTlhOTU5NGI3MDJmMDhiNGFlM2U4ZTZlZGQxMDI4OTAxNWIwODNhOTA4NTdmNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxMzY4YzlmYTJiYTJiNzY1N2U1NDZlYWMzZjA0YjRkMzg2MGIxZTE3NGE1Yzg1YmY1MTQ2OGM1MjU0YTM1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MDRmZmM0NDFkMjc4NGZjMTE0ZDAzZWNlYjM3YjVhMmJlNDVmYTcyNjI2NmM3YTE4MzZiMWEzZWU0MjkxYTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1YzhjMTc5NGEyMGNkY2VlODU1OGQwZjA0NjEzMjUxYTgzNjg0NDhmODgyMTExOWJlNDEwZmRmNDM5YjNlZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8384a24d45c488da9473ac9aabbf94e",
+      "statement": "no_bundle entries are served as pre-built bytes since rerunning esbuild over a Vite build corrupts them, while normal bundles emit one index.js plus sibling wasm copies.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L442-L466",
+          "version": "repo-lines-v1:sha256:e85cb89dc982f99d1aab9b2ac8ed6ad9d5116d445bd94eeffe7c34c7db010448:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZjY5NmE0NDc1ZmFiMmQzNjkyZDJiOTcxZDZjMTAwOWNkZWM5N2Q2OTQzNjY3ZjE5MzU4MWJhMzJkZmJmM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzNmE0M2E1NjMyMmUyMThmNWM3ZTJlMDU0N2QwNTkxZGYwNGM3YjY5MzE1ZjZkZjIxOGZjZDkxMzM4MmFiNWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4MmNjYWMwMjM4ZWJmYWIxZWY5ZDdjYjFjODVlMzMwNDcwY2ZhMzEwMzM0ZWZiZTRiMGUxMDRhMWRlYjQ1ZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzYTAzNGM3YzU1YmFjMDRjNDZiZDYwZmJiZjEzYTRkNGRmYzJkZmM5MzlmOWM4YTNkMjQ5OTk3ZmVhZmUwN2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d968c3c2fde8411d9cab6c30ca30d254",
+      "statement": "Deploy publishes a per-script pointer deploy/<script>/current.json and the fleet pointer deploy/current.json; queue consumers are reconciled as the union of desired and previous attachments.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L615-L641",
+          "version": "repo-lines-v1:sha256:9010cd610e69918f5bf00daa843d046be755f06431811b03c4589b56b570b248:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1MDU1YWQ1MWFmYjQzNzdjNGU3OWY1NjU1OGViYWMxMWYxNDk3NWRhMDJlYjA1NmY2MzE3OTQ3OTk3M2UxYTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZDU1NzJhMGM3OThjZjMwOTFhYjNhNzliNzdjNjQzOTM0ODc5NjQ5NjBjZDMxOWJhMzBiNDBiNWM4M2FjMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhYzE0OTkyMTg0MGRhYjU1OGY1ZTA1MjI3ZWI1Zjg0MzgwY2YyYWFmZDM1ZWJmOTY1YzI5OTIwMjhiYjFhMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkMzVlMGM4NDAzNjlmNTA2ZmQxYWJkYTY1ZDk0N2I2OWNjMjk2ZWQyZjM1MWQyNjc0ZWNhNzcwM2YyMWFiZjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fd92d62bee9c45ad9158e82877054e0c",
+      "statement": "A Generation holds everything a node derives from a deployment; boot and reload construct it through the same two functions so reload cannot miss what boot computes, and generation ids are per-process monotonic while the fleet identity of a deployment is its version string.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L3-L19",
+          "version": "repo-lines-v1:sha256:67bf2c5efef76a6da5a878f34e778808c2225dd04f4388f7a3ad63f64193fa5d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlOGYxNDU5NzM3YzllZGJhMTYyNDVlNzBlZjAxZjg3ODA4MDE2MDNmMTQ4ZjYxNmYyYTk3MGZiYjM4NmM2MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1M2Q5YTYwOTI4NDZmNmU2OWJiNDJmMzNiZWU2M2ExNDQ1ZDAwNGQ1ZDI0OGM2Y2M3NzcxYmMyZTBiY2JjYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2YmU5ZWUzZDhjOGRmZTk3MDMxNmZhNzYxMzA4OWQ2MTQ0NGYwMzgwYWU3ZmQ4NmE5NDkwZGFlZmZkNjRlOGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe1652baddae4707aceb3e37f979ab6c",
+      "statement": "Deployed objects are the Manifest and feature markers (assets, cron, d1, kv, queues, sqlite-vec, r2, wasm, workflows) documented in protocol.rs.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L15-L99",
+          "version": "repo-lines-v1:sha256:c88bd971ddf2f23e05f072bfb8e0f3febc601a273ef7703c41e5c0405df49d3b:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkMDFjNzBjNzU1Y2JjODkyNDgxOTE3MTViODgwMjViYjM0NzgzMDA0ODljZjhmYmYxZjdmNzJmNTA2NjAxMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ZjVhYzllNjhiZjIzZTE1MGFjNjEyNDJmOGZiNzZlOTdkZjFhMGM3ODE3MGQ0N2U5MzcyZDU5NDBlOTZiMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwNDM0M2I0ZDZmODkyZmZkZmVjNmJiNzhkMWE2N2YwNTAxZDU4M2RhNjM0NDljYzY1ZGRlNzJmYjc3ZmMyYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2ZWE3NGE2ODQ4MjUwNGIxZDI3OWNjMWY5YWUwZThjNTYxYTE4MGQwMWEyMTY2NmFhYTY2MzM0ODA2YTM4NjIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:23:20.669Z"
+  }
+}

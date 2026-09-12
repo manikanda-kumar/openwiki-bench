@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:540553c02b992ea1090dab4c040f2d69d54d843129f0eb0b58ae1de22f0a5313",
+  "claims": [
+    {
+      "id": "claim_c759a01604224bd396fd1cf8c3600cf1",
+      "statement": "The release pipeline is two-phase: a push to candidate builds every native target, attests provenance, and uploads to a DRAFT GitHub release plus a container smoke build; publishing the draft is a separate human-approved action, and a failed candidate is deleted without main ever moving; the release body is derived from the release commit message (subject dropped, trailers stripped).",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L1-L12",
+          "version": "repo-lines-v1:sha256:6896bd19bed3d71f88a7bde804da747dfd4b86beda2a5dda3315d604b913b4c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyZWVmOTAzMGQwYzcwMjkwMTBjNDYzNTY4OWY1ODMyOGQxMDllNmE4NWVkMWE5MjQ1YjIwZjM5NTViN2RiMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhOTczM2Y1Yjg0NWJkM2JmOTRjMTczMjYzNjMzMGQ1Y2ZkZTRmZGQwM2ZiY2QxYTQwZTViMzlhYmExZjg1ODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4YTZmOGQ1Njg4ZWJmYWFmNmQ0ZDU1ZGE0MGZhZGY5MDhiNmI5NmI5Mjk3ZmRlZjU3NjRhYjkwYWU1M2VjMTkifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L69-L151",
+          "version": "repo-lines-v1:sha256:a35c478a2c6a44d279d87402ae379f5f210cf1241643e1a927520b6538d07651:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNjVjNzFhYjg2YTEzYjRjNzQ4ZTg2NGNlYjQ3MDAxMmIxYzUyMjBhNTY4ZWJlNjVkMmNmYTg3ZGVjMWI0YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkM2Q2ZDZkMzhiMGVjM2IyZjEwOTQ3YzEwODY5ZTNjZDhkYzk4YzUwMmZhMWNhNTNiZDMwZmExMTFmZTAzYWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiNmQ3MTViYjA4ODRlNGRkYWNlNDBmMWZhZTk1ZWNjMzZhYWI2MjJjNmUzZTIwNWE3MjMyZTUzMGNjMDZjNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1Y2NhYjNlMDYzNWJhNjgwMzY0NTkwZjMwMmYwZTNiODFhNjdmMjcwOWFiY2JlMmIyZmYyMmUyZDI5OWJhOGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b9d1a38a06148e797be6ab240a4c9d4",
+      "statement": "Candidate builds run cargo build --release --locked on three native targets (x86_64-unknown-linux-gnu, aarch64-unknown-linux-gnu, aarch64-apple-darwin), verify celld --version matches the crate manifest version, and package gzip -9 -n -c so the envelope is reproducible whenever the binary is — assets are binaries only, integrity supplied by the attestation plus per-asset digests and gzip CRC.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L30-L69",
+          "version": "repo-lines-v1:sha256:514a6e4466c83828153db3d724f90b4fd2d018ec9ab345307ed2132317743afd:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwYTU5NGYzNGI3ZjBlYTU3M2RhNzg3MDNlMjc0OTMwZGI3MThjOTQyY2FmM2MwNDI1MTc1NWY2MjNjNjBkNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNjVjNzFhYjg2YTEzYjRjNzQ4ZTg2NGNlYjQ3MDAxMmIxYzUyMjBhNTY4ZWJlNjVkMmNmYTg3ZGVjMWI0YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlOGE2OGRiNGNhNmRiNzFiYWQxNTYwZDdhMjQzM2JmMDI1NWEzMWQ0NTdjNzExMWVlMzIzZjQyZTk1YzRjODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwN2IyYmYxNjJkYmM1ZDY1M2Q4Y2EwOWU3ZDc3NGU3M2UzZWM3YjZmOGJlYjEzMTdmMWVjMDg4ZTk1MTcxOTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d70c69e716fe4414aea66a6bce8f1a47",
+      "statement": "Container phase enforces tag-vs-manifest validation (the release tag must equal v$version read from crates/celld/Cargo.toml), builds per-arch images with --provenance=mode=max and --sbom=true, and publishes to ghcr under immutable sha-/version-/latest tags stitched into a multi-arch manifest which is itself attested and verified for anonymous pull before success.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L209-L213",
+          "version": "repo-lines-v1:sha256:dc32a549ec51375f5c8e4072af63370dceff5cbb41b543a3673ec004b469fee2:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDIyNDZhMDY0NGQwOTI4ZGU1YmM1MDZkMjJjNzgxZDBiMDU3ODI0ZGU5NDdiODhlZDc2ZThhNGVhMGVjNDY2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzdlMjExZThmMzNkNGMxZGY3YWI3MGUwMzA2ZWQxMzAyODhkNjYyNWM3MmQyNjc3OTc4YTA0YTBmZmNiYjA0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGVhZjJkYTg3YWEwM2UwYzRlODQ0MWQ5ODlmMTcyYjE3YmEzMzQ5NGRiZmMwZjA2NDg3YWI0MTc0ZGI3MGE1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzNjYzIyZjY0NjM4NzYzMjFhNTkwMTJiYzYyYmE4MWQ4MTk0Njg4MjJiMzc0ZTFjNDMzODAzYjdhY2IzZjZmYyJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L84-L108",
+          "version": "repo-lines-v1:sha256:4d5cf9fc636bd91f72ac043eb83367c82caf3470a4cfc5e0ada603219ee14882:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MTc0ZmQyNTVjZTU2NzBiNDc4YWYwNDZjZDQzYzY3MzRmMjA2NTljZDExMjM4NWY3NTMzMDc1ODNiZmNkZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0NzRiYTEzZDVhNTgwYmZkYjdiMDg0NTdmMzFkNTQ5MDk1ZTJkNmZjMGYwZjdiN2Q3ZjQ1YzcyMTY5NzYwN2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhN2I3OWQ1MzY4MTlmM2Q2NzE4OGQ2Yzg1NjE1ZGY2NDU4YzMxYWIxODk0Yjc4NWM5YTFlNmU1MzQwNjQzMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0NmI1ZTQ1MWFjMDZmODAzMzE1YzI5YzJkYzQ0ZjU4OWU4ZWUzODkzYmQyODI2OTgwZDFjYTIxOTJhMDdkZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8305c8946a494d75b7147e2b787112b7",
+      "statement": "Provenance attestation and anonymous-access verification run only on a public repository; a private repo skips them because a 401 teach-noise experiment would be meaningless; the workflow explicitly avoids teaching red runs to be ignored.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L267-L272",
+          "version": "repo-lines-v1:sha256:d8ce6102cc0464e5b313aa8aa1659ebd6101167265ef1635b11baa19f6c8f739:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlhZDU1ODVlOGVjYmJhMDRiNGQzYTMxNDcyZjA5OWEyZTBlNjViYzRlMTZhYjY3YTVmMzc5ODU5YTI2NTMwNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTBiNjJkMjRmOTI4ZjRhNzQwMDZlN2U5YjNmMzYxN2YyZGUwNzBkOWY3NzEzZmU4NjZjZDQwZjE3ODg1ODQ4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgwNWRhMGIwY2E5NWRiZGY4MGM2MGNhZjA1OTg5NGNkNzg2YTQ1MWY2MWI0M2I1NzFjZDIzOTFkNGViNzAxMiJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L99-L108",
+          "version": "repo-lines-v1:sha256:25554e84d11f0e7a80cc920cb11b4e94aacc732901aef8f8d6bc56cb79a43511:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ZDY0NTdhZjhlNjgxNTQ2YjEzZDQxNmIxMGU3ODVlNTBlZGQ4YzZiOTZiZDU2MGE0NjVkMzgzNGZkYzMzZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0NzRiYTEzZDVhNTgwYmZkYjdiMDg0NTdmMzFkNTQ5MDk1ZTJkNmZjMGYwZjdiN2Q3ZjQ1YzcyMTY5NzYwN2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwMjcyMWVkZDMzNjZlZTBhYTllOWE0Y2ZiZDE0NjJkNjg3MGI5ODVhODM0NmRjOTBjZDY0MzJhODY0NjlhM2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0NmI1ZTQ1MWFjMDZmODAzMzE1YzI5YzJkYzQ0ZjU4OWU4ZWUzODkzYmQyODI2OTgwZDFjYTIxOTJhMDdkZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_48d432668e1148cb96cf345dd84654bd",
+      "statement": "The Dockerfile builds the celld binary under a caller-selected profile (CELLD_PROFILE defaults to release — a fast-loop caller can pass lab to skip the fat-LTO relink and keep incremental state), runs cargo test and clippy -D warnings in a dependent `test` stage so test/lint failures stop the image build (with sqlite3 CLI installed for the ltx fault-injection oracle), and publishes a debian:bookworm-slim image with only ca-certificates plus the celld binary as entrypoint.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile",
+          "version": "repo-file-v1:sha256:cfe03eceb46fabf0151a572a072d510d92673759bdca53c1fdc8c6fee16f8c31"
+        }
+      ]
+    },
+    {
+      "id": "claim_e4313d8751bb4c5e95b27979297433c4",
+      "statement": "Install/removal contract: the installer downloads the celld binary (attestation verifiable via gh attestation verify), keeps each release under ~/.local/lib/celld/releases with one symlink pointing at the current version, and removal means deleting that symlink plus the releases directory; esbuild is needed only for Worker projects, not asset-only ones.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L36-L55",
+          "version": "repo-lines-v1:sha256:88703ad64901c171ec728845417608bcf115bd672e5a152a0ad09e6ab1627505:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNmRlOTA4MmI3ODI4NDAyOGVmNTBkZjZmNTk0Yzk1YTkxNjc2ODdmMDc4MmZiNjhhOWYyNTAyNWIyMDdiZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjM2MwYThjNTEwMWFiNzQ0ZDg2YmRlZDIwYzBjYmU3M2FhZDQ2NWQ5N2Q4NTEyY2RhZjQyZjQxYzEyYjRhZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzNjA5MDI2ZjdmYzkwYzYzM2U3MmYzMTdlZmJjZTkwYzIwNzZmYTU5ZmViZDRiMjE1YTUyODhiNWY3ZWYwMTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzMmNiOTdkNjlkNmQ3MTliMDljZTg1YTRkZTMxYmFiNjQ5ZWE4NDlhMjQ3MDAzMmFkNGExMjNlOWE4OGUxM2EifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:33:19.973Z"
+  }
+}

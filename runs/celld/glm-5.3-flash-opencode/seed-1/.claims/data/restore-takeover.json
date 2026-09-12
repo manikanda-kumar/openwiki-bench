@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e12d133aef00c64b970e0966ce2eb2e6d942329f1c48c687cb1d590973619cae",
+  "claims": [
+    {
+      "id": "claim_1f3291906dd54dbd8f47abff3e8b62a8",
+      "statement": "Takeaway from fleet mode: each process session creates a conditional node-log record before its first fleet-durable acknowledgement, and a cold activation must check the prior owner's record before reading the bucket — absent means never acknowledged past the bucket, sealed means recovery completed, and open/recovering forces the recovery sequence (CAS-fence, seal reachable followers, upload retained segments, mark sealed) before restoring.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L168-L183",
+          "version": "repo-lines-v1:sha256:67e4434527bbb7d09b00cc60a8f27982deee7fbe9608b77972faf71fc9ae92fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjYzE5YzIxNzNmN2NmNWNiNzQ3YWMzZjgyYTg3M2IwNGIxNWZkOGQ4MzYzOTE2ZWM4NDYwNzk2ZjkxMmQ5MjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzOGU4MDFmMGM4MTAyYjQ5ZTdhZTkwNGQ4YmI0NGEzYWRkYmViNWI4YWNlZjBhMzc1MzA0ODlmNzI5M2JiYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxYjBmMDVlNzkzZjU0NzM5MmM4NjYzZGU0NzZhNWMxZGE0ZGNkYzQ5ZDc3MDU2Zjc5NTI4ZGY4ZDNiN2E5ODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_532ced779852499e96887de1b1af9ea5",
+      "statement": "A deadline-cut handoff can leave a node-log recovery for the replacement: one process reads and uploads the dead session while the others wait, and a waiting process may replace an unresponsive recovery after 30 seconds so a failed recovery cannot block the fleet; a recovery store error keeps the session unsealed for later full-bundle re-recovery.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L496-L502",
+          "version": "repo-lines-v1:sha256:7c7adaaa5be4b51bbbec11fc626aa47cd4ee54611d91097deefc332602954a7a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODBmMTdjOGVkN2U0MGM4MGU2ZDM4YzU2NDdkMmQxNDFkNTQ4NGFmZDhhZjhmYjAyYmI1OTJmMTQ2MjhmYWM5ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWE3YzQzODNlMjk3NjFkMjMwY2FkZmU2YTAwN2QwMjA1N2E0ZTUzMjE3Nzk0ZTJiZTYzMzgzMzMzNDFmZjUxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q2ODM5ZTkwNTYzYWQwOGMxMTllNTFjMzI0N2FlZjE1ZmViMDIyMWZjZWY0MjJiOGQ4YWVmYmNkOTZlMTE5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2Q0MDQ5NzExOGRlMjRlNTFiZTM5Mzg2MzBkZDJhOWNiNTE0NGYzNjBlMDY0OTA1MzQ0ZmYyYTI0OWU2NjIxNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d39ac65866b4d66904e2ff1b69a7574",
+      "statement": "Graceful shutdown drains in batches: the health path reports unhealthy (503) so a load balancer stops public routing while accepted requests finish and versioned peer traffic continues; each batch reserves cells, proves durability, tries to publish a full L9 snapshot per closed database (the remote L0 chain as additive fallback on retry-window expiry), releases ownership, and requests a compatible peer acquire — the peer keeps the cell dormant so no unused runtime is restored.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L429-L437",
+          "version": "repo-lines-v1:sha256:77e9a464a17f9aa107937bb22aa355b3c69a4e0124797bc29e65d51afd526795:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWFlMjZhN2RjN2U4NGY0YTZlYzZkNjU1MDhhNmY2ZDJiMzdmNGM1MzVmODc5ZTQ5NDM3MmRhZjA1YWRmMzE5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2Y4ODhkZmM1ZTYzYjdjZGRiMmY2MTU3YWVkN2FhYzMwMDBiZTRhYjgxYjIzMWU3NDFkZDRkYzNlMzMzNTRmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjk3ZWIzZWZjYTBhYmQ0ODMwMzNjMzI3NjU3Mzc2OTcxZjdkNTA2NjI3NzIyMjBmOWU2M2ExNDYwN2IyOTQ1YyJ9"
+        },
+        {
+          "resource": "repo://docs/README.md#L444-L451",
+          "version": "repo-lines-v1:sha256:1e1056983dc0510e304af43c965dcc5c62912a454461f0a6f70cb16b3d17bb91:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODhmZWQ5ZjExY2M0OGUzNTRhZmM1MGNmOGM3NTAyMzRiNmE4NzYwNWE3MDY2MzJkZjViMmU3Nzc0Zjk1ZDE1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzMwOWZlZTQwYTY2YzY2OWExYTFhZWZjMDlmMWQ4ZjI1MWVmYjRjNDEzOGM5NzYwMmNmMGNmZjYwYzgwNGVmOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGFkNDIwZjljMmM0MjI4M2QwOWQ1YWJjZjIyNWVjODcyODcwMTU1MTM1YTMwN2FhMjI4YjNlMDM0Nzc1YzFiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzNmMDRhOWJmNTkyMTQzN2VkNzRmZmU1YjYwYWI0OTc4MTk1M2I4YTExZjFkMjRhNmJkNTJmYmY1ODFkZGRiMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e351c99b7a5465fa2b4329caa065d1e",
+      "statement": "Shutdown pacing: CELLD_RELEASES=8 bounds concurrent complete handoffs, CELLD_ACTIVATIONS bounds demand-driven restore/startup, CELLD_SHUTDOWN_DRAIN_MS=25000 is the no-progress interval each ack restarts, CELLD_SHUTDOWN_TOTAL_MS=40000 bounds the complete stop; an orchestrator stop grace must exceed the total bound; handoff=preserve uses the drain interval as its semantic limit.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L458-L470",
+          "version": "repo-lines-v1:sha256:5b87db8ad100072834a1ff99ade95e23f2feca0250e9942010b4b0096531a10c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1OTFlNDRlYmJiY2I2MmIxYmMxNDQ3ZDg3ZjQ0OGQ0NzU2OWI4Y2MwYTRhZjA5MTAxMjU3ODI3NTI5NzZmMTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjY2Q3NDBhOWY1NGMxZWE1ZTZlYjAxZTNjYjY5M2Q1M2JhOWZjOWU3ZDY3YzM1ZTAyMDRhNWRhYzdlYzkwNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4YWYyYWY4YjUxYmQ1NjE3YzkzZjE3OGVkY2JlZDhlYTViN2JkNTYwYTQxOWM5MDZlOGEzMjlhNjQ2OThjNjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a8d9428145cf44c19417b565aecee0c2",
+      "statement": "The fleet drain token serializes concurrent donors (the token lives at drain/token.json outside nodes/ so lease listings and dead-node GC never see it); it is advisory only — a donor that cannot claim it within CELLD_DRAIN_TOKEN_WAIT_MS (default 30000; 0 disables) proceeds unserialized, because a handoff without the token is still safe and a dead holder's claim lapses via TTL.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L472-L477",
+          "version": "repo-lines-v1:sha256:58bd1f453f9fcd4923ef7d5473d3cd9c3ce8e253bf361fb5dd2b124d2576fe9d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzgzYjRlZjEzZjA1YjgwOWM4ZGUxMjM1NjU0NGQ1NmIxMjBmZWY2MjVjODM0ZmQ4Yjk3ZGYxNDlmODQ4NWMzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVlNjk1YmEyN2I1NDMyMDg4OGU2NDNmMTYyMGQzY2VjMmYwOTZiYTgyYzY3ODllYmI3OThkNjA0YjM4MTg3MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTlkMTliZTRkZGY5ZWMwNTdlYmM0ZmMzNGYyOGNmYzkyNTk3OWIxZjJkOTRkMDYyYjdmMDJiZmY4ODUwYzI5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2E4NDM2ZmZkMTM4NDA0MzE1MTg4MjFhYzBiMmJhZDFlNDMzZWU4NmQ5NDQ4ZjZhMzA4ZGMzZmZiOGU0ZGJmZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_716814f62d1b4e3a9b2927654effb691",
+      "statement": "A fresh process holds its first healthy response until the fleet settles: live node lease, no active donor, memory below every pressure low watermark on each live node, turbulence limit restore backlog within one CELLD_ACTIVATIONS budget, and ownership counts within one equal successor share above the fleet mean; CELLD_READY_FLEET_GATE_MS (default 120000; 0 disables) bounds the wait, else the process reports healthy with a ready_gate_expired event; after the first healthy response, fleet state never removes readiness again.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L479-L494",
+          "version": "repo-lines-v1:sha256:9840fee394240ae44336d5eaa992a27424238ac4df9606bcab936d0e0c2251f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3ZDNkNjM4YTE5MGIxNzk2Yzg3NGM2ZjRlZWU3MjljMDU1MDBhYWRlODkzZWViMjVkM2Y2ZTU3ZjE1ZjY0MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NDg4NTBiZjAxNWNkMWFjZThkN2VkNDIwNjNiZjYzNWMyYjUyYjI1OGUwMTNkN2EzNzE2NzUyNGM4YjY0OGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwYjMxMjgzMTUzNmE0MDI2ZDdiNjIwOTI2OTAyNTA5NDg3MzA0OTE4ZTA2MmY1ODU0ZWQ4Yzc3Y2E1MzU1YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlOTU1MWQ4Y2I3ZmUwMDVmM2VhN2Q1NDcxZTAyZGIyZmZjMTQ4ODc1YTU4MmU0YjhjNmJjZjMxNTIzYmRmODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_64338673407b439d8595941d4e60ec20",
+      "statement": "dead_node_gc is compatibility cleanup for dead process generations: wake entries and lazy ownership takeover already provide serving correctness, so it only retires the historical node-cells/ index debris and expired node-session records; retirement must respect the folded node log (the fleet log's root of truth) and preserve other lease fields verbatim so a crash between tombstone and delete never publishes a poorer record than the one it fences.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/dead_node_gc.rs#L3-L30",
+          "version": "repo-lines-v1:sha256:2c8ab0442fb8a4f4981c116ab0102c9738a97fd39c3118c156bdd4bb799a70d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNjJjMWZkN2E4NDQ2Y2ViMTJjZTZhZDkyOTVkYTAwMGQxNmM2MjllODI1ZWNjYzFjNGUwY2I4ZjRmOGYyNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzYWY1MWI1ZDM0ZjdlOTg3MmUxY2E1Yzc0N2JlNGQyZTIzNTBlYmQxYjI5YjY2YTI3YjViMTc0ZDBmMjMxNmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhNzFhNjhhYmQ5MDYyYjFiZTkzZGNmNDFkN2M1YWM2NDdlYWQzZmMyMTEzOTc5YjAwYTIyN2UzOThkOGFiNjYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:33:19.973Z"
+  }
+}

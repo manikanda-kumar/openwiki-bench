@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9b353dd89a19a3691fee616fa7597cb8c16de6f7b934c32b2c903b1c3265d04f",
+  "claims": [
+    {
+      "id": "claim_78f96e78c54c4434a15e98e17e95bffa",
+      "statement": "Each cell database lives at <watch>/<cell>/ltx/e<epoch>/db.sqlite locally and replicates to cells/<cell>/ltx/e<epoch>/ in the bucket; the epoch-in-prefix is the data-path fence, LtxRepl carries the fleet key prefix itself so two fleets sharing a bucket do not replicate over each other, and a cell is registered at activation so a fresh cell can be proven durable with no cold-start window.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L1-L15",
+          "version": "repo-lines-v1:sha256:98cacf168cb75f1ef0cc9e82bbf59de8e8348060ec912d2460b2ab59037e6830:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjE4ZDU2MTFkMjQwYTYxNjM5YWY1OTg3YzQwNzU3NjQ0ZmUwY2M0ZmNiZmNmYzMzMmJiMzZlZjBlMDRjYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2NWVkOWI4NmNhMzE5NjNhMWZiZmIyMzk0ZDE1NGI4YmI5MWQwMTc4MzJmYmRlZGJjOWZlODA1Y2NiZDg1YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhYTViNzA2YjVlMDgzMTFiYmNlMzMwMjYyYTM2OTAyOTBkOTI1Njc3NjYwZThjMDk3OTUxZWZhYzJhNzk5NjQifQ"
+        },
+        {
+          "resource": "repo://crates/celld/replication.rs#L1-L7",
+          "version": "repo-lines-v1:sha256:d269f3cd6ae4a7ee21f2e2753a84262611f7a16039ef3ea9edd25d256d6a0ca6:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYyMThkNTYxMWQyNDBhNjE2MzlhZjU5ODdjNDA3NTc2NDRmZTBjYzRmY2JmY2ZjMzMyYmIzNmVmMGUwNGNhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWFmYzAyMDBmYjU4YjQ3ZmIzZDE0ZmQ2NWViNTc2MDM4OTExZTdhZjgzYmExZGEwMjJhMGM4YzJjMDUxNTBjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmE0MDNmOWM5YWVmZWJlYTZmODlkZTI1ZDI3Y2ZkNTQ1OGUwMzYzZjliZWExMzE2NWIzODM2ODc3NWU1NGRlMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5549832c31374e55aa8857e49b2947ce",
+      "statement": "celld_ltx::Db owns the SQLite connection: it opens in WAL mode with wal_autocheckpoint(0), holds a long-running read transaction as the checkpoint takeover, diffs the WAL against the last LTX position to write the next L0 LTX file, and runs PRAGMA wal_checkpoint modes; the capture API is synchronous because rusqlite::Connection is not Sync.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/db.rs#L1-L39",
+          "version": "repo-lines-v1:sha256:56d54461eec519a8d78a213f4fb5acfe3e1e24b70f1549f648eddec72e94b3d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxNTIzNDUyNzI3ZjYwYWIyYzU5NGJlMTZlZTA0OWE1MzNhODhjOTU0OGQwMDUxOTIwODI3YmY2NDY5MjVkNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzNTYzOWY0ZDY1NDVlN2Q2Mzk2YmQ5N2RmMjY5NmYyZmU5ZDI0MTRjOWZjN2I2ZjY2NTc4MDIzYjdiN2I2ZjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNjQ0MzdkMTIzYzRiN2NlODQ3Y2YyMTk3YzQ5NmJhNzgzZDcwY2I3YmEzNDJmZGY4NzJmMzcwNWJiOTU1MWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_21ff2e9b13f84111ba5b9c85e29e602a",
+      "statement": "Every LTX file starts with the LTX1 magic, format version 3, a 100-byte header, per-page LZ4-block-compressed data, and CRC64-ISO checksums; the lock page is derived from PENDING_BYTE (0x40000000) and the SQLite page size and is zero-filled on decode.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/ltx.rs#L16-L39",
+          "version": "repo-lines-v1:sha256:a801e246fb9372d0280778d14e5d07fdea1bef68dbba963515c60155eedddad9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MzU1ZmUyZjAyMzU4MjNkMDdiM2MzMGZmMjRjM2U2MzI5YzI4OWRhNDRiZDMyN2M4YzcxNDJmZWVhYTBmMzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNGYyMjA4NDc5YzIyYWMxNzFlYWUzMjA5ZTQ5M2U0OTllYjYxNTY4YzlmN2FiZWY2ZWM2MDI2Njc2OTA0MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmYTM0YTlmYTdmOWQxZmNjYWFlYWRiM2FjYTRjOWU1ZjhjMGQyNDc0MGFkNDUwNDdjZTgxYjRmMWUwZWQzM2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f299f99862d84c1e96f782da2446b0e7",
+      "statement": "Replica drives sync (copy each new L0 LTX file up to the replica, advancing the replicated position one TXID at a time) and restore (download the LTX files in TXID order, merge with the compactor, and reconstruct the SQLite database to a temp file that is fsync'd and atomically renamed into place); calc_restore_plan anchors on the snapshot level and walks per-level cursors.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/replica.rs#L1-L25",
+          "version": "repo-lines-v1:sha256:8a9afee69b165b147173aa3fa2812165fbc1ddadb3ffc81bce2542512abff9b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwODFjY2MzYzkwNGQ3MTk4ZmQ5NjBjOTJkN2RjNjMxZDExNzJhNTkzNzg5NTZkNzQzYzNmMjA2MTAyYjliMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2ZjgzMmFlMWY4NzNmNjQ3NWFmZjhjNDBkMDYzMDNiZDliZmE4MTQ2NWY2Yzk2ZTA4OTA4NmVkNDc1YWZhNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxMmE1MDI0MTAzYWMxNzQ0MzhjMGE3NDgyNDUzMDczNmUwZTUxNWZlZDE5ZWQ3MjhhMjE5YTJiYzFiY2YzOWQifQ"
+        },
+        {
+          "resource": "repo://crates/ltx/src/replica.rs#L57-L71",
+          "version": "repo-lines-v1:sha256:4e17f4106fca7e77d09ab2533296b18e0439b3ed808cef5926447f093f75474b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYzQyOTA1OTY3NjBhN2Y3NmU4NzE3ZmJkNmFjNDg4NWMwYTA0MTNhZDI1OWE0MTFiMWE3NDY3MWUzYmE5M2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhOGFhYjU4N2U2MjdjOTNhZDhlZTE5ZTI0N2RmN2Q3NTJhNzQ0OThiYzliYzQzZTM1YmMyNjdmYmY3OWJhNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjOWQ2ZDg2OTlhMTVlOGE1M2QxNzcxMWFhZDU5NzM1OWVlODFmNWNlNzZkYzg0NTk1NjY5ODkyZmM4ZGQxYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5YWU1MzdmZTI2OTY4YzEzNzg5NDEyMDRkMWFjMTE3NTA4MTNjYWQ0OTc5ZTA3MGU3NzI1Y2FlYzA3MzQxZGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86ee8ec3f63746c2850f3d695b64ef1c",
+      "statement": "client_for keys the replication client to the cell's epoch prefix, highest_nonempty_epoch selects the newest durable copy to restore on takeover, and epoch_replicated is the fail-closed eviction gate: never delete the last local copy of state the bucket cannot restore.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L1183-L1220",
+          "version": "repo-lines-v1:sha256:5b5076c7e014b81fa1ba6052aa0fe20c62bdf734c19c5426082d53adf647135c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZjU0YTU3ZmZjZTVlNTYwOTJlOTRiYzY0MGJiYzllM2I5NmE5MWI1NmQ4Y2E5Y2YzZDVmZjJhODJhYWNkNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzMjM0YjdkYWRlZGEzOWY3ZjQ3MWRhYmMyYjViMDliMzhkYWMxZWYxMWMxNzM2NWFjNWYxMjQ2NjI1YjRiNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMzODVlNzZkYjdiZjBmZDI4OTk1MjA4NjI3NmVkYjQ0N2ZlNjdhMzc2ZmMyYzk4OGQ4OGM4ODczODBjOTM2MzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc4bcddbdb6343ecad66213285b10970",
+      "statement": "A preserved local eviction snapshot is reused only as the previous epoch's baseline (eviction removes the LTX metadata, so reopening that image would start a new writer generation at TXID 1); a clean process reload is the separate resume_local path that retains both the live database and its LTX metadata.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L1261-L1279",
+          "version": "repo-lines-v1:sha256:6acdb32b30abc578567140077b4118bde50ab36d6152bb0f11be01a2d46667e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5ZWYzYWJhZGMzNWE2NDNlNDY1MWE1ZmU4Mjc4MTVhMzNkMzEyMGNmODEyYTIyZWU1YjFlZjUzNWM4YmFjNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1Y2RlZjgwODVhZTc0YWI2MzZkNjQ1OWY1YzZkNWZiZmIwZGIyNjRmMWIwZDc1YmFjNTE5YzliM2Y2NzE3YWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMGQyNWRkNjBlOTNmMTE1NzE3MTA5MjcwZGEwYWNmNzQyYWVjMWNjYWMyYjkwYTdmN2U1MThhMmU0ODMyYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2NmU5NDk4ZjNlZmQ4NjU4OGE5M2FhOGY4ZjlmNjFkMDA2NjRjZjRhZWYxYjdmODVhOGFiMzE4ZjlmYzI0NGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cfecf7a328647bf9d4e6db7f2e9914c",
+      "statement": "Compaction levels follow Litestream: snapshot level 9 for complete database snapshots and default levels L0, L1 (30 s), L2 (5 min), L3 (1 h); the Compactor merges ordered LTX inputs into one byte-compatible LTX output keeping one page per input, and ReplicaCompactor is additive — it creates a destination object and never deletes a source.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/compaction_level.rs#L6-L54",
+          "version": "repo-lines-v1:sha256:964aaf74b8172f4e50b45afb1259b815a3bf714196420cca11f80efdc68a1d81:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3Y2M5YmZhYTg4MTU0M2IzMWQ5ZTViNjRkOTRmOTRiYTA0MWQwNGU0NGFmNjc4MzNlYzQ5MWNhZGVlNGM0NWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiMjkxNTE2YTAyNTQ4ZTYxNGY3OWJjNThkMGQ0NGQ0YWFlN2Q4MzY0NTA1NWIyMDUxMzc5ODFkZDc1YzhkMmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzMzcyN2EwZThiMjUxMzE2Njg4ZmVjOGEwY2YxMDljZThiNzM3NDU3NjVmZDdlMWQ2YjNjMTcxNjUzNjAwMzMifQ"
+        },
+        {
+          "resource": "repo://crates/ltx/src/compactor.rs#L1-L47",
+          "version": "repo-lines-v1:sha256:485dc2a911ab8918e1662df3bca6d23ab336c1ea358e3cb6f11d188a7f0ee42b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2MzlmZDI2NWUxZTg0MDc3NWE3NTM1NWI1NWUzMDc3YTJiMTE1YzUwNTk0ZGNlN2VmYThhNjY5ZmI5MDljYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0ODQ1MjY4MzViMzQ0ODkxM2I1MzU2YjEzYjQ5YmMyN2I5ZDdmODcwNDc4YTU2OTJiZWNkMmYzMDBiNjA1ODgifQ"
+        },
+        {
+          "resource": "repo://crates/ltx/src/replica_compactor.rs#L1-L31",
+          "version": "repo-lines-v1:sha256:f7ccfcd7aff81812e8ee9f2f8e928bee6e440da95344c7ef127f0fea259b05a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYWQ0MTY5ZmM0NmRiZmQwZjk2MWE4M2QzNDJjOTQwZDhjNmRmZTg2ZDIzMDhhYWYxZmVkM2Q0MDNlOGE5ZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MWNkY2MyYTM4Y2U3YWQ0YjU0NTVkMzNjMDQ5ZjNkNjQzMDExYWQzNmFjMjUwYzJmODMyNTUxNGFlMWQ1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMDZkMzBhYjJiOTQzNzg0ZWM4YjA3ZmVlN2ZmOGYxOWNkMDE2NjJmNDQ1MDU2YzljMWZlNjlhZGUzNGY1ZDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba790e48fbb041e1949ec14484419739",
+      "statement": "CELLD_LTX_COMPACTION is on by default: when a cell's durable TXID distance reaches CELLD_LTX_COMPACTION_MIN_TXIDS (default 256) a background attempt folds the L0 chain into an additive L1 object, and CELLD_LTX_COMPACTIONS (default 2) bounds node-wide concurrency; it must be set to 0 on every node of a mixed fleet until all nodes can read block objects.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L2571-L2588",
+          "version": "repo-lines-v1:sha256:bccdbc4d19e31276e4275c3ae91871100194a22301a0a35ef03608308c7ad80f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjYThkM2E3NjQyNjk5NzEyNTk1NmRjY2ZjN2ZhOWUzOWRlYWE1NmU5ODc4ZDE4NmZmNjQ3MjlhN2JhNjM1OTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2OWRlZTkyNDc0NWU2MzkxNDU5NzBlZDVjOWYxZDBjYWFmMDYzODUzMjhkZTRkZjRhYzU0YWE2ODM0MjNjMzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGU5MzIxNmJiZjliYjZkMmZjOTA1YzU4YjNjN2QyMzI1NDNjYzU2OTg3OTI5MThhOTM3MThkY2RhMTlhMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhODQ1NGQzNjA4YTViYTVjODM1ZGI2MTI5NTIxZmZkZTNlNDhiYWVmYTAxZmMwOWQxMDU1MzI3OWVmMGY5ZjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d673b5d31cc47819545e529f7933d86",
+      "statement": "A handoff snapshot is an L9 object so a successor does not replay the complete transaction history, and the proven additive L0 chain remains the fallback restore path after an eviction.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/replication.rs#L19-L26",
+          "version": "repo-lines-v1:sha256:ce0caf0baa99bee9cbf7e4bc407d93b67217db2eba5c8bd5ed247eac93f2ce8b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODk2NDg1M2UzMGE5Y2FiODhjZjdiNGRkZGVhMTg5ZGY2N2Q2YzA2MTJmOGE5NWUxOTRlNzUzYzgyOTQwMTczZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGIyYzJhMTkzZDkzNTQzNTU5ZWFkNTA3M2MwNGNjOWZlZmYyNTQzYTMxZjA2ZmQzNWRjMTViM2M1MmEyNWU4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWYzNDA1N2E2NWJmODMyOTk0ZjFiZWY1OGFkOGU0ZjQzYjdmMjA4ZGNiZmI5NjA5N2M2NGQ4MjQ5YzUyMTI3NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d3365d2ad51543738a440bb1b6e2d3e1",
+      "statement": "A bundle is a celld-original envelope of verbatim L0 LTX files with a CLB1 magic and a binary row footer; at rest the bucket is pure Litestream and a drained bundle leaves no trace, and the BundleOverlayClient lets compaction read bundle-resident frames while its output stays pure per-cell L1s.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L1461-L1474",
+          "version": "repo-lines-v1:sha256:71aa9104f0365fb27dc1a1c8bf141e692ed9c525a5aaece5278aeba0e951c8a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWI4OTNhMTliY2NjNDIxNjY5YzAwNmZiMWNjOTFjMmNmNDM3ZWNlNWUyOTMzZmYxMzY4ZDRkNTg5OWI1MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwZDlmNzM0YmU1YWEwMzkzNWM0OTliNzE0MTEzNTVjZWZhYzJhMmJmNTc5ODllMTI0NmQzNWE3MzUyYzdlOWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljZDYwYWNhNWQ0ZTdjZjgzNDIzMTMyNDY5OTNkNmFhODM3MDRkYTI5NjBkZWU5MTMzMmZhNjUzOWJmOTI4ZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NmU2NjRkMTVhNDBkZGFjYzNmNzU1MGJmNDA3MzEzZWIxN2M2ZTA1Y2FlMWQ4MzZmNjA0NDBmMzg0ZmE5YjUifQ"
+        },
+        {
+          "resource": "repo://crates/ltx/src/bundle.rs#L1-L30",
+          "version": "repo-lines-v1:sha256:f7b32f9619748c38a773f61b335d3e26c6d165620986b809c548e9dffc1e42f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmMzUwNTZjMGIwMDlkNmZkMTZiOTM3Nzg5ZDc3NTY3NWViMzllYjU5M2Q2ZDJjYjE0OWQ4ZWU2ZTE4NTFhNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NDExOTFmODRhODM4NzlmNTE0MTAwNzNkOWQ3ZTYyNjg0OWI2NWJlNWQ0ZmM1NDZhZjhmZmM5NDZhZmU5MGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5bdae10e9d00442aa67bc8fe40bf5536",
+      "statement": "The log tier's replication unit is the captured-but-not-yet-uploaded L0 segment (ShipEntry), streamed to a small follower ensemble over the signed peer transport, and followers keep each session's durable appends under <root>/peerlog/<node>/<generation>/.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L77-L84",
+          "version": "repo-lines-v1:sha256:8905f8d35e1f7c987598e0c3398fab1e98a030abd2083275ffa665d127983846:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE4YTY2MTVmMGY3ZjkwM2YyYThiOTlhNzc0MDU0OTc0MDFjNDRkYjZiN2UxZDgwNTFkMzM2ZjAxODkwYjhjMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzNlYjc0ZTgxZDA1OGU2OGY3ZWE1ZTZkMGNhNzI1YmMzYmY0NjgwYWZlYWI2YmNjOGEyYjdhNTFjMTViZGQ3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdmMDE4NTgzYTg3MzkzMWVhNWQ4NDQyYzA4YmJkMDQ1ZjA4ZjAzNjEzZGQzNDhkMGMxZDg4Yjk0MjU5MGE3NSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/node_log.rs#L676-L702",
+          "version": "repo-lines-v1:sha256:28ce31c9fde8724ffe319fc67afbe5d3363b6709d3dc896d0acda9ca17136620:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1ZDQyNTI5YWM5ZDRhMmU2ZjNjMzIxNzgwZjdiZmQ0MDcwY2I4NmNmZDhhNjQ3YmVjNGIyOGM2MzVlMmJlMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiNWNiMThmNTNhOTkwMGJiZWY5NjQyOTUwMWU3NDVjNzJlODEzNDYzMTI4MTA4NWVmNzYzNWZiNGRhYjc2ZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0Mzc1MGMwMzFlNTM4MzJiYTkzNmY2MGM4NzVhMTNlZTVhYzEyMDgwZTNhMjAxMzFhNWI1NGU1MGE5MjY5MzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyYzE4ZDgyN2M5ZWU2ZDUwMjVmMmFmY2Y0YWVkNGYzMWQ0Njg2NzdjMGM5NDk0M2ZkN2M2YzEyNzZiMDk2MzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e2fc23eca2f40c2b4e5b7616829dfb2",
+      "statement": "The actor waits on a cell's replication through SyncWait: Durable when the latest local commit is in the bucket, Unsupported when the replicator does not track the cell, and Failed on error or timeout.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/replication.rs#L28-L37",
+          "version": "repo-lines-v1:sha256:8d869b6b4439a40ffe882ce4f7c08322e1337b96a6fe221aeeeacfd931081b08:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1ZmNmMGRmNTZkZjI0ZjNjNjljNGI5ZDY5OGQ0NjQ5ODI2YTZlMjBmYzMwYjBhZDkxNzc2MGE4ODg5ZDhhMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjYWQ1MmZmZWIzODIzZDYyNGQxNzFmNDk1YzU1NjhlNzQ3MzFhNDM0MzE2NDJlZWE4ZjA1NGJlODRjNmY3ZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2ZDM3YzI1MGQyMjMzNGRhMDg1YjljOGFmYWMwNTE3ZDdhZjA3YTQ4NGI5Y2I2NzQ2NjFhNmQ0NDJlYjQ1YzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_791e290196ea40af8f3a58c23497a7df",
+      "statement": "Replication concurrency is bounded: SYNC_CONCURRENCY caps per-cell uploads, RESTORE_DOWNLOAD_CONCURRENCY bounds aggregate restores, and CELLD_LTX_TRUNCATE_PAGES (default 128) truncates an ordinary cell's WAL at the next checkpoint while Queue cells use passive checkpoints because a truncate boundary emits a full database image.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L58-L75",
+          "version": "repo-lines-v1:sha256:703b91bf1a0c4f982fc180241f28bbf7829d4658420854122c9d90054b46ab81:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlZTBhNTc5ZWRlZWViNjM2NTA5ZjlhNGNiMTMxNzg2Y2VkMTVmYWNjMTY5Yzk2OGI0ZGEzYjVjOWNhNGRhMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNDUwMTMzMjY2NjlkNDFlMDMwMzc2ODYyNjA0MjU2N2QwNzE5NjRiZWZiZGYyY2QwZTI1M2FiYTQzZDhhNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5ZTQyOWYwODI2ZTdjZTNlNTBkNWQzNDI5NzMwZWY4MTBkMWQxMTQxMGMzN2Y2ZmU0YjZmZGVlNjkxYWEzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxMDZjYzY0OTY4ZjFkM2EwYzlmM2UxZDYxNGRkMmNlZWUzNjA3NTZiNzQxNTUyN2VkZDdmYjg2Y2E3Njk4NWUifQ"
+        },
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L979-L985",
+          "version": "repo-lines-v1:sha256:0c8a39154687d7014e1e147a43e9bd2338e3ab357d78f5d9fa0977a20798208f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNiMTI3YzUyNzE0Njg4ZGNhZjRlYTdkYjExNTBjZjQ0YWZhMmU5ZWViZmY0NDRhMzJkYmNlOTkzMmY5YTMxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWI2N2MxYTc2ZmM4MDk1YTg4MTY2MGI0MTE5ODlkNDQ5MGUwNWRhMTAyYTNmYzdjMjFkYTRhZTVkNjY5MmZlMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzU2OWZhNjFiODljODBjNDJjNDU2NTA4OWI4M2EzZmRhMzk3OGM5ZWE1Yjk5OTA5ZWZlODg4NzY1ZWQxMTI4YiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:40:45.922Z"
+  }
+}

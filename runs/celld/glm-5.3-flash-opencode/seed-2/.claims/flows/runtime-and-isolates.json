@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d38e96db11e097fd2c518dfb8f8dc0351b223159fefa08b870ba0572f2f79978",
+  "claims": [
+    {
+      "id": "claim_d7216b3605fc4ef49d81ab5a68ea0749",
+      "statement": "The JS engine binds rusty_v8 directly with one isolate per cell: the worker's default-export fetch receives an env whose bindings are DO namespaces,env.NS.get(id) instantiates the exported DO class once per id with a state whose storage is backed by the cell's SQLite, and DO storage is async in JS but synchronous underneath, wrapped in async by the JS harness.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L5-L14",
+          "version": "repo-lines-v1:sha256:806abbdf0782d12bf6793844d633e373112eb34a02c3ac6221584df1aeef5ef6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNWYyNzYzZTYzYjlhY2EzNTE5MDViNWQ4OGQyMzMxNjNlY2RiNjY3ZGYwZjcyZGIxZDg4M2MyOGQ2ZTUxZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5N2YxNzk1MTk5NTY0YmQyZDViZmRhNGQ0YzcxZDFmY2FhNTIzYmIxM2Q0NTExMDY5YTg1YWFhOWZhZjkxYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5YzFiZmUwODUzNWIwMWQxZGE4MWQzMmYyNWRjZDU0MWY5MmYzN2FhZWNiNTJlOGRhNDc1OGE0ZmNlYWE2NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3MWFiM2MzNzU3ZDVhYTEwNDI2Njg4NmIwMjlhOGExOGU1ZmU1OTZjMWQ4MGIzMjEyNTM2NDA3NGU0YjkyOTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cee3193b6c6247bab2ec55877fa91a0e",
+      "statement": "The raw V8 adapter and its child modules remain outside the Actor execution domain, with Actor-reachable wake and WebSocket state injected through HostServices.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L1-L3",
+          "version": "repo-lines-v1:sha256:66d850dd2aa537a312ca0ea7fd1ece0d6ddcce07684d3810715b61e5980ed7e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYyMThkNTYxMWQyNDBhNjE2MzlhZjU5ODdjNDA3NTc2NDRmZTBjYzRmY2JmY2ZjMzMyYmIzNmVmMGUwNGNhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTIwOTc4OWE0ZTk2MzBkMmI4NzE0YjlmMThmZDA4MzRhYjdkNjcyYzY2MWVjOTk0MzA4Yzc3MDFiMTUzZDNkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzhhOWY3ZDY5MjMwODI5ZjA0ZGQ0MDE3OTZhNTI0MWY5MTg4ZDZlZjMyMTUxYTE1YWI0NzBmMGY3MjhlZjlhMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_46aa38e436c948e7bebd6d493a1673f8",
+      "statement": "ES module resolution lazily compiles Node builtins: a module compiles the first time something reads its global, so a worker that never touches node:zlib never compiles it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:9bed57565fc003f502c43b47e330681c01d9e4d9f7b13225bfbcd17dc1b3c1d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc4NWVlYWM4ZmU5MDM3MDZlZjUyZTAxM2ExYjIyNmNiYTg3MzAyYzZiNjM1ZDgwM2Y3MDIzODg4ZGJhMGQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFkNGY5ZjBhNWE4YzYyMGU4Y2U4Mjc2OTUyZjE4NDM2ZTdmMzljZmU2Y2YyNGYwZmNmN2QwYWJkODgxMjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhjNThiY2ViOGQ4MTdlNTgxYTFkYTcyZWVlM2ZjMTM5ZjllMWNjZmNkNjJmZjkyYjI4OWJjNTAwMzUxM2YzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_96c84e176b0346b5ad1ae0d75d1b8d55",
+      "statement": "Cell states: resident (active or idle); idle cells are removed from memory; hibernated cells keep their hibernatable WebSocket clients on the node; inactive cells exist only as bucket objects (how every cell starts); no memory survives transitions, so the constructor runs again on the next event, and a hibernated cell wakes the same way a cold start does except its clients stay connected and it stays on its node.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L20-L29",
+          "version": "repo-lines-v1:sha256:830f249507c2ba4fa60eacb52b3e82dcd1cb1fcc25af4a66a895f9299694cf62:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzg3NjBkOTMwYWJiOTQxMDU0NDM3Y2JkNmI3MDk0NzdiNWVmYmUxNTUwMDAxNDc5M2VkNGFkMjdlOTc5YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1MGEyZjBlMmNkMGRhNjJjZGYyZGY2Yzg1ZDMwYjllOGNjODEyYjhlNTUzYmU5MzBlYjBkMDNjMjc3NDMyZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlODI1YjU2MmNjZDY0NDQxNjExYjhiZmEzMjE1OTcyYzdmODNmNzJhNzQwOGJmOWM4YzU5YjEyNWI1MDQyM2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_71c800f8611848a5b8c430480b412ddf",
+      "statement": "RuntimeManager is the Actor's V8 cell-runtime boundary: it holds the generations lock (a reader takes one snapshot and never holds the lock across an await), the cell registry, the alarm reporter, a RemoteRequestRegistry whose tombstone and cell enqueue share one lock so a peer abort arriving before the forwarded fetch cannot lose cancellation, the data dir, replication, wake flusher, and admission limits.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/runtime.rs#L469-L507",
+          "version": "repo-lines-v1:sha256:54909daec34c276c63d60fc47712c9eed4910279cea240f1adee15827ebd4356:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhMmI3MTA5OWZjMGIzOTgxOTg0Y2EwYjU2OGU1ZWZhMmRjNzEyNTFmNzgxOWJjNGQwMTA0NjlkZmQ5OTk3ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyNGZhYzFjZmFiYTAwYTc3NDMzOGNkMWM2MzdlNmQzM2E2ZTUzMTk4OGMzNTNlZmYzMmMzY2UxNjQzNzEwZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmOTRhM2E1MzM4YWViYzM5OTA3MDBlMTMwNWY1NmI3NDlhNGJkODZhYTMzN2JiNDk1YjM5Y2E0MTIwOTRlNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlODU0OTFlODVlMWFjYmQ5NzBmNTlkMDA2MDlkNzI3MzMxZTMzMWNjMTJlOWIyOWJmMWMxM2IxMDdkY2I1MmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5671950f91b543bcb6449d32f2c7f1b6",
+      "statement": "CellHost is an enum with an ordinary builds-only V8 arm (RuntimeManager) and a Scripted arm (SimCellHost) compiled only under the internal-test cfg so the deterministic simulator drives the same actor shell against a scripted cell host instead of V8.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L433-L435",
+          "version": "repo-lines-v1:sha256:6f332775057c0242e33a7867470c51d41ee3a5943b3fe1da348488042ba3e79e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U2MjU0M2VhZGM5NzIyYWEyOWQyNTU2YjI4N2RjZGNlMDY4Y2ViNDlkOTVlOWM2MzBhNzJiYTU0MTJjMDAyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzk0YTNhN2QwMzYyMzE3NDJiYzY5NTM3YjEyYmMyMThhYjM4NzhlYTAyZTc5NDg4N2I3MjNkNzEwYjJkNDVlYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2M4ZjJhOTExMGQxOTI4M2Q3ZWE1ZWVjMWI0NGU0MDJiMWMzMTUzZDZiMTEyMzljYWI3ZWYzMzQ2NzRkMTcxMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjAxOWI3NWJkYzIwZmNiOWIzMmRkODE1YmEyMjgzNDA4YTRiZDg2YWJlMjBmODg5NzVlN2RkYzEzMjQxOTI5NCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/runtime.rs#L493-L507",
+          "version": "repo-lines-v1:sha256:df85998e063c66bfdb113f3807ead4fab63920c4105bbcd6cbc14a3ff00ed5b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyNGZhYzFjZmFiYTAwYTc3NDMzOGNkMWM2MzdlNmQzM2E2ZTUzMTk4OGMzNTNlZmYzMmMzY2UxNjQzNzEwZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzA1MjA4ODhjNDlmNTA0YzEzZmQ1NmFhZDc2ZGM1MTM2MmU3YmJjYTcyMjg2OGVkYWM5MzFjMTQyMDc5OWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlODU0OTFlODVlMWFjYmQ5NzBmNTlkMDA2MDlkNzI3MzMxZTMzMWNjMTJlOWIyOWJmMWMxM2IxMDdkY2I1MmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c057048e61a146dcb20e4c1b997310bf",
+      "statement": "StatelessRuntime and the isolate pool (crates/celld/pool.rs) handle stateless Worker requests in shared isolates, with admission (Pool::admit including shed-aware Refusal error) and cell placement decided by celld-logic's isolate module so lifecycle policy belongs to the replayable core, not the shell.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/pool.rs#L367-L665",
+          "version": "repo-lines-v1:sha256:6813982e678da012699f10bc505af0cc47244e5cbfd00752a84b678163657610:eyJzZWxlY3RlZExpbmVDb3VudCI6Mjk5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkMmY4YzcxNWUwM2M4MzZmN2I0MGViMDc1ZTdiODE1OTIyNDk1NWQxNmI1NzkxMzUxMzI5YmNhNDYyMWMwMWJlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlYWQ3ZjRjYTliZTBhZTQyYTkwMjk5YjM5YzYxYjNmYTQ4MTBlYzNmNDE3NDFmNDQ3NDM5MzY3ZDFlNjVjMWFjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmYmEzYWZjM2M3N2E1NWZkYTM5NzU4ZDBmOTQzODhhMTJlNmQ2OGE5ZGJjY2Y0NDc4MjBhNWQ5N2RkYzQzZmI3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNGVjMDk0NjVlYTM2MGM4YjBlNDZmNTk1NjEzNDA0OTc4ODhkOWVkN2JlOTY5ZGFjZDE0MmFkYmM4YTZmMWE3In0"
+        },
+        {
+          "resource": "repo://crates/celld/runtime.rs#L323-L468",
+          "version": "repo-lines-v1:sha256:b416d77606f0df7d09781c9b0d920c7efb6c5fcebfd35b0b5e6f25d79005e2f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzNTNiOGI3MDg2YzExMTg1ZDAwZGJjMGE4ODRjZWFhMDEzMDVjNWIxOTE4MDZlNGIwZDI2MWFhNjE4ZGZkNmI2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiOTA2Y2FmYmQzNzgzNTZkNmUyNTViYjBhODVjY2FjMjMzMzA2ZjI0MDZlYjdkMDMzNTI0YTQ3OThjOTAzNGMyIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNGE1OWJhMTdkZmEyMjgyMDdkODYwZTQ4ZjZiMzhlMjA4MjFjM2YwNDBiODU0YjYyNWE1NGZhYzI2MDg0ZDllIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkNjA1NzYxNzY4ODBjNWFhNmVhM2I4ZmVjMzVlYzk5ZGI2Y2Y0NjJjMDM2YWE4MTUyYTQ2ZGEwNGVhNmIxZDE5In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_86ba91d881e14a9287dde2751b664c56",
+      "statement": "The health endpoint /.well-known/celld/health returns 200 {ok:true} only when the node is not draining, fleet-ready, and healthy, and 503 {ok:false} otherwise.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2606-L2612",
+          "version": "repo-lines-v1:sha256:d845ba27923b84e0111cc62afe8e85cf25df022862a69f9b54efbdf5fa8ea1b3:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmU5YjYwN2NlZDNkZjRmNzc5YmZlMTUwOGJjYzIzYjI3NWE4Y2RjZmM1YzFlOWZlMzU2YTBhYjc0ZjRhNTVmNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDAyZGY4OWYyMTQ3NzI2N2ExNWU2ZTc2MDMyZjVmMGM2NmEwYWUzMWE5YTk2NmU4ZGRkYWE1MDU4ODE2MDhlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTNlNmY1ZWI1OTI0NjZkM2RmNjI3M2Y2ZDgzMjIxNGU4MDk2OWE3ZjE4YzY0MmM3NjIwN2JhMzI5YmRlZTgzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTZhMzQzOTVhM2IyNjA0NzVjZTI1MTk5YmRhOWQ4N2FlYzg5MDMwMzlkZjZmMWVkMGViYjMxNWNhMGVjYjU3OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ca98adfd11814300a207fb380b5cb012",
+      "statement": "Reserved runtime classes are served only on the interior /runtime/ route with fleet authentication, and the mirror refusal is deliberate: /do/ refuses reserved scopes while /runtime/ serves only reserved ones and refuses plain DO scopes with 403 directing callers to /do/, so a class added to RESERVED_CLASSES inherits both barriers with one route and one refusal.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2694-L2733",
+          "version": "repo-lines-v1:sha256:05a924f8ff0019d6229085f25cc3babc50e17f6deb03799898a983f5e0eecea1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4MGRlNDhhNTM5NDMwYWViMjcyM2ZjZmY2NTM1YzA1NWQ3MWFlMDQzNjU3M2EzMTgyMjBiYjJhZmJkMzI2NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlZDA0MjYxMzk5OWMzOTg5YmZmOWRlMWZmZTg0ZWMwNzc1ZTA2YzQzOTA3Y2E3N2JmY2RhNjc2MWE4NWRjYzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1MzYxNDBlZGFhYzQxNzVjZjVkMjI4NTlhMDI1NzNmYjY4MzFhODM3NGFmODhhOTA0MjA2ZDRmMDM0YzBhOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNWFiMjY1OTI5MmIwYmQwOTZiNTNjNmIyOGFkOGU2OTdkY2ZhMTJjODI1MmM1Y2UyNDUzZDEwMGZlZjUyZjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f8400d77cd54d349590d84f0be2d2ce",
+      "statement": "WebSockets become their own tasks because a socket outlives the request that opened it, with three shapes — a local socket to a cell on this node, a socket proxied to the owning peer, and a socket the worker opened outbound — differing only in what sits on the far end.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/websocket.rs#L1-L6",
+          "version": "repo-lines-v1:sha256:14f95b1a8367f87fc8d3e1db00b867137cd74df74077dbfc936ebc85efc39f61:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYyMThkNTYxMWQyNDBhNjE2MzlhZjU5ODdjNDA3NTc2NDRmZTBjYzRmY2JmY2ZjMzMyYmIzNmVmMGUwNGNhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDVjMzczZTVhYjUxYTEyODFjZjc3MTA3ZjYxYTc2MGU2MzgxZjhiODY3YjM4OWNmMjNhZGNmMDA4NTY3M2QyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGY3MTY0MDU5ZGRhMjJmOWY2MTE2Y2E0ZGY2MDAwNzgxZjBhYjRjZDFiZjFhNjYzMTg3ZjZiNjkxYzk0Y2JjMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6856bf628cf1430fa1e854683fbfcc3b",
+      "statement": "The auto-response short circuit: a matched text frame is answered in the shell and never becomes a webSocketMessage — no routing, no activity, no wake — so a hibernated cell stays hibernated.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/websocket.rs#L9-L22",
+          "version": "repo-lines-v1:sha256:d1f862a814eec5b5acb82575a63711ad2306556c9ad6b92b7b87c369b7671e0c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NmFmYzZmOWRlZjljODhhOTM1NDllZWJmOTIwOWViNzUzNjMzMDIxOWI2NTMwMTk0ZGI4NTNlYmI2NWJhOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlYjQ2MmY2ZmY4YzMxZTBlMGM3NTRjNjRjNWZhNjhhODlmZjFiNTc4ODQ1ZGFmMmM0NzJlNjBjODlhNDY0ZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNjZjZGM4MWZlYjllY2Y3MWYyZDhjOTcwZjNmMWFiNTZiMmEyNDY4MzJhMTNmMTlhMTRhZDJkZjRmYmE4MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjZGQ1M2ViMDBlOTkzY2Q2YzJlMzRlMmVkMjIzMGU5YWM1Y2MwOTgzOGViOTBlZTg5ZjdiNzAwMzc2MTE1NTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ad2f6c1b7e3e4fe888670c3751a32590",
+      "statement": "Durable Object sockets survive between events in tasks decoupled from the isolate so the cell can hibernate; a socket must wake a hibernated cell on its next event, which the shell-level pump provides.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/websocket.rs#L13-L34",
+          "version": "repo-lines-v1:sha256:43f8ac7ebda136c46bbbdd8e3f6b5ba3cdf54204b2032edceb75d23a3098c04a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZGQ5ZmFlMDMxOTBiMzZmM2VhMTg3NDRiMzhkZjA2YTgxMWQ0MzRmZjM2ZjZkMDZiNjM0OTI3NjcxZmE0ODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwOGFmNDFiZjFkZWQzYTE3MDU1YTQ4NDM4NGI3NTM5MmUyOTcwMTczY2E3YmYyOTRmZTg5YzJmOWE4OGE3ZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3Y2M0NGUyMmM3N2ZlYzE3YzZiOTY3ZDI4YTI2Y2FmYjc5NzNhOTVlZWI2MjkwZmU0NjUxZDhmNGI1YzE5MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3OGZhZmY2NjM3MjU0YWRiNTUzMmRiYTVjYzRmNTZlZDhiYzhkYTFkYjhjOTczNzI0Zjg2NzgyN2FmMzg0OTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cc8807164cd41659bf3057a7afb1598",
+      "statement": "Each hibernatable WebSocket client holds state in the isolate heap, so the V8 heap limit decides how many clients a cell can carry (approximately 50,000 at the 128 MB default, approximately 512 MB for 100,000); above 90% of the limit an isolate refuses a new hibernatable socket and also stops SQL result-set materialization, resuming under 90%, and celld forces a collection when a measurement is above 75%.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L299-L303",
+          "version": "repo-lines-v1:sha256:747ad98d715576ad09b294d727e83f5a100dd844aed202bc2c998743caa2aacb:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjY4ODQwZWFlMDE0YjdiN2EyNmRiOGZmYjdhYmYzZDVkM2U2Njg5ZTM5MDBkOTdhNTUwYjUwZjgzMDA5ZWUwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q5OGJhYTYxOWQ3ZDEwNTZkNmFjMGE1ZWJhMDE0NGI2ZmY2NzkwOTQ5NDIyZjUzOTFiZmE5YWRhMGM1YTk0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODhjMjg1YTk4MmM0YWYxNGIwYmUwNmFhNGI1NjYzZWE5NGVmY2Y5Y2NkOTMxNjBlZmNkOWJkNDQyYTQzNjM3YSJ9"
+        },
+        {
+          "resource": "repo://README.md#L305-L312",
+          "version": "repo-lines-v1:sha256:3db4160e39bb00e4dcf473d6679e8f48f283b414d39346d84aca5f178cebd650:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU4OTFmZDliNzk2ZDMyZTA5MmI4ZGQwMTZjYjFlODM3Yzk0ZWE4MDdkOGJiMjJhMDRmYTc5OWY1NWM3ZmI4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjRlOGJhMWU0YmJkNjA0Y2JiM2M0MWYwNzdhNzlkNmRmNTg4N2U0NGQ4ZWU4MGQ1YTk4NGE0YWZhYThkZDFiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjc3ODk4ZDY5N2U5ODUwZjBlYmVkYzk3OGQ4NDAwMWMyZjdiYmY1NDMyODFkY2E5OGJlMWJlNTA4ODAzZTQ5NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd8286be25e64b28a326826f9545c263",
+      "statement": "The per-cell SQLite layer opens one database per cell (with sqlite_vec extension compat), exposes sql_exec/sql_ingest and cursor APIs plus D1 request handling, and tracks write positions; poisons_actor is the deterministic core decision for whether a SQLite failure code poisons the cell (stops serving), and a fault VFS exists so the simulator can exercise the executor's failure paths.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L642-L660",
+          "version": "repo-lines-v1:sha256:313dea4f57123bf485174bc109272361919bc753790d5e7578835385220f33f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiMmIwNWU5MTcwNmFiMTViMDY1MDk4Y2RlOGEyMGEyOGI0NmIwN2U0Y2I4ZTcwMTgwYTA5N2IyYmM1YTViODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlNWI5ODBmOGJlNjM4MDA2YmFkNzZmOGM0ZjdjYWU1MDgwNGU0YzY5MDQ5ZGM2YWVjNDBkZDc1OGVhMTRhMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwZGFlODQyOGJhOWY4MTAyOGRjYzdjYzhlYjdlOTQ5NWRiZTZiZWM5NDAyMzVkNTJhOGIyNGRjOGMwOTU4MGMifQ"
+        },
+        {
+          "resource": "repo://crates/logic/sqlite.rs#L21-L21",
+          "version": "repo-lines-v1:sha256:3b504e7dac19b1157b86a70a1f44def384522660ce357e0308e90d9e087f813e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I1MDRlN2RhYzE5YjExNTdiODZhNzBhMWY0NGRlZjM4NDUyMjY2MGNlMzU3ZTAzMDhlOTBkOWUwODdmODEzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I1MDRlN2RhYzE5YjExNTdiODZhNzBhMWY0NGRlZjM4NDUyMjY2MGNlMzU3ZTAzMDhlOTBkOWUwODdmODEzZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDhhZDZiMGViY2U4YzljMDE4YjVjZjljZmE3ZmU4MDBlMTI5ZTFkMWZlNGI2Y2Q4NzgzOTBmYjA1MmVmNDdmNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmVmNTVlMWQyODE2MmRmODRiMjVjMDVjMmE0MWUyMjQwY2IxOGFhODQ2ZTJhODMwZTVhODdiNmFlNGJhMDM5NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c463535dc6e0442ebe3c2592f3697424",
+      "statement": "The cell's SQLite write position is tracked by storage.rs (write_position reads the schema cookie via fcntl on the database file, sampled twice per cell), which is what the durability layer then proves and gates acknowledgements on.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L66-L66",
+          "version": "repo-lines-v1:sha256:e8fed50d0c511417b8dc0a0c95d9ef21de2eb68c8afe92e75226afd9772cf215:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZThmZWQ1MGQwYzUxMTQxN2I4ZGMwYTBjOTVkOWVmMjFkZTJlYjY4YzhhZmU5MmU3NTIyNmFmZDk3NzJjZjIxNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZThmZWQ1MGQwYzUxMTQxN2I4ZGMwYTBjOTVkOWVmMjFkZTJlYjY4YzhhZmU5MmU3NTIyNmFmZDk3NzJjZjIxNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTg4OGMyM2MyNjM0YmU3MjVmNGZkNmMwYjAxNjBkNmJkNTBiYTU5NDJkZGY4NGYwYmI1MTNiYjRmNDFkY2NkZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDkxN2EzZjhkOTkzZWRiMWMzOTAzMTQ0NDZmZWE5YjIzNzUxZmMwOTQ0MWJkNTgyM2I0MjQ3YjJkODk5ZDIxYSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/storage.rs#L854-L854",
+          "version": "repo-lines-v1:sha256:24bbfce4abd7239ad171573c951b4870d9316faad16c0ffb166f75f328be9580:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjRiYmZjZTRhYmQ3MjM5YWQxNzE1NzNjOTUxYjQ4NzBkOTMxNmZhYWQxNmMwZmZiMTY2Zjc1ZjMyOGJlOTU4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjRiYmZjZTRhYmQ3MjM5YWQxNzE1NzNjOTUxYjQ4NzBkOTMxNmZhYWQxNmMwZmZiMTY2Zjc1ZjMyOGJlOTU4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjQ5NDI2ODcxZWRlNzRiZjY3YzJhZmZlMGJhMGZmMmFkNmYxNDBmNTEwZTZkZWU3ZTcwMmRjZWNkZGQ0ZmQwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODNhNGRlNjJkMmMzZGE3ZjdhYjg5NWYyNTg2YzJmYjBhMTNjOTdhZDg1MWM5MjYyMjc4ZTg1YWJjNWMwZjAzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_222d6ccf2bb341d494a9e0c4ba512d04",
+      "statement": "HostServices is the shell-to-isolate injection point: it carries a scripted metrics mode for simulation, the real node LiveLoad sample handed to the decision core's pressure/shedding decisions, and set_scripted_metrics for tests.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/host_services.rs#L29-L96",
+          "version": "repo-lines-v1:sha256:d8ecfeae31cc26cee9d830d7b5128b09fbd7a4c771b71ae6ec1d3948cb196ab6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjM2NzU3OWY3NmY0ZTUzYmMwNWU4MTBiZjRjYmE4NDE3ZjRlZGU2NGU5MzI3YzcwNTc2ODIxNWZjYTljMzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzYTJmZWY5MDUwZTdiMzNjOGNkM2E0YzQyNTg0OGJlYjIwNTA5NTkwYmViNDA0YjNlZDlmYWRjMmQ2NWI2NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxY2NhYWRlMjdlNjNlNGYzNTA0Y2U0NjZiYzdkNjMxOWU5ZTlhNTMyNzUwMDMxYzU0Mzc4NzcyYjA2ZjM4ZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a6e19594240a41ad8b6698dc877247b0",
+      "statement": "JS-visible actor side-points (queue dispatch, asset calls, service RPC, WebSocket) enter through configured request types such as QueueDispatchReq, AssetCallReq, SvcCallReq, and gate channel types including ws_hibernatable, rather than reaching into the actor mailbox directly.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L243-L315",
+          "version": "repo-lines-v1:sha256:792981ac45022d7a8b9add25a0758d6084380b8d50b6e88a6cfda65442047feb:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZTcxZjRjYjc5OTI5NzU4ZTdkNmZlNTYxMzRmNzA4OTc3NmI3ZWEwYTYyYzdiNTIwODExNDEyMDBmYWE3ZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhMWNiMTJiM2VhYjY3ZGY1YWE4ZTNhN2MzNGNhY2IzYzJlZDBlNDE5YjUwZDBhN2VkZGZhOTc4MGFhYTgxYzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmN2RmYzA5NWE2ZjgyYTFkYmY0OGM4OTFhZGVhOTA0MjU2MjY1ZWUwZTY5ODBkYWM4MjliMWVjMGQ1NjRkZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5NjFhZWQ3MDE4ZmMyODIxZTE3MDM1YmU5MTU3ZjNmYjAxOWM1YjIwYWU1MjZmN2I3MThiZTFiMjI1NDhkNGYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:47:04.277Z"
+  }
+}

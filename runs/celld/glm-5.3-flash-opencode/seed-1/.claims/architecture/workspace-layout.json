@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6ca6a6ed0ae2313cb92da985a95ec5d5287cab585bd16a96c2d3820ebe82b65b",
+  "claims": [
+    {
+      "id": "claim_4ae4a35abcc04770a9731c9414781e96",
+      "statement": "The workspace has three crates, with an explicit ownership rule stated in the workspace manifest: crates/logic owns all behavioral state and decisions, and crates/celld is only an effect executor and adapter host.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L5",
+          "version": "repo-lines-v1:sha256:462368a26313f48ed93009e7cd4f07d3415bc44514868055ae8b0535a168acc8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGRiOTJlNTdlYTc5ZmJkNDI1MmQzNzgyODZlZmJlZTUxM2Y3NTIwNDI1MTAwNTNjMzFmZjQxZTdjMTE1NDkxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M0YTAxMzI4NzI1NTFjZTViMTE2ZjQyMzYxOWNmZjQyMGMzNTU1MDJmYjg4NTBjYmJhMGM1MDE1NGZmNjFmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzkwMDMyMmJlYzdmY2IyNzk1ZjVkYTdiOTZkOWI2NThiODAyMjBlNTMxYmZkOTA5NGQ0YWI3ZjZlMzQ1YThhYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5bdfbf2dd6db49f3b61a85c607fff06c",
+      "statement": "The celld-logic crate is a pure decision core: `on_event(state, event) -> Vec<Effect>` (logic/lib.rs:5215) is the only way behavioral state advances, no adapter may mutate State directly, and the crate declares no async, I/O, clocks, randomness, locks, or dependencies — which is what enables deterministic simulation.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/Cargo.toml#L6-L9",
+          "version": "repo-lines-v1:sha256:5181ef506357eb9a2dc597c34661db4790a89f924ddb66dbea3750b5a99baf33:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY4NmQ3ZjRkM2Q4YzgxMjZhNGRmMjM5ZjZkMDA5OTg3MGMyOWNkYWE1NTk1Njg1Njc1M2MyNDBkY2I0YzhmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzg0MzVlZjU5NGYzMzcwNzMwN2MxZmU1OWIwMTdmMjExZTllZThhMTVjODJkZDVlYWIxOWI3NjdhNmY3NGJlOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjM2YzgwMDIyY2QyNGIzZGY2YmE1YWEwMTJmNWVlMTk4MWJkNzBlZmViYzg2MTAzZTk1MzBmZWQ1YmU0MDM4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2U4NmUyZDVkZTAwZWYxMDJkNzAzYTg0YTgyNTc1NmQ4MzRhN2I0NDM2MjIxODAyNDllYTQwNjAxZWY2MDkwNCJ9"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L4-L7",
+          "version": "repo-lines-v1:sha256:321b45bb0634b2b2b761ef7a95f7a24ae8ca5eee9293ab97a901c80b03a75538:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFkNDVjNDEwMmRjMTBhZWE5YTE4NGVmNjZjOTJmY2FjNWRhN2Q3OTQ5NjdjZWYyYTdiYmYwZjM3N2E1Yzg4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjllN2YwMjJhYzJhOGU5M2I3YmE5Y2Q1NDNkNjJmMjc4OTMwODU4ZTQ2NmEyMmUxMjJhZjQxZDg5M2I0YjExOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U3OGM0NGRiNGEyZTM0YzQ3NzkwNWNiMWQxZTRjY2EzMWMwMjhhMjE4ZmM1Y2Y0YTViNDVmZDQwMzFmYmEyYiJ9"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L5200-L5225",
+          "version": "repo-lines-v1:sha256:3052e73af6a6ba602011e9c2620da69bbbc7593632fb97454c94a15fe98a8ef4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNWUxODZmY2I3N2U0MTg0ZWIwNjdmNTM1MDk4MGRlNGRlY2NjMDRjN2RiNzFjMzljMGMzZjI0OTkxYjQ4ODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkMjJlNzRjZjRkN2I5ZGE3ZGMwYWExNGI1ZDQzYjJiZTI3Mjk1Y2M5YjM4MjU2ZmZkNWExMWFiOTRiZWM2MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyNTZlNWY0YWE0NjIwMjdjZjJkZjIyOGFmMjBhM2E3ZTVkMGU0NmFjYzgzNzQ5YjFhYmI5MWM3OWVmNTBhNTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0M2EyZDZkZjk2ZGMxZmY2YTRjZGY1MTg0NmM0OTgwN2UzZjc1ZmQ2Yzg0MGEwMDA3MGM0YjZkY2ZhMjE3ZTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bfda50054eec499aac82518057860bef",
+      "statement": "The logic crate's modules cover the behavioral domains: alarms, cache, cells, cron, dead-node reconciliation, drain, gates, HTTP, isolation, KV, log eviction, log tiering, peers, pressure, queues, restore, routing, schedules, SQLite, sweep, and wake.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L11-L32",
+          "version": "repo-lines-v1:sha256:59287de57014537dd92e4d6ed75d97b8a20b25adca31a82f436bc11dc5e3911c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyZGJkMGViNjc1Y2U5ZTdiMWM0MzJjMWJlYjBjYmRlMWE0MDlmYzA2YjNiMjE5MjdkOTMxYjBkN2NhNzE3NzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMWVlOTRjZjE3ZDNhODhlZGE5MjVlNzY1YTVjMGRiYjdiYzhmZGQ3MzZkMTY2YzBlMGQxZmM2ZmUxYTIwYmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlNzhjNDRkYjRhMmUzNGM0Nzc5MDVjYjFkMWU0Y2NhMzFjMDI4YTIxOGZjNWNmNGE1YjQ1ZmQ0MDMxZmJhMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwNWEwZGYwODdhYjNhMGEzNmQwYTQ4YjMwNzdjZjE3ZDZiMWU1NzQxZmNkMmM2Mzk1MDU2NDc3NWUwYWFkMGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_15aaa87dba5046be9cc0a9f1ab18c669",
+      "statement": "The celld crate builds the `celld` binary from main.rs and hosts the effect domains (V8/JS runtime, bucket and fleet adapters, replication plumbing, and CLI tooling); fleet CLI and peer-diagnostic work explicitly runs outside the Actor execution domain.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/Cargo.toml#L4-L15",
+          "version": "repo-lines-v1:sha256:c12cc9dedbd36313c03ae3341d3aafdeddf5064145c8e3e4886a9b7899f92c79:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxYTIyNjM0YmJmZmVjNjI4MjJmYWEyMDhiMzUyZDMwMmMxOWMyZjcwZTI5ZTU3NjEzYjlkZjE4ZDdjMmZjMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NjIyN2RlNjc5ODYzNjJjZGQ1NzYxMGY5ZjkxNzljZTcyZjUzZjcwOTg0MGNkNjg1OGFiNjVjY2E4MGRkZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxYzFiYzMyOWFkMzkxMjQ3NzQ5NDc5ZjM5NWRmNjU5ZmY3ZTk3MjZlOWQ5ODJjN2NlZDQ4ZGM4YTVkYzZiMzQifQ"
+        },
+        {
+          "resource": "repo://crates/celld/fleet.rs#L3-L5",
+          "version": "repo-lines-v1:sha256:16f8006dc6221800fd8be4b454201eaa97d9993d5c0be321278c8a969ce33064:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmIwOTEwYTY4N2VmNjYyYzhkMjNlMTAyYWU5YjAwODA2NWQxNzVjZDBkMDg4MWE5MTM5NzdmNTBhNWU2NDgxZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJkYzY5NDlmMzkyNDk2Yzg2MDYzOWY2NTRjZTVmZmY1ODI3YzU4YzRhY2JjNzMyNmQ1MjgyZDlhYTk1NDM1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmFmYjg2ZGFjZDg5NGQ4NmUyNGE4ZmE3YmM3ZjdlNmQ1MjAzMWFlMzhmZTAyYjAyNTg5NDIyYTA4ZTgzNjdjNSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/lib.rs#L295-L365",
+          "version": "repo-lines-v1:sha256:1f835dcdaf5583c2a52133eeb159060b9b0926b46ad3badf852362c63d07fdab:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4MjIzOGUyZTNmNzg2NDg0OGNhZmNiNDg0ZDdjN2U1ODUyYzFhOWZmNjQ2NzJiZGRkOGMwZjBmYjZhNjViOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3NzMwZjA2OTFmNWNhY2UyYmQ0YTY5NGY2ZjI2ZTMxMzBiNmU5OTdjNmU5NDExZDk2MmM1NjZmMWFiNDIwYzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NDJkMDk1NWQxMDQ2MTkyN2RjZGJlMDVlMGNlOTNkMjMyNzViNjcwOGIzNzY5NjczZjYxMDg4YmYwMjdhOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZDA1MjhlMDU4M2QxZjFiZjNkYmY5NzJiYTVmZDBlZTJhM2Y0YWJhMWU5OWY2ZmNlYjI0OTg5ZWFkN2VmMDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3fd9d9a66bb467b95d536d59e88490e",
+      "statement": "celld-ltx is an in-process SQLite WAL→object-store replication engine vendored (2026-08-03) from rustyriver, a Rust reimplementation of Litestream v0.5 with the LTX v0.5.2 block format; celld owns this snapshot rather than tracking upstream, and the celld crate enables only the `s3` feature of the optional `gcs`/`azure` backends.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/Cargo.toml#L18-L26",
+          "version": "repo-lines-v1:sha256:6489cca0f8ca514d9b870eea15edd955acb55a66eae629ee10d2949581c7abc6:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU2NjU4MDM3YzZkNDMzYmZjMjE0NDY2NTY0ZTcwNzViYzg5MThlZmM1NjUyZDVhNzBjMTYyNzI5NjFlY2RkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQ2ZjZmMGU0Y2NjZDUzNzMyNWE0M2FiZWRkNDQ1NDRiZTU1YjI1YWEzZjkzNzc5NjEzZDhkNTNlMTJiNmViZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGZkM2Y5MzNlYmRiOTlkZGYxMjgxNzFhNmUwZTEzMTc1MzVmZjE5N2RmMDIxOGNlNDMwYmUxOTQ3NDY5MTRjYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE2OWNiM2VmNTE0MjBkNTM2NzllYzRjYjk2MzY2ZTA3NTRjYTIyN2M3YTBjMjE5NGYzOGVlZjg3YWY0NDUyYSJ9"
+        },
+        {
+          "resource": "repo://crates/ltx/Cargo.toml#L1-L7",
+          "version": "repo-lines-v1:sha256:5ffb20118c7b6fe206e8c8bec7d9ae0aaa121a2462b261365aca1bf12a2fe384:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmU1YThkZjg4MDUxODVlN2EzZjAwMmJlODE2ZmRhYjAyOGEyY2Q4OTM1NzZlOTA2YTNmYTcyNjViMGJjMzE4NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY4OThkYjM3MjQzYzk4OGQ5NzRiOTYwODU0ZWNhYzdhMTU4M2M1ZWZhZTRmNWViZjk4MTFjYTJhNTI0OGNkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDk3NTk3YzczMTFkOGJjMzU1NGY5YjhhYjZkMTljM2YxN2YxMmFiYmU0ZjI4NWFlNmI5ZjczMWIzMWNmNWRlNSJ9"
+        },
+        {
+          "resource": "repo://crates/ltx/Cargo.toml#L20-L24",
+          "version": "repo-lines-v1:sha256:c70791e2197e8fe0539f45ed440cf6829507f7ffa81b8d8a672763c809e9461d:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWEzMmM2ZjYzMzQ2ZWJjZjAwNzRmYzljZWViOWU2NTg3NmU3OTUwZWJlMzc5NTQ4YTE2OTZlMWM4NGJkYzdlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjg5YjZhODE2ODZmYWE4MDgzYmVmOGVhZTU1MTBiYmM4MDhiNTYzNDc5Yjc4ZTU0MGQwMTAxM2UzYzI0ZGE5YSJ9"
+        },
+        {
+          "resource": "repo://crates/ltx/src/lib.rs#L1-L14",
+          "version": "repo-lines-v1:sha256:8e740ba01ba21a10595b048fce76b7e83f4187a5d16ad3fa27b6dce6fe462841:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxZjBhMWNmMmU3MjlhYjcxODlmZWE0MGJkNWUxOWQ4N2NlOWNhNGZhZGI0MTFhYjFlODZhNDk1YTMwOTI0NjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjQ5NTViZjEyYTQ5YmE4OGNmNDMxYmMxNTI4ZjdkNDJkZThjY2MwY2IxYmUzOTU3YTlmMmI0YWE3ZmQ1ZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c8a7d8ca937546a29cc5e7e2ce836bb7",
+      "statement": "Every direct dependency is declared once in [workspace.dependencies] so member crates can never drift onto two versions of the same crate; members add their own features.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L33-L36",
+          "version": "repo-lines-v1:sha256:17bfcb7012f97256daccf04b53640815ea67254aa830393d3e2e78c47a105233:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWU5NWQ2MTcwOGMzODFhMTI1MWEwMzE4NDQxOTUxM2NhNDYxMjA5NzdlNTk5ODRhZWMwODg5Mjg1ZTMzZThlMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWU2MmUyMmE5NmM1NjYyZmEwNjcyZGMwNTZkMmRhZDg5MWY5ZDNkZGExMjQ3ZTA3ZTMwYmFlYjdkMDgxODNmNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTU4MWU5M2E0YjkwZWUzNDVjYTgzNzk5ZmFhYmJhMDVmZDY1MGQ4NzZlNzdhZGI2NWZlZmM2MDMwYjE1NDlkMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmI2MzVlMzYwOTE0M2EwMGJkYTBmYjQ3NmJlYTE3ZjcwMzViYTA2YTI5ZGZjYzk5MTA1ODA0MzVjODgyMmExOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e19d4b23db1e4328b433cbefa5c6c8b4",
+      "statement": "Version pinning is deliberate at behavior-critical seams: fastwebsockets is exactly =0.8.1 because the peer tunnel needs the unstable-split read/write halves (a WebSocket read is not cancel-safe and must survive concurrent writes); sqlite-vec is pinned to the audited C amalgamation =0.1.9; v8 is 152.1 because shared isolates require v8::Locker and Send Globals shipped there; several crypto crates follow deno's ext/node_crypto versions and features.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L116-L118",
+          "version": "repo-lines-v1:sha256:9f096fcd37194e98d2869004fec17c72dd6be4f15b6ef903aadf7f3d0b393c9d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGNiMGQ2OTZjZjMwODI3ODI2YzMxZmFlOGYwN2JhNjJiN2IzY2Q4MmNlMjU1ZTI3MjZjMjMwNGQwNzFhOGQ5YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRkNDE5MDk4NDdjMjAzMzY0MGQ2ZDM5OWQyZTEyZTE4YzFkMWE2NjgwMzQwZGQ1YzAyNjE0MmE0ZTVmNDY0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjYwNzExYTkxNzRhNmNhNjAwZTc3NjllMzcxZmNmOTcxOWI5ODJmMDkzZWI0ZGNlYzAzMGVlNzkzNmVhNzExMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTUwMmFlOTBmOTVlZWY4NTBlZWE4N2M2OWJkZDBjMDYxZTgxMWYzNzhiZTQ2N2NhM2MxYjI2YTcwYzVjYTAzMiJ9"
+        },
+        {
+          "resource": "repo://Cargo.toml#L137-L140",
+          "version": "repo-lines-v1:sha256:d7c17ff08323b2cfcf4b8bd68c1525626cf6e26de04ed23b7ad021f46bf8ad83:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRiMDY0NDFkYWQ0OTJhNDczNWRjOTIyNGY5YTBkZTdlNjYzMTRmZWY0ODQzNGNhZDE3ZGMxZTljNWNjNGEyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjFhYTlkNmVmNTVjYzJlZTU4ZDQ5YTlkZDE1MTdiMWM0YWUzZWFlN2YxNDk4MzdkMGVjNjdhOGQ3MTFmZTU0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTdmZGE4NTg0OGNjNjVmMGYzMWNjMGIxYWZhNGRiYjk0N2EzYTg2NTE3YWQ0MjA3MDliNzgzYmFhMjZmMzhlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjBmOWMyZmMwODc3YWIxZjkwODUwYWY3OTZiNWZjYjJmNTY4OGUxNjBmNzBjYzIxZDk3MjE2ZTZjMWM0NzBmZiJ9"
+        },
+        {
+          "resource": "repo://Cargo.toml#L50-L59",
+          "version": "repo-lines-v1:sha256:91a443724c0ce3587491c3f7b2975aabdc4f457a048ad58934fc6945e1b62a3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODBiNGM4ZGJiYjA0ZjRlYTBiNzI1YWUwZmQ2ZDk4ZWQ3YjVhZTA0MTFmMmUxYTZlNzQ5OTQ0ZTkxYjgxMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5ZjFjNDY4OTNmZGY2Y2JkZDNlMzNjYWNiN2ZhMDM0YWRlZmRkYjAxZTE0NjIwNDViODU0NGNhYzc1ZGI0OWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1MDY0YjE2ODJmNmE5MWIxNjE1ODU2NTg4MjNkMDJhYzQxNjAzMTY4MWJhOTg4ZmY2ZjM4NjE0ZmRlMTMzOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwNjQ5Mjk0Y2EzMWM5NjNkMTU0ZWIxYTBjMjk4MjcxMWZhMDIzY2M5ZmVlODZhY2Y5ZTRlOWJhZGI0OTdlMjEifQ"
+        },
+        {
+          "resource": "repo://Cargo.toml#L84-L102",
+          "version": "repo-lines-v1:sha256:5da1e41d1f6c062844fc5eef1277adcd7f572ab043e6caf3e2ffc73529d5e998:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkZTUxOWI4ZTRmNDYyOGQzMzg4ZGNlZDQxNDAzN2MzNmJhZWQ2NmE4NGZlNWU1N2Q4ZDA2ZDQyZWUyZTFlZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNDUwZDg4MjMwZTBjNjIzM2UyMWZlYzk5MWYyN2UxN2I3MGNkNjVlMDhkMjYwODNiZjYwMTcwYjE4ZTNkYTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2MjFjY2QyOTY3MTRjNTNhMTZkZTllNWFjMWU5NTc3Y2UxOTUzNzNkY2U2M2E2MjE5NjRhNDE2ODA0ZjM0ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2ZTk3ZDQ5M2EwZGExZGEzMzFhZDE3MDNmY2Q4YjVkNmVmZDdlYzBjNGJlNGU2ZDNhMjJkMjBiZWQwNjJkOTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ff92d6416fb40ba9ffdd9821b2f0201",
+      "statement": "The workspace tunes three profiles: `release` for shipped binaries (fat LTO, panic=abort, strip, opt-level 's'); `lab` for fast iteration (thin LTO, incremental, unstripped with line tables so perf attributes CPU); and per-package dev opt-level 3 for sha2/rsa. CI release builds use `cargo build --release --locked`.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L30-L55",
+          "version": "repo-lines-v1:sha256:2d7b30f48fad4798f8b16e94e2727329757d92f5d1dfc349be5e5c2695839833:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwYTU5NGYzNGI3ZjBlYTU3M2RhNzg3MDNlMjc0OTMwZGI3MThjOTQyY2FmM2MwNDI1MTc1NWY2MjNjNjBkNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YWQ1NTg1ZThlY2JiYTA0YjRkM2EzMTQ3MmYwOTlhMmUwZTY1YmM0ZTE2YWI2N2E1ZjM3OTg1OWEyNjUzMDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlOGE2OGRiNGNhNmRiNzFiYWQxNTYwZDdhMjQzM2JmMDI1NWEzMWQ0NTdjNzExMWVlMzIzZjQyZTk1YzRjODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkOWVjZDQzOWVmMzYyMmM5ZTBmNDE4Y2E1ZGU5NWFjODkyMjU0OGFlZWIyYjI0OThmZDZhMTJiOGQ5MTExYzcifQ"
+        },
+        {
+          "resource": "repo://Cargo.toml#L7-L31",
+          "version": "repo-lines-v1:sha256:b06520a402edd03a9477837c2f609e7cfe85b23f1b15cc67d9319a6b534f03b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNDcxMDk4YTFhYjhmY2MyNjgxNzcwMjg1MDA4MGUxYzhjN2NkNTIzZTI0NDIxN2VhODVlNjY4ZjA2YTY5NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1MGIxNTZmZGViMmY3NzY0ZmUyODNmMGQ0NGMyZmY4MzUwYjNhMmMwNjM3NmQ5MDRkNGNkOGFkMTNhYmMzMjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlOWNkM2U1MDBlNTFkZDNhZjg4ZjgwM2U2NDhlYjcyZTliN2MwZGE1NmEyZDUzYWQ1OTE0YTMwNzI2MDA4MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3MGY3ZDU3MWQ2MWRmODhiMDYyZGI1NmMyZTQ0OWFlMTQwNjdkNjIyZmQ5MWEwMzFjOGJlOTU5NmE0NzJjNzAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:33:19.973Z"
+  }
+}

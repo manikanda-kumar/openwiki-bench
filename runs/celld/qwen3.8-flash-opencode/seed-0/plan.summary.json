@@ -1,0 +1,460 @@
+{
+  "plan_page_count": 14,
+  "deletePages": [],
+  "statuses": {
+    "complete": 14
+  },
+  "pages": [
+    {
+      "id": "1acc31ad-d2a9-4f6a-a4c6-24421588b694",
+      "path": "/openwiki/architecture.md",
+      "title": "Architecture and ownership boundaries",
+      "purpose": "Repository-wide orientation: what celld is, the three-crate ownership split, the execution-domain discipline, and a subsystem map with links.",
+      "seedPaths": [
+        "Cargo.toml",
+        "README.md",
+        "clippy.toml",
+        "crates/celld/lib.rs",
+        "crates/logic/lib.rs",
+        "crates/ltx/src/lib.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/actor-execution.md",
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/concepts/cell-lifecycle.md",
+        "/openwiki/concepts/durability-and-fencing.md"
+      ],
+      "instructions": [
+        "Cover the workspace manifest rationale (workspace.dependencies centralization, release/lab profiles) and the three crates' roles.",
+        "Map the subsystem inventory (routing, gate, output gate, replication, node log, runtime, pool, deploy, fleet, telemetry) to their owning modules with a one-line responsibility each; this page is the hub, not the deep dive.",
+        "Mention docs/ as the operator-facing contract and examples/ as runnable fixtures; note that docs/testing.md describes infrastructure (TLA+, sim harness) that is not in this snapshot.",
+        "Trace the canonical control flow: HTTP ingress -> actor -> on_event -> Effect -> adapter -> versioned Event completion."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "90341b0b-8846-414d-be7f-b5fb0282e26f",
+      "path": "/openwiki/architecture/actor-execution.md",
+      "title": "Actor and execution boundary (celld shell)",
+      "purpose": "Explain the celld shell: the serial actor, effect adapters, the execution-domain boundary enforced by asyncrt plus clippy, and determinism discipline.",
+      "seedPaths": [
+        "Dockerfile",
+        "clippy.toml",
+        "crates/celld/Cargo.toml",
+        "crates/celld/actor.rs",
+        "crates/celld/actor/production.rs",
+        "crates/celld/asyncrt.rs",
+        "crates/celld/host_services.rs",
+        "crates/celld/lib.rs",
+        "crates/celld/startup.rs",
+        "crates/logic/Cargo.toml"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/development/change-guide.md",
+        "/openwiki/quickstart.md",
+        "/openwiki/runtime/v8-workers.md"
+      ],
+      "instructions": [
+        "Cover startup.rs listener reservation policy and host_services.rs injection of process services.",
+        "Cover the asyncrt facade and the custom select macros and why the clippy disallowed list exists (spawn, clocks, fs, rand must go through the execution domain).",
+        "Do not re-explain the pure policy modules; link to the decision-core page.",
+        "Document the serial actor loop: mailbox, versioned timers (TimerSlot semantics, why deadline slots are keyed per operation), effect dispatch to adapters, and completion events.",
+        "Explain the cfg(celld_internal_tests) gating and test = false manifests: internal unit tests exist in source but the default cargo test harness does not compile them; verify how the Dockerfile test stage runs."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e2abf978-6778-41f6-a725-b1d98a3ac764",
+      "path": "/openwiki/architecture/decision-core.md",
+      "title": "Sans-I/O decision core (celld-logic)",
+      "purpose": "Explain the celld-logic crate: the sans-IO pure decision core, its Event/Effect vocabulary, and where each behavioral policy lives.",
+      "seedPaths": [
+        "crates/logic/cell.rs",
+        "crates/logic/gate.rs",
+        "crates/logic/lib.rs",
+        "crates/logic/log_tier.rs",
+        "crates/logic/output_gate.rs",
+        "crates/logic/restore.rs",
+        "crates/logic/routing.rs",
+        "crates/logic/schedule.rs",
+        "crates/logic/types.rs",
+        "docs/testing.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/actor-execution.md",
+        "/openwiki/concepts/cell-lifecycle.md",
+        "/openwiki/concepts/durability-and-fencing.md"
+      ],
+      "instructions": [
+        "Document on_event as the only state-advance path, Event/Effect/State/Config vocabulary in types.rs, and the adapter contract (adapters never mutate State; they return versioned completion events).",
+        "Explain why the core exists: deterministic simulation and the docs/testing.md claims; note the actual simulator is not in this snapshot.",
+        "Note log_tier.rs is marked design-stage / not yet wired into the engine; state that boundary explicitly.",
+        "Summarize what each pure policy module decides: gate, output_gate, schedule, isolate, restore, routing, peer, pressure, wake, alarm, cron, drain, kv, queue, log_tier/log_evict, cache, sweep, sqlite, dead_node_reconciliation, http, cell."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "26831bb8-a1f1-4baa-a9be-cf9ff42b55b2",
+      "path": "/openwiki/concepts/cell-lifecycle.md",
+      "title": "Cell lifecycle and placement",
+      "purpose": "How a cell lives on a node: activation, routing to the owner, residency states, idle eviction, hibernation, restore selection, alarms and wake.",
+      "seedPaths": [
+        "crates/celld/pool.rs",
+        "crates/celld/runtime.rs",
+        "crates/celld/wake.rs",
+        "crates/logic/alarm.rs",
+        "crates/logic/gate.rs",
+        "crates/logic/isolate.rs",
+        "crates/logic/restore.rs",
+        "crates/logic/routing.rs",
+        "crates/logic/schedule.rs",
+        "crates/logic/wake.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/actor-execution.md",
+        "/openwiki/concepts/durability-and-fencing.md",
+        "/openwiki/networking/listeners-and-peers.md",
+        "/openwiki/runtime/v8-workers.md"
+      ],
+      "instructions": [
+        "Cover alarms and cross-node wake: wake/<date>/<cell> bucket mirror, per-node boot scan, advisory fleet waker, alarm retry backoff policy in logic/alarm.rs.",
+        "Cover cold activation: routing decides acquire/restore, logic/restore RestoreSpec fields (fresh, took_over, resume_local, prior) and the adapter's obligation not to rediscover sources.",
+        "Cover isolate pooling: one isolate per cell, v8::Locker thread independence, activation limits (CELLD_ACTIVATIONS), resident-cell caps, and the per-cell input gate allowing concurrent fetches.",
+        "Document the state machine: resident/active/idle/hibernated/inactive, constructor rerun on activation, hibernated cells keeping WebSocket clients.",
+        "Ground state names and behavior in crates/logic and the runtime/pool adapters; cite the docs/README.md lifecycle section as contract."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "34d4d0d5-20a6-408e-b802-c63390d6575f",
+      "path": "/openwiki/concepts/durability-and-fencing.md",
+      "title": "Durability, fencing, and leases",
+      "purpose": "The two safety promises and their mechanisms: bucket CAS ownership, epoch fences, output gate RPO=0 proof, fleet node-log ensemble, takeover recovery, lease-based self-fencing.",
+      "seedPaths": [
+        "crates/celld/bucket.rs",
+        "crates/celld/ltx_repl.rs",
+        "crates/celld/node_log.rs",
+        "crates/celld/ownership_store.rs",
+        "crates/celld/replication.rs",
+        "crates/celld/startup.rs",
+        "crates/logic/output_gate.rs",
+        "crates/logic/restore.rs",
+        "crates/logic/types.rs",
+        "docs/guarantees.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/concepts/cell-lifecycle.md",
+        "/openwiki/operations/node-operations.md",
+        "/openwiki/persistence/ltx-engine.md"
+      ],
+      "instructions": [
+        "Cover full-prefix restore rule and why the seal object was removed; distinguish code-established facts from guarantees.md narrative.",
+        "Cover self-fencing: node lease renewal cadence (CELLD_TTL_MS), lease-expiry fencing, SELF-FENCE exit code 3, terminality of the fenced state.",
+        "Cover storage prerequisites: conditional create/overwrite + read-after-write, qualified providers, probe/ storage test, CELLD_STORAGE_PROBE.",
+        "Cover the node log: per-session node-log records, takeover recovery gate (seal prior session, upload retained segments/bundles), bundle drain, hedges and gray-follower eviction config knobs.",
+        "Cover the output gate rule: no acknowledgement before a durability proof; bucket proof re-reads ownership record; fleet proof via node-log ensemble with fsynced followers, up to two followers, CELLD_DURABILITY modes.",
+        "Document the ownership record CAS protocol (create vs compare-and-swap), fencing epochs per activation, and the epoch-in-prefix data fence cells/<scope>/ltx/e<epoch>/."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "2b6f6f30-9ab7-404b-87f7-040389cccbd8",
+      "path": "/openwiki/deployments/deploy-and-rollout.md",
+      "title": "Deployment pipeline and generations",
+      "purpose": "How an application gets onto a fleet: celld deploy, the bucket-resident deployment objects, feature gating, generation adoption and reload, and rollout rules.",
+      "seedPaths": [
+        "crates/celld/control_plane.rs",
+        "crates/celld/deploy.rs",
+        "crates/celld/dev.rs",
+        "crates/celld/fleet.rs",
+        "crates/celld/generation.rs",
+        "crates/celld/local_store.rs",
+        "crates/celld/protocol.rs",
+        "crates/logic/drain.rs",
+        "docs/README.md",
+        "docs/cloudflare-compat.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/operations/node-operations.md",
+        "/openwiki/platform/reserved-classes.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Cover the dev-mode stack (dev.rs, local_store.rs) reusing deployment/ownership/LTX with a local object store.",
+        "Document celld deploy: esbuild bundling, accepted Wrangler config subset, error on unknown keys, writing deployment objects and pointers to the bucket.",
+        "Document control_plane.rs managed sessions (celld.dev presence/explorer/module sync) as an alpha path, including CELLD_CLOUD_RESTART_ON_DEPLOY escape hatch; note upgrade-specific invariants (v0.1->v0.2 stop-all, v0.2.x->v0.3 rolling, v0.3->v0.4 stop-all) only where the repo records them.",
+        "Document generation adoption at runtime: 30s pointer poll, build-beside-then-switch, request draining to old generation, safe-point object migration, forced move after CELLD_DEPLOY_MAX_AGE_S, /reload and /state visibility.",
+        "Document node discovery via nodes/ leases and fleet/peer-auth.json HMAC bootstrap by the first node.",
+        "Document protocol.rs as the durable bucket contract: Manifest, DeployPointer, module refs, asset index, feature-gate strings, queue consumer attachment, deployment_version."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8817f695-8f71-4001-a896-04ded92f3c91",
+      "path": "/openwiki/development/change-guide.md",
+      "title": "Change guide and verification",
+      "purpose": "How to safely change this repository: what verification exists locally, where behavior belongs, and step-by-step recipes for representative maintenance tasks.",
+      "seedPaths": [
+        ".github/workflows/release.yml",
+        "Dockerfile",
+        "README.md",
+        "clippy.toml",
+        "crates/celld/Cargo.toml",
+        "crates/celld/env_vars.rs",
+        "crates/celld/js.rs",
+        "crates/celld/protocol.rs",
+        "crates/logic/Cargo.toml",
+        "crates/ltx/Cargo.toml",
+        "docs/testing.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/architecture/actor-execution.md",
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/concepts/durability-and-fencing.md",
+        "/openwiki/persistence/ltx-engine.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Document the verification reality in this snapshot: cfg(celld_internal_tests) gated in-source tests, test = false manifests, the Dockerfile test stage (cargo test + clippy -D warnings, sqlite3 CLI for the ltx fault oracle), and clippy.toml disallowed-methods as a compile-visible architecture guard.",
+        "Give change recipes grounded in code: adding a CELLD_* env var (env_vars helpers + startup report + docs/README table), adding a Workers API surface (js binding + logic policy + examples/ + cloudflare-compat.md), changing a bucket-resident object type (protocol.rs + readers on old nodes + upgrade rule), adding a durable type or reserved class, moving logic into the core (pure policy in celld-logic + adapter effect + versioned event).",
+        "Note the contribution policy from README (patches by email, PRs disabled) and the .openwikiignore-adjacent caveat that generated openwiki pages are not evidence.",
+        "State explicitly that the TLA+ specs, simulator drivers, workerd differential corpus, and live-fleet lab described in docs/testing.md are not present in this repository snapshot; engineers must not assume a local command runs them."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "15a27dcc-d20b-4aae-812e-090dd8e17ac2",
+      "path": "/openwiki/networking/listeners-and-peers.md",
+      "title": "HTTP listeners and the peer network",
+      "purpose": "HTTP surfaces: public ingress, internal listener, peer tunnel and HMAC auth, request URL policy, WebSocket ingress/egress, and forwarding/routing decisions.",
+      "seedPaths": [
+        "Cargo.toml",
+        "crates/celld/main.rs",
+        "crates/celld/main/peer_tunnel.rs",
+        "crates/celld/main/websocket.rs",
+        "crates/celld/peer_auth.rs",
+        "crates/celld/peer_probe.rs",
+        "crates/celld/startup.rs",
+        "crates/celld/ws_client.rs",
+        "crates/logic/http.rs",
+        "crates/logic/peer.rs",
+        "crates/logic/routing.rs",
+        "docs/security.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/cell-lifecycle.md",
+        "/openwiki/concepts/durability-and-fencing.md",
+        "/openwiki/operations/node-operations.md",
+        "/openwiki/platform/reserved-classes.md"
+      ],
+      "instructions": [
+        "Cover drain-time behavior: 503 new public requests, health transition, continued versioned peer traffic.",
+        "Document WebSocket ingress/egress and the outbound client; note the fastwebsockets unstable-split dependency rationale from Cargo.toml.",
+        "Document cell fetch/RPC dispatch: routing to the owner, tunneled plain HTTP inside signed establishment, replay/clock-window HMAC semantics, retry-after-failure predicates.",
+        "Document request identity handling: forwarded-header policy, host validation, request.url construction predicates, body limits and streaming threshold.",
+        "Document the two-listener policy: public Worker listener reserves only /.well-known/celld/health; internal listener serves peer protocol, operator routes, /peer/tunnel, /state, /reload, /shutdown, and 404s unknown paths."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "3f1c9201-249d-4e7c-bb6c-8b04b6de1f4f",
+      "path": "/openwiki/operations/node-operations.md",
+      "title": "Node operations and memory pressure",
+      "purpose": "Operating nodes and fleets: configuration parsing, memory pressure and shedding, graceful shutdown and handoff, rolling updates, diagnose, and the operator API.",
+      "seedPaths": [
+        ".github/workflows/release.yml",
+        "Dockerfile",
+        "crates/celld/cli_options.rs",
+        "crates/celld/cli_output.rs",
+        "crates/celld/drain_token.rs",
+        "crates/celld/env_vars.rs",
+        "crates/celld/fleet.rs",
+        "crates/celld/memory.rs",
+        "crates/celld/operator_cell.rs",
+        "crates/celld/peer_probe.rs",
+        "crates/logic/drain.rs",
+        "crates/logic/pressure.rs",
+        "docs/README.md",
+        "docs/guarantees.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/durability-and-fencing.md",
+        "/openwiki/deployments/deploy-and-rollout.md",
+        "/openwiki/operations/telemetry-and-logs.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Document configuration parsing: env_vars.rs strictness (0/1 booleans, startup exit on invalid), CELLD_* table anchors in docs/README.md.",
+        "Document diagnose (lease enumeration + signed probe without taking a lease, restoring counter) and the operator API surface (/state, /reload, /shutdown[?handoff=preserve]).",
+        "Document memory pressure: threshold vs absolute cap math, cgroup working-set vs RSS, jemalloc slack, hysteresis release at 80%, shedding LRU idle cells, refusal to reacquire, /state inputs.",
+        "Document release engineering visible here: candidate-ref builds, attestations, container stages; note this is the only CI in the repo besides the openwiki workflow.",
+        "Document shutdown/rollout: health -> 503 path, batched handoff with L9 snapshot and L0 fallback, release/activation pacing knobs, drain token serialization, first-readiness fleet gate, node-log recovery takeover of a deadline-cut session."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "241d0108-11c5-481c-a673-a29e82f3c3b2",
+      "path": "/openwiki/operations/telemetry-and-logs.md",
+      "title": "Telemetry and logging",
+      "purpose": "Observability: OTel traces and logs into the fleet bucket as Parquet, the OTLP sink, log capture/pipeline knobs, and node logging.",
+      "seedPaths": [
+        "crates/celld/cli_output.rs",
+        "crates/celld/otlp.rs",
+        "crates/celld/telemetry.rs",
+        "docs/telemetry.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/actor-execution.md",
+        "/openwiki/concepts/durability-and-fencing.md",
+        "/openwiki/operations/node-operations.md"
+      ],
+      "instructions": [
+        "Distinguish this telemetry/node-log terminology carefully: the replicated node log is durability, not observability.",
+        "Document retention/flush knobs (CELLD_OTEL_RETENTION, flush time/bytes), sampler config, and the documented DuckDB query and compaction-job pattern; note celld does not compact its own telemetry files.",
+        "Document the sink contract: bucket default writes Parquet under telemetry/ partitioned by node and hour; otlp sink encodes protobuf by hand (otlp.rs).",
+        "Document what spans/logs are recorded (request spans, cell events, outbound fetch spans, cell-start spans, console.log records correlated with trace/span ids) and W3C traceparent propagation in and out."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "de4eb39e-333e-4ba2-9cd4-46ba319e3e4e",
+      "path": "/openwiki/persistence/ltx-engine.md",
+      "title": "The celld-ltx replication engine",
+      "purpose": "The celld-ltx library: LTX capture from SQLite WAL, segment format and codec, compaction levels and bundles, replica clients, and restore mechanics.",
+      "seedPaths": [
+        "crates/celld/ltx_repl.rs",
+        "crates/ltx/README.md",
+        "crates/ltx/reference/ltx-format.md",
+        "crates/ltx/src/bundle.rs",
+        "crates/ltx/src/client/mod.rs",
+        "crates/ltx/src/client/object_store.rs",
+        "crates/ltx/src/codec.rs",
+        "crates/ltx/src/compaction_level.rs",
+        "crates/ltx/src/compactor.rs",
+        "crates/ltx/src/db.rs",
+        "crates/ltx/src/ltx.rs",
+        "crates/ltx/src/replica.rs",
+        "crates/ltx/src/replica_compactor.rs",
+        "crates/ltx/src/wal.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/actor-execution.md",
+        "/openwiki/concepts/durability-and-fencing.md",
+        "/openwiki/development/change-guide.md"
+      ],
+      "instructions": [
+        "Document ReplicaClient trait and backends (file, object_store), replica_url parsing, and error taxonomy.",
+        "Document levels and compaction: compaction_level definitions, streaming compactor, replica_compactor additive L1 behavior (destination created, source never deleted), bundle envelope as celld-original.",
+        "Document provenance: seeded from rustyriver/Litestream snapshot, leaser removal rationale, file-compatibility boundary with Litestream versions and CELLD_LTX_COMPACTION mixing rule.",
+        "Document the capture loop: WAL-mode setup, WAL->LTX segment capture, checkpoint takeover, durability position reporting.",
+        "Document the fault-injection oracle referenced by the Dockerfile test stage (sqlite3 CLI diffing) by locating it in tests.",
+        "Document the format stack: LTX v0.5.2 files, codec encode/decode, WAL parsing and SQLite cumulative checksums, reference/ltx-format.md."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8482905d-8aee-4642-b30b-702318720b19",
+      "path": "/openwiki/platform/reserved-classes.md",
+      "title": "Reserved classes: D1, KV, Queues, cron, Workflows, assets",
+      "purpose": "The reserved-class platform services built on cells: D1, KV, Queues, cron, Workflows, static assets, and the operator CLIs that manage them.",
+      "seedPaths": [
+        "crates/celld/assets.rs",
+        "crates/celld/d1_cli.rs",
+        "crates/celld/js/r2_ops.rs",
+        "crates/celld/js/storage_ops.rs",
+        "crates/celld/kv_cli.rs",
+        "crates/celld/operator_cell.rs",
+        "crates/celld/queue_cli.rs",
+        "crates/logic/cron.rs",
+        "crates/logic/kv.rs",
+        "crates/logic/queue.rs",
+        "docs/cloudflare-compat.md",
+        "examples/d1",
+        "examples/kv",
+        "examples/workflow"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/durability-and-fencing.md",
+        "/openwiki/deployments/deploy-and-rollout.md",
+        "/openwiki/operations/node-operations.md",
+        "/openwiki/runtime/v8-workers.md"
+      ],
+      "instructions": [
+        "Cover D1 (SQL execution, migrations, sqlite surface, d1_cli flow through a node to the owner), KV (namespace cells, value size/epoch handling from v0.4 notes, bulk Wrangler format), Queues (one reserved cell, admission 503 semantics, pause/resume), cron triggers (reserved cell + alarm arming via logic/cron), Workflows, and static assets (assets binding, _headers/_redirects, not-found handling).",
+        "Document the operator path: /runtime/<SCOPE> HMAC routes vs refused reserved classes on /do/<ID>.",
+        "Establish the pattern: each service is a reserved cell class (__-prefixed) with operator reachability through HMAC routes and celld CLI commands.",
+        "Keep the JS binding surface in runtime/v8-workers.md; this page covers the service-level state and control design."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "a58d9aeb-335b-443a-afd7-aed26706a995",
+      "path": "/openwiki/runtime/v8-workers.md",
+      "title": "V8 runtime and the Workers JS layer",
+      "purpose": "How Worker code executes: rusty_v8 engine setup, JS bootstrap/harness, module loading, Durable Object bindings (storage, WebSocket, crypto, R2, fetch), and Wasm support.",
+      "seedPaths": [
+        "Cargo.toml",
+        "crates/celld/js.rs",
+        "crates/celld/js/bootstrap.rs",
+        "crates/celld/js/crypto.rs",
+        "crates/celld/js/harness.js",
+        "crates/celld/js/modules.rs",
+        "crates/celld/js/r2_ops.rs",
+        "crates/celld/js/storage_ops.rs",
+        "crates/celld/js/websocket.rs",
+        "crates/celld/js/zlib.rs",
+        "crates/celld/runtime.rs",
+        "crates/celld/storage.rs",
+        "docs/wasm.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/actor-execution.md",
+        "/openwiki/concepts/cell-lifecycle.md",
+        "/openwiki/networking/listeners-and-peers.md",
+        "/openwiki/platform/reserved-classes.md"
+      ],
+      "instructions": [
+        "Cover bindings: ctx.storage synchronous SQLite ops exposed to V8 with async JS wrapper, WebSocket hibernation surface, crypto, zlib, R2/KV/D1/Queue ops via reserved-class cells.",
+        "Cover heap limits: CELLD_V8_HEAP_LIMIT_MB default 128, 90% WebSocket admission, SQL materialization stop, 75% resume, forced collection on idle measurement.",
+        "Cover module loading and wasm compile-once-per-process reuse.",
+        "Document js.rs isolate turn execution and bootstrap.rs/harness.js layering; identify which behaviors are JS-side vs Rust ops.",
+        "Link to the V8 dependency note (rusty_v8 locker/Globals requirements) only as it appears in Cargo.toml comments."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "18f874bc-df5c-455d-a5b6-6fe8451e5a96",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical getting-started path for an engineer: build, run an example with celld dev, deploy to a bucket, run nodes, and find the right deep page per task.",
+      "seedPaths": [
+        "Cargo.toml",
+        "Dockerfile",
+        "README.md",
+        "crates/celld/dev.rs",
+        "crates/celld/main/cli.rs",
+        "docs/README.md",
+        "examples/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/deployments/deploy-and-rollout.md",
+        "/openwiki/development/change-guide.md",
+        "/openwiki/operations/node-operations.md"
+      ],
+      "instructions": [
+        "Document: cargo build -p celld, the celld binary subcommands (dev, deploy, node, diagnose, cell, d1, kv, queue), running examples/hello and examples/counter with celld dev, and the Docker build path.",
+        "End with a short 'where to change what' routing map to the architecture, durability, runtime, deployment, operations, and change-guide pages.",
+        "State the minimum external prerequisites the repo establishes: esbuild on PATH for Worker deploys, a qualified bucket for fleet nodes, Linux/macOS targets from the release workflow.",
+        "Verify exact CLI surface from crates/celld/main.rs main() and crates/celld/main/cli.rs rather than assuming from README."
+      ],
+      "status": "complete"
+    }
+  ]
+}

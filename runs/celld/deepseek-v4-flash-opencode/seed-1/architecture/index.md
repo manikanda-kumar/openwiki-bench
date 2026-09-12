@@ -1,0 +1,8 @@
+# Files
+
+- [Cell lifecycle and ownership](cell-lifecycle.md) - How a cell (celld's Durable Object equivalent) moves between inactive, resident, dormant, and hibernated states, how cold activation and capacity admission work, how eviction and pressure shedding choose victims, and how requests route to the owning node.
+- [Deployments and in-place code adoption](deployments.md) - How celld deploy bundles a Wrangler project and publishes manifests, module blobs, asset indexes, and the deploy/current.json pointer to the fleet bucket, and how every node loads a DeploymentGraph, builds a Generation, and adopts new code in place without restarting.
+- [Durability, fencing, and the output gate](durability-protocol.md)
+- [System architecture and ownership boundaries](overview.md) - The three-crate workspace split — celld-logic as the pure decision core, celld-ltx as SQLite replication, and celld as the effect executor and adapter host — the single serial actor that drives them, and the node/fleet/cell mental model.
+- [SQLite replication and the LTX log tier](replication.md) - How each cell's SQLite WAL is captured as LTX data, uploaded to the fleet bucket under epoch prefixes, replicated to a follower ensemble, compacted into additive L1 objects and L9 snapshots, and restored on takeover.
+- [V8 runtime and Cloudflare Workers compatibility](workers-runtime.md) - The in-process rusty_v8 runtime that executes Wrangler bundles, the isolate pool and its decision core, the JS prelude and harness, cell storage over per-cell SQLite, the reserved runtime classes (D1, KV, Queues, Workflows, cron), and the Cloudflare compatibility surface.

@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e7dceee26e35be5264dfa2ec8247b81b4f2a6262261f0142aa95aeec68083fff",
+  "claims": [
+    {
+      "id": "claim_832dd1b169194437aadeb51dd866e451",
+      "statement": "celld deploy builds a Wrangler project with esbuild and publishes to the fleet bucket itself: it does not shell out to wrangler or speak a Cloudflare API.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L8-L12",
+          "version": "repo-lines-v1:sha256:8b09a38f479faac02a69fe88b03c59e16438ff9726549e6ed8a57fa74d028b3c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjEzNjc5NjJhN2Y1MjNkZmI3MzU5NTYwOTZiNTI1ZmEzY2I1MWVlODc2ODA5OTVjMjJmMGI3ZTc2OTYxNjEyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmJhZTMxZTEwNzhmMzNmNDVkNTY0MTM1ZmNhMDI0ODZjNDdkMzgyZDRkZTFiYThhYjg0OGRmZWM2ZGExNWY4MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGI0YjE3NTY5NGExMWVhMDllZTdkNmNlZDQxNzFlMjJkOTQ3OTQ0Mzc1ODI0NGYwM2VlOWRmMDYxNWI0ODkzMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMThmNjVhNWY4MGU1NDFlZTkyMTJhZmVlYjZmZDYwMjc4OTAyMDNjNzA4MTA3ZThiZDhmNTk1NzcyMTAxNTAwNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_112710d53db2411cac7ba5c9bfaa1b11",
+      "statement": "deploy/<script>/<version>/manifest.json is the normalized deployment a node reads: DO classes and their SQLite subset, module refs, asset index, cron expressions (deployment state, so schedule changes need no alarm migration), queue consumers, required features, and verbatim raw metadata.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L10-L42",
+          "version": "repo-lines-v1:sha256:92c81b51f726e02eda89d88294faf179d7303d529ac54cc8c02a193c64b4323e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmMmJhMjRkODJkOTdmMzg3ODQxMTdjYTVlNDUzOTQ5M2M2NGZiOTFkYzE5MWRjY2NlNWQ3MTEyZDQ3MmNmNmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2YTdkMjQ1NzM0MGQ0ZjUyNjNhZjRiMzhmZDA4NzFhOWQ5ZTM4NGU5OGM2ODBmMTdkYjA5MTBiOGYwOWE2MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1ZWY4MGU3NWZhYjJhNjQ0NTUxM2M1YzY2YjAxNjgyYjA1MjE4OGQyNjVlZDFmZjYxNzdmNjliZWNlNzM2YzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9cecca4954c14788b8f0db5af535ec1d",
+      "statement": "Deployment versions are content identity: first 16 hex of SHA-256 over sorted module contents plus the exact metadata bytes (and asset index), never upload framing, and deliberately excluding cron expressions so native and managed paths agree.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L417-L451",
+          "version": "repo-lines-v1:sha256:c0fee72b04b9592033083139aa259de026e660b5eb66f2005fe494fd9e411eed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1NzE2MGUzNjcyZGNkMDllM2Y3ZTAzOWU3YWQ0YjgzNjYzZmNmNWJjNzUwNGJlNTE3NmExNjkyMDE2MWE0OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6813ac2afa66417bb7f622f0ee570949",
+      "statement": "Manifests declare required_features against SUPPORTED_DEPLOYMENT_FEATURES, and a node rejects a manifest requiring an unknown feature up front rather than deserializing partially and misbehaving at worker load.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L294-L296",
+          "version": "repo-lines-v1:sha256:1e7e3997dfc4267bdddea5573eb66ee3c04793aa129ba365704d9be5fcd77147:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFiMjg5MTQ2ZTk0OWYwNjQxZTVhMjdjNDM3OTJjY2VjNzA0ZWFiZDliOWU5YWI3OGE1ZWRmZGJlOTFkOTVlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWZlNTkwOTY0YjRmYzI4Nzk4MzQ2MjE2ZmVmZTcxNGMzYmU4YTRiMTA0M2IyNGI3MjIyN2E2ZGZhY2I4ZjE3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGFhN2I3NzQ0YmIwYzIwMjJjNDIwMmI0NjI3YTljMzFkYmJjZDkzNjQyMzI4MjFkNWJkNWQ0NDg1MDI5Njk0MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2JhMjI0Yjk4N2ZmOTE1NmEzYWRlNjdmNjU0MmFlZDY2ODk2NTYwMTNhZDBhZGZkZGY4ZGE5YzI3OTdlYzY4MiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/protocol.rs#L54-L66",
+          "version": "repo-lines-v1:sha256:0073229fa672fa8b6438452a3b0a86bd9ac4e927d43bf6d342aa3d5d9a73bb5b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMDU5MjRlYWY5YjMyOGJmYjgyMjBiODFjN2M3MWU0NzYyYjFmMTZhNzdiNGM2NGY3MWY5ODBiYTgwMGZkYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNzM5NWVmNzA2YTc3NjkxMTY4Njg0MWRjMjg1NWM5ZmNiYjk5NzA5YTk0YzY0NTBjMWIzYjE5YmRjMmU3MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3YWM3ZGMyNzI4ODZhYmFlMzVhZDFjZGQ1ZWZjODAwMzI1OGM3NGY1NzdlNjQ4YzdjYjNhN2RlNTYwZDEzZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ZTBkZWMwZjc5MTE2NWYwMmJmZjE4NjYxZjRmYjE2OGQyYThmY2E2YWVhMWNmZjAxMTE2ODIwYWYwY2JjZjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_89d13b35d89b451c9031e65aa81dddfa",
+      "statement": "The Wrangler config surface is an allowlist: any unmodeled key stops the deploy, because refusing is compat-safe while guessing produces confusing activation failures later.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L35-L56",
+          "version": "repo-lines-v1:sha256:e287c3702d14e5d58cabd0d1abdf08d1baa073e1c243c18bcd8eed7b94521071:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4OWEwYWM4NzJlYzRmNjQ5M2M1ODU1NDEzNTA1ZmQ4MGFjNGRlNTgyYzBmNGYzYjMyMTk1ZjE0YzViMWE0OTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2MDRmZmM0NDFkMjc4NGZjMTE0ZDAzZWNlYjM3YjVhMmJlNDVmYTcyNjI2NmM3YTE4MzZiMWEzZWU0MjkxYTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_af5bb2ea45844b589613436ac5ef14d7",
+      "statement": "esbuild (found on PATH or via CELLD_ESBUILD) bundles Worker entries and copies imported wasm beside the bundle; a pre-bundled no_bundle entry skips esbuild because running esbuild over a Vite build corrupts it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L2121-L2121",
+          "version": "repo-lines-v1:sha256:53b8613adb38c0338c897597df815f58063261805a74a528868ff3e057b61376:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTNiODYxM2FkYjM4YzAzMzhjODk3NTk3ZGY4MTVmNTgwNjMyNjE4MDVhNzRhNTI4ODY4ZmYzZTA1N2I2MTM3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTNiODYxM2FkYjM4YzAzMzhjODk3NTk3ZGY4MTVmNTgwNjMyNjE4MDVhNzRhNTI4ODY4ZmYzZTA1N2I2MTM3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQ3YTAxYTMzMDVlYjNkYjQ0NjZiYTUzNTEwYmIzNjRkM2ZiMzFhYzZmMTJkOTdkYTQxODdiZTgxNjk4MWZhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDcwZDQzMWQyNDUxNGZlYjY1ZmNhYzJjOGRmN2ZhMTJkNmEyMTdhNDRiODVmZGNkZmY2NTU0YmI2ZjU4ZWNmNyJ9"
+        },
+        {
+          "resource": "repo://crates/celld/deploy.rs#L448-L465",
+          "version": "repo-lines-v1:sha256:d03812bdfa4a6a90c851c7521dc04da622b78bb8259a17258a94fdecc099450b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0N2M2OTM2ZDZlNmUxMTIxNmNjMGFmODljMDc1YWNkMWVmYzUxZDdkMzY3NmZjYjMzY2VjMDc0ZTgyOWY3ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3YmNhM2VmNjIyMTQ1ODY1OTAxMDJmY2E5ODczMjhjZDk5MDZlN2I1OTc5Njc0NTAzZjMxMDJkYzNlYWVjMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1MTBkZWJjNTIwNWQ5MTFkYjFiMTQzYjViMWQ5NmQ3MTU1NThiOWFiZWFmOTAxMmZiNWYyNDJlZjkxM2RlM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNGM5NjE2YTU1NDViNzU5NjUzNmNmNTMyYjQ1NjBmOGNiOGEwYzNiZTRiMTdlNmU3MmNlY2YzMmMyMjcxOTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d65a8f021284436adbaaeca3ef64dd0",
+      "statement": "Publication writes content-addressed asset blobs idempotently under deploy-blobs keyed by sha256 metadata, then the versioned manifest, then per-script and fleet-wide current.json pointers that nodes poll.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L613-L619",
+          "version": "repo-lines-v1:sha256:5c952babb33d59af742ffbe1cdffb23b749a9a70bbcced8a73343f34b401f4fd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2QxNTA5MjJlNWJkNTE4NjRjMzAyNzlmNDg4Mzg2ODc1NjVjY2M1MjUxMzk1ODk0YjhiZjBjMTQ3OWY4ZWQxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZhN2E0NGRhNWM3NjBkYjMwYzFmM2E3MTk5YTkyODgxMzY0ZDAzNDMwODc5ZWIwYzZmNzUxODA5YjViYjBkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDc1MTgwMzg4ODk1ODg4ZDY0ZWZhNDE0MDhjNzIxZWM0Y2E1ZGIxYTFiM2NiMjU1OTcxNDNkMWNiMDJhMjQ4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzVmNmY0NjZlNTljZmMzMDcwM2M0NWY3MmFmNjVkZTU0YWMzNjNkMzU0Y2MxYTMzMzAzNTBhY2Q0NTI0MzRjNCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/deploy.rs#L769-L783",
+          "version": "repo-lines-v1:sha256:fe8e9109ff615983ac2d2329553503f322d85277688c4261c6af47e9195c9a38:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2OGMwMWI2M2RiOTdhZTFhMDE3YTk2YWViYTRkYjE2NzI5Zjc1Mzk0M2YxODU4Zjk3MTdiZjVmYmUxZmJlZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkNWM2NjdiMTBlMDA1MDc3NDIwMjIxYjMzMmYwMDc5MDBmYTk1OTg2OTYxMDc2ZDQ0OGUxYTBkOTNhZjEyYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZjZmNDY2ZTU5Y2ZjMzA3MDNjNDVmNzJhZjY1ZGU1NGFjMzYzZDM1NGNjMWEzMzMwMzUwYWNkNDUyNDM0YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhOTAwNTRkNGI2Njk4MjcwYzU5ZGVkOWRiNGE0YzNiM2Y3YTU2ZjFmYmY4YzM3NmUxMDJkZTY0NjRlMWUzOTkifQ"
+        },
+        {
+          "resource": "repo://crates/celld/fleet.rs#L628-L628",
+          "version": "repo-lines-v1:sha256:7cae46ba54b56c0331cbb8ed1a4d158a6c7e09ca4de12d4976cbcc25d07a2c90:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NhZTQ2YmE1NGI1NmMwMzMxY2JiOGVkMWE0ZDE1OGE2YzdlMDljYTRkZTEyZDQ5NzZjYmNjMjVkMDdhMmM5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NhZTQ2YmE1NGI1NmMwMzMxY2JiOGVkMWE0ZDE1OGE2YzdlMDljYTRkZTEyZDQ5NzZjYmNjMjVkMDdhMmM5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjc5NGM0NTBjZDZmZDZkZjFiZmU5OWNiMjYyMjQ2NTk3ZTc1MDFhZDZiMDJjNzgyYmJjMDZiMTk4NmY4OGFiOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg5MDFmMGU3MTE5ZmI3MGRlNWY0YWJjZGQ0OWFmYTU2ZGU5MGIxMzI5YTViODJjZjA0MDJiYjVjZmJhOTFiNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bdc020bf1fb7446faf7b610a1548fa02",
+      "statement": "A Generation is everything a node derives from a deployment (worker configs, isolate pools, DO class registry, service graph, asset resolvers, cron schedule), and boot and reload build it through the same two functions so a reload cannot miss what a boot did.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L3-L16",
+          "version": "repo-lines-v1:sha256:62fdfda1f2ae66dcc76f4e1193dc0b968821a1ead6e2502c376aba169e3c567c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlOGYxNDU5NzM3YzllZGJhMTYyNDVlNzBlZjAxZjg3ODA4MDE2MDNmMTQ4ZjYxNmYyYTk3MGZiYjM4NmM2MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YWE1OGU2MGNhY2E4MTkyNjBjZTdmZTUzNDM5YzcyYjllYzIzMTM5YWNiOGE3NjgzOTk1NzQyM2RhMWYwMjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxYTkxZGRiMDIxYWNhYjNiZDNiNzIxNDkyZTY1ZWRjMjAzZGE0MDQ5NzEwNTUzMzVmZTI4YjY3ZDgxNzI3YzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ec9a6442afb448a0ace4c49f4603ad96",
+      "statement": "DeploymentGraph::load is the only bucket walk: it resolves service-binding and queue-consumer dependencies transitively and refuses double-resolving scripts or mismatched consumer attachments so one script cannot have two bodies in a process.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L110-L140",
+          "version": "repo-lines-v1:sha256:d27182cc34e88993049f95e5e4a70a22e42fbf0a41809a3ac175de3e527dba22:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhM2Y3MWExNDYxZDEwNjcyOWM1NTFkMjA5MTc5YjZhZWU1ZTYyMWU5YmRlZDdmZWY5NzhlOWUxNDQxNzhlOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3OWY2Y2YyZGVhNTE4ZjRkNDcyNmZjZDJkYTlhMDNkZTVjZDVlNTI2MWRkZDRiNWRhMDJlYzQ3MzM4YzY2MzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyMzliYTJjMzc1YjhmOTg2ZTJhOWU2NDJiMzI4MmEwMDlkNDViYTFjYzRlYjgxZjg1Nzg3Y2MxZGQyZGYwMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1YmQ0MzUwNGIwODEwODJiZTgwZjgyY2M1NWVlOTczM2E0ZTJjYzhiZDc0OWI4ZDNmOTU4ZWEzNzhmNmRhMWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_73fb05d896d2420aab8703c925fcb669",
+      "statement": "Adoption polls deploy/current.json every CELLD_DEPLOY_POLL_S (30s default) or on a forced POST /reload, builds the new generation beside the old, flips new requests in one step while admitted requests finish on their generation, and moves resident objects at safe points or forces the swap after CELLD_DEPLOY_MAX_AGE_S (default 60, 0 forces at the flip) by cancelling activity and closing regular WebSockets with 1012.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L86-L104",
+          "version": "repo-lines-v1:sha256:80523c8ab577a04b04e8a0b59252a91fb8dfab2455755c45d3c29aede35f37e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4ZjNlN2RlNGJmZjEyYTI0ZjMyYmI4ZjQ1MDM3Mzg1ZTI3ZTg3YzY2MWFmOGM1NzExYjZlM2Y4NTAyOTJhMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjMDJjMTkzYzRmOGIyYWJjZWVlYzQ5Nzg2NzQ5OGU0ZTExYTJjMmMwMWMyNmMyNTQ4ZGRmNmMwMWQ4YjY2Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmYWI3MTBkZGY3ODU5ZTU3NTc2NGE5MTNhMDAyYzc0NTg1ZmZhNzAwMTUxMGNiODgxMWRhODNkMmNmNzRiMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxNDcyZTU5MGZjZWUzOGQ0YzViOWM5ZjU2NDQ4ZjVjM2ZhZTY1ZTVlOTA4YWJiNjU3ZTE4ZGYzNjhjZTgyYjQifQ"
+        },
+        {
+          "resource": "repo://docs/README.md#L245-L272",
+          "version": "repo-lines-v1:sha256:c34953d4890ffea3543181c8a33f0cb4f6edd23fe7f150a902997afd9655f84c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0ZWE5YjhlOWEyZGE5MTVkZTkxZGIzYTZhMjNhOWUyOGViODIwMmMyMjQzNTM2ZWIxMzY0YjY2OGQ0NTA5NWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NDUzODViODEzMmJmNGVlZmMzYTRjZTRmMGI4Yjg2MzU4MDdmY2Y0MzQxNGU3ZjU5YWU3Nzk3YTM1MWI5NTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllNzBjOGZhYjBjM2ZiMTM5ODA3ZjlmYTQ5ZTdhNmExNzFkN2JmMjcwNzJmODA3NmI3Zjg4MTJkNmMzNGVhZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyOGFkZDhkNjlhMjZkOTZjOWY0OTQzNDU1ZjRjYjk3NTA4MmQ4ODA0MzZlNTVjMTY4NjliOGNmMzRmODUyZGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_764cc21c6853497e9f3f2d71a6c172e3",
+      "statement": "POST /reload rebuilds even when the pointer names the current deployment, which is the documented way to re-read CELLD_VARS_FILE without a restart, while poll ticks and managed nudges skip unchanged pointers.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L35-L42",
+          "version": "repo-lines-v1:sha256:bbb7c004c3d737c5ba289a8c2d11d915d73a82e03f167ef88d82c7f7ce4d9da5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWUxMmZjZjY3NjU1MmExNzY4ZTM5N2VjYmNmNDAzOWRiMGU4ZWU0ZjEzMjJiNDUxZDY2ZWY3Yzk0MTk4NGUxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDZlOTAwOWFhNGY5NTljNjRhYjRlODg5YWViZmI2MmZkYzgxODY3ZDc1ZDc4ZmY0ZDYxNjljN2JjNTQ2MmNhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDcyYTQ5YzU0YzVmMTZhNDMxNDNlNzFmYTg5ZWFiMzZiOWU5MjM5MmZlMjU3OGFmNTRiYzBmMTFkNWE1Y2ZiOCJ9"
+        },
+        {
+          "resource": "repo://docs/README.md#L254-L255",
+          "version": "repo-lines-v1:sha256:26769886f15ca69dc2200824dd78385efb99dbb051013b7fbc58a2213b46e3e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjllOWE3N2Y0N2E4YjhlZDQ2ZjQwNGIxOGI5MzExYjJhYTMwNDY1OGZjZGM0YWE1NmJmYWNmNWYxZDFkM2Q3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EyZGNhYTM3MDM4ZTdiMWJjZWQxNDFkMmU4ZTNkMDAzZDVkN2EyNWRjZjEyYzc2NmEzMDQwNzAwMmU5ZGU3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzI3NTBjNWZhN2RmZWIwMzU4MjgxNWExOWUyZDNmNTJlMmQ0NTVhMjhjYjMyNzU3NzkzN2ExZjJjZTk2Yzk1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjViYTIxODE0Y2M0ZjQ5NDczZjU1ZDNlYzI4MTA3MTZhMjhmZDc2MDBkMDU2NTljNGYzOTBkOTNmOTgxMGNiYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_48649997321345aea7e68aa11ac19844",
+      "statement": "Nodes discover each other through bucket node leases with no join service, validate the bucket at startup, and the fleet's 32-byte HMAC secret is the bucket object fleet/peer-auth.json, created by the first node that needs it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L3297-L3308",
+          "version": "repo-lines-v1:sha256:bb42369d798c85d7e0e58801cc5ee9b9da47d49688bad4272a9187eeb690068b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhZjM0ZWIxMDMwNDg3NDdkNTVlMmYzMGY3ZWViNzc3NzYwN2JhMjI2NWFmNWE3Y2U0MjM4OTRiOTVhZmNhYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwMGZiYTA1ODc4NzFkNDVhNTdhZTJmMzc2MDYzOWEzNTk0ODk5ZWVkN2RkYzE2MzhjMWI5OTUwOGZjM2JhNDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ODgwZjc5OGRjZWE4N2UyYWU2YjQ3YTQ0MzMxYzQ3YzAzNjJiYmNkNWVjM2NiOGVkNjUwZmRmZWRlNmFlYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlYjk1MTAyY2JjY2QxMjU1NDk2MjMzYmY3MTg3MmZmMDgxM2YxNzZlZjJjMDY1MjM3N2UyNTg3OTljODEzYjkifQ"
+        },
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L20-L272",
+          "version": "repo-lines-v1:sha256:73a14de46e51125764be0686836460d44f892d1294353953ffa6a4b86707ab04:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiMmJiN2NlYTQ4NDYzNDRlYzAxMmVjOTdkNWU1NzJmYzc1MzY0MDVmNmM3NDA1MTQzOTIxZTIxYmM2NzhhZTg4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5ZTU3MTQ2OWQ0N2M5YTcyNzlkOTcyZmQxZGJjOWU5NGM5Njk5Y2E2ODNlNGQ0NDc1N2QzYWNiN2RmZTJiMGVlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzYTMwNzc2OTA2MjBkMTcyZDA2YWQ0YzllMDJjYzdjNGQ0MzE2Yzg4MDAzMWM4MzMxNGRjNDBlYzkzMjMzOWM2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkZWZkZjgyMmE5M2ZjYzUyZDkzZDZjZTljNjYxM2Y3ZTA5YTBkODMyODMwODg0M2VkMTA4ZjNhYmZiMDMzMzVhIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_21f1c49755f5471bbae6825b09fecc55",
+      "statement": "celld dev reuses the standalone deployment, ownership, and LTX paths over one persisted local SQLite object store (chosen because supervisor and node are separate processes needing a cross-process conditional update), exposed only through a doc(hidden) bridge the supervised child uses so no regular subcommand can select it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/dev.rs#L3-L32",
+          "version": "repo-lines-v1:sha256:3bec2ba76b39b2863fbb657b17e9997d3c94085efe47f46c5d9ea55d9c716a1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MzBiOTJkZTgwNDQ4NDQ1MzE1Zjc0ZjRhYmI0N2ExZjMwOWM2Y2E5YzUzMDQxNzc1YjEwNWEyZTQxY2QyMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmM2YzMzY1OGFkYzk3Nzg2MTg1YTQwNjMxZjk5YmU3NjZkNjdlODJkYzg0MjQ3MWQ2MThhODJhZDQxZDliNWIifQ"
+        },
+        {
+          "resource": "repo://crates/celld/local_store.rs#L3-L9",
+          "version": "repo-lines-v1:sha256:a8907fa6c3b0cf0bfa5ecebac21261ca9b84227e399b69311109753990a31420:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRjYTk3ZjgxOGI4OTZmZjI5ZWI0NjM3ZTk5NGZjOTcxYmZkNzZiNDY3NWVkY2UzNjFkYzVlY2Y2ODg0YzRiYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDIxNjg2NjI3NjBmZDA1MTc2N2ZkMjYyYWNmYjExMzAzMWY4ZDA5MDkwODQwODQzMTUxNTliYjAwNmVhMjUyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGQ3ZWIxYTFkZTc3OWEzNGY2ZjIwZDlhNGExNTRhYjgxYjljNTE3ZWZhNDIyMDcxN2E0ZTA4NDA1MWZjZTYxYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cdf1cffda16949058d7e915c1f9b7cfd",
+      "statement": "The managed celld.dev control plane is an alpha session client with bounded presence and SQLite explorer views, and its image-replacing restart-on-deployment behavior is off by default, kept only as the CELLD_CLOUD_RESTART_ON_DEPLOY escape hatch.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/control_plane.rs#L25-L44",
+          "version": "repo-lines-v1:sha256:54fec8940ddaac9093af9931f8cb4d791583fd40ade33664c89cd605a1143903:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwNjk1MzVhOWEwMDRhOWEwNjJhZGMwZmViYjdhZGZjYmI2ZDEyYzQ4Y2I4Y2Y2ZTNhOWY3OGI1YWRhMzNlMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiY2I0OTQ2NzUwMWQwODE5MzhlN2ViZTQ1NzBjNTczNTIwNzUxMzZhZmNhMGFjMjI5NWY1NzAxYTlmNzRhNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyNGRjOTYwNDkzOWVmOWZkYmRhODg2MDA3MzUxMmRmNTZkZWViMjg0ZDY2OTk5MzRkNGQ5YzE4MjI5YWE4MDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwODViNWUyMzYwZTMxMjEyMzI2NzFlYzhiOGFlNDMxMzE1MTdjODU4N2JiMzYzMTJjYzdkNDVkMDJkYzFkODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e811456bb232479fa5c4db0bd73ba9e8",
+      "statement": "The repo records that v0.1-v0.2 and v0.3-v0.4 upgrades must stop the whole fleet (advertise addressing, block-object readers, tunneled peer protocol, epoch-qualified KV rows), while v0.2.1-v0.3.0 can roll, and downgrading after an open node-log session can lose acknowledged writes.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L513-L544",
+          "version": "repo-lines-v1:sha256:940860bb26563c1e8abb08b7351038acd0e0057f08c3e727af80cd2290d633d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjOTYwNjNiODdmZGI1YmMzMzliZTkzZmQwZWI0ZjU2OWNmZjdhMGE3Y2UzMTQzYWJjZjgwODlhZTcyZjAxMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjYThlODBmNzhjOWJiMmM5NjQ2YmM4ZTc5YWZmMjIxODhlNjQyOWU5MDI2MzMwNThhMDg4MDM3YzhiYTM3MmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjNTBhNTZiNGUzNzEyZmYzYTIxNTE1ZDY1NmMxZjIxNzljYjNlYWQwMDVlYzg0NGJmNDAyZjcxOGY1OTQ1YWIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:57:20.671Z"
+  }
+}

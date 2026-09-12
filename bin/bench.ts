@@ -60,7 +60,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const command = args[0];
   const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-  const evaluationRoot = path.join(projectRoot, "results", "evaluation");
+  const evaluationRoot = path.join(projectRoot, "results", option(args, "--subject") ?? "", "evaluation");
   if (command === "prepare") {
     const subjectId = option(args, "--subject") ?? "background-agents";
     const judgeFiles = await prepareAllJudgeTasks({

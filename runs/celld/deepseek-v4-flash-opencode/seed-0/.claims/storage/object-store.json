@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b08233fe02a5c1d8ae2e810fb6125c023816273862f35604329d43e6adc8eaa6",
+  "claims": [
+    {
+      "id": "claim_773e1454785a4dc4b043af6ffd9bf863",
+      "statement": "The fleet uses a single bucket client built on the object_store crate that celld-ltx already links, bound to one bucket, replacing aws-sdk-s3; no call site streams a body, so everything is in-memory Bytes.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L3-L6",
+          "version": "repo-lines-v1:sha256:38f1955acc7ea8a7ae930e2b9a463086d869c216f79cfe68fab25a4d77a488e8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmNhY2ZlMzM2YzA3ZjkzMDc0NzRiZWI4ZGZiMjdiMjdjNTMyZjVhNGMwOTFjMzg5ZDliYzFhNjhjZjUzNmYwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGI3ZGIyY2RiNjZiNTAxZGU3ZWQxNjQzMjdiODAyNjBjMGE0YTM3Y2YyNjdkMDdkMDY3N2UyZmFmZmE3YTAxMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_251c83f96b6a4257946000d16104e603",
+      "statement": "Three conditional-write dialects share one surface: the S3 etag dialect (If-Match/If-None-Match with SigV4), the same etag dialect on Azure Blob Storage, and the Cloud Storage XML API generation dialect (x-goog-if-generation-match with OAuth); the CAS token is an opaque String.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L7-L18",
+          "version": "repo-lines-v1:sha256:9b01da9526b4227977abf4647655d591fd57987ed560ba8ef2cf623ec12d5653:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyNTFkYzM5ZTgxMmYyYjk5NWEwNzViMzMzZmY2Y2NhYmVjNmUwYWQ4ZGZiZGNjZTc2NWFmNGI2OGExZGQ4MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzODdkY2JhYTY1MjU1OGMzYzZkODRkZGE4ZDkyMjgyZmRhYjcxZDZhNDM1MmE2ZWJjMjQ1MDJmYTQwNTgyNWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiMDMyYzJhM2ZlYTAyMDMxYjA1OTYwYTI2MzA0YjljYjc1NTE4NTNhMTkxZjVkMmYzOTRiOTc5MTgwNGIzY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0OWJjZWQ3ZmY4NWEyMjc1MjRjYmJmNmY3ZjA2MTRiZTYxYmQzZjg4YTg2NDE4ZGVlMzU3Y2RkMDZkZmZhY2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1e530e7063ae47b89faa6aa4fac4b6b2",
+      "statement": "put_cas answers Ok(None) only for a clean 412/409 rejection; every other failure is ambiguous and surfaces as Err, and a response carrying no CAS token is an error rather than an empty token a later conditional write would trust.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L20-L24",
+          "version": "repo-lines-v1:sha256:87a60adc0e4f479dd4365a62475a2c87612ec70a014849fa56ebd9b221395daa:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FhNDk1NDFhYTY4MWY0ODNjNmY2M2EwNjE3YzQzNjcxY2NmZjk0MjQ2YWFiYWM4NTE3MDQ3MzA5ZTFkZjZkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY5MjBjOWM5MWU1YzhkYTY2ZDdlYTlkOTg0NGQ3NjFiMTVkNDRjZGRiNTI0Y2I5YzBmMTk0ZTUyODhkZWM3OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk5ODlhZWE4ZDEyNGMyZWNjNGJkNzA1YzhlYTk3Yjc0MTc3NGNiYzllMmYzOGQyZDQ1MTdmMDZjZDk5ODM4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFjMWI1Y2VmM2MyODA0NDVhNjI5M2Q2MjUwNTJiMTllY2UxNzU1ZWU0NDkyNTM3YTVmZWNjZTllYWY4NmNmZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b7a6dd78fe64cdd8d0e978360559efd",
+      "statement": "Azure requires exactly one credential family (account key, managed identity, or workload identity) and the authority host must be the public Azure cloud; AZURE_STORAGE_USE_EMULATOR=true selects Azurite for local development.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L162-L199",
+          "version": "repo-lines-v1:sha256:b07feba28fa7c7ee34a242751ddd3b27bad499b40a9beebe1f8aa6023337177d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNDNmYjg5ZGQ3MTM5MTcwNmJiNjU1MzM3MTM5YWU2NmFjMTBmYWNjNDI2MmJjZDI0OGMyMjljZjBlMjVkMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiODQ5YWQ0NmE1YTU0NzAzNjcxYjhlZDVkMTJjYzY4MDE1ZjUwZTk1MTU0MjAwZjE3OTQwMTAwNjg5NTk4ZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZjJkYzAwYWZkZWZhZDhjNGU3MTNjN2VhMzM0MDA1MTI4MWZlZGRjOWU4ZWViYzU0MjYyNzhmNDU0ZjdhYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhMzM5MGYyMDZjYzc0YTE4ZGFkN2I2YTQzOTE2NGU0OGU3OWU2NTk4ODY0MGM2ZjcyZmQwNjc3OGZiZDY4OWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f6fa9bf5ff44cd3aa914bcafe17c226",
+      "statement": "A bucket value can add a key prefix (s3://BUCKET/PREFIX) placing every fleet object below the prefix so two fleets can share one bucket.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L205-L208",
+          "version": "repo-lines-v1:sha256:27f8f2a511591e76e3712bd4a0f6d3e611d43e2793dc7659828198016ff5908b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNkNGUyN2Y2ZDg5NTBlZWYxYTk0MTRkODJjYjk3MTliY2Q0NDI0OTc3N2E4YTA4MzI3MDE2YmJkNTcyZjE3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNmOTI4NDQwNmI0YjQzZTcxMjQyZWM0NTI2ODM2ZWJhMDEzYjVkMzk4NWFkNGQxYWRhZTdkMWMzM2E3YzUzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q4M2I2NGI1ODc1ODk4YWYwNTQzNTM2ZDkzMThlNjUyMTkyYmZkY2Q5ZTNmYTQwODEzYWFjNWIwMThmN2I4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2UwMGEwZDM5NTBiNDNiZmRiMDkyYmEzODFhNTQ2ODlmODI1NDUwNmU5OTFkM2ExYTJlYTQyOWRkZjgwZTlmNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e0e3787ee2ed48b79f6999d9c1c121f3",
+      "statement": "celld reserves probe/, cells/, nodes/, node-cells/, fleet/, deploy/, deploy-blobs/, wake/, and telemetry/ prefixes; the key layout includes cells/<cell>/own.json, cells/<cell>/ltx/e<epoch>/, nodes/<node>.json, fleet/peer-auth.json, and deploy/current.json.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L1190-L1190",
+          "version": "repo-lines-v1:sha256:3a3f350fa12b35cf71df3d88767241eda25a22924daefc8e528ec076909a75b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EzZjM1MGZhMTJiMzVjZjcxZGYzZDg4NzY3MjQxZWRhMjVhMjI5MjRkYWVmYzhlNTI4ZWMwNzY5MDlhNzViNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EzZjM1MGZhMTJiMzVjZjcxZGYzZDg4NzY3MjQxZWRhMjVhMjI5MjRkYWVmYzhlNTI4ZWMwNzY5MDlhNzViNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmQ2YjI5MDU0YTk5MzYxMGNjYmYwN2ZiN2EwODhkYTQ3ZWYwNjQ4MTc3YzdlNjA0YjNmYjY1ZmRkZjQzMDJmMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGExNTMzOTQxY2NkNzE4MThmYWY4YTg5OGQ3OTY3NDlkYTVjNmY2MDEwNDA4Yjc1MWFmYjdkOTdjZTFjZWQ4MiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/ownership_store.rs#L289-L289",
+          "version": "repo-lines-v1:sha256:58f41f00c48a266f178b4fc010579bfdd352f003de0cf9d6de27ea5ac399977f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNThmNDFmMDBjNDhhMjY2ZjE3OGI0ZmMwMTA1NzliZmRkMzUyZjAwM2RlMGNmOWQ2ZGUyN2VhNWFjMzk5OTc3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNThmNDFmMDBjNDhhMjY2ZjE3OGI0ZmMwMTA1NzliZmRkMzUyZjAwM2RlMGNmOWQ2ZGUyN2VhNWFjMzk5OTc3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTJjYzYzZDcwYTRjNmMyYTliNmQ3ZjhhNDk4ODViNGQ1MTdmMmU4NGMyYTYyZTQxMDQyN2MzMzVlMmFiOTI5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmIyY2UzZDI5ZGE1M2U1MWJiOTA4NDgxMjAxM2VhNTgyOTU0ZWNmNzhlZWI5M2UwYTI1NTNkMTUxMWU4YTA3OSJ9"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L78-L81",
+          "version": "repo-lines-v1:sha256:20f67018001ec0d74645b241a61691ebcf6b71f9236f3b1d3987094e055609e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWU2NTk3ZjZjNjRjNDNkN2ViYWY2YmQ4NGNlYzAzNzgwMTFjYmM4Y2Y4YmE5Mzk4NDkxM2IzYWM4Mjc4Y2IyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVkZjdhNzc5ZTEzMTM4MzAyMzIyNDQwNDM1ZDY3MjE4ZGUyMDRkNjEzYThlZmJjMjBkMzMxM2UwY2E5YWYyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDU2ZDFhNTY2MWM0NDgwYmI4MDY1Y2YyNmRhNGYyOTcwOWU5ODI5ZWJiYTk2NDA5N2Y5OTdkZDdjZGVhYWY0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdkZjY3ZGFlMDhmZGJlOTBmYTZmY2VlYTZlZjEwNDBhZDEwZmM0NThkMWY4ZWQxODFmMjE5YTEzNDdhNzYxOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a08ab9e77d4544ae9c75254ea4a2cae6",
+      "statement": "The LTX object-store client keeps the Litestream behavioral invariants: the {path}/{level:04x}/{min}-{max}.ltx key scheme, the 5 MiB single-PUT versus multipart threshold, seek-skip listing, NoSuchKey mapping, and batch DELETE up to 1000 keys.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/client/object_store.rs#L3-L19",
+          "version": "repo-lines-v1:sha256:4868661ce1648d32ea3147a6fb7aa17d3e13a793fec47510a34b29bccdbffb29:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3MWRjNjUyYzJhZTI0ZjA2NWNhNWNiZTdiMDM3ZWQ2M2NlMDc2OWMzMWViYTQyZTNmYTE2NTM0NjU0ODRmMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNjU3MzdlMDcxZjlmYmNkZjU0YjhhZDM4ZTY2ZTRiNmYxZjlmYTFjMDFlZDZhZjlkOTY2NGQyMjJhOTY0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5M2ZlMDRjNDAzNjIxZjU4OGY0MmJlYWUyNGQ2OTVhMzE2OTc3OWYxOWE2NjdlZThhMWI0ZGI2ZjQ5ZGQ4NmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwMzA5OWI4YzQ0M2MwNjgyYTNjYTM1MWZmNWU2MWU4M2IyMGJmZjMzMjk2OWEyNjc1NzM3YTcyMjAwOTE4NWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e54fb57df0c24e198cee736f85055af8",
+      "statement": "celld dev uses a SQLite-backed persistent local object store whose conditional update checks the ETag and installs the object in one commit; it is local to one machine and no fleet flag selects it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/local_store.rs#L3-L9",
+          "version": "repo-lines-v1:sha256:a8907fa6c3b0cf0bfa5ecebac21261ca9b84227e399b69311109753990a31420:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRjYTk3ZjgxOGI4OTZmZjI5ZWI0NjM3ZTk5NGZjOTcxYmZkNzZiNDY3NWVkY2UzNjFkYzVlY2Y2ODg0YzRiYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDIxNjg2NjI3NjBmZDA1MTc2N2ZkMjYyYWNmYjExMzAzMWY4ZDA5MDkwODQwODQzMTUxNTliYjAwNmVhMjUyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGQ3ZWIxYTFkZTc3OWEzNGY2ZjIwZDlhNGExNTRhYjgxYjljNTE3ZWZhNDIyMDcxN2E0ZTA4NDA1MWZjZTYxYiJ9"
+        },
+        {
+          "resource": "repo://docs/README.md#L320-L327",
+          "version": "repo-lines-v1:sha256:899cf81c5de16e6b806c552a7db90e8eb8a50d244b875e23d970b48bbca31f13:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTJmMGU5MzNiNzk3MjQwODU0ZTk0MTFmNzcxODYxM2ViZDUxZjBkMGIxNDc5Y2JmNTU4NjgxMTZmNzlmMTRlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk1NjdhMzczYWY1NzNhZjliM2M5NDIzNjE4YTkxYTE3NTU3YjAzN2MyM2NjZTNmZGNjNTk0ODY5OWQzYjJkMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDY1NjcxMzhlOGQxMWEyNmJmYjZiZWNiYTBmOGJmMTIwMGExNGE4MmI4OGY5ODM5OWRmZDg2MDYzY2E1ODYwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjVjNzE4NTQ0NDhjMWIxODkxZDZiYjBjODBlZmExMTViYWYwZDdiYzQ5NDc2ZTMwMDg5MmYxNzIxNThkYTlkNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3c820af257b4d0ebd64eb2bb8489e99",
+      "statement": "Amazon S3, Cloudflare R2, Google Cloud Storage, Tigris, and Azure Blob Storage qualify for a fleet; Backblaze B2, Hetzner, and DigitalOcean Spaces lack the required conditional writes, and MinIO's RELEASE.2025-09-06T17-38-46Z rejects the conditional create.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L210-L218",
+          "version": "repo-lines-v1:sha256:f9111fe35dd1c558b5d0d2d905e3b117ab7b2a2c677807fcc3af363a43263f6d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDVjZjYyOTA1NmZhNjM2YmNjNDRiOGI4MTA4MjkyNDQ2ZGZkMTA0ZDc5ZWU3MjQ1ZGFiNTRkMDFlODcyZmYxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzc2MTNjOThlNGQ2ZDcwYjViM2IzYmQ4YTQwODIwOGQxOTQwZjk0N2JiOTYwMTIzMThhMjk0MGUxZWNkMjZkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGJjNDlkMzdmNWQzN2NkNDdkNzNmZDgzYWNkODNjYmI4OTM0NGY5YzdmZTgzMzdhNGRkMjg2OWFiNjE1ZGYyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWEzOTIwODVhNThiNmVlODdiMmUwMWRlOWZkZjA5ODdkNDExMjRlZTc3OTM5ZWFlYTAwODk5YTczMTExZGRhMyJ9"
+        },
+        {
+          "resource": "repo://docs/guarantees.md#L16-L42",
+          "version": "repo-lines-v1:sha256:48f7a1c334391bd0e5c7489bf4e15434d102d7d843c5639a1de7956ea9a423c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZWIzYjQwYTU0MjUyMmZjMWFmZTlkYmM2NDVjZDBlNWUyZjIyODQ4YzEyOWVlOTYyYzMyMzFkNDNmY2MxZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjN2ZjNGM5NTUzOTVlNjNkYzU4NTJjNjFmNGIyNTQxN2RhNDYwYzFkNjA0MDU3NjA3ZmQwYjg5NTliNjU1NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5MmM2MzMzMGVkNGNjM2FlNGQ4Y2IxYzE2OGFiNTY3NWY1Y2M5MTExYTI2MGExMDRmZDQxNDg0YmY2N2E5NGMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:20:08.241Z"
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6497f4047c30432029966be931e699b34af623ef01694fdbadeab5af2ce34da9",
+  "claims": [
+    {
+      "id": "claim_43f96ab3d89f4989adf691d5eb3121a1",
+      "statement": "celld deploy builds a Wrangler project and writes it to the fleet bucket; bundling is esbuild's job while deploy.rs handles config, identity, and durable publication, never shelling out to wrangler or speaking a Cloudflare API, and unmodeled config keys are refused rather than silently dropped.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L10-L16",
+          "version": "repo-lines-v1:sha256:780edff0f616c4a45ab80a17cd5e65f9499782f1172fd5708c3ad02ad4dd0061:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZmYzRmMTZhNTlhNTVjNWQ4YTNkM2UwZTA2M2Q0NzU2MzYwNDM5YjNlZDBiYjgwNTJkMDhiNDczYzA5NjRhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDUwODI0YjFmOGVlOTEyZmU5YzgxY2ZiNWJkNmRhNmVhN2FjZmVlNDdiOTcyMjIzYjY5OWNkZDNjZTJiYjBkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWMzY2ZkMGY3OWQ0YzdhYzcyMWMyM2I0MWZiNDA2NjZiYTdjZjI3MzM5ZWI1NWRjOWMzZjg4MzgzMzZmN2I3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGJkNGIwMjc3ZmM3NTAzM2M2OGE3MWUzOGNmYjk3ZjI3ZjdiM2IxNDhmZmUwNmRjNDExYTMzYTY4MzRmNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d93cbca90454f74920b4937860605ed",
+      "statement": "Worker projects require esbuild on PATH; asset-only projects do not.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L193-L201",
+          "version": "repo-lines-v1:sha256:f48fb5d8645b374f0abfdb9df791988949accb93d2f6d46eaf4b4fce7cb5dae7:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGY5NzVmZWI0YjRjZTNiNjkwOTM1NWVhZDU2ODBhYjlmY2RhNzBjM2JiZGU1ODZiNTY0MjQ4NzRmZTlhYjM0ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDMyMzhjMzk0MmUxN2U3NzA2MmM2OWI0YjQxYjZjYTEwZmRkMGVhNWVlOGI4MGE2OGM1YjE2NjljNGNhMzBkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWY2NjZiYzJiODY2NTk2NWQzZDM3MzczYjgyY2Y0YmVjZGY5OGYwOWFhMzc5NDg5ZGU0OTMzZjI5OTg3ZjE2ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTQzZWJmNjM3NjhmOWNhNGZiMjdkY2I4MzkzOTc1Njc4YjQxMWQzZjVlYzA4MTQ2N2M5ZWNlYjg2NDZiNGI5ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c73b437d03843619a370a305e4f9de5",
+      "statement": "The normalized deployment manifest manifest.json is the only interface between deployment tools and celld; protocol::Manifest carries schema_version, version, script_name, modules, DO classes and SQLite-backed classes, assets, cron expressions, and queue consumers.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L15-L44",
+          "version": "repo-lines-v1:sha256:df569d5cfb4ac6dc43a5adab18a0ab5d1a10b4ccde66b014e676442e43e5939d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkMDFjNzBjNzU1Y2JjODkyNDgxOTE3MTViODgwMjViYjM0NzgzMDA0ODljZjhmYmYxZjdmNzJmNTA2NjAxMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwNDM0M2I0ZDZmODkyZmZkZmVjNmJiNzhkMWE2N2YwNTAxZDU4M2RhNjM0NDljYzY1ZGRlNzJmYjc3ZmMyYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1YzE1NTdlMTkxNWNhMGI3OGU0YWMxNDc1MTFjYmI0NmMwNzY4NTkzNTI4YjNiYmMxODFjYjhiMjc2MTJmZTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0361b0de55a4d2b9f1a5c3afc047397",
+      "statement": "Deployment identity is defined by sorted module contents plus serialized metadata, never by raw upload framing, so identical code deploys as the same version identity regardless of transport.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L413-L415",
+          "version": "repo-lines-v1:sha256:2cc8745e1051844438c29d3fd6d47d269f4ca00607d22b76d3d3053894288581:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWNkOGNkNDczYTBlOGE1MjkyNTE2YmUwYThjY2ZjYmRlYzRkY2Q1ZGVmZTQ2YjdlODMxMGYyNTEyOWI3NTIxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGI4Zjg1NzgzYzg5MDQ5NDc1MWI2NWY2MDBlYTU3Mzc2ZjVjNjk3MTYzOTUxODgyYWFmYzcxMDBhYTkwZTdmYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzE1MTIyZWE4NTFkOTIwMjI1ZDI4NzMwNmVjZGIzODZjYmJhNmJhYTU3YWEyMmQ0M2M5N2I1YTdlMmQ2MWM5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDVmYmRkODk0OGU4ODgxZTgwYTc0YTFjYzYwN2M2OTA4NGFhNDYyZjg2NWM3ZjFhOGRhMmJlZDMzNmIzZWZlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_86bbb4ab40ff4a579668343a55a5ae47",
+      "statement": "deploy/current.json is the fleet-wide pointer a node reads on startup; changing it is a deploy and nodes converge on it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L402-L412",
+          "version": "repo-lines-v1:sha256:a55ea58e86c263c4c9f727557ba6a5b4b581eb2cc913ee0490551579a56a57c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliOWJjYjVmM2Q1ZWNmODU3ODg0NjFmMGVlOTU4YzVkMjRkMDQyMjE1NGFkY2IzNmVjNDVkZDE1MDhhNTEzNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxYjE0NTg2ZjkxZWFlMTk0OTM1OWYzZjk2NGQyNGYxMjBhYWUyOGQ0ZTIxYWMzY2I0M2YzNzE2NDdiZWZlODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjYzg3NDVlMTA1MTg0NDQzOGMyOWQzZmQ2ZDQ3ZDI2OWY0Y2EwMDYwN2QyMmI3NmQzZDMwNTM4OTQyODg1ODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_94edacf4b01b406eaae34c0d6b3be518",
+      "statement": "The per-node pointer watcher is the one reader of deploy/current.json after boot: it polls on a slow interval, a POST /reload or a managed notification only makes it look now, and a version that failed to build is remembered and not retried until the pointer names something else or a reload is forced so a broken bundle does not recompile on every node each interval.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L653-L658",
+          "version": "repo-lines-v1:sha256:7701a99050194240a9c310eeec47065a7d0c5409fd565881d0fd5cf3cabecb6a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTExZThiNjJlMzNiYzQ4NDFjODZhNTJiYmZkNDI0YWU0MWUwYmJlYTgyNDIyZDEwZTBkMjBiOWYzMDVmYjQwYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDIyMGIwYzQ0MjA1OGVmZjZlNmI4YTNjMTdhNzU5OWI1YjE3Y2E3OTU2OTYxMWMwYmJlNzZjMzVkOTZhNGIwYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODhlY2VjODU2ZTYxYjRkMzM5MmMwMTViOGMxMDdhM2MxZjQ5NzJhMzdkMWMxNTZmZmY1MGUzMzk2MTRjNWJjZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c93fba2ab114ee4b50ede12c12dec72",
+      "statement": "Deployment adoption is in place: the node sends Message::GenerationChanged so resident cells move to the new generation at their safe points, with reserved cells moving first so the cron arm reaches a cron cell already running the new schedule.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L640-L647",
+          "version": "repo-lines-v1:sha256:98b0585d612c2f5ca8eeab1551682fb07589d26729aafad5fb50287cb943e5cc:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ3YzgyZmEwOWNjOTEyOWQ1OWVhOTU2YmRmNzcwMDgzZDE1YWY0MzFlNTEyOWFjYWE0ZTdmOTlhZDRiNzQ2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJkMTFjYWY0M2U5N2VmMzY5ZTZiZWVkMWEyNjhiZDA1ODM4ZjI5YjlkZDI1NGJmNjliYTY0ODg0MTQ3MjM0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBhMjRhZTk1NzM0ZmE2ODZhMWEzYTEzYzBkY2JjYTU1M2JhYjkxYjZmYTM5NThjMzM1YjAwMzBiNGNlYTBkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmFkZWRmZDJjNWJlMjZjNzM4ZTQ1NWZjNzFmZDg4ZWYxNDE2ZmY1ZjUyMzBhNzE5ZDZhM2QxY2FjODI4YzhjOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0ff718a43f4146248457591d4705ef9c",
+      "statement": "Deployment convergence is tunable: CELLD_DEPLOY_POLL_S controls how often a node reads the pointer (default 30s), and CELLD_DEPLOY_MAX_AGE_S (default 60, 0 forces at once) bounds how long a resident Durable Object may keep the previous deployment's code before celld forces the move.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L682-L685",
+          "version": "repo-lines-v1:sha256:cd519543823ef57fc07112815d4f1816db23909f7a2b12db6024a55b9ec0b882:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZkMThmNzFlZTViYmQyMjY1ZjUyZDJkNWJmYjE3MTMyNzY5MjVhYzAwMWJhYjNlYjI4ZTRlNzI2MWRiM2M4NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM1Mzg0OGJmOTUyOTEzYTRmYTg1YTU5NzdmZDA3ODA0MmJkYjQ3YjA3YjZhOWFlNTM4MmE5OWE3OTczNDM0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTc0YTIxYzI2YmNkNzMzNzI5ODQ4NzA1MmFmNmQ3YWI2MjA3YWI3MTVkYjQ1ZmZjYjdkNTMyYzZjY2JjYTk3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTIzYjhjNTVjM2E4MDk4NTQzZmE3MDhlMTM2ZGExOGJlZmY3MGZmMjAwZTk3MjBjMjFkMzlhNzQ5M2Y3MjlhMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef5ddb9ec14c4bcdb6b1c0369b85b65d",
+      "statement": "A Generation is everything a node derives from a deployment — compiled Worker configurations, isolate pools, the DO class registry, the service-binding graph, asset resolvers, and the cron schedule; a node serves exactly one current generation and reaches it through a snapshot, so a request started on one generation finishes on it even after the node adopts another.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L7-L14",
+          "version": "repo-lines-v1:sha256:a846fe7149a7d8ea1ebfd9026bb6614354b5ede62e1ab8cd8ea8196a0990ab51:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjJiYjhiNzk0NmI1ZTM3OTMzYWQ2NWI0Mzc2N2U4NTJiMjgyMjUxZmVmNjg1YzU5N2M1YmYzNWNmYjY1NjIyYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTE2NWE3NTc1M2VlZjQ2NmEzOGRmNzI2ZWRiY2EzNGFlNzRkNjE5NzAwOWIzYWYxZjZmNzJlNjlmMzYxMDgxOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2ZlNzE0ZTFlMTZhM2E4NTY4YTBiOWVjZGI5Y2I3MWIwMGMyZWQ0Mzg3NzE5MTNlOTYzYjA0Njk1MjcyZmY1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmQyYWVkM2RiZDgyOWJjNTZlNDI2YjJjYWUxNmZlOGRjNGJhOGNiZWNhNDBjZTc3NzI3NzRiYjVhZjVmMjYyZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_64edee971492461899ca0eccec6f9f80",
+      "statement": "Boot and reload construct a generation through the same two functions, DeploymentGraph::load and Generation::build; nothing else reads a deployment manifest into runtime state, so a reload cannot miss what a boot did because there is no second path for it to miss.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L16-L18",
+          "version": "repo-lines-v1:sha256:68cb6b4630600c3ea496a399b75899721ffa4ad979a679f5d13961bb6083729e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlhYTU4ZTYwY2FjYTgxOTI2MGNlN2ZlNTM0MzljNzJiOWVjMjMxMzlhY2I4YTc2ODM5OTU3NDIzZGExZjAyNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmI4NmQyZTRjMWYwYjBiYjNmMzhlY2NlODEwMjQ3YjQyMTYyYWJkOTU3OWU1MGJmYTViNzM1ZWI0ZDhlMzQ3NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU4N2MxMjUwOGJmYTBkNDI4ZGNmN2I0ZTJiMjVkMzUzMDVjMzRmNGI0OThlNGZkMDNlMDRiM2NkMjVhM2QyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTMxMzc1MTA0YzE2OWFiMWRmMzFiYjBjYTAyNGQzMmMzYzZmYzYyZmI5MGUxZGI1MWY3Mjk4MWRmZmRlOTQ2MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d80eb0f48e20481381d74b870395db88",
+      "statement": "Generation ids are monotonic from one within a process, never reused, never persisted, and never compared across nodes — the fleet-wide identity of a deployment is its version string.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/generation.rs#L46-L52",
+          "version": "repo-lines-v1:sha256:392b33e31ed473c722cafcae175f814b3d96f4e68faadaf79871ff7429cc0375:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBkMzk2ZjAzMjBlNzhjNjAwN2QwY2Q1NjMwMzJiMGMyN2NjZWJkMTg5ZWYzMmJkZWM2NzRiZThiZGI1NzEwMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQ1NmM5Mzg2MDU4ZDg2NTQ3MzEwNWM1NjgwOGQ4MmIzMWQ0NWIwOGM2NmFjN2M5MzliOWE5ZDI4OTRkMDg2MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDcyYTQ5YzU0YzVmMTZhNDMxNDNlNzFmYTg5ZWFiMzZiOWU5MjM5MmZlMjU3OGFmNTRiYzBmMTFkNWE1Y2ZiOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjUxZDcyYjJjM2NiZGRjOTk5Yjc1ZmVmZmVmM2E3YWQzMGFlZTBiY2U4M2U5NmU5OGQ3M2MwYzM5NzM3OTA1MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6cd52495df7473f8807a739d399b525",
+      "statement": "StopCause::Swap moves a cell's runtime to an isolate of the new application generation at the same epoch: no ownership change, no restore, no replication release; the core answers the stop with StartRuntime instead of a terminal phase.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L947-L953",
+          "version": "repo-lines-v1:sha256:26e79716ecad3c8fdbebb35c21d54090414122b76100ea298db615b913e4417b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRjNmM2NThjMmI2YTk2MmIyYTNlMzBhOTY3Y2NjYzFiZDMzYWRkNGZlYzFhOGY1MzRiODc1ZDYwN2Y4MTI5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQxYTc4MzI1M2VhNzg1M2E2OWVlZmM1MWE0NmUyMjVkOGY2NjIxOTJhYjU0NTg5Y2UzYWQ2MTlkNTY2MzRmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5fcb4d2a1b244c45b5eb389e0a0fd21d",
+      "statement": "D1's reserved Durable Object class is __D1Database.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L64-L65",
+          "version": "repo-lines-v1:sha256:c534a4e3b425203e947ff18267717d361c377aad58ad3b35b9578c2f7de72cc4:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTI3ZTM3NTZmYjFmOTQ0NjNhYWIzMTdjYmEyZjM5OTRhZGMzMjQ4NjUyNzdhN2YyOTU4MzgxYzdjNzIxY2UxNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjE1ODliZjA3ODU4MmJjY2Q0ZGY0YTAyNmI3ZTM3Njg5ZjMxZGU3YTA0MGJjOTY3YzA2ZmUwNDliMDc2YjFiZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGM0OThlYWNlMmRiOTFmN2IxZTg4OTc3N2ZkNWU3OTU3MTVjODhmMTIwNDEzZWJiMGIzYTBhYzhkMzA1ODE0YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6f03a426ba743b7a9020b3c713b92f5",
+      "statement": "Only D1 (and KV and Queue) are shared reserved classes: the namespace key is fleet-wide precisely so a database outlives the name of any one Worker, so two scripts declaring d1_databases reach the same cells via one registry entry, while workflow classes carry their script and never share.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L107-L114",
+          "version": "repo-lines-v1:sha256:2dfe36d79becd9c69344932cc673b5ab9818f2219632b2bf53469714b72dd094:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDliZTZmZWNmZmZkM2Q5ZDE5NDRhNzQ4YmYyZWI4NWU3YzY1ZWZiNTE4NDJkMDE4MjhiYjUxYzVmMTRjODg1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZiMWY3NGQ5MDU0NGFlZmZlZjFlMjc0MTg5NzZkZWNiMzU5NjYxNzk0ODg0NTJiMDdiMGEwNmNlZDQ3YjY4YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGM2ZWEyYjliNGU1N2U5MTJmOWVmNjZkMzkxNzZkOTU1YjMwYjBkM2QzNDM4YzJmNDQxYzNkNmU0ZTVlMzg5YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5df348b27cdd4235b71fc4937f5ef198",
+      "statement": "Workflow cells run as the reserved class __Workflow, with per-script subclasses named __Workflow.<script_name>.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L101-L105",
+          "version": "repo-lines-v1:sha256:1ffcfb9af0cf10baeb2fb751ac8cbb778b0a8c3d6a1c76a1b3d194d51bceda77:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIzYmMzODU3NWFlYjM1OWI0YjZkNjUzODU0YzMwOTQ5NDcwNDI1ZjY3MTBkNjkwOTk3ODE2ZDZmMTM0Y2I3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODc1ZmU1NDY5MDcxYWVhNjUxMTI4ODQzNDFhMTMzZWM3NjMzYzE5ZjA0MzdjYjNhZTkzMjhjY2ViMDNjY2NjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmNmNzdmOGQ0ODIzMTExODY5MDA3NzJlMDA4NmZlN2VmOTk1ZDBmNDA5YWUzNjdlNWViMzkxZWIzZjk3ZDI2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWU3N2JhMjNlNTkxMjY0ZmVkYTg3OWE3YTIwNTQwOTZkNDM5MTQ1NzlhMWQ0MmQ5NDc1YzNlYjU2ZDBlYmQ2MyJ9"
+        },
+        {
+          "resource": "repo://crates/celld/deploy.rs#L68-L69",
+          "version": "repo-lines-v1:sha256:db69ea4820e11586dc514257cbe4e07da449111e53ae33a8c911269dc3bb9fa1:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEyNDRlNmM4Y2E3Nzc4NmY4OThkOWE4OGMwMGJhNjc2ZTg3ZjBjZjZiNTU3OGIwNWQzYWUzNTYzMGUyOGExYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOThkMWY3OWZiM2JmMzE1Njg5M2I4M2M5YTI5MGMyZmUwZWRkZmFjOTZlYzU0Y2UzOWViMGVhNzE2ZGFhMGNiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWY5NGI1MDUxMjA4MDRmYzdkMDY5OTg4OGQyNWNkM2FlNjI5YjdjODU5MTNkNTZiYzgxMzVjMGJjMDc5ZWI3ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9187c11201cc43c89586379875c78a92",
+      "statement": "The KV and Queue reserved class names are sourced from celld-logic via celld_logic::kv::RESERVED_CLASS and celld_logic::queue::RESERVED_CLASS.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L72-L78",
+          "version": "repo-lines-v1:sha256:3f30c1f3cde4d6ab97a20687c697a629785d19e7c2b63904e6a7e1e4d6f09ef4:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQzY2I3MjJkYTJhMzU5NDdhZjcxZjAzYzU4ODY2MjBmYjg2MGMxMWE2MTdhMDUzYzc2MTg4MjE1OTIxMmExMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NjOGU2ZTJjYzA3YWYxOGI2NTQ3MmQ2YjAyYmU0NTY1NTllN2I4NzUxNmRhMTViZTc3ZGMyMmU4Yzk0MGFiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWYyM2I4MzAyNGY5YzRmNTI2NjU2MzFmZGU5M2EzZTUyMDdkNWY2OWFkMGQ0OGRjOTBkMTZjM2M3NzJjZGE4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWVkNDI3YjBhYjY5MTE5MGI5ZjhhMDg4ODhmNzY2NTMyNjBkYTI0ODUwYmRmYTI1YzAzNzJmNTIwOGUxNmMxNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c8fcd3e8f874100b4cc20094b758b50",
+      "statement": "Cron trigger expressions live in the deployment manifest (crons) rather than cell state: the reserved cron cell reads them from the manifest it runs under, so changing a schedule needs no migration of an already-armed alarm.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/protocol.rs#L26-L35",
+          "version": "repo-lines-v1:sha256:ceca8fb6d07622947e480928b8295bb1145a354d8ebfb95a4dc251d3fea0f371:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YmU1MDA2MjU5ZjUzNDcyN2QyODZiNWZjMmE2OGM2MmNjYWU1MzgwMWI4NjVhYjA2MTc1NjYyY2IwMDFhYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzYTIwMTg2NDUxM2NiODEzOThmNTBhMzI0OGNiNDUzOThlMDY1ZDNmZDYzNzRhMTQ4MDhjYTM2MGJkZDllYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNTVjYzUyMGU3NDE0NzY3M2E4YmEwN2FlYjBmMmYwMjgwY2FmZDQzZTc4MDAyMWY3OTRkZWU3Nzg3OWExYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkNzllMDE5NjhhZjliNzRhNWJmODk0YWNhM2ZlNDQzZmZmZThhMzNkOGVhOTU1YjFlMTkzZTg4YjE1NzZhNWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1521e9401b9643379e2427fc8c4cb0eb",
+      "statement": "After adoption the node re-arms the reserved cron cell through its /arm endpoint routed as an ordinary Durable Object cell request, refusing on a non-success response.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L517-L546",
+          "version": "repo-lines-v1:sha256:534f282e3c03684e5507b70907e10d3c56b310de823ea1ecac9aeb25685bcab6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNzBhNWZmOTY3MTBlYWUzNzJhMTI4MDE1OWY2MTcxM2Y0M2FhODFmNzVkYWRiODZlMThiY2RiODM5ZmI4YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4OTc3MWZlMWI2NjI4ODc1YWEyM2U3ZGJlNGFhNzE0NjFkMDBjZGZiNjZkZGYxMWI5ZDgyMGFjNTg5N2ZkZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZjZmNDY2ZTU5Y2ZjMzA3MDNjNDVmNzJhZjY1ZGU1NGFjMzYzZDM1NGNjMWEzMzMwMzUwYWNkNDUyNDM0YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1NmU3M2Q4OTBjNWRlNDgzYThjYmE1OTgyMTkyYzhlZjc5NTkzNzU5YTJjNzMzN2IzOGM0ZTk0YjkxNDk3M2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cac50a80809c47edbaa46845bc19acfa",
+      "statement": "Scope/class character validation is a security fence on names that become path components and object-store keys, with @ refused before it reaches storage because the @ charset is not the reserved scope's.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L96-L99",
+          "version": "repo-lines-v1:sha256:b0ba584fc4853c241147e6c0c332a381e4913283bf8254da3016113823814cfa:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU0YjdjYjY1OGNjZjA5YmNjZjFmN2UwYWU4MGE5YjMzMzQ3MjZhZTk3ZTI4ZTdlYWE1ZDRhYTk0NTc2NTIwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjk4MGE2ZTBjZWQ2OWE1YWY4YzQzYjhjZWJkODQxMTc3NzA0YTM4N2E4ZGViYWEyYzk2MGU4NzExNTdkOWUwNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzNjMDcxYjRkZGEyNGUyZTQwN2Y3OGEyYmE0YTcxNzQ2YzlhNWZmZWU3M2IxZGM1NTc5MDliZTI2M2Q4NmRlNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTBhZjcyNzk5NDE5MTYzZWIyYTlhMjhlODgxMzljZTFiZWJhOTRkNDZjNmMwZmQ3NDUxMWEwMGRiNDQ3ZDczNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_40e495bf8af744fe9c8bb263c3d0b87f",
+      "statement": "Mixed-version rollouts are gated by capability feature strings (assets-v1, cron-v1, d1-v1, kv-v1, queues-v1, sqlite-vec-v1, r2-v1, wasm-v1, workflows-v1); a node lacking a feature refuses the deployment at deploy time, so mixed fleets fail before requests rather than during them.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L19-L20",
+          "version": "repo-lines-v1:sha256:8a387e655190edcf66ccb6ab3572ce10df6aba49d99f15dba81b9f45bea034c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmUwZjMzNWYwNjE4MjUxZjE5YzJhYmU3ZDE2YWRhNTBlMzA2NjczMTE2N2ZhZDcwYTAzZGEzYWZlNzI0ZTE3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDFmOWEwMGE5ZDkwYzExYjA0MTI0YWVmYTBmOGEzMjBkMDVhOGYzZjliMjlkNjI2ZDA4MDM1MjgzNmQ1Yzg5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWQ4MjZiOTNlN2IxMzdlNGIwZGI0N2E4ZjQxMzI0OGY5MzgwOGNkZjM2NTA3MzkyOTNmMTYyMDZiZjQxMzllMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmVlOTEwZmQ4MjNlNWEzYTVlM2M3ODZmMDIxNmIwNDY0MzYyNjEzYTI1NmJjY2Q1NWJkNTgxOGY2YWE3YWZjZCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/protocol.rs#L53-L63",
+          "version": "repo-lines-v1:sha256:3b798d3db488de1a5a130d0fbd44a5385f4ea0e88789480464c53b2c7ed242b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhNjE0ZGIxMjlmZjYwOTc5MjU4OWM3ZDUwYzExZDE1NzgxNDQxOGEwMGJlZjVlYWIwMTlhNDAwOTVhMjQzMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkZjA2OTRmNjM4OTNiZjlkOTM3MjE0MTk1OGFjNmM1MjNhMTI1ZDM0MjBlMzg2NWIxNGQzOWJiYzQ1NDVkZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5NTk4ODhhN2I0MzcxZGM5ZWQzMjUwZDQxNTA1YTVmMGMxYWI2N2FjYzAyZjQ2ZTQwMWM4ZDJmZTAwNzE3NGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiNDdhZGRkMDI5Mzg4NWVmNjMyNWI1Yjg0MjZiY2E5YjFlNGIzMzZlNmQ5NjM3YWI2N2Q3MDU0ZTgwYTk2MTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_223cdd5ad1644836b69dcf7a1765c6eb",
+      "statement": "The deploy pointer carries a Rollout { percent } so a deployment can move gradually; celld deploy currently writes percent: 100.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L607-L607",
+          "version": "repo-lines-v1:sha256:7cd8d7ac7116d3b0cdcbba43cd2272898ec75b9c02246760eadc451c9647f2c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NkOGQ3YWM3MTE2ZDNiMGNkY2JiYTQzY2QyMjcyODk4ZWM3NWI5YzAyMjQ2NzYwZWFkYzQ1MWM5NjQ3ZjJjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NkOGQ3YWM3MTE2ZDNiMGNkY2JiYTQzY2QyMjcyODk4ZWM3NWI5YzAyMjQ2NzYwZWFkYzQ1MWM5NjQ3ZjJjNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjYyNjgzZjRkMzI0OTcxMGE2ZjBlMTdhMmQxY2Y1ZWIwYjkzY2FmNmQwNWIzMDI5OTJhOWUxNzlkNzFkZTJjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTY3ZDMyOGU0OTYzODhhZGI1ZGEwMmRiMTE0MTU5YWIxODFhZDhhMGRjMmFkYzI2MWE3MmIxY2MxNWFkYzgwYSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/protocol.rs#L414-L418",
+          "version": "repo-lines-v1:sha256:2f8d36dbfcb79b6ddb0a639fb6b8f80cb6ec7aa94a4fdcc3cbaaf6004d0fa44a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRjMjRhYjI4NzA3YzNjODQ2NzQ1MzE2MTU4ZTZlNTlmNTNkYTdhMTFkZTgyMGZhN2UxNTE2N2E5NDFhM2U3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGFiNGRiZDRmNGZkNGU0OWNlMWU0MWUwZDY1NDVjZjNlMmUyYzMxMjM0NWIyZDk2ZjMyOTk2MGMxNzZmOTYzYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmIxZGJiMzY3NDA1NmZiZGJlNzNkMDI3MTNjNjMwNThmYTk3MTAzMjAzMDA2MjhlMWFlNzQ0ZTY1MWE5MDMyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDRiZTZjNmU3Y2I0YzkyNTI5MmM2ZTUxNzlkNDIwZmY0YWU5ZWFiMzI3NTk0OWZmOWIzMGEyODg4NWRhMzU4NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9fe0600e9cd40679f4c7920e990b418",
+      "statement": "AssetResolver documents a pointer-observation fallback: a newer deployment's asset index can be served briefly while an un-restarted node serves HTML referencing it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/assets.rs#L35-L37",
+          "version": "repo-lines-v1:sha256:0c2887b069136afb9173c6761ad0b2aa590bdafa4fb5fd00a6fb252800ff78ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTc3YjI4N2M5MjI3ODBhODQ0NmRjOGEzYjJjNjYwNmJmY2JhZDYxMWJkMTVhNTFlZDYzMTkyNDE5ODQ4NTliYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ZjOTljYjEyYWYwZWM0NjUwZTExMGE3NjU2MmFiMTk1Y2FjMjZhZGYzZWVlZTU1MGNkNmRkNGI4NmRjYjIwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzkzZjYwMTJjMzk5NzhmZjA2ZmNmY2Q1OTQwMGM3Y2M4YWFkYzY3NmY2NGI5OTY0Y2JmNGM5NjgxZGVkNmY3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg3MmY2ZmRhNTJhY2I4NTliNThkOTY5MzMxMDc2ODQxZmE2NDRhOTY5Y2QzYzNhYmMxMDZjMjg0NmFhMmZmNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_23055d50ec3d4d78a6ed09704eb0d0ce",
+      "statement": "AssetResolver reports binding_name(), asset_only(), and should_run_worker_first(path) driven by the deployment's run_worker_first asset config.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/assets.rs#L188-L200",
+          "version": "repo-lines-v1:sha256:66a4ab93134ed451de0414e25b893d6593d468d1c492bb0feb667b8f86397397:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3Yzg1ZmExZmQ0ZjUxMzY5MWE4YmMxYTkyZWQ4ZWYxZGU3ZGQ3ODI4YTdlNWQ1OTIxZDg5ODBjNTdkMGJiMmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkYmY3YjhkNmNiMmVjYjZlNjQ2M2ZhZTJlZThhZmMxOTQ5YzhmYWUzZDZjYmUxMzU3MmM3MjZlYWUzNTdiNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViOWEwOGJjMjlmNmViZWJlOWE1ZjAxOTAzZDk4NDVkYmNiNTg0MmE0NTVmMDdkNWY0MDAyZGFjMzJhNWM2MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjMjM3YzUzZWVlMTVjZDMzODk5YTNjMmMxZjIzNTYwZWQ5NDI5OWRjYjc5YmNkNzYxNDg4N2UyOTZjMDVkZjMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:47:04.277Z"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:29b819db180ac5aa64bd772515f5839bb3af43ef246a9f9511d9915336d5502c",
+  "claims": [
+    {
+      "id": "claim_464c244c4ad34655b175d32b00f67c87",
+      "statement": "In celld the term node log denotes the fleet durability tier (crates/celld/node_log.rs) replicating LTX segments to followers, not an observability stream.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/node_log.rs#L3-L3",
+          "version": "repo-lines-v1:sha256:1e39c2145dbbca096cfb382a7a2d0060188e424a67ef46714bdfdab99a69b836:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWUzOWMyMTQ1ZGJiY2EwOTZjZmIzODJhN2EyZDAwNjAxODhlNDI0YTY3ZWY0NjcxNGJkZmRhYjk5YTY5YjgzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWUzOWMyMTQ1ZGJiY2EwOTZjZmIzODJhN2EyZDAwNjAxODhlNDI0YTY3ZWY0NjcxNGJkZmRhYjk5YTY5YjgzNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmFhZWZkZWJmNGUzZWU3YWVkOGIzMTBjMTRlOTUzMjQ0MGZmZmM5YWRjMWVjNWVhOWRmMmI3YzljOWU2YzIyZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_75215f640b8c41bcbe4b6b6c237e094e",
+      "statement": "Process diagnostics use a lossy non-blocking tracing writer (8,192 lines) that drops log lines under pipe backpressure rather than blocking the Tokio workers that route requests and renew lease authority, with ANSI output only on terminals.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L3009-L3044",
+          "version": "repo-lines-v1:sha256:e318393de53aec09b4b75a9a7187ec28744a9b5a9c27b6d9afc1c75ae5e455bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0NGY4MTU2YWJjYmE2YzJjNWU1MTJiODdkMDMyOTNjYWJjZTJmNmIzY2IyZDBmMmE0NDRmMTk1YTU4YjE1MDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMDlhYTY2YmY4ZDA2ODhkNzVlOGZjNjdjYjljMDcxNjA4YWE1ZDlhMzE3ZDM5NTk4NjI2YWE0ODk0ZGQ0ODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzN2VkOGRjNjE4MTZiNGQ0Y2I0ZGJmODg4NmNjNTBlZWVhOTdiZDgyZTU3MzM3YzJjZjMzMDNlYTE2YjEyZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3MjVmMDcwZjVjYWUxZDJkZmUzNzNmYzkwZmU2NTFjM2M1Mjg3MDRmZDIzZTJmYmY5YWE0YjQ4MDJiZGQ0YzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf303e085f854cbaaf203841801dea17",
+      "statement": "A node logs to stdout while CLI subcommands log to stderr because stdout carries their data, the filter is RUST_LOG defaulting to info (celld dev forces error unless --logs), and every exit path flushes the log guard before the hard process exit so fence forensics survive.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L118-L121",
+          "version": "repo-lines-v1:sha256:a2b0fbead6349a6344a7a991fa33d524f5529915076e093991a529ccc011ddf5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmEzYWMyNjY4Y2Q5OWJmMzIwZDNjNTUwY2Y0NDEwM2ZlM2JkZGU5YjEyMDg4Y2Q1NjM2NGEwMjVkOWY0YThkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTU5Mzc2NzkxZTY5NDc2ZjdhMDcxODk2ZGMyNWI5MTM3ZWY4NDIzZTNlOTYzNDBjY2ZhYzMzMjNkNDJjYTUxZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWFjOWMzNDgzYjlmNzg0YjlhMzAyMDIxNmU2YmZlZmNjOWMyYjlhYTA1YWZhMTQwY2ViNGI3YmQ2MjkyNDliNCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/main.rs#L3012-L3038",
+          "version": "repo-lines-v1:sha256:9c6d611ebc72c2f8462c2db616ddd6d906caff4887fb646ce3649c4adcfd80bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkMGY5ZWY4ZTEyZDA0Zjc5ODZkNTA1N2Y1NjdmODZmZGVmYmVmMzAxMTllNWNmYzQzYzY0OGFiN2E2ODAxNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1Y2RlZjgwODVhZTc0YWI2MzZkNjQ1OWY1YzZkNWZiZmIwZGIyNjRmMWIwZDc1YmFjNTE5YzliM2Y2NzE3YWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5MzdjZmQ4MzE5ZGE3MTczZWYzYTgzYmIwYjA2ZTJhYTgxYTg0OWRkODJjZGEwOGY3OGQ1NjU0MTE2N2Q1YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyZTNmMzEwM2RlOWFiYzQ1Yjg3Zjg0ZDcwMzEzNGFlMmFlNTRlM2M3NzhjNDY1M2QyMzBjMmU3ZGVhYjQ0OWEifQ"
+        },
+        {
+          "resource": "repo://crates/celld/main.rs#L3017-L3027",
+          "version": "repo-lines-v1:sha256:c20a76c0ea73ed2ffcc5190a37709319e1c54fd6495c0ae1f593a0fcccf6471e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNjVjOTg4ZjhjMWM4ZjZjODgwYmZmMjRhODA0NDE4ZjhiZDRlMTVlMjU2MWY2Yjk3MGVhOWQxYmFjYWUzYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjM2IwNjNhMWU0OTY2ZTU1YzA1NzRjNDYzZDdmZDMyMWFjOTQyMmQ0MzNkOWVhM2ZhYjkwNjkyNDY0Y2IwZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiZjk0NDg5OWEwZDAyZWZmNTk5ZDdiN2NhNGU2NjdlYjRhYjA5N2VjNTI3MTMyZTc3Zjc3NzMxNmNmZjFlYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5OTdlZmM3Yjk2MDYwOTI0ZDAyNDFlYTY5YjY3YzBmOGNkMWMxNjhlZGJiOTE5Mzg5YjgzOTM0NGU3NDAwODgifQ"
+        },
+        {
+          "resource": "repo://crates/celld/main.rs#L59-L61",
+          "version": "repo-lines-v1:sha256:8f01252980a8dfbd4bdb7486546dbb0e4d663e1f3cf305bc94be4f90160fbb85:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTNmNTBlNmQxZTY3YjAyYTI3ODBiOGEwMGRlNThhNjlhZjI1MTU2ODNmMGFhN2E4ODBhMmU3MTc3YmVlNzZmYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTAzYTc3YjFlMTM5OWFiZWM4NTdjNDI2ODhiN2ZkMWMwYzAzNmM4NjE3Y2NjZTYyZDAxNWFiMGFjZTNlNGU5YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjlhNjMxMTg4Y2U1Y2Q1OWI3MDY1YWM4YjRmYjQ3NTZjMGNiY2RjYzFjYjhhYTIxMDM5NDE2MWRhMjlhZjZlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGU4MTQ2NGU0N2EwNWI1ZmJhZmRjNWFjNzNjMGU3MDdmMTZkMTA4OTVlYWQ2YjJkZjU4ZjFlMDU3N2RiMGFiNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e22adda4b12548b9a60cede8276de285",
+      "statement": "OTel telemetry is disabled unless CELLD_OTEL=1 and the off state is structural: init never runs, start_trace returns None, unsampled requests build nothing, and record is a non-blocking try_send whose full channel increments a counted drop — telemetry sheds before requests.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L106-L106",
+          "version": "repo-lines-v1:sha256:be3c5baf960da1f15bcc4fd33820460bd5f2fd3c5db47dd0a2e30a5de9f691f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmUzYzViYWY5NjBkYTFmMTViY2M0ZmQzMzgyMDQ2MGJkNWYyZmQzYzVkYjQ3ZGQwYTJlMzBhNWRlOWY2OTFmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmUzYzViYWY5NjBkYTFmMTViY2M0ZmQzMzgyMDQ2MGJkNWYyZmQzYzVkYjQ3ZGQwYTJlMzBhNWRlOWY2OTFmMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWE4M2QzMzYxYjc3Njc5ZDBiZThkNTdhNDE5YmU0NGEwMDYzNTI2MWU3YTVkNDM0YjdmMDgwOGJlNzE3Y2VlMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzhlNTRlY2U3Yjg2NWYwNDg0ZDllODIxNTk5MDJhOGQyMDg3ZjFhYjgzNTUxN2Q1ZjgwMTIzMjE4OTY3ZTg4MiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L5-L19",
+          "version": "repo-lines-v1:sha256:7dc92c8a3863ceecfd0bfa30ce717a2e815880da0da3b89f6701a271a7713b61:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiMDllZGIwY2ZjNzQ4NWJlMmQxY2I5MTU1ZjhjOTk4MzEzNWQ1MTY4MTNhYzk2ZjEwZjBmMTYxNjI2YjkyMTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkZjhjZGNkZmM0OTA2NDZlNDg1MGUwMDA2YmNmNWQ1YmM2ZjkxYTRhYWYzMzk3NTA1N2JhMzFlMTQwYjc2OTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkMzhmMGRmNzliNDJlYTEyNGM0ODMwMzY4NzhkMDdkNWY4YzU2Njk4MTIzNGY3NjkwOGUxNzQ0NWY1MGVmNGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cbbe247f500248f1933cabe91dee80e3",
+      "statement": "The default bucket sink writes Parquet objects under the reserved telemetry/traces and telemetry/logs prefixes partitioned telemetry/<kind>/<node>/<yyyy>/<mm>/<dd>/<hh>, with the v0-unstable schema version stamped on each object.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L30-L33",
+          "version": "repo-lines-v1:sha256:5634d2521c666a7b379637dbc57c036973bc8d7172d2b4b21b33e28b42e9ed53:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ1ZjY3ZjIzMTczMDBmMGQ0NzYzM2Q4M2ZhOWJiZWJiYmRjNGJhZmEzNTNjODc0MjAzMjE2ODRmYjc4N2IyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWRkMjJjNDBmMGU4NjgwYmMxYTllZjk4M2ZjYjFkMDFkZTU5NDAzMzAzMjc4MWE1ZDU2ZjA1YzhiYTE2OWZiMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTg4OWFlMWEzN2FjMThiYTQ4NzVlOWUxN2Y4YjM4OThkZjAwMzNjYmFmYTdkODdiMTkxNTAzYmZiMWYyNmFhOCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L41-L44",
+          "version": "repo-lines-v1:sha256:730cd3003e7b444a72fabe8ce9f4a77de7fa30daf53db808423dc913f305250b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWY3OTljMjcxZGQzMjU4OWJmNmRkNmNmMWEyNDcxYzc4YTc3YWE4NGJlYTEzYWY0ZTBjYmE5MWRhYjFlMmIxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTA5Nzk5ZDJkOWQyODZjM2I3ZTQxNmY3NDlmNmY2OTllNzYxOGZiNGQ1ZmMzOTk0ZGM5MmEyZDhjZjQ5ODQxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTNhN2I0YTJhZWY5OTNiMTQ3Y2ZjY2RiYWViZWNmNjhiYzNlOGUyZjY4YWFiYzk0MzA2ZWIxMzY2NmRmMGIwMyJ9"
+        },
+        {
+          "resource": "repo://docs/telemetry.md#L87-L90",
+          "version": "repo-lines-v1:sha256:4a5d65affeec7c63fff66ca58e01d19413aca67f38b5a6ba810e265a41567275:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcwNmE0ZGQ4MzI4ZmYyNDlkYmNkZDZlNGQ0MDQzMzc5NzMzODNhMTY3MTIxOTdlYTBlN2Y5ZWFjY2YxY2JmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFmNWRmMzA1ZDIwNzgwYjY4ODM2NTc2ZmVjOThmYzFiZDY3MzFlN2Q3YjRjYzAwMTEyOTU1NTQxOTgwOWY0MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWQ0N2Y0ZjNmOWQ2NWIwMTU1NWMwNWExMjAyYzBmNzU4MzNiMzYxOWM4OGU1ZjA4NWU0Y2M1MjFmZWQ4NDZmMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_692caea5746c45cc81e2524c4aa7b83b",
+      "statement": "Telemetry flushes on whichever comes first of CELLD_OTEL_FLUSH_MS (default 300 s) or CELLD_OTEL_FLUSH_BYTES (default 5 MiB), and CELLD_OTEL_RETENTION (default 30d, none disables) drives a periodic sweep deleting the node's old telemetry files.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L163-L178",
+          "version": "repo-lines-v1:sha256:7f8ff3c33f6e09b308a7bbcebb34b4dabdb578b04bc4afac7d955a8098bdb1c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNmVlODQwN2I0OThiZmQ5NjNhMTBlYjcxN2UzMjY4YWZlZTgzNWUyM2IzZTMxYWRiODExYmVjZDU3MWQ5YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiNDExYWQ0NzY2ZDUyMTVmNzlhZTcxNzEzMzBhNmQxY2E0MTg5YWUxOWEwYjJmZTMyZDAzYmFkYjIzMjNhOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0ZTA1MGVlZGIyYjEzOWE5MGNhZWQ0ZDc0ZDlhYjA4ZDgxYjM4Y2U4ZTExMTA1ZDc4YTY5Mjk1NTM0OGNhNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhODhiZmNlNmUyZDU4YTkxMjk2YTVjN2VhYWZkZjY4OTJmNzEyNzhhMWZjM2M1N2U3YmQzYWZiNTA0NGJhMmEifQ"
+        },
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L185-L195",
+          "version": "repo-lines-v1:sha256:4813b373b5df0b0497de4855b1be3a44b6b613688f126b8f0099e95c25a32e32:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwMjdkMzM1NDY2ODU4ZjI0MzEwYzk3OTk5MDUyNGU5MGE3NjViYzc0NjRmZWY5NzY2OTc4OTQ3YWU4NjNjNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MmU4Njc0YWQ2NTlmNGUxMWIwYzZhNjIxMDBlMDg1N2U1NmY2MjM3NGE3YTI1ZDcyY2Q1N2I1NWY5ZDQ1ZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5NmI1ZjU3MmUwNGQwNTg2N2RhNzc4ZjIzMWNjNTNkYTE4NTU1MzJhNDg2ODFiZDNjNzI0NDcwZDdjODFkYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkMTkyZjkwYTE5ODZjM2RlNTA0MTE1OTVlYTc0Yzc2YWFhNjU2YTkzNDA1YTRkNzMyMDIyMDc5NDU5NDY1OGEifQ"
+        },
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L91-L97",
+          "version": "repo-lines-v1:sha256:d4daf9f08bcf5d350f316e90d9038a421aab1e0bb322d0ab91c22640e33260fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg4YzJjZTNiZTMyOGVlOTlkY2JhZDRiMzdlOTc2ZmI3YTlhYzA0ODYwMjA1N2U5MDg3NWEyOGE5YjcxYTVmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI5Njc2NDhjNzg1YzgzM2Y4MzczNGIyODMxOTIxMGZhODY4NzhiMzBlZDUxMDNlYTRhZTZjMDc1ZmZmZTFkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTJlM2Q0NzY5OTE2OWZkMjIyNDVlMGZkYjk2YjRjMWFhZjQ5YzlkNTA0M2RlYWFlNmI5MDQyMjFiMTAwMWZiYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDY2Y2JhZDA5MTg5MTg3MzU5NTYxNjVmZGU2YWI4ZWExNjkyYjEyZDc2YzM1MDA2MGJkY2UzNmNhNjA2NTU3NyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_03ffc40bf96f4682b4ef90ef6c19c641",
+      "statement": "The otlp sink hand-encodes OTLP/HTTP protobuf (opentelemetry-proto v1 field numbers) to keep prost/tonic out of the binary, and the bucket sink likewise uses the native parquet writer without arrow; the otlp endpoint defaults to http://localhost:4318 and works on nodes without a fleet bucket.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L96-L99",
+          "version": "repo-lines-v1:sha256:cec39a61e6bd4abcd51163b63aec8b59dec947f200627454bcc38eb3cfb79552:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTJhMzlmNzIyMWVhM2FiNmMyNzViOTczZjFkYzg5OWVlYWI4ZjM5NjljZjdmNTdmMjFjN2EyMzBhNGY2ZGEwNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRjNTcxODYxZDQwZWI2YmNjNzZmMDVkODcwMWM3N2I1NWFmZjU0Mzk3NmJmZmE2ZDJiOGVjZmViMzI0M2MxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNlN2JlMjQ3OThkZjE1YzRiNTA2ZThlY2QwNDQ1NDA5NTNlMTMyOWJkODRkMDg5YWM5NTVhYWUwOWJjN2Y4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWQ0NjAxOWIzODgzYzI2Mzg0MDQzZTNhMjc4ODhkZTU0NzUxNzBiNjI2ODJhZWJiNDBiY2E1Njg0ZTYyM2FmYyJ9"
+        },
+        {
+          "resource": "repo://crates/celld/otlp.rs#L3-L11",
+          "version": "repo-lines-v1:sha256:a4e6e6a1aef111cedd47149df8da55f6bab45f0c6552d6acc0c3ded40d8e9c70:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNlNzQyYzY4OTcxODM5ODhhNTNhOTk5MzBiMmEwNDNhMzdmOGRlNWY4NmM2Zjc4ZWMxMDNkZDI5ZTYxZDBiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EyYjY2MWIzYWNhZDkxYjYyNTgyMGM1YjhhMGUxYTcwM2RhNzk1YzZhOTAxYTRmNDkzZjdlYzUzMGQ1YzE0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzcxODIxZTA3Nzk4OTczZTlkOGFlMjVjY2MwZWE3NzBmN2M2YTUzYTRhYWU4MjZlM2U2MDBlODAwMjZmOGFhMyJ9"
+        },
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L120-L121",
+          "version": "repo-lines-v1:sha256:9c3feef8b54e307a61d7964218b2371b4b31c5ef27154d3a176540bac524e3ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZkYjg0YjI0NDc1MTAyNWMwYmY5ZmI4ZmE5OWMwOTE2Mjc1NTk1ZDU3MjEwN2ZiNzVhNDg4ZWQ3ZDNjYzZiZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUxOTMxOTdjZjMzYmYwMzU0NmU2YTc5OTRiN2RmMzZlYmRhNWMzMTkyYzE2ZjE3M2FmNGY2ZmRiMDllZGMzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTk1MjEzZDk0OThlMTUyYTM0Y2Q3MjM0NGJhNDFhMTQ1NDQ4OWU2OTFiNzE0ODg5OWM3NzIxZmIzOWY4YzZhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2RkMDM1MjEzZjM3MTBlZmI1ZTQ1MzgyYTM5NWEwNmVhMTllYWZmZTVmZWVlODlkZjRiMGUxN2UwYWJhNmFlOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c4afc316f1ca44799e6861e7cca253b3",
+      "statement": "celld records spans for Worker requests, cell events, outbound fetches, and cell starts; records each console.log line correlated to the handler's trace/span id (surviving await, 8 KiB body cap); and propagates W3C traceparent inbound and outbound while emitting no metrics yet.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L35-L39",
+          "version": "repo-lines-v1:sha256:879b9d6e7b1885baa78d8c0ba70b0be55daa9ea21fa9a86074f7323332474acf:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBjZDhhOThlN2IyYWE5NTE1MzE3YzY4MTY4YjI4NjQ2ZTg5NTU2N2MwYzRiZTk5NzU0N2RiYmQ2YmFlMTc0NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIxNjk0YmFhNjM4YzU1MmQ3NGU3NzczMWI5NWM0Yzg4OTc5NTMwYmJlMjc4NDhmNGFiZDIyOTU4ZmE4YTE4NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTljZjY5NTQ2OWRmYzc4MjY5YTRlYWFlZjdjZmZiZTRhNTFlNWRlN2ZhZTllYzlmNTFkMmU1MzA2NzI5ZmUwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTdkM2UxNTdjMjJhOTI0ZmUxMGU5MTI2OTIxNjYyMzE4YWE5ZGQ4NjQ1NjNjMDAxMzAwOGI4MzhlOTI0NTY0YyJ9"
+        },
+        {
+          "resource": "repo://docs/telemetry.md#L33-L45",
+          "version": "repo-lines-v1:sha256:59ef11baee3209f86fcdc7cf173e5a62a661ad8527723688157ce036805c82b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkMzEyZDlhYzZhMDEyOGUyNjg5Zjk2MGRkZmJmODRiNWU1NmQxNTM3NWM4ODFiY2Y3MTUwOGZlNGVlNWExYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5YjdmMThhYjU3N2I3NjczOTY3ZDg5NmUzMjUwYzZiMjA1MWUzMjg4YTRlZGQwZDM4YTI3OGNkNmVkNTgwMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2NWI3N2YwOGMzOThjZTUyOTViZDkwOWE3Yzc5ZDFhY2ViZTc4Mjk3NTBhNGQzNWRiMDFmMzhmZDg3MDA1Y2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyNTQ0NzBkNDE1MjE0OTQ1N2VhODM1MWQzMTQyOWQ1MjYxMWRiOGViMmRjZWMwYTU3NmI1NWIyOTdhNjBkMGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c8d33130f3314341b37d40b7eef093cf",
+      "statement": "Sampling follows the standard OTEL_TRACES_SAMPLER (default parentbased_always_on; traceidratio applies to roots), decided at trace creation so unsampled requests cost almost nothing.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/telemetry.rs#L88-L90",
+          "version": "repo-lines-v1:sha256:12e3d47699169fd22245e0fdb96b4c1aaf49c9d5043deaae6b904221b1001fbb:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzAzOWZmOGNlNjc1NDBiNTc5Y2U5NjgwMmY3YjkyZDdiMjRlMDQwMjczYjdlNDU4NTBhMDI5MDZmYzRlZGM1MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTlmYWJiYWI2YzVlNWVkMWI3MDcyZGM5NjY1NGI0OGMyNDlkOTljMjU0NjM3M2VkYjE2ZmU1ZDNmNmQzYWIyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjc1MDM5NjI1YmU2NTNjZDI4YmI0YTJmNTQ5NzU5ZjExYWIzOTI0YzExYTA0ZDMxZDZlZGZiMDc1N2Q4ZDRkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzBkYzNiZTMyMTE1ZjY4YmJhZTgyMzY4MzM4ZGViZTFkYjEwYjg4ZjRmZWUzNGIwYTdhYjgwZWJjZjYwZGIwNyJ9"
+        },
+        {
+          "resource": "repo://docs/telemetry.md#L26-L26",
+          "version": "repo-lines-v1:sha256:d7ee1c8f65e897a0bcc6c14904afca6d455918ed4f15d2b3f05ac76a31f44238:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDdlZTFjOGY2NWU4OTdhMGJjYzZjMTQ5MDRhZmNhNmQ0NTU5MThlZDRmMTVkMmIzZjA1YWM3NmEzMWY0NDIzOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDdlZTFjOGY2NWU4OTdhMGJjYzZjMTQ5MDRhZmNhNmQ0NTU5MThlZDRmMTVkMmIzZjA1YWM3NmEzMWY0NDIzOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmVmMWE3NTJlMzc4NDFkYjA5ZDAyZmUwZWIyNWZlYzZhMTIwZjg3NWRmZjBlNTE0OTJkNjdkMjQwOGM1Y2Q5MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjFjNzMyMTc1ODQ0NDNmYjAxOTY0MmU4YmFkNGYxZjdmYWMzNTkwMTNmYTUxMWRiNTdkNGQ0YjZhNTYzODdkZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c42f535fe37443aa65c74439d86148e",
+      "statement": "Telemetry files are queried with DuckDB over the partition globs; celld never compacts its own telemetry files, and the documented near-live procedure is to run an external hourly DuckDB compaction job before shortening the flush interval.",
+      "evidence": [
+        {
+          "resource": "repo://docs/telemetry.md#L92-L133",
+          "version": "repo-lines-v1:sha256:3075c47da80690668315ecaf51de76c2380d7daf9ad74b9c6c9a06f3a584a97d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzOGQ5MGI5NmYxMmVmM2ZiNTU5Mzg5YzA5ZWYxYmFlMWNmMzJjNTAzMjk5YWVmNTYwYWIyZTQzYjJlMDM1OTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4ZTY0ODcxOTNkNzE1MzA1OTQ3YWM0YTJlOTI4ZTJhYThiMmRiOGE5YTY3ZjVhNjg5OGNmNDk4N2M5NzJiMzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExZTljYmVmN2EzYTc1OWNjY2YzZTY0MzExNmQzYTQyNTYyYzZkMjBjNTNjMjgyYWQ1OWU5Y2UwMjQ4ZWVkYTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf2fc4ed2b9b4125a11a5223beb3d7a1",
+      "statement": "CELLD_LOG_PIPELINE and CELLD_LOG_CAPTURE_WORKERS are durability knobs, not logging knobs: they bound in-flight fleet log rounds and replication capture workers.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L2874-L2876",
+          "version": "repo-lines-v1:sha256:217a4ec6d7674ab6d9efa0ac88b968034a8f2e93cb30010dca8b3d8e081a7442:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkzZjkzY2RlZmFiNGYxMWI5ODE1MjZiMTU1MmNiYTlkZGVlOTI4NTI0ZDM2OThkMWRlMGI5ZjNhNjU3NTVmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcxZDIyZWUyMjhkM2ZjMzFkNjExODliYmU3NGE5OTUwODg3MzE3ZGNmOGJjZGQyODA4N2QyODhiNTE2YTNmNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjIxMDQ1Zjg2ZDEyOWUxYzlmYjM3NjBmNjg0ZDk4NzMzNzAzNzIzN2ZmMmRmOTMyYjhkY2Q2MzA1ZTJmMjFmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDFjNTY4ZGUwZGNmMzdjMGRmZjMwYWM3MTNkNzM1ODc1Njg4NjhkYWZlNjBlMjUzOWY4ZThhOGZhMTFmMDI1OSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/node_log.rs#L4181-L4181",
+          "version": "repo-lines-v1:sha256:4a912bdf59fc7994ee5cdc431643b6ad4ffb59c0e39f17937594e28a81c3c7bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE5MTJiZGY1OWZjNzk5NGVlNWNkYzQzMTY0M2I2YWQ0ZmZiNTljMGUzOWYxNzkzNzU5NGUyOGE4MWMzYzdiYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE5MTJiZGY1OWZjNzk5NGVlNWNkYzQzMTY0M2I2YWQ0ZmZiNTljMGUzOWYxNzkzNzU5NGUyOGE4MWMzYzdiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwNGRlNmM5MzY1MWUxM2M3Njg5ZWIxYWVkZTk5OTgzMjhhNTZkN2I2NGM5YTVjY2RlMzY5MGZhODY0NTFlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg3OGNhN2JkMTUyZDE0NTNhMmNjODAwZmQ5Njk5YWRkOTlhYzc5ZTBmZmM0NzhiYTA1Y2YyYmUzMTM5NWQxYiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:57:20.671Z"
+  }
+}

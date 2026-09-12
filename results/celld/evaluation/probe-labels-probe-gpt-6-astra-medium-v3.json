@@ -1,0 +1,642 @@
+[
+  {
+    "id": "probe_89c0b50811a8b6f8ccb530b3722e8be6",
+    "label": "unsupported",
+    "rationale": "The excerpts establish ReadingOwner, Acquiring with ownership CAS, Restoring, and the max_activations cap, but do not establish the subsequent Starting → Publishing → Resident transitions. They also allow a cold route to begin directly with restoration rather than ReadingOwner."
+  },
+  {
+    "id": "probe_056fa2745dd627930071c19d0bfa52be",
+    "label": "supported",
+    "rationale": "The key functions encode alarms as wake/<YYYY-MM-DDTHH:MM>/<cell>. Arm acknowledgement requires a completed PUT or verified coverage at the same or an earlier minute; moved entries PUT before deleting the old key, and consumed-alarm deletion requires consume_durable, preserving coverage until the consuming commit is replicated."
+  },
+  {
+    "id": "probe_68723456680ffe5d6a014da678f79e61",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the roles of crates/logic and crates/celld, but does not establish a three-way split or mention crates/ltx and its role as an embeddable LTX replication library."
+  },
+  {
+    "id": "probe_96d10e5bd1dd57e6a4da67caeccdf9f5",
+    "label": "unsupported",
+    "rationale": "The excerpt ends mid-comment and does not establish that both listeners are reserved before V8 work or that the executor receives an already-validated peer address."
+  },
+  {
+    "id": "probe_a14cbc4a3212522cde7a9f329daf8e4b",
+    "label": "supported",
+    "rationale": "Source 2 explicitly identifies the index debris and expired node-session records retired by garbage collection. Source 1 requires the tombstone to carry the folded node-log state unchanged and preserve every other lease field verbatim, identifying the node record as the fleet log’s root of truth."
+  },
+  {
+    "id": "probe_3adc78885c469d8b73dd1152b30c9e12",
+    "label": "supported",
+    "rationale": "Source 1 equates SIGTERM and SIGINT with POST /shutdown's graceful shutdown; source 2 explicitly establishes unhealthy health reporting, 503s for new public requests, completion of accepted public requests, and continued versioned peer traffic for cells not yet handed off."
+  },
+  {
+    "id": "probe_c7730d7335f1d2c02473b87d4db8afd6",
+    "label": "supported",
+    "rationale": "The excerpts state that peer calls use plain HTTP, neither listener terminates TLS, and the fleet HMAC does not encrypt traffic. Advertised addresses must reach the internal listener, which requires a trusted private network and an encrypted overlay when the network lacks confidentiality."
+  },
+  {
+    "id": "probe_3528c09ca39184fe4d1b9d34f7873786",
+    "label": "unsupported",
+    "rationale": "The excerpts show celld deploy with s3:// and describe gs:// and az:// configuration for celld, including that neither takes S3_ENDPOINT. They do not establish that celld deploy accepts gs:// or az:// buckets."
+  },
+  {
+    "id": "probe_312e85818018f788fc8e1bfba11771cb",
+    "label": "supported",
+    "rationale": "The excerpts state that unauthenticated /do/ refuses every reserved class, including those without hints, and show /runtime/ rejecting non-reserved scopes, explicitly preventing signed requests from driving a user's Durable Object through the operator-protocol route."
+  },
+  {
+    "id": "probe_0f58a468e5a60467db893d1361308fa0",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states the default 1 GiB limit, CELLD_MAX_REQUEST_BODY_BYTES setting, 413 responses for oversized bodies, and streaming for non-GET/HEAD bodies of at least 1 MiB or unknown length."
+  },
+  {
+    "id": "probe_e87768302cf0ab78c63ed71515c5640c",
+    "label": "unsupported",
+    "rationale": "The excerpt shows a single active scheduler permit with waiters queued by lane, but does not define lanes as stateless or per-cell, or establish that permits span an entire event or drained turn."
+  },
+  {
+    "id": "probe_384df0a7e565b225deafb4039c44ebda",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that the manager owns handles and filesystem paths, never lifecycle policy, and that StartRuntime, Publish, and StopRuntime decide the stated handle transitions."
+  },
+  {
+    "id": "probe_5960dba690e5c2c98bc86fec5c11a570",
+    "label": "supported",
+    "rationale": "The source explicitly states that celld does not terminate TLS on either listener."
+  },
+  {
+    "id": "probe_5739f0efe5bd693ff39d494189d292ce",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that celld is not safe for hostile multi-tenant use, that one fleet runs one application, and that it trusts the application code, fleet nodes, and operators."
+  },
+  {
+    "id": "probe_7bf67df60a70808cd9c4de2b07a3e7e1",
+    "label": "supported",
+    "rationale": "The excerpt explicitly describes a permanent fleet lab that qualifies each release using a real bucket, injects all five listed faults between verification passes, and reports no acknowledged writes lost across every run of every scenario."
+  },
+  {
+    "id": "probe_bfd16c169ca844e4c13fa51e8324623d",
+    "label": "unsupported",
+    "rationale": "Source 1 shows cfg-gated conformance tests and selection between real and simulated asyncrt, but the excerpts do not establish celld-logic’s purity restrictions, test=false setting, or inclusion of the internal suites."
+  },
+  {
+    "id": "probe_bebb1f36610dffae4cb17f9ae2a6f988",
+    "label": "contradicted",
+    "rationale": "The excerpt establishes exceptions: quiescing residents do not route Local, several other phases fail or wait without queuing a cold activation, and fenced nodes return NodeFenced before the node-authoritative check rather than NodeUnavailable."
+  },
+  {
+    "id": "probe_58e64701f81a074b5cfafcc7a2d831ae",
+    "label": "unsupported",
+    "rationale": "The excerpt allows one retry each for NotOwner and NeverConnected and denies redispatch for Ambiguous because the owner may have run the request. It does not establish that every other failure is classified as Ambiguous or that denying redispatch fails the caller."
+  },
+  {
+    "id": "probe_a4f740890a26964fce62f4da8869616d",
+    "label": "supported",
+    "rationale": "Source 2 explicitly states ask-time monotonic validity and refusal at expiry even before the timer fires; its freshness check uses < ttl_ms, while source 1’s fence timer uses >= ttl_ms on the same elapsed-time calculation."
+  },
+  {
+    "id": "probe_623b8d1a6c999f0f6b70c4c5bd2b07da",
+    "label": "unsupported",
+    "rationale": "The excerpts establish that takeover recovers the prior owner’s non-sealed sessions into the bucket before the claim proceeds, and that follower seal marks persist across restarts. They do not establish the absent-record guarantee, checks before bucket reads, or the specified CAS fencing, follower sealing, per-cell upload, and restore sequence."
+  },
+  {
+    "id": "probe_db20e49bf12cb26115e90a8e7496fc51",
+    "label": "unsupported",
+    "rationale": "The excerpt checks structural invariants, including valid phases for activation-permit holders, but does not establish that validate runs after every event or compares the occupied counter with a walk of the cell map."
+  },
+  {
+    "id": "probe_1d25c130f07ca3b79c76fd0bd1a25bf9",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes in-process SQLite WAL replication to object storage in LTX format and celld ownership, but says it was vendored from rustyriver, a reimplementation of Litestream and LTX. It does not establish replica-storage reads, database restoration, or level compaction."
+  },
+  {
+    "id": "probe_c9ed3d5ffb135731c0d62f844ac45579",
+    "label": "contradicted",
+    "rationale": "The excerpts explicitly say files written before ltx v0.5.2 use per-page LZ4 frames, contradicting the claim that every file uses raw LZ4 blocks. They also do not establish CRC64-ISO checksums or zero-filling the lock page on decode."
+  },
+  {
+    "id": "probe_45670dfc19f4be650c6d24b41a26f2ec",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes full L9 snapshots as eviction restore artifacts and the proven additive L0 chain as a restore path, but does not identify a handoff snapshot or establish that it avoids replaying the complete transaction history."
+  },
+  {
+    "id": "probe_0d13195d4fe890554aa9281d4d73f2b0",
+    "label": "unsupported",
+    "rationale": "The excerpts show defaulted fields and explicitly say defaults keep old records readable by newer nodes. They do not establish the reverse: that older nodes can read newer leases or tolerate added fields."
+  },
+  {
+    "id": "probe_bff4c515c2f496cf21b38c012fbf6517",
+    "label": "unsupported",
+    "rationale": "The excerpts set version 5 and show header checks rejecting mismatches, but only one returns IncompatibleVersion; response validation returns an anyhow error. They do not establish that these checks gate every proxied call or that the two versions cannot proxy calls to each other."
+  },
+  {
+    "id": "probe_3d15bca56fcba5654ba7d78d83858fc3",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the persistent SQLite-backed celld dev store, atomic ETag-checked updates, and single-machine, non-production scope, but does not establish that regular node or operator subcommands cannot select it."
+  },
+  {
+    "id": "probe_5a4d384293d0d7059658d7bb973000b6",
+    "label": "supported",
+    "rationale": "The documentation and implementation establish the backend/name/prefix split, an empty or slash-terminated prefix, S3 compatibility without a scheme, and bucket-root keys without a prefix. The documentation explicitly identifies Azure NAME as the container and AZURE_STORAGE_ACCOUNT_NAME as the account source."
+  },
+  {
+    "id": "probe_018e87b875d5ba87f7225bebe11a3100",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes a top-level key allowlist and says unknown keys are errors, but does not establish that celld deploy accepts wrangler.jsonc or wrangler.json or bundles Worker code with esbuild."
+  },
+  {
+    "id": "probe_62095150ef02623382f140dc0f069ee0",
+    "label": "supported",
+    "rationale": "The guard rejects a public advertised IP unless unsafe_public_advertise is set, and the error explicitly cites the unauthenticated operator API and peer application data carried over HTTP without built-in TLS."
+  },
+  {
+    "id": "probe_6a76fee9552a83c2b2c83752a0d98512",
+    "label": "supported",
+    "rationale": "The excerpts list the three stated promises and explicitly describe differential compatibility testing by running each Workers and Durable Objects program on workerd and celld with identical bytes and requiring equal outputs."
+  },
+  {
+    "id": "probe_140b9318652057189cfb77893f29f156",
+    "label": "supported",
+    "rationale": "The excerpt explicitly describes the permanent VM-and-bucket fleet lab, all five listed faults injected between verification passes, archived evidence bundles for each run, and no lost acknowledged writes or damaged committed state across every scenario."
+  },
+  {
+    "id": "probe_fd0a3453cf39ef1a4aed5cd203a8f6e0",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the bucket path and epoch-based fencing, but do not establish that committed SQLite writes are captured as LTX data; an ltx directory name alone does not prove that mechanism."
+  },
+  {
+    "id": "probe_9db9c398a6b6e40839312b336d19be4d",
+    "label": "unsupported",
+    "rationale": "The enum defines all the named phases and a Remote phase with node information, but does not establish the transition sequence or the rule that another node's ownership places a cell in Remote."
+  },
+  {
+    "id": "probe_ea43a6b47b45a86e341e74f444357c3f",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes one reserved .cron:<script> cell per script and fleet-wide firing through ownership CAS, but does not establish how triggers.crons entries map to it or that its alarm is armed at the next occurrence."
+  },
+  {
+    "id": "probe_104a4e51b5c3e0e5ad86addc1a188e9a",
+    "label": "supported",
+    "rationale": "The comment explicitly states that phase names are stable across internal renames and published by `/state` and `celld diagnose`; the match assigns a reported name to every phase."
+  },
+  {
+    "id": "probe_3831056ba2b2b3444ec5e1f84df49fce",
+    "label": "supported",
+    "rationale": "The excerpt states the 30-second polling interval with CELLD_DEPLOY_POLL_S, in-place adoption, immediate adoption via POST /reload, building beside the current deployment, switching new requests in one step, and retaining the current deployment if the new one fails to build."
+  },
+  {
+    "id": "probe_a5722ebd3b892bdb7b994a5c50bd64ec",
+    "label": "supported",
+    "rationale": "The excerpt explicitly calls the durable bucket objects the interface between deployment tools and celld and states that nothing else is exchanged."
+  },
+  {
+    "id": "probe_0a6a288d0a11faf19add3926c16cfbe8",
+    "label": "supported",
+    "rationale": "The excerpt explicitly lists all three properties celld needs: conditional create, conditional overwrite, and read-after-write consistency."
+  },
+  {
+    "id": "probe_1964236358f61ca5ae63f1fe4766cae2",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that S3 and Azure share the etag-based If-Match / If-None-Match dialect, while GCS uses object generation with x-goog-if-generation-match, all behind one caller-facing surface."
+  },
+  {
+    "id": "probe_9a5683003e8e81341174cb4659a99c4d",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that the command prints one Class:ID scope per line, returns at most 1000 instances per storage request, and supports --after to continue or --all to read the whole listing."
+  },
+  {
+    "id": "probe_1e47297eecff8b1db7b51d6f4710d571",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes provenance verification and the esbuild requirements, but says nothing about CELLD_VERSION selecting an exact release."
+  },
+  {
+    "id": "probe_3ba2ff1d6043f4380d306b6cc5e454bc",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that celld compiles each wasm module once for the whole process and every isolate after the first reuses it."
+  },
+  {
+    "id": "probe_2b1378278e78b60d6b954d57085c3599",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that ctx.storage is async in JS but uses synchronous local SQLite underneath, each cell has its own database file, and the JS thread maintains a scope-to-Connection map opened on activation and closed on eviction."
+  },
+  {
+    "id": "probe_3042cdc60986faf32e73fad3543e4eb7",
+    "label": "supported",
+    "rationale": "The excerpt explicitly establishes both listeners’ roles, the sole reserved public health path, the internal listener’s ephemeral loopback default (127.0.0.1:0), and its 404 response for unknown paths without forwarding them to the Worker."
+  },
+  {
+    "id": "probe_2bc86c0956cce54ff3cc025ef1cacb2f",
+    "label": "supported",
+    "rationale": "The excerpt explicitly establishes the h1 upgrade on /peer/tunnel, the opaque duplex stream carrying literal HTTP, x-cells-* control headers overwritten by node A and stripped by node B, and per-peer pooling for sequential reuse."
+  },
+  {
+    "id": "probe_800ba6c081ae7af3d5a0c05b71052852",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states the fleet size and node specifications, resident-cell and WebSocket counts, and recovery of every cell’s data on another node in about 11 seconds at the tail after stopping two nodes, with reserve headroom."
+  },
+  {
+    "id": "probe_a49dcbe9e97ff7ff34bbd70a5c58eb57",
+    "label": "supported",
+    "rationale": "The excerpt explicitly identifies on_event as the only way behavioral state advances, says both executor and simulator feed it events and perform returned effects, and prohibits adapters from directly mutating State."
+  },
+  {
+    "id": "probe_b41cf7fa1faa9abdd3dedbaf87bdd078",
+    "label": "supported",
+    "rationale": "Source 2 explicitly describes one actor serializing every event while jointly polling mailbox, timers, and in-flight effect futures, and states that this lets monotonic lease ticks fence the node even when storage remains hung."
+  },
+  {
+    "id": "probe_83461290ca9924c34f347621ac43bfc0",
+    "label": "unsupported",
+    "rationale": "The excerpts establish sampled clocks for some events and shell-stamped log state for CAS readback comparisons, but not that all behavioral mutations enter through OpId-tagged completion events. Several event variants lack OpIds or clocks, and no state-transition logic is shown."
+  },
+  {
+    "id": "probe_6caa7bb0ccda35a5d706709958e552c8",
+    "label": "supported",
+    "rationale": "The excerpts identify SQLite-persisted retry counters as the pure-function schedule input, specify a 2,000 ms exponential backoff capped at shift 6 and a ceiling of 6 limit-counting failures, and explicitly state that excused failures back off without counting toward the ceiling."
+  },
+  {
+    "id": "probe_0ceb8d942eb3378aa0b229da1722eae0",
+    "label": "unsupported",
+    "rationale": "The excerpts establish that inactive cells need a cold start and that takeover log recovery precedes claiming. They do not establish owner/lease reads, MAX_ACQUIRE_RECONCILES=3 ambiguous-CAS re-reads, or the subsequent SQLite restoration and runtime startup."
+  },
+  {
+    "id": "probe_1fed3750e5ac4beb84f0dae745de8560",
+    "label": "unsupported",
+    "rationale": "The excerpt only maps CLI arguments to actions; it does not show stdout handling or stdout_is_data(), so it establishes neither the claimed distinction nor its universality."
+  },
+  {
+    "id": "probe_3eda4a484c75b2459d5b04c381a120ea",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the lease/secret routing and no-storage behavior for KV, with related claims for D1 and Queue. They describe cell only as an operator view; they do not establish that cell uses authenticated owner routing or implements no storage."
+  },
+  {
+    "id": "probe_e6d634793ea5c24963c44a52bbdc9d2b",
+    "label": "supported",
+    "rationale": "SUPPORTED_KEYS explicitly lists understood config keys, and the comment says anything else is an error because guessing produces confusing activation failures later."
+  },
+  {
+    "id": "probe_7bd3def63156b2fdeba979a7f43bd609",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes what a Generation contains and that boot and reload share the same two construction functions, but says nothing about generation IDs being per-process monotonic or deployment version strings serving as fleet identity."
+  },
+  {
+    "id": "probe_cab7c8e87520d06d546e650a4a7611a3",
+    "label": "unsupported",
+    "rationale": "The excerpts establish protocol version 5 and its inclusion in the HMAC-signed canonical string, and define the response-header name. They do not show the header being sent, fail-closed mismatch handling, or the absence of a version-negotiation ladder."
+  },
+  {
+    "id": "probe_a4e33489f3d10e760b57ddd0dade1225",
+    "label": "unsupported",
+    "rationale": "The excerpts establish that accepted config keys must be allowlisted and that manifest-to-runtime loading goes through DeploymentGraph::load and Generation::build. They do not establish that every new key must be computed inside those functions, rather than in helpers they call."
+  },
+  {
+    "id": "probe_6fc871d158aa6c7627e4569a356522ca",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the test and clippy commands and sqlite3's oracle purpose, but does not show that the final image depends on the test stage, so it does not establish that test or lint failures stop the final image build."
+  },
+  {
+    "id": "probe_a472771505ac5b98575a5982f7d806ae",
+    "label": "supported",
+    "rationale": "The excerpt explicitly describes small Wrangler projects demonstrating progressively more of celld’s supported Worker and Durable Object surface and lists all the named examples."
+  },
+  {
+    "id": "probe_5433a47604c6c993ef152059356cf78d",
+    "label": "unsupported",
+    "rationale": "The excerpts establish a pure two-sided clock-window predicate and inclusion of the protocol version in the MAC, but do not establish enforcement of retention at least as long as the window or pure-predicate replay protection."
+  },
+  {
+    "id": "probe_a30592778309427ffaaae22fe3cfa6f0",
+    "label": "unsupported",
+    "rationale": "The excerpts describe the flag and environment variable permitting literal public advertise IPs and state that hostnames are not resolved, but they do not establish that explicit advertise requires explicit internal-listen."
+  },
+  {
+    "id": "probe_a8f45d290545c22dacc5ce22493216fc",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that checking removed a restore-time seal, but does not establish the eight-state ack-fence counterexample or that the seal’s permanent cut could turn recoverable ordering slips into permanent loss; the relevant sentence is truncated."
+  },
+  {
+    "id": "probe_0c40cd89bc549b24a837606f7f35a2c1",
+    "label": "supported",
+    "rationale": "The excerpts explicitly describe a permanent VM-and-bucket fleet lab that qualifies each release, rotates workloads, injects all five listed faults between exact-state verification passes, and archives evidence bundles for both red and green runs."
+  },
+  {
+    "id": "probe_3abd6388479f99c8b2e54a798c7f12e2",
+    "label": "unsupported",
+    "rationale": "The excerpts establish lease enumeration, live-peer probing, skipping and distinctly reporting expired enumerated leases, and taking no lease. They do not establish that the entire command is read-only or changes no ownership: storage probing depends on a read_only parameter, and the final source sentence is incomplete."
+  },
+  {
+    "id": "probe_8830f3187160e203ac98e2bc8f0a043e",
+    "label": "unsupported",
+    "rationale": "The excerpt shows guarded ownership writes and release checks against the node, epoch, and ETag, but does not establish put_cas semantics or a system-wide guarantee that exactly one node owns a cell at a time."
+  },
+  {
+    "id": "probe_e8b115a24046ef248c7b7f8136206b2f",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that fleet acknowledgements can precede bucket uploads, requiring a conditional node-log record before the first acknowledgement, and that cold activation must check prior records and complete CAS-fencing, follower sealing, retained-data upload, and record sealing for open or recovering records before restoring."
+  },
+  {
+    "id": "probe_bd7f04c09f5cf71d7b7314ea749f766a",
+    "label": "supported",
+    "rationale": "The excerpt explicitly says every takeover or local wake advances the epoch, replication uses unconditional PUTs under cells/<cell>/ltx/e<epoch>/, and stale owners write to superseded prefixes while restores select the current lineage; it also states that an epoch never has two writers."
+  },
+  {
+    "id": "probe_f1782ecfdac0613a202d121b22623e60",
+    "label": "supported",
+    "rationale": "Source 2 explicitly states that CELLD_DURABILITY defaults to fleet, uses one or two peers with acknowledgment after peer disk storage or bucket upload, whichever finishes first, requires bucket completion on a single node, and always waits for the bucket in bucket mode."
+  },
+  {
+    "id": "probe_25af46336725cdddca4020b4e05db5b1",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the WAL settings, checkpoint behavior, durability deadline, and 429 throttling behavior. They also state that every acknowledged write recovers, but do not identify the tested failure as SIGKILL of a write stream."
+  },
+  {
+    "id": "probe_9883aba123f6be5a6da773cf78f411c7",
+    "label": "unsupported",
+    "rationale": "The excerpts establish diagnose's coarse node samples and /state availability during drain with handoff and restore counters, but not default-on live introspection, an alpha operator route, the listed deployment and pressure details, or a diagnose restoring count for rolling-update pacing."
+  },
+  {
+    "id": "probe_84330dad7deac912d38f4a1e561d848e",
+    "label": "unsupported",
+    "rationale": "The excerpts establish that telemetry is off by default and sampling is decided at trace creation, with unsampled requests building nothing. They do not establish that init never runs, start_trace returns None because globals are absent, the off state is structural rather than a runtime branch, or telemetry does not affect Actor decisions."
+  },
+  {
+    "id": "probe_1e9bf753443776b03edb110d6b26dca3",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the image’s test/lint gate, differential workerd conformance, deterministic core simulation, and TLA+ checking. They do not establish the local test commands or a live fleet lab with fault injection; the image gate also includes profile and all-targets flags omitted from the statement."
+  },
+  {
+    "id": "probe_d0e95ef39f69de521e1f5bfe8fcdf471",
+    "label": "supported",
+    "rationale": "Source 1 lists all named examples as small Wrangler projects demonstrating celld’s supported surface. Source 2 declares the Counter Durable Object binding and a migration with new_sqlite_classes containing Counter, establishing its SQLite backing."
+  },
+  {
+    "id": "probe_04640018f5236e194fc77838872fe520",
+    "label": "unsupported",
+    "rationale": "The excerpts show release-tag validation and Docker image building, but do not address repository visibility, provenance attestation, anonymous-access verification, 401 experiments, or ignoring failed runs."
+  },
+  {
+    "id": "probe_8d0551bf0f1055d90b2a64cf4b210d1f",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the two-phase candidate/draft workflow, human-approved publishing, failed-candidate deletion, and main remaining unchanged. They do not establish how the release body is derived, and provenance attestation is conditional on the repository being public."
+  },
+  {
+    "id": "probe_7a0e0fd8b7ff21c9091703aabd9612f0",
+    "label": "supported",
+    "rationale": "Source 2 states that on_event is the only way behavioral state advances and executors feed it events and perform returned effects. Source 1 identifies the serial lifecycle executor and request drivers, and explicitly imports on_event and all the listed domain types from celld_logic."
+  },
+  {
+    "id": "probe_414cadae92c0822ab757fa67421700ca",
+    "label": "contradicted",
+    "rationale": "The states are described correctly, but the source says a cell keeps no memory, not nothing: its bucket object persists, and hibernated cells retain connected WebSocket clients and their node. The constructor does run again on the next event."
+  },
+  {
+    "id": "probe_3ea7a56f2fb3b5be17d762ba14044709",
+    "label": "supported",
+    "rationale": "The excerpt explicitly describes identical-byte differential runs on workerd and celld with equal outputs, the two resulting compatibility claims, a growing corpus including the named workerd suites, and full-binary scenario replays in each deployment mode before release."
+  },
+  {
+    "id": "probe_1f8d99d7754318af03f87db8733bf29e",
+    "label": "supported",
+    "rationale": "The excerpt explicitly confirms the TLA+ specification’s author and version, the four bugs and acknowledged-write-losing split-brain missed by review and testing, and the pinned failing verdicts that must preserve counterexamples for past bugs or deliberately broken checkers."
+  },
+  {
+    "id": "probe_768b57c6014117d25cdd69b99c2209b4",
+    "label": "contradicted",
+    "rationale": "The gate explicitly accepts repeated acquisitions by the same event, incrementing outstanding and returning true. Also, abandon() is documented as recovery when the holder dies, not as closing the gate at shutdown."
+  },
+  {
+    "id": "probe_2afeac81aecdf96bfd2823440fb9037b",
+    "label": "supported",
+    "rationale": "The excerpt identifies this as the output gate and states that position is Some when the producing event advanced the committed WAL, opening its own barrier, or None for a read-only event that trails the newest open barrier."
+  },
+  {
+    "id": "probe_40d6b463141ec7e0ec4e204faf95d405",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states celld-ltx’s embeddable SQLite replication capabilities, its from-scratch Rust reimplementation of Litestream v0.5.11, and its use of the LTX v0.5.2 block format."
+  },
+  {
+    "id": "probe_0c557a859f75a626b6fb516275439af0",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes bucket-held leases, an expiry, and retries after a renewal fails to reach the bucket. It cuts off before establishing expiry-triggered fencing, stopping cells, failing requests, bucket writes, logging, exit code, or restart requirements."
+  },
+  {
+    "id": "probe_5e9aa48349d9efeabfb70c32a5809cbb",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that CELLD_OUTPUT_GATE defaults to 1 and that setting it to 0 removes the replication wait and accepts possible loss of an acknowledged write."
+  },
+  {
+    "id": "probe_e0ef11c4e756655d2b7fdaf84c2e6377",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the ownership check and that the core holds the gated write until OwnershipVerified returns, but it does not establish that the shell emits VerifyOwnership."
+  },
+  {
+    "id": "probe_8b707b56c6452955a99afe2c36512f76",
+    "label": "unsupported",
+    "rationale": "The excerpts define request types and configured senders, but do not show WebSocket routing, ws_hibernatable, or establish that these paths avoid direct actor-mailbox access. Service RPC is represented by SvcRpcReq, while SvcCallReq handles fetch calls."
+  },
+  {
+    "id": "probe_851f8d112fd8140972ccd2509c4f1934",
+    "label": "supported",
+    "rationale": "The excerpt explicitly says most builtins compile lazily on the first read of their global, and a worker that never touches node:zlib never compiles it."
+  },
+  {
+    "id": "probe_ea11b86808186e7d97392e39276f31d6",
+    "label": "unsupported",
+    "rationale": "The excerpt discusses Azure conditional-write errors and qualification, but provides no evidence about MinIO, its production suitability, storage tests, or the specified releases and failure behavior."
+  },
+  {
+    "id": "probe_5a091d8724bfc99be2fa4e64a8dac247",
+    "label": "unsupported",
+    "rationale": "The excerpt describes provider-specific conditional-write headers for S3-compatible, Google Cloud Storage, and Azure buckets, but does not establish the qualified-store list, R2 release testing, the named stores’ lack of support, or the claimed failure behavior and testing requirement."
+  },
+  {
+    "id": "probe_fe9de9bfed70a83f8f2dcbab776417ab",
+    "label": "unsupported",
+    "rationale": "The excerpt supports the listener, network, port, and routing requirements, but names --unsafe-public-advertise as the public-IP override; it does not establish that CELLD_UNSAFE_PUBLIC_ADVERTISE provides that override."
+  },
+  {
+    "id": "probe_4a2a56d7619161f7a01221d637604f43",
+    "label": "unsupported",
+    "rationale": "The excerpt defines LogTransport and mentions shipping codecs and twin stream implementations, but does not establish that it is the log routes’ sole peer-POST boundary, document a scheduler-controlled simulator transport, or establish deterministic codecs shared with simulation."
+  },
+  {
+    "id": "probe_28148d356052db647c8836b6c8c10ab8",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states the adaptive default is four times the slowest recent append, at least 250 ms and below the eviction backstop; fixed waits and 0 to disable the second copy are supported, and per-sequence idempotency makes retransmission safe."
+  },
+  {
+    "id": "probe_c1fd2d46c20f2f40fa35d37f4c76ffe4",
+    "label": "unsupported",
+    "rationale": "The excerpts establish threshold derivation, latch classification with a reason, and low-watermark/headroom logic. They do not show release_target or executor behavior, so they do not establish release sequencing or that the executor never sheds independently."
+  },
+  {
+    "id": "probe_ef75071cf23ee6a6a594915cbbb604f6",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the config allowlist and that changing a DeployPointer is a deploy nodes converge to, but do not establish that celld deploy builds a Wrangler project, publishes to the fleet bucket, or uses deploy/current.json."
+  },
+  {
+    "id": "probe_d7a01885ab066f0efb4d14bcd9fd1255",
+    "label": "unsupported",
+    "rationale": "The excerpt shows installation of a profile-specific celld binary and a test stage, but no cargo build command or evidence that the source and release-image builds use the stated flags and workspace."
+  },
+  {
+    "id": "probe_f55546bfa744cce89e10dda24dfa726d",
+    "label": "unsupported",
+    "rationale": "The excerpt shows non-health requests receive 503 and Retry-After: 1 when admit_public() fails, and health requests bypass admission. It does not establish that draining causes admission to fail or that the health endpoint is ultimately served."
+  },
+  {
+    "id": "probe_63cfea6d4f50f22162f0ff591f2465c0",
+    "label": "supported",
+    "rationale": "The workspace comment explicitly states that crates/logic owns all behavioral state and decisions, while crates/celld is only an effect executor and adapter host."
+  },
+  {
+    "id": "probe_ed287119971cd4fa4879ba07d6370d03",
+    "label": "unsupported",
+    "rationale": "The excerpts establish fencing when a renewal lands at or after the prior expiry and that an expired initial acquisition never becomes authoritative. They say to fail its waiters and let a later request retry, but do not establish retries at the fleet's renewal cadence."
+  },
+  {
+    "id": "probe_fdd177d3361448ebc0dc8b0cc9285726",
+    "label": "supported",
+    "rationale": "The excerpts explicitly describe provoking two required rejections on a unique probe/cas- key before serving, identify CELLD_STORAGE_PROBE=0 as the startup bypass, and distinguish permanent store violations that can stop a node from ambiguous errors that callers may serve through."
+  },
+  {
+    "id": "probe_ccbba88bf3175fb3f85c90c6059aa103",
+    "label": "unsupported",
+    "rationale": "The excerpts show a supported-feature list and a validator checking required features against it, but not manifest declarations, rejection behavior, or whether validation occurs before deserialization or worker load."
+  },
+  {
+    "id": "probe_1c5e9aa2f114a3e15d3e2f9de14937d6",
+    "label": "supported",
+    "rationale": "The excerpts explicitly establish pointer polling with a 30-second default, immediate adoption via POST /reload, side-by-side builds and atomic routing of new requests while existing requests finish, and safe-point resident-object migration or forced migration after the configured age (default 60 seconds; zero at adoption), cancelling activity and closing regular WebSockets with code 1012."
+  },
+  {
+    "id": "probe_f0e0d5966d796791b4de4dd2ff6a2c6d",
+    "label": "supported",
+    "rationale": "Source 1 exempts health requests from admission and rejects failed public admissions with 503, Retry-After: 1, and Connection: close. Source 2 establishes that shutdown rejects new public requests while finishing accepted requests and continuing versioned peer traffic for cells not yet handed off."
+  },
+  {
+    "id": "probe_1ce49c07f08246e7d4d55f7a0709132d",
+    "label": "supported",
+    "rationale": "Source 1 explicitly describes three independent socket task shapes and shell auto-responses with no routing or wake. Source 2 states that celld serves and connects with fastwebsockets and handles the handshake itself to retain non-101 responses rather than discard them."
+  },
+  {
+    "id": "probe_cf8851a1cb997341b8e2fabc50ad94bc",
+    "label": "unsupported",
+    "rationale": "The excerpts establish WAL capture, position reporting, and the owned 2026-08-03 rustyriver snapshot that does not track upstream, but they do not establish Litestream v0.5.11 behavior or the LTX v0.5.2 block format."
+  },
+  {
+    "id": "probe_2f9b08e4791c1d52c6f28fddb5c0454d",
+    "label": "unsupported",
+    "rationale": "The excerpts map the four error variants to Litestream sentinels and mention host facilities affecting scheduling or timestamps, but do not establish injectable clock, filesystem, or spawner facilities or a real-host default."
+  },
+  {
+    "id": "probe_0c28da59c87b093546104cb350138288",
+    "label": "unsupported",
+    "rationale": "Source 3 establishes the producer-admission status, headers, and body, and source 2 shows queue operation calls. However, the excerpts do not establish that consumer batches dispatch through ingress like fetches, that the operations target the broker cell, or that purge requires --force."
+  },
+  {
+    "id": "probe_6fc8c847d9a6153f5bd41864e2783329",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the single reserved-scope refusal and shared /runtime/ entrance inherited by new reserved classes, but describe only fleet authentication—not HMAC authentication or exclusivity among all HMAC-authenticated entrances."
+  },
+  {
+    "id": "probe_3437b9bef0530c978e271e8df008a5c6",
+    "label": "unsupported",
+    "rationale": "The enum establishes the listed action variants, but not that Run is invoked by bare input or that parsing rejects ambiguous input rather than guessing."
+  },
+  {
+    "id": "probe_7074fcb93eff39c81b426acab2b55c66",
+    "label": "unsupported",
+    "rationale": "The excerpts establish that worker projects require esbuild on PATH, asset-only projects do not, and regular nodes/operator subcommands must use cloud buckets. They do not establish CELLD_ESBUILD as an alternative or explicitly cover both deploys and dev builds."
+  },
+  {
+    "id": "probe_17eb90cf7b2f5e9fb0f2473596ae3c59",
+    "label": "supported",
+    "rationale": "The comment explicitly places the raw V8 adapter and its child modules outside the Actor execution domain and states that Actor-reachable wake and WebSocket state is injected through HostServices; the attribute explicitly allows the specified clippy lints."
+  },
+  {
+    "id": "probe_5c105253c9c6ac6baaf21e44cd20140b",
+    "label": "supported",
+    "rationale": "Source 1 establishes JS-side argument validation and crypto ownership of key formats and operations. Source 3 establishes one-shot and chunked streaming compression. Sources 2 and 4 establish R2 storage in the fleet bucket under r2/<bucket_name>/ using the node’s existing credentials, without a second blob service."
+  },
+  {
+    "id": "probe_7a39a684f60aa91cd8064c86353cd2f1",
+    "label": "supported",
+    "rationale": "Source 2 explicitly states that every activation advances the epoch and replication uses cells/<cell>/ltx/e<epoch>/, fencing stale writes into superseded prefixes. Source 1 identifies RecoverNodeLog as the takeover interlock for an unsealed dead owner's folded log state, with recovery required before the claim proceeds."
+  },
+  {
+    "id": "probe_ffeb9bac292c0a8d87ad971b632c4ced",
+    "label": "supported",
+    "rationale": "Source 2 explicitly says warm resident requests perform zero bucket operations and only cold activations touch object storage. Source 1 says that when published lease expiry passes, the node self-fences, stops active cells, fails incomplete requests, and exits with code 3, enforcing that a node unable to renew and replicate must not own cells."
+  },
+  {
+    "id": "probe_307574c14b5a03f2db3c57b30a850975",
+    "label": "supported",
+    "rationale": "The excerpt explicitly establishes renewal after one third of the TTL, retries until published expiry, and terminal self-fencing upon expiry or lease replacement, stopping active cells, failing incomplete requests, logging SELF-FENCE:, and exiting with code 3."
+  },
+  {
+    "id": "probe_e8c2053d630394c1dbe29592c5e6fe06",
+    "label": "supported",
+    "rationale": "The excerpts establish both eviction ownership options and the same-node rename benefit, plus a batched shutdown handoff that proves durability, attempts L9 full snapshots with an L0 fallback, releases ownership, and obtains compatible-peer adoption while leaving cells dormant until requested."
+  },
+  {
+    "id": "probe_4d9a4fda2d5bdef9f02d6c45993b9dee",
+    "label": "supported",
+    "rationale": "Source 1 explicitly requires every ensemble member to confirm at the leader’s fragment epoch before acknowledgement. Source 2 states that each process session creates a conditional node-log record before its first fleet-durable acknowledgement."
+  },
+  {
+    "id": "probe_31562fc039ebf1d37658be8ddc3c61a6",
+    "label": "supported",
+    "rationale": "The excerpts specify selecting the highest nonempty epoch, restoring its full contiguous chain from transaction zero to include acknowledged tails added by recovery or bundle drains, and neither writing new epoch seals nor letting legacy seals cap the chain."
+  },
+  {
+    "id": "probe_0432f3fd8323eae3156903ee37ce388b",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the protocol version, trusted-network reliance, fleet HMAC usage, auth-file creation, and bucket-access warning, but does not establish that cell fetch and RPC traffic carries only a protocol version or has no content signature."
+  },
+  {
+    "id": "probe_791784f5eff7a7fa966c9b736dc84495",
+    "label": "supported",
+    "rationale": "Source 2 states that each socket becomes its own task in the three listed shapes. Source 1 explicitly pins fastwebsockets to =0.8.1 with unstable-split so a live, non-cancel-safe read future can survive concurrent writes through separate halves; the exact pin guards against unstable-feature changes."
+  },
+  {
+    "id": "probe_66b853fa015881be723b95593265c8e6",
+    "label": "unsupported",
+    "rationale": "The excerpts establish default-on additive L1 compaction, fewer takeover reads, and attempts to publish full L9 snapshots for closed databases, with L0Chain as a restore artifact. They do not establish a retry window or release with the L0 chain when that window expires."
+  },
+  {
+    "id": "probe_9f93c4b63f9162d255a2a2e9a525e429",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the celld-original raw-L0 envelope, little-endian footer layout, and per-cell-only restores. They do not establish one PUT per node flush or that every bundle row must be drained to the stated key before restore; recovery is described as scoped to one cell’s acknowledged prefix."
+  },
+  {
+    "id": "probe_9e5929dd99c3409c80288a22b531f79a",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the installer URL and verification with gh attestation verify, but does not identify denoland/celld as the repository against which provenance is verified."
+  },
+  {
+    "id": "probe_3d4e3e94f6117117dc75cfc33c1d5990",
+    "label": "supported",
+    "rationale": "The runtime copies celld from the test stage, which runs cargo test and clippy with -D warnings and installs sqlite3 for the ltx fault-injection oracle. The final stage uses debian:bookworm-slim, installs ca-certificates, and sets OCI revision and version labels."
+  },
+  {
+    "id": "probe_52184ad54f453d3918690e2b2f5fd0eb",
+    "label": "supported",
+    "rationale": "Source 2 explicitly establishes structural disablement, nonblocking try_send recording, and counted telemetry drops rather than request shedding; source 1 specifies the 8,192-slot channel capacity."
+  },
+  {
+    "id": "probe_e7ae89850df988b241ae0d175624c636",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the celld.dev default URL, named subcommands, and in-place adoption with an off-by-default restart escape hatch due to interrupted requests and cold restores. They do not establish alpha status, installation credential rotation validation, or short-lived deploy tokens printed as ready-to-run commands."
+  },
+  {
+    "id": "probe_e3a841c5dd607d4e88535af3bba093b8",
+    "label": "contradicted",
+    "rationale": "Listener announcements use the same stdout sink, contradicting the claim that all messages go to stderr. The excerpt does support treating a closed pipe as a successful stop."
+  },
+  {
+    "id": "probe_d45558dbf8be85b446a9258d8fe86757",
+    "label": "unsupported",
+    "rationale": "The excerpts do not describe celld dev, its listeners, state persistence, rebuild behavior, or log flags, so they neither establish nor contradict the statement."
+  }
+]

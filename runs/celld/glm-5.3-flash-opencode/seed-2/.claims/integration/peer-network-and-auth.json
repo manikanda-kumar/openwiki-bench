@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:46c9f67d0f19c66d935b4876b346039ed93371132b856a113027e7dc9d9c296d",
+  "claims": [
+    {
+      "id": "claim_8e336877f87749abbd424b6f219f43ab",
+      "statement": "Peer HTTP and the operator API use the internal listener; every advertised address must be on a trusted private network or an encrypted overlay such as WireGuard or Tailscale, the internal port is not published, and celld rejects a literal public IP unless CELLD_UNSAFE_PUBLIC_ADVERTISE is set; an explicit advertised address requires an explicit internal-listener address and routing to it.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L189-L200",
+          "version": "repo-lines-v1:sha256:bdb1590ef84c3c26ff42b4dc456dd336be8fd92935d7f08a4c470ad52a318e95:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3ODhlYWJjNDMzMzIyNDI0YmRjMzdmNTZhNmM0YzU4MDEwYzY5N2M2YTc0YTM4OTY4NGQzOTU1M2ZjY2Q4MjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwZDk2NzZiZThkYTdiMjllZGRmMmRiOTZmYzg5ZTg5NjQ2MzZhM2MwMzRlMDljZmQ4Mjg4YTJmNDA5YWFiY2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkMTNmNTEwZDUxNzk2MmE2MjFlN2JlYmRhODgyNzI0MThhZWRjYTBmYmE2YWIwMjdiZGZmMmFhM2E5MzJhNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzNjA5MTI0NjA2OTNkY2FhMjJiZTFhYmVmOGY1OTBiYTM3OGQ2ZTQ4YmYwZDdlNjU3YjI5YjY1ODcxYmMyODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_832109908c7e4dac8496eb25d1a5bd8a",
+      "statement": "The fleet peer-auth scheme is PEM-defined around two protocol constants: the secret key fleet/peer-auth.json at SECRET_VERSION 1 with domain cells-peer-request-v1, and the version response header x-cells-peer-version (protocol version 5: PROTOCOL_VERSION=5).",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L18-L22",
+          "version": "repo-lines-v1:sha256:32369e2d0bf256795d42ccfd3e21bfa3835538257abe691bd7ad911c51d76ec1:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBlMGYwMGNmMjExY2Y3ZmJkNDJhZmJjOWM5NjM5NWM1NDRlMjJmYWNlNjVmYjM1MTU2Zjg5ZjA3NWYzN2JhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDQ0OGRiZmYyM2I3NGM1MDlhNGM0MWE0ZjU3YmQ2OGU1N2QyNmUyOTlkYWM1N2Y3ZWQwZThkNDIyMmVmZWY3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDQ3ODhiYmI1ZTViMzhmNjYyNWVjZWNkMjRkNDAxMzE3MWM3ODVmOWE1MTI2ZDQ4YTUyMWFiNjA3YTFjOTNjOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjVlYzA4ZDMwMTM3NzkyZmZkMzE1ODZiMWYzYjJmZGJiMTc5NmViZmRhYzI1NTcxYzVmNmM0NGZkMWNmNzc3MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_62272b1e04f74e76a811f924ee271290",
+      "statement": "Replay protection: a signed request's timestamp must be within a 30-second clock window, a nonce is retained for twice the window (REPLAY_RETENTION_MS = CLOCK_WINDOW_MS * 2), a compile-time const assertion pins that a nonce is retained at least as long as its signature is acceptable, and the replay cache is bounded at 1,000,000 entries.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L24-L31",
+          "version": "repo-lines-v1:sha256:26fb4ed000e5cc3a67bec482bef8ed819b92a90068354048cbe6b91aa2ef0801:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRjNGM3NzUwMzY0YWE4YjY1ZTA3OTJkZDU4ZTczZGViOGM2N2Q0NjlkNGZiNzQ3YTM2ZmJlYzljZjE0YjYxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDZjYzljZGE1YTJhNDNmMzQxZTJmY2UyY2ZlMzBmY2JkNWY4ZjAwMGE4NGMwOWI2OTM5OWNmODEwOTc1MDM3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTc5YmMwMDM1OTE2MDJjMTZkMzAwZWI3NTNmYWQwNWFmNTkxYTUzODg3N2QxNDA4MzU5M2EyZGY0NDM2MzMxNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjAxOTUxMGQ0ZTQwMDE2OTlhZTZiNmZiMjhkNGYxOThhZDZiMjU1MmU4YTM2MjY4ZjAzOWI3ZDRjYWIyZmRjYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e36bca10e005403ebaf3a569b62f3804",
+      "statement": "Signed peer requests carry x-cells-peer-source, x-cells-peer-target, x-cells-peer-timestamp, x-cells-peer-nonce, x-cells-peer-body-sha256, and x-cells-peer-signature headers; the signature is an HMAC whose canonical request binds method, path+query, body hash, source, target, timestamp, and nonce.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L33-L41",
+          "version": "repo-lines-v1:sha256:8176d9775a0a3a347de6f6d78e1318725c41fc6b72c297c1b4a659865b89a2e2:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBkYWU2NjdmMWU2ZWU1ODAwM2ZmODAzZTg0MGRmNmUwZDgzMDFiM2VkMDhlOTgyZjUzZTQ3MmZlNzIxN2E2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDgyODYwNmRiYmNmNzUxMjQ2ZjUzZDAzMTJjN2E4NGQyZDk4NjEyY2I5Nzg4MWRhZWU4NzI2YmZiMzE2NWU2OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmFiNGExYzBjMDA5MzJjM2YxNzQxOWRjNjM1YjU5YWM0NjUwY2ViNDI4YmIyNjIwNDU0YjgwYzQ0ZWVhZDg1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzU5NDUxY2E1NjQzYTZlOWM5OTZkMmViYmJkNTExMjU5NWQyZjY3NTVkNjdlZTAyZGYxMDM0Njc4ZjUxODhjZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_51f1c5da1299472785fcacc1bdeb5934",
+      "statement": "Peer discovery comes from bucket node leases, not a join service: nodes/<node>.json carries addr (where peers POST) and probe_public_key; diagnose and peer routing read these leases.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ownership_store.rs#L27-L55",
+          "version": "repo-lines-v1:sha256:02bddc01c2bcc62031fd9ea5a9df9dd0569242e5455e89aa7590f3b71613df37:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjOTVhZDUzZmQ5YjRlNWJjNDFhNDI1OTNjMmRmOGEwMGM0ZjZmOTY5YTM1Y2E5YTE3Y2U1OTVhNmE5ZmY0ODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2MWFlMTVmZTEzMDllMWE0OTE3ZTYwYzhlN2E2NmZkZTcwNjU1YzQyY2M0ODhjYjZmN2E3YjVjNmM4NGIxMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyMzllNDFhYmMyMGIwZjc4NTlhMWQ2MjA3Y2M5NzUwZGYxZjUwMmQ2ZWExYThjMWEwYjFhMjM3YjY3YWYxMzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_809ea040ba724ed19ea3c7be276a89fe",
+      "statement": "The signed probe is liveness and identity: a installing signer at boot, a peer GET /peer/probe with a random challenge signed by the fleet MAC, and the node responds with its advertise address and challenge signature; probe refuses a node with no signed-probe key and refuses a node whose peer protocol is not the current version.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/peer_probe.rs#L103-L135",
+          "version": "repo-lines-v1:sha256:e464006754200c3ccce10fbd47f71bda82fe977d24c35c3b446f3a18e5b7209b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNTk5NmZiZWZlYWE5MzlkYWIwNjFmNzdjNDE3ODY2YTVmN2ZhMzY5ZTRiYWJlYjAyZjg2ZjQ1NTk2MTA5ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3YzRmMTZkMDQ0NTdlYzg5MjcxZTY0YzEwM2RhYzRjODcwMTJmNDBjNjQ4MGRkODE5Y2M1MGJiMzQyYWVjOTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwN2Y0ZGUwMTcxNTYyYWYyYjcxY2RjMjgwNmZlYWVjYjRjYWMxNmM2MGFkMjhjN2UyYmY3MjYyZTdkYmE1YzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5NjI5Y2E2OWY2NzkzZTkzZTk5N2JmNjdjYzMzYTMzYjE2Mjg4OTFmNTgwNWMxYTMzMmYzNjg1NTFhMzYwOTgifQ"
+        },
+        {
+          "resource": "repo://crates/celld/peer_probe.rs#L18-L60",
+          "version": "repo-lines-v1:sha256:c3690bad01bea44de74e536c7fdf460718b26b624475f99823bc712afa3fcf5e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlYWQwN2RlNTRhMjBkNzYyMDAxMGU1YTcxNDZhY2I3NDk3ZWU1ZDk2NmI2MzcwZjUyNTZiMjA1MTI5ZGU3NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NzU0MzFlNTU1MzE0ZTRmYmM2OWExZjc0MTU1NzRkZWMxNjY5N2E3N2Y4YTBjY2NmYjRmMjdkZDA2MDIwNDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4ZGFiYTljMjc1NDE3MjNiMjhhNjBiNTM3MmRiM2EwNWIzNmQ3ZjI3ZWQ4MDVlODQ5ZDNlZWU4Y2I5NDNiNTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiM2M4YWI2ZjZiMjExMDk5NDgzZDI5NTdhOGQwMjhlYWI0NDE2YTNmYTAxZGIyODUwNTcxZjE0ZjIxZGU0NTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_265d1a867b07465ca9963f96182d3bf2",
+      "statement": "The peer tunnel is an h1 upgrade on /peer/tunnel (CONNECT mechanics with Upgrade): after 101 the connection is an opaque duplex stream and app requests cross as literal HTTP driven by hyper on both ends — the hop never interprets inner bytes so header fidelity is preserved (Host, Content-Length, Upgrade are data) — and per-call control (scope, cell name, request id, capacity handoff) rides x-cells-* inner headers that node A overwrites and node B strips so reserved names cannot be smuggled by an application.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/peer_tunnel.rs#L3-L27",
+          "version": "repo-lines-v1:sha256:bdca9083f53efd5f7410d2e89ec7b395d5952b3e3b14067582ae0c57c79bd69a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTUwMmI4Y2U0YzgyZTUzNjgxODZiOTdlYTIzN2U4MWYwOGRmYWU4ZDhjMTYxM2U3OGE1Y2Q5Y2JkNmE4NTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZmEwNjZjYWYwYTk0MWVkNDVmMmE4MTg4NmY5NmM2YWI0MTZlYjcyMGMyODhkZmE2MzA4ZjAxMzVhMGVmMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhN2NiZDUxNmFlYTU4ZjZhMDBjMmIzZDQyYThhNThiYjRlYTcwMGE2NWU5MjdmMDQzNzQ0NDRjYzliMTUyMmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2M2ExMmVlODQ2ODEwMTg4ODJmMmI2ZDQxM2Q1Y2EwNDJmY2IyNzEzOTMyZGI1MDY2NjA2OTIzNWM0M2U2ZWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0df151cce5f34145beeded98bb5638af",
+      "statement": "Tunnel protocol identification: TUNNEL_PROTOCOL = celld-tunnel, TUNNEL_VERSION = 5, with x-cells-tunnel-version, x-cells-tunnel-kind, x-cells-scope, x-cells-do-name, x-cells-request-id, and x-cells-capacity-handoff as the reserved inner headers.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/peer_tunnel.rs#L40-L52",
+          "version": "repo-lines-v1:sha256:a85f07077a8e987b2014960f975b07947549b6fc603f2a35846b9297edf5c217:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmOWE0YTA1MjM1OGE1ZGVmZjYyNzg2ZTI3MjFjYTA1YmRkYzFhZTRiYzE2YTFmZDM5YjlmMmNmMmUxNWRkMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0NTY5MmYwODZiYTU2NTA5YjhhNGU0YjRlMGUzOGM5MzViYWFiNmIwYWQ5NGJjYzI3OTE1ZGI4NGFiNDI4YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwYTEwZmVmNDc1MmJmZDdlZTI3NGVkNmQwYTM2MGRhNWU3ZjIzMDhjMjFkODE2ZWVhNDFmYTAzNWY4YThmZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5N2NhYjcxZThhZjc0MWU3NTY2Y2IwMmJiMmQ4YWM2MGI1ODQyZTA3M2IyZTZhZTQxYmQwYTJjNGE0MjhhZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a09a4e5cea0449a0adf773b7ca4d62eb",
+      "statement": "Idle tunnels are pooled per peer and reused via h1 keep-alive rather than fresh TCP per call, because without reuse a loopback-speed caller saturates the ephemeral port range into TIME_WAIT within seconds (about 1000 calls/s is the hard OS ceiling).",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/peer_tunnel.rs#L22-L33",
+          "version": "repo-lines-v1:sha256:f9c3305566f0e67a06400e9c2d022f91b92803e2508b943079a1ae828d6bc77f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwYTc2NTA5NDhkOThlYTZhYjY3MjQ0MTEzMTBmMDQyYTVlZWMwMTc4MGVlM2M1Y2NhN2QzN2VlMjA2MzE4ZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2ODlkN2EzNGMxYzVhODNhNTdhZTAxYWJiYjdiNGQ0OTNhZGViMWM0ODk1ZGI1NjcwYzlmOTUwOGQyY2ViMzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4MzYxY2QzYzVkZDBmMmU4MDhmNjEwM2NhMTA0OWMyMDBlYzg3MWYxNTFhODcxODQ3ZTVhYWQ5MjQ0MGI2MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNmM3N2FkOGM0YzNjNmU4OWUwMWI0NGJlNjI3MzI5ZmI3OTU1ZDgzNDVhZWY1NzFlYzc5MjE5N2MwYzdhZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef3297a9f23c4c2e9e62f8bced401485",
+      "statement": "The node-log tier's one peer-POST boundary is the LogTransport trait used by the log routes, and its design documents a scheduler-controlled replacement transport for the simulator, so follower entry codecs are deterministic and shared with simulation.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/node_log.rs#L52-L96",
+          "version": "repo-lines-v1:sha256:cf64daa4d203ba13e905aaf110738945e2c851755ffe9ff5d31cdc4ed3245252:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkMjQ3YmFlNjE2N2VlMGI2ZTMzYzllOTMyMWIwZGEzY2RhNzZlMWY5MDBkMjM1ZmNjMDExNGI3MGE5NThjYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMjY5YjAxYTc5YmU2MjE1ZTQ2N2M0MjUyZjcxMTI2YzhlOGRlYWRmMmFjMWNjZTE4ZWE3OWM0NTNhNWZlOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczMzUyM2Y3NTEwMWMzN2EwZmZhNmVhZjZjMGYwZDM3ODcyYjdkZTI0MzQzMmI1NGJmMWVmNDUwYzcxMmE5MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjNzY2N2M0Y2IwMTgxNTM4OGU1YjFkNTg2NjhjY2Q5ZDAwMTdjNmI2YTBjNjljYTlkMWY0MjdiNzVmNTQ1Y2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0ece29f27374893b84d814d1268cef4",
+      "statement": "/runtime/ is the operator CLIs' way in (celld d1, kv, queue, workflows): the same forwarding dispatch /do/ uses but with the fleet authentication /do/ does not have, and it serves only reserved runtime classes, refusing a plain Durable Object scope with 403 directing the caller to /do/.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2665-L2695",
+          "version": "repo-lines-v1:sha256:54e3964f893296bddfdd637effb36f488c733e04b426eca1efbbb156c4f3d914:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNGEzMDVhODgzYmVhNTU3MjJkNDA0ZTEzMjM0M2Q2ZTk1ZGIyMjg5YWEyODE1OWI0MDM3NTliYzc5OGQ1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MmI4MzU0MjFkOTk1NmViZWMyMWE2ZTg3YjBhZDY3ZjY4ZDUzOGNiMjQ3NTdkNGRkM2E2YzljM2Y0ODUwMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2OTdlOTE4N2Q0N2Y3YzhiZDNjZGQ3MjAwMzg3ZWVkMWJmMzUzNDBjZDU2YzE4NjBhMzllNDBhNjg2M2JlNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5YWY5ODIzZGJiOTY1YmZlMWFlMTYyOTZiZWFmYjdkM2Q5ZmExODYwOWQ2MTI4OTkzODU0ZjlkZjVlZDUwOTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_98cd488028004ea2b7b050a04704ab87",
+      "statement": "Operator commands reach reserved cells by finding a live node from the bucket leases, signing a request with the fleet secret, and POSTing /runtime/<scope> which forwards to the cell's owner; they cannot instead write the bucket because a bucket write happens behind the fence and the owner's next flush overwrites it, and they cannot name one node because an operator's internal listener has an ephemeral port by default.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/operator_cell.rs#L5-L12",
+          "version": "repo-lines-v1:sha256:6ce486c74e9d05297058d27e9b66a7bacc62bbcb957fd02442b7c114170494aa:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhkZjc1MmUwNjVlMTg4NGY5MTBjYTFlOTI5YjQyNDExNDNkODgyMTQ4ODJjNGNhMDcyNTY3N2MyYjNhYzlmNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGJhMjk3ZGQ5ODJjMDlkM2FjZmU5Yzg5ODY2NzEwMDBiMTJiNmY4ODE5OWM5NmVjNmViYTlhNmQxYjFhZWM2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWNjYThmYTE4ZDQ4YjBjN2FkNjRlZjJjNTg1MWJlODY1Zjk2NDEzYTJlNzMyNzA2NmIyODc5ZmNkMDA4YjVjMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3defb77ba6c64d87a96fa6ac59bba084",
+      "statement": "Security boundary: celld is an alpha not safe for hostile multi-tenant use; one fleet runs one application and celld trusts the application code, fleet nodes, and operators; object storage credentials control the fleet and should access one fleet bucket only; the internal listener must sit on a trusted private network (encrypted overlay if not); celld does not terminate TLS, so public TLS must terminate at an ingress proxy.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L5-L22",
+          "version": "repo-lines-v1:sha256:b7524aa17ddd1999c1c36c35c86b3293ee1b2e207c6af5522576a1b09ab3c512:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4ZjA2NGU3NjBiYzE0ZDQ1YWViMTk2NGJjZTcxYThiNzQ1NjRkNzNhOWZhNDdhZTk0OTk4YTJjNjMwNTI0OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyNjVmOTI0YjZjNzEzZTQyZTkzMWJhODkyMDUzODg0NjFjNjg3YzBjOGFjYWI3NDBiOGFlNGY5YmQ4MjhkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0MjExZGQwYmNiZDg2MzBkMjJmMWMxYzhkZjVkMWUxZDAxNzZhN2E5ZmZhYjM1MWUwYTRmOThkZmMwZDUyYTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6972930e8f84b0592f09e101c00ed5c",
+      "statement": "Peer traffic crosses the internal network as plaintext HTTP: the fleet HMAC authenticates tunnel establishment and control requests but does not encrypt application data on the wire; the network layer must provide confidentiality.",
+      "evidence": [
+        {
+          "resource": "repo://docs/limitations.md#L16-L21",
+          "version": "repo-lines-v1:sha256:054637e039dd7c9654b5927874f11110eec2ea2389d2ddc00b2084195ab6e283:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzIyOWVhN2IxNDJiZDFmYzhkNTFiMTVkMjhiNjQwMjAxMTNiZDkwMDdkMTI1ZjhmNzlmY2U0ZGQ4MzU5NmRhNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTMxZDYxMjRjYzY0MGZhYTY4NjA3ZmM2NmM0NTdkOWVkZmRiNmNiNGY5NWZkOWIwODhmMjJiMDZmZmFlMGE3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDA0YmY1MjNmYzBlZDIyNmI1YWQwNWQwZDVlNDBiZjllYTliNzU0MWJiMDI5YzFiM2E4YjIyZDBhMWI5M2IyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTY1ZWQ1MTdiYmE2YzdmMjQ3Y2Y0ZTNkYzcxMjhjZTIyYzEyYmVhNWJhYmYxZjIxZjU4Y2U0YTFmOWJkYjQ0ZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:47:04.277Z"
+  }
+}

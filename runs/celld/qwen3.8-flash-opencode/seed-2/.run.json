@@ -1,0 +1,482 @@
+{
+  "schemaVersion": 1,
+  "runId": "ddba8071-e110-4e5b-bdfb-3741ca3fa088",
+  "mode": "init",
+  "phase": "generating",
+  "startedAt": "2026-09-11T18:36:22.117Z",
+  "language": "en",
+  "languageChanged": false,
+  "requiredRewritePages": [],
+  "initialPages": [],
+  "sourceFingerprint": "sha256:752acd19c4677b6e6a7e4a57a22a9ee21053206b032a00fe200188c233eda2a9",
+  "actor": {
+    "producerActor": "opencode",
+    "metadataModel": "host-agent/opencode"
+  },
+  "previousLastUpdate": null,
+  "wikiGoal": "# Benchmark documentation brief\n\nCreate a source-grounded wiki for engineers who must understand, operate, debug, and safely change this repository.\n\n- Explain the architecture, ownership boundaries, core data/control flows, persistence, external integrations, configuration, and failure handling.\n- Include a practical quickstart and focused change guides for representative maintenance tasks.\n- Treat source code and tests as authoritative. Cite concrete source evidence for every non-obvious technical claim.\n- State uncertainty when the repository does not establish a fact. Do not invent runtime behavior, guarantees, or deployment details.\n- Prefer a coherent, non-overlapping taxonomy over exhaustive file-by-file narration.",
+  "beforeContentSnapshot": "3a6bac43d2c608fff454aed9418503c68d1f5125c6ee87617fbe17f8160172c8",
+  "preparedWiki": {
+    "generatedProvenance": []
+  },
+  "plan": {
+    "pages": [
+      {
+        "id": "0df3acc2-0b32-4019-a7f1-51b3bc5c4de2",
+        "path": "/openwiki/architecture.md",
+        "title": "Architecture: crates, the decision core, and the effect-execution loop",
+        "purpose": "System overview: the three-crate workspace, the logic/executor ownership boundary, the serial actor that feeds Events to on_event and executes returned Effects, asyncrt facade, and build/toolchain shape.",
+        "seedPaths": [
+          "Cargo.toml",
+          "crates/celld/actor.rs",
+          "crates/celld/asyncrt.rs",
+          "crates/celld/lib.rs",
+          "crates/celld/main.rs",
+          "crates/logic/lib.rs",
+          "crates/logic/types.rs"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cell-lifecycle.md",
+          "/openwiki/architecture/coordination.md",
+          "/openwiki/architecture/durability-and-replication.md",
+          "/openwiki/development/testing.md"
+        ],
+        "instructions": [
+          "Cite concrete spans for on_event, Event/Effect, and the actor mailbox/versioned completion pattern.",
+          "Explain why the split exists (deterministic simulation, model checking) and how adapters must never mutate State directly.",
+          "Mention build profiles (release/lab), jemalloc, and the celld_internal_tests cfg with env-include test modules."
+        ],
+        "status": "complete"
+      },
+      {
+        "id": "c50de2b2-f47e-48ad-8561-e16d09207829",
+        "path": "/openwiki/architecture/cell-lifecycle.md",
+        "title": "Cell lifecycle: phases, activation, and eviction",
+        "purpose": "The cell state machine in the decision core: Phase ladder from Inactive through cold activation to Resident/Dormant/hibernated, admission permits, alarms, eviction and shedding order, and generation swaps.",
+        "seedPaths": [
+          "crates/logic/alarm.rs",
+          "crates/logic/cache.rs",
+          "crates/logic/gate.rs",
+          "crates/logic/isolate.rs",
+          "crates/logic/lib.rs",
+          "crates/logic/pressure.rs",
+          "crates/logic/schedule.rs",
+          "crates/logic/types.rs"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/coordination.md",
+          "/openwiki/architecture/durability-and-replication.md",
+          "/openwiki/deployments.md",
+          "/openwiki/operations/node-lifecycle.md"
+        ],
+        "instructions": [
+          "Cross-reference coordination (ownership acquire/claim) and durability (output gate) instead of re-explaining them.",
+          "Ground every phase transition claim in crates/logic/lib.rs and the module files; describe invariants enforced by State::validate.",
+          "Include capacity/activation/eviction permit ceilings from Config and where they come from in the environment."
+        ],
+        "status": "complete"
+      },
+      {
+        "id": "48588e69-4df9-4acd-bb5e-43782e55891b",
+        "path": "/openwiki/architecture/coordination.md",
+        "title": "Coordination: bucket records, ownership, leases, and fencing",
+        "purpose": "Ownership and fencing: bucket layout of authority objects, conditional-write acquisition, node leases and renewal, self-fencing, the takeover interlock, ambiguous-CAS reconciliation, wake entries, and dead-node reconciliation.",
+        "seedPaths": [
+          "crates/celld/bucket.rs",
+          "crates/celld/dead_node_gc.rs",
+          "crates/celld/fleet.rs",
+          "crates/celld/ownership_store.rs",
+          "crates/celld/protocol.rs",
+          "crates/celld/wake.rs",
+          "crates/logic/dead_node_reconciliation.rs",
+          "crates/logic/restore.rs",
+          "crates/logic/wake.rs",
+          "docs/guarantees.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/durability-and-replication.md",
+          "/openwiki/architecture/routing-and-network.md",
+          "/openwiki/integrations/object-storage.md",
+          "/openwiki/security.md"
+        ],
+        "instructions": [
+          "Cite logic modules (Claim/RestoreSpec, MAX_ACQUIRE_RECONCILES) and celld adapters (ownership_store, bucket, fleet) for the split between decision and I/O.",
+          "Cover the probe command and startup test, and the reserved bucket prefixes.",
+          "State the bucket's required properties and what happens when they are violated (two-writer risk)."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "ff6fa4b3-cf12-4b11-90ea-7e3e9402b0b3",
+        "path": "/openwiki/architecture/durability-and-replication.md",
+        "title": "Durability and replication: output gate, SQLite, LTX, and the node log",
+        "purpose": "Durability data path: the output gate (RPO=0 acknowledgement rule), per-cell SQLite storage, LTX segment capture and bucket replication via celld-ltx, the fleet node-log ensemble with followers and hedging, and restore.",
+        "seedPaths": [
+          "crates/celld/ltx_repl.rs",
+          "crates/celld/node_log.rs",
+          "crates/celld/replication.rs",
+          "crates/celld/storage.rs",
+          "crates/logic/log_evict.rs",
+          "crates/logic/log_tier.rs",
+          "crates/logic/output_gate.rs",
+          "crates/ltx/reference/ltx-format.md",
+          "crates/ltx/src/db.rs",
+          "crates/ltx/src/lib.rs",
+          "docs/guarantees.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cell-lifecycle.md",
+          "/openwiki/architecture/coordination.md",
+          "/openwiki/integrations/object-storage.md"
+        ],
+        "instructions": [
+          "Cite crates/logic/output_gate.rs and replication code spans, not just docs.",
+          "Cover compaction levels and bundles from crates/ltx plus the node-side adapters.",
+          "Describe the data path from a committed SQLite write through capture to bucket objects, and which parts are byte-compatible with the documented LTX/Litestream lineage.",
+          "State the RPO=0 acknowledgement rule as code, not marketing: gate opens only on proof; failure returns to Resident."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "309efd13-3eec-48e2-b6e7-cda5c8c8f994",
+        "path": "/openwiki/architecture/js-runtime.md",
+        "title": "The JavaScript runtime: V8, isolates, and Workers APIs",
+        "purpose": "The V8 host: one isolate per cell, bootstrap prelude/harness caching, ES module resolution and builtins, isolate pooling, Worker/DO dispatch, streams, WebSockets, crypto, Node compat, and WebAssembly.",
+        "seedPaths": [
+          "crates/celld/js.rs",
+          "crates/celld/js/bootstrap.rs",
+          "crates/celld/js/crypto.rs",
+          "crates/celld/js/modules.rs",
+          "crates/celld/js/storage_ops.rs",
+          "crates/celld/js/websocket.rs",
+          "crates/celld/pool.rs",
+          "crates/logic/isolate.rs",
+          "docs/wasm.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cell-lifecycle.md",
+          "/openwiki/deployments.md",
+          "/openwiki/integrations/cloudflare-compatibility.md"
+        ],
+        "instructions": [
+          "Explain what a node actually runs (Wrangler bundles via esbuild output) and how bindings are wired from deployment metadata.",
+          "Note the V8 heap limit behavior and hibernatable WebSocket acceptance rules with code citations.",
+          "The Cloudflare-compat page owns the supported/gap matrix; here cover the engine mechanics and where a JS API is implemented (Rust op vs JS builtin)."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "52714aa3-22c2-4cfa-bbf4-e667a6687efd",
+        "path": "/openwiki/architecture/routing-and-network.md",
+        "title": "Routing and the peer network",
+        "purpose": "Request routing and the peer network: the two HTTP listeners, public Worker ingress, cell fetch/RPC/WebSocket proxying, the /peer/tunnel establishment with fleet HMAC, peer probes, capacity handoff hints, and outbound WebSockets.",
+        "seedPaths": [
+          "crates/celld/control_plane.rs",
+          "crates/celld/main.rs",
+          "crates/celld/main/peer_tunnel.rs",
+          "crates/celld/peer_auth.rs",
+          "crates/celld/peer_probe.rs",
+          "crates/celld/startup.rs",
+          "crates/celld/ws_client.rs",
+          "crates/logic/peer.rs",
+          "crates/logic/routing.rs",
+          "docs/guarantees.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/coordination.md",
+          "/openwiki/operations/configuration.md",
+          "/openwiki/security.md"
+        ],
+        "instructions": [
+          "Cite routing re-send policy, replay protection retention, and the unauthenticated operator routes list from code.",
+          "Cover the request path: public ingress → routing table → local resident vs remote owner, including the tunneled hop and its version refusal.",
+          "Distinguish the node log's use of the peer transport from cell-call use of the tunnel."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "3af916ec-ab46-45d2-8d04-0d2376741125",
+        "path": "/openwiki/deployments.md",
+        "title": "Deployments: bundling, publication, and generation adoption",
+        "purpose": "Application deployment and release adoption: celld deploy building a Wrangler project, the deployment objects and protocol types written to the bucket, the deploy pointer polling, in-place generation adoption and DO swap, static assets, and the celld dev local loop.",
+        "seedPaths": [
+          "crates/celld/assets.rs",
+          "crates/celld/control_plane.rs",
+          "crates/celld/deploy.rs",
+          "crates/celld/dev.rs",
+          "crates/celld/generation.rs",
+          "crates/celld/local_store.rs",
+          "crates/celld/protocol.rs",
+          "docs/README.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/js-runtime.md",
+          "/openwiki/integrations/cloud-services.md",
+          "/openwiki/operations/node-lifecycle.md"
+        ],
+        "instructions": [
+          "Generation adoption mechanics are the interesting part: safe-point detection and forced swap at CELLD_DEPLOY_MAX_AGE_S.",
+          "Ground the deploy publication format in protocol.rs type names and paths.",
+          "Mention the managed control plane (celld connect) as a distinct onboarding path verified in control_plane.rs.",
+          "celld dev belongs here: local_store backend, watcher rules, and what is retained across restarts."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "c1d7c63a-2739-45bd-a165-71c6ae644910",
+        "path": "/openwiki/development/change-guides.md",
+        "title": "Change guides: common maintenance tasks",
+        "purpose": "Focused change guides for representative maintenance tasks: adding a CELLD_* env option, adding or changing an Event/Effect and its executor handling, adding a JS builtin/op, changing the peer or bucket protocol surface, and adding an operator CLI subcommand.",
+        "seedPaths": [
+          "crates/celld/actor.rs",
+          "crates/celld/cell_cli.rs",
+          "crates/celld/cli_output.rs",
+          "crates/celld/env_vars.rs",
+          "crates/celld/js/bootstrap.rs",
+          "crates/celld/js/modules.rs",
+          "crates/celld/main/cli.rs",
+          "crates/celld/protocol.rs",
+          "crates/logic/types.rs"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture.md",
+          "/openwiki/development/testing.md",
+          "/openwiki/operations/configuration.md"
+        ],
+        "instructions": [
+          "For each task include what tests exist to prove the change and what documentation (docs/, help text) must move with it.",
+          "Give step-by-step change recipes with exact anchor files for each task.",
+          "Keep guidance grounded: prefer 'follow the existing pattern in file X' over invented conventions."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "21cc61f7-bfa9-4827-a8bc-8d2d63f4ee96",
+        "path": "/openwiki/development/testing.md",
+        "title": "Testing and verification strategy",
+        "purpose": "How correctness is earned and how to run checks in this repo: the four verification layers (differential conformance, TLA+ models, deterministic simulation of the logic core, live-fleet fault injection) and the cfg(celld_internal_tests) build seam.",
+        "seedPaths": [
+          ".github/workflows/release.yml",
+          "Cargo.toml",
+          "clippy.toml",
+          "crates/celld/lib.rs",
+          "crates/logic/lib.rs",
+          "docs/testing.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture.md",
+          "/openwiki/development/change-guides.md"
+        ],
+        "instructions": [
+          "Be honest about this checkout: the conformance test bodies are env-var-gated includes whose corpora live outside the workspace (see lib.rs cfg blocks); `cargo test` in a plain checkout runs what the gate exposes.",
+          "Do not describe CI or lab automation beyond what workflows and docs show.",
+          "Document clippy.toml disallowed patterns as mechanical enforcement of the actor boundary."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "06c71a40-04ff-4086-b4d2-57fd6a878a97",
+        "path": "/openwiki/integrations/cloud-services.md",
+        "title": "Built-in services: KV, D1, Queues, Workflows, cron, and R2",
+        "purpose": "Cloudflare-compatible services implemented as reserved cells: KV, D1, Queues, Workflows, cron triggers, alarms, and R2 on the fleet bucket; plus the operator CLI paths that reach them.",
+        "seedPaths": [
+          "crates/celld/d1_cli.rs",
+          "crates/celld/js/r2_ops.rs",
+          "crates/celld/kv_cli.rs",
+          "crates/celld/operator_cell.rs",
+          "crates/celld/queue_cli.rs",
+          "crates/logic/alarm.rs",
+          "crates/logic/cron.rs",
+          "crates/logic/kv.rs",
+          "crates/logic/queue.rs",
+          "docs/cloudflare-compat.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cell-lifecycle.md",
+          "/openwiki/deployments.md",
+          "/openwiki/integrations/cloudflare-compatibility.md"
+        ],
+        "instructions": [
+          "Document the 'reserved cell with __ prefix' pattern and the HMAC /runtime route the CLIs use.",
+          "Ground each service in its logic module and js/cli adapter, not only docs.",
+          "Note limits (e.g. KV large-value bucket requirement, queue retention) with code or doc citations; the compat page owns the full gap matrix."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "d128b942-765e-4833-81b4-e3e5068228fc",
+        "path": "/openwiki/integrations/cloudflare-compatibility.md",
+        "title": "Cloudflare compatibility surface",
+        "purpose": "The Cloudflare compatibility contract: what celld accepts from Wrangler configuration, the supported service and runtime API matrix, compatibility flags, and known silent gaps.",
+        "seedPaths": [
+          "crates/celld/deploy.rs",
+          "crates/celld/lib.rs",
+          "docs/cloudflare-compat.md",
+          "docs/limitations.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/js-runtime.md",
+          "/openwiki/deployments.md",
+          "/openwiki/integrations/cloud-services.md"
+        ],
+        "instructions": [
+          "Cross-check the honored compatibility flags against crates/celld/lib.rs worker_compat.",
+          "State the repo rule that an unsupported feature without an error is a defect, and list the known silent gaps the doc names.",
+          "The table itself lives in the doc; cite it as the maintained matrix rather than restating every row."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "784d0fbb-80ed-4332-b8b9-dd6b9e972353",
+        "path": "/openwiki/integrations/object-storage.md",
+        "title": "Object storage providers and credentials",
+        "purpose": "Object storage integration: the single bucket client, the three provider dialects (s3://, gs://, az://) and their conditional-write semantics, credential chains and validation, the storage probe, and the local dev store.",
+        "seedPaths": [
+          "crates/celld/bucket.rs",
+          "crates/celld/fleet.rs",
+          "crates/celld/local_store.rs",
+          "crates/ltx/src/client",
+          "docs/README.md",
+          "docs/guarantees.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/coordination.md",
+          "/openwiki/deployments.md",
+          "/openwiki/operations/configuration.md"
+        ],
+        "instructions": [
+          "Cover the conditional-write dialect differences (etag vs generation) and error classification (clean reject vs ambiguous).",
+          "Credential family rules and rejections are operational safety: cite startup validation code.",
+          "Qualify store status exactly as docs/guarantees.md does; do not imply unqualified stores work.",
+          "local_store belongs here as the dev-only backend with SQLite transactionality."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "3fac31b0-46c8-4106-9ed5-5f7c0d3a5bd2",
+        "path": "/openwiki/operations/configuration.md",
+        "title": "Configuration: flags, environment, and defaults",
+        "purpose": "Configuration surface: CLI actions and flags, the CELLD_* environment variables and their strict parsing, listener addresses, and defaults an operator must know.",
+        "seedPaths": [
+          "crates/celld/cli_options.rs",
+          "crates/celld/env_vars.rs",
+          "crates/celld/machine.rs",
+          "crates/celld/main/cli.rs",
+          "docs/README.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/routing-and-network.md",
+          "/openwiki/operations/node-lifecycle.md",
+          "/openwiki/quickstart.md"
+        ],
+        "instructions": [
+          "Cover listener binding rules (advertise requires explicit internal listener, public-IP refusal without the unsafe opt-in).",
+          "Do not enumerate every CELLD_ var; organize by function and point to `celld -h` for the complete list.",
+          "Explain strict parsing consequences (invalid value stops startup) with code evidence."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "0acc4252-d4d9-4611-99ba-a6a3a34baa56",
+        "path": "/openwiki/operations/node-lifecycle.md",
+        "title": "Node lifecycle: startup, shutdown, and pressure",
+        "purpose": "Running a node: startup validation, graceful shutdown and handoff pacing, drain tokens, readiness gating for rollouts, memory-pressure shedding, and V8 heap limits.",
+        "seedPaths": [
+          ".github/workflows/release.yml",
+          "Dockerfile",
+          "crates/celld/drain_token.rs",
+          "crates/celld/generation.rs",
+          "crates/celld/memory.rs",
+          "crates/celld/startup.rs",
+          "crates/celld/telemetry.rs",
+          "crates/logic/drain.rs",
+          "crates/logic/pressure.rs",
+          "docs/README.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/cell-lifecycle.md",
+          "/openwiki/operations/configuration.md",
+          "/openwiki/operations/observability.md"
+        ],
+        "instructions": [
+          "Cover startup ordering (listeners bound before storage/V8 work), the initial storage probe, and first-readiness fleet gate.",
+          "Graceful shutdown: drain batches, snapshots, releases, successor acks, drain token, deadlines; cite drain.rs/drain_token.rs.",
+          "Memory pressure: threshold vs absolute cap, cgroup working set math, shed walk-down and hysteresis, cite memory.rs/pressure.rs.",
+          "Upgrade notes are version-specific in docs/README.md; cite them as documented exceptions, and state that current-version upgrade procedure beyond docs claims is not established in the repo."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "22597c20-7214-4046-a29a-3b78277c31a5",
+        "path": "/openwiki/operations/observability.md",
+        "title": "Observability: /state, diagnose, and telemetry",
+        "purpose": "Observability: the /state operator snapshot, celld diagnose, node logging and the fleet log pipeline, and the telemetry subsystem (Parquet-to-bucket and OTLP sinks, DuckDB querying).",
+        "seedPaths": [
+          "crates/celld/cell_cli.rs",
+          "crates/celld/fleet.rs",
+          "crates/celld/main.rs",
+          "crates/celld/otlp.rs",
+          "crates/celld/peer_probe.rs",
+          "crates/celld/telemetry.rs",
+          "docs/telemetry.md"
+        ],
+        "relatedPages": [
+          "/openwiki/operations/node-lifecycle.md",
+          "/openwiki/security.md"
+        ],
+        "instructions": [
+          "Cite the /state snapshot content in main.rs and the phase-name stability comment in logic.",
+          "Note the schema is v0-unstable as stated in the doc.",
+          "Telemetry config table belongs in docs; here explain the mechanics: sink selection at init, flush triggers, retention."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "2c81f01f-4492-48ca-b1eb-4e73e4a0fbf7",
+        "path": "/openwiki/security.md",
+        "title": "Security boundaries and threats",
+        "purpose": "Security model and operator duties: the trusted-private-network boundary, listener protection, fleet HMAC and replay protection, unauthenticated operator routes, forwarded headers, body limits, and the bucket as root of trust.",
+        "seedPaths": [
+          "crates/celld/fleet.rs",
+          "crates/celld/main.rs",
+          "crates/celld/peer_auth.rs",
+          "crates/logic/peer.rs",
+          "docs/limitations.md",
+          "docs/security.md"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/routing-and-network.md",
+          "/openwiki/integrations/object-storage.md",
+          "/openwiki/operations/configuration.md"
+        ],
+        "instructions": [
+          "Cover peer_auth request signing and the tunnel establishment asymmetry (establishment signed, inner calls not).",
+          "Include forwarded-header and Host policy defaults from code.",
+          "Keep bucket-as-root-of-trust prominent; alpha status is a documented fact."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "37c41149-d718-4dd2-8e35-f967ebea33f3",
+        "path": "/openwiki/quickstart.md",
+        "title": "Quickstart",
+        "purpose": "Practical getting-started path: install, run an example locally with celld dev, deploy to a bucket, start nodes, and basic build commands for contributors.",
+        "seedPaths": [
+          "Cargo.toml",
+          "README.md",
+          "crates/celld/main/cli.rs",
+          "docs/README.md",
+          "examples/README.md"
+        ],
+        "relatedPages": [],
+        "instructions": [
+          "Base the install/dev/deploy walkthrough on README.md and docs/README.md, but verify flags and defaults against crates/celld/main/cli.rs and crates/celld/env_vars.rs.",
+          "End with where an engineer should go next in this wiki.",
+          "Use the examples/ README list to point at a runnable project; do not invent commands not present in the repo."
+        ],
+        "status": "pending"
+      }
+    ],
+    "deletePages": []
+  }
+}

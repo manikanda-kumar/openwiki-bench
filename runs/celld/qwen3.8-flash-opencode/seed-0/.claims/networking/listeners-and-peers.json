@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d34c967e54b51a26cc4693e47ba76806554bff33af134609fe97394056778002",
+  "claims": [
+    {
+      "id": "claim_d68069eeee8a470eab197f01634498f5",
+      "statement": "celld opens two plain-HTTP listeners and terminates no TLS: the public listener serves the Worker plus only /.well-known/celld/health, and the internal listener (default 127.0.0.1:0) carries the peer protocol and an operator API whose unknown paths are answered 404 instead of reaching the Worker.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L20-L45",
+          "version": "repo-lines-v1:sha256:9e548deb841291798cf14a070b256e28aa37856a52530558101b290d8d05ff3c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwOGUxN2QyNTgzZGIxNjAwYzJkYWY1M2Q4YjYxMDAzYmM1ZWMwNjQ0MzdjNmJkMjY2MmZiMjZkY2FlM2E0MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMmU5MTAwOWE4OWYzNmM0Y2E2NWQ3NDM1ZTNhYjQ1NTU0MDkyMWE4YWYyNTU5NjkwZjI3ZTZkMTg5NTk3N2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2ZmI2YjBkYTUxNDgwNGU5ZjMxYWM1NGE1M2U4ZDRkMmE4ZTRkYTVkMjRlNjk1ZjdlMjU4NTg4OTA5Yzg2ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0MTI4NmYyODA1ZmI5NTQ0ZTRmMDVjYmZmZDM0N2M1MTVhNzlhN2ZhMmY0OWU3Yjc0ZjI4MjU5ZTcyMzA0OGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c053a8be386e46e19f5967c27c0c33d6",
+      "statement": "Once draining, the public listener refuses new non-health requests with 503 plus Retry-After: 1 and Connection: close while admitted requests finish and versioned peer traffic keeps flowing to un-handed-off cells.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2572-L2597",
+          "version": "repo-lines-v1:sha256:a3f647134dfc205bdfdc34ecb119d22883596d535c5610a0929548d653e58ec1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwZTM1NjdhOTdkN2U3M2Q4OWQ1MmE5MDJhMzRiZjA3MWEzMTBhOTBjY2E1MjhlZDNiMDc2NmY2MWJlOGIxZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNWU4YjgzMzZlYTRmNjU4ZDU3YWM2Yzg5NjQ0NjAzOWIzMGM0NjJjMTEzYzEyYzU2ZGRkOTZhM2NmY2RjNTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NmQ0NzIyYjBmOGU4MjJkN2UwYzcwNDY3YmY5NGEwNTcyZTA0NWNiOWQ3ZGJjNmUzOTAxMTE4ZDdkYWQwMjYifQ"
+        },
+        {
+          "resource": "repo://docs/README.md#L429-L437",
+          "version": "repo-lines-v1:sha256:77e9a464a17f9aa107937bb22aa355b3c69a4e0124797bc29e65d51afd526795:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWFlMjZhN2RjN2U4NGY0YTZlYzZkNjU1MDhhNmY2ZDJiMzdmNGM1MzVmODc5ZTQ5NDM3MmRhZjA1YWRmMzE5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2Y4ODhkZmM1ZTYzYjdjZGRiMmY2MTU3YWVkN2FhYzMwMDBiZTRhYjgxYjIzMWU3NDFkZDRkYzNlMzMzNTRmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjk3ZWIzZWZjYTBhYmQ0ODMwMzNjMzI3NjU3Mzc2OTcxZjdkNTA2NjI3NzIyMjBmOWU2M2ExNDYwN2IyOTQ1YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf7e00d37dc949da96b988fc3517c2f7",
+      "statement": "request.url construction ignores X-Forwarded-* unless explicitly trusted, takes the last value of multi-valued headers, validates shape per source so a malformed forwarded value falls through to Host, defaults to celld.local, and takes path/query only from the request target, because a structurally invalid authority would make every Worker throw inside new URL().",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L1628-L1686",
+          "version": "repo-lines-v1:sha256:fa3c1b72619bd0abe677be2d0f429091e43c11c6b4bfae7dbed8dab4dd72cdf0:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjYTMwNzJkZTZhODIyZTI2ODM0N2MzM2NjYTI3ZTE2ZWRiMDkzZWRhZDI0ZTVjNGIzNzM1NjMwMjVhZWY0YjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNzZkYzZlNTBmNTk0MTlkNDU3YTgxYTY2MTIzMTI5NDJjZmU0MmM0NjQ2ZjFiMjNkYjIyN2RiODBhMzhjZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmZmIwOTQwOTk3M2EzYTc5MTc3NjM1ZjE5NmY2MGE2NWY2YTAxNGRiMjFmNDk4M2UyMTk3OGZhYmE4ZGU5OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmZTE4NGEwMjJmNWYzZmFkZWVjMWI2NzQyNzhkY2U4YjE1MDA3NmQzNjc4MDhlZDA0YjQ3ZDRjNGVkNDQ5NjQifQ"
+        },
+        {
+          "resource": "repo://crates/logic/http.rs#L3-L19",
+          "version": "repo-lines-v1:sha256:f96a282d9c96d5a692224a9d40336489b1efbb6a9b3eda2ad02b86e76b7296f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyOTg3ZjkyM2RhMjg0ODIwNjMyODVkYzgxNzM0ODhjM2NjOTMzZmE2ZTlkNmZjOGE4MjIxZjUwYzViYWI5MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxYzM0YTkzYWI3NDM1NGM3OTk5MzBjZWUxMTA2ODI2ODgyNzQwOWRiMjMxYTMwMWZkZWMyNzhhZTljYjE1OTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb49cf7ba94345829e28a909c5431854",
+      "statement": "Request bodies are capped at CELLD_MAX_REQUEST_BODY_BYTES (default 1 GiB, 413 on declared overflow and on reading past the limit), and non-GET /do bodies of at least 1 MiB or unknown length stream instead of being collected.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/actor.rs#L1128-L1130",
+          "version": "repo-lines-v1:sha256:3b31f1b27b65c25cdeb267093d6e46fdcd9e06acc31f0b97e69d9c52e0cef862:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWE1MzE0N2QzYWI5Y2M4NjdjNGNlN2Q4Zjc1MWI5Nzg4ZWQyMGJjZmY1YTQ0YjUzZTAxYWE5ZTFlOTI0MzhkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI2ZGFmMzFkMWFiNGQwMTcyZDc1ODQ1MmExOGYwMjRhOGEyYzEwNWYxNzIwYmQzNDI4Yzc0ZWRkMTZhZmE5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTllNzYzNTVjZjExOTk0ODBjM2Y5OTgzNmIxNDg2Yzg0MWQ4OTFmYWFkOTA0YzYwOGUwOTMwMjJkMzc1N2FlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzhmOTc2ODAwODYyYTAxODBjNmJlMWFjNTAxNjIyMDFhMmE4ZDQwOGEyYmQ1NTczODUyMzkwY2Q4OGUwMTAyMiJ9"
+        },
+        {
+          "resource": "repo://crates/celld/main.rs#L1353-L1355",
+          "version": "repo-lines-v1:sha256:9fb064f0b961e702b0d8b135d1301638fb3fda832696ad7e6cef0141ce750317:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTYwNDY3ZDA5MDQ5YzhiMjZmZDRlMThmOTEzMzM4YzA5ZjViYmFjYzZlMGZiNzRmYmUyNjE5ZWFlYWQwNmIwOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWFiMTA2ODc5NWMxY2RlNmVhODlkNDViNjc1ZGE0NTU2OGMxZjg3Mjk3Yzk3YTgxOGQ5YzliYjMxMTM2NTFjZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2FlZDY4NWRjNGNmNjdhMGZhZDZjOWYyMGJkODBkMWY0NjkyNGVkZmNhNzZjZmM1MzFkOWI3ODdkM2RkZDQwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzkyN2VmYmY1YmQ4NzllMDc0ZWMyMTBjM2ZkOWNlZTRjYmQzODY2YTE4NjNiOTk3ZTYyZjYyMjY2ZTdiZjkwMCJ9"
+        },
+        {
+          "resource": "repo://docs/security.md#L126-L135",
+          "version": "repo-lines-v1:sha256:ecb070d98423e69f8f9154c4b712e70c4ade512c2daea20b52e509050cadb05d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1MGJmZWE5OTk2NWZlN2Y1ODlhZmM3NTZmNTQ2MzYxNTQ5NjUwYWYxYTMxZmM4NjQ3M2FhODdlOTcyOGY0NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1ZmY1NGVlNDkxMDM4NGM1YTJmYjg2MzczOWUzZjk3ZWZjZGY4NDc0NTUxM2Y0NmMyNmM4ZmQwYjI4YzdmM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3Y2ZjNDRlODE5ZDFlMDU0ZjI0YzllZTk3M2Q1YWJhZDhlYTA0OTIyNDNhNDdhZWI5NmZjZDAxZTRlZWQ5ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0OWI2NmVkMGViOWY4NTBlODc0YzUxMThjYjA1YWYyZWNkOGJkNzU0OGQ1MGEwMWI4ZDVlN2VhMDAyNjk4OTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e57873dbd034ae7b0fccf9a748e0124",
+      "statement": "The internal listener routes are exact: peer paths (/peer/probe, /peer/handoff, /peer/log/, /peer/abort/, /peer/tunnel), operator paths (/state, POST /reload, POST /shutdown with handoff=preserve, /cell/, /evict/), /do/ for ordinary Durable Objects, and /runtime/ reserved for runtime classes.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2624-L2692",
+          "version": "repo-lines-v1:sha256:422881effcbb78f6b46fb05e8b4b9ceb9ec52596296cb68b978c08d70bb20cd7:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZjU3NmI5YWZiNTgwZDE5MjM1MjlmYTQ1MzlkMzgwYmMzODJjZjdmMGJiYzdjNjU1ZDk1YWI1Y2FhNWQyNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYzQ5YWE0ODgzNTY0YWRiN2QyNDA0YTBkMzc2MjQxNTQ3ZmM0MjU4NmIzMGQwZWYzMjZlMjc5ZGI4MDZjNzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhZmEwMjlmYzZlYWY5NWY0NmRlZTU3NTIxMTA4YWM1MGMxMWU0MzUxOGQ0YmQ0MmFiMmRkZDNiNGUzYWI1MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4M2E2OTIwZjVjNmI0ODdkYWQ1ZmM0Y2IxY2I4ODFmMGZiNDA4MTNlY2ZlMDc2NjEwOGY1NWNhMTc1ZGM4NTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d43aa5ac1e7489da4250ceb3c73dfa6",
+      "statement": "/runtime/<SCOPE> is deliberately the single authenticated entrance for reserved classes: /do/ refuses every reserved scope and /runtime/ refuses every non-reserved one, so a newly added reserved class inherits both the entrance and the refusal instead of relying on per-class routes.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2658-L2712",
+          "version": "repo-lines-v1:sha256:3c48f6fdcef3c40fa7dc3e3e8c52d71adcaa75691c03c0908f0eb0f847b6f585:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwZWY0ZDE1ODU3OTc0MDc4Y2YzYTBhNDY4M2M4N2Y1ZDMzZjc5YmMyYThjYWViZjk4NTg4NTM1NDJiMmJkNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmNTVkOTEyYzgzMWJhYTkwYTU4ZTdiYzNjYmE1ODFiN2JiYjVkZGYxNWYwZTg0ZDRmYTZkZjYyZTI2ZWRiNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNGNmNjEyNTYwMjgzNzIyYjgwMDkzYzk5OGMyMzQxNDA4MDg2YjM4NDU4NGM5Nzg3ZjY3MDdmNTBiODU5NGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f53f0eb823ad4772a590c4db5b495296",
+      "statement": "Every scope entering a network route passes valid_cell_scope first because the scope becomes a filesystem component and a bucket key; the charset fence excludes path separators and . / ...",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2683-L2686",
+          "version": "repo-lines-v1:sha256:f3110f608f9d7edffc460aeb42c1117574818de5c2258a87dc4022eba4208edd:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWY3MDkzYWQ4YjcxMTFmMzliMDVjODQzYzUzNjcwMjIwY2E5N2ZiYjJlZjE5NmU5ZTlhZDIzMWMyMmJhZDg3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE3ZTcwMDg1Nzc1ZDRmMjJmOGY4ZTM0YTlmYmEyYzIzNjU0MGMxOWVhYzkzNGY3Mzc4MmU0NWI4NjdhODMzMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAzODBjM2EyYzZkN2Q3YTQyYTE0ZDA5ZmEzMmJjOGNhYzZmNWEwMjM3ZmExNGFhNTk3MmU1ZTk3ODc5MDRjNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTNkNzMxYTExZTZmNzk2YzljMWU5MjI1NmY3YzQwMzg5ZTQ1NjQ4NzFiNDJlMzUwMDU5Yjk2YjZmNDM5YTJjZiJ9"
+        },
+        {
+          "resource": "repo://crates/logic/cell.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:7d340d5b9b8fb3a3572ebff1df9532ff5475e5847a4599b8ed48271c5fc8a8da:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWY2NmUxNjQ2MGY5ZTM4MGZmMDQ0NDEyZTc1OTIxYzA1NTMxZGY4MGUyN2UxNmE4ZTNmNWE0NjFmNWM4ZDU1MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZThlNThlMTdiYWEyMjJmNGQyNWMxMjI5NzIyNjJlM2QzZjBiOTQ5Mjg1Y2Q0YzE0ZDgxYzQyZDY5MzMyNjU2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjE2YjcwOGQyYWRlNTBjMTEzNzQ4YTk5YzRmNjMyOTE0ODAyZWNiZDkxZmFmN2Q5YzQ3ZTJjMjVmN2M0NDc2ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ0MDM5NjIxMjUyMmQ4ZThlNGJiM2FiMTgxNjM4MjY4MDA5Y2U0OGFlY2RkNzQyZTFiOGZjMTE3ODVmMzVkOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f4a17d5b7ea74789acdae942490d00d2",
+      "statement": "Since v0.4.0 every proxied cell call rides a pooled per-peer tunnel: HMAC-signed h1 upgrade establishment, then opaque plain HTTP that the hop never interprets, with a different protocol version refused at establishment, which makes the v0.3 to v0.4 upgrade stop-all.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/peer_tunnel.rs#L3-L23",
+          "version": "repo-lines-v1:sha256:26269f01546823c869820dc920266cf3189fda11085cf7065f2f16ef02970096:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTUwMmI4Y2U0YzgyZTUzNjgxODZiOTdlYTIzN2U4MWYwOGRmYWU4ZDhjMTYxM2U3OGE1Y2Q5Y2JkNmE4NTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1OGFiOTA4Njc4ZjJlODY5NmNhYjIxYjFiZGM1ZmU3YTBjMzM1YTJmODI1MzhiZGE5MGFmNWJhNTJjNmVmMzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhN2NiZDUxNmFlYTU4ZjZhMDBjMmIzZDQyYThhNThiYjRlYTcwMGE2NWU5MjdmMDQzNzQ0NDRjYzliMTUyMmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlZDk2ZjlkM2U2YWU0YjVhNzQzNWQ0YzFiYWZiZmIxMTYxM2Q1ZDVjMzFhYWE0NTdkMzA3M2UwMmYwNGI1N2QifQ"
+        },
+        {
+          "resource": "repo://docs/README.md#L537-L544",
+          "version": "repo-lines-v1:sha256:7876f607107540b4e896ea1525260282c4fda5db6b9e1ea616d74da502618f9d:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGI1ZjMxM2NlOWNjMzc5MDNmMjIxMjc3YjI5ZWIxOGVjMDc1ZDQzZDMwMGJjMzI3ZTQ0YzhlYzRmOTU3ZGY4NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M5NjA2M2I4N2ZkYjViYzMzOWJlOTNmZDBlYjRmNTY5Y2ZmN2EwYTdjZTMxNDNhYmNmODA4OWFlNzJmMDEyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDkxZmM3OWExMGJlYTNlNzdkODQ0NTM3NWNkOTgyMjIxZDNiNjAwNmY3YTY3ZjM2MzNiNjQ0NmFhODEzMWM2NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmM1MGE1NmI0ZTM3MTJmZjNhMjE1MTVkNjU2YzFmMjE3OWNiM2VhZDAwNWVjODQ0YmY0MDJmNzE4ZjU5NDVhYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_33b15e7efc654282877c2cf008c35e79",
+      "statement": "Per-call control rides x-cells-* inner headers that the entry node overwrites and the exit node strips, so an application cannot smuggle reserved names in either direction; tunnels are plain h1 keep-alive pooled per peer because un-pooled calls exhausted the ephemeral port range near 1k calls/s.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/peer_tunnel.rs#L14-L18",
+          "version": "repo-lines-v1:sha256:a4bad8ac2b372d5ec13b1ac86febb561891a6521c31fe3f1fa054f0700878b0c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGZlYjBlYWU5YjUwMTVkNmJjOTE0YWMwMmQ4YmMzMDAzZjI2ZWU2OWMyODBjYjFjOWJkMjBlOTI3MDAyM2E1MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDkxNDYzOTc4NjFjMWIxMDgzYzBkODg4ZGM5ZTgwZjQ5YTVlZDJhMzEyMTI0Y2JkOTY5ZTY0MmRhYWU0MWIwNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjY2MDhjZjhkYzgwNDFlNTU5MmQwNzhhOWE4MDYwY2Q2NzQxOGQxNTI4ZDIyNmRkMGY3NGUxNWI5MjdjMDI4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzgzNjFjZDNjNWRkMGYyZTgwOGY2MTAzY2ExMDQ5YzIwMGVjODcxZjE1MWE4NzE4NDdlNWFhZDkyNDQwYjYxNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_417985f1745b4279b31bab6fef70d42a",
+      "statement": "Tunnel inner calls are not signed (bodies stream to the owner, so per-call HMAC is impossible); only establishment is authenticated, every path to a runtime class demands the fleet secret, and the signature provides neither confidentiality nor post-establishment authentication, leaving the private network as the trust boundary.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L60-L76",
+          "version": "repo-lines-v1:sha256:00cf77017aea99f2b9c5b2b77d075cda8636cd5bfe11e60d81c908332e3eb070:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1YjgxZjJhMTVjMmNiYzlmMjI1MmM4YzlhODY0ZWJiMzdlNDYwYzA0ZDgyY2JjYTE5ZmViYjgzYTBkMjM5ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViMjdiZjE1NzZhODVhNGM3Nzg2MjFiMzc3ZjQ4NDMwZTIwYzAyOGVlMWRiM2YwNjAxODkzNTAyMzBmZWNmNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMDMzOTk2Y2QxZmQ4ZDI3ODkyNDFjOGFlNWUxZTAzYmJjZmQ4NGNhNzI4MGFlYmRmZDJmNTliZWYzMzU0NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkMjdkMzk0N2UwOGExNjY0ZWM5YTYyM2E3NDk3MWFlNzVkMGJjNjQ5MDc4ODVlZWQ0ZTgwZmYxMmExZTVjMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fb3bbcf32554f85a4603548fa917a39",
+      "statement": "Peer authentication is HMAC-SHA256 over a canonical string binding domain, protocol version, method, path+query, body SHA-256, source, target, timestamp, and nonce, with a 30 s two-sided clock window, replay-cache retention pinned at compile time to at least twice the window, and protocol version 5 exchanged on x-cells-peer-version.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L17-L29",
+          "version": "repo-lines-v1:sha256:49533b1d08d38953b7d5dfbfe1fe71afe40d46d4cba1f21d7a8668aac0f8948f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5YTFlODUwM2IzNTFmMGE3MTM1MjVhZTViZTM3ODZlZjY1YTVjNzViZmQ1MjE0YmUyNzBjNDlmYmVhYWYwYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNzY5ZjMxODA0YzUwZjA1MzgyNDY0ODg3ZTMwNWRkNmRmZTU3YmVlNGMxNjJhY2I1NzE3YjhjZWY4MmY0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNmI1N2UwODZhNGE5NDhkNzg5MzNhZDViYmNhNjYxNWFmMGQ1ZmM2MmZhZDAxZWU2ODM0ZDAyODYzOTY5OWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhYjRhMWMwYzAwOTMyYzNmMTc0MTlkYzYzNWI1OWFjNDY1MGNlYjQyOGJiMjYyMDQ1NGI4MGM0NGVlYWQ4NWQifQ"
+        },
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L249-L270",
+          "version": "repo-lines-v1:sha256:3b49f146effc39a10dea4707b856c2ffdf7708678185eaeae11b405f56c850b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmM2M5MGQ4MWE5ZGNiZmRmZTZlZTlhZDBiN2UwZjY3ODEwNmMwNGIyOGMxMTVjZjEyODE0MTY1NDMxMzhkZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxYjkwNTVlMDM3NGRjOGUzZjRmYWY0MTFjYzQyZDY4Y2Y2OTkwNzIxYzQ1NzRhNWJhMzJlN2U1YWEzNmZmYTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5ea00d5963324149861a07cb185fe112",
+      "statement": "The fleet's 32-byte peer secret is stored as fleet/peer-auth.json: the first node creates it with a conditional write, and a lost create race loads back the winner's key.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L272-L292",
+          "version": "repo-lines-v1:sha256:47e5f74a190776adc9f7a76e9129da4d34a195e2b77726fed9ba61e19937abec:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllNTcxNDY5ZDQ3YzlhNzI3OWQ5NzJmZDFkYmM5ZTk0Yzk2OTljYTY4M2U0ZDQ0NzU3ZDNhY2I3ZGZlMmIwZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhYzY2N2Y3NzIwMjU0ODMwY2Y5NWE0ZTQ3ZmE3NDM4ZjMzNTk0ZDRlYjAxZDJiOGZkYjRmYzc3MDQyYzk1NzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc87e787e08b47b3864b493f939c9c57",
+      "statement": "Failed owner forwards are classified NotOwner, NeverConnected, or Ambiguous by the shell and retried by the core's Dispatcher at most once per class, never for Ambiguous, protecting at-most-once cell execution.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L315-L334",
+          "version": "repo-lines-v1:sha256:ba7138750dda50ce74caa09d71c15e8023fdc761683a71ff9d2f8a3518535294:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2MmQ4YTRhMzlmMTg4YmFhYzNlOTU1NjE1MmUyZjg3OWE4ZjI5NjgzNTU2YTcxMDNkZDU1MDM3ZDBhODdkNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwOGUzN2IwNmViMjUzYWYwNWUzYWJkMzUxZDE2OTllYTYxYmFkMmY3MzA5NjBjZDkxNzU2MjhkNTVmM2I2YTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyNDk2MDM0NTAxMWUxNzVmYzI4ZmNiZmUyYTA4NDRlNGE2MDU4ZjgxMmVmZjYwODE0YzFmZTEzZmE1ZmZiNmIifQ"
+        },
+        {
+          "resource": "repo://crates/logic/routing.rs#L20-L59",
+          "version": "repo-lines-v1:sha256:448ac1431eecd175288823a6e827c68926da34deb152b33a491839bf9c7dfda1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZmExYTkwN2FhNTAzYmQxNTcwNTNlNDRlOTg1MjgwNDdmYTQyMWU0NjkwNGE4NmE1NWVlMGZjOGQzMzMxZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkZGJlYTRlN2UwNDFlNzM1ZjU5NWQ1OWVlYzA0MTc4OGEwYTdhYmUxYzY3MjNiNzM0MGU5MzBhZTBlOGIyYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd0d464e891c4a6594fc229814e16cd5",
+      "statement": "A cell at its concurrent-fetch ceiling (CELLD_MAX_CELL_REQUESTS, default 64) answers 503 with Retry-After: 1 and X-Celld-Overload: cell without starting the excess event, for direct requests and Queue producer admission alike.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L638-L650",
+          "version": "repo-lines-v1:sha256:1aaf42bcc14b9904be4467309f02ef20ee69a3af42444546dcb420995ba29b93:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MGFhZTRkM2I0NmMyN2VmZDhhYzk1MDliY2IzNDFiZGYwZWMyOWFjYTE4OWNkZmMyMmFlODFlODgxZGNlY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxYzJjMGE3ZDY4NjYyYTI1NjQzZmU0OWMyYjRmOTA4NTJhOTRjMmZlZmE5ZDM3NzRhNmY3MDg4NjEyZDljNmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3Y2NhM2ZlZDBlZDI5YzFiMDE5NzU3ZDQwN2Q2ZmY1MjY5ZTM2MDY4NTE2NDJhMjFhMTM2MWJkMTNmNDQ2OWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YzFhMzhmMzA0ZTRiZGM2MzVhMmVjOWM5Y2E5YTU0ZDVjNWFmMjEzZmJhMTdiOGMyNDg1ZDQ0NDE2ZThlOWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a5870f4f3eb949f49c1f21271063ef5d",
+      "statement": "Ingress WebSockets are independent tasks in three shapes (local, proxied to the owner, outbound-dialed); hibernation auto-responses are answered in the shell without routing or waking, and celld serves and dials with the same fastwebsockets implementation while hand-rolling the client handshake to preserve non-101 response bodies.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/websocket.rs#L3-L27",
+          "version": "repo-lines-v1:sha256:37b0fffdb4840567923a60867cdbd32da85271dc297a1eb22f1d64716581cae2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyNmIxODMzMDFiMTExMzYzMjQzMzNjYzIyMDMyZTRlNTVjMmRlMmI1MDkzODg3MDRlNDk1YjllNDBiMWFkNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM0Y2NhZTBiOTVkNGJjMGExMzQzMDM5YTZmNTUyY2FlMWY2ZWFhYTEyZTM3M2M1N2MzYzA3ODIwZGY0YTk2OGMifQ"
+        },
+        {
+          "resource": "repo://crates/celld/ws_client.rs#L5-L15",
+          "version": "repo-lines-v1:sha256:99a5d39e3496ea7ac6a9d4f2eafec24e9b1fb75e69a801f6d8afdda51f30ec8d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhMjIwYWI1ZTNiOWUzMWQ0ODhjZGM3Yzc4MWQ2YTRlZjE5OGQ2ODNiNmU1MTJmYzdmZDI3YjE3MjRhZjkyOWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkODhmNzQ0MjY1OWJmOTYxOGU1YmRiODU0ZDBlNTZlNDQ3Y2ViOTE4NWZhMWQzMDdmZjdlNzBiN2VlZTIxYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiMzBlYmQ0NzRlMDE5ZjE0NTA5ZDJmOTkxOTNjZjIwZjQ4YjVkNmE2Y2RiMjdkMGM0ZjNlMTczODY2NWRlOTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c3c00ebf092e4733a4ab04537dba102c",
+      "statement": "The workspace pins fastwebsockets exactly at =0.8.1 with unstable-split because WebSocket reads are not cancel-safe and the split halves let a live read survive while the same socket is written; an outbound DO WebSocket keeps its cell resident and closes if the cell moves.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L47-L59",
+          "version": "repo-lines-v1:sha256:5e3f4d4a10a5222fdc18f8c9d429d1ad1c58cfb29f6aaef4c35bbb3604ea0864:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzdjNjgwZTRiZTcxNjc2YzQzNGY1MTUwZmE4YmU0MmE0ZjRkMmExMWZlYWI1MmM1NWVkOGJkMDNiNDI4ZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5ZjFjNDY4OTNmZGY2Y2JkZDNlMzNjYWNiN2ZhMDM0YWRlZmRkYjAxZTE0NjIwNDViODU0NGNhYzc1ZGI0OWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyNjlhNDkyZmEwMjUzMzhiOTk1MzAyZGIxZjYyNWM4MjcyNGMwMzI3OGNiYTRkNTY0YWQ2N2YwZDM1MTE0OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwNjQ5Mjk0Y2EzMWM5NjNkMTU0ZWIxYTBjMjk4MjcxMWZhMDIzY2M5ZmVlODZhY2Y5ZTRlOWJhZGI0OTdlMjEifQ"
+        },
+        {
+          "resource": "repo://docs/limitations.md#L38-L45",
+          "version": "repo-lines-v1:sha256:a0a7f58f44be7debce0b610569b78c1e9a6a69f40b2500a99358915ee4dff997:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjdmMDE4NmY3NTU1YjgzOWZhMjk3OGNiNTE0MWVmYjZjMWI1YTVhM2VmYWNiOWIwZDNjMmYxMDE1NWQwZWIzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzc4Y2UzZjRmOTcxMWU4OTU3OGI1ZjY3ZTVhZTNkMTUwNmIzMTVlNzQ4ZGFlNzMxM2VjZDdjMGNjMTk2NGRhYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODliMjBjMTk0ODIyN2QyZDJhMDdmMGRhN2RjMzY3ZTk4Y2JlYThlNTI0MWQwZDFiY2ExZTM4MzE4YzNlMTg1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWEwMzEzNGZhNWUyZjM2ZDhhNGJiYzc5NWZjOGQ4NDhhMmEzNzU2OGM1MzAxNzRkMjJjYzUyZGY3ODNkY2VjYyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:57:20.671Z"
+  }
+}

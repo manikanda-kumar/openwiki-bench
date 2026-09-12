@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9450a726c718802069b352cc99e1af9f0e55ce0453738ddf80cafe19f066cc9f",
+  "claims": [
+    {
+      "id": "claim_7ce8ed5cdaec42038ad63751f5bdfab0",
+      "statement": "Both HTTP listeners are reserved before storage or V8 work starts, and the listener binds a larger backlog (4096) than the socket2 default because a routine reconnect cohort fills an accept queue of 128 at fleet density.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/startup.rs#L20-L26",
+          "version": "repo-lines-v1:sha256:fb3906a008e539577dad4f0378db36ec892445d0192b9dcf452f608d4324b4a4:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDM2MmMzN2QzMjNiOWM1YmUzYjQxNTg0ZTNiN2I3Mjk2MGJmYWY2OWU5Y2RiNzgwMmY5NWExNTAwNmVhZWMzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwYzBmZGUzYTM4Y2E5NDZhZjI5N2QyMzE1ZjBmNDIxMjQwMzljYjZkNGEyMDFiNmUwZjI4NDMyYjEzZjgzNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmMyYWZiMzI1YzgzYmYzYjM1ZTkyMGI1MTgzMmQ1MGE4NTI3ODhkNWMyOTMwYjVkY2Q3ZGY0MjQ1YzkwNDRmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjhkOTkzMDdjY2Q1NmZmZjAzZTRkMmMwNWY2Y2M3ZTAxN2JkNjU0MTc4OWM3Yzk2MTBhMDVhMWI4M2VjZmY4NyJ9"
+        },
+        {
+          "resource": "repo://crates/celld/startup.rs#L3-L9",
+          "version": "repo-lines-v1:sha256:2c662e8c625e483d75d7beaeb41e5c507a0302cba03b7dd611591c1201d8e119:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYxNDQ5MWMzYzE2YjUwNTBjYTJjMzQ4MWU2MjE1ZjBlMzM4MWM4MTMyZDZjZGIzMDFjZWE2YjIyZDM1NTk2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjkyM2UwMTY5MzI2ODJkNmU1ODMxYWVjNTNlMzM3MmYzODkxZWVkNWUzZmUyZmY3YTVkZTgxNzBkZDVjNzI2OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzJiZTFjZDI1NzA1MjM0MmUxNzIwNDhiNzAwZTE4OTE2YWRlNzY3YTIyOGUyZjVmMTFkNWViOWIyMzJkY2U0NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ef53da33f404e9ebc2f5b0baf5e11fb",
+      "statement": "Each node tests the bucket's conditional write contract once at startup with the same four-write probe celld diagnose uses, and a node that finds a broken store stops; CELLD_STORAGE_PROBE=0 disables the startup test.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L59-L74",
+          "version": "repo-lines-v1:sha256:cb69b2ca9d0d6c8d76a47bfd11fb64d3cdf57d54025bec66ee8d0264def75ee6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwYTIxYjVlMDdmYmJmZjU4MmFmYjRiNGMxNDg2MDViNzg3M2I4YjE4ZDM4YTdjOWM3Mzc3NzJiMDIxOTUxYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OGE2NTFiYTZjNDdiNWM4YTU3N2VlNzllYmI3MWNjZjNmMTZjNjE4ODNkMmZiM2NkOTE4NTA5YjM0YmUxYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxZTI3ZDRkMDMxMTlhZjc0ZTM4Zjg3ZGI5N2Q5MTM3YzRiYzYzNDAzZDliMTQzY2UwZDA3YzdmNWY0ZDQ2OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1NmQxYTU2NjFjNDQ4MGJiODA2NWNmMjZkYTRmMjk3MDllOTgyOWViYmE5NjQwOTdmOTk3ZGQ3Y2RlYWFmNDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d3fa6d5adb584442a1d09bb9f0f83eb9",
+      "statement": "A fresh process holds its first healthy response until the fleet is settled: it requires its live node lease, no active donor, memory headroom on every live peer, a bounded restore backlog, and incumbent ownership within one equal successor share above the mean unless the joining node can absorb the skew; the gate holds for at most CELLD_READY_FLEET_GATE_MS (default 120000).",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/drain.rs#L122-L152",
+          "version": "repo-lines-v1:sha256:13aca56499abdd3dc84052005e9ca8b5dfb4f96da1af2bff38069ba45bca746b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYmQ2MzRhNjkxOGYxZGNlZWM4MzYxNzNkMzQ2YTg1OWY5MDUyNWZlZGZiMzUyNzYzYmNmYTQxOGM5MWEzMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmYTY0NzIwZDNlOWRlMzgwMTM3OTZlMzY1YTgwZTQ5NGQ5ZWE4MThlYTQxYTlkYzBlNWIzNzU2Mjk4YzQ3MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZTA3NDQ5YzM2NWNkNmQ5NGM5NmNmZWM1ZWNjZmVjZTBlMzMzMGNkNzY0OTZmYmFhZDc4MDVjZGEyMTE3MjgifQ"
+        },
+        {
+          "resource": "repo://docs/README.md#L480-L494",
+          "version": "repo-lines-v1:sha256:eea32b80f6bbe0d540640cb7cb68b22d2feeb2aa62f8c60f65ac5ea77578e3fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2MDQ5ZmJjOWZhZmI2YjllMzRlNmY1MTVjZjZlNGNkZThlZmNhNzg2YzJiMzExNDg4ODZjOWVlYTViOTc5NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NDg4NTBiZjAxNWNkMWFjZThkN2VkNDIwNjNiZjYzNWMyYjUyYjI1OGUwMTNkN2EzNzE2NzUyNGM4YjY0OGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwOWU1YWUzNDNlZDdiZjUyNGM1YTQ3YWNkOGExYmJlNDFiM2JjZWIxZmIzZGJiNDA4MjQ1OGU0YTg1ZGIxNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlOTU1MWQ4Y2I3ZmUwMDVmM2VhN2Q1NDcxZTAyZGIyZmZjMTQ4ODc1YTU4MmU0YjhjNmJjZjMxNTIzYmRmODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5412a10256843b6a5760d35e5a07e4a",
+      "statement": "celld shuts a node down gracefully on SIGTERM or SIGINT, exactly as POST /shutdown does: the health path reports unhealthy, new public requests receive a 503, accepted requests finish, and the node keeps accepting versioned peer traffic for cells it has not handed off.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L4048-L4049",
+          "version": "repo-lines-v1:sha256:27e6f7a46efb67f952a342cf56b63e1a5002ac34c2e644932b9c85b896562345:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTI2NWQxZjk2MGNhOTZmYjM2MTZjZjk0NTA0MTJkY2IyM2IzYjIxNTY0YmFkM2Q5ODJmZTUyMDYyMjI2OWM3MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFhMzg0ZDk0ZDE4ZDA0MjY0YTIwNjM1ZGI5NDljMjc0MmM0NDRmY2JiNjdlODAzZTdjYTAxZjMyNjkxMzQ0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBhYzZiYTMwODFiZDNhMGI4YTBhOWY5YmZjZjRiNjcyNmNiZGNiYzc0ODZkYmY0NTQ2ZDk5YmYzZTU3NWFkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzNmOTAzNmYyODcwNjRiZWU4MGVlZDA2MjU2ZGE4NTFkODhjNzJkMGRmMWY3YWUxMzY4MDg4ZWE4YThhOGMxYyJ9"
+        },
+        {
+          "resource": "repo://docs/README.md#L429-L436",
+          "version": "repo-lines-v1:sha256:ba87cea21134b4dad48e8768a314407a647d5d1716a5e64c81f76955a4930082:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWFlMjZhN2RjN2U4NGY0YTZlYzZkNjU1MDhhNmY2ZDJiMzdmNGM1MzVmODc5ZTQ5NDM3MmRhZjA1YWRmMzE5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjEwZGYzMmFkZDAxYTA5ZjUxZWRiODVmY2RjZTcxMGZmNmM1NTZjY2E1ZTlkNzE2ZTE5NjY3OTZiYjEwYjljNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2Y4ODhkZmM1ZTYzYjdjZGRiMmY2MTU3YWVkN2FhYzMwMDBiZTRhYjgxYjIzMWU3NDFkZDRkYzNlMzMzNTRmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjJkYzIzNmZiYmU3Nzg4ZmFmZDE0MDJiNzdkMmU3NTc2ZjEwNzYzMDI3YjUyOGYwNWY0N2Q1NDgzYjg4YTYzMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2787b68050564f82b2b84e4d1a3e8405",
+      "statement": "The handoff works in batches of at most max_releases: each batch is reserved and quiesced, proven durable, published as one full L9 snapshot, its ownership records released, and a compatible peer is asked to acquire it; the peer acknowledges after the ownership update and keeps the cell dormant.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L4331-L4434",
+          "version": "repo-lines-v1:sha256:c41a22fce88c77511b23cd5131b22dee9aa1fb5f9bb2766d70d848481678bf1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMTczMmJlN2Y2YmRjY2VjNTllYzJjMWRkNmJhNDk0ODAxMWE3NGUwNTllNjYxNDdlNTc5MTk5MjQzNDE0ZGI4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3MWM5MjFlZDA5ZDc0YWY4NDdjMGYxOTMyODMyYjBiMTFkNjk1ODVmN2JhNTAyMWJmYzk4OGI2NzY3NmZjMGQ4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjEwZjhkMzZjMjNmMzdmOTUwZjViN2JlZGE1MmY2NWMyMTlmYTU3NjE3MTlmOGNkNTFkNmViNDBmMzI3NmU2In0"
+        },
+        {
+          "resource": "repo://docs/README.md#L447-L456",
+          "version": "repo-lines-v1:sha256:cf09090d5908a0ecff064b05369808b6b6ae22a97af8894db6083b7fd7ece8d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwYTc5NjkwYmEyZDQ4YzhiYmEyMzU5ZTlmMmFkZTMwMWI2YjMzNTg4MWQ0MzVkNTA5NmYzMzRlYWY2YjIwMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0M2UwODUyNzM1Mzg3ZDg5YWNmMDk3MDRiZTM3MmUzNGVhMGMwODUyNTJiMzUzYzIyZjQxMmYwNzBkMGUxODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzNGYzMDA4MTg0ZTg5YTkxZTMzNTFiNGMzOWEzYmEzYWE0MGIxNGNiM2I2ZjJjOTk1OWJkZTJkMjNiYTc0NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1MjFlNzQ1ZjQwZDc1YTE4ODhlZWRmM2RiZDliNjcxYThjNzZiOTkzNjQyMDRjNGUxNDVjYTY1ZDRlYzI5NzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_10d1b4f824d34aca8e3361bc7ae8456f",
+      "statement": "CELLD_SHUTDOWN_DRAIN_MS (default 25000) sets the maximum interval without a completed handoff and each successor acknowledgement restarts it, while CELLD_SHUTDOWN_TOTAL_MS (default 40000) bounds the complete process stop.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L458-L469",
+          "version": "repo-lines-v1:sha256:5ac6133c9f55bdfdae77b1aa2b1265656d853fddcbcfd9a033cc52354c1fb600:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1OTFlNDRlYmJiY2I2MmIxYmMxNDQ3ZDg3ZjQ0OGQ0NzU2OWI4Y2MwYTRhZjA5MTAxMjU3ODI3NTI5NzZmMTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMjRmYzMwODdlYmJkOTlhMzU0ZmM3Y2JjMjUwYjllZTg0NmNjMzZlZWQ4ZmFmODRkOGJmMWE3YjMxM2EwYTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjY2Q3NDBhOWY1NGMxZWE1ZTZlYjAxZTNjYjY5M2Q1M2JhOWZjOWU3ZDY3YzM1ZTAyMDRhNWRhYzdlYzkwNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyMjVlNzlmODgyMmM2OTFiZDU3OTMzNzM5N2QyZDMyOTlhOTczODg2YmM3MTQ3YmU4MWUzMTg2NWY2MjU4ZDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e825c59bfb0c4ca48e2fa81469fe87c9",
+      "statement": "A draining node claims a fleet drain token at drain/token.json (TTL 120000 ms) before releasing cells so concurrent donors hand off one node at a time; the token is advisory, and a donor that cannot claim it within CELLD_DRAIN_TOKEN_WAIT_MS proceeds unserialized.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/drain_token.rs#L20-L24",
+          "version": "repo-lines-v1:sha256:41023f09bc3f2880802be18a32eeb411f61b6edabb99bb632631ca7659ac17d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGM3Yzk2NDMzYWJkOTNiNmVlYzllZWU1MDI3ZGNmYzIxODhmN2Q0YjI5ZGZmNGI3Mzk5OWQ3ODJmOTg2YTlhZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjhmZTk0ZDAwYTg2YWNmMGNjZGEyN2EwYjgxZWMwZTE4YjEwYmFkMDc0OGUyNWI3MTY0MjA5Yjg0ODc3OTNiNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjY0NDUzMmY1MWMxMjRlNjdiMzVlYjcxMmIyMjJhNTg1ODE4M2E2OTk1YWU4ODEwZTIwODllM2I2N2U2MDg4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDVhYmJkNmNkMjk4YjBmMjg4ZDJjMGIzN2M2YTNjYmFjNGNkNDg5MGE2NzdkZTczMDdkNTgyNmI5MDVhOWM3YiJ9"
+        },
+        {
+          "resource": "repo://crates/logic/drain.rs#L3-L17",
+          "version": "repo-lines-v1:sha256:c5d61133333fc6ffe9952385cbffbbddbb57798fe78ff864bd1bdeeb747a432e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiODU2MTY3MTg5N2IxZjQxNzIzMWJkYTkyNWNlNmRmYjdiNmMwZTUwYTE1MTY5ZmI1MWQ5NGM4MDVlNmYwZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NzcwOWIwZjZmY2Y5OGIwMTU4OTQ1M2MyZTk3ODZlODhmNDQyZDYyZjlhNTU1MDk5OTM2OWQ3ZDA1Y2RmMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2ODRkOWZjZTQ5NGIwNmEzMGJmNjVjNzY2NjAyNDBiNTEyZWE2MTg1NDVhMmMwMjlhYmU5MWZjYWE1YmU4OTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f6b4b1ec87084a46aca41bca26089ee0",
+      "statement": "Rolling updates stop each node with SIGTERM and wait for its replacement to report healthy; the v0.1.0 to v0.2.0 and v0.3.0 to v0.4.0 upgrades must not be rolling updates, while v0.2.1 to v0.3.0 can be one with per-node staging.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L508-L512",
+          "version": "repo-lines-v1:sha256:1d8119eeace8501ac6d5a1701e5f218c950d8adb44ec9fd10de70c95d885d820:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2JiNDhlZDg3YTNiZTYzZWQ3NTRjMWQ3Zjc2NjAwMzRjNTM4ZWQ2ZWRmNDczMzhkYWFhZmJlMDU4MmRmZTgzOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjQyNmZlMGM1MWQ5ODY5MTZmYzg5MTg2OGVmODJhODM2ZWUxNWJlMjk5NjAxNGU5MGEwOWJlY2MyZDBmZGQzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzNlNjNiNDc4MWE4NDhhNDA1MTNmNzUzNjdlODlmYWM2ODAyYzVkZTEzNDgwYTA5N2U0ZjA5MDZhOTRjZTc5NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDFmMTFiYmQ2Yzg2ZjdkMmZmY2RhZTljZDFlNTU2YTJmZTViNjE1MzhjOGM5MGY1NDdmZTEwNTVkZDBiYmE0NiJ9"
+        },
+        {
+          "resource": "repo://docs/README.md#L514-L544",
+          "version": "repo-lines-v1:sha256:ce6bca7a15ec2a0c73f7de7dde3d69248670c75cd80d89387dcdbcf00cc2e689:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5MzI3NWVmNTQxOTA2MDBmMzQwOWZhZTVjYzJiM2FkMGU1NjVhZTY5MzAwYTViYjc3Yzk2NjJlYjNlNmYzNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjOTYwNjNiODdmZGI1YmMzMzliZTkzZmQwZWI0ZjU2OWNmZjdhMGE3Y2UzMTQzYWJjZjgwODlhZTcyZjAxMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5YjUxZGFkZWI1NTFjZTA5YzgwZmRmODI4MWI3NmRjNmI5NzQ0NjlkNTJkNGYwN2ZjMjlkMTk4YjljOWY1MjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjNTBhNTZiNGUzNzEyZmYzYTIxNTE1ZDY1NmMxZjIxNzljYjNlYWQwMDVlYzg0NGJmNDAyZjcxOGY1OTQ1YWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dca634c9626a46c4b6e8b2851a8b3c7a",
+      "statement": "Dead-node garbage collection retires the historical node-cells/ index debris and expired node-session records, preserving the folded node-log state and every other lease field verbatim because the node record is the fleet log's root of truth.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/dead_node_gc.rs#L20-L36",
+          "version": "repo-lines-v1:sha256:46d285962bf77820e7317b840f86a5a36a4b1ab3e9c82eb566388f299cf0a374:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwZmE4YmM2YzA4MTU0MWFmYTY2ZGY3YTc3NzYzY2UyZWZkNjJiNWRmM2Q1OTU1ZWY4ZDU0MjI2ZWUyNDJlMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0NzFlYjE4MDljZGY4OGMwN2RkOWY2Nzc1MTYyM2MzODAwNjA2MzczMjEyOTZiNTllNGQ4MjlmYmQwYzZiY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwN2NkMGNlODUwZDJmNWZlOTJhMzIwMzBlOTI0ZWMyOWNjNzAxMGFhOTViYjZhODc4NzZiNTQyODI0NjYzYWMifQ"
+        },
+        {
+          "resource": "repo://crates/celld/dead_node_gc.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:5de891fd319a6abee40d52fc3cda72d0c426e62fabf32205f7cfb300a93d1854:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY2MmMxZmQ3YTg0NDZjZWIxMmNlNmFkOTI5NWRhMDAwZDE2YzYyOWU4MjVlY2NjMWM0ZTBjYjhmNGY4ZjI3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmVhNjEyYmFkZjJlNDAwNzE1YWVhYTUyMWU2MmQ2MDIwOGE1ZjJhY2ZhMTRhYzdlNTQ0OTcyOGYyNDFmOWZlNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWQyY2I5MmVlOTdlZjI2ZjRhNjAxZDg2MWQ2YmY0NTg5OTk0NDhiZDdhMGJiNDgwN2EwZjdiNzA5YmJkOWY5NyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:20:08.241Z"
+  }
+}

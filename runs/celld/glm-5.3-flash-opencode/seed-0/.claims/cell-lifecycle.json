@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:2376dbed6b28fe78b61bef4f9dbe5fc2ea89cc3e679385667d7472de8fb24914",
+  "claims": [
+    {
+      "id": "claim_8ca7835443174bea81c9b332396df2a4",
+      "statement": "celld's Phase state machine maps Durable Object lifecycle states onto explicit phases: Resident is active/idle, Dormant is out of memory but still owned (hibernated if sockets survived), Inactive is owned by nobody and is every cell's initial state.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L110-L201",
+          "version": "repo-lines-v1:sha256:d7a65f982914195b66941024782ef569bef621dae1caeb10144b535539d36437:eyJzZWxlY3RlZExpbmVDb3VudCI6OTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4MzczNGFkNWM5OGVlOGRkM2JkODIzMTIwN2FhYzQxYjhiMWUwYmZmYzMxNDVmYjQ1ZDBlN2M5ZGQ4YzMwN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZGE3MTBhMzY0YTY5ODhmN2VhY2U4OGNlMWJjY2IxODU0NGFiNjNjNjQ2YjZlODI5MzI1M2RlYzE3MGMxNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0MmQ4ZGJkMmExOWFhZDIzYzk0YjM0Yzc0OWI2ZDIzNDUzM2ZlYThhYTMwNzU1M2E2MmM1MjMwMWZkMTJhZmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3c19f247ec624b9692148de7f9562bbf",
+      "statement": "evict means different things in celld vs Cloudflare: celld evicts a cell out of memory (Dormant) while Cloudflare evicts it off the host (Inactive), and shedding is what publishes a celld cell unowned.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L110-L117",
+          "version": "repo-lines-v1:sha256:ec659a229baa266c5d2accf10d866fa24ee49831ee1eb89468aa81c1f0742fca:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgzNzM0YWQ1Yzk4ZWU4ZGQzYmQ4MjMxMjA3YWFjNDFiOGIxZTBiZmZjMzE0NWZiNDVkMGU3YzlkZDhjMzA3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzMwYTc2YzcwYWI3NGM3MGI0MmJhNjFmZGM5OTc3ZTVjMzMwM2I0NjUzYzk0NzJjYjYzZmE5ZmIyY2YxMzk4YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWFkYTcxMGEzNjRhNjk4OGY3ZWFjZTg4Y2UxYmNjYjE4NTQ0YWI2M2M2NDZiNmU4MjkzMjUzZGVjMTcwYzE1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2JjY2RjZWU4MDA2YTQyYjcyOGRlNjU3Y2I5YWE5NzU2YjRhOTU3Njg2NjNlODMyYzdkMDVhOWZjMDIxNmRmZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_541ffd87b7cb42dc8c3e7a20251391d1",
+      "statement": "Cold activation of an inactive cell reads owner/lease state, recovers any unsealed dead owner's node log (takeover interlock) before claiming, performs an owner-record CAS bounded by MAX_ACQUIRE_RECONCILES=3 ambiguous-CAS re-reads, then restores SQLite and starts the runtime.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L104-L110",
+          "version": "repo-lines-v1:sha256:d5f9370fb17f91fbba71026b6e707f93d566ec5e0ba5e83b4833abc0822a0745:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVkZDU2ZTZhMDAxNjIyYzFhMTRjYmQzMGYzN2E3NDRiM2Y3MzA2ZTkwMTlhNjQwYmY3YmFjOGRmMzM1MmY3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgzNzM0YWQ1Yzk4ZWU4ZGQzYmQ4MjMxMjA3YWFjNDFiOGIxZTBiZmZjMzE0NWZiNDVkMGU3YzlkZDhjMzA3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2FiZjAyNWE3MDkxYWI5Y2NkYmI1NTg4NDBjZjA2MGZiMzIyZjM3OWU2ZWI3ODgyNTliYWY5MTk4OTM2NTg3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWUyMzI3YzUwMWYzYzdjZWI5MGY5MmExZDVjZjNjMTFkMTk4MjAyNzViZWE5NGFlZDNjOGE5NTYyNWUwMmM0MyJ9"
+        },
+        {
+          "resource": "repo://crates/logic/types.rs#L769-L792",
+          "version": "repo-lines-v1:sha256:5c42ce20f84bed8d27fff7ff3a673931545382575e935483357d30051eb40cfb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MTMxNDJlYzA4Njc0YWZjNDgxMTA1Yzc3OTc4ZmUxNjdiMDIxNjJhZDk4OGE1ZGRiMjFhNTI0NDNlMDNhYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwYWU4NDAxNTUyZWE3M2QzODljMDhkMzk3OTJmODIyYmI1N2UxZTZmZGFiNzUzMjE2Y2NhODEzOTI1YTFjYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDI4YWZhMDRkODZiMThhMWEyNGRlNWM5MTE1MDkyNzEwNTY1YjdkN2ZmNjQwNzQzMzQ1NjBlNzE4MWJlYzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53902dbff55844f8ad9dc04cfe7f7751",
+      "statement": "Activation restores the cell's SQLite from the newest safe source chosen by a pure sans-IO durability predicate among local eviction snapshot and replicated bucket; availability checks are the executor's IO.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/restore.rs#L5-L13",
+          "version": "repo-lines-v1:sha256:0138d5b8cdade0e1a9af345c544f325f37df7c433aaa4863515197cf9b7f15bd:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc1MjI0OWYwNzdlYzVmOTE2MDE4MmIxZmViNzg1OWM1ODI5Mzc0ZWEwYTM0NDlhYzZmYWFkZWJiMDBkODgwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE4MmM0MzEzZTIyMzU2NjE2YWU1NWMzNTgyNmYxMjY4OTVkNjVkZjkyYTgxNTE0ZmNmNTU4ZmMwNDI0MDk1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTEwNjdmZDY4MjU4N2ZiZDEzNzY1OGYzNzNkODNkN2I0ZjhjZmVjYzk2ZDQ5MDU2ZGY1MTE1NDM3M2Q5MTRjOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzBmZTg4NDIwNjk5OWYwZGZhYTcyMDA5NzdlMTk5YWFlODJkODY5Y2UwNWVmNTlhNDRkYTlkN2NmZmMxNmUxYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f44f1a211354f4b94e66344fc3004e3",
+      "statement": "Alarm retry policy is a pure function of a persisted retry row: 2-second exponential backoff capped at shift 6, alarm abandoned after 6 limit-counting failures; excused failures like pressure sheds back off but never count toward the ceiling.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/alarm.rs#L4-L19",
+          "version": "repo-lines-v1:sha256:4f2116f4e3e40d0a12b39ae3728d345cfcc4eea99733eb6d85b91bb20cd3d571:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiNTEyMmFmOTNkYjg2OWJjNTc5MjE5N2U2Njg2ZjNiOGRmZDg1NjViNjU0ZTc2MDViZjAwZGU4MjUwMWYyZWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYjlkZDVhYThiOWQ0MjhjNzQ3ZDI4NzgzZmE1NjZkNzkwZjY0YzFjNjQwMWVhNmZlYmE3NGY3MmI0ODRkNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0YjExN2NiNzYxOWJmN2I0N2VjNzJiZTVlNDcyNGEzY2Y0OGI5MjE2Y2Y2ODYwZjRkNGFmMzYzY2JhOTc4NmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0NjA5ODViMmQwNjdjNDMwM2MwNzJlZDJiMTEwMzMyN2Q5YmYwMTZlMDBlOTc1Njg1ZDdjMTQ3YTVlNDhiZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f011e96db4894e6fbcd45015674eba0a",
+      "statement": "Wake entry reconciliation is a pure WakeCore::decide transition with executor ordering rules, so production's async bucket flusher and any deterministic fake obey one rule set; the wake index keys on minute buckets.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/wake.rs#L5-L9",
+          "version": "repo-lines-v1:sha256:260090e1c09e21d198a730f2172de41b58eb17c05a5c8456c8ba5ce4f8167e6a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE1ZjBiODQ3NjI5Y2E2ZmIyNWU0NDNlN2NkOWNjNGI5Mzk3YWU2ZmU4MTUzOWE1YzE0MmEyMjAyMjczM2E5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzhiYjliYTMwZTFjMjkyYzNmZTcxY2JmMzliMDNjMjMwN2Q4ZGJhZDIyYjQyN2E0MWE5YjJjNWI3Y2JkMzcxYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjE1ZWY3Yjc3OTA3NWRmYzYwMTFkYjhkOWRiNGQyYjdjNWY5MzAyNDQwNjRkZWZhZDdiOTlkY2QzZWQzNGMyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODZkZTllNzkxM2NjOTQxZjM4ZWZkMjZiNzgwOGZkZGMzMjM3MWRkZDdkOTY1NWNiNGIwYmE0ODVhMjM3ZWY0MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0258858e018f4ccea2264ee9d732c429",
+      "statement": "A wrangler triggers.crons entry becomes one reserved cell whose alarm is armed at the next occurrence; cron resolution is one minute in UTC, matching Cloudflare cron triggers and the wake minute buckets.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/cron.rs#L7-L17",
+          "version": "repo-lines-v1:sha256:047e8f86c2b1ca68c2040f703308f52212cf7a958a47b09ffa53d6ee3969240a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwN2U2ZDE1ZTg5ODk5M2RkNWYzMmRiODIwMTQ0ZGY0NjAwM2MxYmMzYWU4MzA5YzRhY2Y5Y2Y3M2JlZjA1ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2YzAzYmFlNGVlYThjNGNiMGY1YzRiMTk3NGQ0NmY4YjI5MWM0YjVkYTAxYTE0NDZlMDViNDRlYWY5MWM5NGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwYWVhMjY5YWFmODhiODc2NTgwNzM3ZmY1MWUxNGU2Y2QxM2Y0MjRkZDJkODgwZjQ1YjM4MzljZjdlODc5N2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViMGIyNjgxMjJiNmQ5MWMwYzVlNWZjMzE1YmMyNTRjMGU4ZGE0MWUwOWQwMmZiNjNiNDczYjAwOGMyY2U4YTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0ae4de013c534f9c9580f3e3b2ef7252",
+      "statement": "A queue is one reserved cell: the cell owns SQL and dispatch, while logic::queue owns stable address, bounds, alarm deadline, admission, retry timing, lease-generation advancement, settlement fencing and purges; PlannedLease carries the generation so callers cannot skip advancing it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/queue.rs#L3-L11",
+          "version": "repo-lines-v1:sha256:b0a097bf229c2d91cd3645d7d646a05b1c40218d33a05791bc89d0b91df4daf8:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTJmNDFjNzYxZDlmMjdkNzQ0MzRiNDI3NDhkYjhiNjRmNzRiOGQzODUyZmFjYzMwNjk2OTFhYmJhOTU0ZTRkZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk0MjcwMzI3Y2M1YzJiMzlkYTg1ZmVjZjk0ZDRhODE2NjE3NDdmNmI0MWNkNjI5YmFiMmUyYTI2ZWJhYWNjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzA2OWYxZTI3N2U3ZjRmZjQ4ZjM0Y2RkMGY2OTAwNWQ0NjlhOGJlYTkxMDljMWMxMWVjODc0YjRiOGY3MzhhNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6520bc47532b4bdba60662a988b7496c",
+      "statement": "Cell sweeps are bounded per turn (256 rows) and share one harness between KV and Queues so no cell-backed feature can silently run an unbounded cleanup loop.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/sweep.rs#L4-L10",
+          "version": "repo-lines-v1:sha256:2715fed50dca1d6492ba996d99561672cdf260eebb06a132d4d9889399061a79:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGUxYzJjOTNjNWY2YjU2ODNkNjU3NjRiYTY5ODRmNWY4YzQ3MjJkMjZjZDJhZWQwZjMzNTRmMjYwYWNlYTdmMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2NlYzVlYTgzOWYyMDMwNjBjMDk0NzViMTRjMTRkYjMxZDFjM2Y1Yjk0OTRkZmU3YjUwMjA0MjE1YTY5ZjllMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a1ef0f0c92f84702916870c0b32ddf84",
+      "statement": "Cell scopes are a security fence: valid_cell_scope allows only ASCII alphanumerics plus _ - . : $ up to 255 bytes and rejects dot-dot names so a scope always forms exactly one filesystem/bucket path component.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/cell.rs#L1-L51",
+          "version": "repo-lines-v1:sha256:ea9d8ae877d4427ad45106db82528a333ad481169952f39b6a361e05223df445:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmMmUzNzc5ZjQ3ZjczYjE1MTdiOTJhZTE3MDcyYTMzNDcyMjZkODgwYjZmN2M2NDg3NzI0ZDAwODFiNDZkOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_910949fa4731433eaa15ae6da60dc0d5",
+      "statement": "Regular and outbound WebSockets pin their cell's resident runtime so events still run locally after quiescing starts, while hibernatable sockets survive idling; outbound socket creation is budgeted.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L391-L400",
+          "version": "repo-lines-v1:sha256:4d453bdc615e6ccd17b90f31abf0396383e545247a2ba172c62a210617109479:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjNjkxZDA1ZGZhZDI2N2IzODhlMzFiNzg5M2U4YjY2ZGQzODljOGU2ZGY5ZjAyMGEwM2UxOGQzMDExMDdlMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiYTFlNzY3ZjdmN2FkMDhiMmRiMGU3NjBiZGY4MGEwZDA5NjllY2ZiZjczNzlhOWJlMDA1YjJmOWI4YTc5NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzMWRlMTI0ODhjYzQ1MjdiYjIyNTk0ZDk0ODQxNmM1NmFmNmEyMzIzMWZmYjhiMzY2NTIzMjBkNGUxZTFlNWQifQ"
+        },
+        {
+          "resource": "repo://crates/logic/types.rs#L471-L481",
+          "version": "repo-lines-v1:sha256:28e1038c68aa10049147ba58ca253cbb5f4810cd83e3712737742ab05c83abf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5OWMzMDc0NGI4NzE1YjhiNTEwNjI4YThmY2VjZGJiODZjZjg1NTVjNjgxYTlkNGFhMDA0NWJkMTEwZTkzYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1ZWE0M2VjYjhkYzIwZjZhNDFjMDVmNjcxYzg4ZmQ4MTZhMTdiNmQwNjZmZjRmNThjMGY3N2RhYjcxZGM4ZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViYjJkZTYzOTc4MTU4MThiYWUwMzJiM2RkNmZiMTBmZTI4NzRhYjNlNzUyYzljN2QzY2UxYjJiNjM2MzU5NzcifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:23:20.669Z"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d37a3cf4cfd70fb85d677682acad36eeb8737fa0956bb147fa5f6554d8ebf1a4",
+  "claims": [
+    {
+      "id": "claim_3ba038d6618e4ecc83b72867613e6242",
+      "statement": "The celld workspace splits ownership by design: crates/logic owns all behavioral state and decisions, and crates/celld is only an effect executor and adapter host.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L5",
+          "version": "repo-lines-v1:sha256:462368a26313f48ed93009e7cd4f07d3415bc44514868055ae8b0535a168acc8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGRiOTJlNTdlYTc5ZmJkNDI1MmQzNzgyODZlZmJlZTUxM2Y3NTIwNDI1MTAwNTNjMzFmZjQxZTdjMTE1NDkxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M0YTAxMzI4NzI1NTFjZTViMTE2ZjQyMzYxOWNmZjQyMGMzNTU1MDJmYjg4NTBjYmJhMGM1MDE1NGZmNjFmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzkwMDMyMmJlYzdmY2IyNzk1ZjVkYTdiOTZkOWI2NThiODAyMjBlNTMxYmZkOTA5NGQ0YWI3ZjZlMzQ1YThhYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9175e62d7d8b440c974f248f7e9a9667",
+      "statement": "celld-logic is a sans-IO decision core whose on_event(&mut State, Event) -> Vec<Effect> is the only way behavioral state advances; both the production executor and a deterministic simulator feed it events and perform the returned effects, and no adapter may mutate State directly.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/lib.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:5a37221a4a1e3133fb069765572a5109ad4c023932a3425f370bd9be139b4eb2:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FkMjM4Y2FjYWE5Y2VlN2FiOTNhMDEwMGE1NjdhODhhMDhjZjFlODYzODBlMzk2NDhkZDY1MmJhNDVmNjcyNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzBkNzA0MDFlYTYxOWViM2ZmNTU5NTRjMGMwOGIyYmU5NmViOWQzZmUwZGFkNzc1M2EzZjRiOGQ1Mzk3Y2U4YiJ9"
+        },
+        {
+          "resource": "repo://crates/logic/lib.rs#L5515-L5515",
+          "version": "repo-lines-v1:sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWI0MjM4YmVlNTdlYTk4M2JhM2MwMTBkODViYWIwOTM5NzMyMDM3MGRlODczN2QyMDJkNTEwNmU3YWUyMzQxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e6308cc3f7e34c4187a4fa65d1e41985",
+      "statement": "celld-logic declares no dependencies (no async, I/O, clocks, randomness, or locks) and disables its default test harness in its manifest.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/Cargo.toml#L8-L11",
+          "version": "repo-lines-v1:sha256:f35bd628b74f4b5b7b185b65a0e58c23ebefc4f1b1ef49a27a8c89167bfc58b4:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ4ZWRmZWVhZTUyZjcwOTA5MzRiYzE0Y2EzZmI4NDg0ZDYzYmQ3MThiNTZhMWU1N2YwODk0MjMwZTdhZjU3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTBkOGZlZTRlN2Q4N2FkZWI3NTdkOGQ4YzVmY2M4MTVjZDNmNGQ5NTYwN2MxM2MyN2ZkNTcwMjZhYTQ2MTdlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmZmYmMzNGRlYWM0NzA3YWIwOTBjNTY0YTViYmQ5ODVmZTkwNGU2MGRlOThlN2ViNDMzNmQ1OTk4NTAzNTg5MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGZkM2Y5MzNlYmRiOTlkZGYxMjgxNzFhNmUwZTEzMTc1MzVmZjE5N2RmMDIxOGNlNDMwYmUxOTQ3NDY5MTRjYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f0656d21daa4bb5bbcb4c7047a6615a",
+      "statement": "The celld executable owns one serial actor that is the only caller of celld_logic::on_event; adapter futures never borrow core state and return versioned completion events through its mailbox.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L5-L9",
+          "version": "repo-lines-v1:sha256:bf8b37a9ee1fc07e9a574b6df6d477168c0bbc44e5b215ec8e9fdf483a7c6986:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E0ZmU4Y2E4ZTA0MDc3YjM5MWYwMzA3M2I2ZGRkMDNkYmNhMjk4ZWZlOTBiMmRlMzA2OTJjZmJmOWIwOWI0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmZjMzRlMzc2NmE4NDYwOGFlZDI5MzI2MTI4OTUyZTI0ZDk0Y2I3MzVhNzY4Njg0NDZhM2VkM2MwMTZkY2QxNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTFkZDcwN2Y0NmJjNjUyNzZmNDU5YWIwNmRmOWVmNDU4NTVlYTMyMjE5M2RiOTFhZDFiYmEzNDlmN2UzZjlhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFkZTY1YmMzZTFmYjI5ODg0MGJiN2FkYmQyMzU0Y2Q1MDJhNjQxZTQ2NjE4NTRhMjRhY2VlN2Q3OTZhMjBmMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c01228b3ef72466eb2df1d66e3aba750",
+      "statement": "The shell's Actor::step handles exactly one ready mailbox item, effect completion, or timer per invocation, keeping lifecycle execution serial.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/actor.rs#L2184-L2186",
+          "version": "repo-lines-v1:sha256:9f269dd802cd20d128a60a5e48e6cc15d6df5aae8908c360a66c4cf5fffdaccd:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTUyZTcyNGUxMzdlY2NjMzNlNGE0ODNjZTM3MDQwYWUyZjU5NjhmNmJiOWJiOTBkZTM2ODIwMTRhNjU4NzRjYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTM0MzAzMWVkYWE1YmZiYzJhNWY2YThhMzMwNGFlYjU1NTdhZTFkOWNiYWJlYjU1ZTk0OTBkOTkyNjMzZGNkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJkODI4YTAzN2FjMWM4MTUzNWIxZDU1MDA4MzIzMjNiZmJiODY2YTNhM2Y4N2U3YTY4YzEzYTJiYWU1NmZmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDNkNTUzOGU3ZmZmYWVmODFhNmY1MmY1Yjk0NmY2OGM1NWNmZDUzMDk1ZGQ0YTRiZjNhN2RiMTQ0ZGRlODNhNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac00cca2e42d4e24a6658a785827410f",
+      "statement": "celld-ltx is an embeddable SQLite replication library that captures committed WAL data as LTX segments and can restore, compact levels, and read bundles; it is a 2026-08-03 snapshot of rustyriver (a Rust reimplementation of Litestream v0.5 and LTX v0.5.2) that celld owns and evolves, and the write-acknowledgement contract comes from celld's outer protocol (output gate, epoch fencing, node log, takeover recovery), not from the library alone.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/README.md#L15-L20",
+          "version": "repo-lines-v1:sha256:2517a37a44a88b2f2e0f2c64d7984b0b3ec527ebb0134546d02060cb128c7391:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQwYzBmMjkyZWFlZjI0MTc1M2RhMzQxMGRjZGE1Mzg5YmEwNzBiODk3NWVkNDljYjhiNWIxYTEwMDQyNjZmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjhmYTU1MWQwYTgwMjkyM2E0MTRiMDYyNTM4N2ViODVhMDczZWViZDkyZTk4ZWQwZTNjNzlhNjFhYzJlNWM0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGUwNDA1YzI5MTMyOGI4NDEzZjFlZjM2YjFmZTFhNzBmYjgwYzhkYjRlY2QyZDJkNDJiNjRjZWUxNmE0YzUzYSJ9"
+        },
+        {
+          "resource": "repo://crates/ltx/README.md#L3-L11",
+          "version": "repo-lines-v1:sha256:58c0dece573725b3cf912e36240273eae45168f1d211ce1d6b18892ea45d31bf:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA4YWNjN2RjM2YyMTQyMTQ0ODcyZjZmYzI4MzJmZjZmMDMyYTNmMjQzODg5MzUyMjU5YjNiNDlkMWFiYjFjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGNjYWFiZmZjMzZmODQ0OWJjYzA1MDM5Y2I2NDExNjViM2RiMTAyYzRkZWUxN2I2OGE4NzBmMWFjNWNlMWM5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2ZjYzgzN2MwNDM0MzI0ZmIzZWRlMzRhYjMxNGU5YjU1MTNmMmE0ZGYxZWFlNjFmY2Y4ZDk0Mjk0ZTY5ZjM4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjhmYTU1MWQwYTgwMjkyM2E0MTRiMDYyNTM4N2ViODVhMDczZWViZDkyZTk4ZWQwZTNjNzlhNjFhYzJlNWM0YiJ9"
+        },
+        {
+          "resource": "repo://crates/ltx/src/lib.rs#L3-L9",
+          "version": "repo-lines-v1:sha256:d36cec5113b4e81d867c113c917d7d5fc70161f83a1f0e775fec4a3bf18bbe11:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRhMDQxYjVmZWQ0NjBmYjBlOTIzOTJlODZjMDZjMDVkOGNiNjI5ZTA0ZGQ5ZmVlN2VhMzBiMzg4N2U5NDlkMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2NTczN2UwNzFmOWZiY2RmNTRiOGFkMzhlNjZlNGI2ZjFmOWZhMWMwMWVkNmFmOWQ5NjY0ZDIyMmE5NjQwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTcwYmQxMTNhMWQwMzQ5YjM2MDQ5ZWE4ZGZhYzE3OWZlMDgxNDczODY2YjRkMzA0N2RjMDY0ODk4MjFhODdmMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmFjMmI3YmE4ZWYyYjFmZmJmZDA3OGYxNTk5Yjg3YmIwM2NiYjg5ODYyY2Y1MGE4OWMwODM5NTIwMzMyNWMyZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1181d847ba774131b5f3717361a5b87a",
+      "statement": "The actor execution domain is fenced at lint time: clippy.toml forbids tokio::spawn, tokio::time, std clock, rand::random, std::process::id, and std::fs methods inside the boundary, requiring celld::asyncrt and injected execution-domain services instead.",
+      "evidence": [
+        {
+          "resource": "repo://clippy.toml#L1-L24",
+          "version": "repo-lines-v1:sha256:b8b21edf45f3fc7b5063cccc4a5112036174e6bcab7a0d6437243a9648cacb3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0NjdkNDY0YjhkNzA0YjZhMzU1ZWE2MGUzYzljODhhMDMwOTBmMWU1M2Y1MjZkYjljZjZhNTNiYzY2YmNhNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmNjQwOTdiMWI4MGFhZjE0MDM3MDBmMGM5MzIwYjkyYjA4NGI3NTY0ZjEwOTQ1YTFmOTgwMjE4MDRkMWEzZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkMDNjOGZhY2YwNjVlNmQxNTMzOGViMWVhYTRjNjFkNDQ1ZDFhZjQwNTVmOTUwNmI3YTg0YTk4N2FjMjUwZmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9ebd1c86b37f42ae94f40edcbc45edf0",
+      "statement": "Internal tests, observers, and a simulated asyncrt are injected into the celld crate with include!(env!(\"CELLD_...\")) behind cfg(celld_internal_tests); those external corpus files, and the TLA+ specs and fleet-lab harness described in docs/testing.md, are not present in this repository snapshot.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L299-L317",
+          "version": "repo-lines-v1:sha256:0f0b539d0a9b466741d7a32576ed75592feb70c9ffec84db5c66c5b4df2e903e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjYWU1OTQ1YTFjYjEzY2RkNTg4Y2IxM2MwY2Q3OTlmZGZhMzEzMDkzOTZiMDE4MWNkMGUxMGZmMjUyNzg5NDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3NzMwZjA2OTFmNWNhY2UyYmQ0YTY5NGY2ZjI2ZTMxMzBiNmU5OTdjNmU5NDExZDk2MmM1NjZmMWFiNDIwYzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0Njc2ODc1NTBiYzA5MjhjYWFlYjI1NDk5YzYzZjgzYTYwNzQyYzZjMTYwMGRmZTBiYmI4YmIxMjc0MjU1OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0YzNkZTg0MGVlNzg5ZDJjMmE5M2NmNWJmYzFjMWM1NmU2Mzg1YTk4MjY4YmQ5M2VjZjQ0N2NlNDZlZDcyZWQifQ"
+        },
+        {
+          "resource": "repo://crates/celld/lib.rs#L366-L367",
+          "version": "repo-lines-v1:sha256:24823fb62744e03c3e04eaf2707a883fb9a85fff76a1c96427b163509bdf36ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDIxMzk4MmU0MjQxNWE1NmE1ZmNlZDBiNmNlNzVkNTIyYzFjY2QyMmYwNTQ5NTQzOTYzZjFhYmMzYWUzZTcxNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTk5Y2FlMGIyOWY2Y2JiZTc0OWEzNTNmMGU3ZTNlMGJkOTg0ZmEwN2FhMjNmZGJlMDAzNTllYzM1ZTU2OGY2OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGY2MGEzNmRjYWFiZWJlMWM4YmMzNDA0OWRhZmRlNGM0MTgwYWE0MGM2MWU2ODhlNzYyNzczMjQzZGM0YTRhNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGFlMTAwNDQ0Mjk0MTUwYTBmZTIwYjYzMTk3MTg2YWM2YzAwNWVhNzEyNzBlZGQ4NDc4ZDAxODhlN2IzODA2YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9354797350ee498d9bb35b8682424f97",
+      "statement": "The fleet coordinates through bucket objects under celld-reserved prefixes (probe/, cells/, nodes/, node-cells/, fleet/, deploy/, deploy-blobs/, wake/, telemetry/), and applications must not write under them.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L78-L81",
+          "version": "repo-lines-v1:sha256:20f67018001ec0d74645b241a61691ebcf6b71f9236f3b1d3987094e055609e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWU2NTk3ZjZjNjRjNDNkN2ViYWY2YmQ4NGNlYzAzNzgwMTFjYmM4Y2Y4YmE5Mzk4NDkxM2IzYWM4Mjc4Y2IyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVkZjdhNzc5ZTEzMTM4MzAyMzIyNDQwNDM1ZDY3MjE4ZGUyMDRkNjEzYThlZmJjMjBkMzMxM2UwY2E5YWYyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDU2ZDFhNTY2MWM0NDgwYmI4MDY1Y2YyNmRhNGYyOTcwOWU5ODI5ZWJiYTk2NDA5N2Y5OTdkZDdjZGVhYWY0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdkZjY3ZGFlMDhmZGJlOTBmYTZmY2VlYTZlZjEwNDBhZDEwZmM0NThkMWY4ZWQxODFmMjE5YTEzNDdhNzYxOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d5eb3ac37b384c2f9d5ce7fc88a1bcee",
+      "statement": "Bucket-resident types in crates/celld/protocol.rs are the durable interface between deployment tools and nodes; the engine reaches the bucket through a single object_store client speaking two conditional-write dialects, and the ownership adapter holds only serialization and error classification while ownership decisions stay in celld-logic.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L3-L9",
+          "version": "repo-lines-v1:sha256:d99157818ec8993b5fa3d53a69ab4da544c9884de55bc41f61082a9f8de78dd2:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmNhY2ZlMzM2YzA3ZjkzMDc0NzRiZWI4ZGZiMjdiMjdjNTMyZjVhNGMwOTFjMzg5ZDliYzFhNjhjZjUzNmYwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODYzZDcwMGRjNDQ3YzRmMDk0NmNmMTMyOGQzYmRlNmZmMmE3ODA4NzZlYzA0ZWNiMmE0NDhkMGY2OThlNzcyNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY4NGIxMmYxY2EwY2U4N2MxYzYyMjdmOTc5ZGMyYThmOGJmZjFiMjliYjA1MzhhOGM0M2I4MzAwOGRhZTI0ZSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/ownership_store.rs#L3-L7",
+          "version": "repo-lines-v1:sha256:53089c7c3cf4f752f149b5550e97163c9d6cb889702d8adc68d3c98c676644eb:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdlZjdlODA2YTFhZWY5MGExZjkxYTcyODQwYzQ5ZWU0NTgxYmU4ZDVjMWZhZTYyMWFjYzIxZGY0ZjIyZGJkOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY5Y2VhZDBkZmExYzA1YzNiZTgxZmJiYzQ5M2IxZDM4MDAxMjFkZjllZTRhNDcwY2JjNDViYTExYjQxYWRmNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmZkMzc5MWE2Y2M0ZDM5MGQ5OTRlZTkzZTFiZTk3Y2JjOTg0MDI2Y2QxZDU0MzU3NWU3NWJmMWNiMzEzMmRjNSJ9"
+        },
+        {
+          "resource": "repo://crates/celld/protocol.rs#L3-L4",
+          "version": "repo-lines-v1:sha256:87c1673eca8f6ac8fc5629d29aac0f079a6448f5cf7275015b5fc3eba77b12b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjVmYzY2ZTY3NDNkOWZkOGMwYmJlZDYxNTA3NWQwZmRkMjJlNDQ3NDBjZmM4MTFjMDE5OTYwMjA0OWU0NWJjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZkMGI1ZGU1NmZlNTE2NDUxZDYxZTkxNGE0OTE5YzFmNDBmMWZmYjNhODY2NGMyYmI4ODZkYzUwZjczZWE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc4NjFjODllNWY3OTQwNGU1MjVkNTY3MjIyMmQyZjEzODQ4MTUxN2NjYTBhMzFlOTZjMDNiN2MyZjAyMjk0OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_11f3fac5bfd3436d9cb9a526231bc31f",
+      "statement": "The public listener refuses new non-health requests with 503 and Retry-After: 1 once the node is draining, while /.well-known/celld/health remains served.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main.rs#L2572-L2597",
+          "version": "repo-lines-v1:sha256:a3f647134dfc205bdfdc34ecb119d22883596d535c5610a0929548d653e58ec1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwZTM1NjdhOTdkN2U3M2Q4OWQ1MmE5MDJhMzRiZjA3MWEzMTBhOTBjY2E1MjhlZDNiMDc2NmY2MWJlOGIxZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNWU4YjgzMzZlYTRmNjU4ZDU3YWM2Yzg5NjQ0NjAzOWIzMGM0NjJjMTEzYzEyYzU2ZGRkOTZhM2NmY2RjNTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NmQ0NzIyYjBmOGU4MjJkN2UwYzcwNDY3YmY5NGEwNTcyZTA0NWNiOWQ3ZGJjNmUzOTAxMTE4ZDdkYWQwMjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7656b2268b984f05b6fe32f532cf16c4",
+      "statement": "All direct dependencies are declared once in [workspace.dependencies] to prevent per-crate version drift, and the build profiles are deliberate: a size-tuned stripped release (fat LTO, panic=abort) versus a `lab` profile that trades the fat-LTO relink for rebuild speed and keeps symbols for perf.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L33-L35",
+          "version": "repo-lines-v1:sha256:864e3a0ac8d51aac77596e3f2cb274019ecbae9bd310c986fa023b4efa3b6fbf:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWU5NWQ2MTcwOGMzODFhMTI1MWEwMzE4NDQxOTUxM2NhNDYxMjA5NzdlNTk5ODRhZWMwODg5Mjg1ZTMzZThlMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGJmODA3ODg4MDMxMWRmZDQwNzRhYzBiM2UyMGIxN2MyNWQ0MDBmZGIxYzVmNDIwM2Y4YTc2MTc1ODI2MTQ0YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTU4MWU5M2E0YjkwZWUzNDVjYTgzNzk5ZmFhYmJhMDVmZDY1MGQ4NzZlNzdhZGI2NWZlZmM2MDMwYjE1NDlkMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWFhMDE1NzQwMTViMDlhZDk3MjgxYzNiYWMxYmM0MTYwZDZiYTcwNjRiODQ0YjdhZWY4ZGY0OGY3YTU2YzBjOCJ9"
+        },
+        {
+          "resource": "repo://Cargo.toml#L7-L27",
+          "version": "repo-lines-v1:sha256:203004554194cf87e05212c2164daf3f3b304f3507dca751096fffe62e9a30c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNDcxMDk4YTFhYjhmY2MyNjgxNzcwMjg1MDA4MGUxYzhjN2NkNTIzZTI0NDIxN2VhODVlNjY4ZjA2YTY5NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhOTM2NDE1ODI3ODYzNzI0ZWNjNGExMzFhYzgyYzUzYTA3Mzc0MjdkYmIxMjYwZjYwYjhjOGI4Mzc1OWM0OTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlOWNkM2U1MDBlNTFkZDNhZjg4ZjgwM2U2NDhlYjcyZTliN2MwZGE1NmEyZDUzYWQ1OTE0YTMwNzI2MDA4MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4MWJhMmUxMGU0MGVlYTMwMjZlMzE2M2FkOTc5MmM0MWEwZjE0NjMzYmRhYjJlMjRkZmQ4YjFmYjFlZDhmODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5706f134c7b540718a224e8792b8184a",
+      "statement": "The logic crate's log_tier module is marked design-stage and not yet wired into the engine; the shipped in-fleet replicated log tier for CELLD_DURABILITY=fleet lives in crates/celld/node_log.rs.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/node_log.rs#L3-L3",
+          "version": "repo-lines-v1:sha256:1e39c2145dbbca096cfb382a7a2d0060188e424a67ef46714bdfdab99a69b836:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWUzOWMyMTQ1ZGJiY2EwOTZjZmIzODJhN2EyZDAwNjAxODhlNDI0YTY3ZWY0NjcxNGJkZmRhYjk5YTY5YjgzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWUzOWMyMTQ1ZGJiY2EwOTZjZmIzODJhN2EyZDAwNjAxODhlNDI0YTY3ZWY0NjcxNGJkZmRhYjk5YTY5YjgzNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmFhZWZkZWJmNGUzZWU3YWVkOGIzMTBjMTRlOTUzMjQ0MGZmZmM5YWRjMWVjNWVhOWRmMmI3YzljOWU2YzIyZSJ9"
+        },
+        {
+          "resource": "repo://crates/logic/log_tier.rs#L3-L4",
+          "version": "repo-lines-v1:sha256:4ce80da807a9ee7aa4f82b5ec26845e21efe5b20a62df07081d96782ac214a92:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk5ZTc4NDkwYTdmNDE2MzI5OTNlN2Q3YWRmMmFkM2JmOTc2YjFkNjUzMzdlMjI1YWM3OTkyODY1ZmQ4MWM2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGFlMTc0ZmIxZTY0ODVmNDNlMTc2YzIyYWQzZWE4YjBiN2FmZGYyZTg2NWMxYWJmODk0NDUzMDYzYTZlNzVkMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWMzYTUyZTQ4OWMzMWRjN2Q5NGM4ZDY0YWFmMDNlYWMxYjgxOWJhNmE2MzFjYmRhODgwOWM3YzM0ODYzYzY3YiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T15:57:20.671Z"
+  }
+}

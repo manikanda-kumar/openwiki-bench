@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a48315e13dcc5f509288f298e93489a163d657554a28deb540d5573af1ff9ff1",
+  "claims": [
+    {
+      "id": "claim_8fd073255e854b869bc4ae533bea9ac9",
+      "statement": "The JS engine is rusty_v8 directly, one isolate per cell: a worker's default-export fetch receives an env whose bindings are Durable Object namespaces, and DO storage is async in JS but synchronous underneath (sync Rust ops wrapped in async by the JS harness).",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L8-L15",
+          "version": "repo-lines-v1:sha256:a3d6723fd7461ff73e7bdc96a3de3ba2066f8cf9005123a51731700b09dd97a2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFiNDg5NThhMDc2MWY4NzQ3NzRhYTUyMDg5MmFkODRmYTE2MjE4NzViOTY2NDc3ZWU1MGI3OGJiMjYyNzQxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc2MmE0NzM3ZjEzOTQyMDJlMjI1ZDU1NWQ5NjQ5NjUxZTVhNWRkZWQyYmRjMjVlNWVhNDlmZTFhZDA5YzYyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWNiMTU4OWNkMWE2Y2VjZmY1YmU0NDBiYjRjN2JmODUzNTIwNWIxYTAxNWNhM2Q5NjdlMzYyOGY2YmQzNGVmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY2MDM2NTVmMDdlODkxYTMxYzk3MjhkYTI1YjY0NjcyMjVjOTJhNTEwMDIwZTJmNjE5YjRhNzg0YWYwZWFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b06d640824124dc099ac32edc66c94de",
+      "statement": "The isolate pool is the shell around the pure isolate decision core: one multi-threaded Tokio runtime owns every socket and timer, isolates belong to no thread because v8::Locker installs the entering thread's per-isolate state, and every choice about which isolate to grow, shed, or retire is made by celld_logic::isolate and merely performed here.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/pool.rs#L7-L20",
+          "version": "repo-lines-v1:sha256:7902e474f5bb600a444576d13baf3cb51c8e12a1ef08348a4c6a9587245af534:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NzYwM2U4NzZlZjEwYTczMGZhMmQ5OTVmYWQyZGUyYjc0MDk4NDIxODFjNzEyNjBkZTA2NWY4OGFhMGIwZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzMjMzM2JiOWEzZjE5Y2NlM2UzYTk0NDQ4ZTJmNWJhMTczNzBhN2I0NzlhNTA2MDllOGQ2ZTc0MDI5ZGEwNTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MzIxYjVmNWY2ZGQ4MThkYjhkYzM3NzhhNWNhNjg5NGM2MzEzZThiMGMyYzhmOTViOTRhMjcwNDgwODQ5MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NGJhNDgxNWY1ZDU5Yzk2NWRkYTVlMTlkOTViOTY4YmEyYjBjNzYzNmYzYWJhMmVlYTNmZGUwZjNiN2Q1YzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_13521534d32b4c299bd761f50b55bbdb",
+      "statement": "The isolate core tracks three quantities per isolate: turns (CPU demand, released across an await), requests (affiliation into the isolate's heap), and cells (realms the isolate is committed to); max_requests is a node-wide bound while max_cells is per-isolate, because a heap holding too many cells is a single OOM taking every cell down together.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/isolate.rs#L3-L88",
+          "version": "repo-lines-v1:sha256:e57bec10c3031ec08d5f82cce124b28dad14402a00a562adaa1093041919aa60:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ZmJhOGZjYjI0ZTE3MGFmNzkxMmVhMWQ2MmQwOTQxZTMzNTE4YjEwOWEyMmM1YjY0ZWY1YWRiMWUyYzc5NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmZTNkODUzNmJhNzVjZTJmZDMwOGVkY2FmY2U5MTdjM2UxZjNkNTYzMTI4OTEzM2M3NGFjOTIxYWU4NDZjYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3fdbd237149c47cd81143d32d6620c59",
+      "statement": "The prelude and harness compile once per process and are cached so a new isolate pays for execution but not compilation, while the per-worker bindings (env, routing table, compatibility flags) are built every time; this matters because every cell wake pays a fresh isolate.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/bootstrap.rs#L1-L16",
+          "version": "repo-lines-v1:sha256:b3df8c6c63b3f8e98f44bab5683e0abe5f577b686020fca8b49b7d9e1b4a00d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjE4ZDU2MTFkMjQwYTYxNjM5YWY1OTg3YzQwNzU3NjQ0ZmUwY2M0ZmNiZmNmYzMzMmJiMzZlZjBlMDRjYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNmRjZmUwOTVjNDI5OTFkZDQ5NzBmZjZlMDY3ZTBjYjZlNDI4MmM0MDJkNjQ1NDE4YTY4YWI3Y2Q2OWE5NWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNDk5NTc5YWI3NTRlN2RiYmMxNmNkN2JmOGFhMGVjOTkzNmRjMDYzYmE1MmEzMGRkZmI4YmQyZWVjZDAxYTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5eadb858fc0549b098d2af954ed51fb7",
+      "statement": "Module resolution distinguishes builtins whose source the runtime holds from imports of another worker that resolve through the loader, and most builtins are lazy so a worker that never touches a module never compiles it.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L1-L25",
+          "version": "repo-lines-v1:sha256:c5fb98a21634bbab5d664a60bc4dc77f142b0096af7a1751b19421c15bd167d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjE4ZDU2MTFkMjQwYTYxNjM5YWY1OTg3YzQwNzU3NjQ0ZmUwY2M0ZmNiZmNmYzMzMmJiMzZlZjBlMDRjYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MjViZmUwYmE4ZjZiMzYxNGY1MGZjOTAxM2Y1MDExMzg2OTM5ZGYzZWUxMTg4Y2I1ZGFhMjliOGI5NDIxYzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NGYxZDlkOTAxNzQyYmY0Y2QxZjM0ODIxZjRhNjU3M2E5NjllNDk3ODdjNjUyNTk2ZDZiMzY1NmRhZjY3ZWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_963e8cf649d14ce6bc1db63d079b45e3",
+      "statement": "Cell storage is per-cell SQLite in WAL mode backing ctx.storage: each cell is its own database file and bucket prefix, the JS thread holds a scope-to-connection map (open on activate, close on evict), and a dedicated alarm table records committed alarm mutations that no turn has taken yet.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L1-L43",
+          "version": "repo-lines-v1:sha256:ffc1f9ef3a7e99a6fb640ea7c9906b014271d778590eb094ad78b10005536bd4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjE4ZDU2MTFkMjQwYTYxNjM5YWY1OTg3YzQwNzU3NjQ0ZmUwY2M0ZmNiZmNmYzMzMmJiMzZlZjBlMDRjYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiMWYxNTBiOTE0N2NkOGU5MTc4NmEzYTRhZmJmNzhjMTM3NDJkNjk4YTA2NjE4NTFiNDI3OWEyYzVmMTM2ZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhOGZhYWJlZWVkYTUzM2IyMmQ1M2FiOTRjOTQ5NmQ3MzRiNGRjNTA4OGUxNmViYmIwNTcxMzY4NjAwZmFiY2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_85af4126835046c0b1920982e9a12872",
+      "statement": "The sqlite_vec compatibility flag registers the sqlite-vec extension (vec0 virtual tables) on each cell connection, and extension use is validated against an allowlist so user code cannot attach a different SQLite extension.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/storage.rs#L600-L659",
+          "version": "repo-lines-v1:sha256:43dadb2d7ba4b36129cda862067fe22a5c157f00ad7bbe6539164fef8470fd1d:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0ZmYxODQ2ZWUyMWQ5MDdmZGY2OGEwZWJkMTMzNmE4NzJiNWZmOTc5NGRhMDQyMTdhNjQ0ODQ2ZjhhODdiZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzOWUwN2Y2ZGY3ZWI4MDFhZTg4OTk2ZDVkMzRjMTUzZjdlZThhNjE2Y2Y2YTExMzM2ZDU4YjU2OThlOTE0ZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwOGJjNTc0MTBlMmFiM2M4MzMyOGFmMThhMDUzNjFlMWIxMWRiZjhiODE1YjVjY2VhYWE5NDY0MmE0YThjOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MWM1OTU4MTRlZWFmYmFhMTJlYzdmMDhhMDNlZWQ5YjQzMDY0ZTNkMjc5MmQ0MDZiZWQxODEzZGJmZDkwMzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_69c95c80423841f5ad48d4605504c1a4",
+      "statement": "Each isolate has a V8 heap limit separate from node memory, defaulting to 128 MB via CELLD_V8_HEAP_LIMIT_MB; a near_heap_limit callback latches and recovers by forcing collections, an isolate above 90% of the limit refuses new hibernatable WebSockets and SQL result-set materialization, and it serves again under 75%.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/env_vars.rs#L82-L86",
+          "version": "repo-lines-v1:sha256:8a50e4e3c069d424d23ded90d61f74bcbfe93b5e421b451e8aab600fa5411430:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGRkMzM5OTcxY2E3M2RiZGIxOTRlZTI0Y2RiODY0MWIzOTgzNzRlMjQ5MGYyZmM4YmMxMDc3OWY3MmRhZjViMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTk5YmRlZmVlYWNhNjM0MGUwMjkwZGM4NmU4ODljODlkNWUxODlhYTViYTQ0YjU4NWIzYjcwNzM0ZjRhNjJkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2E2Mjk4ZjRkODkxMTM0MTZjYjFhZjZiNDFjMDcxN2VlN2U0OTMzNWNhYTkxZTkyODdhODQ0NTEzOTMxZTEwNCJ9"
+        },
+        {
+          "resource": "repo://crates/celld/js.rs#L1993-L2064",
+          "version": "repo-lines-v1:sha256:1402b782a420ea52519e0c29405ec18aa4197c0638c30f20966dfeb26975dbd2:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzMDUwNDI4YWRiODUyYzUxMjY4ZWVlYmI1NjhiMTNmNDBhYmIzZmJlMmVkZjNkMjFlZjVmNDA5YWZkMzBhZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlOWIwMDUxNjIxMTM5ZmU0MzY2YTIyNzBmODVkYzZkZWZlZDZkMDQyNTQ2MThkMmU0M2ZiNTEzYTFkNGI3MjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwODY4OTQzMDMxMDdjYTM4YWUxN2RlODE1NmRlYmRhZjk4NWUyZDI4ZWU4ZWYzNGM2YjA1MTlhZTEzYzgyYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliOWFlMTg2ZmU1NDdmZWNlY2YxMWJmODRmMjg1OWIxNDc1Y2U5OWM3YTBkMGIxNjg0OTA0ZmNmNzYwNjAzYjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_239960fe060c4063b85c7ded6da960dc",
+      "statement": "D1, KV, Queues, Workflows, and the cron cell are runtime-supplied reserved Durable Object classes installed in every isolate, and a user configuration is refused if it names them.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/deploy.rs#L58-L80",
+          "version": "repo-lines-v1:sha256:da92959ffcca0e81eadfe0602225114323e513f8567395d8fcb67218c82df2ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjMDJjMTEwNjZkZTc2YTY4MTdlYjEyOWE1N2M1OGY4NmYyY2FkMDFhZmM5MTYxNTEwY2YxOTA3MDJjMDhkNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1YWExZmYzOWMyMTU0NDkzYWZkYTg2M2RhY2Q1MDEwZTAyOTkzMzQ0ZWU4YzExZDlmMDc3ZDk0MjRiZjFkN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxOGU4ZTVlM2Y1Y2I1ZTdhMGNlM2IzNjcxMmMyYzNjMzI4ODY2NDhmNTY4OThiZjgyY2UxOGVjODYwNGJhYzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkOGIxMjFjYjQ2MTEwOWZhOGM3ZmFkMmViZmExN2RjNTgzZDYyYzAwOTNmNjA5ZTQ1YjIxZjU4MjE0MDZhODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd79d10a499f451bb5896217b2725b2f",
+      "statement": "A KV namespace is a cell of the fleet-wide reserved class __KvNamespace; the pure core owns the bounds and the large-value split — values above MAX_INLINE_VALUE_BYTES (1 MiB, the measured latency crossover) go to the fleet bucket while the row names them, because an inline value is paid twice on every write.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/kv.rs#L3-L60",
+          "version": "repo-lines-v1:sha256:479935592f422bc198c55be1c4b2fc742169b68df03f6d45ca13c938a5931f56:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNzgwNTU3YWY0ZjJkY2UxZThiOTVkNmNmNDE2YjgwYWEwMTlkOTA5OWZhYmUxNDlmYzZkZDg0MWNiYWU4OGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmNDQ3M2NjOGU5ZDJhNDgzMjg5MzRiNzYzM2VmY2IzMmQ5ZGMxNDAwMGU0MWU1YzEyMTFlNDczY2RmZjY1YzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFlNDQ1ZTQ2ZDI5YWQ3NjA3ZWUyMTY5YTQzZWQ1N2YyMDhkODY3Yjc3YmI3NzgzZGZkY2VlYWRkZWRmNzk0ZTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3810c690b444589ab51627dc83c5722",
+      "statement": "A queue is one reserved cell (__Queue); the pure core owns the public bounds (MAX_MESSAGE_BYTES 128 KB, MAX_RETRIES 100, MAX_BATCH_MESSAGES 100), the four-day retention, and the one durable alarm chosen from every batch deadline, and one consumer script can attach per queue.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/queue.rs#L3-L37",
+          "version": "repo-lines-v1:sha256:e549f225ce02c47310cf94d2375fec0219d6c34184e132395098e55a9c2d308f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZjQxYzc2MWQ5ZjI3ZDc0NDM0YjQyNzQ4ZGI4YjY0Zjc0YjhkMzg1MmZhY2MzMDY5NjkxYWJiYTk1NGU0ZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0YTdmNDI4N2U5MWQ2NTk2ZTI0OTkxYWU5M2ExNDNhYmE1MjI2MmI3NTE3ODA3YTU3YmI1YjgyYWNiNjM1M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzOGMzNDM5YmI1Mjg2M2JiMWZkYzRiYzk0ODY4OTM2YmVlY2RjOTE4Nzc1ZTIxZWM2ODUxOGE4Y2I2YzNlMDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_44f2c6b4ccbf43669f6950ab845b4192",
+      "statement": "worker_compat maps a deployment's compatibility_flags and compatibility_date to runtime Compat switches such as delete_all_deletes_alarm, js_rpc, fetcher_no_get_put_delete, sqlite_vec, websocket_standard_binary_type, and the Queue JSON message flag.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L483-L522",
+          "version": "repo-lines-v1:sha256:3c367993fb8c0653f13ab6dfe873544512478f6fd231c142e6b5d6e3f6e379d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MDQyNGVmNGEwNDFhN2JjNDA0ZjJmMzI5MjRkODM2NzhiODc5MjJmY2U0NDQxZWI4MmQ0Zjk5NjFlMjlhNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmOGUyZDhjOWI4ZTFiODA5MmMwNjYzOTkyNWNkOGNmNWRjZWEyYmEzM2Y5YmE1ZjQ2OGZiNDI5ZGRiOWE4YmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1b6221a075164612a56ad840aa24db17",
+      "statement": "The compatibility rule is that celld must reject an unsupported configuration or API at deployment or first use; an unsupported feature that does not cause an error is a defect.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L11-L13",
+          "version": "repo-lines-v1:sha256:2ae50d00acae468b58452d727376b392885013624149f942c4a82ea18eda9706:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODc0ZjA2YTU2NWM0Nzg2YTlhYzY1MDc2MDFkNThiY2NmMWI3MmI2MzU4ZTM1MGZhMmVhYzFjNGFiODE4N2YzOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI5MDUwMWZiOTE4MDFmZDZlNmJjZTJjMDM3ZmUwZTE4MThiZDljOTM5NWJmODUzZmI2ZjQ1YWQ2OTQyZjBlMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYThhNmZlNDk1MDgzMDUyZDJhNDZmMGRiMWNlZTgwMmMwYzdjM2M3NTQ1N2JmZWEwODUzODdiNGQ2OTAzY2Y2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGJjNThjZjJlYzU0ZjdhM2VhODI2OTNhODBiZDJjM2Q1NzY4OTI3MmI2NDUzNDgxNGYwYTE3ZDJjOTI5YjgyMSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-11T14:40:45.922Z"
+  }
+}
