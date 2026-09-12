@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:30da9fbadd9ee308d370128ed5b63e02640a750de6f30cb4d9d695644c375d06",
+  "claims": [
+    {
+      "id": "claim_17e01ef8e5ba4112a4aa3022f1a611fe",
+      "statement": "Pi Agent Desktop is a pure Electron app with no internal HTTP server and no bundled Node runtime; the Electron main process, sandboxed renderer, and Agent Host utilityProcess communicate over MessagePorts.",
+      "evidence": [
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:0f4a03aeaff44b6fd526cb31b689073de92f5f439f400937ce5eb33842e5dcb1"
+        },
+        {
+          "resource": "repo://src/main/main.ts",
+          "version": "repo-file-v1:sha256:698ea6d8d5c1086fcb229be911d7ab72c18ead37af659c54e13c98b320a38d42"
+        }
+      ]
+    },
+    {
+      "id": "claim_f490bbe99b1348d4a895662dc1e4205d",
+      "statement": "The main process (src/main/main.ts) owns window lifecycle, menus, tray/badge, deep links, single instance, app protocol, updates, the browser service, and Host supervision, and installs no business logic itself.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/main.ts",
+          "version": "repo-file-v1:sha256:698ea6d8d5c1086fcb229be911d7ab72c18ead37af659c54e13c98b320a38d42"
+        }
+      ]
+    },
+    {
+      "id": "claim_63e4bb9ea9cc4dfb905230b265a1e7e3",
+      "statement": "The Agent Host (src/agent-host/index.ts) is a utilityProcess that runs pi-coding-agent in-process SW serving the desktop API over a MessagePort RPC server.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/index.ts",
+          "version": "repo-file-v1:sha256:0b959727f836edcde6a480e3caeb91718ecc764cc6509a1935f375f54c5779e0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f2baebaba6804b3393b6a82403c58a92",
+      "statement": "Renderer-to-Host communication uses MessagePorts transported via window.postMessage from the preload, never through contextBridge as a Promise value, with all renderer calls going through the facade in src/renderer/lib/api-client.ts.",
+      "evidence": [
+        {
+          "resource": "repo://src/preload/preload.ts",
+          "version": "repo-file-v1:sha256:4ba944c8fd1c1e300b7f4ae92e7cc4eb3f5b2c4090926dbfa6c3d37ff7673e3f"
+        },
+        {
+          "resource": "repo://src/renderer/lib/api-client.ts",
+          "version": "repo-file-v1:sha256:6560364196568697d4e65b82c13438c1d4441735263615252d83246c73e0228c"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c124bc45c284139af642decf5ea8bd2",
+      "statement": "The preload exposes only piBridge (src/contract/desktop.ts) over contextBridge, buffers deep-link and menu events with EarlyEventReplay, and validates preload location and transferred messages.",
+      "evidence": [
+        {
+          "resource": "repo://src/preload/preload.ts",
+          "version": "repo-file-v1:sha256:4ba944c8fd1c1e300b7f4ae92e7cc4eb3f5b2c4090926dbfa6c3d37ff7673e3f"
+        }
+      ]
+    },
+    {
+      "id": "claim_82e3787110f04e9c9726d9a99c4a4cf5",
+      "statement": "On Host restart the renderer resets its RPC client)SkipGPT and reconnects; on unrecoverable Host crash it shows an error card offering retry or log opening (src/renderer/App.tsx).",
+      "evidence": [
+        {
+          "resource": "repo://src/renderer/App.tsx",
+          "version": "repo-file-v1:sha256:a1bb2e78271c19039d235a0d080d52f38662049963cd338d24759ac8cf0fe4ef"
+        }
+      ]
+    },
+    {
+      "id": "claim_ab722475b37b4e02ac5505434ec2bd73",
+      "statement": "The main process pushes authoritative ToolchainSnapshot and BrowserCapabilitySnapshot to the Host on ready/change via toolchain:init/changed and browser:init/changed messages; the Host acks each with a revision.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/index.ts",
+          "version": "repo-file-v1:sha256:0b959727f836edcde6a480e3caeb91718ecc764cc6509a1935f375f54c5779e0"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts",
+          "version": "repo-file-v1:sha256:af27b24ccd8570827ebad3971c57108b3bc43c267718d3815551deee84106c20"
+        }
+      ]
+    },
+    {
+      "id": "claim_45767922e1654e42af89be88ad26cf09",
+      "statement": "The browser WebContentsView surface is owned by the main process and survives a renderer reload.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-service.ts",
+          "version": "repo-file-v1:sha256:12688a176021b8a09d4e53cad2b286afead079d078fd8a07970f9b298bedc43f"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e41cc299d6200f24a28764aa31d272de85321fba604fd459ed61904cd4321778",
+  "claims": [
+    {
+      "id": "claim_78283d27dd104364aae779cfe77824a3",
+      "statement": "celld is an alpha and is not safe for hostile multi-tenant use; security fixes apply to the latest release only. One fleet runs one application and celld trusts the application code, the fleet nodes, and the operators.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L3-L11",
+          "version": "repo-lines-v1:sha256:76ff70dbe3e47d7eac1f5a5569e9c2b6a098b44edbd9ea2ed0a49a7fdf4e8515:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWNjOGM2MWUyOWIxZTQxZTg1ZDc2YjkyZGFkMjk1NzZlZjliYjIxMGE0NzZkM2Q4NTg5M2FmMTc5YjUwMTI4YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmRkMWI4NjBmYzg3MjA5NDJhOTA5N2Y3OTI3ZjAxOWEyYzNhYTBmMDU1ODhiMDI0ZDdiOThlZGM4YTU2ZTYzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjc1MGFmNGI4NzdjMjVjYWNhZGJlMGVkODVlY2I0NzM3ZGJmMGM4MTdhMzU3ZDY5MWE5YzBiM2Q0ZDY2YTYzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWNkYTYzYjY2NzIwNTA2MDg3NWU0NzI5ODk2N2RmNjZmODAzMTUwYzMxMzE2ODM3ZTljZDBmY2M3NjM4NWViMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c34fc72d3924131a8075e31da137377",
+      "statement": "celld opens two HTTP listeners: the public worker listener reserves only `/.well-known/celld/health`, while the internal listener serves the peer protocol and the operator API and does not pass an unknown path to the Worker (returns 404).",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L20-L46",
+          "version": "repo-lines-v1:sha256:b099061c8fa15fa2e04fc6afb2324276da228c3619720bf990f24df2ef85ea63:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwOGUxN2QyNTgzZGIxNjAwYzJkYWY1M2Q4YjYxMDAzYmM1ZWMwNjQ0MzdjNmJkMjY2MmZiMjZkY2FlM2E0MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2ZmI2YjBkYTUxNDgwNGU5ZjMxYWM1NGE1M2U4ZDRkMmE4ZTRkYTVkMjRlNjk1ZjdlMjU4NTg4OTA5Yzg2ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2MDg5YTA1MTg4ZThjZmVkOGQwNzdhMjMxZDA4MWY4YTA0YzE4MWUwNTM0YTI1ZTk3MzZkNTdkYjI1OGJlMGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c44910fd79a34b9997dab745f43ac521",
+      "statement": "An explicit advertised address requires an explicit internal-listener addressaine, and an explicit non-loopback public listener without an explicit internal listener is rejected; these checks prevent an obsolete one-listener configuration.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/main/cli.rs#L236-L246",
+          "version": "repo-lines-v1:sha256:0294eba5fed02e36288c786242ff7d210293bfe6e50542ef765ff009369ff0c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxODc4YzkzOTI2NTRkMGY2OTEzN2Q3NTBmODViYWVkZGQzMmE5YmM4Mzk4Y2U5YzEyMWM0OTJmMDc2YjU5YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlNzVjNzBkOTQ2MzYyNWUxMDc5ZmQ4ZmM4ZWU2MmFkMmU5MmM0MmJlYWFiZmQ4NWI3OGQ4ZTBhNDk3OWI5NGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlOWZkODhkMTEyZTZhNmMxNTM2YjBkZGI2NDIwY2M4MGJmNGQ5Njg0OGJlMDk2OGI0ZmQwN2Y0ZmJmNjRkYTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjOGM3MzVmZDc5Njk4NzJiOTc0NzkzYzFmMGMzZjZjYTUyNjVjN2I5Y2NhZTJmN2Q4N2QzMzc3YjllNDkxN2QifQ"
+        },
+        {
+          "resource": "repo://docs/security.md#L32-L34",
+          "version": "repo-lines-v1:sha256:482cffc3db7a71bdb23ec436372e60b4c23cfb56a1bc61030b711ff2ed42d70e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjM4OTUyZWIzYmJmOTBhNjg5NjgzYjA4ZDkxMTZjZmJkOTRhZTczOWFlOThhZjk3YmNmYmRmYmQ4ZmE4M2JiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTc1OTQxY2RjYjYxY2E3MWJhNjI1YzdlMTU0Y2ViNDUyYWUzZDBiYTI4NWE1ZTAxMWE3ODAyMTYzMzZiZTExMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmYzYWY2MjEzOGMwODcwMDMwYTI4YjlhYzRmZGQwNGE5Yzc4NTI2ZDFkNDY0NmIwNGE0OWRjZjI2YjAzNTVkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTdlMTI2ZTU3Yjc5NTg0ZTE4NmY3NjQxZTE5ZjJiOWZiNjMxMWZkNmY4NjgxZDBiZWVkZjkyYTBiZTQ3ZGM2MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1b98d4c395e943318e6810b06374cb23",
+      "statement": "The internal listener has three request groups: unauthenticated operator routes, the `/peer/tunnel` route whose establishment carries the fleet HMAC for opens and whose inner calls are plain HTTP and unsigned, and the peer-control and reserved-cell routes that use the fleet HMAC.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L55-L80",
+          "version": "repo-lines-v1:sha256:c5c37472913b6b3b6162bbb87daf99fbb8b13d4a51956d59e787501df0909973:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmOWNiNjc5NDhjMzU5OGY3NWNiOTEzYmQ3NmY0NjEzY2FjMTMzMTIxYTkyM2ViYTM4ZTA1NDczMmMyYjI3OTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2Nzg3NzViZDgzNGFhZTAwMDFkODUwNzMxZWI4NWU2NThhMDYxZjVmMWVhMGU4OTcxOTY3ODg2MmJkN2QxNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4YTI1MjkwZTYxODBiYzg1YTJhNWFjMGMzMDNmNWExNTc4YTUzYTk4Yjc5MzEwMjdlZDgzYzUwNTJiMjA2NWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3ZDI2NWYxMTVhMWQyNTBmNmNmYWM1N2U4NDI3ZmY0Njc2NzAxMmY3MGM1YWY3ODE1ZGM5NWEwMzZhOGU3OWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_daebfddfe3bc4d1aa55068ec51cff434",
+      "statement": "`PeerAuth` signs a canonical request binding the method, path-and-query, body SHA-256, source/target node, a near-current timestamp, and a fresh nonce; verification applies a 30-second clock window and a replay cache of up to one million entries.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L136-L174",
+          "version": "repo-lines-v1:sha256:94b353f907658d005ad8e7f2aad118958c422666a1ebcb74faf705398ca1b40a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhZDNjNzdlNzkxNzJlYTM5YzY5ZTg5OGQ2ZWU4NTAxMmE0ZTFjOGU4ZmQwZWNkNmYxYzNiOWE5YzQ4ZWE0NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZTRiZWRmNTlmZmJjNTRjNTYzODc4MjcxODlhOGI5YjFmZjhkZDhhNDA1MWZjOGE0N2Y4ZmEyMDM4OTZkYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiYTNiMjZiM2Y1YmVjMmY4N2RmODQ4MDU3MDBmOTY2NDM3NDY0ZGVlMmIwYTEwZDg4ZDI2MjMyZDVhYmNhZjgifQ"
+        },
+        {
+          "resource": "repo://crates/celld/peer_auth.rs#L20-L36",
+          "version": "repo-lines-v1:sha256:5a6ba5de1d9b279f75cf6d005d28a4a2894af6b1ec1ea947dbfed9b46002221b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyYmI3Y2VhNDg0NjM0NGVjMDEyZWM5N2Q1ZTU3MmZjNzUzNjQwNWY2Yzc0MDUxNDM5MjFlMjFiYzY3OGFlODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMWYyMDhiYTdlZWY1NGJmNjhmNjgxYTBkZmU3NjY2YWM3MTExMjZiZTA2NzkyNzEzOWM0MTZkNDFmMTAwYjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhMzA3NzY5MDYyMGQxNzJkMDZhZDRjOWUwMmNjN2M0ZDQzMTZjODgwMDMxYzgzMzE0ZGM0MGVjOTMyMzM5YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxOTEzOGE5MWZkZDU5MDg1ZTk4YTA1MTBhZGMwNzhiZjFhOGY1M2RlNWFkZWRiMzQ4MjBlNzQ5ZmIwMGRhMzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_13bcf345a03645e2960ff55418190410",
+      "statement": "celld does not terminate TLS on either listener, and the fleet HMAC does not replace the trusted private network because the signature does not authenticate bytes after tunnel establishment and does not encrypt traffic.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L70-L80",
+          "version": "repo-lines-v1:sha256:d8d20cbc15fb7cdd7bc7d8c23ef5864169ccd4e9a44a40632d3532017946399f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyYjI2Mjg0M2YyNGY3Y2ExM2IzMWRkY2JiZTFiZGQ3NjJiNmY5MTE0YjcwYjJlNWFmZThkZWE0YjNhOTBlNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2Nzg3NzViZDgzNGFhZTAwMDFkODUwNzMxZWI4NWU2NThhMDYxZjVmMWVhMGU4OTcxOTY3ODg2MmJkN2QxNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhZmZiZDBjMmJjOGE1ODUxNzg1Yzk0NmRkOWY3YWI5MTZlZjU0ZmU3ODlmYTQ4YTdlYzU0YjE2YWQzMzkwMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3ZDI2NWYxMTVhMWQyNTBmNmNmYWM1N2U4NDI3ZmY0Njc2NzAxMmY3MGM1YWY3ODE1ZGM5NWEwMzZhOGU3OWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d417b53f765d4bac9a3252ad88002f86",
+      "statement": "The `/do/<ID>` route refuses every reserved runtime class (D1, Workflows, KV, Queues); their operator protocols use the HMAC-authenticated `/runtime/<SCOPE>` route instead.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L96-L103",
+          "version": "repo-lines-v1:sha256:1339c7afcedac1e8bce48cdc6ffb592b6f80a6fca3e1a7d53b5bf48078fb81ec:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTgwMmE0NmMwZjViM2IyNDMzZjQyZjNiOTViZjU2ZjdiYjY5MDc2NzJkZTgxMDgzMTI1ODNiZDM4YjcxMzljMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E5N2Q4ZGZiZTU5ZGU5OGEwNjdjODAwYjMxMDVjZjM2MzcyZjY3ZWYwM2ZlMTg4ZDMxZGFjMWYxODIxMjFhNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmMyZjNhOGRmMmFmYTVjZDUzMTY3NGY4Nzc4OTQzZjlkN2ZmYzkzYzRlOGJmNzIyOGRiZjQ5YmZhYTY1YTRmYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2ZjOWY5NTg4YTA1YTU3NjUwYWE0M2M1ZjAzNDU3NWVmMjUxNDM3NjJhOWRjZjljMTk0N2Q4NmJlNjA0NGZhYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a04e1d1923d141429650d1c30762f2f7",
+      "statement": "celld ignores X-Forwarded-Host and X-Forwarded-Proto by default and uses the last value of each header when `--trust-forwarded-headers` is set; without a trusted proxy the Host header controls the hostname in request.url and is validated, with `celld.local` as fallback.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L105-L124",
+          "version": "repo-lines-v1:sha256:273eef26928edaa5fc2a833d89b5d7dca268cd1d18d881598ae597485c526117:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMGU1ZDIzZGQ3MzkyMzhkOTMyMjIyYmJiYjA0Yjg0YzUwMTNiMDZkZjkwNmNmODU0MzAxNWNkZjUyNDQzOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNGZiYzA1M2ZjM2IxMzFiMzhhYTg1YTZiZjlhOTRmMTdkM2Q0NmM1MTVkYWNiNzJkNjVkZWNkZWVlMjM1YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1MWMwMWEwOTdjMTYzN2NlM2I0NTBmMGQxYzFjZDUzMmJhYzY3NGMzZjc0MWE4MDkyNWU0NDI5N2VlNTM2ZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczODBiMjg3YjU3ODFlMDNiN2JiY2M1NjczMTFhODU2ZWY3ZWJiYWE5OTdkYjFhOWI5ZTFiZWYzMGE2NWNkODcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5aad548bfc2c4f2a8caa2732b88e6151",
+      "statement": "The fleet bucket stores the deployments, cell state, ownership leases, node leases, and shared peer-authentication secret; a person who holds the bucket credentials controls the fleet.",
+      "evidence": [
+        {
+          "resource": "repo://docs/security.md#L137-L145",
+          "version": "repo-lines-v1:sha256:507aa212e5c54360273ed7b9fced8ad266d2dba6dcbe8c7500209c32b45abf4f:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI4ODdhMWE1NjQyNzg3ZDQ4MWE1YTQ2YWFlODVmY2I2NDc4OWQwNjQ5YTBmYmVlODY4YTYyY2NlZDMyNzlmYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzJjYjhmNWVhNzIzODA0YzdhNTYxZjJhMDI3NDg4M2VjYmVhNjQxZmVhMzE3NDMwNTE2YWVhZmZhYjQyNTY3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWUwNTg3ZjhiN2ZlZjg3ZWZlZjI0ZDNlOTIyYTBmNzU4Y2VjM2ZmODliZmJkMTcyMGNiOTJlMWU5MmU5MmJlNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDllZmQ3MDU3NWNlZDhlZTFlYjE3NzU0NDg3NDZkNWNiOTk5OTBkZmVkZjZhODQyYjQ5YmJiY2U2ZDdlZDU2YiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:37:50.122Z"
+  }
+}

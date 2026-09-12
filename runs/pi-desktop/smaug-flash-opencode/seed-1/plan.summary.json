@@ -1,0 +1,389 @@
+{
+  "plan_page_count": 16,
+  "deletePages": [],
+  "statuses": {
+    "complete": 16
+  },
+  "pages": [
+    {
+      "id": "785ed800-9c8e-4cfb-8601-8704faea13e8",
+      "path": "/openwiki/agent-host/session.md",
+      "title": "Agent Sessions and Project Workflows",
+      "purpose": "Explain how the Agent Host creates, manages, and persists Pi agent sessions, builds context pages, auto-titles sessions, forks, manages worktrees, session lists/indexing, and file watchers.",
+      "seedPaths": [
+        "src/agent-host/file-access.ts",
+        "src/agent-host/handlers.ts",
+        "src/agent-host/rpc-manager.ts",
+        "src/agent-host/session-index.ts",
+        "src/agent-host/session-reader.ts",
+        "src/agent-host/session-title.ts",
+        "src/agent-host/session-watcher.ts",
+        "src/shared/worktree.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/architecture/rpc-contract.md",
+        "/openwiki/managed-processes/service.md"
+      ],
+      "instructions": [
+        "Explain session lifecycle, the in-process AgentSessionWrapper, queueing/steer/follow-up, session file persistence under ~/.pi/agent/sessions, session path cache, indexing/fingerprinting, and allowed-root file access policy."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "f856dc4d-5473-4ce8-8293-ae395619e51c",
+      "path": "/openwiki/architecture/configuration.md",
+      "title": "Configuration, Models, and Credentials",
+      "purpose": "Document model/provider configuration, model catalog refresh, credential storage via the CredentialVault and Pi credential sync, theme/ui state, and channel credential persistence.",
+      "seedPaths": [
+        "src/agent-host/credential-sync.ts",
+        "src/agent-host/handlers.ts",
+        "src/agent-host/model-runtime.ts",
+        "src/main/browser/browser-policy.ts",
+        "src/main/credential-vault.ts",
+        "src/main/window-state.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/architecture/persistence.md",
+        "/openwiki/channels/messaging-channels.md"
+      ],
+      "instructions": [
+        "Explain models.json location, atomic writes with conflict detection, model refresh coordinator with timeout/cancel, enabled-model preferences, credential vault encryption via safeStorage, and ui-state persistence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "dfe4f6a3-a003-4f07-823c-a491ea180934",
+      "path": "/openwiki/architecture/host-supervision.md",
+      "title": "Agent Host Supervision and Resilience",
+      "purpose": "Document how the Main process supervises the Agent Host utilityProcess: crash detection, restart budget, heartbeats, managed-process pre-restart gate, and Host/Renderer recovery flows.",
+      "seedPaths": [
+        "src/main/host-install-recovery.ts",
+        "src/main/host-manager.ts",
+        "src/main/host-restart-core.ts",
+        "src/main/main.ts",
+        "src/main/renderer-crash-recovery.ts",
+        "src/shared/heartbeat-liveness.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/managed-processes/service.md",
+        "/openwiki/operations/logging-diagnostics.md"
+      ],
+      "instructions": [
+        "Explain restart-on-crash with CRASH_WINDOW_MS/MAX_RESTARTS, ping timeout kill, snapshot acknowledgements (toolchain/browser), the renderer reconnect flow on host restart/crash, and the managed-process containment gate before restart."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "f1988523-464c-4dd4-a53f-209b8c644aa7",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "Architecture Overview",
+      "purpose": "Explain the Electron three-process architecture: Main process, Agent Host utilityProcess, and sandboxed React Renderer, plus the typed MessagePort RPC contract and persistence surface.",
+      "seedPaths": [
+        "src/agent-host/index.ts",
+        "src/contract/api.ts",
+        "src/contract/rpc.ts",
+        "src/main/host-manager.ts",
+        "src/main/main.ts",
+        "src/preload/preload.ts",
+        "src/renderer/App.tsx"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/architecture/host-supervision.md",
+        "/openwiki/architecture/persistence.md",
+        "/openwiki/architecture/rpc-contract.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Explain responsibility boundaries across Main / Agent Host / Renderer, the MessagePort handoff through preload, host supervision/restart, and the no-TCP-surface principle. Describe the data/control flow for a typical session prompt."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "0516d382-3de6-40fa-a013-211ba1fdd43e",
+      "path": "/openwiki/architecture/persistence.md",
+      "title": "Persistence and State Surface",
+      "purpose": "Catalog where Pi Agent Desktop persists state: sessions, models.json, agent config in ~/.pi/agent, credential vault, browser settings/grants/secrets, toolchain state, and managed-process reaper journal.",
+      "seedPaths": [
+        "src/agent-host/handlers.ts",
+        "src/agent-host/session-reader.ts",
+        "src/main/browser/browser-secret-vault.ts",
+        "src/main/browser/browser-service.ts",
+        "src/main/credential-vault.ts",
+        "src/main/managed-process/reaper-journal.ts",
+        "src/main/toolchains/manager.ts",
+        "src/main/window-state.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/browser/service.md",
+        "/openwiki/managed-processes/crash-recovery.md"
+      ],
+      "instructions": [
+        "Enumerate the key persisted files, their owners, write patterns (atomic temp+rename, mode 0o600), versioning/conflict checks, and what happens on corruption or missing encryption availability."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "b870341a-326e-490d-9eb9-39a69d465817",
+      "path": "/openwiki/architecture/rpc-contract.md",
+      "title": "RPC Contract and System API",
+      "purpose": "Document the typed request/response and event-stream RPC contract that connects Renderer to Agent Host, the five wire message kinds, leases, timeouts, and how main bridges host->main calls.",
+      "seedPaths": [
+        "src/agent-host/handlers.ts",
+        "src/agent-host/parent-rpc.ts",
+        "src/contract/api.ts",
+        "src/contract/rpc.ts",
+        "src/contract/types.ts",
+        "src/renderer/lib/api-client.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/agent-host/session.md",
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/architecture/overview.md"
+      ],
+      "instructions": [
+        "Describe Api.method/Streams, the RpcWriter/response/event wire kinds, subscription semantics, leases, call timeouts, and the host->main (callMain) path used for browser, toolchain, and credential operations."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "4aee5595-0262-4a85-94f9-0c666fc25dd0",
+      "path": "/openwiki/browser/service.md",
+      "title": "Built-in Browser Service",
+      "purpose": "Document the Main-owned WebContentsView browser: profiles, tabs, agent authorization, policy engine, network interception, downloads, secret vault, and advanced browser mode.",
+      "seedPaths": [
+        "src/contract/browser.ts",
+        "src/main/browser/browser-authorization-coordinator.ts",
+        "src/main/browser/browser-policy.ts",
+        "src/main/browser/browser-profile-manager.ts",
+        "src/main/browser/browser-service.ts",
+        "src/main/browser/browser-tab-manager.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/agent-host/session.md",
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/architecture/persistence.md",
+        "/openwiki/channels/messaging-channels.md"
+      ],
+      "instructions": [
+        "Explain browser settings/policy versioning, permission model (none/read/interact/advanced), runtime grants + leases, user takeover, network interception and header rules, advanced mode with CDP/cookies/UA, private-network protection, and the unresolved cookies gate."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "1fd6a040-d33a-41dd-a93f-d832885e2cda",
+      "path": "/openwiki/channels/messaging-channels.md",
+      "title": "Messaging Channels (Weixin, Telegram, Feishu/Lark)",
+      "purpose": "Document the messaging-channel subsystem in the Agent Host: adapters, inbound processing, pairing, bindings, per-session workspaces, outbound rendering, and media staging.",
+      "seedPaths": [
+        "src/agent-host/channels/adapters/feishu/adapter.ts",
+        "src/agent-host/channels/adapters/telegram/adapter.ts",
+        "src/agent-host/channels/adapters/weixin/adapter.ts",
+        "src/agent-host/channels/channel-manager.ts",
+        "src/agent-host/channels/pi-session-bridge.ts",
+        "src/agent-host/channels/policy.ts",
+        "src/agent-host/channels/types.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/agent-host/session.md",
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/architecture/rpc-contract.md",
+        "/openwiki/browser/service.md"
+      ],
+      "instructions": [
+        "Explain channel account/config/secret persistence, QR login flows, pairing TTL, inbound policy decisions, lane-scheduled sequential processing, bindings to Pi sessions, and per-channel outbound/media specifics."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "481e2b6b-b5aa-441b-8e13-ce7f7a9c0e92",
+      "path": "/openwiki/guides/change-main-process.md",
+      "title": "Change Guide: Main Process and IPC",
+      "purpose": "Focused guide for safely adding or changing Main-process behavior and the Renderer-Host IPC surface, with verification steps.",
+      "seedPaths": [
+        "src/contract/api.ts",
+        "src/contract/desktop.ts",
+        "src/contract/rpc.ts",
+        "src/main/ipc-trust.ts",
+        "src/main/ipc.ts",
+        "src/main/main.ts",
+        "src/preload/preload.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/architecture/rpc-contract.md",
+        "/openwiki/quickstart.md",
+        "/openwiki/testing/quality-gates.md"
+      ],
+      "instructions": [
+        "Walk through adding a new desktop IPC channel (contract type, preload method, main handler with trusted sender guard), adding an Agent Host Api/Stream, and how to run the contract-coverage and related checks."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "d3db66c1-12d4-4b9e-ac30-ded139c783aa",
+      "path": "/openwiki/main/updates.md",
+      "title": "Updates and Packaging",
+      "purpose": "Document the update pipeline (electron-updater adapter, update manager state machine, install protocol), platform packaging targets, and update integrity/limitations.",
+      "seedPaths": [
+        "electron-builder.yml",
+        "scripts/package-desktop.mjs",
+        "src/main/main.ts",
+        "src/main/update-adapter.ts",
+        "src/main/update-manager.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/managed-processes/crash-recovery.md",
+        "/openwiki/operations/logging-diagnostics.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Explain the update state machine (check/download/install with busy, offset, signature/integrity), automatic check scheduling, install capacity gating on running sessions and managed processes, and platform/artifact packaging."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "3d657e4c-4bc7-4736-84e0-1b8ff412ee02",
+      "path": "/openwiki/managed-processes/crash-recovery.md",
+      "title": "Managed Process Crash Recovery (Reaper)",
+      "purpose": "Document the Main-process ManagedProcessReaper, journal persistence, identity fingerprinting, POSIX process-group reaping, and the Windows helper/Job Object recovery path.",
+      "seedPaths": [
+        "native/windows-managed-process-helper",
+        "src/main/managed-process/capability.ts",
+        "src/main/managed-process/reaper-journal.ts",
+        "src/main/managed-process/reaper.ts",
+        "src/main/managed-process/shutdown-cleanup.ts",
+        "src/shared/windows-managed-process-helper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/main/updates.md",
+        "/openwiki/managed-processes/service.md"
+      ],
+      "instructions": [
+        "Explain reaper readiness, journal v2 records, identity checks via start fingerprint, reap outcomes, fail-closed containment when cleanup cannot be confirmed, Windows helper secure directory and provenance, and quit/update cleanup."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "99895d13-74b6-4d42-ade4-7d35c600287e",
+      "path": "/openwiki/managed-processes/service.md",
+      "title": "Managed Background Processes (Agent Host)",
+      "purpose": "Document the managed background-process service in the Agent Host: lifecycle, states, readiness, output buffering, policy limits, LAN-bind confirmation, stop modes, and Windows/POSIX backends.",
+      "seedPaths": [
+        "src/agent-host/managed-process/backend.ts",
+        "src/agent-host/managed-process/posix-backend.ts",
+        "src/agent-host/managed-process/service.ts",
+        "src/agent-host/managed-process/windows-helper-client.ts",
+        "src/contract/processes.ts",
+        "src/shared/managed-process-policy.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/agent-host/session.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/managed-processes/crash-recovery.md"
+      ],
+      "instructions": [
+        "Explain how process_* agent tools start/manage processes, output buffering and cursors, start rate/active limits, readiness detection, user-stop barriers, POSIX process groups vs Windows Job Object, and command-blocking heuristics."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "df55ec0a-9bec-4459-8ca8-7276b5a7f16e",
+      "path": "/openwiki/operations/logging-diagnostics.md",
+      "title": "Logging and Diagnostics",
+      "purpose": "Document the main logger, log rotation/redaction, diagnostics export, crash reporting, and packaged startup validation reports.",
+      "seedPaths": [
+        "src/main/diagnostics-redaction.ts",
+        "src/main/diagnostics.ts",
+        "src/main/logger-core.ts",
+        "src/main/logger.ts",
+        "src/main/main.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/host-supervision.md",
+        "/openwiki/architecture/persistence.md",
+        "/openwiki/main/updates.md"
+      ],
+      "instructions": [
+        "Explain the rotating main.log, sanitization/redaction, diagnostics archive export, crash reporter upload-to-server false, and the packaged-startup/custom validation report files."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "b43cae54-80e1-4f73-a052-6b0d5c2fecfc",
+      "path": "/openwiki/testing/quality-gates.md",
+      "title": "Testing and Quality Gates",
+      "purpose": "Document the test runner, verify gate pipeline, contract/security/i18n checks, managed-process workflow tests, Electron smoke tests, and how to run focused tests.",
+      "seedPaths": [
+        "package.json",
+        "scripts/smoke-electron.mjs",
+        "scripts/test-runner.mjs",
+        "scripts/test.mjs",
+        "scripts/verify.mjs",
+        "tsup.smoke.config.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/guides/change-main-process.md",
+        "/openwiki/operations/logging-diagnostics.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Explain node:test discovery under src/**/*.test.mjs, the verify pipeline order, and where each check lives. Note that unit tests run in Node without a GPU/display and that Electron integration tests are separate scripts."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e85c027e-9c08-4c28-9c8c-c81d8595794b",
+      "path": "/openwiki/toolchains/manager.md",
+      "title": "Developer Toolchains (Discovery and Managed Runtimes)",
+      "purpose": "Document the toolchain subsystem: capability discovery from system/bundled/managed sources, probing, candidate selection, project resolution, and app-private managed runtime install/repair/remove.",
+      "seedPaths": [
+        "src/agent-host/toolchain-bash.ts",
+        "src/agent-host/toolchain-runtime.ts",
+        "src/main/toolchains/discovery-registry.ts",
+        "src/main/toolchains/installer.ts",
+        "src/main/toolchains/manager.ts",
+        "src/shared/toolchains/types.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/managed-processes/service.md"
+      ],
+      "instructions": [
+        "Explain capability IDs, provider priority, probing/verification, preference modes, per-project resolution caching, managed component lifecycle, and how executions consume resolved command descriptors and environment patches."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "190ffdd7-0d7b-4a1a-9807-07797019a366",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical guide to setting up a development environment, running the Electron app, building, packaging, and testing Pi Agent Desktop, with pointers to the architecture and operations guides.",
+      "seedPaths": [
+        "README.md",
+        "package.json",
+        "scripts/build.mjs",
+        "scripts/dev.mjs",
+        "scripts/package-desktop.mjs",
+        "scripts/verify.mjs",
+        "src/main/main.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/guides/change-main-process.md"
+      ],
+      "instructions": [
+        "Cover local development setup (Node 22.19+, npm ci, npm run dev), the build pipeline, the full verify gate, packaging for each platform, and how sessions/config live in ~/.pi/agent/."
+      ],
+      "status": "complete"
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "plan_page_count": 11,
+  "deletePages": [],
+  "statuses": {
+    "complete": 11
+  },
+  "pages": [
+    {
+      "id": "67e0c48d-02f0-4e6e-b6e7-9fbb05c8d167",
+      "path": "/openwiki/architecture/configuration.md",
+      "title": "Configuration, STEPPATH, Contexts and Trust",
+      "purpose": "Explain step path resolution, defaults.json, contexts/profiles, root certificates, and how defaults feed CA commands.",
+      "seedPaths": [
+        "command/ca/init.go",
+        "command/context/context.go",
+        "command/path/path.go",
+        "flags/flags.go",
+        "utils/cautils/bootstrap.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/entrypoint.md",
+        "/openwiki/workflows/ca-workflows.md"
+      ],
+      "instructions": [
+        "Cover $STEPPATH layout, contexts.json/current-context.json, defaults.json writing, ca-url/root/fingerprint resolution."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "454c9479-d56c-4dc4-a601-e966f088c2a4",
+      "path": "/openwiki/architecture/entrypoint.md",
+      "title": "Runtime Entrypoint and Command Routing",
+      "purpose": "Explain the binary entrypoint, urfave/cli app construction, plugin dispatch, and global error handling.",
+      "seedPaths": [
+        "cmd/step/main.go",
+        "internal/cmd/root.go",
+        "internal/cmd/root_test.go",
+        "internal/plugin/plugin.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/extensions/plugins.md"
+      ],
+      "instructions": [
+        "Cover process entry, STEPDEBUG behavior, exit codes, panic handling, and the command registry via cli-utils/command."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "cd104eb6-e81c-47e4-867e-9f6268176e33",
+      "path": "/openwiki/concepts/certificates.md",
+      "title": "X.509 Certificate Creation and Profile System",
+      "purpose": "Explain the certificate create/sign command family, profiles, templates, and key handling.",
+      "seedPaths": [
+        "command/certificate/certificate.go",
+        "command/certificate/create.go",
+        "command/certificate/install.go",
+        "command/certificate/remote.go",
+        "command/certificate/sign.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/token-flow.md",
+        "/openwiki/workflows/ca-workflows.md"
+      ],
+      "instructions": [
+        "Cover profile leaf/intermediate/root-ca/self-signed, templates, KMS-backed keys, bundles, and trust store install."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "a66cac9a-7677-435d-9956-852b3cc1aecb",
+      "path": "/openwiki/concepts/crypto.md",
+      "title": "Crypto Toolkit and Key Material",
+      "purpose": "Explain the step crypto command group: JWT/JWS/JWE/JWK, KDF, OTP, nacl, keypair, and security gating.",
+      "seedPaths": [
+        "command/crypto/crypto.go",
+        "command/crypto/jwe/jwe.go",
+        "command/crypto/jwk/jwk.go",
+        "command/crypto/jws/jws.go",
+        "command/crypto/jwt/jwt.go",
+        "command/crypto/keypair.go",
+        "internal/kdf/kdf.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/certificates.md"
+      ],
+      "instructions": [
+        "Cover --insecure/--subtle gates, JOSE operations, KDF with scrypt/bcrypt/argon2, and key safety defaults."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "6d55cfe5-3167-4b0f-b55c-341eb24130d8",
+      "path": "/openwiki/concepts/ssl-ca-wide.md",
+      "title": "SSH Certificates and Agent Integration",
+      "purpose": "Explain step ssh flows: certificate, login, config, agent integration, hosts and proxycommand.",
+      "seedPaths": [
+        "command/ssh/certificate.go",
+        "command/ssh/config.go",
+        "command/ssh/login.go",
+        "command/ssh/proxycommand.go",
+        "command/ssh/ssh.go",
+        "internal/sshutil/agent.go",
+        "internal/sshutil/sshutil.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/token-flow.md",
+        "/openwiki/workflows/ca-workflows.md"
+      ],
+      "instructions": [
+        "Cover SSH cert types, principal creation, agent add/remove, host-id and machine-id derivation."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "fe644bbd-ab8a-4dec-b043-ba60e3ada6a3",
+      "path": "/openwiki/concepts/token-flow.md",
+      "title": "One-Time Token Flow and Provisioners",
+      "purpose": "Explain how OTTs are generated, the provisioner dispatch, token claims, and online vs offline modes.",
+      "seedPaths": [
+        "command/ca/token.go",
+        "token/options.go",
+        "token/provision/provision.go",
+        "token/token.go",
+        "utils/cautils/token_flow.go",
+        "utils/cautils/token_generator.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/certificates.md",
+        "/openwiki/workflows/ca-workflows.md"
+      ],
+      "instructions": [
+        "Cover token validity constraints, audience per operation, confs cnf/sans claims, provisioner types JWK/OIDC/ACME/X5C/SSHPOP/etc."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "010313bd-5dca-4f00-a1bf-4da935017215",
+      "path": "/openwiki/extensions/plugins.md",
+      "title": "Plugins and ext kit",
+      "purpose": "Explain step-<name>-plugin resolution, KMS plugin invocation, and the step-kms-plugin integration.",
+      "seedPaths": [
+        "README.md",
+        "internal/cryptoutil/cryptoutil.go",
+        "internal/plugin/plugin.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/entrypoint.md",
+        "/openwiki/concepts/certificates.md"
+      ],
+      "instructions": [
+        "Cover LookPath resolution, PATH and plugins dir, Windows handling, and well-known plugin URLs."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "881d89a2-df89-459c-9958-6508debb3f8f",
+      "path": "/openwiki/testing-guide.md",
+      "title": "Testing, Integration, and Operations",
+      "purpose": "Explain unit/integration test strategy, build tooling, and operational packaging (systemd, docker, packages).",
+      "seedPaths": [
+        "Makefile",
+        "docker/Dockerfile",
+        "integration/certificate_test.go",
+        "integration/main_test.go",
+        "internal/cmd/root_test.go",
+        "systemd/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/entrypoint.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Cover Go test categories, deployment packaging, and renewal orchestration via systemd timers."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "c30d0251-ad3e-41b2-a40d-0b22eaf6b0a0",
+      "path": "/openwiki/workflows/acme.md",
+      "title": "ACME Client Flow and Challenge Validation",
+      "purpose": "Explain the ACME client flow, order/authorization/challenge handling, and HTTP-01/device-attestation.",
+      "seedPaths": [
+        "command/ca/acme/acme.go",
+        "flags/flags.go",
+        "utils/cautils/acme_flow.go",
+        "utils/cautils/acmeutils.go"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/token-flow.md",
+        "/openwiki/workflows/ca-workflows.md"
+      ],
+      "instructions": [
+        "Cover standalone/webroot modes, LetsEncrypt special-casing, attestation, and challenge retry logic."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "60903aa5-8657-4759-86f9-f13435f4ca31",
+      "path": "/openwiki/workflows/ca-workflows.md",
+      "title": "CA Workflows: Init, Bootstrap, Sign, Renew, Revoke",
+      "purpose": "Explain the end-to-end CA workflows that combine tokens, clients, and offline/online modes.",
+      "seedPaths": [
+        "command/ca/bootstrap.go",
+        "command/ca/ca.go",
+        "command/ca/init.go",
+        "command/ca/renew.go",
+        "command/ca/revoke.go",
+        "utils/cautils/certificate_flow.go",
+        "utils/cautils/client.go",
+        "utils/cautils/offline.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/configuration.md",
+        "/openwiki/concepts/ssl-ca-wide.md",
+        "/openwiki/concepts/token-flow.md"
+      ],
+      "instructions": [
+        "Cover online vs offline clients, the CaClient interface, certificate/renewal flows, and deployment types."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "217795d6-3f01-4514-b5d2-c70f6f457b8d",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical entry point: build, run, and try the step CLI, and map wiki pages to task routing.",
+      "seedPaths": [
+        "Makefile",
+        "README.md",
+        "cmd/step/main.go",
+        "internal/cmd/root.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/entrypoint.md",
+        "/openwiki/concepts/certificates.md"
+      ],
+      "instructions": [
+        "Focus on how an engineer gets the tool built and running, the CLI routing model, and representative end-to-end examples."
+      ],
+      "status": "complete"
+    }
+  ]
+}

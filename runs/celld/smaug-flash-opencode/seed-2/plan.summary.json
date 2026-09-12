@@ -1,0 +1,330 @@
+{
+  "plan_page_count": 14,
+  "deletePages": [],
+  "statuses": {
+    "complete": 14
+  },
+  "pages": [
+    {
+      "id": "398cf08b-f5dc-4914-9325-524320248a80",
+      "path": "/openwiki/concepts/architecture.md",
+      "title": "Architecture: the decision core, the effect executor, and replication",
+      "purpose": "Explain the clean-sheet three-tier split (celld-logic pure decision core via on_event, celld effect/adapter host, celld-ltx replication) and the single serial actor execution shape.",
+      "seedPaths": [
+        "crates/celld/Cargo.toml",
+        "crates/celld/actor.rs",
+        "crates/celld/lib.rs",
+        "crates/celld/main.rs",
+        "crates/logic/Cargo.toml",
+        "crates/logic/lib.rs",
+        "crates/logic/types.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/cells.md",
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/deploying.md"
+      ],
+      "instructions": [
+        "Establish responsibility and ownership boundaries between the crates; describe Event/Effect/State and the actor mailroom; document the deterministic-simulation seam and the __celld_domain_select macro rationale."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "afbd1f80-fe7e-4d07-aa96-429cbca802ed",
+      "path": "/openwiki/concepts/cells.md",
+      "title": "Cells, scopes, and the lifecycle state machine",
+      "purpose": "Explain what a cell is (a named Durable Object with its own SQLite), the scope charset fence, and the full phase state machine from cold start to residency, dormancy, eviction, and takeover.",
+      "seedPaths": [
+        "README.md",
+        "crates/logic/cell.rs",
+        "crates/logic/isolate.rs",
+        "crates/logic/lib.rs",
+        "crates/logic/restore.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/architecture.md",
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/operating-a-fleet.md"
+      ],
+      "instructions": [
+        "Focus on the lifecycle phases, the capacity/activation admission policy, phase census names, and the cell scope security charset."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "6b5fc999-dafd-4ce9-9658-3eb8fea8251a",
+      "path": "/openwiki/concepts/durability.md",
+      "title": "Ownership, fencing, durability, and the output gate",
+      "purpose": "Explain the RPO=0 durability contract: bucket conditional writes, ownership records and epochs, node leases and self-fencing, the output gate, fleet vs bucket durability proofs.",
+      "seedPaths": [
+        "crates/celld/bucket.rs",
+        "crates/celld/node_log.rs",
+        "crates/celld/ownership_store.rs",
+        "crates/logic/gate.rs",
+        "crates/logic/types.rs",
+        "docs/guarantees.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/cells.md",
+        "/openwiki/concepts/replication.md",
+        "/openwiki/security/trust-model.md"
+      ],
+      "instructions": [
+        "Ground the fencing argument (epoch prefixes, ack rule, ownership read) and the output gate in source; cover conditional-write dialects across S3/GCS/Azure."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "58b13200-725c-4cb2-8123-854d8d36e28b",
+      "path": "/openwiki/concepts/js-runtime.md",
+      "title": "The V8 JS runtime: isolates, the input gate, alarms, and WebSockets",
+      "purpose": "Explain how celld embeds V8 and executes Wrangler bundles: isolate pools, blockConcurrencyWhile input gating, alarms and the wake index, WebSocket hibernation, and the V8 heap limit.",
+      "seedPaths": [
+        "crates/celld/js/harness.js",
+        "crates/celld/js/modules.rs",
+        "crates/celld/lib.rs",
+        "crates/logic/alarm.rs",
+        "crates/logic/gate.rs",
+        "crates/logic/isolate.rs",
+        "crates/logic/schedule.rs",
+        "crates/logic/wake.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/cells.md",
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/deploying.md"
+      ],
+      "instructions": [
+        "Document the JS host setup, isolate pool logic, input gate semantics, alarm reconcile/wake index key scheme, and WebSocket hibernation classification."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "37d72b4a-7ee2-44b8-b149-e67a3ee87c71",
+      "path": "/openwiki/concepts/replication.md",
+      "title": "LTX replication and the in-fleet node log",
+      "purpose": "Explain how each committed SQLite write becomes an LTX capture and replica object, L0-L9 compaction and bundles, and the fleet node-log tier (write-all/ack-all ensemble).",
+      "seedPaths": [
+        "crates/celld/ltx_repl.rs",
+        "crates/celld/node_log.rs",
+        "crates/logic/log_tier.rs",
+        "crates/ltx/src/bundle.rs",
+        "crates/ltx/src/compactor.rs",
+        "crates/ltx/src/db.rs",
+        "crates/ltx/src/replica.rs",
+        "crates/ltx/src/replica_compactor.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/change-guides.md"
+      ],
+      "instructions": [
+        "Describe the LTX format surface, checkpoint/takeover capture, per-epoch prefix layout, compaction levels, tiering, and the node-log recovery takeover gate."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "0fc368be-9623-4f65-a897-02318f28e1f4",
+      "path": "/openwiki/concepts/reserved-cells.md",
+      "title": "Reserved cells: D1, KV, Queues, Workflows, and cron",
+      "purpose": "Explain the runtime-supplied Durable Object classes that back D1 databases, KV namespaces, Queue brokers, Workflows, and cron triggers.",
+      "seedPaths": [
+        "crates/celld/d1_cli.rs",
+        "crates/celld/deploy.rs",
+        "crates/logic/cron.rs",
+        "crates/logic/kv.rs",
+        "crates/logic/queue.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/cells.md",
+        "/openwiki/operations/deploying.md",
+        "/openwiki/operations/operating-a-fleet.md"
+      ],
+      "instructions": [
+        "Focus on the reserved class naming, namespace keying, and the pure policy each backs (KV size split, queue lease generation, cron one-per-fleet arming)."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "024a89f5-2d99-4032-afeb-14bda3974d95",
+      "path": "/openwiki/operations/change-guides.md",
+      "title": "Change guides: representative maintenance tasks",
+      "purpose": "Focused how-to guides for safe changes: adding a Worker API surface, tuning durability/latency vars, adding a cell-backed feature, upgrading between releases.",
+      "seedPaths": [
+        "crates/celld/env_vars.rs",
+        "crates/celld/machine.rs",
+        "crates/logic/lib.rs",
+        "crates/logic/sweep.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/architecture.md",
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/operating-a-fleet.md",
+        "/openwiki/testing/overview.md"
+      ],
+      "instructions": [
+        "Write practical, scoped change guides anchored to narrowest validation the repo supports."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "1db2f651-20af-476f-bce3-0625e4e06bd4",
+      "path": "/openwiki/operations/deploying.md",
+      "title": "Deploying applications and adopting generations",
+      "purpose": "Explain the deployment contract: Wrangler config allowlist, manifests, deployment versions, the pointer and in-place generation adoption, cron arm, and reserved classes.",
+      "seedPaths": [
+        "crates/celld/deploy.rs",
+        "crates/celld/fleet.rs",
+        "crates/celld/generation.rs",
+        "crates/celld/protocol.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/durability.md",
+        "/openwiki/concepts/js-runtime.md",
+        "/openwiki/operations/operating-a-fleet.md"
+      ],
+      "instructions": [
+        "Cover the supported Wrangler keys/features, deploy->bucket object layout, version hashing, and how resident objects move across generations with force rules."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "fe0996c1-8857-4337-84a0-5047b067e7a2",
+      "path": "/openwiki/operations/operating-a-fleet.md",
+      "title": "Operating a fleet: CLI, diagnostics, and memory pressure",
+      "purpose": "Explain node startup, listener/advertise policy, the operator CLI (diagnose, cell, d1, kv, queue), graceful shutdown handoff, fleet readiness gating, and memory-pressure shedding.",
+      "seedPaths": [
+        "README.md",
+        "crates/celld/cell_cli.rs",
+        "crates/celld/d1_cli.rs",
+        "crates/celld/drain_token.rs",
+        "crates/celld/fleet.rs",
+        "crates/celld/kv_cli.rs",
+        "crates/celld/main/cli.rs",
+        "crates/celld/queue_cli.rs",
+        "crates/celld/startup.rs",
+        "crates/logic/drain.rs",
+        "crates/logic/pressure.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/deploying.md",
+        "/openwiki/security/trust-model.md",
+        "/openwiki/telemetry/overview.md"
+      ],
+      "instructions": [
+        "Cover the CLI surface, shutdown/rollout protocol, readiness gate, pressure shedding thresholds and cgroup measurement, and the fleet drain token."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "52161141-e1eb-466a-bebe-69d6b3a8d949",
+      "path": "/openwiki/operations/operator-api.md",
+      "title": "The internal operator API and /state surface",
+      "purpose": "Explain the internal-listener operator routes (/state, /reload, /shutdown, /cell, /evict, /do, health), the HMAC-authenticated peer and runtime routes, and what /state reports.",
+      "seedPaths": [
+        "crates/celld/control_plane.rs",
+        "crates/celld/main.rs",
+        "crates/celld/operator_cell.rs",
+        "docs/security.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/operating-a-fleet.md",
+        "/openwiki/security/trust-model.md"
+      ],
+      "instructions": [
+        "Document each operator route, the unauthenticated vs HMAC-authenticated split, and the /state fields."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "0c796d38-c4ef-414c-a61a-be6e45d33c01",
+      "path": "/openwiki/security/trust-model.md",
+      "title": "Security and trust model",
+      "purpose": "Explain the security boundary: trusted application, private network, bucket credentials, listeners split, peer HMAC, cell scope and authority fences, and forwarded headers.",
+      "seedPaths": [
+        "crates/celld/bucket.rs",
+        "crates/celld/peer_auth.rs",
+        "crates/logic/cell.rs",
+        "crates/logic/http.rs",
+        "docs/limitations.md",
+        "docs/security.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/operating-a-fleet.md",
+        "/openwiki/operations/operator-api.md"
+      ],
+      "instructions": [
+        "Ground the trust boundary and each protection in source: peer HMAC headers and replay protection, cell scope charset, authority/URL parsing fence, and body limits."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "9ab7e66b-b700-4102-98d8-2cc31a712698",
+      "path": "/openwiki/telemetry/overview.md",
+      "title": "Telemetry: traces and logs to the bucket or OTLP",
+      "purpose": "Explain the optional telemetry subsystem: how spans and console.log are recorded, Parquet bucket sink vs OTLP collector, configuration, and the DuckDB query workflow.",
+      "seedPaths": [
+        "crates/celld/otlp.rs",
+        "crates/celld/telemetry.rs",
+        "docs/telemetry.md"
+      ],
+      "relatedPages": [
+        "/openwiki/operations/change-guides.md",
+        "/openwiki/operations/operating-a-fleet.md"
+      ],
+      "instructions": [
+        "Cover OTEL configuration, sampling, the Parquet schema and partitioning, flush/compaction, and the DuckDB query path."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "963cb2a4-6b12-45e0-a634-9f8e5101ea5f",
+      "path": "/openwiki/testing/overview.md",
+      "title": "Testing and the deterministic simulation",
+      "purpose": "Explain how celld protects its three promises: differential conformance vs workerd, exhaustive TLA+ model checking, deterministic simulation of the decision core, and live fleet fault injection.",
+      "seedPaths": [
+        "crates/celld/lib.rs",
+        "crates/logic/lib.rs",
+        "docs/testing.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/architecture.md",
+        "/openwiki/concepts/durability.md",
+        "/openwiki/operations/change-guides.md"
+      ],
+      "instructions": [
+        "Document the layered testing strategy and how a change is validated, including the conformance corpus flag and sim store seam."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "a4da9ad2-1847-4886-9ec4-9fa1a64734b6",
+      "path": "/openwiki/quickstart.md",
+      "title": "celld Quickstart",
+      "purpose": "Practical getting-started guide: install, run a local dev node, deploy an example, operate a two-node fleet, and orient the reader to the rest of the wiki.",
+      "seedPaths": [
+        "README.md",
+        "crates/celld/deploy.rs",
+        "crates/celld/dev.rs",
+        "crates/celld/main.rs",
+        "docs/README.md",
+        "examples/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/concepts/architecture.md",
+        "/openwiki/concepts/cells.md",
+        "/openwiki/operations/deploying.md"
+      ],
+      "instructions": [
+        "House the benchmark-required practical quickstart. Use the README and examples to show a real path from install to a running local app and a fleet."
+      ],
+      "status": "complete"
+    }
+  ]
+}

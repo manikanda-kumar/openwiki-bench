@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:463b03801c82fe2038b97ea54023983b36dbbaa521e29bb2c8bbba385bbd7614",
+  "claims": [
+    {
+      "id": "claim_c0ede8b2705044ce87577d81e797b171",
+      "statement": "AdapterRegistry (src/agent-host/channels/adapter-registry.ts) registers three ChannelAdapter implementations for weixin, telegram, and feishu/lark channels.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/adapter-registry.ts",
+          "version": "repo-file-v1:sha256:ff3367ea26b1063b4c2595c9d583203b34f12a7a02c7f3d0613ba105a26103f2"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e93f4bfe2514f78893b2867eb40686f",
+      "statement": "ChannelAccountConfig (src/shared/channel-types.ts) records channel id, DM/group policies, allowlists, requireMention, opt-in slash commands, default work cwd, and the per-account tool set.",
+      "evidence": [
+        {
+          "resource": "repo://src/shared/channel-types.ts",
+          "version": "repo-file-v1:sha256:578b4abb01178ccf8d6ee77acb2115474d5f4ada84bfdd4d0942f77cc9d69654"
+        }
+      ]
+    },
+    {
+      "id": "claim_a4dcd1e19e1a457c813311c25a80bf52",
+      "statement": "Channel secrets are never stored in config; ChannelManager's secretAccess calls the main process channelSecrets.get/set/delete, which persist them in the OS-backed CredentialVault keyed channel:<channel>:<accountId>.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/channel-manager.ts",
+          "version": "repo-file-v1:sha256:4b77ff02663b2f005e7acb23a8aa7de403bc2b742d152f9cbe47a41ff40a223c"
+        },
+        {
+          "resource": "repo://src/main/credential-vault.ts",
+          "version": "repo-file-v1:sha256:a3cc3a584052fa59326c7560bb03b5a173c627c1080b49c598b2cdcabc26039a"
+        }
+      ]
+    },
+    {
+      "id": "claim_58d8e0d94a4e438f82635f9fc9c7de34",
+      "statement": "evaluateInboundPolicy (src/agent-host/channels/policy.ts) allows open DMs and allowlisted senders, pairs unknown senders under the pairing policy, and ignores others; group messages additionally require the group policy, requireMention, and allowlist matches.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/policy.ts",
+          "version": "repo-file-v1:sha256:76934881aa9ddad1029a0f7135281e927693cb8e91b0baf81978d701c3f56503"
+        }
+      ]
+    },
+    {
+      "id": "claim_1fbff3885eec420097e36c816fa7fe06",
+      "statement": "Inbound messages are processed serially per route key through LaneScheduler, which runs up to maxConcurrent (default 4) unrelated lanes in parallel while preserving per-conversation ordering.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/channel-manager.ts",
+          "version": "repo-file-v1:sha256:4b77ff02663b2f005e7acb23a8aa7de403bc2b742d152f9cbe47a41ff40a223c"
+        },
+        {
+          "resource": "repo://src/agent-host/channels/lane-scheduler.ts",
+          "version": "repo-file-v1:sha256:5d71b8dd0dca853c16fe44f6ad1bdc9c8376eb88d7fa6dbedc0225c291fc7fdb"
+        }
+      ]
+    },
+    {
+      "id": "claim_c561846a8ad74390b746cca719cfc0fd",
+      "statement": "Pairing approvals (PAIRING_TTL_MS=10min) add the peer id to allowFrom when approved; rejected or expired pairings are dropped.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/channel-manager.ts",
+          "version": "repo-file-v1:sha256:4b77ff02663b2f005e7acb23a8aa7de403bc2b742d152f9cbe47a41ff40a223c"
+        }
+      ]
+    },
+    {
+      "id": "claim_1b770b56508b479796e20d497152b73d",
+      "statement": "PiSessionBridge (src/agent-host/channels/pi-session-bridge.ts) opens or resumes an agent session in a binding's cwd, passing the account toolNames, and drives runs through the existing RPC session machinery.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/pi-session-bridge.ts",
+          "version": "repo-file-v1:sha256:d8c3b8ac4aa6a6241e5756fa8f71df092d96ffdb5db4da9fc70530b08a894f0d"
+        }
+      ]
+    },
+    {
+      "id": "claim_93831196c9d34d9286bbd73a8457fbc4",
+      "statement": "Outbound file sends via the channel bridge require an explicit user request and enforce size/count limits (20 MiB, four files) plus outside-workspace and symlink guards.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/pi-session-bridge.ts",
+          "version": "repo-file-v1:sha256:d8c3b8ac4aa6a6241e5756fa8f71df092d96ffdb5db4da9fc70530b08a894f0d"
+        }
+      ]
+    },
+    {
+      "id": "claim_f365b8174bb74ba9b50c82c6ad7c5720",
+      "statement": "Account, binding, state and media stores use atomic temp-file + rename writes with 0o600 modes; channel status and activity are checkpointed and pushed to the renderer.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/config-store.ts",
+          "version": "repo-file-v1:sha256:bbd7999f26d44c682b9ca171da1e61261f21ba8c5e3ce4bcb07381a6b2bcde8d"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9190645a50445be901977e27d79a89d",
+      "statement": "connectAccount verifies the credential already exists in the OS vault and validates it with a provider probe before activating the account.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/channel-manager.ts",
+          "version": "repo-file-v1:sha256:4b77ff02663b2f005e7acb23a8aa7de403bc2b742d152f9cbe47a41ff40a223c"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

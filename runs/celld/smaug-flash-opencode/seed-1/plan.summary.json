@@ -1,0 +1,285 @@
+{
+  "plan_page_count": 12,
+  "deletePages": [],
+  "statuses": {
+    "complete": 12
+  },
+  "pages": [
+    {
+      "id": "2a94feb7-da97-488b-8d35-a91ec967a782",
+      "path": "/openwiki/architecture/decision-core.md",
+      "title": "Logic Dec ision Core (crates/logic)",
+      "purpose": "The clean-sheet, replayable coordination state machine: Event/Effect protocol, State, cell lifecycle Phases, output gate, node authority, capacity, and shedding.",
+      "seedPaths": [
+        "crates/logic/lib.rs",
+        "crates/logic/output_gate.rs",
+        "crates/logic/pressure.rs",
+        "crates/logic/types.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ownership-and-replication.md",
+        "/openwiki/architecture/sqlite-replication-ltx.md",
+        "/openwiki/testing.md"
+      ],
+      "instructions": [
+        "Do not reduce the page to a symbol inventory; explain control flow, invariants, and failure behavior.",
+        "Explain that `celld_logic::on_event` is the single way behavioral state advances and adapters only perform returned effects.",
+        "Ground every mechanism in the code; cite stable phase names, Config fields, and Event/Effect variants."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "b2ad4ee3-eb43-4407-b01e-a6eff6e41785",
+      "path": "/openwiki/architecture/ownership-and-replication.md",
+      "title": "Ownership, Leases, and Replication (crates/celld)",
+      "purpose": "How nodes claim cells via conditional bucket writes, hold self-node leases, self-fence, pick followers, replicate LTX data, and prove a write durable (fleet vs bucket proofs).",
+      "seedPaths": [
+        "crates/celld/fleet.rs",
+        "crates/celld/ownership_store.rs",
+        "crates/celld/peer_auth.rs",
+        "crates/celld/replication.rs",
+        "docs/guarantees.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/architecture/sqlite-replication-ltx.md",
+        "/openwiki/security.md"
+      ],
+      "instructions": [
+        "Ground in the code and docs/guarantees.md; cite the mechanism: conditional writes, epoch prefix, acknowledgement rule (RPO=0), self-fencing.",
+        "State uncertainty where the repository does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "c10df484-d166-4f41-a8a0-7fb0858a6396",
+      "path": "/openwiki/architecture/sqlite-replication-ltx.md",
+      "title": "SQLite Replication and LTX (crates/ltx)",
+      "purpose": "The embeddable streaming replication library celld uses: WAL capture, LTX segments, replica restore, compaction levels, bundles, and the object-store and file clients.",
+      "seedPaths": [
+        "crates/ltx/src/bundle.rs",
+        "crates/ltx/src/compactor.rs",
+        "crates/ltx/src/db.rs",
+        "crates/ltx/src/lib.rs",
+        "crates/ltx/src/replica.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/architecture/ownership-and-replication.md"
+      ],
+      "instructions": [
+        "Cite concrete source evidence for each behavior.",
+        "Cover Db, Replica, restore, compaction, bundle overlay, and the ReplicaClient backends.",
+        "Note the crate is a from-scratch Rust reimplementation of Litestream v0.5.11 following LTX v0.5.2."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "bf76283c-5008-4e73-bc2f-bf515ee0a7c1",
+      "path": "/openwiki/architecture/v8-isolate-hosts.md",
+      "title": "V8 Isolate Hosts and Workers/DO API (crates/celld/js)",
+      "purpose": "How celld embeds V8 to run Wrangler bundles: isolate bootstrap and code cache, JS bindings (env, compatibility flags), storage ops, WebSockets, R2, crypto, and the runtime materialization seam.",
+      "seedPaths": [
+        "crates/celld/js.rs",
+        "crates/celld/js/bootstrap.rs",
+        "crates/celld/js/storage_ops.rs",
+        "crates/celld/js/websocket.rs",
+        "crates/celld/runtime.rs",
+        "docs/cloudflare-compat.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/operations/fleet.md",
+        "/openwiki/testing.md"
+      ],
+      "instructions": [
+        "Cover the Cloudflare compatibility surface and the compat flag switches.",
+        "Explain the bootstrap code cache and per-isolate compile/execute split.",
+        "Ground each binding and host relation in source evidence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "80dda773-2be3-4a03-bfe2-4db44474471f",
+      "path": "/openwiki/change-guides/adding-a-worker-api.md",
+      "title": "Change Guide: Adding a Cloudflare Worker API",
+      "purpose": "Focused maintenance guide for extending the Workers/Durable Objects API surface: adding a JS binding, hooking it into bootstrap, adding compat flags, and adding conformance fixtures.",
+      "seedPaths": [
+        "crates/celld/diagnose.rs",
+        "crates/celld/js/bootstrap.rs",
+        "crates/celld/js/modules.rs",
+        "crates/celld/lib.rs",
+        "docs/cloudflare-compat.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/v8-isolate-hosts.md",
+        "/openwiki/testing.md"
+      ],
+      "instructions": [
+        "Reference the conformance corpus requirement for new API surfaces.",
+        "Trace an existing binding end-to-end as a model for a new one; cite concrete source evidence."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e6bd8f29-8b5d-447f-9e5c-35932e09bbea",
+      "path": "/openwiki/change-guides/tuning-resource-limits.md",
+      "title": "Change Guide: Tuning Resident-Cell and Memory Limits",
+      "purpose": "How to change resident-cell ceilings, activation bounds, eviction concurrency, memory shedding thresholds, and the V8 heap limit, and how to rebuild the release/lab profiles.",
+      "seedPaths": [
+        "Cargo.toml",
+        "crates/celld/env_vars.rs",
+        "crates/celld/machine.rs",
+        "crates/celld/main.rs",
+        "crates/logic/types.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/operations/configuration.md",
+        "/openwiki/operations/fleet.md"
+      ],
+      "instructions": [
+        "Ground each tunable in its environment-variable and Config source.",
+        "Note the release/lab build profiles in Cargo.toml and the rebuild command expectations."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "870af8f5-f7bc-416d-83c1-d1137b87b11b",
+      "path": "/openwiki/operations/configuration.md",
+      "title": "Configuration and Environment Variables",
+      "purpose": "The CLI surface, storage backends (S3/R2/GS/Azure), bucket prefixes and reserved space, durability posture, and every CELLD_* environment knob.",
+      "seedPaths": [
+        "crates/celld/bucket.rs",
+        "crates/celld/env_vars.rs",
+        "crates/celld/machine.rs",
+        "crates/celld/main/cli.rs",
+        "crates/celld/protocol.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/operations/fleet.md",
+        "/openwiki/operations/telemetry.md",
+        "/openwiki/security.md"
+      ],
+      "instructions": [
+        "Cover CELLD_DURABILITY, CELLD_TTL_MS, CELLD_MAX_RESIDENT_CELLS, CELLD_MAX_RSS_MB, CELLD_V8_HEAP_LIMIT_MB and the operativeness knobs.",
+        "State uncertainty where the repository does not establish a fact.",
+        "Treat docs/README.md and the CLI/env code as authoritative; cite concrete sources."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "b92819a0-abe3-4d26-9a9f-5e8ac4627874",
+      "path": "/openwiki/operations/fleet.md",
+      "title": "Operating a Fleet and Node Lifecycle",
+      "purpose": "Starting nodes, adding capacity, diagnosis (`celld diagnose`), listing cells, D1/KV/Queue operator commands, node-lease behavior, memory-pressure shedding, and shutdown handoff.",
+      "seedPaths": [
+        "crates/celld/cell_cli.rs",
+        "crates/celld/d1_cli.rs",
+        "crates/celld/dead_node_gc.rs",
+        "crates/celld/diagnose.rs",
+        "crates/celld/kv_cli.rs",
+        "crates/celld/queue_cli.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ownership-and-replication.md",
+        "/openwiki/operations/configuration.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Cite concrete source evidence.",
+        "Explain memory-pressure shedding, the /state route, and the shutdown drain.",
+        "Ground operator-facing behavior in source and docs/README.md."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "4dd306cb-e587-41b9-a33e-9f921b27efce",
+      "path": "/openwiki/operations/telemetry.md",
+      "title": "Telemetry and Observability",
+      "purpose": "How celld records traces and logs (off by default), the bucket Parquet sink vs OTLP sink, span/log schema, retention, and correlation with W3C traceparent.",
+      "seedPaths": [
+        "crates/celld/otlp.rs",
+        "crates/celld/telemetry.rs",
+        "docs/telemetry.md"
+      ],
+      "relatedPages": [
+        "/openwiki/operations/configuration.md",
+        "/openwiki/operations/fleet.md"
+      ],
+      "instructions": [
+        "Cite CELLD_OTEL configuration and the v0-unstable Parquet schema in docs/telemetry.md.",
+        "Ground the trace and log recording surface in code."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "6b504ae2-b0a7-4dd9-8cf3-d02307e4072d",
+      "path": "/openwiki/security.md",
+      "title": "Security Model",
+      "purpose": "Peer HTTP on the internal listener, fleet HMAC, peer-auth signing, node-log recovery interlock, credential handling, storage preconditions, and the trusted-network requirements.",
+      "seedPaths": [
+        "crates/celld/env_vars.rs",
+        "crates/celld/main/peer_tunnel.rs",
+        "crates/celld/peer_auth.rs",
+        "docs/limitations.md",
+        "docs/security.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ownership-and-replication.md",
+        "/openwiki/operations/configuration.md"
+      ],
+      "instructions": [
+        "Ground the HMAC, signing keys, and peer authentication in peer_auth.rs and docs/security.md.",
+        "State uncertainty where the repository does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ab97ef48-f07b-4df0-9323-eb1543db610a",
+      "path": "/openwiki/testing.md",
+      "title": "Testing Strategy",
+      "purpose": "How the three promises are tested: differential conformance against workerd, a TLA+ model-checked specification, deterministic simulation of the decision core, and live fleet fault injection.",
+      "seedPaths": [
+        "crates/celld/conformance_world_tests.rs",
+        "crates/logic/lib.rs",
+        "docs/testing.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/decision-core.md",
+        "/openwiki/architecture/ownership-and-replication.md",
+        "/openwiki/architecture/v8-isolate-hosts.md"
+      ],
+      "instructions": [
+        "Cite concrete evidence for each testing layer.",
+        "Ground the four layers in docs/testing.md and the conformance test modules.",
+        "State uncertainty where facts are only asserted and not evidenced."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "beb36199-5919-47f1-8c6a-32a22ad17caf",
+      "path": "/openwiki/quickstart.md",
+      "title": "celld Quickstart",
+      "purpose": "Practical orientation: run a node locally with `celld dev`, start a two-node fleet against a bucket, and which pages to read for a specific maintenance task.",
+      "seedPaths": [
+        "README.md",
+        "crates/celld/bucket.rs",
+        "crates/celld/dev.rs",
+        "crates/celld/main/cli.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/lifecycle.md",
+        "/openwiki/operations/fleet.md"
+      ],
+      "instructions": [
+        "On init this page is the entry point for engineers; give a focused running-and-changing orientation.",
+        "State uncertainty when the repository does not establish a fact.",
+        "Treat source code and tests as authoritative; cite concrete source evidence for every non-obvious technical claim."
+      ],
+      "status": "complete"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5f596b2bea19cd329222cc6146bc957a060caeb9ecca8dc4f18d95d42ae684cd",
+  "claims": [
+    {
+      "id": "claim_a46fa81fc472436ba02459f0c102078d",
+      "statement": "celld embeds `rusty_v8` directly with one isolate per cell, running actual Durable Objects where `env.NS.get(id).fetch()` instantiates the exported DO class once per id with a `state` whose `storage` is backed by the cell's SQLite.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L8-L15",
+          "version": "repo-lines-v1:sha256:a3d6723fd7461ff73e7bdc96a3de3ba2066f8cf9005123a51731700b09dd97a2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFiNDg5NThhMDc2MWY4NzQ3NzRhYTUyMDg5MmFkODRmYTE2MjE4NzViOTY2NDc3ZWU1MGI3OGJiMjYyNzQxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc2MmE0NzM3ZjEzOTQyMDJlMjI1ZDU1NWQ5NjQ5NjUxZTVhNWRkZWQyYmRjMjVlNWVhNDlmZTFhZDA5YzYyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWNiMTU4OWNkMWE2Y2VjZmY1YmU0NDBiYjRjN2JmODUzNTIwNWIxYTAxNWNhM2Q5NjdlMzYyOGY2YmQzNGVmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY2MDM2NTVmMDdlODkxYTMxYzk3MjhkYTI1YjY0NjcyMjVjOTJhNTEwMDIwZTJmNjE5YjRhNzg0YWYwZWFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cfeb803f9ab46ed881e103080747576",
+      "statement": "DO storage is async in JS but synchronous underneath, because the ops are sync Rust wrapped in `async` by the JS harness.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L13-L15",
+          "version": "repo-lines-v1:sha256:c748d25ec3c928c85221bfcfd2e28f797ea9bb38edc90141830238c96aa03d22:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWFmZTQzZGNjOTU1ZWFiZDgxYjRjY2ViY2ViMWFmZjQ1YjQ1NTgzMGUzMjVmNTQ2MWZiODNkY2E4OWU0ZmJlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc2MmE0NzM3ZjEzOTQyMDJlMjI1ZDU1NWQ5NjQ5NjUxZTVhNWRkZWQyYmRjMjVlNWVhNDlmZTFhZDA5YzYyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTM2ZGJlNDQzM2JhYTExOWI1MWY5YmNiNzRhOWU3NDhjOGQ0YzI4MGYwNWM0NTk2OTJmMzQwM2QwZDAwOWFlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY2MDM2NTVmMDdlODkxYTMxYzk3MjhkYTI1YjY0NjcyMjVjOTJhNTEwMDIwZTJmNjE5YjRhNzg0YWYwZWFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9296bbf7c760460dbf804862f400f1dc",
+      "statement": "celld keeps a per-process compiled-bytecode cache of the ~23k lines of prelude and harness; the first isolate compiles eagerly and publishes the cache and every later isolate consumes it, so a fresh cell wake pays only execution, not compilation.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/bootstrap.rs#L3-L17",
+          "version": "repo-lines-v1:sha256:28af0d1860eeb23fcb5f4cb7e070bec293c228c4b4df4f5d01f7a2722459f982:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MDU4Y2FmYmZjYjhjMWM4NGM1Y2EyNDQxNDdhYjY5MzU1YTkzNGFiZGNlYzc4Y2EwYzA4NjQ4MTNjZmM4ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NmIwNTliNjRmMjAxZDRlYTE4NTYwYTkxY2YyOWZkMTEwMGU3OGQxOTU2ODU0NzJmZmIzZDI1OGNmMTY1YjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxODIxYWJiOTM2YzQxMDk2ZThhNjdmYmJhOTM5NWM0NTMyZGY1MDA4ZGJlYTFmZmMzYWNmYjVhMDljN2I4NGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51edd66a580c4ac8a01fe543675792d2",
+      "statement": "The bindings (`env`, routing table, compatibility flags) differ per worker and are built every time on top of the cached prelude and harness.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/bootstrap.rs#L6-L8",
+          "version": "repo-lines-v1:sha256:1fe317c0d745d4365f6081b1be11abfe8f408d3e7281c7648c6814ed5e9543bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTIyYzY5MTQzMzM4OTg1MmE3ZTJlYjdiMzE3NGFlOGU0MTcyYzllYTJkMTkwYTgzYmJlZDA1OWUyYjg1ZTY4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzU3OWNhMmM4YmE2NGIzMGM5MGE4M2YyMjVjOTA5N2MwNzljOWY1YmY5ZmFkZjMxNGFiOGEzZjgzNDM1ZGRlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGEzMmU3MTc3NzQ0ZTJlYmIyNTQ5YmU2NmY1MGI0YzU2NGZmMGNlNmUxMzE4ZDkzZjc5Y2U0ODdkOTRjMGRlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjhlNGNlMWZhOTgxYmJmY2I1YzYzNGQ5ODM4ODM4Mzc3NzA5NzJhNDI0ZjgyM2IyNGM5ZWYyYTdiYzAyZjNmNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b88bbb2377e44c1bb6580cb789c09250",
+      "statement": "ES module resolution treats a specifier as either a builtin whose source the module holds or an import of another worker resolved through the loader; most builtins are lazy and compile only when something reads their global.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:9bed57565fc003f502c43b47e330681c01d9e4d9f7b13225bfbcd17dc1b3c1d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc4NWVlYWM4ZmU5MDM3MDZlZjUyZTAxM2ExYjIyNmNiYTg3MzAyYzZiNjM1ZDgwM2Y3MDIzODg4ZGJhMGQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFkNGY5ZjBhNWE4YzYyMGU4Y2U4Mjc2OTUyZjE4NDM2ZTdmMzljZmU2Y2YyNGYwZmNmN2QwYWJkODgxMjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhjNThiY2ViOGQ4MTdlNTgxYTFkYTcyZWVlM2ZjMTM5ZjllMWNjZmNkNjJmZjkyYjI4OWJjNTAwMzUxM2YzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_821aa781eb0a43ba9ceda58e5460a1a3",
+      "statement": "The module registry is an isolate slot, not a thread-local, so `Global<Module>` handles into one isolate's heap never leak across isolates.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L38-L54",
+          "version": "repo-lines-v1:sha256:e8f034b45adf09dcc15654972bfe5d5baac48b10ad926fd49b28305073258e04:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxMWU4YjYyZTMzYmM0ODQxYzg2YTUyYmJmZDQyNGFlNDFlMGJiZWE4MjQyMmQxMGUwZDIwYjlmMzA1ZmI0MGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5YjFhMGY1NzQ4NTY2MTUwZDYyMzAwYTRkZGM2YjBiMzU2YjkwZGRkNGY1ZGU0MTk5ZjNjZTdhYjdhZDhiNjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmYWM0MmY5MTY1MGJhMWM4NDM2ZDJhYzc1M2RjZjc3NjIxODA3Yjc2ZWYxNDMwZGI2MzNiOWY1NzhkYzkxMTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d45e545f0b77459694bf91fd08e72f24",
+      "statement": "`storage_ops.rs` is the V8 surface over `crate::storage` for key-value, SQL, and the shared value encoding; it converts V8 values to Rust, calls into storage, and converts the answer back, deciding nothing.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/storage_ops.rs#L3-L9",
+          "version": "repo-lines-v1:sha256:4b47d75d184ab5f2a9199eb8469fd0162a376b9928728d8f4a054795ddfcc9a5:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZjMDA3ZTcwNTRlOGE4MmUwYjcwZjE1OGUwNWI0YWQ0ODA5YzExZDg1ZDQ2OTk0YjMwNTY4MTNmMDM4MDFjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDU1OGNkZmJjNmU4MTc2NWY4Y2M5Zjg5MmY0OTQ0NTA1N2E3OTQ4ZjI5ODVhMmY1MWE4NzRlZjkwODYwMGI0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTUwYWRjYjJkMzMwOGVjMjcxNDhiOTk5ODJjZDBiMDM2NWQyMzlhOGRhNzY1NDQxM2VmNzZlNzUzYzA2MjdlMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c9ffe9f027834358978371fbe4660b3d",
+      "statement": "When an isolate hits `env.NS.get(id)` for a cell this node does not own, the op hands the request to the tokio runtime, which resolves the owner and HTTP-proxies the fetch, replying on an async oneshot so the JS thread is never blocked.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L83-L90",
+          "version": "repo-lines-v1:sha256:06ee7064393508791e0fecb480d1a99b26ac9cd035e35c2c1b258bb66b675e65:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDE0YzU1MmYyMzk0ZmFlNWI2ZTBhYWI1ZWU2NjY0YjViZWI1NjU2ZjZiZjE0YTQ4MjcxOWM5YjE5ZDI4NTJkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdlNWFjOTMxZTc3ZTk4YjMzNzJjNmI0NjA4NjcyZDhjYWNmNjY5MzE2ODBmMjFjYzkwZjI0ZDU5NDdkZTRmMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTQ2NzY4NzU1MGJjMDkyOGNhYWViMjU0OTljNjNmODNhNjA3NDJjNmMxNjAwZGZlMGJiYjhiYjEyNzQyNTU5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTgyOWRiNjc0ZDJkMTA3ZjdmNTNhMjE3ZDBhMmU3YjE3ZmFkOGU5MzUwYjUyYjY5MmJkMDE2MGE2ZDg0OTBjOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d8a4b717b18048108544eccdfca45e48",
+      "statement": "`RuntimeManager` in `crates/celld/runtime.rs` is the V8 cell-host arm that owns handles and filesystem paths but never lifecycle policy; `StartRuntime`, `Publish`, and `StopRuntime` decide when a cell handle moves from starting to externally dispatchable to closed.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/runtime.rs#L7-L12",
+          "version": "repo-lines-v1:sha256:77b63e2f9b042e414f073fd784ad551ee064a7f5f6c3e972ea2ecce576a948c1:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODE3NzI3ZTc3MWM1YWY0NWFjNjk3NDVjZGU5MDFkODYyYzBjNDc5MTU1NWIxYTA2MTAzMmQ3NDRlY2U4NWMyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQ4MWY5NjUyM2Y3YmI0ZDc0YWZhYTYyMGFhYmIxNDI0YjgwMzZjYjJlMzQyMzk2OTA1ZmFmYmRhZmIwOGNlMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U2MGYwZTRhZTFhYzkzNDU2MjdjZmVlMDhiZjE3MWViNjc3OTgzN2FhNDQ3MWQ3YzgxYTkyOTAxMmQ1NTcxZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ecc8d07998da4de5929e894be6ba78c1",
+      "statement": "celld implements a Partial subset of Cloudflare Workers, Durable Objects, Cron Triggers, Worker Loader, KV, Queues, D1, Workflows, and R2, with Static assets, Encoding, and WebAssembly as Yes and Workers AI, Facets, Cache, HTMLRewriter, TCP sockets, EventSource, MessageChannel, and BroadcastChannel as No.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L15-L183",
+          "version": "repo-lines-v1:sha256:76052bc19d6fbbc3d283560f1980db66a2f07930aa6bb0115ff2c2c1af2de513:eyJzZWxlY3RlZExpbmVDb3VudCI6MTY5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyNjgwM2QxOGI0OGQ3ZmYwMzljMWFmYzU5ZTgzODM0YzIwOWEyZDI4NWU5OWVmOTM3Y2NlODcyYWQ0NzNlMjMwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhZWRhMWE3YjAxNDMyMDE0MTEzMmYxMzc5NDM3YjQ5YmYyOGI3ZjZjZTc0ZGZlMGVkMDU4M2ZjNzU5YmFmNGRjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJhNzY1MGRmMzFjNjkxNWY0ODllODI1ZWQ1N2U1NmY3ZTA4NDg1NGYzMTMwMzJmMmVjZWZhMDQ3MTM4MzgzMjM4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwN2ExNTVkMjYxNjMwMjE5ZDIyMGQzYzFmYjA4MjM2MjkwMmVjODk2NDg1NTY1NjFlNzc4ZDZkN2YzMDNjYWZkIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_aed3bc0ad572420dafdde1be818cf385",
+      "statement": "celld honors the compatibility switches `delete_all_deletes_alarm`, `js_rpc`, `fetcher_no_get_put_delete`, `sqlite_vec`, `websocket_standard_binary_type`, and the static-assets navigation flags, computed from the worker's compatibility_date/flags metadata by `worker_compat`; other flags are accepted without effect.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/lib.rs#L483-L522",
+          "version": "repo-lines-v1:sha256:3c367993fb8c0653f13ab6dfe873544512478f6fd231c142e6b5d6e3f6e379d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MDQyNGVmNGEwNDFhN2JjNDA0ZjJmMzI5MjRkODM2NzhiODc5MjJmY2U0NDQxZWI4MmQ0Zjk5NjFlMjlhNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmOGUyZDhjOWI4ZTFiODA5MmMwNjYzOTkyNWNkOGNmNWRjZWEyYmEzM2Y5YmE1ZjQ2OGZiNDI5ZGRiOWE4YmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L305-L317",
+          "version": "repo-lines-v1:sha256:968925eddd7341978787d8817371451342f7dda5892952239a84264112549baa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjZjcyMzAxNDBkMGRjY2QzNThmMDZlMjY2OWUzZjZmNGM5MTI2YjZiYjQ0NGQzYWUwY2YyMjU2MjY2ZDFkNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyOTk1MzA5OTYzNzI4ZDQ1ZjI0M2MyYmI1NmRhM2NmMDgwMmZmYTM2ODU5ODcwZTQxNDNlYjdhYjU3MTkwMTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZDRhMDA4NGM3Mjk4NzBjYzRkMmNmYTgxNWFlMzM0N2IxYzdiMGY1ZDczYzY0MzUwMTRmMTQ0M2YwMGNhYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2ZDIxNThiOTM2NDMxMGQ3YTBlOTI1MWU2MjBjZWE0M2M4YjRhODJmZmE1YTJjZDFjZGI0NzkyNGYzZmE4NzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a7941f91bc0c4eeebe751bc403a1813b",
+      "statement": "`celld deploy` accepts `wrangler.jsonc` or `wrangler.json` with a defined subset of top-level keys, and each other top-level key (including `routes`) stops the deployment.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cloudflare-compat.md#L319-L333",
+          "version": "repo-lines-v1:sha256:19a37e6c8e285d75a7a4e521de84e9a1d57a50bb65e96ffbed45cacc7de085f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0OWIyYzViYThlNmU4NWVhYmQ2ZTExMTEwODAzNzdjZmZiOGZjYTE3NDVkNTY4MDVkYThjZjdjYTU2YjA2ZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyYWI5MGMzYWRmNjZmYmZhNGQ2YzNlZGVkMzMyZDE5MmU2ZmNkNGJhYTBlN2RkOGVmM2M0Yjg5OTg4ZjY1YmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxZGE3ZTkwM2Q5YzM3ZGViMGM1MTdlZjg1ODlmNmFlOWUxOWQ4NzViYWY1MzgzMDBiNWE5N2U0YjJhOWUxNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViNTg5NWM2MzYyMDdmZjBmMzZhZjNkYjFlYjMzZTM4MzM2NTQwMmIwMzFhNjA5YmE3MTUzMGZiMDg2Zjg3NWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b748945353524b5fafcf38f6ffa5d20d",
+      "statement": "The raw V8 adapter and its child modules remain outside the Actor execution domain; the Actor-reachable wake and WebSocket state is injected through HostServices, so the deterministic simulator can drive the lifecycle core while V8 stays out of simulation because V8 is not deterministic.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js.rs#L3-L6",
+          "version": "repo-lines-v1:sha256:6af73672c48a37650765efd11f28dedd2d95c7495e07274da17d8f408600a46a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTIwOTc4OWE0ZTk2MzBkMmI4NzE0YjlmMThmZDA4MzRhYjdkNjcyYzY2MWVjOTk0MzA4Yzc3MDFiMTUzZDNkZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYxNWQ1MTIzOTMwYjM3MWRmZjJjMWVjZGU5MTU3ZGM2ZDdjZWU4OTM2ZjUxNGFjNWY1ZjlmMjU5YzJmNzBjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmJlOGIyYzNiYWIxZDY3NDFiMGY1OGRmNjZmNWI1ODkzMThiN2RmYTU5NmI4M2EyZmFmNjMxOGYxOGM2Y2JkYSJ9"
+        },
+        {
+          "resource": "repo://docs/testing.md#L94-L95",
+          "version": "repo-lines-v1:sha256:c72d23949ee79855726e8cbb46b2e861ee3c0613687881e8f718bfb7417e6de4:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjQwNDhjMWFmODcxNjYxYzg0ZDkyYzg2YzA4NWVmMTlkYmU3NTZmM2YwNzFmZWE3OWI1OWJkMTVkMzM0NDgzMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTA0ZmE5NGI5NWFmZjgzZjVlYWVjM2NiM2NkMTJiZjYwMmI4OGFhNjBkM2U3ODJmNmQwOGViMmQzZjdmNGE4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDQwMzZmNjgwZDMwYzU5ODFmYWNjNzQxMTdjYTE3MDdjZTA4Zjk4OGZhNDQ1YWFhMzA5NWJhODg4ZGU2NDhkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTlmMTdjMjJhYmU5NzA1YTcwMzZhYmY4ODllNTZlZGQ5NmQ4ZjczM2Q1NWJkNDI1Y2FjZTE2NDdiZDAwMDk1MSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:37:50.122Z"
+  }
+}

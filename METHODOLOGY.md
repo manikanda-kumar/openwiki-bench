@@ -69,7 +69,7 @@ Structural recommendations are rule-based labels over completed runs: broadest r
 
 ## Statistical publication gate
 
-Each system needs three independent trials on each of the five pinned subjects, completed semantic judging, correctness probes, no unresolved tiebreaks, and κ ≥ 0.6. The leaderboard reports means and sample standard deviations. Subjects receive equal weight. The unit remains model + runtime; the official matrix holds the OpenCode agent runtime constant and varies only the OpenCode Go model.
+Each system needs three independent trials on each of the five pinned subjects, completed semantic judging, correctness probes, no unresolved tiebreaks, and κ ≥ 0.6. The leaderboard reports means and sample standard deviations. Subjects receive equal weight. The unit remains model + runtime. The original 45-outcome cohort holds the OpenCode agent runtime constant and varies only the OpenCode Go model; the 2026-09-12 amendment adds 15 RouteLLM-hosted Smaug-Flash outcomes under the same frozen agent/runtime contract. Because that amendment changes the provider as well as the model, it supports system-level comparison, not a provider-controlled model-effect claim. Reports must identify the original cohort separately from the amended 60-outcome matrix so the provider expansion cannot rewrite the interpretation of existing results.
 
 ## Current dataset validity limits
 
@@ -78,4 +78,4 @@ Each system needs three independent trials on each of the five pinned subjects, 
 - LLM judging is itself model-dependent even with blinding and multiple judges
 - No token, cost, latency, or tool-call traces for these historical runs
 
-The historical dataset validates the harness and exposes process/output differences. It is not sufficient for a publishable general model ranking until the 45-run five-subject matrix and official Amp judging are complete.
+The historical dataset validates the harness and exposes process/output differences. It is not sufficient for a publishable general model ranking until the five-subject matrix and official Amp judging are complete.

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:844f88c7a7a3de1edbe149b8488995e08e4331ee9f924e64e6de1e6d416af7de",
+  "claims": [
+    {
+      "id": "claim_dd017f1be1c1481ab0f2a0fc8274694f",
+      "statement": "npm run build builds the Windows managed helper on win32-x64, runs tsup to emit out/main, out/preload and out/agent-host, then Vite to emit out/renderer; package.json main is out/main/main.js (scripts/build.mjs, build-main.mjs).",
+      "evidence": [
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:0f4a03aeaff44b6fd526cb31b689073de92f5f439f400937ce5eb33842e5dcb1"
+        },
+        {
+          "resource": "repo://scripts/build-main.mjs",
+          "version": "repo-file-v1:sha256:8d01624c670e2de2708dfbf76006d42753848d09cb1706b8a529104c545ed44c"
+        }
+      ]
+    },
+    {
+      "id": "claim_f21fe8c68be548a989fd8d5b71c87e44",
+      "statement": "npm test runs node --test src/**/*.test.mjs with a default 120s per-test timeout (PI_TEST_TIMEOUT_MS overrides) and asserts a clean exit status (test-runner.mjs).",
+      "evidence": [
+        {
+          "resource": "repo://scripts/test-runner.mjs",
+          "version": "repo-file-v1:sha256:bae7c1a8406afed63dc4af328ceb6b1d28667efdb49aba62b913cface7111709"
+        }
+      ]
+    },
+    {
+      "id": "claim_f64d6e1e5b964c388fa92783f97fa438",
+      "statement": "scripts/verify.mjs is a single release gate that runs format, lint, typecheck, dependency contract, unit tests, managed-process workflows/flood, contract, Pi 0.84 compat, toolchain/catalog, i18n, security, build, artifact isolation, smoke, and browser tests in order, failing on the first error.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/verify.mjs",
+          "version": "repo-file-v1:sha256:09f95c3ae8131f029aa61a0f0b29ed99d7dff0554faf89d29213af0f3c60082d"
+        }
+      ]
+    },
+    {
+      "id": "claim_fc550f98158f4f59afca3ff59b39c965",
+      "statement": "scripts/package-desktop.mjs prepares bundled tools and runs verify.mjs before invoking electron-builder (--dir for pack, --publish never for release) and enforces the unsigned-Beta trust status on Windows.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/package-desktop.mjs",
+          "version": "repo-file-v1:sha256:bfc08c85348747f914187e150aef0488ce59f0a84d5ea7389c2218d8c77efe2d"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf06869f4b32405c8bcb5573ed3d4199",
+      "statement": "electron-builder.yml packages a pure ASAR app and ships signed toolchain catalogs and the current target's core tools as extraResources, restoring Pi authoring docs/examples via explicit FileSets; targets are dmg+zip (macOS), nsis (Windows), and AppImage (Linux).",
+      "evidence": [
+        {
+          "resource": "repo://electron-builder.yml",
+          "version": "repo-file-v1:sha256:fdaf21faa613333d1bef525e6b2f02672dd1bd65a8710fca2171ac038e0aada2"
+        }
+      ]
+    },
+    {
+      "id": "claim_01a6f8ae1d00432faee16495eab98ee4",
+      "statement": "The Windows NSIS artifact is named Pi-Agent-Desktop-Unsigned-Beta-Setup and CI enforces it stays NotSigned because Authenticode is not provisioned.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/build-desktop.yml",
+          "version": "repo-file-v1:sha256:46ce3b33f122ed4b2e789c9356014336f232ce270316ff93944b013483c6b926"
+        },
+        {
+          "resource": "repo://electron-builder.yml",
+          "version": "repo-file-v1:sha256:fdaf21faa613333d1bef525e6b2f02672dd1bd65a8710fca2171ac038e0aada2"
+        }
+      ]
+    },
+    {
+      "id": "claim_3f7492271bc74eadbaf17932fce73680",
+      "statement": "The native Windows helper is built by scripts/build-windows-managed-helper.mjs, verified reproducible by verify-windows-helper-reproducibility.mjs, and CI runs cargo audit and cargo deny --locked against the pinned Cargo.lock.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/build-desktop.yml",
+          "version": "repo-file-v1:sha256:46ce3b33f122ed4b2e789c9356014336f232ce270316ff93944b013483c6b926"
+        },
+        {
+          "resource": "repo://scripts/build-windows-managed-helper.mjs",
+          "version": "repo-file-v1:sha256:b67b7f518e8a997bbefb34c3e5d306bbd5ca59b12ac9d92dfa6a8068ad73dbf4"
+        },
+        {
+          "resource": "repo://scripts/verify-windows-helper-reproducibility.mjs",
+          "version": "repo-file-v1:sha256:1d07b9febbae0dd7d93be80e56b2b227579e946205280cdb13d611d554065114"
+        }
+      ]
+    },
+    {
+      "id": "claim_fcc59376e515487dbba33e6df04a1e67",
+      "statement": ".github/workflows/build-desktop.yml runs a test-platforms matrix (Linux x64, macOS arm64/x64, Windows x64), pins Node 22 and (on Windows) a 1.96.1 Rust toolchain, then builds, signs/notarizes macOS, packages the Windows unsigned-Beta installer and Linux AppImage.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/build-desktop.yml",
+          "version": "repo-file-v1:sha256:46ce3b33f122ed4b2e789c9356014336f232ce270316ff93944b013483c6b926"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

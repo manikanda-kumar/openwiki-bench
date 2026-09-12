@@ -1,0 +1,287 @@
+{
+  "plan_page_count": 12,
+  "deletePages": [],
+  "statuses": {
+    "complete": 12
+  },
+  "pages": [
+    {
+      "id": "5826e190-c07e-45da-91fc-e5e6ea300c05",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "Architecture Overview",
+      "purpose": "Explain the modular architecture, ownership boundaries, core data/control flows, and how components compose for document intelligence.",
+      "seedPaths": [
+        "extract_thinker/__init__.py",
+        "extract_thinker/extractor.py",
+        "extract_thinker/llm.py",
+        "extract_thinker/process.py"
+      ],
+      "relatedPages": [
+        "/openwiki/completion-strategies.md",
+        "/openwiki/document-loaders.md",
+        "/openwiki/extraction-and-classification.md",
+        "/openwiki/llm-integration.md",
+        "/openwiki/quickstart.md",
+        "/openwiki/splitting-and-document-groups.md"
+      ],
+      "instructions": [
+        "Describe the page-based data contract.",
+        "Explain roles of Extractor, Process, DocumentLoader, Splitter, LLM, Contract, Classification.",
+        "Trace the universal content format between loaders and extraction."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "84e94732-185f-4aff-b911-773b91e20725",
+      "path": "/openwiki/batch-processing.md",
+      "title": "Batch Processing",
+      "purpose": "Document model-gated batch extraction via OpenAI batches through BatchJob and extract_batch.",
+      "seedPaths": [
+        "extract_thinker/batch_job.py",
+        "extract_thinker/extractor.py"
+      ],
+      "relatedPages": [
+        "/openwiki/extraction-and-classification.md",
+        "/openwiki/llm-integration.md"
+      ],
+      "instructions": [
+        "Explain BATCH_SUPPORTED_MODELS and can_handle_batch guards.",
+        "Explain error/failure handling and file cleanup.",
+        "Explain that pydantic-ai backend is unsupported for batch.",
+        "Explain the JSONL transformation and polling lifecycle."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "fefbf224-1ded-485f-9906-bef36256636f",
+      "path": "/openwiki/change-guides.md",
+      "title": "Change Guides",
+      "purpose": "Focused maintenance guides for common tasks: adding a document loader, adding a completion handler, and contributing to extraction logic.",
+      "seedPaths": [
+        "extract_thinker/completion_handler.py",
+        "extract_thinker/document_loader/document_loader.py",
+        "extract_thinker/extractor.py",
+        "tests/critical/test_critical_extraction.py",
+        "tests/test_extractor.py"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Give step-by-step change guidance grounded in concrete files.",
+        "Reference existing tests as verification targets.",
+        "State the narrowest verification commands."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "eeef4a68-6228-461e-a899-00dd55ae40b4",
+      "path": "/openwiki/completion-strategies.md",
+      "title": "Completion Strategies",
+      "purpose": "Document how Extraction handles large/paginated content through FORBIDDEN, PAGINATE, and CONCATENATE completion strategies including handlers.",
+      "seedPaths": [
+        "extract_thinker/completion_handler.py",
+        "extract_thinker/concatenation_handler.py",
+        "extract_thinker/models/completion_strategy.py",
+        "extract_thinker/pagination_handler.py"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/extraction-and-classification.md"
+      ],
+      "instructions": [
+        "Explain conflict resolution in PaginationHandler.",
+        "Explain continuation/retry logic in ConcatenationHandler.",
+        "Explain each strategy and handler behavior."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "a11ccd6d-79c5-4cdf-a427-445ff2638829",
+      "path": "/openwiki/document-loaders.md",
+      "title": "Document Loaders",
+      "purpose": "Document the loader abstraction, the page-based content contract, caching, vision mode, and the variety of built-in loaders and their external integrations.",
+      "seedPaths": [
+        "extract_thinker/document_loader/cached_document_loader.py",
+        "extract_thinker/document_loader/document_loader.py",
+        "extract_thinker/document_loader/document_loader_pypdf.py",
+        "extract_thinker/document_loader/document_loader_tesseract.py"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/extraction-and-classification.md",
+        "/openwiki/markdown-conversion.md"
+      ],
+      "instructions": [
+        "Explain can_handle, load, vision mode, caching, and pagination capability.",
+        "Highlight the DocumentLoaderData passthrough and LLMImage fallback.",
+        "Summarize each loader's supported formats and external service dependency."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5ece9cc1-f8ae-408d-a9c5-4a4ee3500fe4",
+      "path": "/openwiki/evaluation-and-reliability.md",
+      "title": "Evaluation and Reliability",
+      "purpose": "Document the eval framework: Evaluator, dataset loading, field comparison, metrics, cost tracking, hallucination detection, and teacher-student comparison.",
+      "seedPaths": [
+        "extract_thinker/eval/cli.py",
+        "extract_thinker/eval/cost_metrics.py",
+        "extract_thinker/eval/dataset.py",
+        "extract_thinker/eval/evaluator.py",
+        "extract_thinker/eval/field_comparison.py",
+        "extract_thinker/eval/hallucination.py",
+        "extract_thinker/eval/metrics.py",
+        "extract_thinker/eval/report.py"
+      ],
+      "relatedPages": [
+        "/openwiki/extraction-and-classification.md",
+        "/openwiki/llm-integration.md"
+      ],
+      "instructions": [
+        "Explain Evaluator configuration, evaluate flow, and metrics.",
+        "Explain comparison types and configs.",
+        "Explain hallucination detection strategies and cost metrics.",
+        "Explain the CLI entrypoint configuration."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "edd8b066-0f04-4650-8c57-be337d56ac17",
+      "path": "/openwiki/extraction-and-classification.md",
+      "title": "Extraction and Classification",
+      "purpose": "Document the Extractor and Process workflows for structured extraction, classification strategies, classification trees, and the universal content pipeline.",
+      "seedPaths": [
+        "extract_thinker/extractor.py",
+        "extract_thinker/models/classification.py",
+        "extract_thinker/models/classification_response.py",
+        "extract_thinker/models/classification_strategy.py",
+        "extract_thinker/models/classification_tree.py",
+        "extract_thinker/process.py"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/document-loaders.md",
+        "/openwiki/llm-integration.md",
+        "/openwiki/splitting-and-document-groups.md"
+      ],
+      "instructions": [
+        "Explain classification tree traversal.",
+        "Explain classify and classification strategies (consensus/higher_order/threshold).",
+        "Explain dependency validation.",
+        "Explain the extract pipeline, universal format mapping, and error handling."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "466b44c3-5e95-43a8-abef-4bbe878a1f9a",
+      "path": "/openwiki/llm-integration.md",
+      "title": "LLM Integration",
+      "purpose": "Document the LLM abstraction, backends (litellm/instructor and pydantic-ai), Router support, thinking mode, token budget logic, and fallback behavior.",
+      "seedPaths": [
+        "extract_thinker/global_models.py",
+        "extract_thinker/llm.py",
+        "extract_thinker/llm_engine.py"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/completion-strategies.md",
+        "/openwiki/extraction-and-classification.md"
+      ],
+      "instructions": [
+        "Describe token budget calculations and constants.",
+        "Detail the interceptor seam.",
+        "Explain LLM.request, raw_completion, request_model, dynamic parsing, and thinking mode."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "dcf5b244-c967-4d05-b75c-de53f4eaa45b",
+      "path": "/openwiki/markdown-conversion.md",
+      "title": "Markdown Conversion",
+      "purpose": "Document the MarkdownConverter for converting documents to markdown, structured content with certainty scores, and verification support.",
+      "seedPaths": [
+        "extract_thinker/markdown/markdown_converter.py"
+      ],
+      "relatedPages": [
+        "/openwiki/document-loaders.md",
+        "/openwiki/llm-integration.md"
+      ],
+      "instructions": [
+        "Explain PageContent/ContentItem models and prompts.",
+        "Explain to_markdown, to_markdown_structured, page processing, and fallback.",
+        "Explain vision placeholder handling and async variants."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "38390ae9-a7f8-40d3-883b-83cace57bf6c",
+      "path": "/openwiki/process-workflow.md",
+      "title": "Process Workflow and Document Groups",
+      "purpose": "Document the Process component that orchestrates loading, splitting, classifying, and extracting multi-page documents.",
+      "seedPaths": [
+        "extract_thinker/process.py"
+      ],
+      "relatedPages": [
+        "/openwiki/document-loaders.md",
+        "/openwiki/extraction-and-classification.md",
+        "/openwiki/splitting-and-document-groups.md"
+      ],
+      "instructions": [
+        "Explain Process roles, chaining API, and per-file-type loaders.",
+        "Explain error handling in process methods.",
+        "Explain split/extract flow and doc group extraction."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "34eadbb2-c1fd-4f17-80bf-2b20f1d62653",
+      "path": "/openwiki/splitting-and-document-groups.md",
+      "title": "Splitting and Document Groups",
+      "purpose": "Document splitter strategies (eager/lazy), ImageSplitter and TextSplitter, and how document groups are computed and aggregated.",
+      "seedPaths": [
+        "extract_thinker/image_splitter.py",
+        "extract_thinker/models/doc_group.py",
+        "extract_thinker/models/doc_groups2.py",
+        "extract_thinker/models/eager_doc_group.py",
+        "extract_thinker/models/splitting_strategy.py",
+        "extract_thinker/splitter.py",
+        "extract_thinker/text_splitter.py"
+      ],
+      "relatedPages": [
+        "/openwiki/extraction-and-classification.md",
+        "/openwiki/process-workflow.md"
+      ],
+      "instructions": [
+        "Explain Splitter ABC and shared aggregation logic.",
+        "Explain the difference between lazy and eager strategies.",
+        "Explain the fallback behaviors in eager/lazy splitters."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "193df41b-522a-425b-8b9e-b7ff884cf81b",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical onboarding: install, basic extraction, classification, splitting, and batch examples routing engineers to deeper pages.",
+      "seedPaths": [
+        "README.md",
+        "examples/extractor_basic.py",
+        "examples/receipt_processor.py",
+        "pyproject.toml"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/completion-strategies.md",
+        "/openwiki/extraction-and-classification.md"
+      ],
+      "instructions": [
+        "Keep examples concise and runnable.",
+        "Point to authoritative source files for each example.",
+        "State uncertainty about runtime/deployment behavior."
+      ],
+      "status": "complete"
+    }
+  ]
+}

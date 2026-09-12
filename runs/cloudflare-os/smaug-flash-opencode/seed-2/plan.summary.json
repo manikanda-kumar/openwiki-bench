@@ -1,0 +1,467 @@
+{
+  "plan_page_count": 18,
+  "deletePages": [],
+  "statuses": {
+    "complete": 18
+  },
+  "pages": [
+    {
+      "id": "9c71db3c-8cc7-4513-a021-a7e17f9bfd0a",
+      "path": "/openwiki/architecture/frontend.md",
+      "title": "The Workshop Frontend",
+      "purpose": "The pure-client React SPA (packages/workshop-frontend): how it speaks RPC over WebSocket, hosts sandboxed gadget iframes and gatekeeper apps, and renders the chat/gadget/admin/connections UI.",
+      "seedPaths": [
+        "packages/workshop-frontend/README.md",
+        "packages/workshop-frontend/src/App.tsx",
+        "packages/workshop-frontend/src/GadgetUI.tsx",
+        "packages/workshop-frontend/src/RpcContext.tsx"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/architecture/gatekeeper-model.md",
+        "/openwiki/architecture/shared-api.md"
+      ],
+      "instructions": [
+        "Cover the two auth build modes (password vs Cloudflare Access).",
+        "Describe the main surfaces: home, chat, gadget editor, admin panel, connections, blueprints.",
+        "Explain how gadgets are hosted in sandboxed iframes with postMessage RPC, and how gatekeeper management apps are hosted.",
+        "Explain the RPC session lifecycle (RpcContext), reconnect behavior, and state-on-client model.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "2e575ce4-db54-416e-a17f-770d798a7a68",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "Architecture Overview",
+      "purpose": "Top-level map of Cloudflare OS: the sense in which it is an OS, the kernel (workshop-backend), the frontend UI, gatekeepers as device drivers, gadgets as processes, blueprints as executables, and the communication-on-Cap'n-Web principle.",
+      "seedPaths": [
+        "AGENTS.md",
+        "README.md",
+        "packages/router/src/index.ts",
+        "packages/workshop-backend/wrangler.jsonc",
+        "packages/workshop-shared/src/api.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/architecture/frontend.md",
+        "/openwiki/architecture/gatekeeper-model.md",
+        "/openwiki/architecture/shared-api.md",
+        "/openwiki/operations/release.md"
+      ],
+      "instructions": [
+        "Explain the RPC-over-WebSocket model and the sandboxed iframe postMessage model for gadgets.",
+        "Map the Durable Objects / Dynamic Worker / Facets usage. State uncertainty where the repo does not establish a fact.",
+        "Present the kernel analogy from README/AGENTS and ground it in the actual package layout.",
+        "Show how the router dispatches by path prefix to the backend and gatekeepers."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "de0cdaff-5f4c-488d-a0da-4d1b4cc4923b",
+      "path": "/openwiki/architecture/shared-api.md",
+      "title": "Shared API and Cap'n Web RPC",
+      "purpose": "The RPC contract between frontend and backend defined in packages/workshop-shared: the capnweb protocol, @validateRpc, promise pipelining, stub disposal, and the type-level gateway/account interfaces.",
+      "seedPaths": [
+        "packages/workshop-shared/node_modules/capnweb/README.md",
+        "packages/workshop-shared/src/api.ts",
+        "packages/workshop-shared/src/code-change.ts",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/architecture/frontend.md",
+        "/openwiki/architecture/the-gate-by-model.md"
+      ],
+      "instructions": [
+        "Document the PublicApi/AuthenticatedApi/Overseer capability hierarchy.",
+        "Explain @validateRpc and why redundant validation is discouraged.",
+        "Explain promise pipelining and stub disposal conventions.",
+        "Note the WORKSPACE_SHARED conventions like validateBindingName and coded error families.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5f12cf0f-59ca-4488-af40-fffe0a069c40",
+      "path": "/openwiki/architecture/the-gate-by-model.md",
+      "title": "Gatekeepers: The Capability-Security Model",
+      "purpose": "What a gatekeeper is and how the model works: OAuth/capability handles, resource granularity, approval queues, simulations, auto-provisioning ambient singletons, management UIs, the observer verifier pattern, and the trust tiers for MCP.",
+      "seedPaths": [
+        "docs/observers.md",
+        "packages/mcp-shared/README.md",
+        "packages/workshop-backend/src/provisioning-policy.ts",
+        "packages/workshop-backend/src/user.ts",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/concepts/sharing-observers.md",
+        "/openwiki/integrations/mcp.md",
+        "/openwiki/operations/admin-config.md"
+      ],
+      "instructions": [
+        "Document auto-provisioning and the three-state mode, and the observer/addObserver/excludeObservers contract.",
+        "Document the MCP trust tiers.",
+        "Document the approval queue and action simulation model.",
+        "Explain the capability-based security posture and how a resource becomes ambient only by config.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ebeb81c5-4e0f-4ee3-8e36-72625ee25136",
+      "path": "/openwiki/architecture/workshop-backend.md",
+      "title": "The Workshop Backend (Kernel)",
+      "purpose": "Detailed walk-through of packages/workshop-backend, the kernel: its Durable Objects (User, Overseer, AdminSettings, PendingLogin), storage collections, auth, sharing/observer model, agent loop, blueprints, and the AI gateway.",
+      "seedPaths": [
+        "packages/workshop-backend/src/auth/",
+        "packages/workshop-backend/src/overseer.ts",
+        "packages/workshop-backend/src/server.ts",
+        "packages/workshop-backend/src/sharing.ts",
+        "packages/workshop-backend/src/user.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/gatekeeper-model.md",
+        "/openwiki/architecture/shared-api.md",
+        "/openwiki/concepts/blueprints.md",
+        "/openwiki/concepts/sharing-observers.md",
+        "/openwiki/operations/admin-config.md"
+      ],
+      "instructions": [
+        "Describe how the Overseer hosts gadgets, gatekeeper facets, chat/agent loop, and code storage (git object store).",
+        "Document admin config ownership and the KV mirror.",
+        "Document auth flows (password, gatekeeper sign-in, CF Access) and their storage.",
+        "Document blueprint storage architecture (Gadget DO -> User DO -> KV -> R2).",
+        "Explain the tiered structure: server entrypoint, User DO, Overseer DO, AdminSettings DO, PendingLogin DO.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5600aae9-3331-481b-911c-a3abaf51045b",
+      "path": "/openwiki/concepts/blueprints.md",
+      "title": "Blueprints",
+      "purpose": "How blueprints share gadget source code as data: what they capture, the three-binding model, the three-tier storage architecture, the .gadget archive format, instantiation by user and by agent, and bundled/format blueprints.",
+      "seedPaths": [
+        "docs/blueprints.md",
+        "packages/workshop-backend/format-blueprints/README.md",
+        "packages/workshop-backend/src/blueprint-archive.ts",
+        "packages/workshop-backend/src/format-blueprints.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/concepts/gadget-buttons.md",
+        "/openwiki/operations/admin-config.md"
+      ],
+      "instructions": [
+        "Document bundled format blueprints and FORMAT_BLUEPRINTS_DIR.",
+        "Document the .gadget binary format bytes and import validation caps.",
+        "Document the storage propagation path and dirty flag.",
+        "Document the three binding types and what a blueprint captures/omits.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "933d69d9-2b09-464d-b219-070da443afaa",
+      "path": "/openwiki/concepts/gadget-lifecycle.md",
+      "title": "Gadgets: Lifecycle, Code, and Chat",
+      "purpose": "The lifecycle of a gadget/workspace: provisional status, the git object store code storage, the Code Mode agent loop, chat compaction, code-change submission, and how mainline code is committed.",
+      "seedPaths": [
+        "packages/workshop-backend/src/agent-compaction.ts",
+        "packages/workshop-backend/src/agent.ts",
+        "packages/workshop-backend/src/git-store.ts",
+        "packages/workshop-backend/src/overseer.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/concepts/blueprints.md",
+        "/openwiki/concepts/sharing-and-observers.md"
+      ],
+      "instructions": [
+        "Explain code-sharing and actions approval.",
+        "Explain provisional gadgets and how they are promoted/deleted.",
+        "Explain the agent loop, code-change message model, and compaction.",
+        "Explain the git object store and why there is no ref layer.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ecae0a46-2df8-42a2-a352-9e5688b9343b",
+      "path": "/openwiki/concepts/sharing-and-observers.md",
+      "title": "Sharing and Observers",
+      "purpose": "Collaborator roles, the permission-graph model with lazy revocation, share links, the observer enforcement mechanism that gates data leaks on shared gadgets, and the terminate-session-on-revoke path.",
+      "seedPaths": [
+        "docs/observers.md",
+        "docs/sharing.md",
+        "packages/workshop-backend/src/overseer.ts",
+        "packages/workshop-backend/src/sharing.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/architecture/the-gate-by-model.md"
+      ],
+      "instructions": [
+        "Document build vs use roles and the capability returned at open().",
+        "Document the observer mechanism, addObserver re-verification on every open, excludeObservers, and teardown on sharing changes.",
+        "Document the permission graph, effective-role fixed point, lazy revocation, keepUsers, and preview/confirm.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "770fbf9b-1e96-4453-9752-bc610cc59e84",
+      "path": "/openwiki/developing/change-guides.md",
+      "title": "Change Guides",
+      "purpose": "Focused, actionable guides for representative maintenance tasks: adding a gatekeeper, ship a new format blueprint, changing the shared API, bumping wrangler/workerd, and running a preview deployment.",
+      "seedPaths": [
+        "docs/integration-testing.md",
+        "packages/gatekeeper-*",
+        "packages/mcp-shared/README.md",
+        "packages/workshop-backend/format-blueprints/README.md",
+        "scripts/preview/"
+      ],
+      "relatedPages": [
+        "/openwiki/integrations/mcp.md",
+        "/openwiki/operations/build-test.md",
+        "/openwiki/operations/release.md"
+      ],
+      "instructions": [
+        "For adding a gatekeeper, cover package layout, bindings, configurator UI, and build integration.",
+        "For format blueprints, cover import:format-blueprint and sidecar edits.",
+        "For shared API changes, cover the backward-compat and review bar.",
+        "For the preview deployment, cover scripts/preview/{config,deploy,delete,sweep}.",
+        "Provide concrete step-by-step change workflows grounded in the repo scripts and docs.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "c34a247a-01cf-4810-9cc0-46207957c891",
+      "path": "/openwiki/integrations/context-library.md",
+      "title": "Context Library Gatekeeper",
+      "purpose": "The Context Library: auto-provisioned accounts, private vs public collections, sharing-domain scoping, the three Durable Objects plus KV, the agent read session, and the management UI.",
+      "seedPaths": [
+        "packages/gatekeeper-context/src/context-api.ts",
+        "packages/gatekeeper-context/src/domain.ts",
+        "packages/gatekeeper-context/src/index.ts",
+        "packages/gatekeeper-context/src/library-gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/the-gate-by-model.md",
+        "/openwiki/integrations/mcp.md",
+        "/openwiki/integrations/scheduler.md"
+      ],
+      "instructions": [
+        "Document account auto-provisioning and the singleton read session / management UI.",
+        "Document private and public collection visibilities and ownership rules.",
+        "Document sharing-domain namespacing.",
+        "Document the Durable Objects and KV layout.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "75101b85-98a4-4a5a-8dc4-818fde187053",
+      "path": "/openwiki/integrations/gatekeeper-cloudflare.md",
+      "title": "Cloudflare Gatekeeper (Auth, Billing, Observability)",
+      "purpose": "The single Cloudflare OAuth account serving three purposes: sign-in, AI Gateway billing, and Workers Observability, plus the layering and fail-closed scopes.",
+      "seedPaths": [
+        "docs/ai-gateway-billing.md",
+        "docs/public-server.md",
+        "packages/gatekeeper-cloudflare/README.md",
+        "packages/gatekeeper-cloudflare/src/observability-session.ts",
+        "packages/gatekeeper-cloudflare/src/vendor.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/the-gate-by-model.md",
+        "/openwiki/operations/admin-config.md"
+      ],
+      "instructions": [
+        "Document billing integration.",
+        "Document the observability layering and fail-closed scopes.",
+        "Document the resource granularity / binding boundary.",
+        "Document the three purposes sharing one OAuth app and one scope.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "31d087f7-6bd8-4336-9416-a644e4a14c36",
+      "path": "/openwiki/integrations/mcp.md",
+      "title": "MCP Gatekeepers and Trust Tiers",
+      "purpose": "The two MCP connectors and their shared library: endpoint discovery, tool classification, the trust tiers (byo/vetted), the at-most-once approval guarantee, and shared limits.",
+      "seedPaths": [
+        "packages/gatekeeper-mcp-portal/README.md",
+        "packages/gatekeeper-mcp/README.md",
+        "packages/mcp-shared/README.md",
+        "packages/mcp-shared/src/action-store.ts",
+        "packages/mcp-shared/src/tools.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/the-gate-by-model.md",
+        "/openwiki/integrations/context-library.md",
+        "/openwiki/integrations/scheduler.md"
+      ],
+      "instructions": [
+        "Document the at-most-once claim/apply model and failure classification.",
+        "Document the byo/vetted tiers and portal trust annotations.",
+        "Document the shared limits table.",
+        "Document the trust boundary classification and auto-approval eligibility.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "10682072-fa43-4272-94bf-e647d2ce6d9a",
+      "path": "/openwiki/integrations/scheduled-tasks.md",
+      "title": "Scheduled Tasks Gatekeeper",
+      "purpose": "The Scheduled Tasks ambient gatekeeper: persistent workspace callbacks (every / calendarAt / runAt), the account-scoped ScheduleDriver Durable Object with one alarm, retries, cadence, lifecycle, and management app.",
+      "seedPaths": [
+        "packages/gatekeeper-scheduler/README.md",
+        "packages/gatekeeper-scheduler/src/schedule-driver.ts",
+        "packages/gatekeeper-scheduler/src/scheduler.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/the-gate-by-model.md",
+        "/openwiki/integrations/context-library.md"
+      ],
+      "instructions": [
+        "Document the alarm-driven delivery, batching, admission checks, and retry budget.",
+        "Document the lifecycle (disabled hook -> enabled -> terminal) and mis-enable restart semantics.",
+        "Document the read-only management app and limits.",
+        "Document the three registration methods and their occurrence bounds.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "3504c7aa-176e-47a9-842c-51fb0d8b94b2",
+      "path": "/openwiki/operations/admin-config.md",
+      "title": "Deployment Admin Configuration",
+      "purpose": "The deployment-level AdminConfig: what it covers, the AdminSettings DO and KV mirror, the AdminApi capability, ambient gatekeeper modes, resources toggles, formats promotion, and branding.",
+      "seedPaths": [
+        "packages/workshop-backend/src/admin-config.ts",
+        "packages/workshop-backend/src/admin-settings.ts",
+        "packages/workshop-backend/src/provisioning-policy.ts",
+        "packages/workshop-backend/src/server.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/operations/auth.md"
+      ],
+      "instructions": [
+        "Document ambient gatekeeper modes and resource toggles.",
+        "Document format promotion.",
+        "Document the AdminApi capability and one-time admin check.",
+        "Document the AdminConfig shape and defaults.",
+        "Document the AdminSettings DO ownership and KV mirror of .adminConfig.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "eba1e1d1-1b0c-4e89-916f-ae467eec82d2",
+      "path": "/openwiki/operations/auth.md",
+      "title": "Authentication and Sign-in",
+      "purpose": "The three auth modes (password, Cloudflare Access, gatekeeper OAuth) and their configuration: AUTH_GATEKEEPERS, DISABLE_PASSWORD_AUTH, email-keyed identity, transient login grants, and the PendingLogin DO.",
+      "seedPaths": [
+        "docs/oauth-signin.md",
+        "docs/public-server.md",
+        "packages/workshop-backend/src/access.ts",
+        "packages/workshop-backend/src/auth/"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/integrations/gatekeeper-cloudflare.md",
+        "/openwiki/operations/admin-config.md"
+      ],
+      "instructions": [
+        "Document CF Access mode and JWT verification.",
+        "Document env-var-driven config that cannot be changed by a compromised admin.",
+        "Document gatekeeper sign-in, incremental scopes, transient grants, and PendingLogin.",
+        "Document the password scheme (client-side argon2id + server-side hash).",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e84b402b-1c24-4700-a759-803b4783e840",
+      "path": "/openwiki/operations/build-test.md",
+      "title": "Build, Test, and Lint",
+      "purpose": "How to build, type-check, test, and lint the workspace: the Vite+ task/cache model, the command matrix, workerd suites, the single-threaded tsc rationale, and how caching strips env.",
+      "seedPaths": [
+        "AGENTS.md",
+        "package.json",
+        "scripts/assert-workerd.ts",
+        "scripts/vitest-task-vite-config.ts",
+        "vite.config.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/developing/change-guides.md",
+        "/openwiki/operations/release.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Document Vite+ task caching, env stripping, and fingerprinting.",
+        "Document the exact pnpm/vp command matrix for build, test, lint.",
+        "Document the single-threaded tsc rationale and env-passthrough test.",
+        "Document the workerd suites and assert-workerd setup.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "eb50d065-53b0-4435-8231-900378fb0a17",
+      "path": "/openwiki/operations/release.md",
+      "title": "Release Pipeline",
+      "purpose": "The scripts/release pipeline: byte-identical worker bundling, the release manifest contract, R2 upload/promote flow, and how the deploy service renders placeholders.",
+      "seedPaths": [
+        "scripts/release/build-release.ts",
+        "scripts/release/manifest-lib.ts",
+        "scripts/release/promote-release.ts",
+        "scripts/release/upload-release.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/operations/build-test.md"
+      ],
+      "instructions": [
+        "Document the content-addressed R2 layout and manifest-last promotion.",
+        "Document the deploy-wizard config (deploy-inputs.json, NO_DEFAULT_CRED_INPUTS).",
+        "Document the golden-file test and regeneration.",
+        "Document the release manifest and placeholder contract.",
+        "State uncertainty where the repo does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "6e87e927-fb43-4b52-8be9-41f19bd28d86",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical, source-grounded getting-started and daily-workflow guide for engineers: prerequisites, running the whole stack locally, the dev loop, build/test/lint commands, and the change checklist.",
+      "seedPaths": [
+        "README.md",
+        "docs/public-server.md",
+        "package.json",
+        "scripts/run-dev-server.ts",
+        "scripts/run-local.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/backed-kernel.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/operations/build-test.md",
+        "/openwiki/operations/release.md"
+      ],
+      "instructions": [
+        "Cover pnpm run-local, pnpm dev-server + pnpm dev-client, the localhost ports, and .wrangler data location.",
+        "Document the build/test/lint command matrix exactly as declared in package.json and AGENTS.md.",
+        "Explain the std dev loop an engineer uses to change code and verify it.",
+        "Use the root package.json scripts and scripts/*.ts entrypoints as authoritative for commands."
+      ],
+      "status": "complete"
+    }
+  ]
+}

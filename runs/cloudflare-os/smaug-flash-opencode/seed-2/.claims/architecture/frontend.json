@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e2a153dd9a30df23916b9143b1d58d851795dc01e156c370da218011d7f4528a",
+  "claims": [
+    {
+      "id": "claim_0ec55d29a4cf41bfb773f6e4e39ee67f",
+      "statement": "The frontend is a pure single-page application that holds no authoritative state; all of its knowledge and changes go through the RPC API defined in packages/workshop-shared (src/api.ts).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L1-L24",
+          "version": "repo-lines-v1:sha256:1838e0177eaeb013e44ab9374d4b1ff3908cac932a0bc81b00a86f85fc85f87e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxOWQ3YjExOGJlZjA5MjYzZDNjYTk5N2I2ODE2Y2Y3NDIyOGM3YjljNDNmMDY2NTVkOTU5YjAzODU2OWU1YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZmZiY2JhZjNlMGVhNDQwYjEzYTkxNTBmY2JkMGEwZmUwMGI5OTA0Zjg5NDMzMjVjZWIyZDgwNTQ5NDhiYzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1MTc4NmNiMzBmZDQ1NmZjYzc0NjU2YjA5NjI0YzI5ZGQ0Y2M4Y2NlNzc1N2RhOWE1ZGI0NzVmNGJjMTc1Y2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_458a3a3e0c9b46899b6eea8e0d6cf83c",
+      "statement": "The app opens one persistent Cap'n Web WebSocket RPC session to the backend at startup and reconnects on loss; connection management is hoisted into module-level globals in src/main.tsx rather than React state to avoid duplicate sockets in dev-effect double runs.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L47-L108",
+          "version": "repo-lines-v1:sha256:62aee1c999fd70bfa238a0dee71d4bf1dd8c3f9e01cf022bd2146cf5d2a0e436:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhYjU0NGViZWU1MTNlOGI0Y2Q0MDdkNzZkN2Q0MDk4ZDIzYTQyNmM4NGRiOGEyMzhiNGJjYjFiOGMzYjQ3NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyMmFhYjExYzNkOGFmMWM5YmIwMzkzNzY0ZDEzMjljNDcxZTBlNDRlYzVkMjY1ZWJlNmE3Y2Y3ZjdiZTg1MDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkYzcxMjBlOWMyZjg0MTNhZmQ5Y2RhZTFhYTdkNDM0YzcxOWQ4Y2E5OTQ5ZGVjYjJhYzhmODk1NzNmMTgzYTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a1645671f2b42cc88760e5e8b8f0f0b",
+      "statement": "On RPC loss the frontend immediately publishes a new RpcPromise wrapping reconnect(), so calls pipelined during the outage are queued and delivered in order once the replacement connection is proven with a ping(), instead of failing against a dead socket.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L107-L153",
+          "version": "repo-lines-v1:sha256:108469fa003c272f6c0e721d844e0ff34caeeabd70ac59d681317cf5d6684c29:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMGEzOGYxYWZiOTFmOWNiY2QwNjBlNTI3ZWFhZDQ1NmYyZWI1MzY2MWFlNWY1Y2UxYTNkYTRiMDMyODMxOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4MWVjMWM2YjE1YmY3N2E5MGRhMjdiNGZmOGUyZjY3NjMwODAxMjYyOWU5ZTkzNGU0NjkzN2IzODk3ZGIxNjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2ZTU2ZjhmOGJlMWJkNDU0YzRmZmFiOTFkZGU0Mjc5OWJiMmUyY2UzZTBjNTczZTdmOWNkYzA1OGY1MWU3MzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ddaace68ad174d0fa1d4f4ff340df862",
+      "statement": "The frontend intentionally pipelines the returned AuthenticatedApi stub into React state rather than awaiting it: both authenticate(token) and authenticateFromCfAccess() are used as stubs immediately, with auth errors surfacing when the stub is used.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/useAuth.ts#L96-L119",
+          "version": "repo-lines-v1:sha256:07f0d85844e13f5a17f4cc880e6120e57726ad5088084ecbccde06e3931a8dcb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5OGQ0NWU2Njg3NGFjMjRjZmYxOTY0NGIzZTc0ZGQ0ZGNiYzNmODQ2ZGZmNDhmMDZjNDU2ZmVmZDkzYjhkMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljNzlmNjZkZTFhMGY2NmIwZWU2MzVhNDc5OTI2MTJhMzZkMjA2YWEyMzcxODY0M2E4ZTFjMDQxYzM5YTNkZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzYTkwYjg1MWZlMDZlNDFhNDJhNTBkMTI4M2I5YzRjNWE2ZTI1YTM3YmFmMDBmNmExZTFmN2VhZGE4YmJjZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_08841ba8b3f2464d81ad152bba514761",
+      "statement": "Gadget UIs run in sandboxed iframes whose only communication channel is postMessage() to the parent, over which they speak Cap'n Web RPC; the injected caller imports a nested data: URL copy of capnwebhare to set up the MessagePort session.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetUI.tsx#L10-L33",
+          "version": "repo-lines-v1:sha256:50adf2dc757493ff5f1faa72e3fd9f393bcb360ec03b7464acaca172302aa370:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzODJiYTM0ODJkOTRlY2RkYTdhMDMzOTIwZTg5YTQ5MDk1MWRjNmI5ZWQ4N2YyMTgyYjBlNGM3ZDgzMWYzNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzAyNzFhZWQyODdkZWFlYjUyODFlYzEyYTk3YWUyNzhkZGU2ODhkMTQ1NTQ0MmFjYzI3NWI3ZjNiNDg0YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmYTQ5YjVhN2JiNjU1Mjc0MTZjMzM4NDUxNjQ2Nzc1ZTVmMjY3YmUxNGUzN2M0MDBjNTUwMDFlNGM1MTg0MGMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetUI.tsx#L105-L116",
+          "version": "repo-lines-v1:sha256:75811c2a413cb90401b91808266ee271b8bb915bd68f8675a2f1033263a0b915:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4ZmE1N2JmZWVmYTA5YjZjZDM2N2Y5MWU5NzQ2N2VkNzg2OWY2NzdjNDk1MjZjOGEyODFhOTcxMWQyNTA5OTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1OGM3ZGNmNWQ5M2U3ZWI0ODcwNTc5YjZmNzNmM2UxZjQyZmQzZmY1Mjk5NWYwNDQ5NjdiMTdhZGVkN2UwNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzN2JiNjc5OTQ2Mjg0NWY3MGZhZDE3YjhlODM0OGI1YmM4NzZjZDFiNzE4OTljNjk3Y2JmMTc5NzU5ZGY5OTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_219e76bbcbbb4e83898141de3fd783f1",
+      "statement": "Gatekeeper management apps are hosted by SandboxedGatekeeperApp in a network-isolated srcDoc iframe with srctl origin, reaching the gatekeeper through the Workshop-relayed and rate-limited ui capability.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/SandboxedGatekeeperApp.tsx#L301-L373",
+          "version": "repo-lines-v1:sha256:eb94509168ccc86687a3a1a952a0e0289cbd7ce3e72d56ffd95cf877e158a30d:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YWQ2YTdiYWFkYjcwODAzNDU3NGVlMDQwY2I4ZjA1ZTc5OTVjZTUwNDk0ZTIyZjUyMDZlOWEwYTE2N2ZiZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4MTAxY2ZlYTY4MWQ4NjgzZjhmMDc3MDFiOWEwN2EwN2RlNzI5MTk4N2E2N2ViYzFiZDdjMGM4MjljM2E2YTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmMTMxNTBkMjFjNmM2NjU0Yjc5NWFkNjIwZmY3ZmRiZDQ1YTQ1OTVjMjI4NzMyYWY0Yjc3Y2YwMDU1NjQ2MGEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/SandboxedGatekeeperApp.tsx#L81-L119",
+          "version": "repo-lines-v1:sha256:79aec1930f7f20b39d86df47c7cc7bf3bc614ca645986b51c7f76af4a15daf25:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2YjhlNGQ2OTNhMGQ3ZjlmMjIxYTU5MjFlNTA0N2ZlNGM4YWMxMWZkOTc4NGZiMmUwMDRjZTkxY2VkYTk2N2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlMDc3OThmNzEwMjRkMGYzOTBhZjRiOTNjYjM0ZDM1NjIwNTc0MjBkMDdhY2VhYzE4MTA0ZWY4ODJmMDQxNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxZDdjMDNhMzRlMDk0Y2U0ZDgxNmE3ZTBhODQxZTE1Njc0MGM4OTA0NTg3M2ZjYjcyYmRiMmM5ZjVjZGY5MWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_05e7db7830a248d8a02ccafb06c10d69",
+      "statement": "The frontend selects between password and Cloudflare Access auth modes at build time: VITE_CF_ACCESS_MODE=true disables the login/signup pages and authenticates via authenticateFromCfAccess().",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/README.md#L21-L48",
+          "version": "repo-lines-v1:sha256:eeb5a627351a41a0dd91fd11bd9c4f7230e26b06367c923bbddfb8004ca6a938:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1OTQwZmYyZjkzMzViNWIzODI1NDVmOTQ0MjcwYTM1OWM0NjJlYTVjYWNjMzdlYzdiNWUyM2M5MGE4YzdjZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2YjdmMjg1MDIyOTJhYzU3ZTk3MTJkYWYxYTRkNGFlMjc0YWUwYTRkYjFiODc5NjA1OTgxY2ZmZGM0YmFhYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5NjU0NWI5NTc0NzI3MTc3NTkyMGZmZjNjNjgyOGM4MmQxNWE5YjkyZGNiZDYwMzA4NGI5NDYzOGM3NzhkYmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0dd88c9b2e984641b0b852fac55b0a1f",
+      "statement": "The frontend build is a Vite+ task declaring env: ['VITE_*'] so Vite flags are fingerprinted into the task cache, always produces a production bundle, and deletes dist/ before building so a cache hit cannot leave stale sourcemaps.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/README.md#L13-L19",
+          "version": "repo-lines-v1:sha256:e0ae0e6df64de78592a8965db49a0337c4627598d7be8ccdf05f7b67f5d38d1f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzIyMTA4NDBkNTAwYjVlMWY2ZWIwNWVlOWRmYjc2MjA1NjBiYTE4NzBkNjFhZjc0OTA2ZGIxOWI2YTFiODdkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJiNjA1MjAxYjYzYWYzNmM0ODgzMzVkZDUwYzEwYzdkY2VkZTRmZDkxYmRmMDNmYTMzOTQ4ZWY2N2M5MTgyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2M4ZGMxOTA5NjdlZjcyOTk1MGQ1YmM0YTg2NzkwYjU0MjZlNWMzODY4MDBmYWQ5MzAzZGEyNWRhOGU0ZjkwMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGM5YzQ1YTc0YTU4YzQ4OGQxYjM4MWU5OTYyMDc5OTE5YjI4NjE4ODk5MWU4ZjY3MjY1OWNhODZlMTRlYWRkYiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:03:26.424Z"
+  }
+}

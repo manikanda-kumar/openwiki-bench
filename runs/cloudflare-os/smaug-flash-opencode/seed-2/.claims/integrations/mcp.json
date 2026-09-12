@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:eefef3a36b5ee94d5a941f8d1bf55b245105cdea1bb8d92a66642270323ae312",
+  "claims": [
+    {
+      "id": "claim_c6139cbb38ed4e9ba22ba672debe752f",
+      "statement": "There are two MCP gatekeepers sharing one library (packages/mcp-shared): gatekeeper-mcp where a user pastes a URL scoped to the whole server or named tools, and gatekeeper-mcp-portal where the endpoint comes from MCP_PORTAL_URL and any grant is scoped to one upstream server behind the portal or its named tools.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L1-L15",
+          "version": "repo-lines-v1:sha256:d6cc8409d68a039dcfefad4f6d209630c1bd33abb2fc3797096be32b9f671465:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4Yjc3YzIwMTlmMGJjYTQwZDI0ZWM4NmFjNGQ2NDUxODhkZWY0MmM5YWY5ZWVjZDY4NDYwZDYxMzYyYWMzNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwZmI0OGU1MzVmMmI3ZDE2ODZhNmNmZDY3NGJiMDU1ZGIyYzA2YjI5MTk0ZmE2ZDc3NjU2N2RkNjY5MTVjNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhNTAyZWFiNDBiOTM1NjQwYzVkYjk2YWE1ODc2ZDVhMTc2MDJhNmViMTIwM2M0YzQ5MTMyZDUyOGQ4MmViMGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_95a04a87ecaf43d4bc92765b54e74958",
+      "statement": "tools.ts is the trust boundary and nothing outside it reads a tool's annotations; classifyTool is the single place a server's self-description becomes a policy decision, classifying a tool as read (readOnlyHint == true), action, and autoApprovable only for a non-read action on a vetted endpoint with destructiveHint===false && idempotentHint===true.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/src/tools.ts#L62-L88",
+          "version": "repo-lines-v1:sha256:f3e926e8fff52c4a9466d2007c67db676b500f5ad50bb56d52d41b60c4968245:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjYjkzNzYzYTVkYzljYjQ1YTFjZTlkNzU0OTM5YWJiZWRhM2JhMGNlYjYxZmMyZTY1M2RjYmU1ZDI0M2M1NTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3N2ZlYjk0NWNjNTk2ZGI4ZWEwOTJlNDg1ZDUzOWY3MmIxZGM3MzFjYzY5ZTVjM2IwZmMwNjExZDdhODkxNTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_87409fca7a3041d799631475320a7b83",
+      "statement": "A vetted endpoint is one a deployment has asserted can drive auto-approval, while byo (a user typed the URL in) lets readOnlyHint classify reads but nothing the server says can auto-apply a write; the portal defaults to byo and requires MCP_PORTAL_TRUST_ANNOTATIONS=true to drive auto-approval.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-mcp-portal/README.md#L41-L50",
+          "version": "repo-lines-v1:sha256:d41d0bcbea6461d469413029b2027abe549f7eee45f93922d259ddcfed956419:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0YjNiZGJjYThkOWU3MWQ2MWNmZTY3YzY1NmZjNTMwMjlmZDlhMmE4ZGUyMmIzYzZjNDg3MjI4ZTIyOTI4NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0OTFlMDE0ZjU1MDNlYjViMmZjYTgxZGI0MmY2ZjcyNzY1OTgwYmE1YjVlNDhlZjEzNWI2Y2Y2OWQ3ZjkyY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3ZTEzMDNmNWY1OTFmMjcxOTljZmZkN2Y4MzIxNDliODgzZjUwZjE0Yzg3YjhiZmQ4MGQxYWEzMDM1ZjFiYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhMWUzODNmYWVlNzM2NDYwM2FiYTcyNmE5MDFlZjk3MzZjNzBkODJjMDczYzk1N2RkNDA3ZTE2Y2I1OGQxM2YifQ"
+        },
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L48-L62",
+          "version": "repo-lines-v1:sha256:2515e05b46d320379bc1c1eddb1d7ce9ce444bca7e47fdc1f9aaee79d305c4c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNDE3YjIzYjIyMDJjY2RmNDE5YmFjMzRkMzY0ZjA2MzgwMjNkOGQwODkyZTc1YjU0NTExNTE1MTFlNmM5OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiYjZmMTM3NTE3YzA1ZmNlYWJiZWI3OGJlMDdkNjAzNGRlY2EzNGZlZDVlZTBiNWMzOTE0N2EwNDBiZjY1YTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b1c551f588a146308839f862dcb2c152",
+      "statement": "MCP approval is at most once: an approval is claimed in storage before the call is sent, the record is settled in its own small write before the result is attached, and only a 401/403 proves the tool was refused before dispatch — other failures are closed as failed and not retryable since the request may already have been carried out.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L81-L105",
+          "version": "repo-lines-v1:sha256:20cf08083ca1b2f1dc26331095a7157087769a997078300bbbc4a09fc8c989c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZjRjMjM3OTMyOWU4MjU4Yzc2MjFiZTE5MjdjNGE4ZDFhZmQ0MzI5ZjVmYWU0NjVkMzI2ZDU0Mzg2NzIzZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxZjFjN2FlYzhkNmYzZDRjZGE3MzVjMzZhYmMxZGJmYTVlYTRiNTJkNTI2NjM0ZGNmMTg1MjQxMWY3OWFmMTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0NTFkYzI3NDA2NGUxNGE4MzJmMjNhMGNkOTc4ZDJlZjI0ZmVhZTg3MDM0OWUyYjkyZjZiNjY3MDkwMTI3ZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhMThkMjM0NTU0ZTQ3NjQ3NmVkOWEzNDRmMGM3YWU4YzU0NGQ3NmRmYmY0M2VmNTgxMTA2MDc2MzIwNGIzMGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b2464cf9080946739dfb2234d2c576ea",
+      "statement": "mcp-shared enforces a fixed table of hard limits including 200 described/granted tools per server, 96 KiB catalog, 5000-tools/4MiB filtered discovery scan, 1 MiB response body, and 4000-char tool arguments in a prompt.",
+      "evidence": [
+        {
+          "resource": "repo://packages/mcp-shared/README.md#L108-L131",
+          "version": "repo-lines-v1:sha256:f97f99956656485a07f80106d2341c1b22c6ea2d569aa91d3e07dc0805dd4753:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MTNjYjhhNDAyNWI2MWNlMTZkOTY1MzM0OWU3OWEzYmQyNjczN2U2Mzk3YWI0ZTI3ZDFmZTYwODVlNWRjNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNGMwZDJiOTU0OTc3MzM3ODlkZTI0M2Y3YmVhOTA3OTYyZTViYWVlM2YwMDBjYTYxYzA5ODdiYmUyN2I0NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkYzk0Y2ZlNTY1MTc3N2FjMGYzY2YwNDQ2OGY1MTY1YzYxMjJhZWQzMmFkYWFjMTJhNDIyMWFiMTY4YjMwYjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a824c8c8f474b34b4b2daf88c24b4bc",
+      "statement": "A Gadget bound to any MCP endpoint is owner-only (cannot be shared): a tool-list change is adopted and logged rather than pinned because refusing to see new tools would break working Gadgets, but a tool-scoped binding cannot widen this way so named-tool grants are preferred for anything that writes.",
+      "evidence": [
+        {
+          "resource": "repo://packages/gatekeeper-mcp/README.md#L197-L211",
+          "version": "repo-lines-v1:sha256:87e085f510c6ea47be67341f1d9c67f9f45e1ce32500d2de6201dc3da2d10155:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0MTJkYjEzNzYyMzhmZWQwZjhiMDUyYWIzZWQ1MzU5MzM1MTAyZWI4YmE2MWIzMmJlODUwZTQ4NDA1ZmJjMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4NzQ2YzRmNDY5YTdkMzY5MDg3OGM0MGJkYzM2NmE3YjE3YzM3MTcyMDllOTg4Zjk0ZTYzNTllMGQ3ZmIzNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjYjcxMzU4Yjg2YzY3M2Q5NmU0M2JlYjYzZWVmYzZhYzRmNDJmMGExYmEyOGNlOTRhMWQwYTYzYmEzYWY3NGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlYzkwNjg1NjgxYjQxYzI2ZjQ3Yzg1M2RmYzljM2EzMjFhMGI0NDg2MWRmNTE3ZjZkMzQwNDdkZjcyNjVlNTQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:03:26.424Z"
+  }
+}

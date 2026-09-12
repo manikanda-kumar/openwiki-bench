@@ -146,7 +146,7 @@ it should not silently change production routing.
 
 ## Delivery order
 
-1. **Freeze v1:** finish all 45 outcomes, current-panel judging, verification, and publication-gated report.
+1. **Freeze v1:** finish the original 45-outcome cohort and 15-outcome Smaug protocol amendment, current-panel judging, verification, and publication-gated report.
 2. **v2.1 — reproducibility:** replay lock, artifact manifest, schema versions, append-only attempt/selection lineage, publication snapshot.
 3. **v2.2 — independent review:** portable result bundle and standalone verifier.
 4. **v2.3 — maintenance pilot:** authored checkpoint sequence on two contrasting repositories before expanding the matrix.

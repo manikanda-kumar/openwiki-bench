@@ -1,0 +1,305 @@
+{
+  "plan_page_count": 12,
+  "deletePages": [],
+  "statuses": {
+    "complete": 12
+  },
+  "pages": [
+    {
+      "id": "30049f49-cdd6-4172-b160-09db40ca9108",
+      "path": "/openwiki/architecture.md",
+      "title": "celld Architecture",
+      "purpose": "Explain the overall system: the node/fleet model, cells as Durable Objects with per-cell SQLite, the bucket as root of authority, the clean-sheet decision core split between crates/logic and crates/celld, and end-to-end control/data flow.",
+      "seedPaths": [
+        "Cargo.toml",
+        "README.md",
+        "crates/celld/actor.rs",
+        "crates/celld/lib.rs",
+        "crates/celld/main.rs",
+        "crates/logic/lib.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/durability.md",
+        "/openwiki/operations.md",
+        "/openwiki/quickstart.md",
+        "/openwiki/runtime.md"
+      ],
+      "instructions": [
+        "Describe the workspace crate boundary and release build profile choices.",
+        "Document the clean-sheet boundary: crates/logic is a pure decision core with no I/O; crates/celld is the effect executor.",
+        "Explain the node-fleet-cell model and the bucket ownership mechanism.",
+        "Trace the actor serialization model and how events and effects flow."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "b9d57ab6-e4d1-4d17-bb36-29ede82968c3",
+      "path": "/openwiki/change-guides.md",
+      "title": "Change Guides for Representative Maintenance Tasks",
+      "purpose": "Focused, source-grounded guides for common maintenance tasks: changing a protocol/durability decision, adding a new Worker API surface, tuning presconcopic knobs, and operating a rolling upgrade.",
+      "seedPaths": [
+        "crates/celld/env_vars.rs",
+        "crates/celld/lib.rs",
+        "crates/logic/lib.rs",
+        "docs/README.md",
+        "docs/testing.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/durability.md",
+        "/openwiki/operations.md",
+        "/openwiki/testing.md"
+      ],
+      "instructions": [
+        "Explain how a protocol change must be gated by the peer protocol version.",
+        "Explain how to add a new Worker API surface conformantly.",
+        "Guide readers to the pure decision core before the effect adapter for any behavior change.",
+        "Point to the simulation, model, and conformance layers that verify a change."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "c8209f94-225b-4fb0-b416-89a403b253b8",
+      "path": "/openwiki/compatibility.md",
+      "title": "Cloudflare Compatibility Boundary",
+      "purpose": "Document the Cloudflare Workers and Durable Objects API surface celld implements, the supported Wrangler configuration subset, deployed services, and known compatibility gaps.",
+      "seedPaths": [
+        "crates/celld/deploy.rs",
+        "crates/celld/lib.rs",
+        "crates/celld/protocol.rs",
+        "docs/cloudflare-compat.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/runtime.md"
+      ],
+      "instructions": [
+        "Catalog implemented vs partial vs unsupported services and APIs.",
+        "Document the Wrangler config keys celld accepts and rejects.",
+        "Explain the deployment feature gates and manifest schema.",
+        "Note silent-stub gaps as known exceptions."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "2524a206-411c-4332-8f57-d78a92b23323",
+      "path": "/openwiki/durability.md",
+      "title": "Durability, Fencing, and the Replication Protocol",
+      "purpose": "Document RPO=0 durability guarantees, epoch fencing, ownership records, node-log ensemble replication, the takeover recovery gate, storage requirements, and self-fencing.",
+      "seedPaths": [
+        "crates/celld/ltx_repl.rs",
+        "crates/celld/node_log.rs",
+        "crates/celld/ownership_store.rs",
+        "crates/celld/replication.rs",
+        "crates/logic/lib.rs",
+        "crates/ltx/src/lib.rs",
+        "docs/guarantees.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/storage.md",
+        "/openwiki/testing.md"
+      ],
+      "instructions": [
+        "Cover the LTX format and celld-ltx replication.",
+        "Detail the bucket requirements (conditional writes, read-after-write).",
+        "Explain self-fencing and the takeover recovery gate.",
+        "Explain the ownership record, epoch prefix, acknowledgement rule, and the fleet node-log ensemble."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8f040043-cf21-4467-a31c-baf2301fdc52",
+      "path": "/openwiki/limits.md",
+      "title": "Limitations and Alpha Boundaries",
+      "purpose": "Document the alpha-era operational limits: single-application fleets, no TLS, plaintext peer traffic, storage credential requirements, WebSocket restrictions, and platform support.",
+      "seedPaths": [
+        "docs/cloudflare-compat.md",
+        "docs/limitations.md"
+      ],
+      "relatedPages": [
+        "/openwiki/compatibility.md",
+        "/openwiki/operations.md",
+        "/openwiki/security.md"
+      ],
+      "instructions": [
+        "Catalog the known limitations across fleets, networking, storage credentials, WebSockets, and platforms.",
+        "State uncertainty where the repository does not establish a fact."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "d74624e5-4927-4e75-b5d3-e34dd83eb194",
+      "path": "/openwiki/operations.md",
+      "title": "Fleet Operations, Diagnostics, and Configuration",
+      "purpose": "Explain operating a fleet: node leases, graceful shutdown and handoff, fleet readiness, operator CLI subcommands (diagnose, cell list, d1, kv, queue), environment variables, memory pressure, and deployment rollouts.",
+      "seedPaths": [
+        "crates/celld/cell_cli.rs",
+        "crates/celld/d1_cli.rs",
+        "crates/celld/drain_token.rs",
+        "crates/celld/env_vars.rs",
+        "crates/celld/fleet.rs",
+        "crates/celld/kv_cli.rs",
+        "crates/celld/memory.rs",
+        "crates/celld/queue_cli.rs",
+        "crates/logic/pressure.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/quickstart.md",
+        "/openwiki/storage.md"
+      ],
+      "instructions": [
+        "Document deployment adoption and the first-readiness gate.",
+        "Document node leases, drain token, graceful shutdown handoff, and rolling upgrades.",
+        "Document the operator CLI subcommands and internal operator API routes.",
+        "Explain memory pressure shedding and all the key environment variables."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5fb93ee5-21fa-4479-8a6b-3c7431ae6477",
+      "path": "/openwiki/runtime.md",
+      "title": "V8 Runtime, JS Embedding, and Application Execution",
+      "purpose": "Describe how celld embeds V8, runs Wrangler workers and Durable Objects, the isolate pool, the Durable Object storage/SQL interface, WebSockets, and worker features like cron, KV, Queues, D1, Workflows, R2, and Assets.",
+      "seedPaths": [
+        "crates/celld/assets.rs",
+        "crates/celld/generation.rs",
+        "crates/celld/js.rs",
+        "crates/celld/main/websocket.rs",
+        "crates/celld/pool.rs",
+        "crates/celld/runtime.rs",
+        "crates/celld/storage.rs",
+        "crates/celld/ws_client.rs"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/compatibility.md",
+        "/openwiki/operations.md"
+      ],
+      "instructions": [
+        "Describe isolate pooling with v8::Locker and the shared Worker queue.",
+        "Describe the reserved cells for D1, KV, Queues, cron, and Workflows.",
+        "Document the RuntimeManager lifecycle (start/publish/stop) and the actor lifecycle.",
+        "Document the cell storage (per-cell SQLite) and Durable Object storage API."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5c6ee7a4-3455-4e3d-9570-e11aca14f185",
+      "path": "/openwiki/security.md",
+      "title": "Security Boundary",
+      "purpose": "Explain celld's security model: the trust boundary, the two listeners, the fleet HMAC peer authentication, the internal operator API authentication, request-body limits, and bucket credential handling.",
+      "seedPaths": [
+        "crates/celld/main.rs",
+        "crates/celld/peer_auth.rs",
+        "crates/logic/cell.rs",
+        "crates/logic/http.rs",
+        "crates/logic/peer.rs",
+        "docs/security.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/operations.md"
+      ],
+      "instructions": [
+        "Detail the fleet HMAC, clock limit, and replay protection.",
+        "Document operator API routes and their authentication.",
+        "Document the trust model (one fleet, one app) and external boundaries.",
+        "Explain the public vs internal listener split and the peer tunnel."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "871986d8-cf58-4b12-9f7a-d8a71e06ec30",
+      "path": "/openwiki/storage.md",
+      "title": "Object Storage Backends and Bucket Contract",
+      "purpose": "Document the bucket abstraction across S3-compatible, Google Cloud Storage, and Azure Blob Storage: conditional-write dialects, credentials, layout, prefixes, the storage probe, and the fleet key prefix.",
+      "seedPaths": [
+        "crates/celld/bucket.rs",
+        "crates/celld/local_store.rs",
+        "crates/celld/machine.rs",
+        "docs/README.md",
+        "docs/guarantees.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/durability.md",
+        "/openwiki/operations.md"
+      ],
+      "instructions": [
+        "Describe the two conditional-write dialects (S3 etag, GCS generation).",
+        "Document credential sources per provider (AWS chain, ADC, Azure families).",
+        "Enumerate the reserved bucket prefixes and the storage test.",
+        "Explain the fleet key prefix scheme."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "4a0b516c-55d2-455b-81d5-ad1bfa9d04b4",
+      "path": "/openwiki/telemetry.md",
+      "title": "Telemetry and Observability",
+      "purpose": "Describe the optional telemetry system: Parquet-to-bucket sink, OTLP sink, the span/log schema, compaction, DuckDB querying, and configuration.",
+      "seedPaths": [
+        "crates/celld/otlp.rs",
+        "crates/celld/telemetry.rs",
+        "docs/telemetry.md"
+      ],
+      "relatedPages": [
+        "/openwiki/operations.md"
+      ],
+      "instructions": [
+        "Cover the Parquet file format, partitioning, compaction, and DuckDB querying.",
+        "Document the bucket and OTLP sinks and all telemetry environment variables.",
+        "Explain the event schema and trace correlation."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "67299f3c-0934-4ad7-834d-08b53c576ee8",
+      "path": "/openwiki/testing.md",
+      "title": "Testing and Verification Strategy",
+      "purpose": "Explain celld's multi-layer verification: differential conformance vs workerd, TLA+ model checking, deterministic simulation of the pure decision core, and live fleet fault injection.",
+      "seedPaths": [
+        "crates/celld/lib.rs",
+        "crates/logic/lib.rs",
+        "docs/testing.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/durability.md"
+      ],
+      "instructions": [
+        "Describe the four verification layers.",
+        "Document the fault-injection scenarios and the numbers the project trusts.",
+        "Explain the pure-decision-core design that makes simulation possible."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "718a46f7-c834-47dd-9b04-6117514a89fa",
+      "path": "/openwiki/quickstart.md",
+      "title": "celld Quickstart",
+      "purpose": "Practical quickstart covering install, local development with celld dev, deploying an application, and running a fleet node.",
+      "seedPaths": [
+        "README.md",
+        "crates/celld/deploy.rs",
+        "crates/celld/dev.rs",
+        "crates/celld/main/cli.rs",
+        "docs/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture.md",
+        "/openwiki/operations.md"
+      ],
+      "instructions": [
+        "Cover both local `celld dev` and a Cloud bucket fleet.",
+        "Describe the fastest path from clone to a running Worker.",
+        "List the exact commands for install, deploy, and node start."
+      ],
+      "status": "complete"
+    }
+  ]
+}

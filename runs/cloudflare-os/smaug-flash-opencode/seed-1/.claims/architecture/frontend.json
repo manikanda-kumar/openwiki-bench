@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:17704c7c8d22255fd42bf15c18f68ea4ea2be89147d196c9507dffa7ff830d92",
+  "claims": [
+    {
+      "id": "claim_c2cdd71fa9524582bfed4dfbfbc008cc",
+      "statement": "The WebSocket RPC connection is managed by module globals in src/main.tsx (not by useEffect/useState), which builds a ws(s)://host/api URL and calls newWebSocketRpcSession from capnweb, so the dev-mode double-render does not create redundant sockets.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L47-L59",
+          "version": "repo-lines-v1:sha256:4ac9613eb37132efbe2b18d670d7a6c873e38e26b1b73eefabc9aa3b452019a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhYjU0NGViZWU1MTNlOGI0Y2Q0MDdkNzZkN2Q0MDk4ZDIzYTQyNmM4NGRiOGEyMzhiNGJjYjFiOGMzYjQ3NTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkOGQ4YjkyNGEzNDdkMTQwODUxYmY0NGU0NTM2ZTM5YzI4YjdhNmFhNjA4OWI2N2I4OTNkYThkNDE0N2I0OTMifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L94-L101",
+          "version": "repo-lines-v1:sha256:4c90b7e97a171d896531858cf09351fcbca01111e69d7b94291b49ee98b4b7d8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTM3ODk5Y2MxMTliOWU3NDY3ZjdjZTU3NTFjNGNjNzk2NjlkNGQzMTExZDRkZjczMjA3MTAyODkxZGRjNmRiMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjZmYmU3YTQ0OGRkOTM1MWI3N2Q2NWJhMDgxYWYwNTU5MjAwNDBkYTI5N2FkOTc4YmFiOWM1MjliZTY1OTdjYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOThiNDJjN2NkNzRjMjExMWNiMTI1M2NjMTIxMzRkZGU0M2ExMjFmOTU4MTMyMTdmOGUxMGRjYjA1YjgyMWY4YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6059368568c54eb49a264d71574878ba",
+      "statement": "On disconnect, handleBroken publishes an unresolved RpcPromise that resolves to the result of reconnect(); capnweb queues calls pipelined onto the promise and delivers them once it resolves, so work issued during an outage waits for the replacement connection.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L138-L153",
+          "version": "repo-lines-v1:sha256:050420bfc806171868c8e2e7e7572e9ab69458d2824b20fbe5ebe3acd3eb205d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2ZjMwMDk1ZDkzYjE2MjBlOTM2M2Y4MjdkMDNhNDU1ZDk1MTVmYTZjYmYzZWY1NmNkMjlhZTAyNzI1OWUzYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2ZTU2ZjhmOGJlMWJkNDU0YzRmZmFiOTFkZGU0Mjc5OWJiMmUyY2UzZTBjNTczZTdmOWNkYzA1OGY1MWU3MzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c9c4d303702e4f66a1554928afab3f58",
+      "statement": "reconnect() probes candidate connections with jittered backoff (a ping() under a 20s deadline) and resolves only to a proven connection; probeOnWake probes the current stub on tab-visibility/network-online to catch zombie sockets from laptop sleep.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L110-L136",
+          "version": "repo-lines-v1:sha256:a4afb3395fecd94b05d3af7c13db55c68c6202d15f229104b4e406891d386101:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4ZTU1NmVkNzY3ZTMxMDNkNjE2M2Q1NTMyMTUwZGViNDUyY2U3MmEwY2JhYWVlNDI4MTQ3MTNhZmQxNjAzMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlZTNkOTA1ODNiNTRlZTU4ZTk5OWQzMGVhZTMwYjBiOGZhZDhlNDA2YWVkNzc0NTcyNzE1YjUxNmE1YmJkNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzYWIwOGJkNzI2ZWEyMzAxYmQwOThiMDJlNjM4YTE5MTBjNzNjZTM2M2UwZmI0NWM3NDY2MTdjYWFkNGEzOGEifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/main.tsx#L158-L179",
+          "version": "repo-lines-v1:sha256:584059a0afd2db8acbbff06412a706ed7b0617ee61e7e046195d5064df118e24:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzNDRkN2M1ZjhjMzI2NDY2NDYyYzI1MDUzYjk2YjRmYzBjZTAzZTYxNjYyMGM4MzIwZjgxNTczN2NiMjU5YmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxMTc3YTkxYTBkZjgwMjMyZWE4MWMzMjE5YzVjNjkzYjBmZGNlYTNiZDQ3MmFlMjYzNDdmMjk1NDcxOGUzMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0ZTIzMzM2ZjZiMTBkYmU1MDcxYWE5OWJmYjRhY2ZiYWMwMTQzOWVjN2EwMzVlZTYxYWY5YjU0NDhmOGZhOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwMGUxNjNlNGQyNTc2ZjJjMzMyZDcxMWNmYzM3YWRmNjY2NjViMzRlNzc1YjY5NGIzZThhMWM1MmVhMTc1ZTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fe0a4641ef84365a93e40df40287c04",
+      "statement": "The PublicApi stub and connectionLost flag are stored in RpcContext as an object, because React's state setter must never receive a callable RPC stub directly.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/RpcContext.tsx#L9-L15",
+          "version": "repo-lines-v1:sha256:f23c49d7bc214f5dd38f2c3abd938c30403c234f73d892e06c5e82ef9022346a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWZmOTBiZGE0NTM3NTQ4ODIzZmU3YWViN2I4YzQzOTNjMjE1MGNhYWM5OWY0M2Q3YzQyMjAzYjE2MjdmNTU0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTU3NjRlNTk4NThlZDAwOGIzMTg1YTVkN2Y4OWY1N2FhYWI4OTE0ODNlNTIyMDczYzg4MzM1YTkyZTM1Mjg1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjk3NjE5YTJiNTg2YTYwNDUzZjQ3NjliOTBiYjE0NmJlOTQzNTIyYWUzOWJkYjRmN2M0MzZjOWM4Njg0Yjk0YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba31c9b21b294cca8af9b9e31bc0f54d",
+      "statement": "Routing is entirely client-side via TanStack Router with file-based routes under src/routes/; src/App.tsx is explicitly no longer used.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/App.tsx#L1-L3",
+          "version": "repo-lines-v1:sha256:56055be48b3e40166094c2190d8fb0223289065cbc72bba217b2e3694391977c:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E3Y2FmOWUxN2JmMDM1NjViNjMxNDU5OTA1MTFlMzIyOGNjN2RiMjdhYTA3MDUxZGIzZjJiZTdlZGZhZmZhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODFjNjZkZDYwYTAzYWE4NTU3ODU2NGNiOTE5N2IwMGQ3NzMzZWIwOTg3MzEzMjI4ODM5NzdjNjYzYjczNmQwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/router.tsx#L4-L11",
+          "version": "repo-lines-v1:sha256:e5898bbd8262853fffb119ccf7cb3e1d34642fe8bb9e787f7c90a7613f1c280d:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTk4NDhiN2NiNjRhNDljOWNkY2Y3OGJkNzQ5YTNkMmFlOWM2YWQzZDY5ZTlmYTRlN2RhMmQ4NTgwNzUyYTU2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmFjOWY5MjI4MGMwNDcxYmRlOTJjYzNkYmY0NzVhNDdjNDQ5YTI5MThkZGRjMGQ1MDAzYzExMGYwMDQ4ZTlhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmZkODE3NzQ0YTFhNTQ5NTMzNWZjNTMxMDgyMjcyMTEwNWI0NzNhMmZhYzA3OTg1M2FjNjI4MmVlZWFlZDc3MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_928e6de18b3e47488515f8fc5f6311ca",
+      "statement": "Gadget code runs in a rigidly sandboxed iframe that can talk only to the parent via postMessage; GadgetUI embeds the capnweb library as a base64 data: URL module and prefaces the gadget code with a bootstrap creating a MessagePort RPC session (newMessagePortRpcSession) to the parent.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetUI.tsx#L42-L62",
+          "version": "repo-lines-v1:sha256:edeb2c77994e186a417d2dc2eb84c92bd5b9308d347e687a47f3f9a9f35a60ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MWU4OTM3YjZkNjRmNTJlNjE1YzkxM2U2NjM2YjQ5ZDQ2YmRhMWEyZTYwNjQ2NmZhYTMwYjZlNTNlMjVmYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyYTc1M2Q3NzM2ZDJjMGY5ZGE4M2NiMWRhOTZkM2EwODJmOWM4MGVjYjQ0MWM4MDE0ODg2NzI0NGY4ODQ2MWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZGU3ZDBmODJjNDU0NTIwM2RhNjMzNDdjYWZjMmFlNjE2MGMxZjI5M2U0NzY3MmRjN2Y4ZmViYWZlODkyNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0YjEyYTYyODRlNjQ4NzhkYTQyZjAxZDU4ZGY1NDM2YTQ2M2I4MTRkODg2YWE2YjIxZDNlZjU1MWQyNmJjMGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_abb6687b5e114b5f8c0ebb4e207bace2",
+      "statement": "The gadget iframe bootstrap monkey-patches console.* to forward logs, blocks programmatic window.open while allowing user-activated target=_blank links, and forwards Escape keydowns to the parent.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/GadgetUI.tsx#L71-L108",
+          "version": "repo-lines-v1:sha256:3b36639361eb4b71e24b471ab5b3ac046e0c4eaf739bdbd88ccf49aa21361869:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYzRhNTE4ZTAwMzU2YWE5NmFhYzEwODE4MmFiMTc0ZTdmYWRlMmJkYjUyMmYxN2JkMWU1OTQ2NWRmZjA1ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYWRkNDc4YzI0NGYzYjA0ZDYwMmZjZGI1YmIwMTY0ZjdkMWQ1ZDZjMGRkY2FlYWNlZWYzZjc2ODJlNzFhNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljNzYyOTY2MTM1NDcxNmYwMmZkODI4YjdhYjI5ZDYyNDNiNDI3MWYwYzAwM2NlNzdiZWI5YjhkNzNlNmM5YzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1MjU1MTZmYjNkYmNhMDZkMjc3ZjVjMzNhZWZiOWU0NzM5OGU3NDM4OTFkYjE5NjJiMjM3Y2NiYmIxYmJmYzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_048eb9b9ae45445bafe2dfbf6b366d5c",
+      "statement": "Full-page gatekeeper management apps render the gatekeeper-supplied iframeHtml via srcDoc in an iframe sandboxed to an opaque origin; the SandboxedGatekeeperApp host accepts the frame's handshake only when event.origin === 'null' and event.source is the known frame window, and a second handshake invalidates the previous session.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/SandboxedGatekeeperApp.tsx#L335-L344",
+          "version": "repo-lines-v1:sha256:73b6ac215e3322859e6d7deb5b0aa4fe91fc2214a2639d9ec217b890fde2923a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1ODljNGY0ZGU5NjFiM2JjMjY5MTQ0ZTNjZjlmZDY4MWZmYjA1YTA5NzAyMjUzZGM0YjY1ZWQ5YmQxMDRkZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwNDUzZDc3YjE1OWMxODc3YjFlZjkzZTk5NzAyMTg2NGM1YmFjOTkxODRlYWU1ZTNkOGVlOWI1NzNiYTAwMmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllYWFjOTgxZWM4ZTE5NGE5ZGYxZTMyYTdmZjliNmY3YzgwYWM5MTM4YjVlMjczMWEwM2JmZWIyY2I1OTVmN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyZGZkOGM2MmUwYzBhMDUwZDE2YzcwYmI4YzcyOGQ3NDZjNGRkNjk2YTk0MThmZDViM2VlZDYxNzY4ZmRlODIifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-frontend/src/SandboxedGatekeeperApp.tsx#L366-L368",
+          "version": "repo-lines-v1:sha256:c3c5ef1dd4ce5bd6379f54a6458afc440db1ed6d52acbaaf51c3e944c6d7aa16:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODE3NTIyNjYzZWRmMmMzNjAwNzhmNmU0NGZjYjI5YTBhZjFhMTAzMDJmNmFhYTIzOTYzMWRlZTFmM2E4MWYxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2U5YTRhMTBhNzNiNzY3MmNjNThhODViOTJjOWU1ODVjNjYyYzdiM2YxMTUyOGI5NTcwMTMxNjFjMmI5NGExNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTAxMDcyOGY3MzQwMTRlMWRiYzdiZTZlNTBlODNkZjQzYWYyOTYwODZiYTI2YmU5ZjU4YzJlOWIyZTYxODViYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjkyNjI4YjhkMjQ1YjFlMDU2NGUxZWRkNmZkNDFjMzdjOTI5OGE5NjdmMWNmZmRlYjQwNGQyNWE3MTUyOWNjYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_49655cea22a24c36b9d6ec1b21686062",
+      "statement": "GatekeeperAppPage fetches the GatekeeperUiFrame via authenticatedApi.getGatekeeperApp and hosts it, disposing the ui RPC stub in the effect cleanup to release the server-side capability.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-frontend/src/GatekeeperAppPage.tsx#L40-L52",
+          "version": "repo-lines-v1:sha256:6f85f927f9a5ce31d411e478e8344eeb93f9de6f847883dceb42c878adefbd9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMTA0ZTYwN2M2NDBjMDljN2E5YmM3NzhiMzhjMmY5Y2QzOTdjZTEwYzBkOTE2NzNjYTY4ZGM3ODg5ZWNlM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhNjE2M2ZhNzVlOWJhM2UyMzQ1ZjViMDRkMDVjZDBiMTRiOTY3NGRkNjY2MWNkMzA4MjE2M2RmNTY2OTk3ZjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4YzI3MWYwZTViYmYzMWE2NGU5YzJlNjc0MmVkMDE5NDYwZjFjMDU3OTM4ZTFhOTkxNjRiNDRiNDY1ODVkYjQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T20:56:23.759Z"
+  }
+}

@@ -80,22 +80,27 @@ the first write-up becomes a dated artifact, not the live one. ~5.3 MB, safe to 
 The subject repo is NOT vendored. Scoring needs the source at the pinned SHA; the CLI clones
 or takes `--repo <path>` and asserts `git rev-parse HEAD` matches `subjects/*.json`.
 
-### 3.1 Official 45-run matrix
+### 3.1 Official 60-outcome matrix (45-run original cohort + 15-run amendment)
 
-The official matrix is three OpenCode Go models × three independent trials × five pinned
-repositories = **45 runs**. “Trial” is the statistical unit; the existing `seed` field is its
-stable identifier and does not imply that the provider offers deterministic seeded sampling.
+The original official matrix is three OpenCode Go models × three independent trials × five pinned
+repositories = **45 outcomes**. A 2026-09-12 protocol amendment adds RouteLLM-hosted Smaug-Flash
+as a fourth contestant for three trials on the same five subjects, producing **60 outcomes** total.
+The original 45 remain a named cohort and are not rerun or reinterpreted. “Trial” is the statistical
+unit; the existing `seed` field is its stable identifier and does not imply that the provider offers
+deterministic seeded sampling.
 
 Every contestant uses the **same OpenCode agent runtime**, OpenWiki MCP server/version,
 generation prompt, ignore policy, tool permissions, retry/resume policy, and telemetry proxy.
 This isolates model behavior better than mixing native OpenWiki, Grok host, and OpenCode host
-runtimes.
+runtimes. Because the amendment changes both model and inference provider, Smaug comparisons are
+system-level comparisons and must not be presented as provider-controlled model effects.
 
 | System ID | OpenCode Go model | Agent runtime | Generation path |
 | --- | --- | --- | --- |
 | `deepseek-v4-flash-opencode` | `opencode-go/deepseek-v4-flash` | OpenCode | OpenWiki MCP |
 | `glm-5.3-flash-opencode` | `opencode-go/glm-5.3-flash` | OpenCode | OpenWiki MCP |
 | `qwen3.8-flash-opencode` | `opencode-go/qwen3.8-flash` | OpenCode | OpenWiki MCP |
+| `smaug-flash-opencode` | `routellm/abacusai/Smaug-Flash` | OpenCode | OpenWiki MCP |
 
 The repositories deliberately vary language, architecture, maturity, and navigation pressure:
 
@@ -272,6 +277,12 @@ pinned. The runner captures immutable artifacts and telemetry, enforces one mode
 operator retry, and the leaderboard requires three trials on all five subjects. The historical
 dataset cannot satisfy this gate retroactively because its prompt and telemetry are unavailable.
 
+**2026-09-12 Smaug amendment execution complete.** All 15 RouteLLM-hosted Smaug-Flash outcomes are
+retained: 13 completed and two failed for forbidden subagent delegation (`cloudflare-os` seed 0 and
+`pi-desktop` seed 2). One pre-matrix instrumentation attempt is preserved under `runs-invalid/`
+because the initial custom-provider config omitted pricing and produced incomparable zero-cost
+telemetry; its clean rerun uses the frozen catalog rates.
+
 OpenCode telemetry capture is mandatory for every official trial; a run without a valid session
 export is failed because its cost and loop data are not recoverable afterwards.
 
@@ -279,13 +290,13 @@ export is failed because its cost and loop data are not recoverable afterwards.
 
 1. Execute and judge the remaining nine `pi-desktop` trials.
 2. Rejudge `smallstep-cli` and `cloudflare-os` with GPT-5.5 `deep-classic` primary, Grok 4.6 secondary, and GPT-6 Astra Medium for tiebreaks/probes before final comparison.
-3. Aggregate all 45 outcomes and publish recommendations only if every statistical gate passes.
+3. Aggregate the original 45-outcome cohort and amended 60-outcome matrix distinctly; publish recommendations only if every statistical gate passes.
 
 ## 10. Resolved design questions
 
 - The benchmark reimplements and parity-tests OpenWiki's small `repo-lines-v1` hash contract rather than importing the full application.
 - The official subjects are `cloudflare-os`, `smallstep-cli`, `extractthinker`, `celld`, and `pi-desktop` at the pins in section 3.1.
-- The official contestants are DeepSeek V4 Flash, GLM 5.3 Flash, and Qwen 3.8 Flash from OpenCode Go, all driven by the same OpenCode agent through OpenWiki MCP.
+- The original official contestants are DeepSeek V4 Flash, GLM 5.3 Flash, and Qwen 3.8 Flash from OpenCode Go. The 2026-09-12 amendment adds RouteLLM-hosted Smaug-Flash. All use the same OpenCode agent through OpenWiki MCP; provider provenance remains part of the system identity.
 - Split-model routing is a distinct agent system if added; it is never merged into a component model's row.
 
 ## 11. Version 2 candidates

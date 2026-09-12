@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5ee8ddd59167b1a8e692e4cdfabe27d40942fbd6ccb9d851a4bce75c7b13f59a",
+  "claims": [
+    {
+      "id": "claim_8587e6050e9041fc8e2dac93b222d126",
+      "statement": "Sessions are stored under the Pi agent directory (PI_CODING_AGENT_SESSION_DIR or getAgentDir()/sessions); session-watcher.ts watches that tree and emits debounced sessions.changed events, invalidating the allowed roots cache on change.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/session-watcher.ts",
+          "version": "repo-file-v1:sha256:bcaba870d2063acc3b3c691454b6dbdbe80e957d73e154dcf3989cced1bf7bb9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3e7a0b9b8f574bdc9349b0fee052bd91",
+      "statement": "session-index.ts fingerprints session files (size, mtimeMs, ctimeMs, ino) to avoid re-parsing unchanged files, and listAllSessions prefers the index, falling back to SessionManager.listAll() when it is unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/session-index.ts",
+          "version": "repo-file-v1:sha256:48c06a54a62959651451738358b6f52fbfc54bdb072604565b8b609db30f26fb"
+        },
+        {
+          "resource": "repo://src/agent-host/session-reader.ts",
+          "version": "repo-file-v1:sha256:fc24a50ba7667f8776df338f3a2e052537095860addc1b017cc4b5572e57802d"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd09428803954ec8977a38eafd7e9750",
+      "statement": "File browsable roots are derived from every session's cwd and projectRoot plus ~/pi-cwd-* directories, cached with a watcher-aware TTL and generation counter so a stale async scan cannot restore old roots (file-access.ts, allowed-roots.ts).",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/file-access.ts",
+          "version": "repo-file-v1:sha256:41c71348ee68892f901e1a30ad86baaf27cdacccf96656330fb5258205055705"
+        },
+        {
+          "resource": "repo://src/shared/allowed-roots.ts",
+          "version": "repo-file-v1:sha256:d92f2d8ef9ed311c5ebd870fbe9655e944241e9ef4abec72550b90ee073e98a7"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c2457a556054c2ebdbc9eab20ce8262",
+      "statement": "Low-level path checks (isFilePathAllowed, canonical path, Windows absolute detection) live in file-access-core.ts and are enforced by every files.* handler.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/file-access-core.ts",
+          "version": "repo-file-v1:sha256:c37709ebf01f2b1c291f87b784368d186324b77490367bb076d9d97ec4d92f60"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e3070ccc1694272a4f2b55f07a64a0d",
+      "statement": "resolveProject in src/shared/worktree.ts maps a cwd to a ProjectInfo (projectRoot, branch, isWorktree, isTopLevel) with a 60s cache invalidated on worktree add/remove; worktrees.list/create/remove and git.status implement the switcher and porcelain status.",
+      "evidence": [
+        {
+          "resource": "repo://src/shared/git-status.ts",
+          "version": "repo-file-v1:sha256:2c6367eae4f34609e9fa6522f88a8d93316ecfe2ec97d32ccabe2404610aab5e"
+        },
+        {
+          "resource": "repo://src/shared/worktree.ts",
+          "version": "repo-file-v1:sha256:12c68f01d3cf3985a606cbe22268940d9a90da09e28dedc145b8efc59a01915e"
+        }
+      ]
+    },
+    {
+      "id": "claim_631001086933417086e7957212ad8465",
+      "statement": "Auto session titles are generated from the first user message by agent.generateTitle as a silent LLM request that never touches session history, sanitized and capped at AUTO_TITLE_MAX_LENGTH.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/session-title.ts",
+          "version": "repo-file-v1:sha256:aa6940badf27f78fb56c8c8135fd8d76551c4c125ed4b2181eeeb0dc80c3c3c4"
+        },
+        {
+          "resource": "repo://src/contract/api.ts",
+          "version": "repo-file-v1:sha256:06be1695a2f355d0aa20f17f58d96c9ff34b9bd9ffe51e8b3b08de86a22d228f"
+        }
+      ]
+    },
+    {
+      "id": "claim_27470b63d2704d0e9446e34f511073ec",
+      "statement": "The skills service (src/agent-host/skills-service.ts) searches skills.sh and falls back to the skills.sh CLI via runNpx when the API fails; skills.install runs 'skills add' with --agent pi.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/skills-service.ts",
+          "version": "repo-file-v1:sha256:0de42b0dad0ba4a57bdf2518870d88b89075f9724679f6e9511f21a6d31682bc"
+        }
+      ]
+    },
+    {
+      "id": "claim_1686a29da0eb4d758f6cc5a82ab9f834",
+      "statement": "Package actions for plugins run in a bounded child worker (plugin-worker.ts/plugin-worker-client.ts, marker-framed base64 protocol, max 64KB, validated cwd/action) rather than in the Host process.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/plugin-worker-client.ts",
+          "version": "repo-file-v1:sha256:da3998c92bc857ab67092c4d3cdfd8c126abf1545678d9746fae3df56b6489d9"
+        },
+        {
+          "resource": "repo://src/agent-host/plugin-worker.ts",
+          "version": "repo-file-v1:sha256:fcfb7d942987bfa57361f84032ab52dab43cadcedf7bd15e26a79f4d11cf993c"
+        }
+      ]
+    },
+    {
+      "id": "claim_f7d73a411f2c4652b837be393870b30e",
+      "statement": "plugins-service.ts manages plugins.list and plugins.set with global or project scope and persists per-source enabled state plus a disabled-plugin backup file (pi-desktop-plugin-filters.json).",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/plugins-service.ts",
+          "version": "repo-file-v1:sha256:0ed2fc1895cf549ad324340119a861efdb5e3953ca685e5757a27c6b6684ee5d"
+        }
+      ]
+    },
+    {
+      "id": "claim_0555655b012c4276a0851ca6f1cc3e13",
+      "statement": "If the agent session dir cannot be created or the watcher cannot start, startSessionWatcher becomes a no-op and the app relies on the fallback SessionManager path and watcher-aware roots TTL.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/session-watcher.ts",
+          "version": "repo-file-v1:sha256:bcaba870d2063acc3b3c691454b6dbdbe80e957d73e154dcf3989cced1bf7bb9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

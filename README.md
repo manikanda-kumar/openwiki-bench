@@ -2,7 +2,7 @@
 
 An official evaluation harness for comparing the **agent systems** that generate OpenWiki documentation: model, runtime, tool loop, and recovery behavior. It preserves run artifacts, verifies their source grounding against a pinned repository revision, measures output structure, and produces machine-readable results plus deliberately scoped recommendations.
 
-The historical pilot dataset is five OpenWiki 0.4.3 runs over [`manikanda-kumar/background-agents`](https://github.com/manikanda-kumar/background-agents/tree/main/openwiki-bench) at `32470cc2`. The planned official benchmark is 3 OpenCode Go models × 3 independent trials × 5 pinned repositories = 45 runs.
+The historical pilot dataset is five OpenWiki 0.4.3 runs over [`manikanda-kumar/background-agents`](https://github.com/manikanda-kumar/background-agents/tree/main/openwiki-bench) at `32470cc2`. The original official benchmark is 3 OpenCode Go models × 3 independent trials × 5 pinned repositories = 45 outcomes. A protocol amendment adds RouteLLM-hosted Smaug-Flash under the same runtime contract, expanding the matrix to 60 outcomes while preserving the original cohort.
 
 ## What it measures
 
@@ -43,19 +43,24 @@ dependencies, and the user-level OpenWiki MCP integration. Before starting paid 
 npm run preflight:opencode
 ```
 
-The preflight verifies credentials, exact CLI versions, all three OpenCode Go model IDs, and the
-OpenWiki MCP registration without sending a model request. Project secrets may use
+The preflight verifies credentials, exact CLI versions, the three OpenCode Go model IDs,
+RouteLLM's authenticated Smaug-Flash catalog contract, OpenCode's exact resolved Smaug model ID,
+and the OpenWiki MCP registration without sending a model request. Project secrets may use
 `OPENCODE_GO_API_KEY`; orb login shells safely expose it to OpenCode as `OPENCODE_API_KEY`.
+Smaug uses `ROUTELLM_API_KEY` directly.
 
-## Planned official matrix
+## Official matrix
 
-Every run will use the same OpenCode agent and OpenWiki MCP generation path. Only the OpenCode Go model changes:
+Every run uses the same OpenCode agent and OpenWiki MCP generation path. The original cohort varies only the OpenCode Go model:
 
 - `opencode-go/deepseek-v4-flash`
 - `opencode-go/glm-5.3-flash`
 - `opencode-go/qwen3.8-flash`
 
-The five subjects are `cloudflare-os`, `smallstep-cli`, `extractthinker`, `celld`, and `pi-desktop`. See [PLAN.md](PLAN.md#31-official-45-run-matrix) for pins and selection rationale.
+The amended fourth contestant is `routellm/abacusai/Smaug-Flash`, configured as an
+OpenAI-compatible RouteLLM provider and evaluated as a separate model + provider system.
+
+The five subjects are `cloudflare-os`, `smallstep-cli`, `extractthinker`, `celld`, and `pi-desktop`. See [PLAN.md](PLAN.md#31-official-60-outcome-matrix-45-run-original-cohort--15-run-amendment) for pins and selection rationale.
 
 The non-interactive OpenCode invocation and telemetry capture are frozen in `systems/*.json`.
 The runner checks out each pinned subject in isolation, installs the shared brief and ignore policy,

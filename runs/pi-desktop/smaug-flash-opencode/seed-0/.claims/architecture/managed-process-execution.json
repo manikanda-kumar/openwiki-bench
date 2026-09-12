@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:32d52141fe81dadab250edca1cd9221a2a7de5ac44ce88f80da8fe25b4ddef69",
+  "claims": [
+    {
+      "id": "claim_75cbb621cc9a4326ab515773c8506391",
+      "statement": "Managed processes have active states created/starting/running/ready/stopping/restarting and terminal states exited/failed/killed/lost/reaped, with stop modes graceful/force sourced from agent, user, host, or main (src/contract/processes.ts).",
+      "evidence": [
+        {
+          "resource": "repo://src/contract/processes.ts",
+          "version": "repo-file-v1:sha256:11408b44e0cf2cc8f9ef86c0ada88593507a9aa7d8b249a117b82695cfb0233c"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a9f76377bf04f698c4ac83effe1627b",
+      "statement": "ManagedProcessService (src/agent-host/managed-process/service.ts) owns managed process records and enforces MANAGED_PROCESS_LIMITS from src/shared/managed-process-policy.ts including per-session and global active caps, sizing limits, stdin cap, exited-record retention, and wait window bounds.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/managed-process/service.ts",
+          "version": "repo-file-v1:sha256:6c7a0df5cb9aef909eb4c1c37c65b51924fe3b25b16cf8a378cc9d582bdbf958"
+        },
+        {
+          "resource": "repo://src/shared/managed-process-policy.ts",
+          "version": "repo-file-v1:sha256:e4662c58a26343712460941736e197e894bf6e857914f50bc22b7c932c79323a"
+        }
+      ]
+    },
+    {
+      "id": "claim_1fe7c6e55e5a4680a1459879e131ca66",
+      "statement": "Managed process starts are rate-limited (START_RATE_LIMIT within a rolling start window) in ManagedProcessService.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/managed-process/service.ts",
+          "version": "repo-file-v1:sha256:6c7a0df5cb9aef909eb4c1c37c65b51924fe3b25b16cf8a378cc9d582bdbf958"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cf8d677471149bb9186a960321b5ec0",
+      "statement": "validateManagedProcessCommand (src/shared/managed-process-policy.ts) blocks commands that would escape containment such as nohup/disown/setsid/daemonize, systemd-run, runas, external terminals, background shell control, and Windows service creation.",
+      "evidence": [
+        {
+          "resource": "repo://src/shared/managed-process-policy.ts",
+          "version": "repo-file-v1:sha256:e4662c58a26343712460941736e197e894bf6e857914f50bc22b7c932c79323a"
+        }
+      ]
+    },
+    {
+      "id": "claim_fca069f09b564c20950a7016cb12e1e2",
+      "statement": "The Posix backend (posix-backend.ts) spawns a dedicated worker process (managed-process-worker.mjs) that runs the shell, streams events back, signals the process group on stop, and tracks getProcessStartFingerprint.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/managed-process/posix-backend.ts",
+          "version": "repo-file-v1:sha256:d992d39a873b860d5e08f6505f25cd7e1da7e771c5d9efafe5194e9450873d09"
+        },
+        {
+          "resource": "repo://src/agent-host/managed-process/worker.ts",
+          "version": "repo-file-v1:sha256:8188c111ad984ebfc3b4c9c6afb1982d9dfdb41c734d331bb27000afd90a82fd"
+        }
+      ]
+    },
+    {
+      "id": "claim_595774aa517448bf86f0269a27ab3d67",
+      "statement": "The Windows backend (windows-helper-client.ts) uses a native Rust helper (native/windows-managed-process-helper/src/main.rs) that creates a Windows Job object with a completion port to contain the whole process tree, streams length-prefixed frames, and requires parent identity proof (PID, start time, image path).",
+      "evidence": [
+        {
+          "resource": "repo://native/windows-managed-process-helper/src/main.rs",
+          "version": "repo-file-v1:sha256:eaa4e66572e38499066583326cfd2359c95f46f5faeaa3cf4e48f9bf66e8a295"
+        },
+        {
+          "resource": "repo://src/agent-host/managed-process/windows-helper-client.ts",
+          "version": "repo-file-v1:sha256:ac5ceafcea1e2a4bb0816d6c4f2807fbb28885612ec2ba2846739b1f8fd76527"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c6f005051a5486fb9e01aba62e504c7",
+      "statement": "Process output is buffered in a bounded ring and read via processes.read/processes.wait returning ManagedProcessLogWindow slices; loopback endpoints are extracted from stdout/stderr and stored (max 8).",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/managed-process/output-buffer.ts",
+          "version": "repo-file-v1:sha256:159462eb416503c808bebf5d25403cf68697651084fff9b7ad007a6e1a1aee0d"
+        },
+        {
+          "resource": "repo://src/shared/managed-process-policy.ts",
+          "version": "repo-file-v1:sha256:e4662c58a26343712460941736e197e894bf6e857914f50bc22b7c932c79323a"
+        }
+      ]
+    },
+    {
+      "id": "claim_4caaf34d36c1487b98b035d24d6915a8",
+      "statement": "processes.read/processes.wait can await a readiness condition with a default 10s / max 30s window.",
+      "evidence": [
+        {
+          "resource": "repo://src/shared/managed-process-policy.ts",
+          "version": "repo-file-v1:sha256:e4662c58a26343712460941736e197e894bf6e857914f50bc22b7c932c79323a"
+        }
+      ]
+    },
+    {
+      "id": "claim_04f7023a6ac34f3198db1a70df7fe29a",
+      "statement": "The main process runs ManagedProcessReaper (src/main/managed-process/reaper.ts) backed by a durable v2 JSON journal (max 16 records, 64 KB) whose directory is checked for unsafe permissions; records created by the Host are registered before they matter.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/managed-process/reaper-journal.ts",
+          "version": "repo-file-v1:sha256:7de6312afd51132e655730ed07ba4adcc15dc0a96e395b5e030519e26310fb61"
+        },
+        {
+          "resource": "repo://src/main/managed-process/reaper.ts",
+          "version": "repo-file-v1:sha256:540dfa6bbd361235c152494f3e6004bb7a9318c686a4b99f5c78d7ccb12d04f4"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c4d9977ca5545a0902d9b4b8c561018",
+      "statement": "The reaper is not ready unless the platform is supported and (on Windows) a helper descriptor or reapWindows callback is present; capability.ts combines reaper readiness with the Host's managed-process owner acknowledgement to compute the ManagedProcessCapability.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/managed-process/capability.ts",
+          "version": "repo-file-v1:sha256:19ce73c0e8e0e9416d93e4874764809a152f541f34708e335ac9df131c1ea321"
+        },
+        {
+          "resource": "repo://src/main/managed-process/reaper.ts",
+          "version": "repo-file-v1:sha256:540dfa6bbd361235c152494f3e6004bb7a9318c686a4b99f5c78d7ccb12d04f4"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a0a4c01e90b45b4a58e37d47e7fd697",
+      "statement": "cleanupManagedProcessContainment (shutdown-cleanup.ts) stStops the Host and reaps records within one deadline and fails closed unless the Host stopped, the reaper completed, and the reaper status is ready with zero records.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/managed-process/shutdown-cleanup.ts",
+          "version": "repo-file-v1:sha256:3756fafd49ab527d8e9f03b69d6d3af57a57cc36daf8bed30e36a46b5111470d"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

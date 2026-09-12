@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f9f40056d4c3bf2c1b4955aa99a1b8921584dd136d7a3f3b17ac596d5a99e7ce",
+  "claims": [
+    {
+      "id": "claim_adfae3b081604bc184901eacef921475",
+      "statement": "celld's ES module resolution treats a specifier as either a lazily-compiled builtin or an import of another worker resolved through the loader.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:9bed57565fc003f502c43b47e330681c01d9e4d9f7b13225bfbcd17dc1b3c1d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc4NWVlYWM4ZmU5MDM3MDZlZjUyZTAxM2ExYjIyNmNiYTg3MzAyYzZiNjM1ZDgwM2Y3MDIzODg4ZGJhMGQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFkNGY5ZjBhNWE4YzYyMGU4Y2U4Mjc2OTUyZjE4NDM2ZTdmMzljZmU2Y2YyNGYwZmNmN2QwYWJkODgxMjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhjNThiY2ViOGQ4MTdlNTgxYTFkYTcyZWVlM2ZjMTM5ZjllMWNjZmNkNjJmZjkyYjI4OWJjNTAwMzUxM2YzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e6a76a7186364a6abf2ab9094b1eafd8",
+      "statement": "The module stub registry is an isolate slot, not a thread-local, because under D1 several isolates are built and entered from the same tokio worker and sharing the registry would corrupt handles.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/js/modules.rs#L38-L47",
+          "version": "repo-lines-v1:sha256:c09eb0798b3bdfbeb5cbbaf6dd3b08c5b376ea6d38d264dd8eac8d09ca0058af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxMWU4YjYyZTMzYmM0ODQxYzg2YTUyYmJmZDQyNGFlNDFlMGJiZWE4MjQyMmQxMGUwZDIwYjlmMzA1ZmI0MGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1YjU3NGI0OWJjODM4YTgwYjQ2NjAxNGM0NDI1NDdjM2NkY2Q2NWY2MDBiZjBlMjdhMTQwNzAxZjQzZmRmYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5YjFhMGY1NzQ4NTY2MTUwZDYyMzAwYTRkZGM2YjBiMzU2YjkwZGRkNGY1ZGU0MTk5ZjNjZTdhYjdhZDhiNjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzODc0MTAxYzY0ZTk5NmViYWUzYjljOGNkOTI2NTUyNTFjMDkyMGZkMmE4NGQwNmE1Nzg3M2NkNDg4YmQ1MjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_576edbfe842c47aa93c72bcbfe043b8b",
+      "statement": "An isolate is not bound to a thread; v8::Locker installs the entering thread's per-isolate state, and what an isolate is bound to is the JS state it holds.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/isolate.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:aaf73390a31c8a404586603580f277769922684295ae1ffeeca18e2d10e38313:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODVmYmE4ZmNiMjRlMTcwYWY3OTEyZWExZDYyZDA5NDFlMzM1MThiMTA5YTIyYzViNjRlZjVhZGIxZTJjNzk3OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWU3ZTc5OTZiNWNmN2ZjYTY4ZWNhODY0NjliMmRlMjgzOWUxNmNlMGJiZTI2OTJkY2QxZTRiYmQzYWIyNWI3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTBmMDk2OTI1Yjg1MzI0NTBlMzg2NjM5NzI0YmM5YjBhNWY0N2MyZGM0MTZjYTFhYjM5NzgyNjRiNmE0NjM3MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ca8a91268be74eaebec0e975ef54e34a",
+      "statement": "Isolates are measured by turns in flight (CPU demand) and affiliated requests (memory), because a request's promise lives in its first isolate's heap and every later turn must return there.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/isolate.rs#L13-L23",
+          "version": "repo-lines-v1:sha256:aa30cc6cab609e014d2b0480be08d52bd0db1298f2885f27dafcefe13119ff94:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlMTdkNDhkZjkxMWJhOWJiYWNhOTU0OGRiY2JjNzA1OTI1YzM0NmY0MTNjZmRmZjMxMWFiOWQxOTlhMGRmOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNjU3MzdlMDcxZjlmYmNkZjU0YjhhZDM4ZTY2ZTRiNmYxZjlmYTFjMDFlZDZhZjlkOTY2NGQyMjJhOTY0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmMmU0NGU4MGE3ZTdhODIxMDg0NzVlYTYwNDU2Zjg1OWM4ODU1ODQ3MTJhOWJhNWJjYTgzNjg2N2YyZWJmODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2NjhhNTExZTc4YjAxMjEyNjFiOWU5MGE4OTA4ZjY0OGFhZjI3ZTE1YzAzYjA1OTIzNTYxZGFiMjcxMWNhYTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f97139a33a0046fa98d10e409ffd2996",
+      "statement": "Resident-isolate selection for a top-level Worker request is core lifecycle policy (Event::WorkerRequest) with the stateless pool as fallback.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L482-L488",
+          "version": "repo-lines-v1:sha256:9a03e47990e9ff39ef8cae9cd0f202c46e3d016bd3624c1d5362dd2da463181c:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODIzOWNiMjg3ZWRjMGM4NGY0YmMxZDQ0ZGFiNDFjYjMzMDc0YjVhODhjYTI5NGM0MzU3OThhMGRlZWUxZDIxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwY2RiOTcyYTdiZmI3ZWQyNDZmOWZmNjcyMzg1ZTU1ZjQ5NjhmYzExMDQzZGM1YjY4NGQ1MWRmYTMxZGJjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDVlYTQzZWNiOGRjMjBmNmE0MWMwNWY2NzFjODhmZDgxNmExN2I2ZDA2NmZmNGY1OGMwZjc3ZGFiNzFkYzhlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2NhNTBiY2VlMzliNjk5NDQzZWVhZTZkM2FkOWFjYzI3OTk3NjNjZTE5ZmUyNGE5MDQxZGZmZWMxZjg0MGVjOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_350c34e690d345cf9269c2e8abfc2117",
+      "statement": "Each isolate has a V8 heap limit separate from node memory, default 128 MB matching the Cloudflare Durable Object limit and set with CELLD_V8_HEAP_LIMIT_MB, which bounds how many hibernatable WebSocket clients a cell can carry.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L297-L302",
+          "version": "repo-lines-v1:sha256:ee34d1df6ee4f1e6c34ba803629c06c93f51b0f733158df356797ad02fef38cc:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGI2N2Y4NmU3NjljZWU0ZGFmMzBiZjgyMjMwZjliNjAzOGI0MTBkMTU4MjYwZmFhZmVlNjEzYjhkZTYzZWQ4NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhlODEzZjljODVjNzVhMWM5MWRhZTY4MGE5NGYwY2NhMWM0MGJjNTcyZGMyODZmOWJiODBhMGFiN2E0MjM4YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGUyOGE1ZjJjYjdhNmU2NDFjMzZiOWI4MGYyMzM3YzRiMWVlNTk4YjNmYmE4NGQwZmVlMGM5OGJkNGUyNDk3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTVkYjQwNDc2OGNlY2NiNTk3ZDMwNGQyZGMxZTM3OGFjZTA1OTAyNTFhN2FiMThlZWViODE5OTQ0NDg5NDcxMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_061b61d5b4ed4610838ce973d8879757",
+      "statement": "The input gate blocks delivery of any incoming event to a cell while a handler holds it across blockConcurrencyWhile; in celld storage completes inside the turn that started it, so the gate cannot close on a storage suspension.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/gate.rs#L3-L24",
+          "version": "repo-lines-v1:sha256:41f681d50cd9dc0e09680c1d18a0147e5c71b5f2ec42a6cc7ec5f8ae42d777d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNGI2NTVkY2JiODQzODJkMWM2ODYyM2M3YWIzNzFhOGJhMzU2NzAwMTk5ZjJiYzI1YTcwOTZjMWU3MTkwZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwZjMyN2NjYjZlMzFiNzgxZWFjMGU1ZTZkMDkzNTgzM2Y5NDA5YzdmNzgzY2I1MmUwYzJiNDM5YjQ3NzU2NTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkMWUzN2ExZDdlNjc3NTVhY2I3ZjBiNTE3MTk5NzMwNTk4MTA0ODAzM2YxYTA2MjJjNTc4YWQ1N2E0YTcyZmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f428c50b7e34b1d97803f6a918ab8b5",
+      "statement": "Input gate acquire is synchronous with the JS call, nested blocks are counted not refused, release panics if the wrong event releases, and abandon covers a holder that dies mid-block.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/gate.rs#L141-L144",
+          "version": "repo-lines-v1:sha256:3e5c3e9274ccb302fa5da7a2e7c2168378bc0bacb5d8e898e75ea72bcd6e65ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJiOGUyNzc0MDNlMGFiYjE5OWNjY2EzNDk5ZDk5ZDU0NWIwMGIxYTQ5NmU2MjNmZGExMTM3YjRjZGM0YTAwNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzE2NWE5MDY4NTdkZjY0NGM0ZTI3ZTY0NjVjNzQxOWUyYzZhOTc1NmMxNmMyNGNkYjgzMTQ5MmQ2ZjA3NzJjOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        },
+        {
+          "resource": "repo://crates/logic/gate.rs#L37-L53",
+          "version": "repo-lines-v1:sha256:05d5fa0f2917790fb89d4c2c96b92b45386a08e8b5eb0b90984ff0c78e20ae69:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNjdlOTQ2YzZkMDYxYjcxY2E0OTI1YmZjZDgxYzFiYjkwYTRkOWI1ZGQ2NDI5MjY4ZDRhY2Y0ZmZhYmY0ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MDM3MGUzZTJlY2VkNmQ1MzkxMTQ0YWFjY2RhYjAzMTBkNGIyYjcyZjQwOTcxMzc3ZWU5N2NhN2I1YjMyNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyNjIzNjk3YzA5YTJkZWViYWM0Y2MxNTkyM2Q4OTRjYzczNzI0YjU1MDI5YjhmM2EyYTFhYzU2ODJkMWEzOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0YWZmMzYxYjYzYTJiNDU3NjIwZDA1MmJiYzc1MGU2NGM3MTRiNGM3MTNmMzg0NGQ4N2JkZjQ1OWQ1NjA0MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e99f8a7117b84efeb918572e87ba12c2",
+      "statement": "A cell's alarm is carried in its own SQLite, so a restored or cold-woken cell has an alarm the isolate has not re-armed; RestoreOutcome::alarm reports it so residency decisions do not shed a cell about to fire.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L255-L267",
+          "version": "repo-lines-v1:sha256:0c3173219ac6836053f6d714815cdc8a532cbc59083c13276b04ca670ad517f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwMTgzZGRmNDY5YmI4NmRkNGVhNWZmMmI1ZGM5NDgwMmE1YTFjN2EwYjI4MGZmNWEyYzY0MzM3NWQ0MDNjZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZGJiYzg3OTdjNTVjMTA2ZDA3MTk0YThlZGUxMjlmYzU5MGNlNGYwYjJjZDRmMTkyM2YxNmE3NjFiZmE2NDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxNDlhMzIyNzgyOTk3NTZhODllZTc2NzBhYjk0MzQ0NDBkMWVhNDQ1NWNiODFhMzU4YzE4YmIyNWUzNGY3YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3MTVjNzhjNDkxZTFmZTEwYTZiMTZhOWM3NGIxNzg4ZmM1MGI4YTg5NDQ1Mjk5MGRjZjE3NDA3YTdiNDFkYTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f2afc80d765491fb7ed98fb3772df61",
+      "statement": "Alarm retry policy is a pure function in crates/logic/alarm.rs with exponential backoff and a bounded ceiling on limit-counting failures; excused failures back off but never reach the ceiling.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/alarm.rs#L3-L34",
+          "version": "repo-lines-v1:sha256:8ad1f9692c1347e71fb6564a2525ee35ec7348d64959489a38d2fb8bfdbaded0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1YjVlMGFmNTRjYzM5OWNiYTU0MTU0NjQyZDVlN2NlNGFiMmM1NzdjN2ZkNDc4Y2E1NDFmMmUwNDM0NTcyODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_94cbf9354ba841ffb625a7879c916ae4",
+      "statement": "The wake index stores wake/<minute>/<cell> entries at minute precision in UTC, lexicographically ordered, and parse_entry_key recovers the cell scope which passes the same charset fence a request does.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/wake.rs#L28-L39",
+          "version": "repo-lines-v1:sha256:7b01915adb4eead943d80c59b0449d01f041e85409ae1da3fcb945bf2c932a35:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzk4MDAxODFmNzE3Yzc5MWYyZWExMWM3YzI4NDc2NDBjZmViZTY2OGFiZjhiYWE0ZjZlNDc2ZWI3MGY1MGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhNWNjM2M3NmM2M2I0OTdlMDI3MzZhMDBjMGYyZWIwY2I0NmU5OGU2ZDRmZWZmMDYzZDljZWU1NTI0OWE4NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlZTEzZmQ0NjQ4NmEzMzA4ZmM5M2E1YjhiM2ViYjU4MDllN2Y0YjJiOGI4YTkxNjI3YmY5OTMwNGRiYzhjMzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0f15b8a760304cc787c70498acccafa2",
+      "statement": "Effect::ReconcileWakeEntry keeps the bucket's wake entry in line with the cell's alarm wherever the alarm settles.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L794-L803",
+          "version": "repo-lines-v1:sha256:303c36d44819161f0b391f08fb8b6a51a04b0ebccb3afa4a97a347471bfe13c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NDkzM2JlYmY3OGIxOGFkNjc4Mjk0MzM1NjdjYzk4MWNlYjdiM2FlOGIyZTRlNjA5NjRlOWYwNDQ4MjJmNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzNjk3Mjg1YzIwNWNlYjY2ZjkwZWM0ODRjOTMwOGUxYWM3NTJkMzhlYTg1YjQzYWY5YzQzYTNmZWI2NDIwMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiNzgzMGY3ZjYwMDY4MTIzYmQyNTZlYzY3MWFmMDM2OGFjOTViN2ZmY2JkZWRjZWQyYjg4NzBkMzU4ZDc4MWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d548a9d3dc6b46aca5a8c4779b93b1e8",
+      "statement": "WebSockets are classified hibernatable, regular, or outbound; regular and outbound sockets pin a cell resident because a live host transport cannot move with ownership.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/types.rs#L390-L399",
+          "version": "repo-lines-v1:sha256:58c9b70ad5adfc000fc0f990f94558173888fad686b4a380302d715d2ecf1405:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Mjg5MTJkZGMwZGMyZmE0OTRmZGE1ZTljOGQ1YjcyOWMxMDUwYWFjYTA2M2YwYTYyNjg4MWE5Y2IzMjgwYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0Y2FkZDhhNTEzODU0N2NlZTA1ZTNhODI2ZTQ5MmRlMzAzMzZlZDc2NzdlMzI4YTc3NTExOThiZWI3NmJlYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxZjE0YzcwOGUyODk5OWRjMThiZTM3YjYxOTgzMzc0YTZjZWUzZmZlZjE5M2Y3MzgwMTIzNzEyNzRiYjlkYWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef25892a83ef48669e40a7853c647705",
+      "statement": "The node-wide outbound pin budget counts pinned cells (one socket pins a cell) and reserves at most half the resident ceiling so the eviction pool is not fully pinned.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/pressure.rs#L279-L297",
+          "version": "repo-lines-v1:sha256:60195fc8b11e1095605a249dc39ab2c320dfe34d37ec01972d3c695705fec658:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMDVmZDAzZTU5NmRmOTA4ZGM5MTZhNDEwOTE4NjI5NzM2MDhjNTE4ODhhMTQ2NDhhOWIxOGY0MmQyZTQ0YzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f94198c934ff421cb6866e32230b3f4a",
+      "statement": "WebSocket close-code selection is pure: an application close wins, a peer 1005 becomes 1000, and an abnormal transport end receives no frame.",
+      "evidence": [
+        {
+          "resource": "repo://crates/logic/schedule.rs#L23-L35",
+          "version": "repo-lines-v1:sha256:7afb1ea9cf29e9a569d2aee3f6de336e2148d5853b7944095d97416fc6190287:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhNWU3NWE4YTlkMDhkYTgzNDMyNDM4NDIwNTMxMTY3ZmM3NmMyNTViNzljMzRiODQzYWQ4NDY2MjYyMGJiOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZTFjYmJiNWNkNDEyYTFkODRiYTEwYmY5NDQ5ZjZkMjhmOWJjMWNkMjY0NDA2M2E3NDdkMGQ3YzIzMjI0ODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:45:00.837Z"
+  }
+}

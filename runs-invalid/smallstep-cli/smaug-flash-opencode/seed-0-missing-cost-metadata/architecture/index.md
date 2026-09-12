@@ -1,0 +1,9 @@
+# Files
+
+- [Online and Offline CA Flows](ca-online-offline-flows.md) - How the step CLI signs, renews, revokes, and rekeys certificates, unifying the online step-ca HTTP client and the embedded offline authority through the cautils CaClient abstraction and the ACME device/HTTP challenge flow.
+- [Standalone Certificate, CSR, and Crypto Toolkit](certificate-toolkit.md) - The offline step certificate command group for creating, signing, verifying, inspecting, bundling, and installing X.509 certificates and CSRs without an online CA, plus the step crypto group of general-purpose cryptographic primitives.
+- [CLI Runtime and Command Registration](cli-runtime-and-command-registration.md) - How the step binary is assembled from a urfave/cli app, commands registered via init() side-effect imports, plugins dispatched by step-<name>-plugin, and errors/panics surfaced with STEPDEBUG support.
+- [Step Environment, STEPPATH, and CA Contexts](environment-and-contexts.md)
+- [Provisioners, Admins, ACME EAB, and Certificate Policies](provisioners-and-policies.md) - How step ca manages provisioners, admins, ACME external account binding keys, and certificate issuance policies, dispatching either to the online Admin API or the local ca.json configuration.
+- [SSH Certificate Signing and Agent Management](ssh-certificates.md) - How step ssh signs user and host SSH certificates, derives principals, integrates with the SSH agent for login/logout/list/renew/revoke, and provides proxycommand and remote-shell helpers.
+- [Provisioning Token and JWT Claims System](token-system.md) - The token package's default JWT claims and validity bounds, signing, per-token-type detection (JWK/OIDC/AWS/GCP/Azure/K8sSA/Nebula), the sha/sans/cnf/x5c claims and headers, and how the token flow commands build these authorization tokens.

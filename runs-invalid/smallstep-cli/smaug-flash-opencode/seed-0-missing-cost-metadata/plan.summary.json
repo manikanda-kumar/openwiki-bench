@@ -1,0 +1,292 @@
+{
+  "plan_page_count": 12,
+  "deletePages": [],
+  "statuses": {
+    "complete": 12
+  },
+  "pages": [
+    {
+      "id": "900b1ffe-530a-4589-a3c8-cdea5a24197b",
+      "path": "/openwiki/architecture/ca-online-offline-flows.md",
+      "title": "Online and Offline CA Flows",
+      "purpose": "Explain the certificate/revoke/renew flows and the unification of the online (step-ca HTTP client) and offline (embedded authority) paths through cautils CaClient and CertificateFlow, OfflineCA, ACME flow, and KMS/plugin signers.",
+      "seedPaths": [
+        "command/ca/certificate.go",
+        "command/ca/renew.go",
+        "command/ca/revoke.go",
+        "command/ca/sign.go",
+        "utils/cautils/acme_flow.go",
+        "utils/cautils/acmeutils.go",
+        "utils/cautils/certificate_flow.go",
+        "utils/cautils/client.go",
+        "utils/cautils/offline.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/environment-and-contexts.md",
+        "/openwiki/architecture/ssh-certificates.md",
+        "/openwiki/architecture/token-system.md",
+        "/openwiki/integrations/km-system-and-external-pki.md"
+      ],
+      "instructions": [
+        "Explain online client vs OfflineCA, how Sign/Renew/Revoke/Rekey behave in each, and the ACME flow's challenge handling.",
+        "Ground in the cautils source files."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "388c5470-5f9f-457a-ac85-3392fbe1ee13",
+      "path": "/openwiki/architecture/certificate-toolkit.md",
+      "title": "Standalone Certificate, CSR, and Crypto Toolkit",
+      "purpose": "Explain the offline step certificate command group (create, sign, inspect, verify, bundle, format, fingerprint, lint, install, key, p12) used without a CA, plus the step crypto group (JWT/JWS/JWE/JWK/keys) for general-purpose crypto.",
+      "seedPaths": [
+        "command/certificate/certificate.go",
+        "command/certificate/create.go",
+        "command/certificate/inspect.go",
+        "command/crypto/crypto.go",
+        "command/crypto/key/key.go",
+        "flags/flags.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/integrations/km-system-and-external-pki.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Ground profiles, templates, and key-type handling in create.go and flags.go."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "57d167e0-4f06-49a0-8083-a8dbb809ace9",
+      "path": "/openwiki/architecture/cli-runtime-and-command-registration.md",
+      "title": "CLI Runtime and Command Registration",
+      "purpose": "Explain the urfave/cli-based runtime: entrypoint, app construction, command registration via init() side-effect imports, plugin dispatch, debugging/error handling, and version injection.",
+      "seedPaths": [
+        "cmd/step/main.go",
+        "command/ca/ca.go",
+        "command/version/version.go",
+        "internal/cmd/root.go",
+        "internal/command/inject.go",
+        "internal/plugin/plugin.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/environment-and-contexts.md",
+        "/openwiki/architecture/token-system.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Explain how commands are registered and retrieved, how plugins are dispatched, and how errors/panics are surfaced.",
+        "Ground claims in root.go and plugin.go."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "1353a1a2-7565-48dc-b4a9-38c3187118b9",
+      "path": "/openwiki/architecture/environment-and-contexts.md",
+      "title": "Step Environment, STEPPATH, and CA Contexts",
+      "purpose": "Explain persistent client state: STEPPATH layout, defaults.json/ca.json/root, --config flag, context switching via contexts.json and current-context.json, and how bootstrap/path/context commands manage it.",
+      "seedPaths": [
+        "command/ca/bootstrap.go",
+        "command/context/context.go",
+        "command/context/select.go",
+        "command/path/path.go",
+        "flags/flags.go",
+        "utils/cautils/bootstrap.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/cli-runtime-and-command-registration.md",
+        "/openwiki/architecture/token-system.md"
+      ],
+      "instructions": [
+        "Ground the path layout, defaults.json fields, and contexts.json structure in source.",
+        "State uncertainty where behavior depends on external cli-utils code only referenced, not implemented here."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "1438e9d5-987e-47a3-b0cc-b79682e57337",
+      "path": "/openwiki/architecture/provisioners-and-policies.md",
+      "title": "Provisioners, Admins, ACME EAB, and Certificate Policies",
+      "purpose": "Explain how provisioners are created/updated/removed via the Admin API or local ca.json, the supported provisioner types (JWK, OIDC, ACME, SCEP, X5C, SSHPOP, K8sSA, Nebula, AWS, GCP, Azure), admin management, and issuance policy management at authority/provisioner/ACME levels.",
+      "seedPaths": [
+        "command/ca/acme/acme.go",
+        "command/ca/acme/eab/eab.go",
+        "command/ca/admin/admin.go",
+        "command/ca/policy/actions/policy.go",
+        "command/ca/policy/policy.go",
+        "command/ca/provisioner/provisioner.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/environment-and-contexts.md",
+        "/openwiki/architecture/token-system.md"
+      ],
+      "instructions": [
+        "Ground provisioner types, CRUD dispatch (Admin API vs ca.json), and policy levels in source."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "d485e08d-40bd-414a-bd2a-fcdf0b92e5d8",
+      "path": "/openwiki/architecture/ssh-certificates.md",
+      "title": "SSH Certificate Signing and Agent Management",
+      "purpose": "Explain the ssh command group: user/host certificate generation, signing flows and principal derivation, the SSH agent integration, login/logout/list/renew/revoke, and the SSH proxycommand helper.",
+      "seedPaths": [
+        "command/ssh/certificate.go",
+        "command/ssh/login.go",
+        "command/ssh/ssh.go",
+        "internal/sshutil/agent.go",
+        "internal/sshutil/shell.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/provisioners-and-policies.md",
+        "/openwiki/architecture/token-system.md"
+      ],
+      "instructions": [
+        "Ground principal derivation, agent add/list, and proxycommand in source."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "7505cfb8-d60d-4909-a274-e2fc88c53aa9",
+      "path": "/openwiki/architecture/token-system.md",
+      "title": "Provisioning Token and JWT Claims System",
+      "purpose": "Explain the token package: default claims, validity bounds, JWT signing, token type detection (JWK/OIDC/AWS/GCP/Azure/K8sSA/Nebula), claims/headers like sha/sans/cnf/x5c, and the token flow commands that build them.",
+      "seedPaths": [
+        "flags/flags.go",
+        "token/options.go",
+        "token/parse.go",
+        "token/token.go",
+        "utils/cautils/token_flow.go",
+        "utils/cautils/token_generator.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/environment-and-contexts.md",
+        "/openwiki/architecture/provisioners-and-policies.md"
+      ],
+      "instructions": [
+        "Cover how different provisioner types produce tokens.",
+        "Ground defaults, validity constraints, and claim semantics in token package source."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "5f9456a0-6a38-4e0a-a5d5-f90d54282ecf",
+      "path": "/openwiki/integrations/km-system-and-external-pki.md",
+      "title": "KMS, step-kms-plugin, and External PKI Integrations",
+      "purpose": "Explain integration seams: the KMS URI flag space, step-kms-plugin dispatch through cryptoutil/plugin, Azure/AWS/GCP/TPM/YubiKey/PKCS11 KMS types, the oauth command for OIDC SSO, and CRL/federation/roots/policy tooling.",
+      "seedPaths": [
+        "command/ca/federation.go",
+        "command/crl/crl.go",
+        "command/oauth/cmd.go",
+        "flags/flags.go",
+        "internal/cryptoutil/cryptoutil.go",
+        "internal/plugin/plugin.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/certificate-toolkit.md",
+        "/openwiki/architecture/environment-and-contexts.md"
+      ],
+      "instructions": [
+        "Ground KMS URI scheme and plugin dispatch in cryptoutil.go and flags.go.",
+        "Ground oauth flows and endpoints in cmd.go."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "dae89726-bcc4-411c-a9fc-f3002af768b0",
+      "path": "/openwiki/operations/change-guides.md",
+      "title": "Change Guides for Common Maintenance Tasks",
+      "purpose": "Focused guides for representative tasks: adding a new CLI subcommand, adding a flag or option, changing key default sizes/curves, and modifying token claim semantics, with pointers to the exact files and tests to touch.",
+      "seedPaths": [
+        "command/ca/ca.go",
+        "flags/flags.go",
+        "integration/main_test.go",
+        "internal/cmd/root.go",
+        "utils/cli.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/cli-runtime-and-command-registration.md",
+        "/openwiki/architecture/token-system.md",
+        "/openwiki/testing/integration-and-testing.md"
+      ],
+      "instructions": [
+        "Give step-by-step maintenance instructions grounded in concrete files.",
+        "Reference tests to run."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "70414719-ac46-4197-a648-daee53d4e654",
+      "path": "/openwiki/operations/step-ca-deployment-types.md",
+      "title": "CA Deployment Types: Standalone, Linked, Hosted, and RAs",
+      "purpose": "Explain step ca init's deployment model: standalone, linked, hosted, and Registration Authority (RA) modes (CloudCAS, StepCAS), the CAS interface abstraction, KMS-backed keys, Helm output, and what each produces on disk.",
+      "seedPaths": [
+        "command/ca/init.go",
+        "flags/flags.go",
+        "internal/cmd/root.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/environment-and-contexts.md",
+        "/openwiki/operations/change-guides.md"
+      ],
+      "instructions": [
+        "Do not invent details about the remote services themselves.",
+        "Ground deployment types and the RA/CAS selection in init.go."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ae6976fe-2efb-4152-b3e3-0e03c1d221c7",
+      "path": "/openwiki/testing/integration-and-testing.md",
+      "title": "Testing Strategy: Unit, CLI Integration, and Testscripts",
+      "purpose": "Explain how the repository is tested: targeted Go unit tests, testscript-based CLI integration tests wired through TestMain, the txtar testdata, and the make targets for build/test/lint/race.",
+      "seedPaths": [
+        "Makefile",
+        "integration/certificate_test.go",
+        "integration/crypto_test.go",
+        "integration/main_test.go",
+        "integration/shared_test.go",
+        "integration/testdata/version.txtar"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/cli-runtime-and-command-registration.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Do not over-claim coverage of untested subsystems.",
+        "Ground the testscript wiring and representative cases in the integration package and testdata."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "d984415d-bf38-49d4-83e2-521c75d2e001",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart: Building, Installing, and Trying the step CLI",
+      "purpose": "Practical quickstart covering build, install, and representative end-to-end workflows (CA init, certificate creation, bootstrap, ssh login) so a new engineer can run and exercise the CLI quickly.",
+      "seedPaths": [
+        "Makefile",
+        "README.md",
+        "cmd/step/main.go",
+        "integration/shared_test.go",
+        "integration/testdata"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/ca-online-offline-flows.md",
+        "/openwiki/architecture/cli-runtime-and-command-registration.md"
+      ],
+      "instructions": [
+        "Ground every command line and path in source evidence.",
+        "Keep examples concise and runnable.",
+        "Reference default step path and env vars from cli-utils usage and the code."
+      ],
+      "status": "complete"
+    }
+  ]
+}

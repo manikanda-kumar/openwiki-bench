@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d9bac9964ff30c0d20bd9bec642d196edf4cb157ef34fc26b2a0f9cd0be604e2",
+  "claims": [
+    {
+      "id": "claim_e864e80e1d484222a835791d0c02b7ff",
+      "statement": "The Agent Host is an Electron utilityProcess entrypoint (src/agent-host/index.ts) that runs pi-coding-agent in-process, registers all API handlers, and serves requests/streams over MessagePort via a single RPC server.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/handlers.ts",
+          "version": "repo-file-v1:sha256:1b89a1379debc6fa9bf01f6b42bfc3505ed11c3b009d58a333e453b1c9538d1e"
+        },
+        {
+          "resource": "repo://src/agent-host/index.ts",
+          "version": "repo-file-v1:sha256:0b959727f836edcde6a480e3caeb91718ecc764cc6509a1935f375f54c5779e0"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb4247e650e540c488f47bbe01224a81",
+      "statement": "HostManager (src/main/host-manager.ts) supervises the Agent Host: on 'ready' it redelivers toolchain and browser snapshots, pushes managed-process owner identity, starts the 15s ping loop, and kills the child if a pong is absent for 10s.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts",
+          "version": "repo-file-v1:sha256:af27b24ccd8570827ebad3971c57108b3bc43c267718d3815551deee84106c20"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b5daa737e90403d87e5c2368852a14b",
+      "statement": "The Host restart budget allows at most MAX_RESTARTS (2) restarts within a rolling CRASH_WINDOW_MS (30s); exceeding the budget sets the Host status to 'crashed' (reserveHostRestart in src/main/host-restart-core.ts).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts",
+          "version": "repo-file-v1:sha256:af27b24ccd8570827ebad3971c57108b3bc43c267718d3815551deee84106c20"
+        },
+        {
+          "resource": "repo://src/main/host-restart-core.ts",
+          "version": "repo-file-v1:sha256:61356e00033c6dfd37d50dd3a23856c72fb6ec9d0eebce54cc06811aadcd46fb"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d0663bc719f4ba790d63228c3371ae5",
+      "statement": "On child exit, HostManager only schedules a restart after the beforeRestartHandler (managed-process cleanup) runs without error; an unresolved cleanup flips the Host to 'crashed'.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts",
+          "version": "repo-file-v1:sha256:af27b24ccd8570827ebad3971c57108b3bc43c267718d3815551deee84106c20"
+        }
+      ]
+    },
+    {
+      "id": "claim_145b0f3e52744517afb4b47e08bb69d9",
+      "statement": "src/contract/rpc.ts implements a dependency-free MessagePort RPC with five wire message kinds (request/response/subscribe/unsubscribe/event); the client enforces a default 120s call timeout and the server tracks per-port subscriptions and leases.",
+      "evidence": [
+        {
+          "resource": "repo://src/contract/rpc.ts",
+          "version": "repo-file-v1:sha256:dbaa4971b5b847605ada30f3ea54ffec41e0d263c914ea0a673d48f2b2a15bb8"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf3a66c79ebd4b3ca12652cac18bdc98",
+      "statement": "The RPC server attaches a port via ensureSubs and forgetPort, and on remote port close (ISSUE-013) it drops the port and finalizes its leases and subscription state.",
+      "evidence": [
+        {
+          "resource": "repo://src/contract/rpc.ts",
+          "version": "repo-file-v1:sha256:dbaa4971b5b847605ada30f3ea54ffec41e0d263c914ea0a673d48f2b2a15bb8"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a2e889cac034f58b0209ff9159994f6",
+      "statement": "HostMessagePort to the renderer is transferred via window.postMessage from the preload (src/preload/preload.ts, src/renderer/lib/api-client.ts), never through contextBridge as a Promise value.",
+      "evidence": [
+        {
+          "resource": "repo://src/preload/preload.ts",
+          "version": "repo-file-v1:sha256:4ba944c8fd1c1e300b7f4ae92e7cc4eb3f5b2c4090926dbfa6c3d37ff7673e3f"
+        }
+      ]
+    },
+    {
+      "id": "claim_b2bc03b0eff0432288067d22809a1526",
+      "statement": "The renderer RPC facade (src/renderer/lib/api-client.ts) waits for Host ready status, requests the transferred port, validates with host.ping, and on crash resets the client so a fresh port is requested after the Host restarts.",
+      "evidence": [
+        {
+          "resource": "repo://src/renderer/lib/api-client.ts",
+          "version": "repo-file-v1:sha256:6560364196568697d4e65b82c13438c1d4441735263615252d83246c73e0228c"
+        }
+      ]
+    },
+    {
+      "id": "claim_f6a94e247ca04db18417c968f7cc810a",
+      "statement": "The Agent Host handles uncaughtException/unhandledRejection by logging and calling process.exit(1) on the next tick, leaving restart to the main-process supervisor.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/index.ts",
+          "version": "repo-file-v1:sha256:0b959727f836edcde6a480e3caeb91718ecc764cc6509a1935f375f54c5779e0"
+        }
+      ]
+    },
+    {
+      "id": "claim_28d30459ef544641a0f5ce853a2eefd4",
+      "statement": "src/contract/api.ts defines the full request/response Api and server-push Streams surface, including agent.new/agent.command, sessions.*, auth.*, skills/plugins, channels.*, processes.*, files/worktrees, and models.*.",
+      "evidence": [
+        {
+          "resource": "repo://src/contract/api.ts",
+          "version": "repo-file-v1:sha256:06be1695a2f355d0aa20f17f58d96c9ff34b9bd9ffe51e8b3b08de86a22d228f"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

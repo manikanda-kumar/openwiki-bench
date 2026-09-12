@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:87c0e90548bcaf6168e19e9700308623d8894397be015bb937a5cfa07dbf965a",
+  "claims": [
+    {
+      "id": "claim_396c1fb7f57f4add958ae9acf55a701e",
+      "statement": "build-release.ts builds an immutable release by bundling every deployable worker exactly as wrangler deploy would (dry-run + outdir with the pinned wrangler), plus the Access-mode workshop-frontend asset build, plus the release manifest that describes it.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/build-release.ts#L1-L25",
+          "version": "repo-lines-v1:sha256:93367263c2bab770d1c4c89910ccfe8fd5a29781058c2e9f99e9650589c0a5b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwYWNiYWZiNzg3NGMzNDllMTRlYzg2NDk3YjIzZDJmOTU3ZTNlZDYxZmMzNWQ0ZDZmYWExNzM5MzAxYWQyYzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0YjNmODkyYzY2MjU0YzMyNzg5NGE1MTFhMTk0OTliM2Y3MTkyODM5MTkzNDY4ODI1MDNhZWZmOTA2OTRlNTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dbbb922c8a3e473da057ea43c4ae1146",
+      "statement": "upload-release.ts mirrors a built release to R2 via the S3 API with content-addressed blobs deduped across releases (each key is HEAD'd first) and uploads the manifest last, so a crashed upload never leaves a manifest pointing at missing blobs; with --candidate the manifest lands under candidates/<id>/ invisible to the deploy service.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L5-L15",
+          "version": "repo-lines-v1:sha256:b900e73b8e09bdef34b3dbaa6a398a178ffc7eb9650447c1e1c759306bc333dc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjY2EyZWQ1MmE2MWRiMDQ1MTM2NjRkZmYzN2RjNzI1N2M0NWYwZGI3M2UzOGRjNmUwYWMzMTJjNTJkY2IzMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljMTJjYzAxNTk1OTg3ZGNkODdhNGQ4MDlmNTA3ZWRiMTRiMTk3MzQxNjk2YzJmMjIxMTUxMGVjOTFlMDcxYmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmM2UyOWFhZjE0YTZkNmMzMDQwMThhNTc2MDcyNzMyOWU5MjVjN2NkNmZlYzg4MGNiOTAwYzcxMTZiNzgxZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNzg4ZjQ2NDg1NjVjZmI5MzFkYWRhYjZjYzZmYTUyZjhjYTZlZWQwODg1ZWQ2OGQ3MDc2ZjRkZjE4YTIwZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4997d1bbccec46b1ad8f8712c7f1249a",
+      "statement": "promote-release copies candidates/<id>/manifest.json to releases/<id>/manifest.json, making publishing that single all-or-nothing manifest copy; the copy is not isolated, so CI serializes promotions and the supersededBy newer-release guard skips candidates a later release already superseded so a stale PUT cannot roll production back.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/promote-release.ts#L20-L35",
+          "version": "repo-lines-v1:sha256:64ce3280bfb52e245d0af2add96c84108c0683d9330780a373f394fecae47842:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjN2E1NWJkYzIyODU4MmM1ZDVkNzE0ZjcwMTExMTQ0ODRiMDI5YzFmZmM5ZDlhMWEyZjVkNGIwZWQ3ZGU0YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlMmVkNDZmNzE5Zjk0Mjk3ZTBjNmNiN2QwMzg5NGNhMjYwMzVkMWU5M2EzNGQ5OTdmY2I3YWE1N2E3MTBhZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlNjljZjUzMmViNzY0MzAzMTI4YWFmYzYyNmMwNTQ3ZWRlM2E3NjJhZTYzYjgyZTBiYTQ1ZTlkNzk5ZjI0NjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_95973e2498a6434c9e00c7ab6452c450",
+      "statement": "manifest-lib.ts parses each package's wrangler.jsonc (only HANDLED_CONFIG_KEYS are understood, anything else fails closed) and emits binding templates replacing account-specific values with placeholders the deploy service resolves ($ACCOUNT_ID, $KV_<BINDING>_ID, $R2_<BINDING>_NAME, $WORKER_NAME(<pkg>), $SECRET(<name>), $PUBLIC_BASE_URL); the placeholder list is closed and MANIFEST_VERSION guards agreement with the renderer.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L1-L17",
+          "version": "repo-lines-v1:sha256:dd1a0388a5fa939f460d46a646e7bb638f23fa7b74e11b18615a0b43ebedbdae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWE3NDA4ZGE5MDcxY2ExZGNlNjNjYmI4YjRjYjZmZWQyOTFjZjRkOTJlZTVjZmM3OTQ2OWQ4MGEwYjk0YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMDRkZGI3MzM4MjE2ZDMzOWJiZjdkZWU2ZTZlYjMxMzMxZjUxY2E4YmNkZTBiNWI3NGY2NTgzYzI2YTIxZTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYWUyNGIzODgwNzZkYzUxMGVkN2EzYzJkNTc1ZTgzNTAyOGM2NDlkNTA2OGM3ZTllZGY5YzU1NDQ5MWIwMjcifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L242-L254",
+          "version": "repo-lines-v1:sha256:c7dba386107b957ae3df5feff7174aae3d735fb04e43977e6524a8b549db28fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjBlZDY4YzJiNDYyMzNjMjNhNGM2YTJhZDM5Njk0ODlhNDI2OWQ2NWVjMWQ5YTQ1OTRhMjNlZTBjNTZlODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1ZTI2Y2Q5MjM2NmY2MGQ4ZWQ5MmQwMjM5ZjA3ZmVmNzRjYWMxNGFhNjlhZGRmOWMyY2MwZDExZWIwMGE0NjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5NDZiZmI3MmQ5NzMyZjllNzgwYzYwZWIxOTk5MGQ1OTEzZjVlMTljNDBmZmI0OGQyZDc3ZWNkZTlmNzRmOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2Mjc2MmVkMDEwNjE4YTQ4MzM4ZTAzM2Y4OTIwMjlkODVlZWIzNDNiMDM0YjljY2RjMmM4MjFkMWRiM2JmYWMifQ"
+        },
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L25-L25",
+          "version": "repo-lines-v1:sha256:6579d5990503a54501451c47bd81376f2bab32157e511c395562630f1c261fe5:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjU3OWQ1OTkwNTAzYTU0NTAxNDUxYzQ3YmQ4MTM3NmYyYmFiMzIxNTdlNTExYzM5NTU2MjYzMGYxYzI2MWZlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjU3OWQ1OTkwNTAzYTU0NTAxNDUxYzQ3YmQ4MTM3NmYyYmFiMzIxNTdlNTExYzM5NTU2MjYzMGYxYzI2MWZlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmY5YzhlOGE0ZGRlMWI4OGIwZjAxNTZhMzlmYjhiYzUyYjdkNDI5NWU5NTY5MGRhMjMwODBkNjM0NDY2Y2QzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmU5NjRkZWFkZDAxMWRkODAzZDVhYTI1NjZiNTE0YmZjNzA0MWFhNTdkMDkxYTU4NDQwZWFjMWE5MzkxYmVjZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_08f50e0cfb7c48f6960a0bb1e17a4fcd",
+      "statement": "An installable gatekeeper's user-supplied inputs default to OAuth CLIENT_ID/CLIENT_SECRET secret inputs unless deploy-inputs.json overrides them, and NO_DEFAULT_CRED_INPUTS opts out gatekeepers that take no third-party OAuth app credentials (context, homeassistant, scheduler, mcp, mcp-portal), because the wizard blocks Install on unfilled secret inputs.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L258-L266",
+          "version": "repo-lines-v1:sha256:99000b9208868c847c32f1b94096c0c43e27ad51d097c26868eacb9abd59ab8b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWE1ZTgyZGY5NTBlNWM0NjNhOTYyN2FlOTNlZDcwYWNkMTJmNGE4NTg2MjcwZDNiODEzMDY2MTM0ZmQ0YjViMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVlMjZjZDkyMzY2ZjYwZDhlZDkyZDAyMzlmMDdmZWY3NGNhYzE0YWE2OWFkZGY5YzJjYzBkMTFlYjAwYTQ2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTYyNzYyZWQwMTA2MThhNDgzMzhlMDMzZjg5MjAyOWQ4NWVlYjM0M2IwMzRiOWNjZGMyYzgyMWQxZGIzYmZhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDcwM2ZmNmJjNDY4YmQ3ZDhlODRhNmQxZDRiOWQxNDM2YTk1NTVhOWJhOTc1ZTUwM2Y0OGYzNjIyM2ZhYzNjNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c1c0d55c111c42f2a1144a842b34d54f",
+      "statement": "NOT_INSTALLABLE (gatekeeper-email) ships its bundle anyway so the entry stays auditable, and PREINSTALL (gatekeeper-context, gatekeeper-scheduler) are installed on every fresh core deploy with no user interaction and must take no inputs of any kind.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L268-L275",
+          "version": "repo-lines-v1:sha256:e2db436532f6dd97d5eb21653af1e3f7f2aa35a382bcc015c4fc4db41dcb4634:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdmMDhmZWUyNjFlNGJlYjg2ZWYyNDBlNTQ3ZmVhNTNiZjZmYjlhZTJhOTYyNjdiODUyODNmNWQxZDQzMzM2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdhZmE4YjcwZDVlMTIzNDU3YTBjMzI5YjNiZGEwZGRhNjMxNzZjOWY0MjdjNzAyNmNkNzYwOTkwMzlkNzdiYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTE0N2M1NGVlYmYwZjlmNDdhOWYxOWNhZDg0YTAxYzAwMGVlOTkxOTJiYzAyODY1NmQ5OWZmNTNiZjg4ZTM3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjQ4YmU3OTBjMDg1YWJhNGU2MDgzMGQ5Y2ViNDFkMDRjZTEzMGRmY2NiNDkxYzgyMzg0ZmViYzJhOTM5MmFmMSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T20:56:23.759Z"
+  }
+}

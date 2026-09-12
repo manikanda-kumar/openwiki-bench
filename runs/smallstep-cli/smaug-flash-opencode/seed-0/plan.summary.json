@@ -1,0 +1,239 @@
+{
+  "plan_page_count": 11,
+  "deletePages": [],
+  "statuses": {
+    "complete": 11
+  },
+  "pages": [
+    {
+      "id": "25d2395d-6028-46ba-aba2-c682741fa566",
+      "path": "/openwiki/architecture/command-runtime.md",
+      "title": "CLI Runtime and Command Registration",
+      "purpose": "Explain how the step binary boots, how urfave/cli is configured, how command packages self-register, orchestrate context/middleware, and how errors and panics are handled and debugged.",
+      "seedPaths": [
+        "cmd/step/main.go",
+        "command/ca/ca.go",
+        "command/crypto/crypto.go",
+        "internal/cmd/root.go",
+        "internal/command/inject.go",
+        "utils/utils.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/plugin-system.md",
+        "/openwiki/configuration/env-and-step-path.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Describe boot sequence, cli.App wiring, global flags, STEPDEBUG behavior, panicHandler, password prompt injection, and the verify/lint help-quality checks."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "d7aaa587-841d-4b9d-a69c-dddc425cc3ca",
+      "path": "/openwiki/architecture/plugin-system.md",
+      "title": "Plugin System",
+      "purpose": "Document how step discovers and executes external step-<name>-plugin executables and how well-known plugins are resolved/downloaded.",
+      "seedPaths": [
+        "internal/cmd/root.go",
+        "internal/plugin/plugin.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-runtime.md"
+      ],
+      "instructions": [
+        "Explain LookPath resolution order over $(step path)/plugins and PATH, Windows power-shell handling, subprocess execution, and GetURL for well-known plugins."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "466f6747-9b69-4804-98fb-5fb8d941ad0f",
+      "path": "/openwiki/architecture/token-claims.md",
+      "title": "Token Model and JWT Claims",
+      "purpose": "Describe the JWT/one-time-token (OTT) model used to authorize step-ca operations: claim fields, token signing feature options, supported token types, and strict validity constraints.",
+      "seedPaths": [
+        "token/options.go",
+        "token/parse.go",
+        "token/token.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/token-flows.md",
+        "/openwiki/integration/ca-client.md"
+      ],
+      "instructions": [
+        "Cover default claims, issuer/audience constants, With* option functions, cnf/x5c/nebula/sshpop headers, Type() discrimination across JWK/OIDC/GCP/AWS/Azure/K8sSA/Nebula, and validity bounds."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "4512b299-59ac-4afd-b84e-192283062839",
+      "path": "/openwiki/architecture/token-flows.md",
+      "title": "Certificate and Token Flows",
+      "purpose": "Explain the reusable certificate/token/SSH flows that bridge CLI commands to step-ca, including per-provisioner token generation, offline vs online mode, and client construction.",
+      "seedPaths": [
+        "utils/cautils/certificate_flow.go",
+        "utils/cautils/client.go",
+        "utils/cautils/offline.go",
+        "utils/cautils/token_flow.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/token-claims.md",
+        "/openwiki/integration/ca-client.md",
+        "/openwiki/integration/ssh-integration.md"
+      ],
+      "instructions": [
+        "Describe CertificateFlow methods (GenerateToken/GenerateSSHToken/Sign/CreateSignRequest), NewTokenFlow provisioner dispatch incl. ACME/SCEP errors, OfflineCA wrapper, and NewClient/AdminClient construction."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "91ae3a16-1289-487e-ba02-ed12e06d6ffa",
+      "path": "/openwiki/certificates/certificate-commands.md",
+      "title": "Certificate Command Group",
+      "purpose": "Explain step certificate create/sign/inspect/verify/install and related helpers: profiles, templates, SANs, issuance flows, and local verification against roots/OCSP/CRL.",
+      "seedPaths": [
+        "command/certificate/certificate.go",
+        "command/certificate/create.go",
+        "command/certificate/inspect.go",
+        "command/certificate/sign.go",
+        "command/certificate/verify.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/token-flows.md",
+        "/openwiki/configuration/env-and-step-path.md",
+        "/openwiki/crypto/kdf-and-primitives.md"
+      ],
+      "instructions": [
+        "Cover create profiles and templates, key generation rules, bundle behavior, sign via CA certificate, verify (RFC5280/OCSP/CRL), inspect, install trust store."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "c34b0138-3824-4800-8406-4c786543472a",
+      "path": "/openwiki/configuration/env-and-step-path.md",
+      "title": "Configuration, Environment, and the Step Path",
+      "purpose": "Document step path resolution (STEPPATH), contexts for multi-CA environments, global --config handling, and key derivation of key-type defaults/flags.",
+      "seedPaths": [
+        "command/context/context.go",
+        "command/path/path.go",
+        "flags/flags.go",
+        "utils/cli.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-runtime.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Cover default $HOME/.step path and STEPPATH override, contexts.json, authority path behavior, --config flag, and default key type/curve/size resolution."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "57326466-7469-48eb-ada7-c24fa4a4c1f1",
+      "path": "/openwiki/crypto/kdf-and-primitives.md",
+      "title": "KDF and Crypto Primitives",
+      "purpose": "Document the crypto command group and internal KDF helpers: scrypt/bcrypt/argon2 password hashing, key/CRL utilities, casts, and safe-default enforcement.",
+      "seedPaths": [
+        "command/crypto/crypto.go",
+        "internal/crlutil/crlutil.go",
+        "internal/cryptoutil/cryptoutil.go",
+        "internal/kdf/kdf.go",
+        "internal/kdf/phc.go",
+        "internal/kdf/scrypt.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-runtime.md"
+      ],
+      "instructions": [
+        "Cover KDF interface and PHC-encoded hashes, Compare semantics, cryptoutil signer/key loading incl. KMS, and CRL parse/creation used by certificate verify."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "23790c28-c32d-48af-88d3-c6551d27a815",
+      "path": "/openwiki/integration/ca-client.md",
+      "title": "Online and Offline step-ca Client Integration",
+      "purpose": "Document the client used to talk to step-ca and offline CA: CaClient interface, root/ca-url resolution, mTLS/admin client, trust store, and the ACME client/server flows.",
+      "seedPaths": [
+        "flags/flags.go",
+        "utils/cautils/acme_flow.go",
+        "utils/cautils/acmeutils.go",
+        "utils/cautils/client.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-runtime.md",
+        "/openwiki/architecture/token-flows.md",
+        "/openwiki/integration/ssh-integration.md"
+      ],
+      "instructions": [
+        "Cover CaClient interface methods, NewClient offline/online selection, admin client mTLS, ACME standalone/webroot/device-attestation challenge modes, and acme-flow truststore option."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "9e2c1ac1-5696-48e7-9002-8bbcbb3312dc",
+      "path": "/openwiki/integration/ssh-integration.md",
+      "title": "SSH Certificate Integration",
+      "purpose": "Explain the SSH command group: certificate issuing, login/logout/inspect with the ssh-agent, proxycommand, rekey/renew/revoke, and the sshutil helpers.",
+      "seedPaths": [
+        "command/ssh/login.go",
+        "command/ssh/ssh.go",
+        "internal/sshutil/agent.go",
+        "internal/sshutil/sshutil.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/token-flows.md",
+        "/openwiki/integration/ca-client.md"
+      ],
+      "instructions": [
+        "Cover step ssh subcommands, agent usage, certificate parsing utilities, and how SSH sign tokens authorize certificate issuance."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "3fd993eb-6c1c-40ad-9ecd-8496e16fcf2b",
+      "path": "/openwiki/testing/testing-strategy.md",
+      "title": "Testing Strategy and Integration Harness",
+      "purpose": "Explain how the repo is tested: unit tests, the testscript txtar integration harness, help-quality checks, and build/test/lint tooling.",
+      "seedPaths": [
+        "Makefile",
+        "integration/certificate_test.go",
+        "integration/crypto_test.go",
+        "integration/help_test.go",
+        "integration/main_test.go",
+        "integration/shared_test.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-runtime.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Cover make target aliases (test/race/lint/bootstrap/build), gotestsum usage, testscript.Params with execute= step, txtar fixtures, and the help-quality report assertions."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "e1ada0fd-168b-45ab-980a-c661405b518d",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical entry point for new users and engineers to build, install, and run representative step CLI workflows against both offline and online step-ca, plus environment/configuration basics.",
+      "seedPaths": [
+        "Makefile",
+        "README.md",
+        "cmd/step/main.go",
+        "command/ca/init.go",
+        "command/path/path.go",
+        "internal/cmd/root.go",
+        "utils/cli.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-runtime.md",
+        "/openwiki/configuration/env-and-step-path.md",
+        "/openwiki/integration/ca-client.md"
+      ],
+      "instructions": [
+        "Focus on reproducible quickstarts: building from source via Makefile, locating STEPS, using offline mode, bootstrapping an online CA, and common one-liner certificate/JWT/CA operations."
+      ],
+      "status": "complete"
+    }
+  ]
+}

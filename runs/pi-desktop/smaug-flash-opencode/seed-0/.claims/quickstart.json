@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:98bbce113f13de6a74cfbd677f1dd58f0789e43028e18eac25fb36fe4a51ac49",
+  "claims": [
+    {
+      "id": "claim_c7d1f329c9a84659b22352cf3bb91cf4",
+      "statement": "Pi Agent Desktop is a pure Electron app with no internal HTTP server and no bundled Node runtime (package.json engines >=22.19.0 <23; main is out/main/main.js).",
+      "evidence": [
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:0f4a03aeaff44b6fd526cb31b689073de92f5f439f400937ce5eb33842e5dcb1"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5a75ea15fea4b8fa1e0ebf12e63e32e",
+      "statement": "npm run dev (scripts/dev.mjs) starts a Vite dev server on localhost:5173, a tsup watch loop building main/preload/host into out/, and launches Electron, tearing down the full process tree on exit.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/dev.mjs",
+          "version": "repo-file-v1:sha256:09d6037dc85b79b90caf94d1ea81b07a0a11df728e49456d9e501e6dd70b2dbf"
+        }
+      ]
+    },
+    {
+      "id": "claim_ec9dbe49ae684fcea1915a91ac42e1ab",
+      "statement": "npm run lint (ESLint --max-warnings=0), npm run typecheck (two tsc projects), and npm test (node --test src/**/*.test.mjs with a 120s default timeout) are the local development quality checks.",
+      "evidence": [
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:0f4a03aeaff44b6fd526cb31b689073de92f5f439f400937ce5eb33842e5dcb1"
+        },
+        {
+          "resource": "repo://scripts/test-runner.mjs",
+          "version": "repo-file-v1:sha256:bae7c1a8406afed63dc4af328ceb6b1d28667efdb49aba62b913cface7111709"
+        }
+      ]
+    },
+    {
+      "id": "claim_6148666715504c389299489abec62ee8",
+      "statement": "npm run verify (scripts/verify.mjs) is the single release gate running format, lint, typecheck, dependency contract, unit tests, managed-process and security/contract checks, build, artifact isolation, and smoke/e2e tests, aborting on the first failure.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/verify.mjs",
+          "version": "repo-file-v1:sha256:09f95c3ae8131f029aa61a0f0b29ed99d7dff0554faf89d29213af0f3c60082d"
+        }
+      ]
+    },
+    {
+      "id": "claim_1fb8792de839414980da6dd61274265d",
+      "statement": "npm run build outputs out/main+preload+agent-host via tsup and out/renderer via Vite; npm run pack and npm run dist route through scripts/package-desktop.mjs to electron-builder (--dir vs release).",
+      "evidence": [
+        {
+          "resource": "repo://scripts/build.mjs",
+          "version": "repo-file-v1:sha256:83e88ba1286e3d9b0f4ca38227b1f82b27b05550ac8b9236a2982387565929c4"
+        },
+        {
+          "resource": "repo://scripts/package-desktop.mjs",
+          "version": "repo-file-v1:sha256:bfc08c85348747f914187e150aef0488ce59f0a84d5ea7389c2218d8c77efe2d"
+        }
+      ]
+    },
+    {
+      "id": "claim_cee8e1ae6be049438edb5f0f5b9c4d3a",
+      "statement": "Packaged Windows installer is named Pi-Agent-Desktop-Unsigned-Beta-Setup until Authenticode signing is provisioned; macOS dmg/zip and Linux AppImage are built by electron-builder (electron-builder.yml).",
+      "evidence": [
+        {
+          "resource": "repo://electron-builder.yml",
+          "version": "repo-file-v1:sha256:fdaf21faa613333d1bef525e6b2f02672dd1bd65a8710fca2171ac038e0aada2"
+        }
+      ]
+    },
+    {
+      "id": "claim_23f4495cbc6c4dcab7a702180100da4f",
+      "statement": "RPC methods are typed in src/contract/api.ts (Api + Streams), implemented in src/agent-host/handlers.ts, and called from the renderer through src/renderer/lib/api-client.ts; components never touch MessagePort directly.",
+      "evidence": [
+        {
+          "resource": "repo://src/contract/api.ts",
+          "version": "repo-file-v1:sha256:06be1695a2f355d0aa20f17f58d96c9ff34b9bd9ffe51e8b3b08de86a22d228f"
+        },
+        {
+          "resource": "repo://src/renderer/lib/api-client.ts",
+          "version": "repo-file-v1:sha256:6560364196568697d4e65b82c13438c1d4441735263615252d83246c73e0228c"
+        }
+      ]
+    },
+    {
+      "id": "claim_619c0d364d1d42398e8708c2be748e71",
+      "statement": "Toolchain capabilities, providers, preferences, health and error codes are defined in src/shared/toolchains/types.ts; the scan/selection pipeline is src/main/toolchains/manager.ts and install/repair is src/main/toolchains/installer.ts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/toolchains/manager.ts",
+          "version": "repo-file-v1:sha256:84fe4108667c5abe80a190465bf15947d274c65839e5bbfdf57f8ec68e23bf07"
+        },
+        {
+          "resource": "repo://src/shared/toolchains/types.ts",
+          "version": "repo-file-v1:sha256:3fd1a64fd1687e23496fe113e2da8b6695d65ce73a097f31a30dd4860de93fcd"
+        }
+      ]
+    },
+    {
+      "id": "claim_8937017104e84df4b47ccd78be330a33",
+      "statement": "Browser authorization, permissions, leases and confirmations are enforced entirely in src/main/browser/ and driven by the renderer via piBridge.browser*; coding permissions never imply browser rights.",
+      "evidence": [
+        {
+          "resource": "repo://src/contract/desktop.ts",
+          "version": "repo-file-v1:sha256:10feb51da0af4688ef8cc6ae33e3101567fdc4e135b7fdc257c9c92a439dafc5"
+        },
+        {
+          "resource": "repo://src/main/browser/browser-policy.ts",
+          "version": "repo-file-v1:sha256:820a62c77835ac3a5cac9615a5fbc0a021f2eea681eab071aaac7eabc7d07bee"
+        }
+      ]
+    },
+    {
+      "id": "claim_b09c2fe18d1144ce9ae083b1e91735e2",
+      "statement": "scripts/check-desktop-security.mjs is the compile-time security gate asserted by verify.mjs; changes to security invariants require updating both the checker and the source, then running check:desktop-security and verify.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/check-desktop-security.mjs",
+          "version": "repo-file-v1:sha256:c06cb0548c80fc0acef754fba0cd6abd8ba0f5754e25a27def0719d80d4eda21"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

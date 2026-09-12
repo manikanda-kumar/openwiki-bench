@@ -219,13 +219,16 @@ function opencodeFailure(events: string): string | null {
   return result;
 }
 
-function assertOpenCodeSession(session: unknown, expectedModel: string, expectedAgent: string): string {
+export function assertOpenCodeSession(session: unknown, expectedModel: string, expectedAgent: string): string {
   if (typeof session !== "object" || session === null) throw new Error("OpenCode session export is not an object");
   const root = session as { info?: { model?: { id?: unknown; providerID?: unknown }; agent?: unknown; version?: unknown }; messages?: Array<{ info?: { role?: unknown; modelID?: unknown; providerID?: unknown } }> };
   const info = root.info;
   if (info === undefined) throw new Error("OpenCode session export has no session metadata");
   const resolvedModel = info.model;
-  const [provider, model] = expectedModel.split("/", 2);
+  const separator = expectedModel.indexOf("/");
+  if (separator < 1 || separator === expectedModel.length - 1) throw new Error(`Invalid provider/model identifier: ${expectedModel}`);
+  const provider = expectedModel.slice(0, separator);
+  const model = expectedModel.slice(separator + 1);
   if (resolvedModel?.providerID !== provider || resolvedModel?.id !== model) {
     throw new Error(`OpenCode resolved ${String(resolvedModel?.providerID)}/${String(resolvedModel?.id)}, expected ${expectedModel}`);
   }

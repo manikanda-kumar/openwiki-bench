@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4f7d6689ea8f91421fc603980a06d2ab44b5f760519241ca7088d1d933f86000",
+  "claims": [
+    {
+      "id": "claim_b7e2555e18a846aa80ef7e49ff0f8f7a",
+      "statement": "The built-in browser is an Electron WebContentsView surface owned entirely by the main process (BrowserService in src/main/browser/browser-service.ts) and survives a Renderer reload.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-service.ts",
+          "version": "repo-file-v1:sha256:12688a176021b8a09d4e53cad2b286afead079d078fd8a07970f9b298bedc43f"
+        },
+        {
+          "resource": "repo://src/main/browser/browser-tab-manager.ts",
+          "version": "repo-file-v1:sha256:f534bc21bae1d6c573bca0805331626bebe276db415cf73425f633d8e7792172"
+        }
+      ]
+    },
+    {
+      "id": "claim_8937fc5e1f424f4bba95ed3dbf461637",
+      "statement": "Agent coding permissions never imply browser rights; browser access uses a permission lattice none<read<interact<advanced enforced by BrowserPolicyEngine, with short-lived grants and per-request leases that carry a policyRevision.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-policy.ts",
+          "version": "repo-file-v1:sha256:820a62c77835ac3a5cac9615a5fbc0a021f2eea681eab071aaac7eabc7d07bee"
+        }
+      ]
+    },
+    {
+      "id": "claim_0dee79c0a65945cc9e5e4eacf117151a",
+      "statement": "Leases expire after a lease TTL (default 15 min) and are all cleared when the policy revision bumps; a stale lease or revision fails with CAPABILITY_LEASE_EXPIRED or POLICY_REVISION_MISMATCH, forcing the agent to refresh.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-policy.ts",
+          "version": "repo-file-v1:sha256:820a62c77835ac3a5cac9615a5fbc0a021f2eea681eab071aaac7eabc7d07bee"
+        }
+      ]
+    },
+    {
+      "id": "claim_8386bbf2aa7647b98f5087199093d22d",
+      "statement": "BrowserAuthorizationCoordinator resolves approvals serially per session, honoring persistent permissions, issuing grantSession for allow-session decisions, applying deny cooldowns, and timing out pending requests after 60s.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-authorization-coordinator.ts",
+          "version": "repo-file-v1:sha256:cd7d5f27bada04387e9158094177d1979ffaa2f529983d0973edc2182df804d9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fd9c55f41ff48bb92f2c1e28c806f9a",
+      "statement": "BrowserConfirmationManager issues single-use, expiring BrowserConfirmationProofs (default 2 min TTL) bound to a kind and payload digest; sensitive operations require consuming a matching, unconsumed, unexpired proof.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-confirmation.ts",
+          "version": "repo-file-v1:sha256:48621f3dc31e71c1dea84918cc4ff2e25ce3bbe1623d02f6030ebaa4b45ac393"
+        }
+      ]
+    },
+    {
+      "id": "claim_c0b275664ed1485a80a35cf36bcff26f",
+      "statement": "Persistent per-session browser permissions are stored in BrowserPersistentGrantStore (browser-session-grants.json), consulted at request time; runtime grants are held in BrowserService.runtimeGrants for 8h.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-persistent-grant-store.ts",
+          "version": "repo-file-v1:sha256:5d18252bd628b20733bd5545e603cbc731b21f783f66390b39119669ea5be814"
+        },
+        {
+          "resource": "repo://src/main/browser/browser-service.ts",
+          "version": "repo-file-v1:sha256:12688a176021b8a09d4e53cad2b286afead079d078fd8a07970f9b298bedc43f"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b0e9d57f84c4b99afbb744c46d21cd0",
+      "statement": "BrowserProfileManager manages Session-partition profiles including a default temporary profile, ephemeral profiles, persistent profiles (max 16), and unsafe profiles that are only allowed when advanced mode is enabled.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-profile-manager.ts",
+          "version": "repo-file-v1:sha256:14abf2075147f265181935029c8f67c0017e6e40a33461fb0e12196685d9e597"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c9f2e36551646d7b151423ad7b963b4",
+      "statement": "The advanced browser mode (advancedBrowserMode.enabled, this-launch only) unlocks removing site security headers, disabling web security, allowing insecure content, certificate-bypass domains, and unrestricted raw CDP; turning it off downgrades advanced grants to interact.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-policy.ts",
+          "version": "repo-file-v1:sha256:820a62c77835ac3a5cac9615a5fbc0a021f2eea681eab071aaac7eabc7d07bee"
+        },
+        {
+          "resource": "repo://src/main/browser/browser-settings.ts",
+          "version": "repo-file-v1:sha256:d778051519d930251ea75b46d3f5e7472d43e013ac6c5ff75e08121147248896"
+        }
+      ]
+    },
+    {
+      "id": "claim_f3980180df6a42b3bccab4087d1e7918",
+      "statement": "Browser header secrets are encrypted with safeStorage and referenced opaquely via secretRef from BrowserSecretVault so the renderer and logs never carry plaintext values.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-secret-vault.ts",
+          "version": "repo-file-v1:sha256:f5980b78588fd8a65e482874a39405a2054e0b5248fa435e499f1d8f73bd4d60"
+        }
+      ]
+    },
+    {
+      "id": "claim_9481c9ba6b5a4cc3a266dbcd9a2b0cbf",
+      "statement": "BrowserService pushes a BrowserCapabilitySnapshot (revision, browserEnabled, automationEnabled, advancedEnabled, sessionPermissions) through a subscription wired to hostManager.setBrowserCapabilitySnapshot, and the Host applies it via browser:init/browser:changed before syncing session browser tools.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-policy.ts",
+          "version": "repo-file-v1:sha256:820a62c77835ac3a5cac9615a5fbc0a021f2eea681eab071aaac7eabc7d07bee"
+        },
+        {
+          "resource": "repo://src/main/main.ts",
+          "version": "repo-file-v1:sha256:698ea6d8d5c1086fcb229be911d7ab72c18ead37af659c54e13c98b320a38d42"
+        }
+      ]
+    },
+    {
+      "id": "claim_995f5d98a36b47f991bc355e9f298216",
+      "statement": "On Host stop, BrowserService.onHostStopped clears agent header rules, cancels pending authorizations, revokes all policy grants and lease state, revokes agent tab actions, and clears advanced state.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-service.ts",
+          "version": "repo-file-v1:sha256:12688a176021b8a09d4e53cad2b286afead079d078fd8a07970f9b298bedc43f"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

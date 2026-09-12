@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ea860dd7f49bf4fe26c5f8bacf6ef70ff6d100bc41824a9baebe2564f4ae4a00",
+  "claims": [
+    {
+      "id": "claim_ccf9e10b254848e7a274b6d3bddaa37f",
+      "statement": "`celld-ltx` is a from-scratch Rust reimplementation of Litestream v0.5.11 whose block format follows LTX v0.5.2.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/lib.rs#L3-L12",
+          "version": "repo-lines-v1:sha256:572023f3b758b3962bc6ddf1a5e72a502d2c7271eeba457fb88f9657a5043a61:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YTA0MWI1ZmVkNDYwZmIwZTkyMzkyZTg2YzA2YzA1ZDhjYjYyOWUwNGRkOWZlZTdlYTMwYjM4ODdlOTQ5ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5ZGY2MzdlMTQyNDg0Y2I1M2I3Nzk4OTcyNDU1NjUyMDRmMGNjM2E1ZDMxMGIxNjA2N2Y4Mjc5NmY1MTc2OTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3MGJkMTEzYTFkMDM0OWIzNjA0OWVhOGRmYWMxNzlmZTA4MTQ3Mzg2NmI0ZDMwNDdkYzA2NDg5ODIxYTg3ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1N2EwOWUxNzUyYTk0YjU3NDY2ZTc3OTc0ODJlMjNiOWFkN2UwYTZjMjlhM2IzMWIxNTA4MTliNTk4YTI2ZTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09e0a616934e4f39a814c8f45a570cb0",
+      "statement": "The capture API in `db.rs` is kept synchronous and owns the SQLite connection directly because `rusqlite::Connection` is !Sync; `Replica` drives `sync()` and `checkpoint()` from a blocking context.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/db.rs#L8-L18",
+          "version": "repo-lines-v1:sha256:902651f62e851221675a7352a8967032bec1d6d8e07de42f03181b839d6226e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzUyMzViMGQ5NzZmNTliZTA4MWQ5ZDgwMjk4MGMwYzY5OWYyNTUzNTZkYTBkMTEwNWIyOWFjZmJmZmFhMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlZTVkZDliN2EwN2M5NDQ4NmRlNzk2NTM5OGY0MTUxNTVlOWQ1ZGM5ZjViYmVjOTU4ZDkwYjg3OTVjYjI4YWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkMzM2ZDU1ZGQ2YmI5Nzg4NzBmMDY5MjU3OWI4MjU1ZjAzNDg0YmExYzIwZTYyZDU2YWVjZWQzM2VhYmZmNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2Y2YzNzJiMWE4MWI2ZmRjYzRiMmQzODVhNjNjZDg3Zjc2MzdlOTc2YzhhN2FiNTgxMDc2OTQxM2UyYTdjMDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1eacd20fcf614f3bbe1b1cab29695257",
+      "statement": "The functional capture path diffs the real WAL against the last LTX position and writes the next L0 LTX file with atomic tmp→rename and a position cache; `verify` is the snapshot-on-continuity-break branch lattice and `checkpoint_if_needed` applies a 3-tier policy with anti-feedback flags.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/db.rs#L20-L47",
+          "version": "repo-lines-v1:sha256:84761fe72c44cd7d25e606a026bbc522c3a1e08eae76b3e109960faf58899b6d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3NjJlZjc0NmNkNjgyYjA1NDVlNGRjYmZlYThlNWViZGVjODljY2QwZTZhM2EzMGUzNTIzNDc2NGM2NTVlZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMzg4Mjc5NTZkZjJhYzgzM2M3Nzg5ZTMyMmMxYWU3Yjk1N2QwZjM3ZTVmMjQ4MmFlNzE4YzJiMjFmYzViOTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhODRiNDQ0NGE2YzAyZmQyNGNkZTRjYzhlNjdkZDQ4NjQ2YmVjYzU1ZGY0ZDU0NWQ4NWUyYjQ5NzU5ZDUwY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2YTA1NzkyZGQ4NWJhOGNlMmFjNTcyZjg5YTY5MTk3MWMzOWQ1ZmFjMDMxZDc3NDVjNGJlN2YwMjkwMjljNmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_08c3acb8f656467eb641593136a630c6",
+      "statement": "`CheckpointMode` renders exactly PASSIVE/FULL/RESTART/TRUNCATE into `PRAGMA wal_checkpoint(<mode>)`.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/db.rs#L66-L90",
+          "version": "repo-lines-v1:sha256:519c14208d7a67e211205aeb4c183ec7e53ce5aba926c6f3c444e285a549815e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MDBkMmIyY2IxZjZhODIzNTQ0ZDI4ZGFiYjU5ZmRlMzYyMzg2Nzk1ZTUwYTViMGY3ZDMzNjY5ZGQ1ZTU3ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmMTc2MmYzNTM5ZTE0ZGExNGE4NDg3N2I4NjVhNTA4OWYyZjgxMDI1ZTMzZTZmNjQ2Yjg5MjJkNjUyMTRhYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2OTMwZGY5MGYwMjlmYzUyZWUzNGFmNDc0YTYxMTM3NGVlMmNmZTgzMTYzYTdhNGNmNDEyNjhlNjZiODFjZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkZTQ4N2EwYjQ3OTQyNjMzMTg1Yjk0MDA3MjdlMjhjMTQwYjQzMjY3NDc0MDY4MGJlMGYyMzA1ZGVjZjU0MTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bff3968452f04991814d40541d31d550",
+      "statement": "`Replica` drives two halves of replication: sync copies each new L0 LTX file up to the remote replica advancing the replicated position one TXID at a time, and restore downloads LTX files in TXID order, merges them with the compactor, and reconstructs the SQLite file to a temp file that is fsync'd and atomically renamed into place.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/replica.rs#L4-L16",
+          "version": "repo-lines-v1:sha256:d3b07712730b28140b79a023830993b590a2447f08345dbca4ea354e43a4c716:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MzdlOTM2M2MwMmFmMjQ1ZWYwNmI1MWJkOWQ2N2IwNWI3NjE2YjFkMDc0OWExOGEyYmFjMmVmODAwNjVmNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0NGNjZDk2NmVhYTQ4ZjAyM2MxMmUwMWVhMjEwN2UwZjhkOWNmYTMwOTUwODc2NDgyOGU3NDhhYzE1NzE4ZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkM2VlMzU2NjYyMzI0OGYzODViZWIwMDUyNzM3MDM2NDBiOTEwMGJkMjFmNWM2ZDFhYmY5YjA1N2UzZDY4MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyOWU1YjUwMjU5ZDcyNjU3NDNjZTk3MzdiNWQ4YWQ0ZDlhYTcwZjI1ZDE4YWQ5NmY5Yjg4N2ZjYWQxYzFmMjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_07d0176019714d22961f9b3c034312f0",
+      "statement": "The restore-plan calculation honors a target TXID and probes the snapshot level first so it stays a faithful port that works when compaction is added; the current scope is L0-only and one-shot.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/replica.rs#L18-L36",
+          "version": "repo-lines-v1:sha256:f1f84db796afc268115039cc4711f168a8370d87390f0910400f6c4458ead339:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlNGRiNzdlYjYyNmE1MGMzNjI3Njg5NDk0Y2M1NzlmOTBhNzUyZTI1NWFiZDk4ZDNjZjUzNmI1MmUzNDg0MDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNzhjYTA0YzAyYWVkYzUxNWJkMjQwOGFlMDU0NjAzZTM5YTA2ZjYxOGVlMThkYzJjYjY4YTQxYTVjNDc1MjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwMGM5ZTFmZDk2OGVjNDY1ODY1YjcyNTlkNzZmOTAyMzNhYWQwMmM0NDQ4OTU0YWUyYWIxZTMxMzU5NjlkMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNzY4Y2JkNWFmZWRkNjg3YzI2NDBjZWExYjFjOTI0YzZmODk1NzUwZDJmZjdlNmQ5YzA5NTFhOGZiMWViYTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ccdb6ed4f8644c784f30e1d6e16d409",
+      "statement": "The compactor is a streaming port of the LTX Compactor that merges ordered LTX inputs into one byte-compatible output, keeping one decompressed page per input rather than a database-sized page map.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/compactor.rs#L1-L36",
+          "version": "repo-lines-v1:sha256:2b040771e73a5a7e77879a26b6dec827b4e01bc87bc981378f76d49de5248d5b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2MzlmZDI2NWUxZTg0MDc3NWE3NTM1NWI1NWUzMDc3YTJiMTE1YzUwNTk0ZGNlN2VmYThhNjY5ZmI5MDljYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMjYzZDkwYTQzYmU4ZjZiYzY0Y2JkOGExNzRhYjg4Y2JiNDI3YzdhNWNmNjYyYzUxOWQ3YWRkZmQzYTFiNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmYjZkODU4MTc2NTgyNDAwNDdkYzZmY2Q4YTEyOTQwZjY5NTFjMDlkNjA2YjliNzgxZGZmYzJjNjA0MTc3N2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ca8b42d88d343e289d22e9bc949131e",
+      "statement": "The bundle is a celld-original, self-contained envelope (magic `CLB1`) that concatenates verbatim L0 LTX bytes with a little-endian footer, so un-bundling is pure arithmetic and a drained bundle leaves the bucket in pure-Litestream state.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/bundle.rs#L4-L17",
+          "version": "repo-lines-v1:sha256:93dabfc5b6779fdfa4da143d89d32bbb2fd5e46af58846f85fa9db52d347f263:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlYmZlZThmZjRiMjkwYWJmMTBhNmUyNzRhNDQ4NWM5NjA4OGQ5MmVjMzc0ZDBkNjNlZTUwYjBjNDdjZDg2NGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlMTI1YjAyMjM5MDVlMmRkYTVkNGNkNmZiN2I5ZTllOTIwNDI2M2Q1YzRmYzM4YTA4NDg4ZjkwMzY5NTMwZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5ZTM5NzE3MzczNTExMjYzZjlmMWY5MmVmOGY4MjdjNzI4YWQwMjlhNGM2ZDNjZTc1Zjk2ODdiYmE4ZWNmODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3ZjZkODRlZjVmMGIzODEwNzM2ZTRjNWQxODU3NzlhYzM3MjNkNjRmOGQzNWVjNTYzYjRlNDA3NTU3YmFlNTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f0b275bb49a24d93a176957652b2ba7c",
+      "statement": "`ReplicaClient` is the storage abstraction every replica backend implements, with `FileReplicaClient` storing on the local filesystem and `ObjectStoreClient` (behind the s3 feature) using the object_store crate.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/lib.rs#L72-L108",
+          "version": "repo-lines-v1:sha256:079345ed3b5ac5d0504fba1d07c80e6a562cbd8a3ba88ce914c2fd1b6717c834:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlZDFjMTgxNmE1MTM3YzAzYjBiN2Q2MWY0MjI0NDQ2ZDZjMDMyNTE5YTVkYmI1ZTViYTM5YjJmYzI5ZTFhNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNGVhODAxMTExNGIyYmFkYzI1M2FjOWE1MDYxMjM2Zjg2ZDJlZmE0Yjc3NGY1MjMyOTExMzhmNjJmN2ZhYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZTJhYjJlN2M3NWY3Mjg5ZGFlNWRhMjAxZDY3ZWU4MGU5ZmQ5YjI2NDIwYWU4OGU3ZTRkMDVjZjkxMzAxMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlYjkyOWRhMjVhMzFmYWUwOTU1YmEzZTUxODZiMTVmOWE3MTEyOTk5MjQyYzI4ZWMyMzZkNzA3N2I0NDg3NmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e0846c65f464ac380477f48440c59a4",
+      "statement": "The unstable `internal` module with no compatibility guarantee re-exports db, lz4_block, replica, and object_store internals for external verification tools.",
+      "evidence": [
+        {
+          "resource": "repo://crates/ltx/src/lib.rs#L30-L41",
+          "version": "repo-lines-v1:sha256:66cbccaf91b8a45115f3a0fdcf4cef55c0d58b3e8694abff8f02288cb847f433:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmMTM3NDBjN2ZhNmI0ODI2MjBlYTUyYmFiNmM0ODI1NTdmZjcwMGZmYzQxMDg3MzVkNThlOGQ3ODdiNWJlNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmZGRjNjQ2N2FjMGExZmQyNTFjMTEzZmQyYzNlOTI0ZTJjOGFjZjlkNzg2NjEzNWQwZGY2ZTM4YjJmNTgxOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyZjk5MzJiMTMzOTNmZjE5MDViNTYyYWJkNDNiMDIxOWViOTQ4M2E1ZmI4ZmJjMTg1MGJkZDRjNjRhOWUwODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a9da9c4d584426f9586b0ed47716651",
+      "statement": "celld's `crates/celld/ltx_repl.rs` builds its own object-store clients rather than going through `bucket::Bucket` and carries the fleet's key prefix itself, so two fleets sharing one bucket do not replicate over each other.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L11-L15",
+          "version": "repo-lines-v1:sha256:f5c59ca3acd77a1ebfd460cdb32818f760bffcee3551b9e4489c935e262f0425:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2UyNDJlYTkxODNlNmVkYzliMTk4OTBkMzQ0NzI3NjYxMmI2ZGUxNmQ4Y2U4OTBkMDFkNzI4Y2VlZjEzYTFjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTY1ZWQ5Yjg2Y2EzMTk2M2ExZmJmYjIzOTRkMTU0YjhiYjkxZDAxNzgzMmZiZGVkYmM5ZmU4MDVjY2JkODVhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGFkNmNlMGY5YTEyN2RlZTZkODM4ZDA5M2I5ODExYTVlY2RlNGYwMTI3YTM2YTE5YjQ2NjZiMTVhNWY0YWZiZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWFhNWI3MDZiNWUwODMxMWJiY2UzMzAyNjJhMzY5MDI5MGQ5MjU2Nzc2NjBlOGMwOTc5NTFlZmFjMmE3OTk2NCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:37:50.122Z"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:818f9c5b641399e9b1b4d836e731f9f3b32b018f85b58be5b60e7ff790d62d44",
+  "claims": [
+    {
+      "id": "claim_6d08954213c5439597fc29ed9c98f56f",
+      "statement": "The toolchain capability model (src/shared/toolchains/types.ts) defines a fixed set (shell.bash, vcs.git, js.node, python.*, search.*, data.jq, network.curl) with providers project/custom/system/bundled/managed/legacy-upstream-managed, per-capability preferences, ToolHealth states, and a closed TOOLCHAIN_* error code set.",
+      "evidence": [
+        {
+          "resource": "repo://src/shared/toolchains/types.ts",
+          "version": "repo-file-v1:sha256:3fd1a64fd1687e23496fe113e2da8b6695d65ce73a097f31a30dd4860de93fcd"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e281295fba745da9e44ddc3d5d335f9",
+      "statement": "ToolchainManager (src/main/toolchains/manager.ts) collects executable seeds from custom/system/bundled/managed/legacy sources, probes each, normalizes/dedupes candidates, selects defaults, and produces a ToolchainSnapshot carrying revision, platform, arch, candidates, defaults)SkipPress and publicState.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/toolchains/manager.ts",
+          "version": "repo-file-v1:sha256:84fe4108667c5abe80a190465bf15947d274c65839e5bbfdf57f8ec68e23bf07"
+        },
+        {
+          "resource": "repo://src/main/toolchains/public-state.ts",
+          "version": "repo-file-v1:sha256:94cec84a6ce9d653f232c3085333e2eb1a1f1feaf5d75a93df4b640c025d0cfc"
+        }
+      ]
+    },
+    {
+      "id": "claim_3b22024550e44c2eb41c6c77a91bfb8d",
+      "statement": "The runtime catalog schema (src/shared/toolchains/catalog-schema.ts, version 2) requires per-platform/arch variants with url, sha256, downloadBytes, archive format, and installer id; the app ships two signed catalogs plus the current target's core search tools as extra resources.",
+      "evidence": [
+        {
+          "resource": "repo://electron-builder.yml",
+          "version": "repo-file-v1:sha256:fdaf21faa613333d1bef525e6b2f02672dd1bd65a8710fca2171ac038e0aada2"
+        },
+        {
+          "resource": "repo://src/shared/toolchains/catalog-schema.ts",
+          "version": "repo-file-v1:sha256:414708fca71dcb201c666006b9d24784dd381f7e2ad3a05d67506906d71c089f"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ed6f7448cbf496aac514b7f7e98b0f8",
+      "statement": "ManagedComponentInstaller (src/main/toolchains/installer.ts) runs a phase machine and verifies every download byte-by-byte against the catalog sha256 before extraction, writes a signed runtime manifest, and resumes partial downloads by re-verifying the existing archive.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/toolchains/downloader.ts",
+          "version": "repo-file-v1:sha256:aee07f368d4edc18f4faf987aa486d827ce6aeb0f6704bb1ade42a89b6f81be6"
+        },
+        {
+          "resource": "repo://src/main/toolchains/installer.ts",
+          "version": "repo-file-v1:sha256:cdc78c79c52d347e7d443c0a34e1eba7bc5d52130d87744c4399e6989bffec11"
+        }
+      ]
+    },
+    {
+      "id": "claim_09ac4297e9e544a7b120333edec9814f",
+      "statement": "Component removal renames the component tree to a staging trash path before deleting and is refused while an agent command is running or an install is active (manager.ts).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/toolchains/manager.ts",
+          "version": "repo-file-v1:sha256:84fe4108667c5abe80a190465bf15947d274c65839e5bbfdf57f8ec68e23bf07"
+        }
+      ]
+    },
+    {
+      "id": "claim_83f5c5f1d7ca4c029bf2aa3f0aac381c",
+      "statement": "Toolchain profiles (javascript-essentials, python-essentials, windows-shell-essentials, cli-essentials) map to managed component sets, and caches (npm, uv, bun, downloads) are enumerable and clearable.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/toolchains/manager.ts",
+          "version": "repo-file-v1:sha256:84fe4108667c5abe80a190465bf15947d274c65839e5bbfdf57f8ec68e23bf07"
+        },
+        {
+          "resource": "repo://src/shared/toolchains/types.ts",
+          "version": "repo-file-v1:sha256:3fd1a64fd1687e23496fe113e2da8b6695d65ce73a097f31a30dd4860de93fcd"
+        }
+      ]
+    },
+    {
+      "id": "claim_24ecdd205f604ff8aa30018d1389fa3b",
+      "statement": "The Agent Host's toolchain-runtime.ts applies the pushed ToolchainSnapshot, rejects older revisions, caches per-request resolutions keyed by cwd/intent/trusted/revision, and refetches when a resolution's inventory revision is stale.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/toolchain-runtime.ts",
+          "version": "repo-file-v1:sha256:51052a63bc1f41e5d13f54d888c265af1143d59de6c0a9af561b87b0edd3bc36"
+        }
+      ]
+    },
+    {
+      "id": "claim_ce7b8b6a3fa94cc0a0b9d2cba5dc6038",
+      "statement": "createExecutionContext in toolchain-runtime.ts assembles a ToolExecutionContext (nativeEnv, shellEnv, per-capability CommandDescriptors with envPatch/shellEnvPatch and cwdSemantics) used to spawn agent bash/git/node processes.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/toolchain-runtime.ts",
+          "version": "repo-file-v1:sha256:51052a63bc1f41e5d13f54d888c265af1143d59de6c0a9af561b87b0edd3bc36"
+        }
+      ]
+    },
+    {
+      "id": "claim_82d7693565154cd88e480e7f4e191556",
+      "statement": "Toolchain execution intent requests are only trusted when they come from the app-owned Host path; a Renderer cannot request a trusted project resolution.",
+      "evidence": [
+        {
+          "resource": "repo://src/shared/toolchains/types.ts",
+          "version": "repo-file-v1:sha256:3fd1a64fd1687e23496fe113e2da8b6695d65ce73a097f31a30dd4860de93fcd"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7f9e001b02b4d0e8b40591281032625",
+      "statement": "The user can select custom tools per capability (choose-custom-tool) and set preferences (set-preference, auto/system/bundled/managed/custom) through the ToolchainActionRequest surface.",
+      "evidence": [
+        {
+          "resource": "repo://src/shared/toolchains/types.ts",
+          "version": "repo-file-v1:sha256:3fd1a64fd1687e23496fe113e2da8b6695d65ce73a097f31a30dd4860de93fcd"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

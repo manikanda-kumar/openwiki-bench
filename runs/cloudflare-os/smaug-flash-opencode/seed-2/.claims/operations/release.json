@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ea7b4bd4d27c2e27b06b46999cc492a22fff043a0a435df67487de1581d4eb25",
+  "claims": [
+    {
+      "id": "claim_becc1dc983c047c9832f32d8eadabe56",
+      "statement": "build-release.ts bundles every deployable worker byte-identically (wrangler dry-run + outdir with the pinned wrangler), builds the Access-mode frontend asset build, and generates the release manifest; the output layout is <out>/manifest.json plus content-addressed modules/ and assets/ blobs.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/build-release.ts#L1-L17",
+          "version": "repo-lines-v1:sha256:7e86f580f3b16cd552922bae723dc3e81bdeb8b587f2bfc36688c2602691bfd5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OWM0Nzg3MmI3MWYxMjU4OTk0Mjg5MjQ2NGU3NjRjMGRiMzUwYzIwYjcyMjI4NjQ1NjE1Y2MzNmUwYTA3MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyOTM3YTliZjE2Nzc0ZDQzYTY0Y2Y0YmFhMWQ0ZDZlMDk4OWQwOWE1NjViMjFjN2UyYTU3ZDQ3NjAyZGYwYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxZGUyMDc5Yzk1ZDE2Njk1Zjc3MzA0MTI3MzhhMzIxNjI0ZmI1YTA1ODFiOGQzZDg4YzI5MTEwNzM1NDUzOWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7d26ba05af16494aa6f1527a80961d0c",
+      "statement": "manifest-lib.ts parses each package's wrangler.jsonc and emits binding templates where every account-specific value is replaced by a closed placeholder list ($ACCOUNT_ID, $KV_*, $R2_*, $WORKER_NAME, $SECRET, $PUBLIC_BASE_URL) that the deploy service renders; MANIFEST_VERSION guards the contract.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L1-L25",
+          "version": "repo-lines-v1:sha256:eb0943324f5f1b34aad7e3a92716dcc0a8c0f408dcd2624acb3973d30e6c539c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWE3NDA4ZGE5MDcxY2ExZGNlNjNjYmI4YjRjYjZmZWQyOTFjZjRkOTJlZTVjZmM3OTQ2OWQ4MGEwYjk0YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1NzlkNTk5MDUwM2E1NDUwMTQ1MWM0N2JkODEzNzZmMmJhYjMyMTU3ZTUxMWMzOTU1NjI2MzBmMWMyNjFmZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlOTY0ZGVhZGQwMTFkZDgwM2Q1YWEyNTY2YjUxNGJmYzcwNDFhYTU3ZDA5MWE1ODQ0MGVhYzFhOTM5MWJlY2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_748a040193ba4a35acf9b9ce836cdd28",
+      "statement": "upload-release.ts mirrors blobs to R2 via the S3 API content-addressed with HEAD-before-PUT (unchanged files dedupe), and uploads the manifest LAST because its presence under releases/<id>/manifest.json is what marks a release complete, so a crashed upload never leaves a manifest pointing at missing blobs.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L3-L10",
+          "version": "repo-lines-v1:sha256:43e1f267b79b53d08407e31c0ff81db336886006935c24f3a190328f4f188eeb:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDY1ODk3YzkwMWE5YzllYWQ4M2NlZWY3ZGM2YmViMGMyZWJkNTNhZjdiZmRjZTEzMDFmMmU5ZjY2ZjJkYTIzYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjcxZGJlNjMzZWZjNTQ1NmM0MGVhNjY3MzI1ZThiMDA2NWNjNDc0OTM2MjYxYWNmZmY2MTkzYjBjNTM5NmZiZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQ3YjE3MGJmNTJlMDg5NTEwMDhiZjNlY2NiYmI4NzBhMjZiZTBhMWU1YjhlNWYwMjBiYWZiY2YzNTk5OTdjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDZkZTZjZDQ4MGE1Mjk2NzgyYzAxMmE0ZWVhNTBhNDUxYzcxZTZmMjQxYWM3ZDRkZGExNjVmODYxYzBjZDBmYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_da0b13e648834a54abe29fd10984d1d2",
+      "statement": "With --candidate the manifest lands under candidates/<id>/ invisible to the deploy service until promote-release.ts copies it to releases/<id>/, and promote-release.ts's newer-release guard plus CI serialization handle the non-atomic promotion copy.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/upload-release.ts#L12-L17",
+          "version": "repo-lines-v1:sha256:de92535e46d84b97e0aa1edae60bec6848069060e8cbe3ccb318876e1a05be7b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2JiZDg1MTEzZWFkNDJiMzY2MTU5MjUyMmU5YzgyODZiOWMzNjU0MDY4NDA1NmY0NzYwNWUwMTk5YTA4ZjhjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGUyNWMyOGRhMzE5MWNjNzA4OTAwNGM4YmM3NzI0ZTEyMDE1MDM2OTFiY2ZmNmViMTVjYTZmMTNkNTQ5MjMwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGU3YmMxYTMzZjlmNzI1Mzc0MWMwZGFhYTMzZjg0NWNjMDFiMDQyMTVlYTEzYjg4YTNhY2YzNTI5YzVhMWJlMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea4b82b9c63047ab99865bf65c8155a9",
+      "statement": "NO_DEFAULT_CRED_INPUTS in manifest-lib.ts names the installable gatekeepers that take no third-party OAuth app credentials (gatekeeper-context, -homeassistant, -scheduler, -mcp, -mcp-portal) so the deploy wizard doesn't demand spurious default secret inputs from them; everyone else defaults to CLIENT_ID/CLIENT_SECRET overrideable by deploy-inputs.json.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.ts#L256-L266",
+          "version": "repo-lines-v1:sha256:0761bff2e402d6a7f6813a2b06736f05de0717c09e9dcf48088ff521176bc245:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4NzQ3MWJkZGE0YjA3YjQ1ODkwZDZjZDRmMzZjMmJlOGU2NmMyZmVjMTBjODYxNTBlNGZmODk4ZDg0MWVjMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1ZTI2Y2Q5MjM2NmY2MGQ4ZWQ5MmQwMjM5ZjA3ZmVmNzRjYWMxNGFhNjlhZGRmOWMyY2MwZDExZWIwMGE0NjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4MWMxMGFhOWVmM2IxMTRkZjI4ZTEzZTQwZTk5M2IwNjRjYjY5NWNjMjU1NzBhOGI4ZWMzY2E5NDY2OWJiNjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3MDNmZjZiYzQ2OGJkN2Q4ZTg0YTZkMWQ0YjlkMTQzNmE5NTU1YTliYTk3NWU1MDNmNDhmMzYyMjNmYWMzYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_29db6e759d534f70b0d86eb178716fc7",
+      "statement": "The manifest is covered by a golden-file test regenerable with UPDATE_GOLDEN=1 node --test scripts/release/manifest-lib.test.ts, and the review must check the golden diff.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/manifest-lib.test.ts#L1-L40",
+          "version": "repo-lines-v1:sha256:9f69c301655783d6b5db7fc4621ac5a016a9ab5fcf7e72982b43577aaf97cdf5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlZDBiZmNiNmIzMWY0YTc5MDBiZmY4YzA0NDE2MWZmZThhYTA3ZWY0ZjcwMzY2N2U2ZDM4NzBiNmI2YTRkNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliYmQ1MTMzMjAzZWExMDA5MjI4OWQ1ZGI4MTgwY2ZhZDMxNWVjYzJjOGU4ZWI5YWI0NWViOTExNDg0N2EwZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3M2Y3YWExNDAyYjk4NzU5MzA1MWQ3ODQ3ZDkyMzdiMzIxOGYyOGUwYTZlMzM2NmJlNjNlM2NkZmJiMzMxZjkifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:03:26.424Z"
+  }
+}

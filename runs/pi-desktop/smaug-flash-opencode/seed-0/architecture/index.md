@@ -1,0 +1,10 @@
+# Files
+
+- [Agent Host & MessagePort RPC](agent-host-rpc.md) - How the Agent Host utilityProcess is supervised and restarted by the main process, and the request/response plus stream MessagePort RPC protocol that carries the desktop API surface.
+- [Built-in Browser Service](browser-service.md) - The in-app Chromium browser shared by user and agent — WebContentsView surface, profiles and tabs, agent authorization and confirmation flows, network policy and interceptor, header rules, secret vault, and downloads.
+- [Managed Background Processes](managed-process-execution.md) - The supervised managed-process subsystem — lifecycle states and stop modes, posix and Windows-native backends, output buffering, loopback endpoints, readiness probing, and crash reaping guarded by a durable journal.
+- [Messaging Channels (Feishu / Telegram / WeChat)](messaging-channels.md) - The external messaging-channel subsystem in the Agent Host that adapts WeChat, Telegram, and Feishu/Lark, enforces DM/group policiescars, schedules outbound turns per lane, and bridges inbound messages to Pi agent sessions.
+- [Architecture & Process Model](process-model.md) - The Pi Agent Desktop process topology — Electron main, sandboxed renderer behind preload, the supervised Agent Host utilityProcess, and the no-internal-server MessagePort RPC transport that connects them.
+- [Security & Trust Boundaries](security.md) - The security invariants that shape the desktop — a sandboxed renderer behind preload policies, IPC sender validation, safeStorage-backed credential vaults, toolchain download integrity, browser isolation, and secret redaction.
+- [Sessions, Files, Projects & Skills](session-project-surface.md) - The agent session / file / project surface — session storage watching and indexing, allowed file roots, file watching and suggestions, worktree and git-status APIs, plus the skills and plugins services.
+- [Toolchains & Developer Tools](toolchains.md) - How the desktop discovers, probes, selects, installs and supervises developer tools — the capability model, providers/preferences/health, managed components, profiles and caches, and the snapshot the Agent Host consumes.

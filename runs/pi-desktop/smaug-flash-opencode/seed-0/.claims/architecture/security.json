@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8999fdc113150362471983f93399b9019ea2f8f6413694380aba85a076965cd1",
+  "claims": [
+    {
+      "id": "claim_682fc47ce0d744cebc72b852c7bb4721",
+      "statement": "The renderer runs sandboxed with contextIsolation and exposes only piBridge; the preload only trusts app://bundle or a Vite dev server at localhost:5173/127.0.0.1:5173 (preload-location-policy.ts).",
+      "evidence": [
+        {
+          "resource": "repo://src/preload/preload-location-policy.ts",
+          "version": "repo-file-v1:sha256:9e8479de8545e1e2ce4335f2ca054ff2be7f2e7c38b063453949981f5b0982c2"
+        }
+      ]
+    },
+    {
+      "id": "claim_67c5dbc28c72459bb9753cd3c6992c9a",
+      "statement": "preload-message-policy.ts validates that exactly one well-shaped MessagePort (postMessage/start/close) is transferred and that deep-link session ids are strict UUIDs before forwarding.",
+      "evidence": [
+        {
+          "resource": "repo://src/preload/preload-message-policy.ts",
+          "version": "repo-file-v1:sha256:73b0c72c59584c368913609aba63b63d485f36340b258483ca17ea135f4a63f4"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d1b3202819a4566920f20825a9f1811",
+      "statement": "isTrustedDesktopIpcSender (src/main/ipc-trust.ts) requires the IPC sender to be the main BrowserWindow's webContents and its main frame, rejecting nested-frame or other-window senders.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/ipc-trust.ts",
+          "version": "repo-file-v1:sha256:6a75b783b567235e464d4835c1fc2a90b1706405657a7ff060a64fcacfa03942"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c8daadde36c415c8b17b0a88e119156",
+      "statement": "CredentialVault (src/main/credential-vault.ts) persists channel credentials to a 0o600 JSON file as safeStorage.encryptString blobs Brief, refuses to run when safeStorage is unavailable, and validates keys strict against channel:(weixin|telegram|feishu).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/credential-vault.ts",
+          "version": "repo-file-v1:sha256:a3cc3a584052fa59326c7560bb03b5a173c627c1080b49c598b2cdcabc26039a"
+        }
+      ]
+    },
+    {
+      "id": "claim_e99efcd5d978403aaba90048f43a62cd",
+      "statement": "BrowserSecretVault stores encrypted browser header secrets referenced by opaque refs, refusing values over 64KB or containing NUL so plaintext never reaches the renderer or logs.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-secret-vault.ts",
+          "version": "repo-file-v1:sha256:f5980b78588fd8a65e482874a39405a2054e0b5248fa435e499f1d8f73bd4d60"
+        }
+      ]
+    },
+    {
+      "id": "claim_1969ebbd436e491fa04068a89f5d58f4",
+      "statement": "Channel secrets are fingerprinted (last 4 chars) and recuctively redacted in redaction.ts, and safeChannelError routes all surfaced channel errors through redactChannelText capped at 500 chars.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/channels/redaction.ts",
+          "version": "repo-file-v1:sha256:246fa244e8e9a44d54f86eab73fb8ad70a73f6a83545d3b43b4a0e7e0caffdc1"
+        }
+      ]
+    },
+    {
+      "id": "claim_fdc8e6b4c2ea4d9eaaabbcdda35bbfc9",
+      "statement": "Browser url/text redaction (browser-redaction.ts) strips URLs of credentials and sensitive query keys and redacts bearer/api-key/password patterns before agent-visible content.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/browser/browser-redaction.ts",
+          "version": "repo-file-v1:sha256:df84382c887945aa5e14b9c5e9d554f440b9bad601872047ae4a25a3b258667f"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d492b78f4614b85ac9f51293a486a1f",
+      "statement": "Diagnostics redaction (diagnostics-redaction.ts) substitutes userData/logs/home directory paths and redacts authorization/proxy-authorization headers.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/diagnostics-redaction.ts",
+          "version": "repo-file-v1:sha256:dbc4bb1e66880a7dba0355e249358f688f123498815651f053e5e845d4e16fc2"
+        }
+      ]
+    },
+    {
+      "id": "claim_724c48561d144f179a67a40a0fa01848",
+      "statement": "Toolchain downloads are verified ( SHA-256 hash and bytes) against a signed RuntimeCatalogVariant, and HTTPS redirects are limited to a fixed allow-list of artifact hostnames via assertRuntimeRedirectUrl.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/toolchains/downloader.ts",
+          "version": "repo-file-v1:sha256:aee07f368d4edc18f4faf987aa486d827ce6aeb0f6704bb1ade42a89b6f81be6"
+        },
+        {
+          "resource": "repo://src/main/toolchains/installer.ts",
+          "version": "repo-file-v1:sha256:cdc78c79c52d347e7d443c0a34e1eba7bc5d52130d87744c4399e6989bffec11"
+        }
+      ]
+    },
+    {
+      "id": "claim_45f0b08bcd04486aabcc175b63d40ed2",
+      "statement": "scripts/check-desktop-security.mjs is a compile-time security gate run under verify.mjs that asserts source invariants including sandboxing, preload policy, IPC trust, redaction usage, Windows helper containment, and credential vault usage.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/check-desktop-security.mjs",
+          "version": "repo-file-v1:sha256:c06cb0548c80fc0acef754fba0cd6abd8ba0f5754e25a27def0719d80d4eda21"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

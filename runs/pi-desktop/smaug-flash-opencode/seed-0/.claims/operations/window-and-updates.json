@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:add21adb89428ce135fff77dd27da2bd9ca2367b22df22e5704c657581bc4c61",
+  "claims": [
+    {
+      "id": "claim_d1dcf50fea134d4c80b04dfe2226d89b",
+      "statement": "Main window creation loads persisted UI state (ui-state.json), applies restored bounds/maximization, and tracks/re-saves window state on move/resize/maximize via window-state.ts and window-state-core.ts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/window-state.ts",
+          "version": "repo-file-v1:sha256:80751c178a56874e6236cdf0e0008fe2485f386cdc446f6bf698cae234bcecda"
+        },
+        {
+          "resource": "repo://src/main/window.ts",
+          "version": "repo-file-v1:sha256:bca793c2c4405c40309c24175ba04dad7c347e264c9039583360b25d4f8642d1"
+        }
+      ]
+    },
+    {
+      "id": "claim_cae1f4c5112f494e8c724299c9681c7e",
+      "statement": "Renderer load failures/crashes are caught by window-load-failure.ts and renderer-crash-recovery.ts, and a window that fails to appear is retried by window-show-fallback.ts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/window-load-failure.ts",
+          "version": "repo-file-v1:sha256:fd4640c8b28ede79be4f38b6e2ea9a22588626182e7ac444ba0edb9c7c285c13"
+        },
+        {
+          "resource": "repo://src/main/window-show-fallback.ts",
+          "version": "repo-file-v1:sha256:7353b62ce6f531f7ccac3eb717c78a9dd132c7ee674456ed1e6e749c0f61d496"
+        }
+      ]
+    },
+    {
+      "id": "claim_42f23ab1eb584e2b949a1855a2097207",
+      "statement": "The app menu (menu.ts) sends menu commands to the renderer via <menu:event>, and the preload replays them with EarlyEventReplay; the tray and badge reflect running Host/session counts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/menu.ts",
+          "version": "repo-file-v1:sha256:8d674da4063c878321e7694ff8029875ee7028e15eb93840a5c990ed7c3a8626"
+        },
+        {
+          "resource": "repo://src/preload/early-event-replay.ts",
+          "version": "repo-file-v1:sha256:79e4094bda88efce1173b4400bea3ae74740c1609079318137a3a79de3bfff6a"
+        }
+      ]
+    },
+    {
+      "id": "claim_e1e40d82ae884de7a99e70c863e43ebd",
+      "statement": "acquireSingleInstanceLock (single-instance.ts) returns false when the lock is already held (now-holding process exits) and focuses/restores the existing window on second-instance.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/single-instance.ts",
+          "version": "repo-file-v1:sha256:9f1e775bfbd6753a492d6e05f9ae66acd4294fa8e65186b4d419443c2af35752"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e0e51afd280433c9d36cafb1584cc40",
+      "statement": "Deep links use the pi-agent-desktop: scheme with host session or path /session/<id> to resolve a sessionId (deep-link.ts); the custom protocol is declared in electron-builder.yml.",
+      "evidence": [
+        {
+          "resource": "repo://electron-builder.yml",
+          "version": "repo-file-v1:sha256:fdaf21faa613333d1bef525e6b2f02672dd1bd65a8710fca2171ac038e0aada2"
+        },
+        {
+          "resource": "repo://src/main/deep-link.ts",
+          "version": "repo-file-v1:sha256:d529a7320e47ef2ecfe019736a79af24d7f34c08cd7d8c93f7bec4171354445f"
+        }
+      ]
+    },
+    {
+      "id": "claim_28861c2a394b40e28c52115c23de2883",
+      "statement": "main.ts tracks a startup readiness machine and accepts --validate-packaged-startup and --validate-packaged-cleanup-fault flags in packaged builds for headless self-validation.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/main.ts",
+          "version": "repo-file-v1:sha256:698ea6d8d5c1086fcb229be911d7ab72c18ead37af659c54e13c98b320a38d42"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb87870b3a784e05b6439e1c2442851c",
+      "statement": "UpdateManager (update-manager.ts) is a phase state machine with automatic checks (initial 60s delay, 6h interval, jitter), a 15-minute download watchdog, and closed UpdateErrorCode classification.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/update-manager.ts",
+          "version": "repo-file-v1:sha256:59bf8469783a5d45af92c2f9aa461eec308444492bed5c6707d96db3bbe7511f"
+        }
+      ]
+    },
+    {
+      "id": "claim_fdfd8ec292324421bfa069c882c6c172",
+      "statement": "installUpdate() is gated on no active agent sessions (installBlockedByActiveSessions) and runs the prepareToInstall hook for managed-process cleanup; on failure recoverFromInstallFailure restores the app without launching the installer.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/update-manager.ts",
+          "version": "repo-file-v1:sha256:59bf8469783a5d45af92c2f9aa461eec308444492bed5c6707d96db3bbe7511f"
+        }
+      ]
+    },
+    {
+      "id": "claim_24b08cc3951049be9c438e795ad1335b",
+      "statement": "The update adapter (update-adapter.ts) only publishes when the updater verifies a signature (SHA-512 in latest.yml), and main.ts creates the adapter only in packaged builds on supported platforms (or PI_DESKTOP_TEST_UPDATER dev mode).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/main.ts",
+          "version": "repo-file-v1:sha256:698ea6d8d5c1086fcb229be911d7ab72c18ead37af659c54e13c98b320a38d42"
+        },
+        {
+          "resource": "repo://src/main/update-adapter.ts",
+          "version": "repo-file-v1:sha256:e799c301b69e82f03a46492b5ee8aa8b70cc4d56373c7283295cbfaccb1a7b65"
+        }
+      ]
+    },
+    {
+      "id": "claim_3acba7d6c41a441797b2684a113f0474",
+      "statement": "redactUpdateError scrubs home paths, bearer/basic tokens, GitHub tokens, authorization headers, query secrets, e-mail addressesaging, and Users/home/tmp paths before updater errors reach logs, capped at MAX_ERROR_DETAIL_LENGTH.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/update-manager.ts",
+          "version": "repo-file-v1:sha256:59bf8469783a5d45af92c2f9aa461eec308444492bed5c6707d96db3bbe7511f"
+        }
+      ]
+    },
+    {
+      "id": "claim_61f7507588184f30bc62389068df314d",
+      "statement": "packaged-cleanup-fault-validation.ts provides a headless mode proving update-install fails closed when managed-process cleanup is uncertain.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/packaged-cleanup-fault-validation.ts",
+          "version": "repo-file-v1:sha256:29fd88aeb10eaf58b0a871ea2543c3a4400028de32398196a8da2a0491753b32"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:51:41.516Z"
+  }
+}

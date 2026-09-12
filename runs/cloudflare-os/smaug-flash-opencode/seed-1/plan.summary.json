@@ -1,0 +1,246 @@
+{
+  "plan_page_count": 10,
+  "deletePages": [],
+  "statuses": {
+    "complete": 10
+  },
+  "pages": [
+    {
+      "id": "cf1ec638-0c42-496a-a3cf-4ee4cdf8cf99",
+      "path": "/openwiki/architecture/capnweb-rpc.md",
+      "title": "Cap'n Web RPC Contract",
+      "purpose": "The client-server and worker-worker RPC plumbing: the PublicApi/AuthenticatedApi/Overseer interfaces in api.ts, the gatekeeper contracts in gatekeeper.ts, promise pipelining, and the validator.",
+      "seedPaths": [
+        "packages/workshop-shared/node_modules/capnweb/README.md",
+        "packages/workshop-shared/src/api.ts",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/gatekeepers.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/build-and-test.md"
+      ],
+      "instructions": [
+        "Document gatekeeper.ts interfaces: Vendor/User/ConnectCallback/ApprovalQueue/ObservationAuthorizer/Gatekeeper/Session.",
+        "Document the capnweb conventions: promise pipelining, RpcTarget/RpcStub, stub disposal, @validateRpc, WebSocket+RPC session.",
+        "List the three top-level RPC surfaces (PublicApi, AuthenticatedApi, Overseer) and their responsibilities."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "726302ad-6704-44c9-a3b4-2981a19eaad1",
+      "path": "/openwiki/architecture/frontend.md",
+      "title": "The Workshop Frontend SPA",
+      "purpose": "The packages/workshop-frontend single-page app: bootstrap, RPC connection, routing, sandboxed gadget iframes, gatekeeper app hosting, and state management.",
+      "seedPaths": [
+        "packages/workshop-frontend/src/App.tsx",
+        "packages/workshop-frontend/src/GadgetUI.tsx",
+        "packages/workshop-frontend/src/RpcContext.tsx",
+        "packages/workshop-frontend/src/main.tsx"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/capnweb-rpc.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/build-and-test.md"
+      ],
+      "instructions": [
+        "Describe the SPA bootstrap, auth flows (password, gatekeeper sign-in, Cloudflare Access), and the WebSocket RPC session.",
+        "Describe the main pages/views: Home, Connections, Blueprints, Outputs, Settings, Admin, Chat.",
+        "Describe the sandboxed iframe model for gadgets and gatekeeper UIs (postMessage), and srcDoc frames with origin null."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "95eca9e9-041a-4f66-a1fe-8f1a09b1f018",
+      "path": "/openwiki/architecture/gatekeepers.md",
+      "title": "Gatekeepers & the Approval Model",
+      "purpose": "How gatekeepers wrap external services: three-tier hierarchy, connect flows, OAuth, approvals/simulation/observers, auto-provisioning singletons, and the MCP family.",
+      "seedPaths": [
+        ".agents/skills/write-gatekeeper/SKILL.md",
+        "packages/gatekeeper-context/README.md",
+        "packages/mcp-shared/README.md",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/capnweb-rpc.md",
+        "/openwiki/architecture/kernel-backend.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/extending-gatekeepers.md"
+      ],
+      "instructions": [
+        "Cover the mcp-shared trust tiers (byo/vetted), tools.ts trust boundary, and the two MCP connectors.",
+        "Document the ApprovalQueue model: submitAction/applyAction/rejectAction/revertAction, authorizeObservation, simulation, and observer verification strategies.",
+        "Explain auto-provisioned singletons and management UIs via createAccount and AccountDescription.singleton/providesUi; the three provisioning modes defined in provisioning-policy.ts.",
+        "Explain the connect flow (connectAccount/complete/callback, reconnect, ensureResources), the nonce security requirement, and the gatekeeper-google reference."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "a17f67eb-5571-434a-adfc-45e9e1c2660e",
+      "path": "/openwiki/architecture/kernel-backend.md",
+      "title": "The Workshop Backend (Kernel)",
+      "purpose": "Deep dive into packages/workshop-backend: entrypoints, Durable Objects, user/overseer data flow, admin settings, blueprint storage, AI invocation, and the security chokepoints.",
+      "seedPaths": [
+        "packages/workshop-backend/src/admin-config.ts",
+        "packages/workshop-backend/src/admin-settings.ts",
+        "packages/workshop-backend/src/overseer.ts",
+        "packages/workshop-backend/src/server.ts",
+        "packages/workshop-backend/src/user.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/capnweb-rpc.md",
+        "/openwiki/architecture/gatekeepers.md",
+        "/openwiki/architecture/overview.md"
+      ],
+      "instructions": [
+        "Describe the three Durable Object classes (UserDurableObject, OverseerDurableObject, AdminSettings) and their responsibilities and relationships.",
+        "Explain the agent (overseer) and code-mode harness, bindings/env, and how the ApprovalQueue ties in.",
+        "Explain the security chokepoints: getGatekeeperClassFor in user.ts, readAdminConfig, #isAdmin in server.ts, env-var-driven auth config.",
+        "Explain workspace lifecycle, provisional gadgets, share keys, and collaborations briefly."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "d0fc40f7-ec57-4a7b-8c10-3f8d97a9cae4",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "Architecture Overview",
+      "purpose": "Top-level map of the system: the OS analogy, the kernel/backend, frontend SPA, router, gatekeepers, shared RPC contracts, and how they connect.",
+      "seedPaths": [
+        "README.md",
+        "packages/router/src/index.ts",
+        "packages/workshop-backend/src/server.ts",
+        "packages/workshop-shared/src/api.ts",
+        "packages/workshop-shared/src/gatekeeper.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/capnweb-rpc.md",
+        "/openwiki/architecture/gatekeepers.md",
+        "/openwiki/architecture/kernel-backend.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Describe the three-tier gatekeeper hierarchy (Vendor/User/Instance) and the capability-based security model.",
+        "Explain the kernel/devices/shell/processes OS analogy from README and connect each piece to a real package.",
+        "Explain the routing model: router is the public origin, routes /api and /gatekeeper/* by GATEKEEPER_ binding scan."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "508bf12f-ef73-4a63-a056-968656097492",
+      "path": "/openwiki/development/build-and-test.md",
+      "title": "Build, Test, and Lint Workflows",
+      "purpose": "The Vite+/vp toolchain: cached tasks, per-package builds, the env-stripping rules, vite-plus caching pitfalls, and how the test tasks work.",
+      "seedPaths": [
+        "AGENTS.md",
+        "package.json",
+        "scripts/gatekeeper-configurator-vite-config.ts",
+        "scripts/vitest-task-vite-config.ts",
+        "scripts/with-timeout.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/development/release-pipeline.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Document lint: oxlint via vp, correctness+suspicious as errors, unused-var rules, no type-aware rules yet, tsgo as tsc.",
+        "Document the env-stripping of cached vp runs first, then the FORMAT_BLUEPRINTS_DIR and workspace path caveats.",
+        "Document the per-package test task, with-timeout watchdog, workerd pool assert, and the singleThreaded tsconfig decision.",
+        "Explain pnpm build / pnpm test / pnpm lint and the difference between a script and a task (vite-plus)."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "cde347a0-1d82-49ef-9f30-77aa842667d7",
+      "path": "/openwiki/development/extending-gatekeepers.md",
+      "title": "Change Guide: Adding a New Gatekeeper",
+      "purpose": "A focused, representative maintenance task: the full workflow to author, wire up, and ship a new gatekeeper package, including the review bar.",
+      "seedPaths": [
+        ".agents/skills/write-gatekeeper/SKILL.md",
+        "packages/configurator-ui",
+        "packages/workshop-shared/src/gatekeeper.ts",
+        "scripts/build-gatekeeper-configurator.ts",
+        "scripts/gatekeeper-configurator-vite-config.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/gatekeepers.md",
+        "/openwiki/development/build-and-test.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Cover the configurator-ui build path, types.txt symlink, GatekeeperVendor binding, registration in wrangler.jsonc, and self-destruct alarm.",
+        "Refer to the review bar: gatekeepers aren't the kernel but still must hold the capability-security and observer bars.",
+        "Walk the two-phase path: Phase 1 core (vendor/user/instance, types.d.ts, connect flow, resource configurator, register binding), STOP for review; Phase 2 approval logging, caching, simulation, observers."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "10e8db22-7489-42e7-b346-808113649142",
+      "path": "/openwiki/development/mcp-sharing.md",
+      "title": "Change Guide: MCP & Share-Sensitive Services",
+      "purpose": "A representative security-focused maintenance task: working inside packages/mcp-shared and packages/gatekeeper-cloudflare, where trust boundaries and scopes fail closed.",
+      "seedPaths": [
+        "packages/gatekeeper-cloudflare/observability-api.ts",
+        "packages/gatekeeper-cloudflare/observability-session.ts",
+        "packages/mcp-shared/README.md",
+        "packages/mcp-shared/src/tools.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/gatekeepers.md",
+        "/openwiki/architecture/kernel-backend.md",
+        "/openwiki/development/extending-gatekeepers.md"
+      ],
+      "instructions": [
+        "Explain the cloudflare gatekeeper observability layering and fail-closed scopes, worker-scoped filter re-checking, and audit logging of numeric codes only.",
+        "Explain the mcp-shared trust boundary (tools.ts) and byo/vetted tiers, the need for sdkFetch, and the queued-action store.",
+        "Give a representative change: e.g., adding a new tool resource type to mcp-shared or a new telemetry query to the cloudflare observability session."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "7d15b931-7e43-4872-8020-bb22e8cbf964",
+      "path": "/openwiki/development/release-pipeline.md",
+      "title": "Release Pipeline",
+      "purpose": "How customer instances are deployed and updated: the scripts/release flow, byte-identical builds, the manifest, R2 upload/promote, and the deploy wizard inputs.",
+      "seedPaths": [
+        "AGENTS.md",
+        "scripts/release/build-release.ts",
+        "scripts/release/manifest-lib.ts",
+        "scripts/release/promote-release.ts",
+        "scripts/release/upload-release.ts"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/build-and-test.md"
+      ],
+      "instructions": [
+        "Describe build-release, upload-release (candidate), promote-release; the manifest contract and golden-file test; NO_DEFAULT_CRED_INPUTS; deploy-inputs.json.",
+        "Explain the placeholders ($ACCOUNT_ID, $WORKER_NAME, etc.) and that backend instance-state vars are injected at PUT time, never manifest-templated."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "de1d630e-ef17-4d11-b359-516d965ac4ae",
+      "path": "/openwiki/quickstart.md",
+      "title": "Cloudflare OS Quickstart",
+      "purpose": "Practical entry point: how to run, build, test, lint, and safely change the repository, and how to start developing a new gatekeeper.",
+      "seedPaths": [
+        "AGENTS.md",
+        "CONTRIBUTING.md",
+        "README.md",
+        "package.json",
+        "pnpm-workspace.yaml"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/development/build-and-test.md",
+        "/openwiki/development/release-pipeline.md"
+      ],
+      "instructions": [
+        "Cover the local run paths (pnpm run-local, pnpm dev-server + pnpm dev-client), how to build/type-check with pnpm build, run tests (pnpm test, per-package test:run vs vp run), and lint with pnpm lint.",
+        "Include the minimum repo conventions every change must respect: pnpm not npm, RPC promise pipelining, RPC stub disposal, @validateRpc, logger usage, env-var auth config vs AdminConfig, singleThreaded tsconfig, no baseUrl.",
+        "Point to the gatekeeper-to-add flow as a representative first change, referencing the write-gatekeeper skill and gatekeeper.ts canonical interface file."
+      ],
+      "status": "complete"
+    }
+  ]
+}

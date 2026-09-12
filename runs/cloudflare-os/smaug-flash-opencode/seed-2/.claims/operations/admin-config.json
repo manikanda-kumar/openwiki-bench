@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:57f9a2aaebe76db26d9d5976151f7513068b86d8d584fb0f9cf9c9c7e4010147",
+  "claims": [
+    {
+      "id": "claim_4ef8b28da76c4fa4a844e759b167e415",
+      "statement": "AdminConfig covers signupsEnabled, site name/logo, instanceInstructions, announcement, banner, accentColor, disabledResources, disabledGatekeepers, ambientGatekeeperModes, and formats, with DEFAULT_ADMIN_CONFIG defaulting everything to enabled/off-as-appropriate.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-config.ts#L15-L94",
+          "version": "repo-lines-v1:sha256:45eb9758e15dcae8cde339b97d2ea31dac782b33542b31d9956a578e50064ded:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2MDA3OWNlODFiNzc1NWQ1OThiOTMwMzc3Y2VkOGQwOWUxYzFhMTg0YTIxNGY1ZjdhNGE3ZjBkZTVlOTM2ZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMwODUzODgzMDUwZWVmOGFiOTZlYTllZTdjNjc1ZTkwNmQwMTA3MDI4ZDc0NDJkOGJiMTA0MTA1ZWVmMzJlYTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5OTE3YWZlZDZiMzViNzg5YmFhZjZmYTI3YWJiNjIxNDM3MWNiYTFjZTI4NWQwNjI1YjljMDNmZDgzNjU3ZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_812a553db16e4aed922215e59c1c28ce",
+      "statement": "Authentication/authorization config (sign-in providers via AUTH_GATEKEEPERS and password login via DISABLE_PASSWORD_AUTH) is deliberately kept out of AdminConfig and stays env-var driven so it cannot be changed by a compromised admin session.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-config.ts#L4-L9",
+          "version": "repo-lines-v1:sha256:e676c59c5b386225816cab341c15efe71830511e1a41d3e9ef51aa60037aecfc:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTAxZWFkOTM2YTIyODFkNTNkY2MwNjRiN2UyYTJhYjBkNTNiOTJlZjNlZjdiMzRiNjY4NjczMDA3ODk1Yzg2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTc4Y2M0YmNhOGJiMTE1MmQwZjg1YjhmZGIzYjU4MmY2Nzc0MDc5N2ZjYzczMmFiMmZlMDFlYjI1NDRhYWY0YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWViZTJjNGRjNDYxMGQ5NThjZWIxZjhlMTJmZTM2NTg3NzY4MTQ5NWY3ZmViMGI1OWM1MjEwNDMyZTMyZDc0MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjRkMDU0M2RkMzI3ZDgyNDk2NTg5MzAwYWQ1YjI2ZDM4YmJjZDc4ZGQ1MzQ0NTFkZWI1YThiZjUwMDkzNTA5ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_16deffec1cbe453fa63060de0f7c0a6f",
+      "statement": "The AdminSettings Durable Object is the only writer of AdminConfig, holding it as a singleton and mirroring it to the single reserved BLUEPRINTS KV key .adminConfig so hot-path code reads it with one cheap KV get via readAdminConfig(env).",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-settings.ts#L19-L45",
+          "version": "repo-lines-v1:sha256:4a20bb3bac9f804174f60b1ea5ec51dc48721846ebec9a0dbd2e8f1773c02a3c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3MmExN2M2ZmY0YzcwNmU3M2NiY2ZmZmE5OWY1Y2U5M2ViZGFkNmE1MGZlMTk1MjcyODk5NGY4MjRlYjNlMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjZmZlMWQ1MWM4ZmVmMTlkM2E2YjFkYzk0Y2E2NGM2MjljOTU2MTFiNzM3NDgyNjQwMzgyNDhiYWU2YjQ1MDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0OTQ5ZTMwNzNlM2IwMDgzZTcxZTRjZDczMWNiYTg4YjVmNjc0ZGViOGY3ZTc5ZDlhN2Y5NWYwYjBiYWYyN2EifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-backend/src/blueprint-archive.ts#L11-L15",
+          "version": "repo-lines-v1:sha256:f82ab26d2620e989097c85f2e5329636dc0fc0497de5c4f761a862fb6f29f563:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzUyM2JkNjdhNzRkZWE3MmI1NmFhYzY3MmIwY2JjZmEwY2I5OGY1MTI3MTExZGQ0NDRkNGQ3OTQ2OTMyNjdjNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWVkY2VkODcyZmVhMjg1ZGMxNWI0ZTFmOTg4YTkxMmY5YjBiYzQ3ZWNjNWU1OTFjZTVjZWRkY2U5NWIwN2NlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDZmNDAyMDE3MzEyYTlhY2RkMjMyNmQzNDZlNWEzMTE4NjNhMWQ4ZjkwMTIzN2Y4MzIyODEzODU1MmY1YjVkYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_03999a330c57465db8c87ce72a8d663b",
+      "statement": "getAdminApi() returns an AdminApi capability or null; the #isAdmin() check happens once when the capability is minted so its methods need no per-call authorization, and the grant covers branding, agent instructions, resource/gatekeeper toggles, blueprint featuring, and format promotion.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/server.ts#L100-L117",
+          "version": "repo-lines-v1:sha256:cf55ee06a64a167048e41b24b1b5eba767ce68a15bbc23159e00f46b69369c06:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZGMxZWMzZTFkMjc5NjljYmViMTk5YjBlYjQ2NDA1NTIxZjgyODUyZTJmOTgyODliZWI0MWJmMGI5MDMwNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzMzEwNzVjZTU2OTFhZWE1MTgzOTk4YzEwMzg0OTZiYmYwZmE4NjczMzBmOWNmOTVjZGUzMDgwNDAxMDJiMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlM2MzY2Q1ODM3YWQ5MDUxMzM4MGVhZWJlZTY3NzVjOWZlYmNmYTEzY2ZlMjc1MTI4ZDJmYzhhMDEzZmIyNjQifQ"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L928-L928",
+          "version": "repo-lines-v1:sha256:8e5d12e774e29c2daee58b208887e983446838e108f04ea7502c65bffc505e5b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGU1ZDEyZTc3NGUyOWMyZGFlZTU4YjIwODg4N2U5ODM0NDY4MzhlMTA4ZjA0ZWE3NTAyYzY1YmZmYzUwNWU1YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGU1ZDEyZTc3NGUyOWMyZGFlZTU4YjIwODg4N2U5ODM0NDY4MzhlMTA4ZjA0ZWE3NTAyYzY1YmZmYzUwNWU1YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQyOGEzMThmNGZhNzkzNDA2ODg5NmM1ODRkMTRhOGZhOWMxNTNiZmY5MWQ0ZGQ3OGFlYzE0YTZlZDhjNWE1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2E2Y2RhYzhlMjg2M2QwNDE0YzU4ZTc1ZmIzNTlmMzcyNjM1OTRhMGU5YzkzM2Y5OTQ1YTE2MTE4MDgyOGRjZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b64edd31a50345cd875a283e5ae0f5c5",
+      "statement": "Disabling a resource or gatekeeper is soft: it hides the resource from the connect UI, resource picker, and agent but does not revoke a capability a gadget already holds; getGatekeeperClassFor() in user.ts is the core chokepoint where disabled gatekeepers/resources are enforced.",
+      "evidence": [
+        {
+          "resource": "repo://docs/observers.md#L104-L104",
+          "version": "repo-lines-v1:sha256:5796d5b8055bc7397aee9d644ae0fe0cb7e0918260b58b701a99bf7d9172c2e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc5NmQ1YjgwNTViYzczOTdhZWU5ZDY0NGFlMGZlMGNiN2UwOTE4MjYwYjU4YjcwMWE5OWJmN2Q5MTcyYzJlNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc5NmQ1YjgwNTViYzczOTdhZWU5ZDY0NGFlMGZlMGNiN2UwOTE4MjYwYjU4YjcwMWE5OWJmN2Q5MTcyYzJlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU2OTNjZWI0MGY4OWY2MGI3ZjljNmNlOTQ4ZWU5YmI0YTgzZWQwYWQ5ZWMxMjBjNjQ1Y2YxYWJhNjNiNWU0OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDAxZjJlYzE3NTkzYzEwNTRlYjQ2MzY3ZDg0NTNlZjI0YTE3M2NlOTZiNzExN2Q5MWY5YTY4ZDQ0ZmVmOGIwMSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L954-L963",
+          "version": "repo-lines-v1:sha256:b2662ed3fcec12232ce1116cd16c9d1c45ba5244c323ce4de8244c08f7e8d46a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMThmYzhlMDliOTFlZmY0ZWJhZmM2MzNiNGI4YmQ1ZGVmNWRjZTEyMGVmYWRmMTc5MzJkZTE4YmUyMTM0ZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzYjM0YzJmODM1ZDZjYWNmM2FmNGNiZWU4NzcyY2UyNTRmMjRmYTY5NTQ3N2Q5Yzk1N2YzZmYxMjRkODM1NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxOWUyZGQ5ZDZiMzUzNjcxODk2ZjA0N2EwZjI0NjgzNDdjNzNmYzNmODIxNDEyMGY5NDk1YTYzMmFjNTA1NmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZkM2E5YzU3ZGZjNmFmZGQ4MmRlMjI4YWVmZmNlMjJhYjZhZTE5OGU3NjUwNWNhMmMzM2FkOWUyYWI3NTFmMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_16b9507880854ca497db860231213a44",
+      "statement": "deploymentOutputForBlueprint applies the deployment's presentation overrides on every instantiation path, and overrides apply even when a format is disabled, so an admin rename reaches gadgets the agent builds too.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-config.ts#L183-L208",
+          "version": "repo-lines-v1:sha256:397fc2989a7d35ec76f3b74def3940eeeef7c7344213f4fc1d7e4d07905ff119:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyZDE5N2M5NjBhNDBkNjMwYjA3NWY4NTVmNjE2YmZhNDg0NzQwY2RlYjE2ZWIwY2IxMjdkNzQzNzcwNTFlNGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4ZjhkN2YxMDk3ZGZkMGU3MWVlMWU3ZTJlYmViZWI0ODQxMTlmZWIxOTA5NTA1Y2JjMGRkMTExMTU0YjNmY2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ce2a3a423424904852c7e49e4079a7c",
+      "statement": "reorderFormats requires the submitted ids to be a permutation of the currently promoted ids, checking uniqueness separately from length so a duplicate like [A, A] cannot silently drop B and leave a stuck state.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-config.ts#L125-L141",
+          "version": "repo-lines-v1:sha256:bf722b5e75cb12eca403dc0916b0712c73e5a30b5dca112cc7f2a706c60c78d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1NGY3OWI5MTU1MGNhYzQ1MzAzMzFlNzFlY2IzNTJlMzE5NWNmOWJmZjEyY2ZhYzNhY2ZmZDc1OTQ4OTQxYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViYzY5OGIyYzc0NDE0NDg2YTk1OGRlOThiMzUxNjQ2YjRmMWM5NzVhMmQ5ZDIyODE1NjBmZjQ5MDRlZjk0MTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_95da81fc781f4be3a612719f71846402",
+      "statement": "Bundled format blueprints are promoted exactly once each through #promoteBundledFormats; re-deriving the list from the manifest would undo an admin's removal and reinstalling an updated archive refreshes the blueprint without resetting how the deployment offers it.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-backend/src/admin-settings.ts#L131-L157",
+          "version": "repo-lines-v1:sha256:153e336787d7e88c48e61d69500057a62b4d3444391b8a147081be2cc228d860:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExOGMxNDgyYzE4NTI5NDI1MDA4MTBjMDhlNDNlYzU1YjhkYjQzMWI0YWY4NTUzMmJhZmU0ZjExNmFmMDEyNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyODkyYTI4ZDczYmIxMzlkY2VkOGVkYmI4NjA2ZGEyNjUyMjM2MWRlNTcwNmJkMDk5NmRjODRjMjI1ODU0YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzNjQ1YmU5M2YxMGFlOWQzNzU0YTg0Y2FmMzAzZDRkNmMzZGU0N2VhMDJhZmMzYjdkZWQxODYxMGMwNTFhNjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6623d50fba8a4ac1b193e792495362b0",
+      "statement": "setBranding: the site name is bounded by MAX_SITE_NAME_LENGTH, the logo validated as decodable PNG by header/size/dimensions, and the accent color validated as a 3- or 6-digit hex by isHexColor to prevent CSS injection.",
+      "evidence": [
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L768-L772",
+          "version": "repo-lines-v1:sha256:c005b82e12940662729dd37ecd2bc07d3a7bc4b1c8b6a1de3144f40ce2eda73c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjlmMDYzNTkzYTI1NzhiNGYxYWZhMmVlMzczMTY3YmVjY2M3ZmYyMTcyMTVjNmRlYThlYmZiODBlOTA1NWNlOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDE2NTM5MTQxNmJmMTM0NDcxMzQ0ZDEyOWY5NGZhNmFjYTcwN2ExOWVmY2FjMTJlYjYyNjRjZDBkNDQ1YjVlYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWVlY2E5YWZjZTVmMjAzNWQ5N2NiODA0YTA2MjgyYTRhMTIyMzllYzVhMjRhYmI2YWVmZWU3MDNlNDhiOGM4MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmVhNTNjMzM5YmM0YzRmM2Y4ZGI5NDE1ZGUxODAyNWMwMGVkMjZkZGUyNTI2NGEzNzhjM2QzYjJiNGNmOWM3MSJ9"
+        },
+        {
+          "resource": "repo://packages/workshop-shared/src/api.ts#L830-L854",
+          "version": "repo-lines-v1:sha256:56eb9a9f21735015e0ccd911721b2a04ff0fa0409da0aeae04bbf69c10d0ec7d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxZGRlOWY0NmEzODE5NGE2OGM1OTBmNTNiYTg5ZTRmYWU0NzJkZjViNzI2YzA1ODY2YjM1MDEyNjFmYmJmYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyZGM4MDBmMGU0NWU2OTVkMmNkYjUyYTU5ZGVhYWIwYTA5MGRlZGE0OTA4OWRkOTNjMzMwYWQ1MGQ5NWZkZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmOTUzNjVlN2RiZTRhZGU2ZWM1NTQ1YTEwNDQxMmQ0NjM2Njk5Y2Q5ZmQ0ZGFlNjBjODQ4YzFjOTMzNWI4ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3N2Q1MGQzZjczMTg1NjhjM2M0ZmQ1MTNmYjU3ZjIwNGFjMmJlZjI4ZWFjNDc2ZWYwYTlkOWYxNzVmNTRjMzYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:03:26.424Z"
+  }
+}

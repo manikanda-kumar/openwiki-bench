@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:3406a1aed81b281e07cf72b1a96d2475db37110d924aa9913a64274ff7d8a377",
+  "claims": [
+    {
+      "id": "claim_cc826ee72d784d02854e9200b60bbd4c",
+      "statement": "The bucket client is the engine's single object-store client bound to one bucket, speaking the object_store crate dialect with all bodies in-memory Bytes, and it treats the CAS token as an opaque String a conditional write consumes.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L3-L12",
+          "version": "repo-lines-v1:sha256:fa78ce41373473691ce8be493059ab229d2c532e7513eb632535287b7ba4c668:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjYWNmZTMzNmMwN2Y5MzA3NDc0YmViOGRmYjI3YjI3YzUzMmY1YTRjMDkxYzM4OWQ5YmMxYTY4Y2Y1MzZmMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MDViM2JmZjM0MWRkMTI1YTA2ZTA2NmNmOGM0YmRkNjczNzkyYTNmYmQ3MDczN2RhMjU3MWQwMzhhMzk3NTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NTY1MDM1M2UxZTk2OGRlMWNmOWNhZTM5OWM3NjIxOTA2ZmU0MWY0MzBlY2I5NjUxZThhN2JlOTEyMjFhM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMWY1Yzk2M2NlODBlOWFmMTI0ZDA0M2U2ZmNjNmVjZTRiNzk4ZjYzNmMxNjhlZDI0YzRkNDU0YmExOTY5ZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d2a7276112b5457db768a05f9bc69303",
+      "statement": "There are two conditional-write dialects: s3:// and az:// speak the etag dialect (If-Match/If-None-Match), while gs:// speaks the Cloud Storage XML API dialect with x-goog-if-generation-match and OAuth; the distinction is the dialect, not the endpoint.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L5-L11",
+          "version": "repo-lines-v1:sha256:2fb1cfd0a8349ff77d5f4f774b07855fa23cda1c1ac5f757e8e2e2cb9f76d651:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzIwZjk0ZjMzYThmMzYxZDE4NGNjMjk2OGNiNDE0MWQyZTM1ZDFiMjhlMGQ1ZThiM2FmNzY3YzUwMjI3MzZiNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2IzMDYxOGYzZmE4ZTYyYjcxNGFmZWM0MDY5Nzk4MTMxMzY3M2FiNWY5YzVhMmJiMjVlMDJkN2ExNGQ1MzY4ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODhlOTM5NTNiZWQwMzIwM2NmZTM4ZjVkYjJmZmNmODdiMjBjZDI2NTQ4ZThmNWJjMDJlNWVkNWNhMzk5NmNhNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTJiODJkYzUzYWExODk1YmM5NDkyYWRhNTdlOTEyZmNjY2EzZDAzZTlmYWY3Mzc4ODdjMjE5NmZkNjMzY2U5OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4597da0850374ec4be4ec3e9d6417539",
+      "statement": "put_cas answers Ok(None) only for a clean 412/409 rejection and every other failure is ambiguous; a response carrying no CAS token is an error, so a stale owner's late write cannot be mistaken for a clean rejection.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/bucket.rs#L13-L17",
+          "version": "repo-lines-v1:sha256:64bb5fde8f277347824984d41a423caa949e7e449b3b6e861ad2f075f2c7bf9b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUzNTM3NWYxYjlhZTcxOTZhNmU2OWIwZGVmZTAxNTk0N2FjYzM0OGNhNjliYzIzMzM2MWNmZDI4MDA2YTRiNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjFlMTA3NTY1NzY4OGQ2OTc5M2ZiMzgxZjk1ZWM5Njg5NDRlYTYwM2EzMWVjNGEwYmRkNGE1YzgwODlmMzFhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGY4NGIxMmYxY2EwY2U4N2MxYzYyMjdmOTc5ZGMyYThmOGJmZjFiMjliYjA1MzhhOGM0M2I4MzAwOGRhZTI0ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNkYmJmNjEyZTY1Y2UwODNkMmVlZmFhODA2MjdhNWY4MzA4M2JmYzRhM2M1ZTdiOWQxY2U0YmY1YjYzOTViZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d1561afaa76d400bbd6826e2a9f1ce2e",
+      "statement": "S3-compatible storage uses the standard AWS credential chain (with EKS Pod Identity support), Google Cloud Storage uses Application Default Credentials, and Azure Blob Storage requires exactly one credential family: account key, managed identity, or workload identity.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L128-L179",
+          "version": "repo-lines-v1:sha256:e2fc2d1e841e288fd412636e0a6c89e8ffc7a81f858f8bab3b59eeb64ba79bb8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmYzY5NzNlMzE4OWJlNTZmNmQ3ODY1OGQzMzI4OTZmNjU0NmQzNTMzOGY1MzQ5ZTdkNmMxZTRmMzRmYWZmNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNDY1ODIzM2M1NzMwOTAwNzUwNmIxMzZjZWU2ZjU2YTFlODI1MTQzY2VjNzg4YzMwNjgxMmJiZTRkYjQ1OWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3NjIwZTFhYmY4ODIwMzAwMzdmYTc4NDM0OTRlYjhhMjViZWY5NDMxN2Q0Nzg1NzY4ZmFkYjM2MmJlYWE0NzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0MzJhYWQ2M2I4OWZlMjBlMjY2ZmNiN2RiNzk3ZmVjYWZjMjIwYTAzYzZjYWNhNmU3ODFhOWFkMTNkY2QxNzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_958d2aa3ac954eac8d3703db7605a9ff",
+      "statement": "celld reserves the probe/, cells/, nodes/, node-cells/, fleet/, deploy/, deploy-blobs/, wake/, drain/, log/, and telemetry/ prefixes and deletes objects under some of them, so an application must not write under these prefixes.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L78-L81",
+          "version": "repo-lines-v1:sha256:20f67018001ec0d74645b241a61691ebcf6b71f9236f3b1d3987094e055609e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWU2NTk3ZjZjNjRjNDNkN2ViYWY2YmQ4NGNlYzAzNzgwMTFjYmM4Y2Y4YmE5Mzk4NDkxM2IzYWM4Mjc4Y2IyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVkZjdhNzc5ZTEzMTM4MzAyMzIyNDQwNDM1ZDY3MjE4ZGUyMDRkNjEzYThlZmJjMjBkMzMxM2UwY2E5YWYyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDU2ZDFhNTY2MWM0NDgwYmI4MDY1Y2YyNmRhNGYyOTcwOWU5ODI5ZWJiYTk2NDA5N2Y5OTdkZDdjZGVhYWY0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDdkZjY3ZGFlMDhmZGJlOTBmYTZmY2VlYTZlZjEwNDBhZDEwZmM0NThkMWY4ZWQxODFmMjE5YTEzNDdhNzYxOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe7de178340e486991cc6c66867d23b6",
+      "statement": "The storage test sends four conditional writes and requires two to fail; each node repeats it once at startup and stops on a broken store, and it can be disabled with CELLD_STORAGE_PROBE=0.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L60-L74",
+          "version": "repo-lines-v1:sha256:892e1eb818e0ce401e56b81b831115c33da069011ca4175a12b8240f6bc1831a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OGE2NTFiYTZjNDdiNWM4YTU3N2VlNzllYmI3MWNjZjNmMTZjNjE4ODNkMmZiM2NkOTE4NTA5YjM0YmUxYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4Y2JhM2Q3ZTFkNWVjMGUyMTgxY2NmZGQzMTkxOTQxMzI0ZmJkNmViZGVmYTJkMjcwZmU2MWE3NjFhNTU0MmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1NmQxYTU2NjFjNDQ4MGJiODA2NWNmMjZkYTRmMjk3MDllOTgyOWViYmE5NjQwOTdmOTk3ZGQ3Y2RlYWFmNDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f7004de14124b52bd50d962fb070876",
+      "statement": "A bucket value can carry a key prefix (s3://BUCKET/PREFIX) so two fleets can share one bucket; a bucket value without a prefix keeps objects at the root so an existing fleet does not move its data.",
+      "evidence": [
+        {
+          "resource": "repo://docs/README.md#L205-L207",
+          "version": "repo-lines-v1:sha256:81b028689e5df1c52bc8fe4f71fd99ab56a3a3b1ae5435bd44857f8a5aa9b0ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNkNGUyN2Y2ZDg5NTBlZWYxYTk0MTRkODJjYjk3MTliY2Q0NDI0OTc3N2E4YTA4MzI3MDE2YmJkNTcyZjE3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmJhNDg2OWY0OTZiYmNiNTFkMjMyYjNiODdiOTM0NDY1OGFkNWZjYTQ5ZGQzZGZiYmZkZjlhNTMwYWZlYTdlZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q4M2I2NGI1ODc1ODk4YWYwNTQzNTM2ZDkzMThlNjUyMTkyYmZkY2Q5ZTNmYTQwODEzYWFjNWIwMThmN2I4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDE1ZDdlYTM3YmQwMmVhNTZkMWJmNWU3NTcwNjZmYzkwNmFjYjJmZTI4MDZjNTdjMjYyYTYyMjFmZjdiMDZkYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_833f62f6fa1c4959a6fd271b9e5b59c1",
+      "statement": "Each cell's durable data lives under cells/<cell>/ltx/e<epoch>/ in the bucket, mirroring the local watch/<cell>/ltx/e<epoch>/db.sqlite tree, and the in-process replica carries the fleet's key prefix itself so two fleets sharing one bucket do not replicate over each other.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ltx_repl.rs#L9-L15",
+          "version": "repo-lines-v1:sha256:e5fd77dfd54d80c86345889b819dd76655ac1c4ccc646c442c33fe38595381cc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA1MjIxMmE4ZDY4YTI4NGE4NDU4MmQyOGM5N2QxYzYzZmViNDBmMDg0ZDI1MGFiNmY1ZmU4ZjIxNmY3OWFkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTY1ZWQ5Yjg2Y2EzMTk2M2ExZmJmYjIzOTRkMTU0YjhiYjkxZDAxNzgzMmZiZGVkYmM5ZmU4MDVjY2JkODVhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNhOGU2YzlkMGU2Y2MzMWEwODFiYjI4YmUwNzdkN2QzNGZmNDliNzg2ZmM2Y2JhN2JlNDYyYTFkMzQ2ZDUzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWFhNWI3MDZiNWUwODMxMWJiY2UzMzAyNjJhMzY5MDI5MGQ5MjU2Nzc2NjBlOGMwOTc5NTFlZmFjMmE3OTk2NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_352c1a8d5d6e44ed91804ef3242942f5",
+      "statement": "MinIO (community edition) passes the storage test but is not production-qualified, and one broken release (RELEASE.2025-09-06T17-38-46Z) rejects the conditional create of an absent object.",
+      "evidence": [
+        {
+          "resource": "repo://docs/guarantees.md#L36-L41",
+          "version": "repo-lines-v1:sha256:c8fc9b60d6a21c2ee33ccf93a46fef573a34c0dddd7f4da8b2fc22c9493ea264:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDVkNzVjMWU4ZTkzZWJjMjY5NzQ0OWJhMDE5ZDJhYzM1OGRkNzRmNzMwYjU2NDc2Yzc0Yjk0MDkwZDE1YzQzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJhNTRkOWFhNWY4OTEwYjU0NmY4NmRmYjhiZTNlMTEzMmY4OTQ3NDZmMTg3NTgxZDhiNTNlNDU2MDBiZWUzNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjIxODc5YzliZTdjMjI0OWJkOWU4YzAwNDQxOTgzNTZkNTY0MDI3YWNhMjZjNGRjNWRmOGMzZGFkMjhkNDk4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzdlYmM4NjNjNGUxNmMzMjA0ZmMyYmEzMjQwYjBiYzRlMTZkODI4MmJhNTJhODQzMTI5MzA0MGYyOWM5N2I5YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_59d222684d5a441c89028bf0e96eb3ea",
+      "statement": "The ownership-store adapter contains only serialization, wall-clock sampling, SDK configuration, and error classification; ownership decisions remain in celld-logic.",
+      "evidence": [
+        {
+          "resource": "repo://crates/celld/ownership_store.rs#L3-L8",
+          "version": "repo-lines-v1:sha256:692a8b13a42c6216a5dfdea1b9352eeec417cf39c1260245464eaf53b664dceb:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdlZjdlODA2YTFhZWY5MGExZjkxYTcyODQwYzQ5ZWU0NTgxYmU4ZDVjMWZhZTYyMWFjYzIxZGY0ZjIyZGJkOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU1NjUwMzUzZTFlOTY4ZGUxY2Y5Y2FlMzk5Yzc2MjE5MDZmZTQxZjQzMGVjYjk2NTFlOGE3YmU5MTIyMWEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWMyYTJhZGE0MmM0MzE2MWQyYzMyZTNhMzQ0ZDYyNmNmOWYyNWEwM2U3NGY4MzA0ODgxNzljMWIzMDJmMWU2YSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T21:30:17.310Z"
+  }
+}
