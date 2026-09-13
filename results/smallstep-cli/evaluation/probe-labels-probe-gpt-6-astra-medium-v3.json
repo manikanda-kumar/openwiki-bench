@@ -1,0 +1,802 @@
+[
+  {
+    "id": "probe_c58dc0efe2546cad4c690e8408fe4158",
+    "label": "supported",
+    "rationale": "GetURL returns the step-kms-plugin GitHub URL for \"kms\" and an empty string for every other name."
+  },
+  {
+    "id": "probe_68a6c9ca7d6ce5dbc18f9e0d5bc8bf6b",
+    "label": "unsupported",
+    "rationale": "The excerpt shows bash and zsh variables being printed and fish completions generated through ctx.App.ToFishCompletion(), but does not establish that the bash and zsh scripts are stored inline in command/completion/completion.go."
+  },
+  {
+    "id": "probe_1a90f4a552477004597a2f047fe8cfba",
+    "label": "contradicted",
+    "rationale": "Kubernetes service accounts use generateK8sSAToken(ctx), not GetIdentityToken. GCP, AWS, and Azure use GetIdentityToken, but the excerpt does not establish a direct exchange for certificates."
+  },
+  {
+    "id": "probe_7528825708082429f38c6204cd8331fb",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes which function is printed for each flag, but does not establish a contexts-based directory layout under $STEPPATH."
+  },
+  {
+    "id": "probe_34b06558191a991c3e527f94494e0eb9",
+    "label": "supported",
+    "rationale": "The function parses the token, generates a key using the kty/curve/size flags, and creates a CSR with token-specific handling: conditional cloud identity SAN defaults, OIDC email and issuer#subject URI SANs, and the command-line subject preserved for K8sSA."
+  },
+  {
+    "id": "probe_f8132491b4ec63737a1588562f0766d1",
+    "label": "supported",
+    "rationale": "The function requires x5c-cert and x5c-key, places the base64-encoded certificate bundle in the X5cInsecureKey header, signs with the supplied key, and rejects a nonempty positional subject unless it matches the first certificate’s common name."
+  },
+  {
+    "id": "probe_3cc2f64e3a81c8b51ab23d71dbbfe05c",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the JWT typ header, extra-header merging, single-value aud conversion, and compact serialization, but does not show that GenerateKeyID computes a SHA-256 thumbprint."
+  },
+  {
+    "id": "probe_821cbe4f7eb3ccb9d45f4fa2168f5960",
+    "label": "supported",
+    "rationale": "parseResponse applies the regex to p.XMSMirID and populates Azure subscription, resource group, resource type, and resource name fields. Its AWS branch unmarshals p.Amazon.Document into InstanceIdentityDocument."
+  },
+  {
+    "id": "probe_c5bd4204ac53ca63ea8013bb8875f790",
+    "label": "supported",
+    "rationale": "The function rejects --offline with --token, uses ACME or generates a token when none is supplied, calls CreateSignRequest, checks the subject against the CSR common name for JWK tokens, signs through flow.Sign, and serializes the private key with mode 0600."
+  },
+  {
+    "id": "probe_cdec075f44838f44eed36e8b17ca118e",
+    "label": "supported",
+    "rationale": "The excerpts list all eleven provisioner types and define CRUD using linkedca.Provisioner. Client selection uses an admin client when authorization is required and falls back to caConfigClient with the CA configuration file on network errors or an unimplemented admin API."
+  },
+  {
+    "id": "probe_f46850c922c9b0686a6da5c7b138fe1c",
+    "label": "supported",
+    "rationale": "The Subcommands list contains command constructors corresponding to all fourteen named subcommands, including the active proxycommandCommand(); only the separate proxyCommand() is commented out."
+  },
+  {
+    "id": "probe_761cff1b35fd715803c7da9b36e32ee6",
+    "label": "supported",
+    "rationale": "The excerpt explicitly says the command renews SSH host certificates, cannot renew SSH user certificates, and overwrites <ssh-cert> unless --out specifies a new file."
+  },
+  {
+    "id": "probe_d4a7b3dfc7d7ab7f1955aab2f59fd8e3",
+    "label": "unsupported",
+    "rationale": "The excerpts establish deb/rpm formats, the scripts, copyright path, and ghost entries, but package_name is set to {{ .Var.packageName }} without establishing that its value is step-cli."
+  },
+  {
+    "id": "probe_ca6aa366e7f494d4e999c4c44627db68",
+    "label": "supported",
+    "rationale": "The default build explicitly lists darwin, freebsd, linux, and windows targets across multiple architectures, with CGO_ENABLED=0, -trimpath, and Version/BuildTime ldflags. The second build inherits the default configuration and names its binary step-cli specifically for .deb and .rpm packaging."
+  },
+  {
+    "id": "probe_3991e3aeedf89db06d0cd5407d8e0d3d",
+    "label": "unsupported",
+    "rationale": "The excerpts show token parsing and use in certificate signing, but do not establish that step ca token generates a one-time token or that this workflow requests a certificate from an online CA."
+  },
+  {
+    "id": "probe_ec094f723e90296adac969d2f808bc57",
+    "label": "contradicted",
+    "rationale": "The excerpts confirm the bootstrap behavior and automatic defaults, but explicitly locate the configuration at $STEPPATH/configs/defaults.json, not $STEPPATH/config/defaults.json as stated."
+  },
+  {
+    "id": "probe_bd18ef68fa89118a5ced1ab771e399d7",
+    "label": "supported",
+    "rationale": "NewClient branches on --offline, requires --ca-config and calls NewOfflineCA in offline mode. Otherwise it parses the CA URL, uses --root or defaults to pki.GetRootCAPath() with an existence check, and calls ca.NewClient with the root-file option."
+  },
+  {
+    "id": "probe_6126218665d02a602ceb708ee9eb0f76",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the singleton, authority.Authority wrapper, JSON loading into config.Config, and audience URLs without /1.0. They do not identify the file as ca.json or establish that authority is from step-ca."
+  },
+  {
+    "id": "probe_db240e2a490e2aeefbd6dd951a90a8cf",
+    "label": "unsupported",
+    "rationale": "The excerpts show side-effect imports of enabled command packages and collection via command.Retrieve(), but do not establish registration through cli-utils/command's command.Register in init() or that the imports are in internal/cmd/root.go."
+  },
+  {
+    "id": "probe_1941d5932f0381ad531e9d0d0c899bc2",
+    "label": "unsupported",
+    "rationale": "STEPDEBUG=1 enables detailed errors and re-panics with version information, while non-debug panics exit with code 2 and show a rerun hint. However, non-debug errors without Message() print only the error and no rerun hint, so the stated behavior is not established for all errors."
+  },
+  {
+    "id": "probe_132b3c2f2a5700e036db53b2bc3673f4",
+    "label": "unsupported",
+    "rationale": "The excerpt defines an oauth command and documents authorization-related options, but does not show OAuth 2.0 flow implementation or registration as a top-level command."
+  },
+  {
+    "id": "probe_a0e4328cbf45d051770c4a87b5bd31af",
+    "label": "supported",
+    "rationale": "The excerpt explicitly declares module github.com/smallstep/cli and go directive 1.25.8."
+  },
+  {
+    "id": "probe_f17a42e59d27eed1c4a8527a155ad148",
+    "label": "unsupported",
+    "rationale": "The excerpts establish DefaultClaims' issuer, audience, 5-minute validity, and current UTC nbf/iat, and define the three validity limits. They do not show that the package enforces those limits."
+  },
+  {
+    "id": "probe_d4aea9b96b375e7ce87e4e59e1898a8e",
+    "label": "supported",
+    "rationale": "The switch checks conditions in exactly the stated priority order, returning OIDC only when audience, issuer, subject, expiry, and issued-at are present/nonzero, and Unknown otherwise."
+  },
+  {
+    "id": "probe_b27ae415d44474a716114da890654843",
+    "label": "supported",
+    "rationale": "The excerpt shows TestVersionCommand running testdata/version.txtar and TestBogusCommandFails running testdata/bogus.txtar, covering the stated scenarios."
+  },
+  {
+    "id": "probe_2ddb2924b6dc042f73fe040276eb6122",
+    "label": "unsupported",
+    "rationale": "The excerpt verifies an ECDSA P-256 marshal/parse round-trip and begins a P-384 test, but does not establish round-trip tests for other key types or identify ssh as golang.org/x/crypto/ssh."
+  },
+  {
+    "id": "probe_ae922c498a72f8fcefe3dbbfedc062a8",
+    "label": "supported",
+    "rationale": "The excerpts show testscript running a .txtar scenario and TestMain registering the step command to cmd.Run, explicitly identified as the main entrypoint."
+  },
+  {
+    "id": "probe_70f70f19a309af3082ea46a385ec0350",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that setting cli.Command.Hidden to true hides a command from the help menu when it is deprecated or not ready for users."
+  },
+  {
+    "id": "probe_1e4bf81b2549724cd970c539db08c344",
+    "label": "supported",
+    "rationale": "The excerpt explicitly says these systemd unit files are redirect targets in the files.smallstep.com S3 bucket and instructs updating those redirects if their locations change."
+  },
+  {
+    "id": "probe_694b2276d0c1ca27359b407ffbf5eb3b",
+    "label": "supported",
+    "rationale": "The default build uses CGO_ENABLED=0 and -trimpath for darwin, linux, freebsd, and windows targets, producing bin/step. A second build with id nfpm inherits the default configuration and names its binary step-cli, explicitly for .deb and .rpm packaging."
+  },
+  {
+    "id": "probe_eb25f2fd47049b2f014debd0dc5b04fa",
+    "label": "supported",
+    "rationale": "The code prompts for PKI settings, generates provisioner key pairs for standalone deployments, creates root and intermediate certificates when initializing a new CA, and saves the configuration with p.Save()."
+  },
+  {
+    "id": "probe_284e3f5e425b3df3ebd213c4842dc5b9",
+    "label": "unsupported",
+    "rationale": "The excerpt shows go build writing to $(PREFIX)/$(BINNAME) with $(LDFLAGS), but does not establish a make build target, the bin/step output path, or version and build-time injection."
+  },
+  {
+    "id": "probe_ec204dc92f0331bd46cb3762b1da8c01",
+    "label": "unsupported",
+    "rationale": "The interface declares all the listed capabilities, but the excerpt does not establish that all certificate-related commands use it or that it is located in utils/cautils/client.go."
+  },
+  {
+    "id": "probe_a65f2cea08e98a185984562f1fb46d9c",
+    "label": "supported",
+    "rationale": "The offline branch requires a nonempty --ca-config and returns NewOfflineCA. Otherwise, it defaults an empty root to pki.GetRootCAPath(), verifies that path exists, and calls ca.NewClient with ca.WithRootFile(root)."
+  },
+  {
+    "id": "probe_e02282669bee5ec1d167798555497ba6",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes saving the root to pki.GetRootCAPath() and writing CA URL, fingerprint, root, redirect, and conditional password-length/provisioner values to step.DefaultsFile(). It does not establish the paths under the step directory, the exact JSON field names, or that later commands can omit those flags."
+  },
+  {
+    "id": "probe_1af38466c1f70cb8818ccd1f4b6ef1a4",
+    "label": "unsupported",
+    "rationale": "The excerpt creates the profile defaults file with {} when contexts are enabled and the file is absent, but it does not establish that ProfileDefaultsFile() resolves to profiles/<profile>."
+  },
+  {
+    "id": "probe_44273c847e2ecdf6bea2646005f5b391",
+    "label": "supported",
+    "rationale": "The top-level action attempts plugin lookup and execution for a supplied command name. LookPath checks step.BasePath()/plugins for step-<name>-plugin before PATH; Run inherits stdin, stdout, and stderr; and GetURL provides the kms plugin’s project/download URL."
+  },
+  {
+    "id": "probe_136bea6c01efffc44b99e0d0495338b2",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes initialization before app creation, execution with os.Args, stderr reporting and exit code 1 for returned errors, and verbose formatting with STEPDEBUG=1. It does not establish that newApp returns a *cli.App."
+  },
+  {
+    "id": "probe_66c1e6e97f1d1566d7950ffe9de5bd4e",
+    "label": "supported",
+    "rationale": "The excerpt selects SSH or X.509 token types from the operation flags, uses host/principal settings for SSH signing, adds confirmation options from cnf or cnf-file, parses token and certificate validity bounds, and writes the token to outputFile with mode 0o600."
+  },
+  {
+    "id": "probe_186364679af1e70d0ce8ff968ad2a632",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes fetching provisioners, calling provisionerPrompt, dispatching by every listed type, and short-circuiting renewals to generateRenewToken. It does not establish filtering; provisionerPrompt's implementation is not supplied."
+  },
+  {
+    "id": "probe_b3fced779d97c6ab8361ebc992fe6914",
+    "label": "contradicted",
+    "rationale": "ReadInput also reads non-pipe stdin when its size is nonzero, rather than always prompting otherwise. ReadFile handles '-' as stdin and wraps read errors with errs.FileError, but strips a UTF-8 BOM only from named files, not stdin."
+  },
+  {
+    "id": "probe_10edba960706fd07b0dfd3d572a01c86",
+    "label": "unsupported",
+    "rationale": "The excerpt shows a cli.Command created in init(), registered with command.Register, and wrapped with command.ActionFunc, but does not establish the urfave/cli import, the package's location under command/, or a general rule for new top-level commands."
+  },
+  {
+    "id": "probe_edbe0223e5f0abf76efc57dd26446574",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that bootstrap requires --ca-url and --fingerprint unless --team is provided, but does not show that it stores environment defaults or lets later commands omit --ca-url/--root."
+  },
+  {
+    "id": "probe_8f47316c496102269a7196ce4ff88beb",
+    "label": "unsupported",
+    "rationale": "The excerpt shows token generation when absent (except ACME flows), creation of a signing request, signing, and private-key serialization with mode 0600. It does not establish the EC P-256 default, certificate-chain output, or certificate-file permissions."
+  },
+  {
+    "id": "probe_f8d528303b816bb6e4a34f1a81f11ff5",
+    "label": "unsupported",
+    "rationale": "The excerpt shows client initialization with contacts and a truststore option, order creation, an authorizeOrder call, conditional key/CSR creation, and finalization. It does not show that authorizeOrder authorizes each authorization or that the full chain is generally written; the chain is returned and only explicitly stored for a TPM key."
+  },
+  {
+    "id": "probe_441197cabd2fcdf4527e37bc336c7814",
+    "label": "supported",
+    "rationale": "The function errors when offline is true, sets standalone to true when neither challenge option is selected, and uses --acme or constructs <ca-url>/acme/<provisioner>/directory."
+  },
+  {
+    "id": "probe_f32f6f68abf5637519c31cc249511d85",
+    "label": "unsupported",
+    "rationale": "Source 1 establishes the two incompatible flag combinations. Neither excerpt establishes the --subtle requirement, CSR-mode restrictions on --bundle, --ca/--ca-key or non-leaf profiles, or use of the subject as the default SAN."
+  },
+  {
+    "id": "probe_7c0e4e62af2ea06e2e9a6225409dd0e5",
+    "label": "contradicted",
+    "rationale": "The excerpts explicitly mark csr as used only on sign and exclude it from the template-mapping switch, which rejects it as an invalid profile. The other four profiles and their stated default validity durations are established."
+  },
+  {
+    "id": "probe_4ea802848f2847cd493da5fce6a077af",
+    "label": "unsupported",
+    "rationale": "The excerpts show make build and GoReleaser target cmd/step, and GoReleaser sets CGO_ENABLED=0 and binary: bin/step. However, they do not establish cmd/step/main.go or the Makefile defaults for CGO_OVERRIDE, PREFIX, and BINNAME."
+  },
+  {
+    "id": "probe_403b0f0e543235201cff3d41a852ad19",
+    "label": "unsupported",
+    "rationale": "The excerpts show an init-time registration example and imports of enabled commands under command/, but do not establish that all commands follow this pattern or the claimed ownership boundaries and delegation of crypto semantics to libraries."
+  },
+  {
+    "id": "probe_c9181bfd050324b2fe98ec647a8cf000",
+    "label": "unsupported",
+    "rationale": "Source 2 establishes the offline CA delegation and flag-based JWK/X5C fallback. Source 1 restricts NewIdentityTokenFlow to OIDC, but does not identify it as the bootstrap token flow or establish that bootstrap supports only OIDC."
+  },
+  {
+    "id": "probe_5e8bd03fd4ec4e7b65d6a7d745af8996",
+    "label": "contradicted",
+    "rationale": "The operation-specific paths and offline use of DNSNames[0] match, but parseAudience accepts URLs with no scheme and converts them to HTTPS, so it does not reject all non-HTTPS URLs. The excerpts also do not establish that the offline configuration comes from ca.json."
+  },
+  {
+    "id": "probe_929639f1593519e3e1fd7aaf3bd5f064",
+    "label": "unsupported",
+    "rationale": "The excerpt specifies 0700 directory creation, 0600 root serialization, and 0644 defaults writing, but omits bootstrapConfig's JSON tags, so it does not establish the exact JSON keys or omission of optional fields."
+  },
+  {
+    "id": "probe_21dc644ba2035c3c10d2301691725e8c",
+    "label": "supported",
+    "rationale": "The excerpts show contexts.json mapping context names to authority/profile pairs and current-context.json selecting a context. They describe the authority path as the default with a context, give --base precedence, and define --profile as the current profile path, although its example inconsistently prints beta-corp for the selected ca.acme.net context."
+  },
+  {
+    "id": "probe_41e7c54384775da3878ea5f9f698708a",
+    "label": "unsupported",
+    "rationale": "The excerpts establish plugin naming, local-then-PATH lookup, Windows extension handling, inherited stdio, PowerShell execution for .ps1 files, and kms as the sole hardcoded URL. However, they do not establish that step.BasePath() resolves to $STEPPATH."
+  },
+  {
+    "id": "probe_d1c37acb114e702f6a05cd82cfe49d0b",
+    "label": "supported",
+    "rationale": "IsKMSSigner checks whether the signer is a *kmsSigner. IsX509Signer accepts ECDSA, RSA, and Ed25519 public keys, but restricts kmsSigner instances with an sshagentkms: URI prefix to Ed25519."
+  },
+  {
+    "id": "probe_deaadd8ccc3fcf298d37cf46701a0d58",
+    "label": "supported",
+    "rationale": "Source 2 requires Go and make, specifies support for the latest two Go versions with the minimum in go.mod, and says make bootstrap should only need to run once. Source 1 shows the bootstrap target installing all five listed tools."
+  },
+  {
+    "id": "probe_200cce9556e8928fae015ba5eed0372f",
+    "label": "unsupported",
+    "rationale": "The examples establish local and HTTPS certificate fingerprinting and the --bundle and --format options, but do not explicitly establish SHA-256 or an insecure-gated --sha1 option."
+  },
+  {
+    "id": "probe_f4be0952ca43da8ee4421b1196e72dc0",
+    "label": "supported",
+    "rationale": "The excerpt explicitly says the certificate flow unifies online and offline flows, constructs it with cautils.NewCertificateFlow, and rejects both flag combinations with comments giving the stated reasons."
+  },
+  {
+    "id": "probe_75a7e617a1fa592daa4a348b134366ca",
+    "label": "unsupported",
+    "rationale": "The excerpts show a missing-token check and an --acme condition, but not their execution paths, token generation, or any ACMETokenError fallback to ACMECreateCertFlow with a provisioner name."
+  },
+  {
+    "id": "probe_aad6f3f97ad3d4255718468365748072",
+    "label": "unsupported",
+    "rationale": "The timer returns the stated error after the smaller of a positive provider expires_in and the default, but the excerpt does not establish that the default is 5 minutes. Polling can also end earlier with a token or another error."
+  },
+  {
+    "id": "probe_40036a551bc271b0013181d829bfce58",
+    "label": "unsupported",
+    "rationale": "The excerpt introduces requesting a certificate with an OIDC provisioner but does not show the claimed command or establish that it is a documented example."
+  },
+  {
+    "id": "probe_db6721b8e539f885c7f1ed5f2dee43f4",
+    "label": "contradicted",
+    "rationale": "Audiences use the first configured DNS name, bracket IPv6 addresses, and map token types to paths without /1.0. However, GetCaURL directly concatenates the first DNS name without IPv6 bracketing, contradicting the claim that CA URLs also bracket IPv6 addresses."
+  },
+  {
+    "id": "probe_87e2aeea8ec7493e9fd99922f8abd504",
+    "label": "contradicted",
+    "rationale": "Bootstrap tokens use ca.WithRootSHA256, but their audience is used as the CA URL only when --ca-url is absent. Otherwise, --root is not required if the default root CA file exists; offline mode bypasses these requirements entirely."
+  },
+  {
+    "id": "probe_2721cfd37763078400ba9a47e1105eb5",
+    "label": "unsupported",
+    "rationale": "The excerpts establish EnableBashCompletion and printing bash/zsh values plus fish generation via ctx.App.ToFishCompletion(), but do not establish that bash/zsh scripts are embedded or that Completion is registered as the `step completion` command."
+  },
+  {
+    "id": "probe_e767e297cfbe3d66481f9ada1da135e9",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the rendering hooks and placeholder extraction/default, but do not identify newApp or the import paths, nor show that FlagNamePrefixer renders names as --name <placeholder>."
+  },
+  {
+    "id": "probe_dfbc1b529acf9d63bd769795bb19cf54",
+    "label": "unsupported",
+    "rationale": "The excerpts show completion scripts, a Dockerfile, and systemd renewal unit files, but provide no evidence for debian/ packaging metadata or powershell/ scripts, nor establish all the stated directory paths."
+  },
+  {
+    "id": "probe_144866184d15412c508fd81115f6cf22",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that bcrypt_pbkdf implements a bcrypt-based KDF and exports Key, but does not establish its pkg/bcrypt_pbkdf path, leaf-package status, or use in encrypting SSH private keys."
+  },
+  {
+    "id": "probe_0f7169ccec988f7f8e799742f428f13e",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes PEM serialization and fileutil.WriteFile with mode 0600, but does not establish that outFile comes from --out or defaults to overwriting the input certificate file."
+  },
+  {
+    "id": "probe_a57d0348fcbe99f57f7087495d311238",
+    "label": "supported",
+    "rationale": "The excerpt explicitly states that renewal uses mTLS by default and recommends --mtls=false to force X5C token authentication in all three listed scenarios. It also notes an exception for expired certificates when post-expiry renewal is allowed."
+  },
+  {
+    "id": "probe_e4bed495063687690574c7d4ef9ee35c",
+    "label": "unsupported",
+    "rationale": "The excerpts show response_type=code, PKCE S256, scope, state, nonce, optional prompt/login_hint, extra auth parameters, and an exchange posting code_verifier with client credentials and redirect_uri. They do not establish that state and nonce are random, login_hint comes from --email, or scopes default to 'openid email'."
+  },
+  {
+    "id": "probe_ac063b1fb2ea9cc7ba009252478eb875",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the redirect URI override, browser/URL behavior, and two-minute token/error wait, but does not show NewServer's implementation or establish the default 127.0.0.1:0 address or --listen behavior."
+  },
+  {
+    "id": "probe_0cf7befb1cf6948745f8a905a9ccacb9",
+    "label": "supported",
+    "rationale": "The shared token-type enumeration includes dedicated SSH types, and the switch maps both SSH signing types to /1.0/ssh/sign and the SSH revoke, renew, and rekey types to their stated paths."
+  },
+  {
+    "id": "probe_815f7642e93dfdd1b05573d895d181e5",
+    "label": "unsupported",
+    "rationale": "The excerpts establish filename suffixes, host certificate/token types, signing-mode filename handling, and add-user incompatibilities. They do not establish actual file writes, the additional provisioner certificate request, or default agent addition tied to --no-agent."
+  },
+  {
+    "id": "probe_48ccea6a3374bd6b8305352dee03d7b3",
+    "label": "unsupported",
+    "rationale": "Source 1 establishes filtering by the listed credential flags, but neither excerpt shows cloud provisioners passing DisableCustomSANs into shared context or CreateSignRequest consulting it to synthesize SANs."
+  },
+  {
+    "id": "probe_1ce9139d33721769678838034a412032",
+    "label": "unsupported",
+    "rationale": "The test pins expected audiences for sign, renew, revoke, and all four SSH endpoints, but the excerpt does not establish that it should be extended when the mapping changes."
+  },
+  {
+    "id": "probe_d18b91ced2f41f2547a285dc3444c7df",
+    "label": "supported",
+    "rationale": "The KMS path wraps the signer with jose.NewOpaqueSigner, selects ES256/384/512 by EC curve, RS256 for RSA, or EdDSA for Ed25519, and sets KeyID from jose.Thumbprint(jwk)."
+  },
+  {
+    "id": "probe_7e2abda795c9d3c1f16342feaae43111",
+    "label": "unsupported",
+    "rationale": "The excerpt shows doTPMAttestation reading attestation URI, TPM storage, and attestation CA flags and initializing a TPM, but does not establish the tpmkms URI scheme or use of the three named libraries in-process."
+  },
+  {
+    "id": "probe_d02f0fb9e90cfc7d8a580294d0202509",
+    "label": "unsupported",
+    "rationale": "The excerpts show make build defaults to compiling cmd/step into bin/step with CGO disabled and passes LDFLAGS, but do not establish version ldflags, git describe usage, or 'N/A' version behavior outside make or GoReleaser."
+  },
+  {
+    "id": "probe_d34e684fff6fc11dec865bbcf419f898",
+    "label": "supported",
+    "rationale": "The test target runs gotestsum with -short and a coverage profile; race runs gotestsum with -race. The lint target depends on golint and govulncheck, with golangci-lint loading the shared smallstep/workflows configuration."
+  },
+  {
+    "id": "probe_2304b3e14eab11027d0211b6b566137a",
+    "label": "supported",
+    "rationale": "The excerpt explicitly assigns the crypto file writer and password prompts to fileutil/ui implementations, overrides the listed CLI templates and printers, sets app.Commands to command.Retrieve(), and appends a global config string flag."
+  },
+  {
+    "id": "probe_41b94c665885307e9890a0b958c6a434",
+    "label": "supported",
+    "rationale": "GetURL returns https://github.com/smallstep/step-kms-plugin for \"kms\" and an empty string for every other name."
+  },
+  {
+    "id": "probe_5ccdbac31ccdcdb1901a39bb886bfdb1",
+    "label": "contradicted",
+    "rationale": "InjectContext takes a context-aware function and returns a cli.ActionFunc, not the reverse. It supports middleware by passing the injected context middleware and supplied middleware to wrap."
+  },
+  {
+    "id": "probe_97258d25631f2f2c3e5f2ef24daa60d1",
+    "label": "unsupported",
+    "rationale": "The excerpt confirms all four dependency versions, including urfave/cli v1.22.17 (v1), but does not establish that they are the CLI's core engine dependencies or that all are smallstep modules."
+  },
+  {
+    "id": "probe_dfe63be0a30934923dd05ad5eb5fdd2d",
+    "label": "supported",
+    "rationale": "parseAudience maps every listed token type to a fixed /1.0/ path, resolves it against ca-url, and sets the scheme to https; SSH user and host signing share /1.0/ssh/sign."
+  },
+  {
+    "id": "probe_a51c2e4a3968bd4ff803dda19aecdca7",
+    "label": "supported",
+    "rationale": "RenewType returns directly through generateRenewToken. Both x5c flags are required; a supplied subject must match the certificate CN, and the token subject is always that CN. Signing uses the x5cInsecure header and issuer step-ca-client/1.0."
+  },
+  {
+    "id": "probe_c8b5a1a2283d43726784c210db64e7e7",
+    "label": "supported",
+    "rationale": "The function defaults to EC/P-256, enforces the RSA minimum size unless insecure (while still rejecting nonpositive sizes), rejects size for EC/OKP, permits only Ed25519 for OKP, and returns RequiredWithFlag for curve or size without kty."
+  },
+  {
+    "id": "probe_3a693eec1f6cfa2a8b7089bdbff30ffb",
+    "label": "supported",
+    "rationale": "For a non-nil error, Fail prints it to stderr using %+v when STEPDEBUG=1, otherwise uses Fprintln, then exits with code 1."
+  },
+  {
+    "id": "probe_3d4389017c9df34e1a8022c993b91d7a",
+    "label": "unsupported",
+    "rationale": "The excerpts establish public-key thumbprint generation, ExtraHeaders overriding kid, and single-element audiences being forced to strings, but do not establish handling of an opaque signer's public JWK."
+  },
+  {
+    "id": "probe_a4774d15e9b2d2d71178d126e8a13f8e",
+    "label": "supported",
+    "rationale": "WithFingerprint hashes CSR Raw bytes or marshaled SSH public-key bytes using SHA256 and Base64RawURLFingerprint, then sets the cnf confirmation claim’s x5rt#S256 value. WithConfirmationFingerprint sets that value directly."
+  },
+  {
+    "id": "probe_12db6cc30c9584b90a2d5321d99f3ca7",
+    "label": "unsupported",
+    "rationale": "The excerpts establish Go and make prerequisites and that make bootstrap installs lint, test, and release tools, but do not establish that bootstrapping is a one-time installation."
+  },
+  {
+    "id": "probe_e01ef50d329cf0b448df2ca553c11fa5",
+    "label": "supported",
+    "rationale": "The excerpt states that plugins named step-<name>-plugin must be in $PATH or $STEPPATH/plugins and are automatically executed, if found, when running step <name>."
+  },
+  {
+    "id": "probe_7cc80dc9cf05780772dc48659cf7ce69",
+    "label": "supported",
+    "rationale": "The Go test generates a fresh CSR and self-signed CA, then its testscript Setup serializes the CSR, CA certificate, and CA key into e.Cd for the sign.txtar script."
+  },
+  {
+    "id": "probe_5fe497f58abb2956e03b17ce06211a1a",
+    "label": "unsupported",
+    "rationale": "The excerpt defines a ci job but does not show a publishing job or a needs: ci dependency, so it does not establish that publishing waits for CI."
+  },
+  {
+    "id": "probe_2a45dae14e4374dcdeb44bf1e3f0397d",
+    "label": "unsupported",
+    "rationale": "The package comment establishes OpenBSD compatibility and preserving compatibility with existing importers, and change-pass uses pemutil to parse keys and configure passwords. The excerpts do not establish that there are no in-repo command users or that re-encryption occurs purely through pemutil."
+  },
+  {
+    "id": "probe_4d7f843a2ca95ecdc6ea2f5c377ec6cb",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes RS256 signing, issuer-valued iss/sub, a one-hour expiry, client-ID kid, and PKCS8 PEM parsing of the client secret, but does not establish use of the jwt-bearer grant; it returns the signed JWT directly as a Bearer token."
+  },
+  {
+    "id": "probe_70bbad5add3892c9901c811028037938",
+    "label": "supported",
+    "rationale": "The excerpts show cli.Command construction in init(), registration via command.Register, locally constructed ca subcommands, subpackage Command() accessors in the other group, and an action wrapped with command.ActionFunc. The groups mix both subcommand styles rather than using them exclusively."
+  },
+  {
+    "id": "probe_b502c8a9e3e99e7c09d912e64d13b746",
+    "label": "unsupported",
+    "rationale": "Source 1 establishes the metadata setup and cmd.Run() call. Source 2 shows step.Init() initializing the step environment, but does not establish that it initializes STEPPATH or runs before the CLI app is constructed."
+  },
+  {
+    "id": "probe_ee29921fb7a59922d3b437ece091c681",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the root path and 0600 mode, HTTPS URL normalization, defaults fields, ctx.Set calls, and creation of an empty profile defaults file if missing when contexts are enabled. They do not establish that the root was verified."
+  },
+  {
+    "id": "probe_d1f62f061e33ec2622caece2ab6d0b99",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the default as step.Path()/config/ca.json and template values StepPath and StepBasePath, with Context added only when contexts are enabled. They do not establish that step.Path() is computed against the active context."
+  },
+  {
+    "id": "probe_b80b8961019a3b1a04270aa6458d3292",
+    "label": "unsupported",
+    "rationale": "The excerpts establish dependencies and some cli-utils, JOSE, and PEM imports, but do not establish the claimed certificates responsibilities, other crypto primitives, or installation of WriteFile/PromptPassword hooks."
+  },
+  {
+    "id": "probe_d67d24622b0d6d4e172f9c988f4bb92d",
+    "label": "unsupported",
+    "rationale": "The excerpts show command subcommands, side-effect imports of command packages, and CLI key-policy validation, but do not establish cmd/step, internal/cmd wiring, or the claimed shared flags, cautils, JWT, and subprocess libraries and their consumption by commands."
+  },
+  {
+    "id": "probe_99b8a435ffcf068e455d066fd7928ad7",
+    "label": "unsupported",
+    "rationale": "The excerpts establish provisionerPrompt's filtering, empty-list errors, and automatic or interactive selection, but do not show online token flows fetching live provisioners via pki.GetProvisioners(caURL, root)."
+  },
+  {
+    "id": "probe_5a344acf2a7197a14ac59da83043fefc",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes credential-file authentication or a login flow that generates an OTT, an in-memory key and CSR, obtains a certificate via client.Sign, and configures ca.NewAdminClient with WithAdminX5C. It does not establish that client.Sign calls /1.0/sign."
+  },
+  {
+    "id": "probe_7437f03c378efb04f73945c8b401cf6e",
+    "label": "supported",
+    "rationale": "Source 1 calls SSHCheckHost with an identity-key-generated token when client authentication is required and a default identity is available, and documents 0/1 exit statuses. Source 2 explicitly sets renewal’s default threshold at 66% of the certificate’s lifetime."
+  },
+  {
+    "id": "probe_f9b9f8b7b214c13e37cf763adab02022",
+    "label": "unsupported",
+    "rationale": "The excerpt implements all nine listed methods using c.authority, but does not establish how ca.json initializes OfflineCA or that step ssh uses it to work without a running CA."
+  },
+  {
+    "id": "probe_373ed849ce73e5ffc2059b5136b20ca9",
+    "label": "unsupported",
+    "rationale": "The excerpts establish Keep a Changelog/SemVer formatting and a TEMPLATE section that must not be altered or removed, but do not require all behavior changes to be documented in CHANGELOG.md."
+  },
+  {
+    "id": "probe_06950c19dd2e43c7907c159fd2cc709d",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the testscript files, usage.Report quality checks, and regex-based flag placeholders, but do not establish that these tests run in CI or gate it."
+  },
+  {
+    "id": "probe_7da6459d532c32623ae90cc1e16fd2c4",
+    "label": "supported",
+    "rationale": "The metadata job derives VERSION, prerelease status, and Docker tags from the tag ref, adding latest only when IS_PRERELEASE is false. The release jobs invoke the shared goreleaser and docker-buildx-push workflows, with smallstep/step-cli images using docker/Dockerfile and docker/Dockerfile.debian."
+  },
+  {
+    "id": "probe_162bde0ba60c96bcab4464fe837be26a",
+    "label": "contradicted",
+    "rationale": "The git describe fallback explicitly uses --dirty=\"-dev\", not a -dirty suffix. The excerpts support the other stated version fallback, build metadata, and DEBUG flag behavior."
+  },
+  {
+    "id": "probe_be2956d19eac5e883722acc1c75f3e44",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the bootstrap tools, gotestsum tests, and linting with the shared smallstep config plus govulncheck. However, the build excerpt does not establish bin/step as the output, static linking, or stamped version ldflags."
+  },
+  {
+    "id": "probe_75d354e26ce4f7f2ce3a0db7706ca921",
+    "label": "supported",
+    "rationale": "The workflow defines build-and-upload jobs for smallstep/step-cli using docker/Dockerfile and docker/Dockerfile.debian, with tags supplied by release_metadata."
+  },
+  {
+    "id": "probe_13d5fa42c71f388a5b9d0697c2295aa3",
+    "label": "supported",
+    "rationale": "The switch returns GCP, AWS, Azure, K8sSA for issuer kubernetes/serviceaccount, JWK when SHA or SANs are present, OIDC when its required fields are populated, and Unknown otherwise."
+  },
+  {
+    "id": "probe_f62bc57e170994589e04045b3a153f00",
+    "label": "supported",
+    "rationale": "WithValidity rejects validity durations below 10 seconds or above 1 hour and start times more than 30 minutes ahead of now, using the constants defined in source 2."
+  },
+  {
+    "id": "probe_e65258d499e1cfba2f943d03770d3507",
+    "label": "supported",
+    "rationale": "CreateSignRequest switches on token type and conditionally derives default SANs from AWS instance identity, GCP compute-engine fields, Azure ResourceName, and OIDC email, subject, and issuer values."
+  },
+  {
+    "id": "probe_b16b4db60f7e19753cd870bde19058d1",
+    "label": "unsupported",
+    "rationale": "The function reads a JSON config, rejects configurations without provisioners, and reuses a cached instance to avoid repeated authority initialization. However, the excerpt does not establish that the config is named ca.json; it reads the supplied configFile path."
+  },
+  {
+    "id": "probe_488817bcd32b14cec34786752a2d9cec",
+    "label": "unsupported",
+    "rationale": "The excerpts establish that step context manages CA contexts, show contexts.json, and show select calling step.Contexts().SaveCurrent(name). They do not establish that SaveCurrent writes current-context.json or that this file stores context state."
+  },
+  {
+    "id": "probe_909b49aa5e7001644116a0e93f291ca1",
+    "label": "unsupported",
+    "rationale": "The excerpt checks RSA sizes against keyutil.MinRSAKeyBytes * 8 unless insecure is set, but does not establish that threshold as 2048 bits. It shows errors for curve or size flags in the no-key-type branch."
+  },
+  {
+    "id": "probe_7a932e8ab9eb0aaa31ab623f7f35ce74",
+    "label": "unsupported",
+    "rationale": "Those conditions are not sufficient: IsKMS also requires kms.TypeOf(rawuri) to return no error; otherwise it returns false."
+  },
+  {
+    "id": "probe_d2f9f3414d49ff8112ffc31236692fd9",
+    "label": "supported",
+    "rationale": "The excerpt defines KDF as func(password []byte) (string, error) and provides Scrypt using scrypt-32768, Bcrypt, Argon2i, and Argon2id, with PHC encoding for scrypt and Argon2 and bcrypt Modular Crypt Format for Bcrypt."
+  },
+  {
+    "id": "probe_1cf10e72fbfc493e9a86c5cfd4b699fd",
+    "label": "supported",
+    "rationale": "The LetsEncrypt-specific branch rejects explicitly set not-before or not-after flags and adds the subject as a DNS SAN identifier if it is not already included."
+  },
+  {
+    "id": "probe_b6ecb1eefde641b84ef16853f19f850c",
+    "label": "unsupported",
+    "rationale": "The function requires a CA URL and a root file (which may use the default path), and loads admin credentials or generates them in memory using client.Sign. However, WithAdminX5C does not establish that the resulting client uses mTLS."
+  },
+  {
+    "id": "probe_10b6307dfa97e562f938a3f46013787d",
+    "label": "supported",
+    "rationale": "The excerpt connects with sshutil.DialAgent, generates an SSHUserSignType token through the certificate flow when no token is supplied, requests an SSHUserCert via caClient.SSHSign, and attempts to add the returned certificate and private key to the agent."
+  },
+  {
+    "id": "probe_88d3c16800197527ea19d89a9b623625",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes host-registry lookup, adding the user to ssh-agent if necessary, proxying the connection, and use with ProxyCommand, but does not identify the registry as the CA host registry."
+  },
+  {
+    "id": "probe_091ad091482a1cc5287b0081426f37ab",
+    "label": "supported",
+    "rationale": "The excerpt explicitly gives $HOME/.step as the default, allows STEPPATH to override it, and shows --base returning the base path while step path returns the current authority path when a context is configured (otherwise the default or overridden path)."
+  },
+  {
+    "id": "probe_2bb4293785509c5c3890da9d72660b53",
+    "label": "supported",
+    "rationale": "The bootstrap example is followed by defaults.json containing ca-url, fingerprint, and root, showing these values are saved as configuration defaults rather than needing repeated flags."
+  },
+  {
+    "id": "probe_d7b75e2dbeb125f4c9463b334fbe6a89",
+    "label": "supported",
+    "rationale": "The test target runs the stated gotestsum command, and the race target runs gotestsum with -race over ./...."
+  },
+  {
+    "id": "probe_90471c8aaa35d24872963032822e8017",
+    "label": "supported",
+    "rationale": "The bootstra% rule matches bootstrap and installs golangci-lint, govulncheck, gotestsum, and goimports, then downloads GoReleaser Pro and copies its binary into GOPATH/bin."
+  },
+  {
+    "id": "probe_2743978479f1a4c90e3aa39617fb184a",
+    "label": "unsupported",
+    "rationale": "The excerpt only defines bootstrap API response fields. It does not establish that bootstrap writes defaults.json or that CA commands inherit --ca-url, --root, or --fingerprint from it."
+  },
+  {
+    "id": "probe_c6581a3f014524d927cb10f8c8d0a391",
+    "label": "supported",
+    "rationale": "Source 1 shows contexts.json at the base path mapping context names to authority and profile fields. Source 2 shows current-context.json at the base path recording the context used by step path."
+  },
+  {
+    "id": "probe_05d97114c0ae2ef5fc53c819688af2b8",
+    "label": "unsupported",
+    "rationale": "The excerpt documents getPeerCertificates with a default port of 443 and roots/insecure parameters, but does not establish that step certificate remote uses this function."
+  },
+  {
+    "id": "probe_f0962a4cb1f45926575e2da56e3a96b7",
+    "label": "supported",
+    "rationale": "The code checks the CSR signature, verifies the issuer-key match, and validates CA status, keyCertSign usage, and intermediate-CA pathLenConstraint limits. It prints the signed PEM certificate to stdout, including issuer certificates when --bundle is enabled."
+  },
+  {
+    "id": "probe_e6e2b420ae5faf0057ba132b11947868",
+    "label": "unsupported",
+    "rationale": "The excerpt shows a scrypt key derivation call using a password and salt, but does not establish the behavior of the named commands or password-hash verification."
+  },
+  {
+    "id": "probe_108b34372ab6f1aac391e4e98e987933",
+    "label": "unsupported",
+    "rationale": "The excerpts establish JWT and JWS signing/verification and the existence of a jose format subcommand, but do not establish JWE/JWK operations or serialization conversion."
+  },
+  {
+    "id": "probe_69e140f1d73291b0d3ff75ac9d965169",
+    "label": "unsupported",
+    "rationale": "The excerpts establish connecting via SSH_AUTH_SOCK and adding certificates with a computed lifetime, but do not establish wrapping the golang.org/x/crypto/ssh/agent client or support for listing and retrieving by comment."
+  },
+  {
+    "id": "probe_91e1edeeb2905181393481895cf06447",
+    "label": "supported",
+    "rationale": "The code requires a successful SSH-agent connection, returns early when a matching key is already present unless force is set, and calls agent.AddCertificate to add the issued certificate, reporting any failure."
+  },
+  {
+    "id": "probe_2efd1508ec7b0ccb2cc3b9495c357b5d",
+    "label": "supported",
+    "rationale": "generateOIDCToken invokes exec.Step with oauth --oidc --bare and supplies the provisioner's ClientID and ClientSecret via --client-id and --client-secret."
+  },
+  {
+    "id": "probe_5e574ec3ad88d334d7fd5679e2565d9a",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that signing adds a kid header that ExtraHeaders can override and converts a single audience to a string, but it does not establish that GenerateKeyID produces a JWK thumbprint."
+  },
+  {
+    "id": "probe_419f8fa63949a91619472a76f92f9547",
+    "label": "supported",
+    "rationale": "The excerpt explicitly documents the step-<name>-plugin naming convention, the $PATH and $STEPPATH/plugins search locations, and lists step-kms-plugin and step-kmsproxy-plugin as known plugins."
+  },
+  {
+    "id": "probe_131498fa5cefafc3a311e48ada5d6deb",
+    "label": "unsupported",
+    "rationale": "The excerpt checks the plugins directory using PATHEXT, or the listed extensions when PATHEXT is unset. It does not show a subsequent PATH search or establish that step.BasePath() is $STEPPATH."
+  },
+  {
+    "id": "probe_f3999b9dfbea4542a4fc7f89ac034491",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that main calls cmd.Run(), but not that it sets identity strings or that github.com/smallstep/cli/cmd/step is the build entrypoint."
+  },
+  {
+    "id": "probe_2375448e61413214787a4a08c75c1945",
+    "label": "contradicted",
+    "rationale": "The excerpts show blank-imported command packages, but the command tree is assembled with command.Retrieve(), not cli.Retrieve(). Self-registration via command.Register is not shown."
+  },
+  {
+    "id": "probe_eac7c60edbba32c1212aab0d62a29a4c",
+    "label": "unsupported",
+    "rationale": "The excerpt shows build and goreleaser targets using $(PREFIX)/$(BINNAME) and passing $(LDFLAGS), but does not establish bin/step, version or build-time embedding, or install, uninstall, and cross-compile targets."
+  },
+  {
+    "id": "probe_2baba886ba64e22d1b38903866443d46",
+    "label": "unsupported",
+    "rationale": "The excerpts show testscript.Run using .txtar fixtures and filesystem setup, but do not establish the integration/ location, roguepeppe go-internal provenance, real CLI execution, or stdout checks."
+  },
+  {
+    "id": "probe_3d47953846e84a46682970bf965456f4",
+    "label": "unsupported",
+    "rationale": "The excerpts show ca registering via init() and blank imports of the listed CAS and enabled command packages, but do not establish that every command package uses this pattern, that command.Register comes from cli-utils, or that the imports are in internal/cmd/root.go."
+  },
+  {
+    "id": "probe_91daceb249a93cbb4cbcd0305ecbe558",
+    "label": "unsupported",
+    "rationale": "The excerpts establish ParseCaURL’s HTTPS handling and FirstStringOf’s flag-selection behavior, but not the file’s role as a shared flag catalog or the time, template-data, and fingerprint parsing helpers."
+  },
+  {
+    "id": "probe_9c18a1e43b45e95ae14208163af7fc84",
+    "label": "supported",
+    "rationale": "NewAdminClient loads both provided admin certificate/key files, or invokes NewTokenFlow with the admin subject, generates a fresh key and CSR, and obtains a signed certificate. It passes the resulting credentials to ca.WithAdminX5C."
+  },
+  {
+    "id": "probe_b52014ca8d73e4feab7dce98856d13fd",
+    "label": "supported",
+    "rationale": "The excerpt explicitly describes daemon renewal before 2/3 of certificate validity with random jitter, service reloads using --pid, --signal, or --exec, and default mTLS authentication with X5C token-based authentication forced by --mtls=false."
+  },
+  {
+    "id": "probe_8f7174d90fea653077b9c49ffe5819b8",
+    "label": "unsupported",
+    "rationale": "The excerpts list the flags and show GetTemplateData parsing --set/--set-file, but do not establish that create.go calls it, that templates are JSON certificate representations, that key defaults are EC P-256, or that the listed security flags enforce gates."
+  },
+  {
+    "id": "probe_52afbb45a1b004bf43fa7318e2a656d3",
+    "label": "contradicted",
+    "rationale": "The lint, inspect, and renewal descriptions match the excerpts, but verify has no --intermediates flag. It obtains intermediates from the certificate bundle or remote peer chain and calls cert.Verify with x509.VerifyOptions for path validation, using roots supplied through --roots."
+  },
+  {
+    "id": "probe_27b841f5aaf3bf848f3f9b51d39cebb3",
+    "label": "unsupported",
+    "rationale": "The excerpts show init-time registration, blank imports to run init(), and app.Commands = command.Retrieve(), but do not establish internal/cmd/root.go as the import location or cli-utils as the provider. Source 1 instead instructs importing in cmd/step/main.go."
+  },
+  {
+    "id": "probe_2728091c862e37bcedb989a58d787e27",
+    "label": "supported",
+    "rationale": "The excerpts recommend a separate package for each command-hierarchy level, where possible, and top-level placement for command helpers without command-specific business logic, explicitly citing flags and cli-utils/errs."
+  },
+  {
+    "id": "probe_d6a1929cabc74f4d4af0ade5f4b498d8",
+    "label": "contradicted",
+    "rationale": "The SHA/audience and offline behavior match, but the fallback does not require --root: when omitted, it uses pki.GetRootCAPath() if that file exists. Only --ca-url is always required in that branch."
+  },
+  {
+    "id": "probe_caa05d62097c55a111318260f464ded0",
+    "label": "unsupported",
+    "rationale": "The excerpts establish the sharedContext fields, four option constructors, and NewCertificateFlow applying options to sharedContext, but do not show NewTokenFlow or establish that it applies options to sharedContext."
+  },
+  {
+    "id": "probe_42f1ab38b29c3e16f1f9bf858d968d4d",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes PKCS#8 PEM parsing from o.clientSecret, RS256 JWT signing with all listed claims, and posting to the token endpoint. It does not establish that o.clientSecret comes from --client-secret or that jwtBearerUrn equals the stated grant-type URN."
+  },
+  {
+    "id": "probe_3a8f599b9651fa90057f4931e8a011af",
+    "label": "unsupported",
+    "rationale": "The excerpts show Google as the default provider, default Google client and device-grant credential constants, and the listed flags. They do not show that the flows are implemented for installed applications or that those constants and flags are actually used as defaults and overrides."
+  },
+  {
+    "id": "probe_0d2c760659e5efa8143f50fedd22e7df",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes build-time LDFLAG injection for Version and BuildTime and initial values of \"N/A\", \"N/A\", and empty for the three variables. It does not establish the entrypoint path or LDFLAG injection for AppName."
+  },
+  {
+    "id": "probe_a65affd9feec0fac7a448e1a7bd88b53",
+    "label": "supported",
+    "rationale": "The excerpts list the stated certificate, ca, crypto, and ssh subcommands, and explicitly describe oauth as implementing OAuth 2.0 authorization with OIDC support."
+  },
+  {
+    "id": "probe_e42f6c40a5d7338c7eeb4572eec55ca2",
+    "label": "unsupported",
+    "rationale": "The excerpts show testscript.Run using the named txtar fixtures and Cmds maps for custom commands, but do not establish that the code is in integration/, uses go-internal testscript, or drives a compiled step binary."
+  },
+  {
+    "id": "probe_5e92ff505508dfba471a06c7b801e3f0",
+    "label": "supported",
+    "rationale": "The Pro configuration builds ./cmd/step for numerous OS/architecture targets with CGO_ENABLED=0, -trimpath, and ldflags setting main.Version and main.BuildTime. Its inherited nfpm build names the binary step-cli and is explicitly designated for .deb and .rpm packages."
+  }
+]

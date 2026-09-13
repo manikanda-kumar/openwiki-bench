@@ -6,9 +6,9 @@ import { runAmpTask, type AmpModeConfig, type AmpTaskProvenance } from "../src/a
 import { aggregateTelemetryByRun, readTelemetry } from "../src/cost.js";
 import { prepareAllJudgeTasks, prepareAllProbeTasks, writePreparedEvaluation } from "../src/evaluation.js";
 import { aggregateJudgments, parseJudgeResponse, runOpenAICompatibleJudge, selectDisagreementTasks, type JudgeManifestEntry, type JudgeTask, type OpenAICompatibleJudge, type PageJudgment, type WikiPenalty } from "../src/judge.js";
-import { buildLeaderboard } from "../src/leaderboard.js";
+import { buildCohortLeaderboard, buildLeaderboard, type SubjectEvaluation } from "../src/leaderboard.js";
 import { aggregateProbeLabels, parseProbeResponse, runOpenAIProbeJudge, type ImportedProbeLabel, type OpenAICompatibleProbeJudge, type ProbeTask } from "../src/probe.js";
-import { generateReport } from "../src/report.js";
+import { generateCohortReport, generateReport } from "../src/report.js";
 import { runSystem } from "../src/run.js";
 import { scoreAll } from "../src/score.js";
 import type { JudgeAggregate } from "../src/judge.js";
@@ -151,8 +151,18 @@ async function main(): Promise<void> {
     return;
   }
   if (command === "judge" && args[1] === "aggregate") {
-    const tasks = await json<JudgeTask[]>(option(args, "--tasks") ?? path.join(evaluationRoot, "judge-tasks.json"));
-    const privateManifest = await json<{ entries: JudgeManifestEntry[]; penalties: Record<string, WikiPenalty> }>(option(args, "--manifest") ?? path.join(evaluationRoot, "judge-manifest.json"));
+    let tasks = await json<JudgeTask[]>(option(args, "--tasks") ?? path.join(evaluationRoot, "judge-tasks.json"));
+    let privateManifest = await json<{ entries: JudgeManifestEntry[]; penalties: Record<string, WikiPenalty> }>(option(args, "--manifest") ?? path.join(evaluationRoot, "judge-manifest.json"));
+    const models = option(args, "--models")?.split(",");
+    if (models !== undefined) {
+      const allowedTasks = new Set(privateManifest.entries.filter((entry) => models.includes(entry.model)).map((entry) => entry.task_id));
+      const allowedWikis = new Set(privateManifest.entries.filter((entry) => models.includes(entry.model)).map((entry) => entry.wiki_id));
+      tasks = tasks.filter((task) => allowedTasks.has(task.id));
+      privateManifest = {
+        entries: privateManifest.entries.filter((entry) => allowedTasks.has(entry.task_id)),
+        penalties: Object.fromEntries(Object.entries(privateManifest.penalties).filter(([wikiId]) => allowedWikis.has(wikiId))),
+      };
+    }
     const judgmentFiles = required(args, "--judgments").split(",");
     const judgments = (await Promise.all(judgmentFiles.map((file) => json<PageJudgment[]>(file)))).flat();
     const judgeIds = required(args, "--judges").split(",");
@@ -200,8 +210,16 @@ async function main(): Promise<void> {
     return;
   }
   if (command === "probe" && args[1] === "aggregate") {
-    const labels = await json<ImportedProbeLabel[]>(required(args, "--labels"));
-    const manifest = await json<Array<{ task_id: string; wiki_id: string }>>(option(args, "--manifest") ?? path.join(evaluationRoot, "probe-manifest.json"));
+    let labels = await json<ImportedProbeLabel[]>(required(args, "--labels"));
+    let manifest = await json<Array<{ task_id: string; wiki_id: string }>>(option(args, "--manifest") ?? path.join(evaluationRoot, "probe-manifest.json"));
+    const models = option(args, "--models")?.split(",");
+    if (models !== undefined) {
+      const judgeManifest = await json<{ entries: JudgeManifestEntry[] }>(required(args, "--judge-manifest"));
+      const allowedWikis = new Set(judgeManifest.entries.filter((entry) => models.includes(entry.model)).map((entry) => entry.wiki_id));
+      manifest = manifest.filter((entry) => allowedWikis.has(entry.wiki_id));
+      const allowedTasks = new Set(manifest.map((entry) => entry.task_id));
+      labels = labels.filter((label) => allowedTasks.has(label.id));
+    }
     const labelsById = new Map(labels.map((label) => [label.id, label]));
     if (labelsById.size !== labels.length) throw new Error("Probe labels contain duplicate task ids");
     const missing = manifest.filter((entry) => !labelsById.has(entry.task_id)).map((entry) => entry.task_id);
@@ -239,6 +257,39 @@ async function main(): Promise<void> {
     process.stdout.write(`Generated leaderboard (publishable=${leaderboard.publishable}) -> ${output}\n`);
     return;
   }
+  if (command === "cohort") {
+    const scoreFiles = await Promise.all(required(args, "--scores").split(",").map((file) => json<ScoresFile>(file)));
+    const judged = await Promise.all(required(args, "--judged").split(",").map((file) => json<JudgeAggregate & { manifest: JudgeManifestEntry[] }>(file)));
+    const probes = await Promise.all(required(args, "--probes").split(",").map((file) => json<Record<string, ProbeAggregate>>(file)));
+    if (judged.length !== probes.length) throw new Error("--judged and --probes require the same number of subject files");
+    const panel = required(args, "--panel").split(",");
+    if (panel.length !== 4 || panel.some((id) => !id)) throw new Error("--panel requires primary,secondary,tiebreaker,probe");
+    const evaluations = judged.map((value, index): SubjectEvaluation => {
+      const subjects = [...new Set(value.manifest.map((entry) => entry.subject))];
+      if (subjects.length !== 1) throw new Error(`Judged input ${index + 1} must contain exactly one subject`);
+      return { subject: subjects[0]!, judged: value, probes: probes[index]! };
+    });
+    const cohort = buildCohortLeaderboard({
+      id: required(args, "--id"),
+      models: required(args, "--models").split(","),
+      scoreFiles,
+      evaluations,
+      panel: { primary: panel[0]!, secondary: panel[1]!, tiebreaker: panel[2]!, probe: panel[3]! },
+    });
+    const output = required(args, "--output");
+    await writeJson(output, cohort);
+    process.stdout.write(`Generated cohort ${cohort.cohort.id} (publishable=${cohort.publishable}) -> ${output}\n`);
+    return;
+  }
+  if (command === "cohort-report") {
+    const output = await generateCohortReport({
+      originalPath: path.resolve(required(args, "--original")),
+      amendedPath: path.resolve(required(args, "--amended")),
+      outputPath: path.resolve(required(args, "--output")),
+    });
+    process.stdout.write(`Generated ${output}\n`);
+    return;
+  }
   if (command === "report") {
     const leaderboardPath = option(args, "--leaderboard") ?? path.join(projectRoot, "results", "leaderboard.json");
     const output = await generateReport({
@@ -250,7 +301,7 @@ async function main(): Promise<void> {
     return;
   }
   if (command !== "score") {
-    process.stderr.write("Usage: openwiki-bench run|score|prepare|report|cost|leaderboard ...\n       openwiki-bench judge run|run-amp|disagreements|aggregate ...\n       openwiki-bench probe run|run-amp|aggregate ...\n");
+    process.stderr.write("Usage: openwiki-bench run|score|prepare|report|cost|leaderboard|cohort|cohort-report ...\n       openwiki-bench judge run|run-amp|disagreements|aggregate ...\n       openwiki-bench probe run|run-amp|aggregate ...\n");
     process.exitCode = 2;
     return;
   }

@@ -90,6 +90,14 @@ npm run bench -- probe aggregate \
 
 Aggregation rejects missing/duplicate probe labels and duplicate judgments. Judge identities are checked against contestant models. `leaderboard` refuses publication below linear-weighted Cohen's κ = 0.6, with unresolved judgments, without probes, or below three trials × five subjects per system. Exact agreement and unweighted κ remain visible diagnostics.
 
+Final aggregation uses `cohort` with comma-separated score, judged-score, and probe-score files—one
+of each per subject—and an exact four-ID judge panel. Generate model-filtered per-subject aggregates
+with `judge aggregate --models ...` and `probe aggregate --models ... --judge-manifest ...` for the
+original cohort; the amended cohort uses all four systems. `cohort` rejects mixed panels, missing
+subjects, and incomplete wiki/probe coverage, macro-averages repositories equally, and reports
+failed trials separately through a reliability-adjusted rubric score. `cohort-report` renders both
+cohorts and withholds recommendations whenever either publication gate fails.
+
 Telemetry accepts normalized proxy JSON/JSONL and LangSmith exports:
 
 ```bash
@@ -120,6 +128,9 @@ runs/background-agents/*/seed-0/     immutable run artifacts + manifests
 runs-invalid/                         preserved infrastructure-invalid attempts excluded from scoring
 results/scores.json                   generated machine results
 results/leaderboard.json              publication-gated cross-run results
+results/cohorts/{original-45,amended-60}.json
+                                      separately gated official cohorts
+results/FINAL-REPORT.md               generated official cohort report
 results/REPORT.md                     generated human report
 results/COMPARISON-2026-08-29.md      original qualitative study
 ```

@@ -75,6 +75,14 @@ function collectModels(value: unknown, models = new Set<string>()): Set<string> 
   return models;
 }
 
+export function assertExactResolvedModels(models: readonly string[], expectedModel: string, threadId: string): void {
+  const normalizedExpected = expectedModel.split("/").at(-1);
+  const allowedModels = new Set([expectedModel, normalizedExpected]);
+  if (!models.includes(expectedModel) || models.some((model) => !allowedModels.has(model))) {
+    throw new Error(`Amp thread ${threadId} resolved ${models.join(", ") || "no model"}; expected ${expectedModel}`);
+  }
+}
+
 export async function runAmpTask(
   taskId: string,
   prompt: string,
@@ -100,10 +108,7 @@ export async function runAmpTask(
     const exported = await run("amp", ["threads", "export", threadId], { cwd });
     if (exported.exitCode !== 0) throw new Error(`amp export exited ${exported.exitCode ?? "without a status"}: ${exported.stderr.slice(-1000)}`);
     const models = [...collectModels(JSON.parse(exported.stdout))].sort();
-    const normalizedExpected = config.expected_model.split("/").at(-1);
-    if (!models.includes(config.expected_model) || models.some((model) => !model.includes("/") && model !== normalizedExpected)) {
-      throw new Error(`Amp thread ${threadId} resolved ${models.join(", ") || "no model"}; expected ${config.expected_model}`);
-    }
+    assertExactResolvedModels(models, config.expected_model, threadId);
     return {
       response: result,
       provenance: {

@@ -578,5 +578,245 @@
     "id": "probe_88d1f0213de924e1f8764d0c4fe72a18",
     "label": "unsupported",
     "rationale": "The excerpts support the page-dict format and show DocumentLoaderLLMImage preparing images with vision_mode=True, but do not establish that no loader invokes an LLM or that a vision model is invoked later by the Extractor."
+  },
+  {
+    "id": "probe_f8b8dddcaf334a453350ebc7b09b6b2e",
+    "label": "supported",
+    "rationale": "Conflicts trigger a dedicated LLM resolution request whose prompt includes original page content, available images, and per-page extracted values, and asks for a chosen value with a confidence score from 1 to 10."
+  },
+  {
+    "id": "probe_19ec5d3bef29e811a658b209d9881afd",
+    "label": "unsupported",
+    "rationale": "The excerpts establish optional fields, parallel page processing, merging, and conflict markers for differing scalar values. List merging is delegated to _merge_list_field, whose implementation is not shown, so flattening list fields is not established."
+  },
+  {
+    "id": "probe_5e1cc184d0ed91b1204835262b39fdae",
+    "label": "supported",
+    "rationale": "The list branch loads and maps each item, joins their text with '--- Document Separator ---', combines their image lists, and calls _extract once on the merged content."
+  },
+  {
+    "id": "probe_0f40984b76d40561a016f2f90b777222",
+    "label": "supported",
+    "rationale": "The vision path loops over classifications individually and retains the response with the highest confidence. The text path combines all class names, descriptions, and structures into one prompt and makes a single LLM request."
+  },
+  {
+    "id": "probe_d1e922f64a1f6f9fbeac165f9a4a2bdb",
+    "label": "supported",
+    "rationale": "The method explicitly avoids an LLM and joins page conversions using page text; when vision is enabled and the first image contains bytes, it embeds that image as a base64 PNG data URI."
+  },
+  {
+    "id": "probe_e605eff0d67cb198af07ef9e553287ad",
+    "label": "supported",
+    "rationale": "Both excerpts submit page-processing tasks to ThreadPoolExecutor and catch per-page exceptions, storing HTML error comments while continuing to process other results."
+  },
+  {
+    "id": "probe_fc831cc71b6fda3beaaadc8d799bd2ee",
+    "label": "unsupported",
+    "rationale": "The excerpts show a call and a function that suppresses the specified Pydantic V2 warning, but do not establish that the call occurs in the top-level __init__ at import time."
+  },
+  {
+    "id": "probe_142a9331494a043f780183573cbd3533",
+    "label": "supported",
+    "rationale": "The normal single-source path calls loader.load, normalizes the result with _map_to_universal_format, and passes it to _extract. The documented universal format contains content, images, and metadata; _extract builds messages and branches by completion strategy, directly calling self.llm.request for FORBIDDEN and delegating other strategies to handlers."
+  },
+  {
+    "id": "probe_e780f1594978fba920fd3600b406f6eb",
+    "label": "supported",
+    "rationale": "Both loader-setting methods reject mixing a default loader with per-file-type loaders. load_splitter checks isinstance(splitter, ImageSplitter) and sets vision mode accordingly on all currently loaded loaders."
+  },
+  {
+    "id": "probe_08c8ea11b6e4f1fcc5a021ed808cc8d2",
+    "label": "unsupported",
+    "rationale": "The code establishes level-by-level classification and UUID-based matching before descending into the matching node’s children, but it does not establish Boolean classification of the nodes."
+  },
+  {
+    "id": "probe_ed4f4d6298948b30ed4acdd8bd06eb63",
+    "label": "supported",
+    "rationale": "The dispatch explicitly routes PAGINATE to PaginationHandler, CONCATENATE to ConcatenationHandler, and FORBIDDEN to llm.request. CompletionHandler defines an abstract handle method, providing an extension interface for completion strategies."
+  },
+  {
+    "id": "probe_bfe6d615ba7803f42bb5b6816d20041c",
+    "label": "supported",
+    "rationale": "The excerpts show the three methods building and augmenting messages, vision content using text and base64 image_url blocks, non-vision content joined into a string, and spreadsheet dictionary data converted with json_to_formatted_string."
+  },
+  {
+    "id": "probe_fdaa18609485258c96a18f996256e06b",
+    "label": "unsupported",
+    "rationale": "The excerpts show contract model definitions but do not establish pytest usage, per-subsystem test modules, a critical end-to-end directory, or the stated fixture and sample-document paths."
+  },
+  {
+    "id": "probe_5044f0da78aacf12938c68606c59fa3d",
+    "label": "unsupported",
+    "rationale": "No source content was supplied to establish that loader tests extend BaseDocumentLoaderTest or add provider-specific assertions."
+  },
+  {
+    "id": "probe_608328621638a13c620843b60617d43e",
+    "label": "unsupported",
+    "rationale": "The excerpts establish loader assignment, loading an LLM from a string or instance, and results validated by response_model. They do not establish that response_model is a Contract or that the result is Contract-validated."
+  },
+  {
+    "id": "probe_7971f79b727dcdcd73dd163bdb9d4668",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that Contract subclasses BaseModel, but does not identify BaseModel as Pydantic’s or show that Contract defines an expected structured extraction schema."
+  },
+  {
+    "id": "probe_6f5f91a83f8aac68a177372fb7d1cfbb",
+    "label": "unsupported",
+    "rationale": "The excerpts define the CompletionHandler abstract base and CompletionStrategy values, but do not show PaginationHandler or ConcatenationHandler, their inheritance, or how new strategies are extended."
+  },
+  {
+    "id": "probe_7d36286dc5cbf4db090574d376feed75",
+    "label": "supported",
+    "rationale": "extract_async awaits asyncio.to_thread(self.extract, ...), running synchronous extraction—and any blocking loader or LLM calls it makes—in a worker thread rather than on the event loop."
+  },
+  {
+    "id": "probe_04ae5df4d76cd9751301a65fd8ab5b04",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that ClassificationTree has a nodes field containing a list of ClassificationNode objects, but does not establish the nodes’ fields or hierarchical level-by-level classification behavior."
+  },
+  {
+    "id": "probe_03419cc21d709188da5580f96dd4b4f3",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that Contract subclasses Pydantic BaseModel, but does not establish its extraction-output role or any requirements enforced by Extractor._validate_dependencies."
+  },
+  {
+    "id": "probe_492fbbc37cc2cfbebcfbcb1283a3a82d",
+    "label": "unsupported",
+    "rationale": "The excerpt shows conditional '##Content' text additions and a call to an image helper in vision mode, but does not establish that the helper adds base64 image_url blocks for each page image."
+  },
+  {
+    "id": "probe_f3a9ad30a2ca6a8e3aee54b583e6b0d9",
+    "label": "supported",
+    "rationale": "The method requires a document loader when vision is false, always requires an LLM, and rejects response_model unless it subclasses BaseModel or Contract."
+  },
+  {
+    "id": "probe_3984747e5bcc0d65915103dfb1748ba4",
+    "label": "supported",
+    "rationale": "Both async methods await asyncio.to_thread with their corresponding synchronous method and forward the supplied arguments."
+  },
+  {
+    "id": "probe_564b500f66786ee0b5cce46b1d3de97b",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes the LLM requirement, conditional vision configuration, loader-based page processing, and direct file/stream reading with DEFAULT_MARKDOWN_PROMPT. However, it does not establish structured=False: _process_markdown_page is called with only page_data, and its implementation is not supplied."
+  },
+  {
+    "id": "probe_723eb2e5ec026b77c933d4c95123bf03",
+    "label": "unsupported",
+    "rationale": "The excerpt validates an integer threshold between 1 and 10, not “1-10cherub.” The described layer gathering, strategy rules, and final ValueError otherwise match the non-tree classification path."
+  },
+  {
+    "id": "probe_7d79bae71c397562bf3227a341c395d2",
+    "label": "contradicted",
+    "rationale": "The code calls extractor.set_skip_loading(True), not extractor._skip_loading(True). It also loads the full document before selecting group pages and uses extraction_contract with a fallback to classification.contract. Per-group extract_async calls and asyncio.gather are shown."
+  },
+  {
+    "id": "probe_5a6ac4a0c8aadb2502a71b88530783e0",
+    "label": "unsupported",
+    "rationale": "The excerpt says text files do not support vision mode and checks whether it is enabled, but omits the branch body, so it does not establish that ValueError is raised."
+  },
+  {
+    "id": "probe_bbe515b52af0477a60a2f4e17e068e66",
+    "label": "unsupported",
+    "rationale": "The excerpts show exports, a base abstract load method, SUPPORTED_FORMATS usage, and PyPDF dependency checks with config/legacy initialization. They do not establish required page-dict list output, can_handle_vision, optional can_handle_paginate, a Config dataclass, or that all new loaders must follow this full checklist."
+  },
+  {
+    "id": "probe_72c1f5a51d231b252fb3cb65b1829ed3",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes polling, downloading, writing, parsing, and returning parsed[0], but ends at `finally:` without showing file cleanup."
+  },
+  {
+    "id": "probe_848e51273b21ee7dd2e005897fcc79cf",
+    "label": "supported",
+    "rationale": "_cleanup_files removes the input and output paths if they exist and removes the input file’s parent directory if empty. __del__ calls _cleanup_files when the object is destroyed."
+  },
+  {
+    "id": "probe_6659f1e2b4efe143efb2828d78a6230b",
+    "label": "unsupported",
+    "rationale": "The excerpt specifies Python >=3.9,<3.14 but does not establish that provider-specific loaders require separately installed SDKs."
+  },
+  {
+    "id": "probe_c89bec4bf55aa75fd5f030d77e22878b",
+    "label": "unsupported",
+    "rationale": "The excerpt imports and lists all named API symbols in __all__, but it does not establish the file path extract_thinker/__init__.py or the installation command pip install extract_thinker."
+  },
+  {
+    "id": "probe_d28af2fc6efed4ab050b02f4fcb4a3ca",
+    "label": "unsupported",
+    "rationale": "The excerpt defines the listed fields, including an optional untyped extractor, but does not show Process extraction or establish that Classification selects its extraction contract and extractor."
+  },
+  {
+    "id": "probe_e781bbe3d15e373e558acd0394d9b2ff",
+    "label": "unsupported",
+    "rationale": "The excerpt shows all seven named components being imported and publicly exported, but does not establish that they are composable or designated as the primary components."
+  },
+  {
+    "id": "probe_afe10e2e35bd22a9f27076bb194553da",
+    "label": "supported",
+    "rationale": "The excerpt explicitly raises ValueError for each stated condition: no LLM is set, the backend is LLMEngine.PYDANTIC_AI, or can_handle_batch() returns false."
+  },
+  {
+    "id": "probe_0f57418af4ab9b1e23162fd31d2865b7",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes polling until completed or failed, downloading and parsing output with the response model, and wrapping exceptions as ValueError, but does not establish that SLEEP_TIME is 60 seconds."
+  },
+  {
+    "id": "probe_2afaed954ca00107d8af2ed869490b83",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that incomplete output raises ExtractThinkerError when FORBIDDEN is set, but does not establish that FORBIDDEN is the default or that validation-failing output raises that error."
+  },
+  {
+    "id": "probe_044ad7649ee79eef677ab3ce99a7bcc4",
+    "label": "unsupported",
+    "rationale": "The excerpts establish parallel page processing, merging, and a JSON-continuation retry loop. However, they do not show streaming, and the conflict-resolution request implementation is omitted, so a follow-up LLM call is indicated but not demonstrated."
+  },
+  {
+    "id": "probe_2aede8d65935fa2324c048828d68dc8b",
+    "label": "supported",
+    "rationale": "The handler calls make_all_fields_optional(response_model), submits each page to a ThreadPoolExecutor, collects the results, and passes them to _merge_results."
+  },
+  {
+    "id": "probe_0172ba21c200d269f418c49a79b848cd",
+    "label": "unsupported",
+    "rationale": "The excerpts show strategy dispatch to both handlers and loader-based content loading in extract_with_strategy, but source 1 does not identify its enclosing method as _extract or show message construction."
+  },
+  {
+    "id": "probe_4a109db96888716cd70c686c75e80166",
+    "label": "unsupported",
+    "rationale": "The excerpts establish DEFAULT as litellm + instructor, PYDANTIC_AI as pydantic-ai, and lazy loading with an import check, but do not establish use of instructor.Mode.MD_JSON or pydantic_ai.Agent."
+  },
+  {
+    "id": "probe_655c18b85e5f69765342fe182753d2fb",
+    "label": "supported",
+    "rationale": "The non-PYDANTIC_AI path calls router.completion or litellm.completion and returns choices[0].message.content without response_model parsing. It adds thinking when is_thinking is enabled and the model supports reasoning."
+  },
+  {
+    "id": "probe_96b317fc0d8f0daa760c435be7dc82c8",
+    "label": "contradicted",
+    "rationale": "Both methods require an LLM, and to_markdown_structured rejects documents without images. However, despite its List[PageContent] annotation, to_markdown_structured documents and returns a list of strings, including error strings, rather than consistently returning PageContent objects."
+  },
+  {
+    "id": "probe_0600e79be6aa1f06479fa91047eb8c84",
+    "label": "supported",
+    "rationale": "DEFAULT_PAGE_PROMPT explicitly requests Markdown followed by a JSON items breakdown with certainty scores from 1–10. DEFAULT_MARKDOWN_PROMPT explicitly requires only formatted Markdown, without additional JSON or explanations."
+  },
+  {
+    "id": "probe_c442272bfd312e97a4227c25802711bf",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that process_doc_groups gathers _extract calls for all groups, prints the error, and re-raises exceptions, but does not establish that this helper is part of Process.extract."
+  },
+  {
+    "id": "probe_22696fb6d6ce5347b80d10f8c729f9dc",
+    "label": "supported",
+    "rationale": "load_document_loader raises ValueError when document_loaders_by_file_type is nonempty, and set_document_loader_for_file_type raises ValueError when document_loader is not None."
+  },
+  {
+    "id": "probe_10b48ece6b6311c8f6515b42c6b759de",
+    "label": "unsupported",
+    "rationale": "The excerpt establishes that Contract subclasses Pydantic BaseModel, but its empty body does not establish an expected schema for extracted data or that intended use."
+  },
+  {
+    "id": "probe_4c2f715a36f0a813c7e96a7e7857c88b",
+    "label": "supported",
+    "rationale": "split delegates page grouping to the loaded splitter using classifications. extract then processes every group with the extractor from the Classification whose name matches the group's classification, passing that group's pages and contract."
   }
 ]

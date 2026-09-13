@@ -1,6 +1,6 @@
 # OpenWiki-Bench — plan to extract a standalone benchmark project
 
-Status: framework and historical evaluation complete; repeated run matrix blocked, 2026-08-30. Source of the first data: `background-agents/openwiki-bench/`
+Status: v1 execution and evaluation complete; publication blocked by judge agreement, 2026-09-13. Source of the first data: `background-agents/openwiki-bench/`
 (5 runs, repo `background-agents` @ `32470cc2`, openwiki 0.4.3).
 
 ## 1. Why this exists
@@ -261,11 +261,11 @@ and `plan.summary.json`; mark anything not recoverable as `null`, never guessed.
 runs, backfill `run.json`, write `grounding.ts` and `structure.ts` plus `bench score`. No LLM
 spend. Exit: `results/scores.json` regenerates from a clean clone.
 
-**P1 — pilot complete; official Amp transport frozen.** `rubric.md`, `judge.ts` (blind,
-multi-judge, kappa), and `probe.ts` contradiction rate are implemented and the historical runs
-were judged through OpenRouter. The ordering is traceable to per-page scores, but primary-judge
-κ = 0.476 misses the 0.6 gate. Before official runs, revise the weak taxonomy/style anchors and
-replace direct-provider judging with isolated Amp threads while preserving the JSON contracts.
+**P1 — complete; official Amp panel evaluated.** `rubric.md`, `judge.ts` (blind,
+multi-judge, kappa), and `probe.ts` contradiction rate are implemented. The historical OpenRouter
+pilot remains preserved, while all official subjects use isolated Amp threads with exact model and
+prompt provenance. The official results expose the rubric's remaining agreement weakness rather
+than converting low-agreement scores into a ranking.
 
 **P2 — complete.** `cost.ts` and derived per-page/per-claim economics are implemented. Official
 runs preserve OpenCode JSON events and session exports, reject model substitution, and normalize
@@ -292,13 +292,22 @@ probes with exact task/model/prompt provenance. All page tasks crossed the disag
 linear-weighted κ = 0.446 and exact agreement = 0.567, with no unresolved tasks. Pi Desktop is
 therefore not publishable under the 0.6 agreement gate, and these results cannot support a ranking.
 
+**2026-09-13 official evaluation complete.** The current panel produced 362 GPT-5.5 primary
+judgments, 362 Grok 4.6 secondary judgments, 342 disagreement-only GPT-6 Astra Medium tiebreaks,
+and 724 Astra correctness probes. Every task ID, prompt hash, requested mode, resolved model,
+timestamp, and one-to-one output/provenance count validates. The original 45-outcome cohort misses
+the κ gate on all five subjects (weighted κ 0.311–0.576). In the amended 60-outcome cohort,
+Smallstep passes at 0.612 while Cloudflare OS, ExtractThinker, Celld, and Pi Desktop remain below
+0.6. Both recommendations are therefore withheld in `results/FINAL-REPORT.md`.
+
 OpenCode telemetry capture is mandatory for every official trial; a run without a valid session
 export is failed because its cost and loop data are not recoverable afterwards.
 
 ## 9. Remaining evaluation work
 
-1. Rejudge `smallstep-cli` and `cloudflare-os` with GPT-5.5 `deep-classic` primary, Grok 4.6 secondary, and GPT-6 Astra Medium for tiebreaks/probes before final comparison.
-2. Aggregate the original 45-outcome cohort and amended 60-outcome matrix distinctly; publish recommendations only if every statistical gate passes.
+No v1 execution or evaluation work remains. The frozen artifacts need a rubric-anchor revision and
+independent rejudging before either cohort can publish a model recommendation; this is a v2 task,
+not permission to mutate or rerun v1 contestant outputs.
 
 ## 10. Resolved design questions
 

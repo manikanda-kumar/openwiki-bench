@@ -965,5 +965,351 @@
       "/// parser never receives this path, so no regular subcommand can select it.\n",
       "- [Operate D1 and KV](#operate-d1-and-kv)\n- [Start a node](#start-a-node)\n- [Add nodes](#add-nodes)\n- [Shut down and roll out a node](#shut-down-and-roll-out-a-node)\n- [Diagnose a fleet](#diagnose-a-fleet)\n- [List Durable Objects](#list-durable-objects)\n- [Environment variables](#environment-variables)\n- [Cloudflare compatibility](cloudflare-compat.md)\n- [What celld guarantees](guarantees.md)\n- [Limitations](limitations.md)\n- [Security](security.md)\n- [Telemetry](telemetry.md)\n- [Testing](testing.md)\n- [WebAssembly](wasm.md)\n- [Rust library API](library-api.md)\n\n## Install\n\nThe installer downloads the `celld` binary. Replication runs inside the\ncelld process, so a node needs no external replicator.\n\n```sh\n"
     ]
+  },
+  {
+    "id": "probe_d1dad6efa41068ef0e31193461c17f01",
+    "statement": "The ownership record names the owner node's session and carries a fencing epoch; every activation advances the epoch徒 and the replicator writes each cell's SQLite data under cells/<cell>/ltx/e<epoch>/, so an epoch never has two writers.",
+    "sources": [
+      "### The ownership record\n\nEach cell has one ownership record in the bucket. The record names the\nowner node's session and carries a fencing epoch. A node acquires a\ncell with a conditional write — a create when no record exists, a\ncompare-and-swap on the previous record when one does — and the bucket\naccepts one such write, so two nodes cannot acquire the same cell.\n\nEvery activation advances the epoch, a takeover and a local wake alike.\nEach owner therefore replicates under a fresh epoch, and an epoch never\nhas two writers.\n\n### The epoch prefix\n\nThe replicator copies each cell's SQLite data to the bucket under\n`cells/<cell>/ltx/e<epoch>/`, with plain unconditional PUTs. The epoch\nin the key is the fence: a node that lost ownership can keep writing,\nbut its writes land in a superseded prefix, and a restore selects the\ncurrent lineage. (The tiering path can first combine segments from many\ncells into a node bundle, and it drains each segment into its per-cell\nprefix later.)\n\nThe prefix protects the new owner's data from stale writes. The next\ntwo sections protect the durability promise.\n"
+    ]
+  },
+  {
+    "id": "probe_13dc54c13c6e23df180474df3586f4a9",
+    "statement": "A node claims a cell by a conditional bucket write, so the object store decides who wins and two nodes cannot both claim the same cell; the claim expires unless renewed.",
+    "sources": [
+      "state, and small ownership records. A conditional bucket write gives a node the\nownership of a cell, so exactly one node owns a cell at a time — no\nmembership protocol, no failure detector, no consensus service. Signed\npeer HTTP provides routing and replicated-log transport.\n",
+      "Exactly one node serves a cell at a time. The nodes do not elect a leader\nor keep a membership list: a node claims a cell by writing a small record\nto the bucket, and it writes that record with a condition the storage\nenforces — the write succeeds only if nobody else changed the record\nfirst. Object storage therefore decides who wins, and two nodes cannot\nboth claim the same cell. The claim expires unless the node keeps\nrenewing it, so a machine that dies releases its cells without anyone\nhaving to declare it dead.\n\n"
+    ]
+  },
+  {
+    "id": "probe_4148845bcfea65712e3e8e581944bc43",
+    "statement": "A protocol change gets one of two upgrade shapes recorded in docs/README.md: an incompatible wire change that forces stop-all-then-start, or an on-bucket data-format change that a mixed fleet can silently break committed data on.",
+    "sources": [
+      "Some upgrades are exceptions:\n\n- The upgrade from v0.1.0 to v0.2.0 must not be a rolling update. Stop\n  every v0.1.0 node, then start the v0.2.0 nodes. Two changes require\n  this: v0.2.0 nodes advertise the internal listener, so ownership\n  records that v0.1.0 nodes wrote name an address that v0.1.0 peers can\n  not follow to a v0.2.0 node; and v0.2.0 compacts replicated data into\n  block objects that a v0.1.0 reader can not restore. A fleet must not\n  mix the two versions.\n- The upgrade from v0.2.1 to v0.3.0 can use a rolling update. v0.3.0\n  changes the default durability from `bucket` to `fleet`: a single node\n  keeps the v0.2.1 behavior, and a fleet of two or more nodes activates\n  fleet replication automatically. Stage the v0.3.0 binary on every node,\n  and restart one node at a time. A mixed fleet stays safe, but a v0.3.0\n  node cannot replicate to a v0.2.x peer, so it acknowledges writes\n  through the bucket and retries until the peer runs v0.3.0. Do not start\n  a v0.2.x binary after that node runs v0.3.0 unless the shutdown log\n  contains `node-log close: sealed epoch`. A graceful stop attempts this\n  seal, but a stop under load can leave the record open, and a v0.2.x\n  binary cannot read writes that wait in the replicated log or bundle\n  objects — this downgrade can lose acknowledged writes.\n- The upgrade from v0.3.0 to v0.4.0 must not use a rolling update. Stop\n  every v0.3.0 node, and then start the v0.4.0 nodes. v0.4.0 moves every\n  proxied cell call — the fetch, the RPC, and the WebSocket — onto one\n  tunneled connection that carries plain HTTP, and the peer protocol\n  refuses a different version, so the two versions cannot proxy calls to\n  each other. v0.4.0 also stores each new large KV value under its ownership\n  epoch and writes an epoch-qualified row reference. A v0.3.0 node cannot\n  read that reference, so a mixed fleet can make a committed KV value\n  unavailable. The tunnel establishment carries the version, so a later\n  protocol change can negotiate instead of refuse.\n\n"
+    ]
+  },
+  {
+    "id": "probe_d49d0219e7356f917813859324161303",
+    "statement": "A rolling upgrade stops each node with SIGTERM, waits for its replacement to report healthy, and moves on; a draining node claims a fleet drain token and a fresh node holds its first healthy response behind a first-readiness gate.",
+    "sources": [
+      "\nSimultaneous stop signals do not flood the surviving nodes. A draining\nnode claims a fleet drain token in the bucket before it releases cells,\nso concurrent donors hand off one node at a time. A donor that cannot\nclaim the token within `CELLD_DRAIN_TOKEN_WAIT_MS` milliseconds (default\n30000; `0` disables the token) proceeds without it, because the\norchestrator grace is finite. The token is advisory: a dead holder's\nclaim expires, and a handoff without the token is still safe.\n\nA fresh process also holds its first healthy response until the fleet is\nsettled. The process requires its live node lease, no active donor, and memory\nbelow every pressure low watermark on each live node. It also requires a total\nrestore backlog no larger than one `CELLD_ACTIVATIONS` budget. The incumbent\nownership counts must remain within one equal successor share above the fleet\nmean. A joining process can satisfy this condition when it advertises paced\nhandoff support and owns fewer cells than the busiest incumbent. The process\npublishes this successor capacity before readiness, so an idle rollout can\nrepair the ownership distribution during the next donor handoff.\n\nAn older peer does not publish the low-watermark result, so the gate uses that\npeer's pressure latch during a mixed-version update. An unreadable fleet or an\nunsettled condition holds readiness for up to `CELLD_READY_FLEET_GATE_MS`\nmilliseconds (default 120000; `0` disables the gate). The process then reports\nhealthy with a `ready_gate_expired` event. After the first healthy response,\nfleet state does not remove readiness again.\n",
+      "To roll out a new version, use the rolling update of your orchestrator:\nstop each node with SIGTERM, wait for its replacement to report healthy,\nthen move to the next node. celld paces the cell handoffs inside each node\nshutdown, and the first-readiness gate paces the update against fleet\nrecovery, so a deployer does not need a separate fleet-level handoff gate.\n"
+    ]
+  },
+  {
+    "id": "probe_8dc4a861a5125df79e66a28153e673ca",
+    "statement": "Some unsupported APIs are deliberately silent stubs that form a known silent gap: node:fs returns ENOENT from each read, other Node.js modules and connect() are inert stubs, and EventSource, MessageChannel, and BroadcastChannel are inert stubs.",
+    "sources": [
+      "- celld implements `node:assert`, `node:async_hooks`, `node:buffer`,\n  `node:events`, `node:path`, `node:stream`, `node:timers/promises`, and\n  `node:util`.\n- `node:crypto` does not implement Diffie-Hellman, streaming signatures,\n  ciphers, RSA-PSS, or DSA signatures and key generation.\n- `node:zlib` implements only the synchronous gzip and deflate functions.\n- `node:fs` returns `ENOENT` from each read.\n- Each other Node.js module returns an inert stub. This behavior is a known\n  silent gap.\n\n### [TCP sockets](https://developers.cloudflare.com/workers/runtime-apis/tcp-sockets/)\n\n**No**\n\n- `connect()` returns an inert stub. This behavior is a known silent gap.\n\n### EventSource, MessageChannel, and BroadcastChannel\n\n**No**\n\n- These classes are inert stubs. This behavior is a known silent gap.\n"
+    ]
+  },
+  {
+    "id": "probe_afc03d7c6827e20926c4db2730d625af",
+    "statement": "A node does not rebalance existing cells when it joins a fleet; traffic assigns an unowned or released cell to a node with capacity, and there is no join command or fixed membership list.",
+    "sources": [
+      "bucket; there is no join command and no fixed membership list.\n\nThe bucket supplies discovery and authority, not network reachability.\nCell fetch and RPC traffic has a protocol version but has no content\n",
+      "  Storage bucket, or an Azure Blob Storage container. The `celld dev` command\n  instead uses a local SQLite object store. A regular node or an operator\n  subcommand cannot select this local backend.\n- A node does not rebalance the existing cells when it joins a fleet. Traffic\n  assigns an unowned or released cell to a node with capacity.\n"
+    ]
+  },
+  {
+    "id": "probe_aa8b94a67fdc8191054124dfe89d587c",
+    "statement": "Every typed production environment variable is validated in a startup pass (env_vars::validate) so a typo cannot silently change the configuration of a running node.",
+    "sources": [
+      "//! Strict runtime environment parsing.\n//!\n//! An unset variable selects its caller's documented default. A supplied\n//! variable must contain a valid value, so a typo cannot silently change the\n//! configuration of a running node.\n\nuse anyhow::{anyhow, bail};\n"
+    ]
+  },
+  {
+    "id": "probe_b69a7ecdd0c6b6121bc8c838aae4583a",
+    "statement": "A running node adopts a deployment in place by reading deploy/current.json every CELLD_DEPLOY_POLL_S seconds; POST /reload adopts it now, and a resident Durable Object is forced to the new deployment after CELLD_DEPLOY_MAX_AGE_S.",
+    "sources": [
+      "A running node does not restart for a new deployment. Each node reads\n`deploy/current.json` every 30 seconds (`CELLD_DEPLOY_POLL_S`) and adopts\na new deployment in place, and `POST /reload` on the internal listener\nmakes a node adopt the pointer now. A node builds the new deployment\nbeside the one it serves, and then it switches new requests to the new\ndeployment in one step. A request that started on the previous deployment\nfinishes on it. A deployment that does not build leaves the current\ndeployment serving, and the node reports the failure in its log and in\nthe `/reload` response. `POST /reload` also rebuilds an unchanged\ndeployment, so an edit to `CELLD_VARS_FILE` takes effect without a\nrestart.\n\nA Durable Object that is not resident runs the new deployment at its\nnext activation. A resident Durable Object moves to the new deployment\nat a safe point: no request runs in it, no alarm handler runs in it, no\noutput waits for durability, and no regular WebSocket is open. A request\nthat arrives while the object moves waits for the new code. The move\nkeeps the object's storage, its epoch, and its hibernatable WebSockets,\nand it does not read or write the bucket. An object that reaches no safe\npoint in `CELLD_DEPLOY_MAX_AGE_S` seconds (default 60) is forced: celld\ncancels its running work and closes its regular WebSockets with code\n1012, which is what a Cloudflare deployment does to every object. A\nvalue of 0 forces every resident object at the adoption. In this window,\na request on one deployment can call a Durable Object on the other, so\ntwo adjacent versions must accept each other's calls. The `/state`\nresponse reports the deployment a node serves, the deployments it still\ndrains, the objects that are moving, and the deployment each resident\nobject runs.\n"
+    ]
+  },
+  {
+    "id": "probe_20dd61115e61b185fc262097c867a362",
+    "statement": "Nodes find each other through the leases in the bucket; there is no join command and no fixed membership list, so an additional node needs no extra configuration and enables faster fleet durability proofs.",
+    "sources": [
+      "One node proves each write through the bucket, so a write costs one storage\nround trip. Start a second node against the same bucket, and celld sends each\nwrite to it: the write then finishes as soon as the second node holds the data\non its disk, which is much faster than the round trip.\n\nRun two or more nodes if write latency matters to you. The second node needs\nno extra configuration, because a node finds the other nodes through the\nbucket.\n\nHow much faster depends on how far your bucket is and how loaded the fleet\nis. A write to a region-local store takes about 90 ms. One loaded lab fleet\nmeasured about 600 ms against a store that was not region-local, and about\n25 ms once a second node held the write. See\n[what celld guarantees](docs/guarantees.md#the-ensemble-needs-two-nodes).\n",
+      "bucket; there is no join command and no fixed membership list.\n\nThe bucket supplies discovery and authority, not network reachability.\nCell fetch and RPC traffic has a protocol version but has no content\n"
+    ]
+  },
+  {
+    "id": "probe_6912fca0803f30920aca1a50c2e991f4",
+    "statement": "A node is started with --bucket, --listen (public Worker listener), --internal-listen (peer/operator listener), and --advertise; an explicit advertised address requires an explicit internal-listener address and must be routed to the internal listener.",
+    "sources": [
+      "\n```sh\ncelld deploy . \\\n  --bucket s3://my-cells-bucket\n\ncelld \\\n  --bucket s3://my-cells-bucket \\\n  --listen 0.0.0.0:8080 \\\n  --internal-listen 10.0.0.12:8081 \\\n  --advertise 10.0.0.12:8081\n```\n",
+      "An explicit advertised address requires an explicit internal-listener\naddress: set both command-line options, or their equivalent environment\nvariables. celld also rejects an explicit non-loopback public listener\nwithout an explicit internal listener, because that shape identifies an\nobsolete one-listener configuration.\n\ncelld cannot verify that an advertised hostname or a translated port\nreaches the internal listener. You must route the advertised address to\nthe internal listener, and you must not route it to the public Worker\nlistener.\n"
+    ]
+  },
+  {
+    "id": "probe_a571db970ecda771f295eb099c7e6f17",
+    "statement": "The clock window is two-sided (30 seconds) and replay retention must be at least the clock window, enforced as pure predicates in crates/logic/peer.rs so the replay hole cannot reopen.",
+    "sources": [
+      "// A nonce must be retained at least as long as its signature stays acceptable,\n// or the replay cache forgets it while a replay is still in-window. Pinned at\n// compile time (see celld_logic::peer::replay_entry_expired).\nconst _: () = assert!(REPLAY_RETENTION_MS >= CLOCK_WINDOW_MS);\nconst MAX_REPLAY_ENTRIES: usize = 1_000_000;\n\n",
+      "}\n\n/// Is a request timestamp within the accepted clock window of `now`? The window\n/// is TWO-sided (`abs_diff`): a check that accepted arbitrarily old timestamps\n/// would let a captured signature replay forever.\npub fn within_clock_window(now: Ms, timestamp: Ms, window: Ms) -> bool {\n    now.abs_diff(timestamp) <= window\n}\n\n/// May a replay-cache nonce be evicted — has its retention window elapsed?\n/// Retention MUST be at least the clock window, or a nonce is forgotten while a\n/// signature bearing it is still within the clock window and would be accepted.\npub fn replay_entry_expired(now: Ms, seen_ms: Ms, retention: Ms) -> bool {\n    now.saturating_sub(seen_ms) > retention\n}\n"
+    ]
+  },
+  {
+    "id": "probe_9466584c4df1a576223c0b7b39cc1b25",
+    "statement": "The fleet HMAC authenticates peer-control and reserved-cell operator requests with a clock limit and replay protection, and the peer tunnel establishment request carries it so only a holder of the fleet secret can open a tunnel.",
+    "sources": [
+      "- The `/peer/tunnel` route establishes a tunnel for cell fetch, RPC, and\n  WebSocket calls. The establishment request carries the fleet HMAC, a clock\n  limit, and replay protection, so only a holder of the fleet secret can open\n  a tunnel. Each call then crosses inside the tunnel as plain HTTP with the\n  cell scope in a reserved header, and these inner calls are not signed.\n- The peer-control routes coordinate fleet nodes, and the reserved-cell routes\n  access runtime state. These routes use the fleet HMAC for request\n  authentication, a clock limit, and replay protection.\n\nAll three groups require the trusted private network.\n\nThe tunnel permits a request body to stream to the owner, so the fleet HMAC\ncannot sign an individual call. The establishment signature decides who can\nopen a tunnel, and a tunneled call can address an application class or a\nruntime class, so every path to a runtime class demands the fleet secret.\nThe signature does not authenticate the bytes after the establishment, and\nit does not encrypt any traffic. The private network must therefore stay\ntrusted, and the fleet HMAC does not replace this network boundary.\n\n"
+    ]
+  },
+  {
+    "id": "probe_9289e82d06c35430fe07c3a97b19263c",
+    "statement": "MinIO (community edition) passes the storage test but is not production-qualified, and one broken release (RELEASE.2025-09-06T17-38-46Z) rejects the conditional create of an absent object.",
+    "sources": [
+      "MinIO (the community edition) implements the conditional writes and\npasses the storage test, but celld has not qualified it for production.\nOne release is broken: RELEASE.2025-09-06T17-38-46Z answers the\nconditional create of an absent object with `NoSuchKey`, so the first\ndeploy fails (denoland/celld#162). Use RELEASE.2025-09-07T16-13-09Z or\nlater.\n"
+    ]
+  },
+  {
+    "id": "probe_7b9144f6c8f126562e3f7ba8a668c4cb",
+    "statement": "celld reserves the probe/, cells/, nodes/, node-cells/, fleet/, deploy/, deploy-blobs/, wake/, drain/, log/, and telemetry/ prefixes and deletes objects under some of them, so an application must not write under these prefixes.",
+    "sources": [
+      "never reads it. celld reserves `probe/` together with `cells/`,\n`nodes/`, `node-cells/`, `fleet/`, `deploy/`, `deploy-blobs/`, `wake/`,\nand `telemetry/`, and it deletes objects under some of them, so an\napplication must not write under any of these prefixes.\n"
+    ]
+  },
+  {
+    "id": "probe_bd548852e4604eaac0c25f3ae0fd09e8",
+    "statement": "A live fleet lab runs standard VMs with a real bucket and injects faults between verification passes, covering SIGKILL mid-write, freeze/unfreeze, bucket cutoff, 429 throttling, and host kill, across which no acknowledged write was lost and no committed state was damaged.",
+    "sources": [
+      "\nSimulation cannot see the real S3 tail latency, the real kernel and\nfilesystem behavior, or V8 under memory pressure. The third layer is\ntherefore a permanent fleet lab: standard VMs from standard providers,\nand a real bucket. The workloads rotate: chat rooms under many WebSocket\nconnections, working sets that shift across tens of thousands of cells\n(each cell has a unique checksum), deployment cutovers under load, and\nruns that fill the nodes to the memory limit. The lab qualifies each\nrelease, and between releases it pushes the density and the fault\ncoverage further. Each run makes an archived evidence bundle: the\nconfiguration, the verification sweeps, the node journals, the kernel\nlogs, and the phase timings. We keep a red run with the same care as a\ngreen run, because a failure that the harness caught is a result, not a\nretry.\n\nWe inject the faults between verification passes. A pass fetches each\ncell through different nodes and compares the durable state exactly: the\nstatus, the body, and the full message ledger. Each run therefore has a\nclean picture before the fault and after it. A cell can be unavailable\nfor a short time while its ownership moves, but its committed state must\nstay complete, and a live node must serve that state again.\n\nThe scenarios attack every seam that we know:\n\n- Stop a node with `SIGKILL` in the middle of a write stream and delete\n  its local database, so recovery can only come from the bucket. Every\n  acknowledged write comes back, because the output gate held each\n  response until the write was durable.\n- Freeze an owner node, write to its cells through other nodes, and\n  unfreeze it. The node sees that its lease moved and refuses to serve\n  the old state, and each write from the other nodes lands exactly one\n  time: one epoch has at most one writer.\n- Cut a node off from the bucket. It fences itself, because a node that\n  cannot replicate must not own cells.\n- Throttle the bucket, so it answers each request with a 429. The engine\n  slows to the write rate of the store and does not amplify the\n  throttle, because a node that knows its replicated position does not\n  ask a slow store for extra listings.\n- Stop a full host at the provider level in the middle of a workload.\n  Its cells move to the other nodes, and the returning host joins again\n  with no duplicate residency.\n\nAcross every run of every scenario, no acknowledged write was lost and\nno committed state was damaged; the verification sweeps show zero body\nfaults, zero status faults, and zero lost messages.\n"
+    ]
+  },
+  {
+    "id": "probe_6ff958234437b24e09673e7bd3850fc4",
+    "statement": "A seeded scheduler drives each simulation run so a failure replays exactly with its seed; the properties cover safety and liveness and must survive tens of thousands of seeds (the core protocols have run millions).",
+    "sources": [
+      "\nA seeded scheduler drives each run, so a failure is not a fluke: the seed\nreplays it exactly, every time, and we keep the seed until the bug is\ndead. We examine each property for safety (two writers in one epoch, a\nlost acknowledged write, an expired lease that comes back) and for\nliveness (each armed alarm fires, and ownership settles on one node after\na crash). A property must survive tens of thousands of seeds, and the\ncore protocols have run through millions of different schedules.\n"
+    ]
+  },
+  {
+    "id": "probe_c5ea62ce9d13e321b9320a887e0d446b",
+    "statement": "`State::validate` is a cheap internal consistency gate run after every event on both executors, checking occupancy, activation/eviction permits, the active_cells reverse index, and phase/queue invariants.",
+    "sources": [
+      "    pub fn validate(&self) -> Result<(), String> {\n        if !self.occupied_below(self.config.max_resident.saturating_add(1)) {\n            return Err(format!(\n                \"occupied {} exceeds ceiling {}\",\n                self.occupied(),\n                self.config.max_resident\n            ));\n        }\n        let eviction_ceiling = if self.draining {\n            self.config.max_releases.max(self.config.max_evictions)\n        } else {\n            self.config.max_evictions\n        };\n        if self.eviction_permits.len() > eviction_ceiling {\n            return Err(format!(\n                \"evicting {} exceeds ceiling {}\",\n                self.eviction_permits.len(),\n                eviction_ceiling\n            ));\n        }\n        let handoffs = self\n            .quiescing()\n            .saturating_add(self.eviction_permits.len())\n            .saturating_add(self.releasing())\n            .saturating_add(self.adopting());\n        if self.draining && handoffs > self.config.max_releases {\n            return Err(format!(\n                \"handoffs {handoffs} exceeds release ceiling {}\",\n                self.config.max_releases\n            ));\n        }\n        if self.activation_permits.len() > self.config.max_activations {\n            return Err(format!(\n                \"activating {} exceeds ceiling {}\",\n                self.activation_permits.len(),\n                self.config.max_activations\n            ));\n        }\n\n        let mut activation_queued = BTreeSet::new();\n        for id in &self.activation_waiters {\n            if !activation_queued.insert(id) {\n                return Err(format!(\"activation waiter {id:?} is queued twice\"));\n            }\n            let Some(cell) = self.cells.get(id) else {\n                return Err(format!(\"activation waiter {id:?} has no cell state\"));\n            };\n            if cell.phase != Phase::WaitingActivation || cell.waiting_activation.is_none() {\n                return Err(format!(\"activation waiter {id:?} is not waiting\"));\n            }\n            if self.activation_permits.contains(id) {\n                return Err(format!(\"activation waiter {id:?} also holds a permit\"));\n            }\n        }\n        for id in &self.activation_permits {\n            let Some(cell) = self.cells.get(id) else {\n                return Err(format!(\"activation permit {id:?} has no cell state\"));\n            };\n            if !phase_holds_activation(&cell.phase) {\n                return Err(format!(\n                    \"activation permit {id:?} is held in terminal phase {:?}\",\n                    cell.phase\n                ));\n            }\n        }\n\n        let mut queued = BTreeSet::new();\n        for id in &self.capacity_waiters {\n            if !queued.insert(id) {\n                return Err(format!(\"capacity waiter {id:?} is queued twice\"));\n            }\n            let Some(cell) = self.cells.get(id) else {\n                return Err(format!(\"capacity waiter {id:?} has no cell state\"));\n            };\n            if cell.phase != Phase::WaitingCapacity || cell.waiting_for.is_none() {\n                return Err(format!(\"capacity waiter {id:?} is not waiting\"));\n            }\n        }\n        for (id, cell) in &self.cells {\n            if cell.quiescing && !matches!(cell.phase, Phase::Resident { .. }) {\n                return Err(format!(\n                    \"cell {id:?} is quiescing in non-resident phase {:?}\",\n                    cell.phase\n                ));\n            }\n            if cell.swapping\n                && !matches!(\n                    cell.phase,\n                    Phase::Resident { .. }\n                        | Phase::Cleaning {\n                            cause: StopCause::Swap,\n                            ..\n                        }\n                        | Phase::Starting { .. }\n                        | Phase::Publishing { .. }\n                )\n            {\n                return Err(format!(\n                    \"cell {id:?} is swapping in phase {:?}, outside the swap path\",\n                    cell.phase\n                ));\n            }\n            if cell.swap_cancelled && !cell.swapping {\n                return Err(format!(\"cell {id:?} carries a swap flag without swapping\"));\n            }\n            let is_activation_queued = activation_queued.contains(id);\n            if (cell.phase == Phase::WaitingActivation) != is_activation_queued {\n                return Err(format!(\"cell {id:?} activation queue and phase disagree\"));\n            }\n            if phase_requires_activation_permit(&cell.phase, cell.swapping)\n                && !self.activation_permits.contains(id)\n            {\n                return Err(format!(\n                    \"cell {id:?} is in activation phase {:?} without a permit\",\n                    cell.phase\n                ));\n            }\n            let is_queued = queued.contains(id);\n            if (cell.phase == Phase::WaitingCapacity) != is_queued {\n                return Err(format!(\"cell {id:?} queue and phase disagree\"));\n            }\n            for request in &cell.requests {\n                if self.request_cells.get(request) != Some(id) {\n                    return Err(format!(\n                        \"request {request} index disagrees with cell {id:?}\"\n                    ));\n                }\n            }\n            // Every in-flight cell op must be resolvable through the index,\n            // or its completion event will never find this cell.\n            let indexed = |op: OpId| self.cell_ops.get(&op) == Some(id);\n            if let Some(op) = phase_op(&cell.phase) {\n                if !indexed(op) {\n                    return Err(format!(\"cell {id:?} phase op {op} is not indexed\"));\n                }\n            }\n            if let Some(AlarmState::Firing { op, .. }) = cell.alarm {\n                if !indexed(op) {\n                    return Err(format!(\"cell {id:?} firing alarm op {op} is not indexed\"));\n                }\n            }\n            if let Some(op) = cell.releasing {\n                if !indexed(op) {\n                    return Err(format!(\"cell {id:?} release op {op} is not indexed\"));\n                }\n            }\n        }\n        let walked = self\n            .cells\n            .values()\n            .filter(|cell| phase_occupies_capacity(&cell.phase))\n            .count();\n        if walked != self.occupied {\n            return Err(format!(\n                \"occupied counter {} disagrees with the walk {walked}\",\n                self.occupied\n            ));\n        }\n        for (request, id) in &self.request_cells {\n            if !self\n                .cells\n                .get(id)\n                .is_some_and(|cell| cell.requests.contains(request))\n            {\n                return Err(format!(\"request index {request} has no matching waiter\"));\n            }\n        }\n        for op in &self.timed_out_runtime_starts {\n            let Some(id) = self.cell_ops.get(op) else {\n                return Err(format!(\"timed-out runtime start op {op} is not indexed\"));\n            };\n            if !self.cells.get(id).is_some_and(\n                |cell| matches!(cell.phase, Phase::Starting { op: current, .. } if current == *op),\n            ) {\n                return Err(format!(\n                    \"timed-out runtime start op {op} has no matching phase\"\n                ));\n            }\n        }\n        // The reverse index must agree with the map it summarizes, exactly.\n        let mut recount: BTreeMap<CellId, usize> = BTreeMap::new();\n        for id in self.active_requests.values() {\n            *recount.entry(id.clone()).or_insert(0) += 1;\n        }\n        if recount != self.active_cells {\n            return Err(format!(\n                \"active_cells index {:?} disagrees with active_requests {:?}\",\n                self.active_cells, recount\n            ));\n        }\n        for (request, id) in &self.active_requests {\n            if self.request_cells.contains_key(request) {\n                return Err(format!(\"request {request} is both pending and active\"));\n            }\n            if !self.cells.get(id).is_some_and(|cell| {\n                matches!(\n                    cell.phase,\n                    Phase::Resident { .. } | Phase::EnsuringDurability { .. }\n                )\n            }) {\n                return Err(format!(\n                    \"active request {request} has no resident cell {id:?}\"\n                ));\n            }\n        }\n        // `(request, channel)` identifies a withheld output. The shell keys its\n        // adapters on that pair, so a second output for the same pair would be\n        // released once and stranded once.\n        let mut held_outputs: BTreeSet<(RequestId, &'static str)> = BTreeSet::new();\n        for (op, barrier) in &self.barriers {\n            match &barrier.owner {\n                // A held output keeps its request pinned, so the cell cannot be\n                // evicted underneath the barrier and a later write of the same\n                // request can still find it.\n                GateOwner::Output(held) => {\n                    Self::validate_held(\n                        held,\n                        op,\n                        barrier,\n                        &self.active_requests,\n                        &mut held_outputs,\n                    )?;\n                }\n                // An alarm pins nothing: it is not a request, so it has no\n                // activity to hold. What keeps the cell resident is the firing\n                // state itself, which `shed_candidate` refuses to evict. The\n                // phase is deliberately not asserted here — an activity fold\n                // can retire the firing state while this proof is still in\n                // flight, and the barrier that outlives it is then settled by\n                // whichever teardown takes the cell.\n                GateOwner::Alarm { .. } => {\n                    if !self.cells.contains_key(&barrier.cell) {\n                        return Err(format!(\n                            \"gated alarm write op {op} names a cell that is gone: {:?}\",\n                            barrier.cell\n                        ));\n                    }\n                }\n            }\n            // A follower is always an output: an alarm opens a barrier and\n            // never trails one.\n            for held in &barrier.followers {\n                Self::validate_held(held, op, barrier, &self.active_requests, &mut held_outputs)?;\n            }\n        }\n        for (id, cell) in &self.cells {\n            if matches!(cell.alarm, Some(AlarmState::Firing { .. }))\n                && !matches!(cell.phase, Phase::Resident { .. })\n            {\n                return Err(format!(\"cell {id:?} is firing an alarm while not resident\"));\n            }\n            if cell\n                .websockets\n                .values()\n                .any(|kind| matches!(kind, WebSocketKind::Regular | WebSocketKind::Outbound))\n                && !matches!(\n                    cell.phase,\n                    Phase::Resident { .. } | Phase::EnsuringDurability { .. }\n                )\n            {\n                return Err(format!(\n                    \"cell {id:?} has a live transport while not resident\"\n                ));\n            }\n        }\n        Ok(())\n"
+    ]
+  },
+  {
+    "id": "probe_0b257eb69b0aa554adb5e536c3408aae",
+    "statement": "Operator-visible phase names come from `phase_name` and `phase_census` reports counts per phase; the names are stable across internal renames because charts and humans read them.",
+    "sources": [
+      "fn phase_name(phase: &Phase) -> &'static str {\n    match phase {\n        Phase::Inactive => \"inactive\",\n        Phase::WaitingActivation => \"waiting_activation\",\n        Phase::ReadingOwner { .. } => \"reading_owner\",\n        Phase::ReadingNodeLease { .. } => \"reading_node_lease\",\n        Phase::RecoveringOwnerLog { .. } => \"recovering_owner_log\",\n        Phase::ReadingCapacity { .. } => \"reading_capacity\",\n        Phase::WaitingCapacity => \"waiting_capacity\",\n        Phase::Acquiring { .. } => \"acquiring\",\n        Phase::ReconcilingAcquire { .. } => \"reconciling_acquire\",\n        Phase::Restoring { .. } => \"restoring\",\n        Phase::Starting { .. } => \"starting\",\n        Phase::Publishing { .. } => \"publishing\",\n        Phase::EnsuringDurability { .. } => \"ensuring_durability\",\n        Phase::Cleaning {\n            cause: StopCause::Swap,\n            ..\n        } => \"swapping\",\n        Phase::Cleaning { .. } => \"cleaning\",\n        Phase::Dormant { .. } => \"dormant\",\n        Phase::Adopting { .. } => \"adopting\",\n        Phase::Resident { .. } => \"resident\",\n        Phase::Remote { .. } => \"remote\",\n        Phase::Fenced => \"fenced\",\n    }\n}\n",
+      "    pub fn phase_census(&self) -> Vec<(&'static str, usize)> {\n        let mut counts: BTreeMap<&'static str, usize> = BTreeMap::new();\n        for cell in self.cells.values() {\n            *counts.entry(phase_name(&cell.phase)).or_default() += 1;\n        }\n        counts.into_iter().collect()\n    }\n"
+    ]
+  },
+  {
+    "id": "probe_42b5becd45b166d760c6a6e48415db6a",
+    "statement": "A follower failure degrades the node to bucket-proof acks until a periodic re-recruit CASes a fresh ensemble; recovery gathers from every reachable sealed member and requires at least one.",
+    "sources": [
+      "//! v0 limits, deliberate: entries travel as base64 JSON; a follower\n//! failure degrades the node to bucket-proof acks until a periodic\n//! re-recruit CASes a fresh ensemble; recovery gathers from every\n//! reachable sealed member and requires at least one.\n"
+    ]
+  },
+  {
+    "id": "probe_8d48427d6e89359ff8bc4923ccd06d34",
+    "statement": "A node picks its followers from the other nodes in the fleet and never counts itself, so a fleet needs two running nodes before any node can complete a fleet proof; `CELLD_DURABILITY=fleet` is the default.",
+    "sources": [
+      "### The ensemble needs two nodes\n\nA node picks its followers from the other nodes in the fleet, so it never\ncounts itself. One follower is enough, therefore a fleet needs two\nrunning celld nodes before any node can complete a fleet proof.\n`CELLD_DURABILITY=fleet` is the default, so a fleet of one node requests the\nfleet posture and does not get it.\n\nA node recruits up to two followers, so a fleet of three or more nodes holds\nthree copies of an acknowledged write. The ensemble keeps acknowledging while\none follower remains, therefore a fleet does not fall back to the bucket each\ntime it loses a follower.\n\nA node without an ensemble stays correct. It acknowledges each write on a\nbucket proof instead, so celld still does not acknowledge a write before a\ndurability proof covers it. The cost is latency: the write waits for the object\nstore, and an object store round trip is much slower than a follower fsync.\n"
+    ]
+  },
+  {
+    "id": "probe_642da45c75d36b781cedb12cadd54f0f",
+    "statement": "`celld deploy` accepts `wrangler.jsonc` or `wrangler.json` with a defined subset of top-level keys, and each other top-level key (including `routes`) stops the deployment.",
+    "sources": [
+      "## Wrangler configuration\n\n`celld deploy` accepts `wrangler.jsonc` or `wrangler.json`. It does not\naccept `wrangler.toml`. The deployment accepts these top-level keys:\n\n- `$schema`, `name`, `main`, and `no_bundle`\n- `compatibility_date` and `compatibility_flags`\n- `durable_objects` and `migrations`\n- `assets`, `services`, `triggers`, and `vars`\n- `d1_databases`, `kv_namespaces`, `queues`, `workflows`, and\n  `r2_buckets`\n\nEach other top-level key, including `routes`, stops the deployment.\nAn asset-only project can omit `main`. celld refuses a symlink or special file\nin an asset directory, and `.assetsignore` requires Wrangler.\n"
+    ]
+  },
+  {
+    "id": "probe_60eb4931c45e07d570476b96e1f4e795",
+    "statement": "DO storage is async in JS but synchronous underneath, because the ops are sync Rust wrapped in `async` by the JS harness.",
+    "sources": [
+      "//! `storage` is backed by the cell's SQLite (crate::storage). DO storage is\n//! async in JS, synchronous underneath — the ops are sync Rust, wrapped in\n//! `async` by the JS harness.\n"
+    ]
+  },
+  {
+    "id": "probe_28e35d45d0b7a5a9d74a34af3f51960d",
+    "statement": "Compatibility switches are computed from the worker's metadata by `worker_compat` in `crates/celld/lib.rs`, and a new gated API must extend it and the `Compat` struct.",
+    "sources": [
+      "pub fn worker_compat(metadata: &serde_json::Value) -> js::Compat {\n    let flags = metadata\n        .get(\"compatibility_flags\")\n        .and_then(serde_json::Value::as_array);\n    let has_flag = |name: &str| {\n        flags.is_some_and(|flags| {\n            flags\n                .iter()\n                .any(|flag| flag.as_str().is_some_and(|flag| flag == name))\n        })\n    };\n    let date = metadata\n        .get(\"compatibility_date\")\n        .and_then(serde_json::Value::as_str);\n    let switch = |enable: &str, disable: &str, since: &str| {\n        if has_flag(enable) {\n            return true;\n        }\n        if has_flag(disable) {\n            return false;\n        }\n        date.is_some_and(|date| date >= since)\n    };\n    js::Compat {\n        delete_all_deletes_alarm: switch(\n            \"delete_all_deletes_alarm\",\n            \"delete_all_preserves_alarm\",\n            \"2026-02-24\",\n        ),\n        js_rpc: has_flag(\"js_rpc\"),\n        fetcher_get_put_delete: !switch(\n            \"fetcher_no_get_put_delete\",\n            \"fetcher_has_get_put_delete\",\n            \"2024-03-26\",\n        ),\n        sqlite_vec: has_flag(\"sqlite_vec\"),\n        websocket_standard_binary_type: has_flag(\"websocket_standard_binary_type\"),\n        queue_json_messages: switch(\"queue_json_messages\", \"queue_v8_messages\", \"2024-03-18\"),\n    }\n}\n"
+    ]
+  },
+  {
+    "id": "probe_49f790cd51e7f979f11e6afa5d96a259",
+    "statement": "An unsupported configuration or API must be rejected at deployment or first use, not silently differ, per the compatibility page's known-exceptions rule.",
+    "sources": [
+      "\ncelld must reject an unsupported configuration or API at deployment or first\nuse. An unsupported feature that does not cause an error is a defect. This page\nidentifies each known exception.\n"
+    ]
+  },
+  {
+    "id": "probe_53b2f302ced032dd5736159b14041ebf",
+    "statement": "The CLI is strict: a non-loopback --listen or CELLD_ADDR requires an explicit --internal-listen/CELLD_INTERNAL_ADDR, and --advertise/CELLD_ADVERTISE requires an explicit internal listener, because celld does not reuse the public Worker listener for peer traffic.",
+    "sources": [
+      "    if listen_configured && public_listener_is_non_loopback && !internal_listen_configured {\n        anyhow::bail!(\n            \"a non-loopback --listen or CELLD_ADDR requires an explicit --internal-listen or \\\n             CELLD_INTERNAL_ADDR; celld does not reuse the public Worker listener for peers\"\n        );\n    }\n    if settings.advertise.is_some() && !internal_listen_configured {\n        anyhow::bail!(\n            \"--advertise or CELLD_ADVERTISE requires an explicit --internal-listen or \\\n             CELLD_INTERNAL_ADDR; the default internal listener uses a random loopback port\"\n        );\n"
+    ]
+  },
+  {
+    "id": "probe_f3e0f13c53c6cbd707ec620d26fea44b",
+    "statement": "An R2 binding uses the fleet bucket under the additional prefix `r2/<bucket_name>/`.",
+    "sources": [
+      "### [R2](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/)\n\n**Partial**\n\n- An R2 binding uses the fleet bucket under `r2/<bucket_name>/`.\n"
+    ]
+  },
+  {
+    "id": "probe_fb62801f3f8110b4c9c0cc6954761cfb",
+    "statement": "Each node loads the latest committed deployment from `deploy/current.json` each `CELLD_DEPLOY_POLL_S` (default 30 s) and adopts it in place, so a running node does not restart for a new deployment.",
+    "sources": [
+      "A running node does not restart for a new deployment. Each node reads\n`deploy/current.json` every 30 seconds (`CELLD_DEPLOY_POLL_S`) and adopts\na new deployment in place, and `POST /reload` on the internal listener\nmakes a node adopt the pointer now. A node builds the new deployment\nbeside the one it serves, and then it switches new requests to the new\ndeployment in one step. A request that started on the previous deployment\nfinishes on it. A deployment that does not build leaves the current\ndeployment serving, and the node reports the failure in its log and in\nthe `/reload` response. `POST /reload` also rebuilds an unchanged\ndeployment, so an edit to `CELLD_VARS_FILE` takes effect without a\nrestart.\n"
+    ]
+  },
+  {
+    "id": "probe_39c59b8b2dd0aaccd7a80338bb31895c",
+    "statement": "The fleet bucket is the root of authority, storing the deployments, cell state, ownership leases, node leases, and the shared peer-authentication secret.",
+    "sources": [
+      "## Protect the fleet bucket\n\nThe fleet bucket is the root of authority for the fleet. It stores the\ndeployments, the cell state, the ownership leases, the node leases, and the\nshared peer-authentication secret.\n\nA person who holds the bucket credentials controls the fleet. Give each\ncredential access to one fleet bucket only, and replace a credential after a\nsuspected disclosure.\n"
+    ]
+  },
+  {
+    "id": "probe_7f28ea09cc21d61407f913c113c3cb81",
+    "statement": "celld does not terminate TLS on either listener, and the fleet HMAC does not replace the trusted private network because the signature does not authenticate bytes after tunnel establishment and does not encrypt traffic.",
+    "sources": [
+      "The tunnel permits a request body to stream to the owner, so the fleet HMAC\ncannot sign an individual call. The establishment signature decides who can\nopen a tunnel, and a tunneled call can address an application class or a\nruntime class, so every path to a runtime class demands the fleet secret.\nThe signature does not authenticate the bytes after the establishment, and\nit does not encrypt any traffic. The private network must therefore stay\ntrusted, and the fleet HMAC does not replace this network boundary.\n\ncelld does not terminate TLS on either listener. Do not expose the internal\nlistener to the public internet. Use an encrypted overlay such as WireGuard or\nTailscale when the network does not provide the required confidentiality.\n"
+    ]
+  },
+  {
+    "id": "probe_f4ca0e35973ef0cf5ad35569c407ca97",
+    "statement": "celld ignores X-Forwarded-Host and X-Forwarded-Proto by default and uses the last value of each header when `--trust-forwarded-headers` is set; without a trusted proxy the Host header controls the hostname in request.url and is validated, with `celld.local` as fallback.",
+    "sources": [
+      "## Set the forwarded-header policy\n\ncelld ignores `X-Forwarded-Host` and `X-Forwarded-Proto` by default. Set\n`--trust-forwarded-headers` or `CELLD_TRUST_FORWARDED_HEADERS=1` only when a\ntrusted proxy replaces both headers. celld uses the last value in each header,\nso an earlier client value does not override the proxy value.\n\ncelld always takes the path and query from the request target. It ignores the\nscheme and authority in an absolute-form target, so a client cannot bypass the\nhost policy through the request line.\n\nWithout a trusted proxy, the `Host` header controls the hostname in\n`request.url`. celld accepts a hostname, an IPv4 address, or a bracketed IPv6\naddress, with an optional port. It rejects malformed and noncanonical values,\nand it uses `celld.local` when no source gives a valid host.\n\nThese checks keep the path and query valid, but they do not make the hostname\ntrustworthy. An application must not use an unchecked hostname for an\nauthorization decision. Use a trusted proxy or check the hostname against a\nlist in the Worker.\n"
+    ]
+  },
+  {
+    "id": "probe_8512dc3de8c6fd1b2d5bc548b0909c5b",
+    "statement": "The checkers themselves are tested with deliberately broken protocol variants, because a suite that stays green against a broken protocol is broken.",
+    "sources": [
+      "Simulation has a known failure mode: the checker that cannot fail. So\nwe also test the checkers: we run deliberately broken variants of the\nprotocol against the properties, and the properties must find the damage.\nA suite that stays green against a broken protocol is a broken suite.\n"
+    ]
+  },
+  {
+    "id": "probe_7ada3b8adccfd402a08ba83999772553",
+    "statement": "The specifications are a hand-synced snapshot deliberately not in continuous integration, while deterministic simulation remains the per-commit ratchet.",
+    "sources": [
+      "The specifications are a hand-synced snapshot, deliberately not in\ncontinuous integration: a silently stale gate is worse than none. In\npractice their updates have landed in the same changes that moved the\nprotocol, and a delta ledger records what the model does not yet\ndescribe, including places where the model is weaker than the code\nrather than wrong. Simulation remains the per-commit ratchet; the\nmodel is its exhaustive small-configuration complement.\n"
+    ]
+  },
+  {
+    "id": "probe_1986db08a0b14edd274ffedc2596169b",
+    "statement": "celld defines fair select! and biased select_biased! macros via __celld_domain_select; select! rejects the biased; token and select_biased! requires a non-empty reason string stating which arm wins.",
+    "sources": [
+      "    };\n\n    (biased; $($tokens:tt)*) => {\n        compile_error!(\n            \"select! is fair and does not accept `biased;`; use select_biased! with a reason\"\n        )\n    };\n",
+      "#[doc(hidden)]\n#[macro_export]\nmacro_rules! __celld_domain_select_biased {\n    ($reason:literal; else => $else:expr $(,)?) => {{\n        $crate::__celld_domain_select!(@reason $reason);\n        $else\n    }};\n    ($reason:literal; $pattern:pat = $($tokens:tt)*) => {{\n        $crate::__celld_domain_select!(@ {\n            mode=(biased $reason);\n            ()\n        } $pattern = $($tokens)*)\n    }};\n    ($($tokens:tt)*) => {\n        compile_error!(\"select_biased! requires a non-empty reason string as its first token\")\n    };\n}\n"
+    ]
+  },
+  {
+    "id": "probe_da9aad71652529d666882fe22db5266b",
+    "statement": "The select macro facade is adapted from Tokio select.rs and re-exports doc(hidden) Tokio items, so a Tokio version bump must re-check the facade against the new select.rs.",
+    "sources": [
+      "// This implementation is substantially adapted from Tokio 1.53.1 select.rs.\n// Copyright (c) Tokio Contributors. MIT license. See ../../LICENSE.tokio.\n//\n// Every `tokio::` item re-exported below is `doc(hidden)` upstream, so none of\n// them carries a compatibility guarantee. Tokio can rename, reshape, or delete\n// any of them in a patch release without breaking its own semver promise, and\n// the `tokio = \"1\"` caret range in ../../Cargo.toml does not prevent that. A\n// Tokio version bump must therefore re-check this facade against the select.rs\n// of the new version.\n//\n// The failure mode is a compile error in celld, not a behavior change, so\n// nothing broken ships and no test passes wrongly. Without this note the person\n// who runs `cargo update` sees a macro that no longer resolves and gets no\n// pointer to the cause.\n//\n// Rejected: narrowing the `tokio` constraint to the range this facade is known\n// to work with. That blocks unrelated Tokio fixes for the whole dependency tree\n// to guard against a break the compiler already makes un-missable. Do not\n"
+    ]
+  },
+  {
+    "id": "probe_d420992e661f4316b70b8267fb0cad20",
+    "statement": "put_cas answers Ok(None) only for a clean 412/409 rejection and treats every other failure as ambiguous because the write may have committed, and the CAS client is built with retries off so ambiguity surfaces as Err.",
+    "sources": [
+      "    /// Conditional writes only, built with retries OFF: a retried CAS put\n    /// can land on the first attempt's own token change and report a clean\n    /// 412 — converting \"may have committed\" into a false rejection. The\n    /// ambiguity must surface as `Err` so the caller reconciles.\n",
+      "//! Error contract, relied on by the self-fence: `put_cas` answers\n//! `Ok(None)` only for a clean 412/409 rejection; every other failure is\n//! ambiguous — the write may have committed — and surfaces as `Err`.\n//! In the same spirit a response that carries no CAS token is an error,\n//! never an empty token a later conditional write would trust.\n"
+    ]
+  },
+  {
+    "id": "probe_c6ed14eae57fa9c90a064008071aeae6",
+    "statement": "The input gate (blockConcurrencyWhile) is distinct from the output gate: it withholds delivery of incoming events while a handler holds it, and in celld storage completes inside the turn that started it so the gate never yields to another event.",
+    "sources": [
+      "//! The input gate, reified sans-IO.\n//!\n//! A cell serves several requests at once — that is the Durable Object\n//! contract, and D1 restores it by deleting the per-cell thread that\n//! accidentally forbade it. Concurrency is only safe if a handler that\n//! must not be interrupted cannot be, or it would resume to find its own\n//! state changed underneath it by whatever ran while it waited.\n//!\n//! workerd's rule (`io-gate.h`): while the gate is held, **no incoming\n//! event of any kind is delivered** to that cell except the event holding\n//! it. Not just new requests — a subrequest's response, a timer, a stream\n//! read. Anything that would run JS and observe state.\n//!\n//! **What holds it here is not storage.** In workerd the async KV API\n//! (`actor-state.h:49`, `jsg::Promise<...> get`) can genuinely suspend on an\n//! `ActorCache` miss, so storage is what gates; the SQL API (`sql.h:41`,\n//! `exec` returning a `Cursor`) is synchronous and does not. In celld every\n//! storage path is local SQLite underneath, including the async-shaped one,\n//! whose `await Promise.resolve()` drains in the same microtask checkpoint.\n//! A read or a write therefore completes inside the turn that started it and\n//! never yields to another event, so there is no window for the gate to\n//! close.\n"
+    ]
+  },
+  {
+    "id": "probe_6d603e51713bc139885a6904088b2c74",
+    "statement": "Input gate acquire is synchronous with the JS call, nested blocks are counted not refused, release panics if the wrong event releases, and abandon covers a holder that dies mid-block.",
+    "sources": [
+      "    pub fn abandon(&mut self) {\n        self.holder = None;\n        self.outstanding = 0;\n    }\n",
+      "//! two structures agreeing.\n//!\n//! # Why acquiring cannot fail\n//!\n//! [`acquire`](InputGate::acquire) panics if another event holds the gate,\n//! and that is not optimism. Acquiring happens *during* an event, and an\n//! event only runs because a delivery point found the gate open. So a second\n//! event cannot be running to acquire second. Nested blocks within one event\n//! are counted, not refused, because that event already holds it.\n//!\n//! This property is what makes the mechanism small, and losing it is what\n//! wedged cells before: while acquiring was asynchronous, a cell could\n//! deliver a second event in the window between a block starting and the\n//! gate shutting. That event then had to *wait* for a gate held by an event\n//! suspended beneath it on the stack, which nothing could ever release.\n//! Acquiring is therefore synchronous with the JS call that asks for it, and\n//! the panic is what says so.\n"
+    ]
+  },
+  {
+    "id": "probe_bd08ee0db72c6ce42804c3b7c69a10f3",
+    "statement": "WebSocket close-code selection is pure: an application close wins, a peer 1005 becomes 1000, and an abnormal transport end receives no frame.",
+    "sources": [
+      "pub fn websocket_echo_close(\n    peer_code: u16,\n    peer_was_clean: bool,\n    handler_sent_close: bool,\n) -> Option<u16> {\n    if !peer_was_clean || handler_sent_close {\n        None\n    } else if peer_code == 1005 {\n        Some(1000)\n    } else {\n        Some(peer_code)\n    }\n}\n"
+    ]
+  },
+  {
+    "id": "probe_04aa7ef5c885c1fd8ae0365d49830da4",
+    "statement": "CELLD_LTX_COMPACTION enables additive L1 objects so a takeover reads tens of objects instead of thousands, and CELLD_LTX_COMPACTION_MIN_TXIDS queues a background L1 attempt after a durable TXID distance.",
+    "sources": [
+      "| `CELLD_LTX_COMPACTION` | The default is `1`: celld creates additive L1 objects, and a takeover reads tens of objects instead of thousands. Set `0` on every node of a mixed fleet until all nodes can read v0.5.2 block objects, because an old reader cannot take over a cell after its first L1 publication |\n| `CELLD_LTX_COMPACTION_MIN_TXIDS` | The durable TXID distance that queues a background L1 attempt (default: 256) |\n"
+    ]
+  },
+  {
+    "id": "probe_157deafb6a427425ce962484b1303e6a",
+    "statement": "crates/celld/ltx_repl.rs is the in-process replication backend: one shared object_store client for the node and a managed celld_ltx::Db per resident cell that captures committed WAL and uploads it on demand.",
+    "sources": [
+      "//! In-process replication backend built on `celld-ltx`.\n//!\n//! One shared `object_store` client for the whole node, and a managed\n//! `celld_ltx::Db` per resident cell that captures the cell's committed WAL\n//! and uploads it on demand. No external process, no directory-watch lag — a\n//! just-written cell is registered the instant it activates, so the output\n//! gate can prove a fresh cell durable with no cold-start window.\n"
+    ]
+  },
+  {
+    "id": "probe_94198ede618c5d3135598b81c59b55e4",
+    "statement": "celld d1 walks the node leases in the bucket)Skip reads the shared secret.Context and sends SQL to a node's /runtime/ route which forwards to the owner, so the CLI holds no ownership or SQLite.",
+    "sources": [
+      "//! `celld d1` — run SQL and migrations against a deployed D1 database.\n//!\n//! A D1 database is a cell, so it is only reachable through the node that owns\n//! it. This command finds the fleet the way `celld diagnose` does — it walks\n//! the node leases in the bucket, and it reads the same shared secret — and\n//! then sends the SQL to a live node's `/runtime/` route, which forwards to the\n//! owner. The CLI therefore holds no ownership logic and no SQLite: it reaches\n//! the database over the dispatch a Worker's `env.DB` reaches it over.\n"
+    ]
+  },
+  {
+    "id": "probe_b7fc6ed0e4e4cf4b082d68e028d6552c",
+    "statement": "Queue lease generation travels in PlannedLease so a caller cannot select a row and forget to advance its generation, preventing a late settlement from acknowledging a newer delivery.",
+    "sources": [
+      "//!\n//! The lease generation travels in [`PlannedLease`]. A caller cannot select a\n//! row and then forget to advance its generation, because this module never\n//! returns a bare sequence number for a deliverable row. That prevents a late\n//! settlement from an expired lease from acknowledging a newer delivery.\n"
+    ]
+  },
+  {
+    "id": "probe_1088630b8b63e66eb6d2d1a7a5e0d67f",
+    "statement": "celld dev starts one node with a local object store,Skip does not require Docker or a cloud bucket,Skip listens on http://127.0.0.1:9876,Skip and keeps durable state in .celld/dev.Skip so repeat invocations reuse it.",
+    "sources": [
+      "```sh\ncelld dev\n```\n\nThe command starts one celld node and uses a local object store. It does not\nrequire Docker or a cloud bucket. The Worker listener uses\n`http://127.0.0.1:9876`. Use `celld dev --port PORT` to select a different\nWorker port. Use `celld dev --host IP` to select a different interface. A\nnon-loopback IP exposes the Worker listener to the network, and the internal\noperator listener stays on loopback. The command keeps the application state\nin `.celld/dev`, so a later invocation uses the same durable data.\n\n"
+    ]
+  },
+  {
+    "id": "probe_5b7921dd00ba495af6d92f0e37ee7e53",
+    "statement": "celld diagnose enumerates every node lease and performs a signed direct probe of each live peer,Skip distinguishing expired records,Skip unsafe addresses,Skip unreachable peers,Skip and incompatible protocols.Skip.",
+    "sources": [
+      "## Operate a fleet\n\n`celld diagnose` enumerates every node lease by default, then performs a signed\ndirect probe of each live peer:\n"
+    ]
+  },
+  {
+    "id": "probe_21e8a16d31fdc785c376a6bca559d223",
+    "statement": "The sampler decides at request start; an unsampled request records nothing,Skip and under load telemetry sheds before requests do,Skip counted.",
+    "sources": [
+      "The sampler decides at the start of a request. An unsampled request\nrecords nothing and costs almost nothing. Under load, telemetry sheds\nbefore requests do, and celld counts what it sheds.\n"
+    ]
+  },
+  {
+    "id": "probe_90fcbbfdea89657fd10445b7a56b92d2",
+    "statement": "The bucket sink requires a fleet bucket,Skip while the otlp sink works on a node without one.",
+    "sources": [
+      "The `bucket` sink requires the node to have a fleet bucket\n(`CELLD_BUCKET`). The `otlp` sink works on a node without one.\n"
+    ]
+  },
+  {
+    "id": "probe_c744f0efbf49e421d9d80eccd391cef3",
+    "statement": "The coordination protocol is specified in TLA+ and model checked at small configuration,Skip which found four bugs and a split-brain that lost an acknowledged write.",
+    "sources": [
+      "The coordination protocol is also specified in TLA+. Heyang Zhou wrote\nthe specifications against celld v0.1.0, and his model checking found\nfour bugs and a split-brain that lost an acknowledged write. All are\nfixed. None had surfaced in our own review or testing.\n"
+    ]
+  },
+  {
+    "id": "probe_a9461e0049e599c1e90128e29a25b241",
+    "statement": "The coordination protocol is a pure decision core with the clock,Skip randomness,Skip and object store as interfaces,Skip and a deterministic simulator injects latency,Skip CAS races,Skip lost responses,Skip crashed nodes,Skip and scripted adversle hosts.",
+    "sources": [
+      "## Simulation: the protocol under adversarial schedules\n\nThe dangerous bugs live in the coordination: a crash during an ownership\nhandoff, a lease renewal that races a takeover, an alarm that fires\nagainst a partially restored cell. These windows are nanoseconds wide and\nopen rarely, so a test cannot wait for them.\n\nThus the coordination protocol is a\n[pure decision core](https://github.com/denoland/celld/tree/main/crates/logic)\nwith no I/O of its own: the clock, the randomness, and the object store\nare interfaces, and a simulator drives the core. The simulated store\ninjects latency, compare-and-swap races, and lost responses; the clocks\ndrift apart; a node can crash at each await point. Scripted adversaries\nplay the cells: a handler that never returns, a write stream that stops\n"
+    ]
   }
 ]

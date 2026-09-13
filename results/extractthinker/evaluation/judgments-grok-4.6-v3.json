@@ -752,5 +752,317 @@
       "correctness": 3
     },
     "rationale": "Taxonomy: LLM class/backends/request path clearly owns the page; related-page links route consumers and backend-adding but never state out-of-scope in prose, so not a 4. Grounding: load-bearing request/backend/token claims have line ranges that say what the code does, but the opening choke-point claim, ConcatenationHandler consumer, and “only credentials / never read” universals lack evidence, and inferences (conservative 8000 cap, temperature=1 as a reasoning requirement) are not labeled—one unsupported load-bearing claim caps at 2. Depth: strong flow/constraint catalog (DEFAULT vs PYDANTIC_AI, dynamic parse, router vs instructor, thinking budget math) with a few implications, but the instructor-bypass and thinking fallback are stated rather than tied to invariants/failure modes. Change: concrete files/symbols and named tests (including known-broken test_llm_backends.py) without an ordered edit sequence; playbook link does not transfer. Style: opening purpose plus question-shaped headings, no major repetition; opening does not give the request/raw/router flow. Correctness: internally consistent and flags test drift, unused DEFAULT_OUTPUT_TOKENS, and thinking unsupported, without handling subtler cases (e.g. asyncio.run nesting, what unvalidated router completions actually return)."
+  },
+  {
+    "task_id": "page_0061cb4bb4180950b414dc2d",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 2
+    },
+    "rationale": "One topic (CompletionStrategy + handlers) owns the page; opening and H2s make that clear, but there is no explicit in/out-of-scope statement or routing to Extractor/LLM/change-guide outline entries, so taxonomy stays 3. Most load-bearing claims have line-ranged locators that the prose interprets, but FORBIDDEN-as-default is uncited, llm.py is a path-only locator, ThreadPoolExecutor is pinned only to the class line, and “each strategy is a CompletionHandler” is stretched by the abstract-class cite—one unsupported load-bearing claim caps grounding at 2. The body is a numbered flow/constraint list; the only clear causal link is optional fields so partial page results validate. That is not two implementation→invariant/ordering/failure explanations, so depth is 2. Concrete files/symbols and runtime failures (IncompleteOutputException, ExtractThinkerError, max_retries=3, conflict merge) are present, but there is no ordered edit sequence or tests, so change usefulness is 2. Style is a clean flat reference with purpose-setting open and per-strategy headings, without progressive disclosure of edge cases. Internally, the opening’s “each strategy is a CompletionHandler” collides with Dispatch/FORBIDDEN using direct llm.request—a material conflation, so correctness is 2."
+  },
+  {
+    "task_id": "page_070c328e41927c74a7e56651",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 2
+    },
+    "rationale": "Extractor dominates, but batch extraction, completion-strategy handlers, and split/aggregate are substantial adjacent-outline topics; the page states ownership, not exclusions (taxonomy 2). Core extract/load/map/_extract claims have file:line locators, but loader-interceptor invocation, when `_extract_with_splitting` runs, Process-set `_skip_loading`, and `can_handle_batch` are unevidenced; inference is unlabeled (grounding 2). Ordered mechanics and restrictions are listed without causal links to invariants (as_completed vs first-scalar merge; None chunks) (reasoning 2). Symbols and named tests exist; no ordered edit sequence, invariants, or rollback signals (change 2). Opening plus headings form a navigable flat reference (style 3). Material conflations: LLM interceptors as both `intercept(self.llm)` and `process(messages, response)`; `extract` diverts non-FORBIDDEN to `extract_with_strategy` while `_extract` still dispatches to Pagination/Concatenation (correctness 2)."
+  },
+  {
+    "task_id": "page_106307bd1840491131171899",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Architecture is the dominant topic, but the page never states what it owns or delegates, and substantial sections (loader selection, _extract/completion dispatch, Process load/split/extract, vision, classification strategies) re-explain adjacent outline entries instead of routing to them. Extractor claims often have line locators plus a described effect (e.g. extractor.py:92, :337, :1115; llm.py:183), but load-bearing Process/splitter/public-re-export/ownership-table claims are module paths only, so grounding caps at 2. The page is mostly a flow-and-constraint catalog; the two causal notes (universal format so _extract sees one shape; extract_async uses to_thread because loaders/LLM block) do not derive ordering, failure, or composition invariants (LAZY/PDF, _skip_loading, cache key, FORBIDDEN vs handlers). Extension seams name files/symbols and a basic add-loader/handler path but give no ordered edit sequence, tests, invariants, or debug/rollback signals. Headings route public API, ownership, E2E flow, Process, async, seams, and failures without major repetition; the opening is a product pitch, not a three-layer progressive-disclosure answer. No internal contradiction invalidates the two-root (Extractor vs Process) model; list-source handling in get_document_loader vs extract is at most imprecision, and edge cases are stated rather than qualified as uncertainty."
+  },
+  {
+    "task_id": "page_2fe91a63bdecfa8c2e5dc474",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 2
+    },
+    "rationale": "Process is a clear owner (compose load/split/classify/extract) with only compositional mentions of adjacent systems, but the page never names exclusions or delegates to Splitting, Document Loaders, or Completion Strategies, so taxonomy stays at 3. Most load-bearing classify/split/extract claims have line-cited evidence, yet loader maps are described as file-extension keyed (source uses get_image_type), set_document_loader_for_file_type is said to chain like the others (it does not return self), and Process is said to ValueError on unsupported completion strategies (it only forwards the enum). That is one unsupported/wrong loader-routing claim plus stretched error coverage, so grounding maxes at 2. The body is a method walkthrough of flows and ValueError guards; skip_loading/finally is the only real cross-module why, with no 1-based page-index, eager-vs-lazy return-shape, or HIGHER_ORDER first-layer-always-returns consequences, so depth is 2. Concrete process.py symbols and failure strings exist, but there is no ordered change sequence or tests, so change usefulness is 2. Opening plus headed sections are a clean flat reference (style 3). Central pipeline is right; the extension-vs-image-type keying is a material operational error, not a central-model collapse (correctness 2)."
+  },
+  {
+    "task_id": "page_33fe243ba04930bc5b4e94e7",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Workflow owner is stated (Extractor + completion-handler extension seams) and sections stay on that change path; no explicit out-of-scope routing, so taxonomy stays 3. Load-bearing seams are cited with file:line and explained (loader order 92–126, message builders, _extract dispatch 1132–1143, CompletionHandler 5–27, extract error wrap 320–335, pagination merge 270–402); MarkdownConverter duplication and CompletionStrategy wiring lack evidence, blocking 4. Content is flows and constraints (loader order, dispatch, merge, exception wrap) without two causal implementation→invariant explanations, so depth is 2. Change path names concrete symbols, an add-strategy order (implement handle, then dispatch + CompletionStrategy), and tests/failure wrapping, but no invariants/rollback. Flat headings route the seams; opening is purpose-only, no edge-case layer. Internally consistent with named edge cases; no labeled uncertainty."
+  },
+  {
+    "task_id": "page_405fee55f89df46ca9d6f25e",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Change Guides owns the page: the opening states representative maintenance how-tos, and loader/completion/extraction material is in service of those tasks rather than competing system surveys. No explicit out-of-scope routing, so not a 4. Load-bearing how-to claims are only partly evidenced: several steps have line ranges (configs, can_handle, CompletionHandler, extract/_extract dispatch, FORBIDDEN→ExtractThinkerError), but the load() List[Dict]/vision image contract, cache-key composition, __init__ export, and PaginationHandler/ConcatenationHandler behaviors are path-only locators or uncited—one unsupported load-bearing claim caps grounding at 2. The page lists ordered flows and a few constraints (FORBIDDEN, credentialed tests) without causal explanations of why dual registration, cache keys, or merge/retry exist, so depth stays at 2. Change usefulness meets locations + ordered steps + named pytest targets; it lacks rollback/debugging signals. Style is a clear flat how-to with purpose in the opening and task headings; no third edge-case layer. Internally consistent aside from minor ‘implement vs inherited can_handle’ / image vs images imprecision."
+  },
+  {
+    "task_id": "page_45509476c0e628fd0ec642b7",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one owner (CompletionStrategy + handlers when one completion cannot cover a document) is stated in the opening; DocumentLoader/LLM/Extractor mentions are dispatch glue, not a second topic. No explicit out-of-scope/delegate sentence, so not 4. Grounding: PAGINATE/CONCATENATE/dispatch claims carry line ranges, but load-bearing items (enum membership, CompletionHandler contract, FORBIDDEN as default) are path-only locators; unlabeled “well-suited to streaming” inference. One unsupported load-bearing claim caps at 2. Reasoning: numbered handler flows plus a few implications (optional fields so partial pages validate; FORBIDDEN throws rather than returning partials); parallelism/merge ordering, extract vs _extract selection, and conflict-confidence failure modes stay implicit—flow list, not a causal model. Change: concrete files/symbols and runtime failures (IncompleteOutputException→ExtractThinkerError, max_retries=3 ValueError) but no ordered edit path or tests. Style: opening + dispatch/FORBIDDEN/PAGINATE/CONCATENATE headings route questions; edge cases stay inlined, so flat 3 not progressive 4. Correctness: internally consistent; minor hedges (“or equivalent”, “like” merge keys) without source contradiction."
+  },
+  {
+    "task_id": "page_4bb111900c405f183092a6f5",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Change-guide workflow clearly owns the page; systems appear only as extension seams. Opening states in-scope tasks but never names out-of-scope outline boundaries (one loader-convention handoff is not enough for 4). Many load-bearing how-to claims have path:line locators, but several required steps lack line-range or quoted evidence (dual-constructor pattern, CompletionStrategy/LLMEngine/Splitter/eval metric files, param-replication sites); one unsupported load-bearing claim caps grounding at 2. Mostly ordered mechanics plus two thin implications (register strategy on the extract early-return path; duplicate LLM request params across three methods)—lists of constraints, not derived invariants. Loader/strategy sections give files, numbered edit order, and named tests/failure checks, but no rollback or debugging signals. Headings route tasks; opening plus sections are a flat reference, not layered progressive disclosure. Internally consistent with a few edge cases (vision ValueError, optional deps); no material self-contradiction, and no uncertainty labeling on categorical claims such as “all concrete loaders.”"
+  },
+  {
+    "task_id": "page_6b039f3d9e010afb17991c50",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Extractor is the clear owner; loaders, LLM, and completion strategy are mentioned as dependencies without being re-owned. Classify is Extractor API, not equal-weight spillover. Scope is never paired with explicit exclusions/delegations, so not a 4. Most pipeline claims have line ranges, but several load-bearing details are uncited (instance fields, load_document_loader, ClassificationResponse) and other citations are whole-function/file ranges (extract 193–335, classify 536–772, batch_job.py 11–212), which is vague evidence. The page lists extract/classify/batch mechanics and one implication (page count for thinking-mode token budgeting) without two causal explanations tying choices to invariants or failure modes. Concrete files/symbols plus existing validation/error names support a change review, but there is no ordered edit sequence, tests, invariants, or rollback signals. Headings match likely questions and the opening states the pipeline; it is a flat reference, not three-layer disclosure. Internally consistent with named edge cases; no source available here to confirm subtle exceptions, and uncertainty is never marked."
+  },
+  {
+    "task_id": "page_6e937a02574a68bfc884158c",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: Quickstart/end-to-end usage is a clear workflow owner; classify/split/batch appear as first-run recipes rather than competing system pages, but the page never names exclusions so it cannot be a 4. Grounding: only a minority of load-bearing claims have line-level evidence (load_document_loader :128, load_llm :131, Classification :6, load_splitter :42); extract() behavior, vision/base64, EAGER vs LAZY, Python pins, and batch-model limits are locators or uncited, so 1→2 promotion fails. Reasoning: several common flows plus when-to-use notes (vision, mixed multi-page, batch) with restrictions stated, not derived; no causal implementation→invariant explanations. Change usefulness: concrete symbols/files and a copy-paste usage sequence plus InvalidVisionDocumentLoaderError, but no ordered library-edit path, named tests, or invariants/rollback. Style: purpose in the opening and headings that route recipes, without progressive disclosure of flow vs edge cases. Correctness: no internal contradiction of the central extract path; missing Contract import in the Process snippet and unhedged LiteLLM/batch-model claims are minor, not material."
+  },
+  {
+    "task_id": "page_6f741fd8dcb1f7b26acc89bd",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Owns MarkdownConverter conversion (structured vs to_markdown vs basic fallback) with only minor Extractor/loader spillover; opening never names out-of-scope outline neighbors, so not a 4. Method-level path:line locators cover the main API, but many load-bearing details (constructor loaders/allow_verification, ThreadPoolExecutor/image ValueError, prompt/placeholder behavior, Extractor copies) sit under one start-line each with no excerpts, so grounding caps at 2. Page lists flows and constraints (vision load, HTML error comments, LLM vs basic fallback) without two causal links from those choices to invariants or cross-module consequences. File/symbols plus runtime failures are enough for change-usefulness 2; no ordered edit path, tests, invariants, or debug/rollback. Headings make a flat reference retrievable (style 3) without opening flow plus grouped edge cases. Internally consistent aside from minor imprecision (intro “usually an LLM” vs both public paths requiring one; to_markdown(vision=False) vs processors forcing allow_vision=True; “scoreshare”)."
+  },
+  {
+    "task_id": "page_7016a63735d413e285174048",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: page is owned by extract_batch/BatchJob with only incidental mentions of loaders/LLM/contracts; opening states the topic but never names exclusions or delegates adjacent outline entries, so it cannot be a 4. Grounding: load-bearing claims (preconditions, JSONL/upload/create, status map, 60s poll, parsed[0], cleanup/__del__) are pinned to file:line locators and several quoted errors/signatures; inference is not labeled and a few details (InstructorBatchJob, “never LiteLLM”) are thinner, which blocks 4. Reasoning: numbered lifecycle plus listed restrictions, not two causal explanations tying choices to invariants/ordering/failure; __del__/finally cleanup is restated mechanics—cap 2. Change: concrete symbols in extractor.py and batch_job.py and runtime ValueErrors, but no ordered edit path, tests, invariants-to-preserve, or rollback signals. Style: opening plus headings route the API; caveats overlap preconditions and edge cases stay inline, so a solid flat reference (3) not progressive disclosure. Correctness: internally consistent; parsed[0] vs multi-source get_messages is a minor under-explained limitation, not a contradiction."
+  },
+  {
+    "task_id": "page_89515c22dc5a2a043b7ea05d",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: MarkdownConverter is the clear owner; loader/LLM/Extractor appear only as dependencies, but the page never names out-of-scope boundaries or routes those outline topics, so it stays a 3. Grounding: load-bearing entry points, prompts, parallel processing, message shape, per-page errors, and fallback all have line-range citations and explained claims; the Extractor-mirroring claim is a multi-file conclusion without an Extractor boundary, and inference is unlabeled, blocking 4. Reasoning: common with/without-loader and structured-vs-markdown flows plus a few implications, but fallback, vision-required, image-first order, and HTML-comment errors are stated mechanics, not causal explanations. Change usefulness: exact file/symbols and runtime failure modes (page error comments; LLM fail → _basic_to_markdown if a loader exists), but no ordered edit sequence, tests, invariants to preserve, or rollback signals. Style: opening states purpose; Entry points/Prompts/Processing/Fallback route questions with no real repetition; opening does not give the dual-API/fallback flow and edge cases are not fully isolated. Correctness: internally consistent except a minor tension between opening “optionally using an LLM” and to_markdown “always requiring an LLM”; fallback-without-loader and structured-path failure are under-specified, not contradicted."
+  },
+  {
+    "task_id": "page_8fc1ad2613e0ddbe94628aac",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Architecture Overview is the clear owner: a module map plus extract/Process control flow, with one-liners that route to outline topics rather than re-owning them. It never names in-scope vs out-of-scope in prose, so not a 4. Load-bearing claims (loader page-dict shape, LLM backends, completion strategies, contracts, __init__ export/warning filter, LLM.request return) are paths or uncited; only extractor.py:92-126, 337-432, 1115-1147 and process.py:240-308 are real evidence, so grounding stays at 1. The numbered extract path and Process group loop are common flows/constraints with no derived invariants or failure consequences (cap 2). Files are named but there is no edit sequence, test, or failure check (change usefulness 1). Two headings plus an opening purpose statement make a flat, non-repetitive reference (style 3). No internal contradiction; no edge-case handling (correctness 3)."
+  },
+  {
+    "task_id": "page_90bec89931c52dbb2c79ba70",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Batch processing is the clear owner; DocumentLoader/LLM mentions are workflow spillover, but the page never names exclusions or routes adjacent outline topics, so it stays a 3. Load-bearing eligibility, message-build, BatchJob init, status map, poll/parse, and cancel/cleanup claims carry line-range citations and labeled uncertainty; OPENAI_API_KEY and __del__ are uncited, blocking a 4. The page walks flows and ValueError/status constraints without causal links from those choices to invariants or cross-module consequences. Files and symbols are concrete and failure strings are named, but there is no ordered edit path or tests. Opening plus headings route the topic as a flat reference, not three-layer disclosure. No internal contradiction; uncertainty is handled, but batch-level vs per-request failure and list-vs-single result are not treated as edge cases."
+  },
+  {
+    "task_id": "page_a198213e651b426f4228328a",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: Process-plus-splitting is the clear owner; classify/extract/loader mentions are orchestration, not a second topic. Scope is never explicitly bounded (no in/out-of-scope statement), so not a 4. Grounding: major Process/ImageSplitter behaviors carry line cites, but load-bearing details lack specific evidence—lazy “PDF only”, TextSplitter behavior (class locator only), SplittingStrategy with no line range, skip_loading/add_classify_extractor/load_file, and strategy semantics under one function cite. One unsupported load-bearing claim caps at 2. Depth: documents eager/lazy/classify/extract flows and states fallbacks, vision auto-enable, and ValueErrors, but does not derive why (e.g. why merge-on-failure is conservative, skip_loading, loader XOR, gather concurrency). Change: concrete files, ValueErrors, and test_process.py exist; no ordered edit sequence, invariants to preserve, or rollback/debug signals. Style: opening states the chain; headings route Process vs splitters vs tests; flat reference, edge cases inline rather than layered. Correctness: no internal contradiction to the model; Process ≥2-page guard vs splitter single-page path and “gather in a loop” are minor imprecision, not a broken model."
+  },
+  {
+    "task_id": "page_a1c0caadb1b6ab064789f0e2",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Owns MarkdownConverter conversion (plain/structured, vision, fallback, async) with only minor spill into loaders/LLM/Extractor and no explicit out-of-scope routing, so taxonomy stays 3. Most API/flow claims cite line ranges in markdown_converter.py, but load-bearing details lack evidence (parallel page processing, 1-indexed `pages` validation, shared Extractor helpers, async preserving fallback); inference is not labeled, so grounding caps at 2. The page lists methods, prompts, and constraints; the only real causal note is per-page HTML-comment errors so other pages complete—ordering, vision-required, and fallback are stated, not derived (depth 2). Concrete file/symbols and failure checks exist (ValueError, no-images, fallback), but no ordered edit sequence or tests (change 2). Opening plus headings route well; async is repeated but not a major detour (style 3). Primary-path “requires LLM” vs exception fallback is reconcilable and no source contradiction is shown (correctness 3)."
+  },
+  {
+    "task_id": "page_a39ddb869e1b87977732201b",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Owns Process orchestration (classify → optional split → per-group extract) with splitter implementations; opening makes that scope clear, but never names out-of-scope boundaries or routes Classification Tree, loaders, completion strategies, or Extractor flows. Load-bearing Process claims are line-cited, yet splitter fallbacks use whole-file ranges, several details (add_classify_extractor, 1–10 threshold, tree using only extractor_groups[0][0], skip_loading reset) lack specific evidence, and inference is unlabeled—so grounding caps at 2. The page lists flows and constraints (strategies, eager/lazy, ValueErrors, LLM fallbacks, gather) with only one thin why (skip_loading because content is loaded); no second causal link to an invariant/ordering/failure, so depth is 2. Concrete files/symbols plus runtime failure modes, but no ordered edit sequence or tests, so change usefulness is 2. Headings match the three-stage flow without repetition (flat reference, not progressive disclosure). No source contradiction; omissions (tree bypasses strategies, 1-based pages, finally-reset skip_loading, None completion strategy) are minor imprecision, not material error."
+  },
+  {
+    "task_id": "page_a94d5ddfde0520190ac877bb",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Quickstart owns the getting-started workflow and routes adjacent topics (loaders, extraction, splitting, batch, LLM) without becoming an undifferentiated survey; it never names explicit out-of-scope exclusions, so not a 4. Load-bearing behavior (universal content dict, ClassificationResponse 1–10, EAGER/LAZY, batch allowlist, pydantic-ai rejection, 60s poll, extract_thinker_batch/) has paths or unsourced assertions only; quoted snippets cover a minority of claims and there are no line ranges, so grounding is 1 (unsupported load-bearing claims also cap at 2). The page lists happy-path flows and a few usage constraints without causal explanations, so depth is 2. Named example/module locations plus failure checks (Tesseract path, LAZY/PDF, batch models) meet 2; no ordered library-edit sequence or tests. Opening and headings route well; edge cases stay mixed into recipe sections. No internal contradiction of the central onboarding model; the split-result “document/{SplittingStrategy}” line is minor imprecision, not a 4-level treatment of exceptions."
+  },
+  {
+    "task_id": "page_aede85338e0a47cd825ef4c8",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: Quickstart owns onboarding (“gets a new engineer running end to end”); adjacent loader/extractor/LLM/process topics are only routed, not re-explained. No explicit in/out-of-scope pair, so not 4 (related-pages list does not count). Grounding: load-bearing claims are the install story, loader/LLM wiring, and extract(load → message → Contract validate). Only two line-range locators exist (extractor.py:131-137 for load_llm’s argument types; contract.py:4-5 for BaseModel). pyproject.toml has no range; load_document_loader, extract’s pipeline, env credentials, and optional extras are uncited—minority coverage, cap 2 from any unsupported load-bearing claim, score 1. Depth: numbered happy-path flow plus credential/binary constraint; lists flows/constraints with no derived invariants or failure model, cap 2. Change: concrete symbols/files and an ordered usage recipe, but no tests, library edit order, or operational failure checks beyond “need credentials”—2 not 3. Style: opening states purpose; Install / Minimal extraction / learn-next route questions; no major repetition; not 4 (no layered edge-case section; broken-link comments are not disclosure). Correctness: internally consistent with the example; credential caveat is the only uncertainty handling; no source available on-page to show a contradiction, and no subtle exception model for 4."
+  },
+  {
+    "task_id": "page_c0f08a732861f7bc8ff1602c",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Architecture is the dominant topic, but the page never states what it owns or delegates, and whole sections (classification strategies, loader render details, FORBIDDEN completion) belong to other outline entries—cap 2, not 3/4. Central flows have line-range evidence (_map_to_universal_format 337–432, list merge 238–318, validate 139–157, classify 774–807, process classify_async 74–188, error translation 318–335), but component-role, Splitter, spreadsheet-as-page, LLM backend, and integration claims are locators or uncited, so one unsupported load-bearing claim keeps grounding at 2. Page-contract→loader-agnostic pipeline is one real cross-module consequence; other constraints (FORBIDDEN fail-closed, vision strip vs set_vision_mode) are stated mechanics, so depth is 2. Extensibility names files and a basic add-loader/splitter/handler path plus extract/VisionError failures, but no ordered change sequence or tests (2). Headings route the map/flow/extend questions with little repetition (style 3). Internally consistent with only minor slop (“documentached”); no source available to find a contradiction, and uncertainty is not labeled (correctness 3)."
+  },
+  {
+    "task_id": "page_c9ae9cb94e0e26457d1caa28",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: Contracts/Classification is the stable owner; Extractor/Process appear only as classification call sites, but the page never names out-of-scope boundaries or routes them to adjacent outline topics (so not 4). Grounding: most load-bearing claims have path:line locators and a short explanation, but strategy semantics, set_image, and field-purpose claims are not tied to the code that would establish them; fact vs inference is unlabeled, so max 2. Reasoning: uuid-vs-name matching is one causal note; the rest lists flows, enum values, and ValueError constraints without deriving invariants (cap 2). Change usefulness: concrete files/symbols plus named failures and two test modules, but no ordered edit sequence or invariants/rollback (cap 2). Style: opening states purpose; headings route Contract/Classification/strategies/trees/flow; table and numbered walk help; not progressive disclosure of edge cases (3 not 4). Correctness: internally consistent aside from garbled layer-failover/tree-descent sentences and a dubious Vehicle→Invoice example; no material model contradiction visible from the page."
+  },
+  {
+    "task_id": "page_f399fc839c58b28d26305f5a",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 1,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Testing owns the page: layout, representative cases, and env deps; spillover is only naming other subsystems as coverage, not explaining them. Scope is clear from the opening, but nothing states in-scope vs delegated outline topics, so not a 4. Load-bearing claims (pytest layout, BaseDocumentLoaderTest, critical invoice assertion, dotenv/TESSERACT_PATH/cloud keys) are tied to path locators with no line ranges or excerpts, so almost none have specific evidence. The page inventories files and what tests cover; the only implication is that a subset needs keys/binaries—no invariants, ordering, or causal model. Loader tests extending BaseDocumentLoaderTest plus named files is a basic change path, but there is no ordered edit sequence, invariants, or rollback/debug signals. Opening plus Layout / Representative tests / External dependencies routes the questions the page answers without repetition. Internally consistent and flags that many tests cannot run clean; no source contradiction is visible on the page, and specific model/assertion claims are not hedged."
+  },
+  {
+    "task_id": "page_f46c35433669047ce50a7cd3",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 2,
+      "correctness": 2
+    },
+    "rationale": "LLM class/backends own the page; opening states that wrapper, and Extractor/MarkdownConverter mentions are minor, but nothing names out-of-scope outline neighbors so taxonomy stays 3. Request, thinking, router, and Extractor wiring have line ranges, yet LLMEngine behavior, constructor defaults, token-limit precedence, _get_model_max_tokens, global_models, and interceptor abstracts are locators only—one unsupported load-bearing claim caps grounding at 2. Flows and constraints are listed (dynamic path, thinking warning, router ValueError) without causal explanations of those choices. Files/symbols plus failure checks exist, but no ordered edit sequence or tests. Style is undercut by the garbled max_tokens sentence and the interceptor section’s detour. Correctness is limited by conflating LlmInterceptor and loader interceptors at extractor.py:1122-1124 while also claiming the call site passes only self.llm."
   }
 ]
