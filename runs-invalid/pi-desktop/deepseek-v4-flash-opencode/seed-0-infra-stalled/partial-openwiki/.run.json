@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 1,
+  "runId": "0c53232e-70d7-4fb8-8f2f-b3599fe9ae4f",
+  "mode": "init",
+  "phase": "generating",
+  "startedAt": "2026-09-12T10:56:41.032Z",
+  "language": "en",
+  "languageChanged": false,
+  "requiredRewritePages": [],
+  "initialPages": [],
+  "sourceFingerprint": "sha256:da9c9bceb7543a35057c5d153dd9348b93e8725112e20ac20ded8a4feca9d863",
+  "actor": {
+    "producerActor": "opencode",
+    "metadataModel": "host-agent/opencode"
+  },
+  "previousLastUpdate": null,
+  "wikiGoal": "# Benchmark documentation brief\n\nCreate a source-grounded wiki for engineers who must understand, operate, debug, and safely change this repository.\n\n- Explain the architecture, ownership boundaries, core data/control flows, persistence, external integrations, configuration, and failure handling.\n- Include a practical quickstart and focused change guides for representative maintenance tasks.\n- Treat source code and tests as authoritative. Cite concrete source evidence for every non-obvious technical claim.\n- State uncertainty when the repository does not establish a fact. Do not invent runtime behavior, guarantees, or deployment details.\n- Prefer a coherent, non-overlapping taxonomy over exhaustive file-by-file narration.",
+  "beforeContentSnapshot": "3a6bac43d2c608fff454aed9418503c68d1f5125c6ee87617fbe17f8160172c8",
+  "preparedWiki": {
+    "generatedProvenance": []
+  },
+  "plan": {
+    "pages": [
+      {
+        "id": "9c0d7e09-0775-4b8d-90dd-cb4226f9b5c8",
+        "path": "/openwiki/architecture/agent-host.md",
+        "title": "Agent Host",
+        "purpose": "Document the utilityProcess Agent Host: session lifecycle, handlers, session index/watcher, model runtime, auth, skills/plugins, file access, worktrees, and title generation.",
+        "seedPaths": [
+          "src/agent-host/auth-login.ts",
+          "src/agent-host/file-access.ts",
+          "src/agent-host/handlers.ts",
+          "src/agent-host/index.ts",
+          "src/agent-host/model-runtime.ts",
+          "src/agent-host/plugins-service.ts",
+          "src/agent-host/rpc-manager.ts",
+          "src/agent-host/session-index.ts",
+          "src/agent-host/session-reader.ts",
+          "src/agent-host/session-title.ts",
+          "src/agent-host/session-watcher.ts",
+          "src/agent-host/skills-service.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/main-process.md",
+          "/openwiki/architecture/rpc-and-contract.md",
+          "/openwiki/operations/persistence-and-data.md",
+          "/openwiki/systems/managed-processes.md",
+          "/openwiki/systems/messaging-channels.md",
+          "/openwiki/systems/toolchains.md"
+        ],
+        "instructions": [
+          "Cover crash/liveness behavior: uncaughtException exits, main supervises and restarts.",
+          "Cover session file persistence under ~/.pi/agent, the session index, watcher debounce, and file-access root policy.",
+          "Explain how the Host runs pi-coding-agent in-process and serves Api/Streams over MessagePort."
+        ],
+        "status": "complete"
+      },
+      {
+        "id": "35e89f65-3318-4d0c-bb69-ede60bbd628c",
+        "path": "/openwiki/architecture/main-process.md",
+        "title": "Electron Main Process",
+        "purpose": "Document the Electron main process desktop shell: window lifecycle, tray, menus, deep link, protocol, single instance, updates, diagnostics, host supervision, and desktop IPC.",
+        "seedPaths": [
+          "src/main/credential-vault.ts",
+          "src/main/deep-link.ts",
+          "src/main/diagnostics.ts",
+          "src/main/host-manager.ts",
+          "src/main/ipc.ts",
+          "src/main/main.ts",
+          "src/main/menu.ts",
+          "src/main/protocol.ts",
+          "src/main/single-instance.ts",
+          "src/main/tray.ts",
+          "src/main/update-adapter.ts",
+          "src/main/update-manager.ts",
+          "src/main/window-state.ts",
+          "src/main/window.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/overview.md",
+          "/openwiki/architecture/rpc-and-contract.md",
+          "/openwiki/operations/build-and-verification.md",
+          "/openwiki/operations/persistence-and-data.md"
+        ],
+        "instructions": [
+          "Cover Host supervision: spawn, ping heartbeat, crash restart budget, before-restart managed process cleanup.",
+          "Cover desktop IPC (installDesktopIpc), menu/tray/deep-link events, and the app:// protocol.",
+          "Cover the update manager lifecycle, platform gating, and install failure recovery."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "6bc579e7-4696-45ce-b9f0-6c28b13aca88",
+        "path": "/openwiki/architecture/overview.md",
+        "title": "Architecture Overview",
+        "purpose": "Explain the Electron three-process architecture, ownership boundaries, main data/control flows, and security posture.",
+        "seedPaths": [
+          "README.md",
+          "src/agent-host/index.ts",
+          "src/main/main.ts",
+          "src/preload/preload.ts",
+          "src/shared/types.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/main-process.md",
+          "/openwiki/architecture/renderer-and-preload.md",
+          "/openwiki/architecture/rpc-and-contract.md",
+          "/openwiki/systems/browser.md",
+          "/openwiki/systems/managed-processes.md"
+        ],
+        "instructions": [
+          "Explain where each capability is owned (main vs agent-host vs renderer) and how data flows between them without local TCP servers.",
+          "Focus on the process model: Electron main, utilityProcess Agent Host, sandboxed renderer, Main-owned WebContentsView, and managed project processes."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "768edca4-a048-4de4-8767-7114ea47829c",
+        "path": "/openwiki/architecture/renderer-and-preload.md",
+        "title": "Renderer and Preload Bridge",
+        "purpose": "Document the sandboxed React renderer and preload bridge: piBridge surface, MessagePort handoff, RPC client, host restart/crash recovery, theme, and i18n.",
+        "seedPaths": [
+          "src/preload/early-event-replay.ts",
+          "src/preload/preload-location-policy.ts",
+          "src/preload/preload-message-policy.ts",
+          "src/preload/preload.ts",
+          "src/renderer/App.tsx",
+          "src/renderer/i18n.ts",
+          "src/renderer/lib/api-client.ts",
+          "src/renderer/main.tsx",
+          "src/renderer/theme-init.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/overview.md",
+          "/openwiki/architecture/rpc-and-contract.md"
+        ],
+        "instructions": [
+          "Explain renderer reconnection on host restart and the crash screen.",
+          "Explain that MessagePort must cross the contextBridge via window.postMessage transfer, and the early-event-replay buffering for menu/deep-link events.",
+          "Explain theme init and i18n dictionary structure at a high level."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "9b63f15a-24bd-4051-80fd-7e27c14873a3",
+        "path": "/openwiki/architecture/rpc-and-contract.md",
+        "title": "Typed MessagePort RPC and the Contract Layer",
+        "purpose": "Document the type-safe MessagePort RPC protocol, the Api/Streams contract, leases, error mapping, and how renderer, main, and Agent Host wire together.",
+        "seedPaths": [
+          "src/contract/api.ts",
+          "src/contract/browser.ts",
+          "src/contract/desktop.ts",
+          "src/contract/processes.ts",
+          "src/contract/rpc.ts",
+          "src/contract/types.ts",
+          "src/main/host-manager.ts",
+          "src/preload/preload.ts",
+          "src/renderer/lib/api-client.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/main-process.md",
+          "/openwiki/architecture/overview.md",
+          "/openwiki/guides/adding-a-host-rpc-method.md"
+        ],
+        "instructions": [
+          "Describe the five wire message kinds, subscription semantics with keys, call timeouts, leases, and error serialization.",
+          "Explain the two distinct transports: direct renderer-to-Host MessagePort and main-process host-rpc calls bridged through HostManager."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "e1ad7776-f1ac-4bb6-a766-e591087c16a8",
+        "path": "/openwiki/guides/adding-a-host-rpc-method.md",
+        "title": "Change Guide: Adding a Host RPC Method",
+        "purpose": "Focused maintenance guide for adding a new request/response API method end-to-end across the contract, Host handler, renderer client, and contract-coverage check.",
+        "seedPaths": [
+          "scripts/check-contract-coverage.mjs",
+          "src/agent-host/handlers.ts",
+          "src/contract/api.ts",
+          "src/contract/rpc.ts",
+          "src/contract/types.ts",
+          "src/renderer/lib/api-client.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/rpc-and-contract.md",
+          "/openwiki/quickstart.md"
+        ],
+        "instructions": [
+          "Mention error mapping conventions (RpcError codes, ToolchainError mapping).",
+          "Walk through the concrete steps: type in Api, register handler, expose renderer helper, verify with check:contract, test with a focused .test.mjs."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "5cc65efd-601d-4a8f-a264-d3df4cdc015d",
+        "path": "/openwiki/guides/changing-managed-process-behavior.md",
+        "title": "Change Guide: Managed Process Policy",
+        "purpose": "Focused maintenance guide for changing managed-process validation, limits, or backend behavior, including tests and platform gates.",
+        "seedPaths": [
+          "src/agent-host/managed-process/service.test.mjs",
+          "src/agent-host/managed-process/service.ts",
+          "src/agent-host/managed-process/tools.ts",
+          "src/contract/processes.ts",
+          "src/main/managed-process/capability.ts",
+          "src/shared/managed-process-policy.test.mjs",
+          "src/shared/managed-process-policy.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/operations/build-and-verification.md",
+          "/openwiki/quickstart.md",
+          "/openwiki/systems/managed-processes.md"
+        ],
+        "instructions": [
+          "Walk through changing MANAGED_PROCESS_LIMITS or BLOCKED_COMMANDS, how tests cover it, and how the capability gate affects packaged builds."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "1b04f49a-f2e0-405b-9bf1-eefe96b9f044",
+        "path": "/openwiki/operations/build-and-verification.md",
+        "title": "Build, Packaging, and Verification",
+        "purpose": "Document the build pipeline, packaging matrix, CI workflows, verification/check scripts, and release artifacts.",
+        "seedPaths": [
+          ".github/workflows/build-desktop.yml",
+          "electron-builder.yml",
+          "scripts/build-main.mjs",
+          "scripts/build.mjs",
+          "scripts/check-contract-coverage.mjs",
+          "scripts/check-desktop-security.mjs",
+          "scripts/package-desktop.mjs",
+          "scripts/smoke-electron.mjs",
+          "scripts/test-runner.mjs",
+          "scripts/verify.mjs",
+          "tsup.config.ts",
+          "vite.config.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/main-process.md",
+          "/openwiki/architecture/overview.md",
+          "/openwiki/quickstart.md"
+        ],
+        "instructions": [
+          "Describe platform packaging targets and the Windows helper/SBOM build steps; do not invent release/deployment details the repo does not establish.",
+          "Explain the three tsup bundles (main CJS, agent-host/workers ESM, preload), the Vite renderer build, and where output lands.",
+          "List the verification gate scripts referenced by verify.mjs and what each checks."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "0edabb9f-bfa9-4a05-939c-9214cd4dd129",
+        "path": "/openwiki/operations/persistence-and-data.md",
+        "title": "Persistence and Data Locations",
+        "purpose": "Cross-cutting reference for where state persists: Pi sessions/config under ~/.pi/agent, Electron userData for desktop settings, credentials, grants, reaper journal, and toolchain state.",
+        "seedPaths": [
+          "src/agent-host/channels/config-store.ts",
+          "src/agent-host/handlers.ts",
+          "src/agent-host/session-index.ts",
+          "src/agent-host/session-reader.ts",
+          "src/main/browser/browser-persistent-grant-store.ts",
+          "src/main/browser/browser-settings-store.ts",
+          "src/main/browser/browser-tab-restore-store.ts",
+          "src/main/credential-vault.ts",
+          "src/main/managed-process/reaper-journal.ts",
+          "src/main/toolchains/paths.ts",
+          "src/main/toolchains/state-store.ts",
+          "src/main/window-state.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/systems/browser.md",
+          "/openwiki/systems/messaging-channels.md",
+          "/openwiki/systems/toolchains.md"
+        ],
+        "instructions": [
+          "Explain atomic-write patterns (models.json) and version-conflict handling.",
+          "Explain which persistence is intentionally not durable (e.g., runtime grants, ephemeral browser profiles).",
+          "Give concrete paths and JSON file names where the code establishes them; state uncertainty where a path is derived at runtime."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "d8e9b457-cdd7-4491-ad63-72597ada57be",
+        "path": "/openwiki/systems/browser.md",
+        "title": "Built-in Browser",
+        "purpose": "Document the Main-owned WebContentsView browser: profiles, settings, network policy, authorization model, CDP coordination, agent browser tools, and advanced mode.",
+        "seedPaths": [
+          "src/agent-host/browser-agent-runtime.ts",
+          "src/agent-host/browser-capability-runtime.ts",
+          "src/agent-host/browser-tools.ts",
+          "src/contract/browser.ts",
+          "src/main/browser/browser-authorization-coordinator.ts",
+          "src/main/browser/browser-cdp-coordinator.ts",
+          "src/main/browser/browser-network-interceptor.ts",
+          "src/main/browser/browser-network-policy.ts",
+          "src/main/browser/browser-persistent-grant-store.ts",
+          "src/main/browser/browser-policy.ts",
+          "src/main/browser/browser-profile-manager.ts",
+          "src/main/browser/browser-service.ts",
+          "src/main/browser/browser-tab-manager.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/main-process.md",
+          "/openwiki/architecture/overview.md",
+          "/openwiki/architecture/rpc-and-contract.md",
+          "/openwiki/operations/persistence-and-data.md"
+        ],
+        "instructions": [
+          "Explain advanced mode gating (this-launch switch), CDP network capture, write request replay with confirmation, and the private-network best-effort caveat.",
+          "Explain permission levels, session grants, persistent grants, authorization dialogs, and that Coding permissions never imply browser permissions.",
+          "Explain that remote sites and localhost project pages load in Main-owned WebContentsView without app preload/Node access.",
+          "State uncertainty explicitly where the repo does not establish behavior."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "05eb5090-0198-4f37-82ba-84825d7ddbb0",
+        "path": "/openwiki/systems/managed-processes.md",
+        "title": "Managed Background Processes",
+        "purpose": "Document the managed-process system end-to-end: policy validation, agent tools, service, output buffers, log cursors, platform backends, crash reaper, and shutdown cleanup.",
+        "seedPaths": [
+          "native/windows-managed-process-helper/src/main.rs",
+          "src/agent-host/managed-process/posix-backend.ts",
+          "src/agent-host/managed-process/runtime.ts",
+          "src/agent-host/managed-process/service.ts",
+          "src/agent-host/managed-process/tools.ts",
+          "src/agent-host/managed-process/windows-helper-client.ts",
+          "src/agent-host/managed-process/worker.ts",
+          "src/contract/processes.ts",
+          "src/main/managed-process/capability.ts",
+          "src/main/managed-process/reaper.ts",
+          "src/main/managed-process/shutdown-cleanup.ts",
+          "src/shared/managed-process-policy.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/main-process.md",
+          "/openwiki/architecture/rpc-and-contract.md",
+          "/openwiki/guides/changing-managed-process-behavior.md",
+          "/openwiki/operations/persistence-and-data.md"
+        ],
+        "instructions": [
+          "Cover command validation (blocked commands, LAN bind confirmation), cwd containment, output redaction, and limits.",
+          "Cover platform backends: POSIX process groups vs Windows Rust helper + Job Object, owner identity, and fail-closed behavior.",
+          "Cover the main-process reaper journal, before-restart cleanup, and shutdown deadline.",
+          "Explain the feature is off by default and is lifecycle control, not a sandbox; subprocesses inherit host filesystem/network/env privileges."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "cde476ca-34f6-4ef6-a720-6dffa1daad4a",
+        "path": "/openwiki/systems/messaging-channels.md",
+        "title": "Messaging Channels (WeChat, Telegram, Feishu/Lark)",
+        "purpose": "Document the IM channel subsystem: adapters, config/state persistence, pairing, bindings, session bridge, media handling, and policy.",
+        "seedPaths": [
+          "src/agent-host/channels/adapters/feishu/adapter.ts",
+          "src/agent-host/channels/adapters/telegram/adapter.ts",
+          "src/agent-host/channels/adapters/weixin/adapter.ts",
+          "src/agent-host/channels/channel-manager.ts",
+          "src/agent-host/channels/config-store.ts",
+          "src/agent-host/channels/pi-session-bridge.ts",
+          "src/agent-host/channels/policy.ts",
+          "src/agent-host/channels/redaction.ts",
+          "src/agent-host/channels/state-store.ts",
+          "src/shared/channel-types.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/rpc-and-contract.md",
+          "/openwiki/operations/persistence-and-data.md"
+        ],
+        "instructions": [
+          "Explain account secrets persisted via main-process credential vault, bindings, tool permission policy per Pi session, and redaction.",
+          "Explain outbound-only long polling (WeChat/Telegram) and outbound WebSocket (Feishu); no inbound webhooks or listening ports.",
+          "Explain per-channel rich rendering and media conversion (SILK to WAV)."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "2eae198e-7e12-4a05-a448-587b9508b2b2",
+        "path": "/openwiki/systems/toolchains.md",
+        "title": "Toolchain Management",
+        "purpose": "Document toolchain discovery, catalog, managed installs, project resolution, and runtime environment that pi-coding-agent sessions consume.",
+        "seedPaths": [
+          "src/agent-host/toolchain-bash.ts",
+          "src/agent-host/toolchain-git.ts",
+          "src/agent-host/toolchain-runtime.ts",
+          "src/agent-host/toolchain-search.ts",
+          "src/main/toolchains/bundled-core.ts",
+          "src/main/toolchains/catalog.ts",
+          "src/main/toolchains/discovery-registry.ts",
+          "src/main/toolchains/installer.ts",
+          "src/main/toolchains/manager.ts",
+          "src/main/toolchains/portable-git-installer.ts",
+          "src/main/toolchains/state-store.ts",
+          "src/shared/toolchains/catalog-schema.ts",
+          "src/shared/toolchains/types.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/main-process.md",
+          "/openwiki/operations/persistence-and-data.md"
+        ],
+        "instructions": [
+          "Explain bundled rg/fd offline search and managed components install into an app-private directory without touching system PATH.",
+          "Explain the capability model (ToolCapabilityId), providers (system/custom/bundled/managed), health states, and preferences.",
+          "Explain the snapshot/ack flow: main publishes ToolchainSnapshot, Host acknowledges by revision, and the packaged-startup validation gates on it."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "2105bf2a-7771-4617-b736-ff2d473ecdf8",
+        "path": "/openwiki/quickstart.md",
+        "title": "Quickstart",
+        "purpose": "Get engineers up and running: environment requirements, dev loop, build, test, verify, packaging commands, and task routing across the wiki.",
+        "seedPaths": [
+          "README.md",
+          "package.json",
+          "scripts/build.mjs",
+          "scripts/dev.mjs",
+          "scripts/test.mjs",
+          "scripts/verify.mjs",
+          "tsup.config.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/agent-host.md",
+          "/openwiki/architecture/overview.md",
+          "/openwiki/operations/build-and-verification.md"
+        ],
+        "instructions": [
+          "Include a task-routing map linking common maintenance tasks to the relevant wiki pages.",
+          "Include only commands and facts that are verifiable from package.json scripts and the scripts/ directory."
+        ],
+        "status": "pending"
+      }
+    ],
+    "deletePages": []
+  }
+}

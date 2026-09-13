@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:0511cb60bf3894b48d73a7d10954000e0f3010cd4d5a8429182f07dbb8d217f9",
+  "claims": [
+    {
+      "id": "claim_1fb9ba652c5d4d279dec804f99dfec70",
+      "statement": "Build outputs split by process: out/main/main.js is CJS, out/main/agent-host.mjs plus plugin-worker.mjs and managed-process-worker.mjs are ESM because pi packages are import-only, and out/preload/preload.js is a browser-platform CJS bundle.",
+      "evidence": [
+        {
+          "resource": "repo://tsup.config.ts",
+          "version": "repo-file-v1:sha256:a5a338c193c980b114c7594ac0999a65b61eaef8d7cf11cc26a9d513980e048c"
+        }
+      ]
+    },
+    {
+      "id": "claim_1fbb6ba7177145b2ad7fe3ce48eaf2c3",
+      "statement": "Main owns window lifecycle, menus, tray/badge, deep links, updates, protocol, and Host supervision with no business logic, while the Agent Host utilityProcess runs pi-coding-agent in-process and serves Api/Streams over MessagePort.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/index.ts#L1-L4",
+          "version": "repo-lines-v1:sha256:f8815b420cb3a2c8ad1e385a6b79ed6e655bac8f125e4c5c2772e655e809a20f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTJkZWQ2NjA1YjE3YzlkNGQwMjE3NmIwZmYzNTE3MzdhYjdiZWUwZDhhNGY0NzYxNTY1ODE3NTM3ZjE5ODU5MiJ9"
+        },
+        {
+          "resource": "repo://src/main/main.ts#L1-L5",
+          "version": "repo-lines-v1:sha256:d30a28d9c7bbfad01d6f555915c6bb10ad63e1cbc017001a9929c8eaa8fd9000:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQ0YzU0ZDVjY2Q2MzNjZGQwMmQ3ODg5OWEwYWE4MTBmZDExYjgzZTZlMDUzYzk5MjA0OTBmNDE0NzJmMGJkMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c327300841d540e0814d79542e50f987",
+      "statement": "The Host runs as a separate utilityProcess so the pi runtime is isolated from the UI; on uncaughtException or unhandledRejection it exits immediately rather than serving requests from a potentially corrupted process, relying on Main's supervisor to restart it within budget.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/index.ts#L113-L118",
+          "version": "repo-lines-v1:sha256:9816a400bbed9ac696f79680c17b29a7ab076a245269a2dd8571c3d076f86a93:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDMyOWNiOTZhYjVhYjE3YTdkNzJjZDE1YjBiNDM0ZTg5MTU5NzdkOTNmN2YxNmI5YjU0NWQ0OTQwZDJiNzkxMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMThmMTY2NWZhZWMwNGVlZTM0ZDE1ZmYzMzJjNWMyZjRiYTVmMmQ5NmIwMDIyN2U0MTY0NzJjZTAwMzcxNTUzMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWMzZTgxMzcyMDAwZmNjMGYxM2YxMDI5MjY2MzVmYWNmMDg2YWU3YzM3NTRiZTBhNmE4N2U1MGFiZTM5ZTBhMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c9183dcb4044c3bb6897c697044f684",
+      "statement": "HostManager forks the Host with utilityProcess.fork, strips ELECTRON_RUN_AS_NODE so the child receives parentPort, and sets PI_AGENT_HOST, PI_DESKTOP_USER_DATA, and PI_DESKTOP_VERSION environment markers.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts#L219-L236",
+          "version": "repo-lines-v1:sha256:d22410ee80e6c0a2b34f3f5347d4ce023a25a4cdcd3b7a7ceffb7673a774e3b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NjE5ZTVmZWZiNWJmOTk0NDM5ZWJhYzA0YTZiMjY3MTc2MWU2ZTliOTY3ODE1ZWQ1YWQ4YmVmODk2ZTlhZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjNGJkMzNhZTk2NTVjMzU5ZTljNGFiNjE0OGFiMTNmZDMzN2Y2NjJmZmI4YjdhMDQxNDZmYjYwZGRkNzQ1NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhYzkwNTVhMjBhZWJhMmZmNTIzNGMwMzFlNmEwOWIwZmRkNzllY2U1NDdiYmU0OTJmZWUyZDU2MWI2N2Y3ZjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_71d6538009e04aa185d41c45698fdaf5",
+      "statement": "The parent/child control protocol carries ready (with pi version), pong, log, toolchain:ack, browser:ack, and managed-process-owner:ack from Host to Main, and ping, attach-port, toolchain/browser snapshots, managed-process-owner:init, and shutdown from Main to Host.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/index.ts#L45-L106",
+          "version": "repo-lines-v1:sha256:ef61165ab27e8fb5a1de475e907a8f7ac1e9aa04d371ee25667c943642ca3b17:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWVjODMyMGNhOGNkMjY4NmNiZmQzMTIyYTFjYTlhMWFmYzhjODNiZGZjMTJiZTMzODUyOTVjZThmM2E0MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MWI0NWNlZGZmMDg4Yjg0MTg0YTE3Yzg0YWExMmI2ZTlhZGFjMDRiOGViNWVhMzNlOWM3NDY0ZmRlYThiMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjNmUwMWM0MmVlMzAzZDVmMzM3MjQ5OWQ3ZDI1ZDczYmYyNjY4NmI5MzYyOWZiNzhlN2JlYzE0NzM5YjZjOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MDVmYjBmYzdkZjZkYmM3OTAxZjU2N2RkNDZiOGQ5ZGRiMzg4NWI5NzVkMzNiZGFkZmEzZmE4MDAwMTI2MjIifQ"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L263-L299",
+          "version": "repo-lines-v1:sha256:2f7505db3e6c3e00f08cd15f113862737c627555d3af9d471ae31c9a7793243e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhYTMzZWMyNGYyZTk2NWRmMTA0ZjU1NDdiYWQyMjMwOWQ1NzY2N2MwZjI2MWY1OWYwYzY1Yjc0ZDkzOTA3ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YTg0ODhhYmU3YWNkZGQ2YTZhMDAxMzBjYmUxYjQ2MTcwMDcyZGRiOWIzZjkwYTY1MTcyN2FmN2VkNDRkMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZjAwNzYzYmU5ZmYwN2U3YzFjNTdkYTNmMTg0ZThjZmIzYTNjMjBkY2JhZmM5YTI3Mjc1NWIxZGM2YWU5NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzOWY5OWIwOGUyYjk5MmE4ZTdiZDI1NDc0NTA3ZDIxYjE2NWFlNmM1NjRjNGFiZGM2ZWU2N2Q0OGM3NzZiMzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a1317fdde901406f8e0eb22b93c5d1fa",
+      "statement": "On Host ready, Main resends both policy snapshots and the managed-process owner identity, marks the Host ready, starts the ping loop, and emits host-restarted crash recovery when the previous Host had been ready; ack revisions reset to -1 on every spawn because acknowledgements are not transferable between Host instances.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts#L211-L216",
+          "version": "repo-lines-v1:sha256:25ef09376eda335711d83b4ebf2d7423c64001e6edc8f0c6062d51a0916c2583:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTMxMGM3NjMyNWY3OWI1ZTgxNGRmOWZkYzUyM2YyMDkyZTE3NWYyYTk0ODYxNDJmOWUwNTM1NmU4MGNjYmVkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNmMzk1MzdkOTA3Y2ZiODA1OTI2MDZjYTJiNWI3ZjkzODVlYjYwZTkxNGM0ZGVmODkyODk3YjZiMzI4YTE3YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzkzNTMwZjBhZDc5NzMxNDdhNTc5NTY4Yjg5NmRhMjlmOTBkYTBiNzg4MTQxYWIzOTRkNDIwYzVjYThjZjBiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTRhNDc2ZTdmNTdiMWI5MzJiOWJmNDkwOGFmOTQ2NzEzMDNlYWZlZGQ5MTlhOTZkMzYwNmZhMGY0MTcyN2Q4NyJ9"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L263-L277",
+          "version": "repo-lines-v1:sha256:f71006684d8c5240570ffe436c71e643b2a99412eabeccd1f28d5d3eb2e3188a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhYTMzZWMyNGYyZTk2NWRmMTA0ZjU1NDdiYWQyMjMwOWQ1NzY2N2MwZjI2MWY1OWYwYzY1Yjc0ZDkzOTA3ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZjAwNzYzYmU5ZmYwN2U3YzFjNTdkYTNmMTg0ZThjZmIzYTNjMjBkY2JhZmM5YTI3Mjc1NWIxZGM2YWU5NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzOGVhOTFmYjUyNGM0ZTkzNjI1NGM4MGMxODRkYjM4ZWM1NDVlNDA1NWY5M2I1MGIwNDUwNzU5NWMwZTlhMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ccfa01473f54b7f8e4c4808a1fbed7d",
+      "statement": "Main pings the Host every 15 seconds and kills it when no pong arrives within a 10-second timeout; the heartbeat evaluator distinguishes an unresponsive peer from a suspended clock and re-establishes one heartbeat after a clock discontinuity, because ownership safety is separately enforced by process handles and pipe EOF.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts#L17-L20",
+          "version": "repo-lines-v1:sha256:70fb084f71acd38323b71995de7bbf8367c12b185e8b303e84fcba84c0ed0c8d:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTViYjM2MzQ2OWE1OTE0MWYyZWY3ZjU4ZGZiNWRmYjRlYjJhYmUyMmExYzA1NzMxNzNkMzdlNjMzYzIwNWExNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGUyODY5NDhiZjVlMWM1ZTdmYjg2M2RjMGU3OWJkNWIyODJiMzllYjE5Y2I3YWYwZmE4NjNlNWJiZGY2NjM3OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjk2N2YzN2ZjNjA1OTc5MDZiMzU1YzZkZjRiMDNiOWM1ZmQ5NDYwODU5MTlmNmNhY2RhYzk1YTMxZDNmNzUxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjk0OTliNDNmZDY3NWUyNzNmNTM4NDEzMzViMWZmZjBmMTBiMThiNmRjZTJmOTM2MzM0NWFmZDk2MTEyMmI2MSJ9"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L386-L416",
+          "version": "repo-lines-v1:sha256:b9de7cea409457678a481119843828507f053a97c7428d91a0cdcd27b20043ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MDYwOGY0NjhkZDA5OWJlODVkNDA1MzVmMGU3NWY3ODA5YTg3NjFlYmU3ZDJhNWQ2ODg4ZjhmYjVlZmNjOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYTc3NjEzYTk3M2Y0ZmQ5Y2RiOGY4MGYyY2FhMTczMWZiZmM1YmMyOWJlZjI5MjNkNGJmMTZkZTBmN2Y1YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5OTQxZjE0ZjY1MzFlZWZiMzVkZjY5MDEzZWViNDNkNzI5YTQyZjc2ZjRmZTZkMzViMGZhOWQ1ZmZiZTBjMDUifQ"
+        },
+        {
+          "resource": "repo://src/shared/heartbeat-liveness.ts#L14-L29",
+          "version": "repo-lines-v1:sha256:beff2423b9dc5f2b10de0ca4f46d0646888925b510e920db84c4df59b7a74154:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxYjkyNjFmZjMzN2VlMDJjZGZjYzY2Y2Q1NDAwYjUzNjFkMDBlMDhhYzVkZGVlOTlhMjMwMzRkYjZiMTc5NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c7e420b50634f99b0018db503ed4de5",
+      "statement": "Host restarts are budgeted to at most 2 restarts within a 30-second crash window before the Host is marked crashed; on exit Main first runs managed-process cleanup via the before-restart handler and marks the Host crashed instead of restarting if that cleanup cannot be safely confirmed.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts#L344-L359",
+          "version": "repo-lines-v1:sha256:5afd4fbc7912314926d63027f44d9b45b0b25af95c1237f36acb8340e31f3cfc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ZGEwNGQ3NDk4YTMwN2ExYTNlZGRlNGUwZGVhNTUzMjQ2ZDdkODgzYmNhMjk4N2NhNGRlYmU0MmUwMjgzZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3YTM2YTllM2EwY2Q4YTJkZDlhNTM4YjkyOThkMjcwOTg0ZjgyNDRlNjU5Mzk2NjI5ZGM3MmZjZTg1MmMyNjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwNDBlMzI2MmI4OWQ0MTE3NTlmYjNjMDY4ODlkOTY2ZTQ4ZGQyNDdlNGM0ODU2YmIwNTZhNmQ5MmQ0M2QxZmQifQ"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L368-L384",
+          "version": "repo-lines-v1:sha256:4d7f41e1ec7315a7c9e8b3dc07a08a8dca0a734e605d0a82bb3d2943077107a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwZWE0YmIzNWJmZGU5YzUyYWEwMGMwMTIxZDRiODQyMzYyNGU1NjUxZTJiY2I4ZTVjODdkOTM4MTJlZDNhMjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0YmExNjA4NmM4Y2VjMDdiZTA2ZDg4ZjllNTE4MTE5OGEwMmU4MWQ2Y2M0ZjcxY2NjYWMzM2Y4MjI2ZjJiMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhNWMwNGFhYjYyZTQyZWZiNDFlMDhlYjhhNzA5Zjg1YTZjNDZhMmFlYTJmZDQzZTE1ODk1NDZiYWI5NjJlZDAifQ"
+        },
+        {
+          "resource": "repo://src/main/host-restart-core.ts#L37-L49",
+          "version": "repo-lines-v1:sha256:92e5eb62ecb80f2ae702803f1571748d34fe3470c67723acbd2f4602d7ee88c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyOWIzMzAzY2ZlMDk4MDNkNTVkOGEwZDliZWY5ZDM1ODAxNmM1NDU4ZDBkM2VhYThmNzBlZWU4NDE0ZGYzM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0OTcxMzQ2ZmQzYzM3ZWU1ZWZlYzhlNWRlN2EwZTQwNzUzM2Q3NjE1M2QzOWVjMDJkN2RjNGQ4M2FhNzc0MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6492608287584cc399a5a6e6e24955dd",
+      "statement": "HostManager.stop() sends shutdown and force-kills after a 10-second grace period; the Host responds by stopping the session watcher, restoring the git runner, and disposing handlers before exiting.",
+      "evidence": [
+        {
+          "resource": "repo://src/agent-host/index.ts#L99-L104",
+          "version": "repo-lines-v1:sha256:78d8fb7dd906a3417defae2b2e576b41ca5d3535e7aff685f35a768a79380c4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQwZDJjZmUxMWFiMzUwNGRlZWVlODk5ZDhkNTk0ODNiZGRjZDAxYmE4ZTA3OGY2OGE2ZjVmOTZiNjA2Y2NlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EzZTQ2Zjk0Mjc2YjZmNmY0ZWQxZjAyYWY3OGJlZjZhMmVlMWM0MzlkZDU1ODRiOTczOTQ4MzEzMjE0ZDJiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTJjN2QzNmJiZmU0MWVjZDUzYzlkZDBkZTg2OWVjMDU0MmE3MzUxZjAzN2JlMjkxNTM0OTU1MjYwZDMyNDA5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjExMGZmZGE3MmE4NTU3MzVhNDA2MjZjYWJkNjM4OTJmYjUxZjUwMDc4ZjFmNGIzMjcxNjNlZDBhNmE4NzI4MiJ9"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L112-L137",
+          "version": "repo-lines-v1:sha256:9af61d72a015a14c41015341be66abb52c81164586c74eec1b008460bc49e2a9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0YmNjZGUyMGYwOGQ3NjIxYTVlMjI1MjhlNDY0NzEwOWFkOWY0ZjkxMjJmZGFjN2FhYzQ3ZDc2NGJhYzZiNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1ZTliY2UwODgxMDA4ZmQ3NzY5MDZjYjI5OTZkOTIwMmYwZTJjYzJiZGZiODRkNTI5NmYzN2FkMTk1ZTg0NjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkMDk2ZTk5NGVlMmM3NWRjM2FlYmY4MzcxNWE2OWNiY2M0ZjQ4YzRiYmRjY2NjYTNhMTIwZTlmZTg1YzVkNTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4febbcddb17044f689472f46e606db3c",
+      "statement": "Renderer connections use MessageChannelMain with one port forwarded to the Host via attach-port and pre-ready ports queued until spawn; Main also issues one-shot RPCs over fresh channels with a 10-second default timeout and answers Host-initiated host-rpc requests through its request handler.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-manager.ts#L139-L166",
+          "version": "repo-lines-v1:sha256:dc20f77ea5670436c034adb829a5ad9f5b48acd16e631bb0c1e1c84f502c5450:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzZmQwMmNiNGJmNjUwNDE0YjMwMGNmZTkyMGQ1NTgzNWE2ODJlMDkxNDIxYjVjOTE0MjFjYjUyYmJkZTJkMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiOTgwNzQ1OTI5MjZmYmJlYWY1NGM4MTM4YzJhMzE5YmE0NDdlNTA5ZDNlMGM5YTk0YTE3ZWYyNWQ1ZTk3NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3MjUwMjA1Y2NmNDBjZWMxYmQ1M2I1MjM2ODA1ODkyZWQ1NzBlNjI0ZTk3ZTZjMWE0YWM1MDg1YzUwYTllNzcifQ"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L168-L202",
+          "version": "repo-lines-v1:sha256:f5f81d4c5cfeafc8b0bfddddc114bf98b07c63a57aeb62a4748a37e91ba5553c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YWJlYzQwNTFkZTM1YzZiY2I1YjY1ZTM1ZTEzYjBhNjc2YjZkYzBhZmI3NjdiODE0NGUyODZlZjFjMjc1ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlNGEwYTA0NDU2YmQ1ZDRjMGQxYzU1NjAxODNlZGE0Y2UzNTZjN2I1MzU1NTgwOGQ3YjQxMjMyNDY0Njg0YmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmMjg1ZTAwODQyZmU0YzJjMzIzMGUzMjNkNWE0ZGJmMzkxMjU4NDFhZGRmYjgzNWQxMjhkNDVmMjY1ODQyODIifQ"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L251-L261",
+          "version": "repo-lines-v1:sha256:18558a67702a77a8092fdeb2f267afa3e81a5791031da832a5ab36549e2b1adc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExYjU0OGJkNGNjZmM0YTQyNjEwNmNhZWMxMjFiY2JlOWRmZjk0MWQ2MDViMmJkNTM2MjRjM2E1MjgyYmY3OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwMDVkOTVlZjhkNDM0YTYzOTdhYWVmZTdiMzc4MjI5ODI2NGM1MzNhMDY5NGE5NDkzNjIzYzY5MDI3NmY1NzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4MjkxNWI1ZmI1ZjZkNDFiMGMwZWIwZWY3MzdmODhlMjIwMTUyNjgwYzhjNmM3MGNkNzNkMjFiNjA4YTAzN2QifQ"
+        },
+        {
+          "resource": "repo://src/main/host-manager.ts#L299-L331",
+          "version": "repo-lines-v1:sha256:e9416016db3986ee6c1380f8aec5307332fc6bb49ee54bc36ef01497df8d55c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YTg0ODhhYmU3YWNkZGQ2YTZhMDAxMzBjYmUxYjQ2MTcwMDcyZGRiOWIzZjkwYTY1MTcyN2FmN2VkNDRkMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhNDVjMDJkMjM4YTJlNDc4OTg2NDVkOWYwMWY2YTQwN2U4MTU5ODVkZDVlMmM4NGVhNzM5MmQ4MjFkMDlkZTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhYzIzZjZiYTRlNjhiNTEwY2JiMDE1MmViOTAzMjM0OGJmNmUxY2NiNGI5MTU1YjdjOTU5OGIzNmM0YmU3YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5YzFjNjA1ZWIxNGQ4OTE5M2MxNTZiZDZkMWRlNWY5ZjgzMDU2NWVjODRlODM2ZDJhZTE1ZGQ2OWFiYzhiOTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_28876824358f46ccb80828030c963f43",
+      "statement": "Renderer crash recovery ignores clean-exit/killed, halts on oom/launch-failed/integrity-failure, and otherwise reloads with exponential backoff (250 ms base, 4 s max) capped at 3 reloads per 60-second window before declaring a crash loop.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/renderer-crash-recovery.ts#L12-L46",
+          "version": "repo-lines-v1:sha256:0240670b1e1815691786cba47f255b4038f37d05ebb7ad3b928172d82b9e32df:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmZDU5NDIwM2M3NzAyZWJkMjYyNzg5NTU4MTM0ZWY1ZWRmZGE3MTQzYTc0OWJiYWY5Y2U2ZjhhODM4N2I3NGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1YzhmM2U4ZTAyNDRiZWI2ODJkYzI3YWYyMTJiYmM2MmM1NmM4Yjk2ZTRjOTI5NzE0NWEwZDZhN2U0OTY1MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjMTExYzdiYmRkNzNlYTQ3NWRmMWEwMDYyYTA3YTU3MmYwY2I4NzNiOTRhOGQ3MTVjMmE3OGU3ODhmODc3NmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d4bc4d0aa1e43968e6d5f3793fe4781",
+      "statement": "restartHostAfterExit implements the post-update recovery path by stopping and conditionally restarting the Host.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/host-install-recovery.ts#L6-L11",
+          "version": "repo-lines-v1:sha256:b0af527388d455bbe330460be83af4069097e7fb39c0644ea89629ab540309fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODc5MjViZDAzYjRlODE1MWUwNzU0Zjg1NzhiMzkzYzJlYmIyYjU2MDU3YjgxMjY2M2U4Y2FmMzg3OWMyYTNhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWViZDc5OGMwZTFlNGZkMDIwZTlhOWM2YjE3Y2FlNTFjZDk2NGYwNmVlMjEwNTQyMWVkYTBmYTVkY2YyMTdlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6ac994042b2d4dc4b173ecc19f04dc9e",
+      "statement": "Packaged builds support --validate-packaged-startup, which succeeds only when the renderer loaded, the Host is ready, the toolchain core is ready with healthy bundled search.rg and search.fd capabilities, the Pi version matches the pinned expectation, and the Host acknowledged the toolchain revision; --validate-packaged-cleanup-fault exercises the cleanup failure path.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/main.ts#L108-L120",
+          "version": "repo-lines-v1:sha256:6665c7b1e1b8028914c4593d22308b8b3760a75e574fdea7f326700fdeb4eea8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MTNkZTdmZWJlZTViZjhlMzBlNjk5NzdjMzE4NGJkN2FiZmY1ZDA2ZGVlZjc3YTU3MGY4NGQyZjVkYjdjNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNTQ0ZGRhZTdhZjE5YmMyMWJhNGUwZTNlOGM4NDQwNzllZGM4NDI0ZDdlNDJlZTdmZDhmNzQ1ZWUwYWRjN2UifQ"
+        },
+        {
+          "resource": "repo://src/main/main.ts#L52-L52",
+          "version": "repo-lines-v1:sha256:f2a6239fecf7fd2943009125f6ce70f59fc7fe741dcf72d7d2f41bfee6d66621:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjJhNjIzOWZlY2Y3ZmQyOTQzMDA5MTI1ZjZjZTcwZjU5ZmM3ZmU3NDFkY2Y3MmQ3ZDJmNDFiZmVlNmQ2NjYyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjJhNjIzOWZlY2Y3ZmQyOTQzMDA5MTI1ZjZjZTcwZjU5ZmM3ZmU3NDFkY2Y3MmQ3ZDJmNDFiZmVlNmQ2NjYyMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTdmZjA2N2VkNmVjZjY2YWM1MjQxNGQ5ODY5ZTU0MjIwZmFjZmI4YWRjYWVlZDhmNjQ4ZmQ0ZThmNjk1Y2E1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDdjYWY3MDUwYzAxMTkwNGI0NTEyYzYyYjE5NjFkOTlkYjUzOTJhNzgzY2EzZmY1ZDMzNzBlZDQyZmQ1OGFkYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_be6c6d4a53824bf5a5a82c77df189008",
+      "statement": "Quit is staged: before-quit is prevented once, users with running managed processes must confirm, and managed processes plus browser state are cleaned within a 15-second deadline before app.quit() proceeds.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/main.ts#L766-L807",
+          "version": "repo-lines-v1:sha256:44f5744d253a69e18cf4b013374a8114c85a90fef748a2146851e5850cbdd1ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNDJhNGIxYjViOGMyZmZlYTgwMmFjZWI0Mzk2NDcwM2FlYWQxZmQzN2Q1YmYwYzY4OTdhYTQxYjIzNWQyYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxNjQ4YmMyYWEyODlkNmM2YzcwZmQ2ZjIxMmY1OGQwMDU5YmYzMjUzMWU0YTQ1M2RlNzc2NjMyOTZmZDE1MzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUyODRlYzU1Zjc4ODZjNzNmZDBkMDFmNGI3NzQ5ZmViYjNlMmQyZjI3MmQ0Yjc2MzY5YzFiMDZjOTBiNDM1ZjMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-12T18:27:38.057Z"
+  }
+}

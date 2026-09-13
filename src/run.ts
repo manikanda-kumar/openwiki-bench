@@ -143,13 +143,21 @@ async function execute(
         } catch { /* non-JSON output is retained for post-run validation */ }
       }
     });
-    const timer = setTimeout(() => {
+    const deadline = Date.now() + timeoutSeconds * 1000;
+    const expire = (): void => {
+      if (timedOut) return;
       timedOut = true;
       terminate();
-    }, timeoutSeconds * 1000);
+    };
+    const timer = setTimeout(expire, timeoutSeconds * 1000);
+    const wallClockTimer = setInterval(() => {
+      if (Date.now() >= deadline) expire();
+    }, 1000);
+    wallClockTimer.unref();
     child.on("error", reject);
     child.on("close", async (code) => {
       clearTimeout(timer);
+      clearInterval(wallClockTimer);
       await Promise.all([finished(redactedStdout), finished(redactedStderr), finished(stdout), finished(stderr)]);
       resolve({ exitCode: timedOut ? 124 : contractError === null ? code ?? 1 : 1, timedOut, contractError });
     });

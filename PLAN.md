@@ -272,10 +272,11 @@ runs preserve OpenCode JSON events and session exports, reject model substitutio
 tokens, reported cost, latency, tool failures, page completions, and verified claims. The five
 historical runs stay `null` and are labelled as such.
 
-**P3 — execution contract frozen; four subjects executed.** Five repositories are selected and
-pinned. The runner captures immutable artifacts and telemetry, enforces one model/session with no
-operator retry, and the leaderboard requires three trials on all five subjects. The historical
-dataset cannot satisfy this gate retroactively because its prompt and telemetry are unavailable.
+**P3 — execution complete; publication still gated.** All 60 outcomes across five pinned
+repositories are retained. The runner captures immutable artifacts and telemetry, enforces one
+model/session with no operator retry, and the leaderboard requires three trials on all five
+subjects. The historical dataset cannot satisfy this gate retroactively because its prompt and
+telemetry are unavailable.
 
 **2026-09-12 Smaug amendment execution complete.** All 15 RouteLLM-hosted Smaug-Flash outcomes are
 retained: 13 completed and two failed for forbidden subagent delegation (`cloudflare-os` seed 0 and
@@ -283,14 +284,21 @@ retained: 13 completed and two failed for forbidden subagent delegation (`cloudf
 because the initial custom-provider config omitted pricing and produced incomparable zero-cost
 telemetry; its clean rerun uses the frozen catalog rates.
 
+**2026-09-13 Pi Desktop evaluation complete.** In the original cohort, DeepSeek completed two of
+three trials, GLM completed one of three, and Qwen timed out in all three. Smaug completed two of
+three; seed 2 failed immediately for forbidden subagent delegation. The current non-Claude panel
+completed 40 GPT-5.5 judgments, 40 Grok 4.6 judgments, 40 Astra tiebreak judgments, and 80 Astra
+probes with exact task/model/prompt provenance. All page tasks crossed the disagreement threshold;
+linear-weighted κ = 0.446 and exact agreement = 0.567, with no unresolved tasks. Pi Desktop is
+therefore not publishable under the 0.6 agreement gate, and these results cannot support a ranking.
+
 OpenCode telemetry capture is mandatory for every official trial; a run without a valid session
 export is failed because its cost and loop data are not recoverable afterwards.
 
-## 9. Remaining execution work
+## 9. Remaining evaluation work
 
-1. Execute and judge the remaining nine `pi-desktop` trials.
-2. Rejudge `smallstep-cli` and `cloudflare-os` with GPT-5.5 `deep-classic` primary, Grok 4.6 secondary, and GPT-6 Astra Medium for tiebreaks/probes before final comparison.
-3. Aggregate the original 45-outcome cohort and amended 60-outcome matrix distinctly; publish recommendations only if every statistical gate passes.
+1. Rejudge `smallstep-cli` and `cloudflare-os` with GPT-5.5 `deep-classic` primary, Grok 4.6 secondary, and GPT-6 Astra Medium for tiebreaks/probes before final comparison.
+2. Aggregate the original 45-outcome cohort and amended 60-outcome matrix distinctly; publish recommendations only if every statistical gate passes.
 
 ## 10. Resolved design questions
 
