@@ -32,8 +32,9 @@ Now:
 - Subject weighted κ (original/amended): Smallstep 0.576/0.612; Cloudflare OS 0.435/0.458; ExtractThinker 0.472/0.490; Celld 0.378/0.388; Pi Desktop 0.311/0.446. Only amended Smallstep passes the 0.6 gate.
 - Scoring retains early failed trials that legitimately have no `plan.summary.json`. Cohort aggregation rejects mixed panels and incomplete semantic coverage, macro-averages subjects, and separates reliability-adjusted quality. `npm run verify` passes 23/23.
 - `results/cohorts/original-45.json`, `results/cohorts/amended-60.json`, and `results/FINAL-REPORT.md` are generated. Neither cohort is publishable, so both recommendations are withheld.
+- All 60 official root session exports and all seven invalid-attempt root exports are committed or recovered locally. All 18 child sessions referenced by forbidden `task` calls (624 messages, 1,233 tool parts) were recovered from the current and Smaug workstream orbs into parent-local `opencode-child-sessions/`; synthetic smoke sessions remain excluded.
 Next:
-- Begin v2 only on explicit request; do not rerun v1 outputs or push the local commits without explicit authorization.
+- Push the recovered trace commit only with explicit authorization, then the orb can be archived. Begin v2 analysis only on explicit request; do not rerun v1 outputs.
 Open questions (UNCONFIRMED if needed):
 - Exact start/end times and resume counts absent from source artifacts remain null.
 - None.
@@ -41,5 +42,6 @@ Working set (files/ids/commands):
 - `results/{smallstep-cli,cloudflare-os,extractthinker,celld,pi-desktop}/evaluation/*-v3.json`; `results/cohorts/*`; `results/FINAL-REPORT.md`.
 - No orb services are running.
 - Smaug-Flash artifacts: `systems/smaug-flash-opencode.json`; `runs/*/smaug-flash-opencode/`; one excluded instrumentation attempt under `runs-invalid/smallstep-cli/smaug-flash-opencode/`.
-- The 30-minute monitor's completion condition is reached; clear schedule `fd1dc33a-9845-5947-bfd8-1346ab8098fc` after the final local commit.
+- Orb-only OpenCode database/log/cache/config are intentionally excluded: root and available child benchmark sessions are exported, while mutable global state may contain credentials and unrelated sessions.
+- The completed 30-minute monitor has been cleared.
 - Pi Desktop verification passed: 19/19 tests, exact task/model/prompt provenance, 12/12 final manifests, retained-session model checks, and a high-confidence credential scan over 371 artifact files.

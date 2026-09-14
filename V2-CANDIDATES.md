@@ -134,7 +134,28 @@ OpenEval's
 [`viewer`](https://github.com/Hona/openeval/tree/main/packages/viewer) is the best UI reference,
 but an adapter should consume OpenWiki artifacts rather than require `runner.db`.
 
-### 7. Recommendations and routing — downstream, not part of scoring
+### 7. Trajectory diagnostics and steering experiments
+
+Derive diagnostics from the immutable session/event artifacts, not from OpenCode's mutable local
+database. At minimum, measure:
+
+- navigation before plan submission: unique files/directories visited, revisit rate, and time or
+  model steps to the first accepted plan;
+- loop efficiency: model/tool calls per accepted page, repeated reads and commands, failed calls,
+  no-progress intervals, and finish attempts;
+- tool policy: invalid or forbidden calls, child-session creation, recovery after tool errors, and
+  whether the agent reads the skill and benchmark brief before acting;
+- output linkage: join each page submission to the preceding source reads and compare those
+  trajectories with grounding, coverage, rubric, and probe outcomes;
+- failure signatures: last successful state transition, repeated error sequence, token/cost spent
+  before death, and whether the same signature recurs across repositories or trials.
+
+Treat exposed reasoning as qualitative evidence only because providers expose it inconsistently.
+Turn findings into pre-registered prompt/tool-policy variants and evaluate each variant as a new
+agent system against frozen baselines. Never tune on a v1 run and overwrite its identity, and do
+not infer causality from a post-hoc correlation between one trajectory feature and quality.
+
+### 8. Recommendations and routing — downstream, not part of scoring
 
 Generate recommendations per repository/task class only when evidence supports them. A future
 router may use language, repository scale, architecture, or task type to choose a system, but it
@@ -150,7 +171,7 @@ it should not silently change production routing.
 2. **v2.1 — reproducibility:** replay lock, artifact manifest, schema versions, append-only attempt/selection lineage, publication snapshot.
 3. **v2.2 — independent review:** portable result bundle and standalone verifier.
 4. **v2.3 — maintenance pilot:** authored checkpoint sequence on two contrasting repositories before expanding the matrix.
-5. **v2.4 — analysis UI:** trace/evidence viewer and Pareto/slice visualizations.
+5. **v2.4 — trajectory analysis:** reproducible diagnostics, trace/evidence viewer, and Pareto/slice visualizations.
 6. **v2.5 — routing experiment:** recommendations followed by prospective A/B validation.
 
 ## Explicit non-candidates

@@ -52,6 +52,13 @@ claims to JSONL. `cost` also accepts LangSmith and proxy exports. Repeated reads
 normalized file beyond two count as redundant. Historical runs without traces remain `null`; zero
 is never substituted for unknown spend.
 
+The full export preserves observable messages, tool inputs/outputs, patches, and any reasoning text
+the provider chose to expose. Reasoning visibility is provider-dependent—Smaug-Flash exposed none—
+so it is diagnostic context, not a cross-model score. When a forbidden `task` call created child
+sessions before fail-fast termination, available child exports are retained beside the parent for
+failure analysis but remain excluded from scoring. Global OpenCode databases and logs are neither
+portable nor credential-safe and are not part of the artifact contract.
+
 Each official trial gets one OpenCode session and a three-hour wall timeout. There is no automatic
 retry or resume: process death, timeout, source modification, incomplete finalization, or model
 substitution remains an immutable failed trial. Forbidden subagent delegation fails fast on the

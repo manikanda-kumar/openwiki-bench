@@ -67,9 +67,18 @@ The runner checks out each pinned subject in isolation, installs the shared brie
 records prompt/ignore/system hashes, validates the exported OpenCode session against the exact
 provider/model, captures raw and normalized telemetry, and refuses to overwrite a trial.
 
+Each official run retains `opencode-session.json` (full messages, available reasoning, tool inputs
+and outputs, patches, tokens, cost, and timing), `opencode-events.jsonl` (the raw streaming event
+sequence), and, when finalization reached normalization, `telemetry.jsonl` (normalized
+model/tool/page metrics). The raw session remains authoritative when interrupted runs lack that
+derived ledger. Forbidden-delegation failures also retain available child exports under
+`opencode-child-sessions/`; these are audit evidence, never additional contestant output. The
+OpenCode database, logs, cache, and credential-bearing user configuration are deliberately not
+benchmark artifacts and must not be committed.
+
 ## Semantic evaluation
 
-The checked-in pilot judgments used OpenRouter and are preserved as dated provenance. Current official evaluation runs blind tasks in fresh, repository-less Amp threads using GPT-5.5 through `deep-classic` as primary, Grok 4.6 as secondary, and GPT-6 Astra Medium for tiebreaks and correctness probes. Exact resolved model IDs must be recorded; Amp routing may not silently substitute another model. Earlier Claude-panel results remain historical and must be rejudged before they are compared with current-panel subjects.
+The checked-in pilot judgments used OpenRouter and are preserved as dated provenance. Current official evaluation runs blind tasks in fresh, repository-less Amp threads using GPT-5.5 through `deep-classic` as primary, Grok 4.6 as secondary, and GPT-6 Astra Medium for tiebreaks and correctness probes. Exact resolved model IDs must be recorded; Amp routing may not silently substitute another model. Earlier Claude-panel results remain historical and are excluded from current-panel comparisons.
 
 ```bash
 # Prepare opaque, deterministic page and claim tasks
@@ -126,6 +135,10 @@ systems/README.md                    planned OpenCode Go systems
 judges/README.md                     official Amp judge protocol
 runs/background-agents/*/seed-0/     immutable run artifacts + manifests
 runs-invalid/                         preserved infrastructure-invalid attempts excluded from scoring
+runs/**/opencode-session.json         full contestant session export
+runs/**/opencode-events.jsonl         raw contestant event stream
+runs/**/telemetry.jsonl               normalized model/tool/page ledger
+runs/**/opencode-child-sessions/      forbidden-delegation child traces retained for audit
 results/scores.json                   generated machine results
 results/leaderboard.json              publication-gated cross-run results
 results/cohorts/{original-45,amended-60}.json
