@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d795a84d0704d006e5d5ebb89f9083716980e679fef040624e0ddfd6cc1ae95d",
+  "claims": [
+    {
+      "id": "claim_fe0aa68ca0ea44baa37b7e3c794187db",
+      "statement": "utils/cautils/acme_flow.go exposes ACMECreateCertFlow (subject, certFile, keyFile args plus --san; builds the flow with withSubjectSANs and withProvisionerName, calls GetCertificate, writes the PEM chain with writeCert, and serializes the private key unless it is a TPM/attestation key) and ACMESignCSRFlow (same transaction using a caller-provided CSR via withCSR, writing only the certificate file).",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acme_flow.go#L14-L59",
+          "version": "repo-lines-v1:sha256:9515e30490e2d565a2d6791b889f993d6f51007407f11cf3f13e69eb42696682:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhOTg1YWY4NWM4Y2MwOWYyNDBhYTY0MjJiZTAyNzQyYTVjOTk2NTNiN2Y0ZmMwYmY5YWIwYWRjMGY2MDBkNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYjgyMjNiZThhMzRmMjhkMzk1MWExM2QwNWYyZDYzZTk5YmE0MjEwYjllODdhYTNmMzUwMWVlNzA3YjQ0NzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmMTU3MTNjMThkYzI5ODdiMGZiNDUyMzViNmM5ZDJhZTQ4MDA4YjFjY2QzODNkZTk0NTNiZTNhNjA5MmNkOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_efdfe2e3aceb4baf965526a4abfd0acd",
+      "statement": "step ca certificate dispatches to ACME: when --acme is set and no token is given it calls cautils.ACMECreateCertFlow(ctx, \"\"), and when GenerateToken returns the ACMETokenError type (carrying the ACME provisioner name, also returned by OfflineCA for ACME provisioners) it calls ACMECreateCertFlow with that provisioner name.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/certificate.go#L258-L266",
+          "version": "repo-lines-v1:sha256:8539e4fbd6f07984f708ff8249b903866fd914ca49eddf88689dbb39a75b6b82:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjY0ZDEyZjI4YzliZjY4MTdlZmFkMTIxYzAwMDA3YzBhODNiMTY4ZDJhOGIzNjQyZWU5NGJmYjY5Y2ZjM2ZjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU0ZTc4ZDJlYjY4M2U4NGZhOWQxMTNkMjZlMzkxM2IyMjU2ODJhNDBlNGI0MTgxNzU4Y2UyNDdlNTNmYmU4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWQ4ZGQ4NTJhN2I5Y2JlNTdlZTlhMjE5N2QyYTI1MjZiNjIzMzJkMjk0NjYyMGUyNzMyMmU3MWY0ODdmODZkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjJmMmZmNWZlZWM2MGY1ODdjOGZhZTRlODdmODA5YTY2MWNmZmVkNmI0N2FhZTVmNmQ2YTI2NTNhYTg5NTJlZiJ9"
+        },
+        {
+          "resource": "repo://utils/cautils/token_flow.go#L78-L90",
+          "version": "repo-lines-v1:sha256:0ce103bf0c6922e8ad57e09a507be5a794360985702f1866c7e53ea45f5b1b16:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNDUwNzU4NjUyNWIzYjdhMjlhNTcyZTdmYzQ1NGRkYzE1YmFkM2MxZDRhYmEyNTE3MmMwNjg4MDM0YjY0MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyNmRkMTI2ZjllZDY2NTM2YWJjMTI4N2MwOTA0MmQ1YzRkOGRiOTIyNmY2OThmMDY2YzFiOTA2MGU1MzZmN2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliOWUxMmFlOWIyOTRiNmE5YTE5ZDAwOGQxODVmZDg2YTFlOGI0ZWE3ODgzOGZkODA3M2RmYWY3ZTA3NGJmZGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0c78a49377b4616be957feb97ea31ec",
+      "statement": "newACMEFlow rejects offline mode as mutually exclusive with ACME, rejects --standalone combined with --webroot, forces standalone on when neither is set, and derives the ACME directory as <ca-url>/acme/<provisioner>/directory when --acme is absent (requiring a provisioner name).",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L625-L665",
+          "version": "repo-lines-v1:sha256:13d064e02742b8ebaea6f4844f616719181120d9d9c4721f1369c8bb6b767622:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MmRkZTRhMGQ5M2ViNTM1NmI0ODVjNmY1ZWM0YzI3NmFjYmNkNGMxYTRkZjM1NzZlNGEzYTUwYzk3ZGViY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MzllY2Y3ZGU4N2VmOGJjMTdmMjkzZGQ5MmExZTNlMWM4ZjhhMWJkZGIzYjNjODk5Y2M5ZTEwZWI4OTRkNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YzM3YTgyZDU0N2Q4MDU3YzhkNjM2YjU0ODY1OWMyN2ZhODg3MDRjOGNmYzkwNTc3MjliNDI0NzQzODU3ZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzNzBkNDg1ZGQyYTA2MDg3ZmYxZTU3OTk4NTI2ZmNlZTcwMzg4NWYzMDNjOGQxODRiMDUwYTFkZjU5MjFjMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a06ad6cefcee41699b01ea441062698b",
+      "statement": "getClientTruststoreOption uses --root if set, else the default root at pki.GetRootCAPath() if present; when merging is requested (explicit --acme) it appends the local root to the system cert pool with a TLS 1.2-minimum transport, otherwise it uses ca.WithRootFile or the default transport.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L668-L707",
+          "version": "repo-lines-v1:sha256:ba0f95ea2c0eb48291f56dcf1ad53c54c2d9c7646f5b15942a61795678b76eb4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwZTA5NjE2YWNmYTA1MDZhZmVlMjc2MDVlNTdkMWRmODQ1Y2NjMjg2YjdlYTdjMzlkYjg1YjA0ZDEyNGY2MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4MjM2NDkzNGFkYWMwMmE2MWU5NWMxNTkxN2VlMjIzMDIzNGNlM2FhYzEwZmJlMGJlZjY5OWQwMjU5ZDZiZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4ZTM5MDJmODhhMTM0YjViMDMyNjcwMDcxOGVjMjQwNWQ1NWZmODI2ZThiMzk4MDdlMmI5Y2FkYWJlZjU0YzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMTk2MjNmY2UwOGNhZTE4OTkyNTQ3ZDI5OTcyZGFkZjhhZTNkYzVhZjlmMjc3OThmN2QzNTYwNjdlYjQ4ZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_78344813795a43c9a53b80b951c089fc",
+      "statement": "createNewOrderRequest validates SANs for ACME (email and URI SANs rejected; wildcard DNS names rejected because DNS validation is not implemented), and for LetsEncrypt directories rejects not-before/not-after and always adds the subject CN as a DNS identifier; otherwise it builds a NewOrderRequest with NotBefore/NotAfter from flags.ParseTimeDuration and adds the subject as a DNS or IP identifier if absent.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L285-L393",
+          "version": "repo-lines-v1:sha256:122ebdc90afccfdb3948657caebe9d434d9904291c6ea64be539f00faa29ca7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0NWJkZTQ1NWIyM2Q3MDdiZGQ4ZmU0YzVkZjM4MWFkMDZhY2M2ZjYwNGY3ZDMwNjQ3YjA0MWZjNzQyM2VhZGZkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlYmY0NGFlYzVmNTY0Yjk4ZWM1MTI2ZDdhY2ExYjZmN2YxNTMwN2EyZWQwNmJmMzczMTQ2NGUwMTk3ZWMyZjA5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkYjE3NmFmNGExZWMxMWVhNjQ4MjA0YjMwMDI0OGE0MTAxNTIyMDNjYWQzOTFlNWE3Zjc3YzZhODYyNjM0YjFlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1YjMwNjhjODJlYmU1Y2ViMmE3MmRhYmZjMGMzZDhmMzFmYjNlMzA3MTE5NTBlMDZhOTNhZjhhMzY2M2I4ZDA5In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cd020f8811e41cf931512d7f688f999",
+      "statement": "HTTP-01 challenge serving has two modes behind the issueMode interface: standaloneMode starts an HTTP server on --http-listen (default :80) serving /.well-known/acme-challenge/<token> with the key authorization and shuts it down on cleanup; webrootMode writes the key authorization to <webroot>/.well-known/acme-challenge/<token> (0755 dir, 0644 file) served by an existing webserver and removes it on cleanup.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L47-L152",
+          "version": "repo-lines-v1:sha256:7f53618ffad1207f8beb650a2e69ee96e60c848637a6efc3f77c57f05cc27394:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyNThkNGI2Yzg2M2M1MGVlZDg1OTI0ODg2ODU2MzM5ZjIxZTYyOTg5NDQxNTc1ZjZlOTVlZWE1ZjgzYzkzMDYyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzNzEzNWYxNzI4OTY0NzVjNTRlMjk5MGIyMTcxZGQ5MTUwMDdhOWM0ODYzMzMzYWFhNGZmMDFhMjdjNDhmYjdmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5ZTlkNGI1Y2IwMjAwYTQ4NThiNTdjZjIwMGYwYTYwYWQ1MzExZmNmZDg1ZjNiMWZjMDczYTUxY2U3ZTAyZjI3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd122f6d994c4aa7ba37e8ce1b466e74",
+      "statement": "serveAndValidateHTTPChallenge runs the selected mode, calls ac.ValidateChallenge, sleeps 1s, then getChallengeStatus polls every 5 seconds until the challenge is validated or failed, extracting detailed error messages from the challenge object.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L159-L193",
+          "version": "repo-lines-v1:sha256:e89760c57ca287562a41315e157b2c50103584c95adb761e9579d33e48ab56b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNjA3MzA3MDE4MGQ4N2Q1MTQyNjA0OGYyNGIzM2IyZjlhZTFjMDIwMGY0NGJjMTE5ZjE5MzczZmI0N2EzYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhODlmMjk5MWNjNzIxOWI3NDEwOTRkZTE0YzUzMTAyNmRmYmQ1YmYzMzU4YjkxMjMwZGEyYzNjZWNiMjM0ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhMmRkMzNiNGNjOGFhOWRhY2JlOTkxYjJjZTM0MzJjNDY5NjZjODI3YjhlNDIzOGE1OTY0MTQ3ZjY0NThmMzMifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L518-L555",
+          "version": "repo-lines-v1:sha256:d47eabb1c6ab96edeac73b6c5bf57abab53af2251e72fe5f735a24c0ef84d929:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZThhODMyY2I1Y2RlZGUwZTIyYTA5YmI3NDMyM2Y1OGExMTJkMWU3ZjU2ZTYwMmVlN2Q3YTM0ZTU4MTAxYTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5NGNiMjFkZGRiM2U2ZTI1NThhOTNiNjBiZGJiNjRjN2Y5MjU4YWRhNzU2ZWZjMWE2NDA2MTliNTJkYTBjNmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMDkxN2Q5OWNiNGM2NjE2OTU4NzIxN2RjY2U5NmRmMmVkNmVhY2Q2MjRkYTMyODlkNWEzMTQ5NTM3NDcxNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjYjkwODA0YjAwMTc2Njc1NzRiNjAzNmJmY2FhZWMwMTdhNzk5MDUwZjRlODQ5YzBhNjQyNTE1OWZiZGYxZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fa84b6231d1d46b3a91020870c6ed2f3",
+      "statement": "authorizeOrder iterates the order's AuthorizationURLs and validates each identifier with http-01 via serveAndValidateHTTPChallenge (unless attesting) or with device-attest-01 via doDeviceAttestation (when --attestation-uri is set); it errors if no challenge for an identifier can be validated.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L196-L231",
+          "version": "repo-lines-v1:sha256:3cfd1023587e80b2057dddfb381891d043db46077bc69da5b04d0c4f68df0c4d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNTNjNzJmY2QwOGQ0YjhlMzNhNWEzZjAzOTMzNTdkYzUxOWQ0ZmM1OTMwYzliNjhlOGZlZjkxYTAzZTg4ZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNDhmMjg5YjE0ZmRhNGEwNWQ2YmIzMjAyNzY5MzVkZDEzYWEwMmZiYzNiM2I5ZWFmNWUzOWE0Yjc2MjkzYzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d24f4391b1a34e05941b773c3c37417e",
+      "statement": "finalizeOrder polls the order up to 10 times at 1s intervals until status 'ready', calls ac.FinalizeOrder with the CSR, then polls again until status 'valid', erroring with the order state if either phase times out.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L234-L282",
+          "version": "repo-lines-v1:sha256:985566bb003bcc31cf3a2280177bc9610d95f0f3180c5d8be1653b93a9c30052:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmMTE0Y2RiNTFhNTZjZjlkMjJiZDJjY2I4YjAxZTlhNzljY2RhNzY1YjE0ZjVlOTU2Njk5ZWQ1OTAxZjI5ZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0OTAxYjRmNDZiMDJkOTNlZWEyOGU1YzZjM2UzZDc1NTYxN2MwNjRjM2E4YTU2NTc5MzQzMTljMTJhZGNkYmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2NGQ5YWI1ZTk5YTI1NDgwOGI0YmM3YWNkOGE5NDg4NTZiOTQ5MGYyZjJjYjUyYjk3NDAyZjQxMDJjNWI5NmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd0d8ee1f1fd43c3a33e6d0b77226624",
+      "statement": "acmeFlow.GetCertificate builds the order (identifiers, or a single permanent-identifier when --attestation-uri is set), creates the ACME order, authorizes it, generates a CSR when none was provided (key from kty/curve/size flags for the normal flow, the TPM signer for tpmkms, or cryptoutil.CreateSigner for other attestation URIs), finalizes the order, fetches the certificate, and for the TPM signer stores the chain in the TPM via key.SetCertificateChain.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L710-L864",
+          "version": "repo-lines-v1:sha256:f676f78b754de8b33fb588dfaa0e5d960d67ee44207bd29919515eeb616105aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhYmZhOTYzMWM4YjUyZDkwZWM1NDgwZTg2ZTg1NmVkMDc0MjYzMjc3MDc1Mjg1NjY5NTM5YWIzNGRkMzFlYzMyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlMmJiY2NiZDYwNjFkOGNkNmFmNjc3ODE5ZWI2ZjU4MTQxZjk5ODc4Y2VlYTUxNzU3MDE3NzY1ODVkNTkyN2E5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlNzY4MGZlYjVlMmU1NGZmMTRhOGM0YjcyYmYxZGU4Zjk2ZTg5MjA1ZGMwNDVlM2RkNmY3ZTk4YzM4ODYzZDRmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0Y2FiODg0Mzk3ZjJlYzUxZmVkMGEwNGZhOTRiMDcyNTFmMjhlNzYwMjY2YzczMWQ2ZDdlZDhhMGIyNTBmOWZlIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_abe9177c34b24dc68ab605ae25947124",
+      "statement": "doDeviceAttestation dispatches tpmkms: URIs to doTPMAttestation; for other URIs it uses cryptoutil.CreateAttestor, signs the key authorization (ES256 for P-256 EC, RS256 for RSA, EdDSA for Ed25519, other keys rejected), CBOR-encodes the signature, and posts the attestation payload with the PEM bundle as x5c.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/acmeutils.go#L403-L515",
+          "version": "repo-lines-v1:sha256:a9d45e2a8bfdf34e60cbb4f67ce1012a13681ebc496ef5cb8699ba7fba43b1ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiODA2NmJmZWYzZTI0MTM2MDI5OGVlZTcyMmQ4MTllYzkyYjcxNDQ2NzliOGFjMTlhODAxMTI5MjhkYTljNDM5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIxN2Q0NTI4YjYzZDJlZGI4YmE1NjIyNWFhZjBkOTViNWU1YmZkYzkyYjNkNTBlMTkyMWZiMzVjYmUwY2RkYjdjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ODgwMzQ3MDNmNDIyNjA5OTcwZDFmMjA2ODA3NWQ5NjRmNTY3N2U3ZDg2MmRkNDY1N2Y1OGI0YzM4NDZiMmJmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwNDQ1ZThmNzkwY2I0NDZjNmU1MWM2NDI5NmFiNDk3ZWQ4ZTY4ZGExNTAyZWEyYzU2ODk5YzJjOTFlYmUxNTA3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_52db7af9f7b040d8a369d40d55c1dd3a",
+      "statement": "doTPMAttestation parses the tpmkms: attestation URI (parseTPMAttestationURI requires the tpmkms scheme and a name parameter, with optional device and attestation-ca-url), initializes a go.step.sm/crypto/tpm instance with a dirstore at --tpm-storage-directory, maps kty/curve/size to ECDSA 256/384/521 or RSA, and prints TPM info before attesting.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/tpm.go#L199-L214",
+          "version": "repo-lines-v1:sha256:0f2eb8a4d5376a0d386e41e2e5f11051e979aa664bc85a82af5f7ab93dea8594:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjA3MTBhYjI3NzIzMWU0ZjA1NmJhYTdlY2I0ZmM3OThmODZlOTY2ZmM2ZmY4ZDFiOGEzMGU1MmM0MzY5YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2ZjE5M2MyZjQ3MmY1MWMzNTIxZjk3ZmZhNDFmMmIzNTBkM2NmZWEzZTNkYmNhZGE2N2JkM2Q1MWI4MzhlYTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMDg1Y2MyMDkyOWM0YTVlNGE3NDAxOTM5ZDhjZWYzZjJkMWQwYWUyNjU5ZDI4Mjk4YTNiNTJkYzEwOTBlOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNDk0Zjk3MTBiZmQzN2M0YjgwMDA1OWUzOWM3MGI5YTlhNTI1YjNjOTIzZmI3NTVkM2Q1ODBlNmM2ZjNiZDYifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/tpm.go#L40-L196",
+          "version": "repo-lines-v1:sha256:ecd1fd55a08642b04af1201c2772c9bdd0dec66f506c12ca5812da463cdee92f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzNTM5ZjM5MDAzZDc4NTM4ZWE2M2RiZWU3ZTRhODI1MWFkYmQ4MWRlNWI1YjcwNzYxOTcyYTJjZGNkYmJjMGEyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzNzEzNWYxNzI4OTY0NzVjNTRlMjk5MGIyMTcxZGQ5MTUwMDdhOWM0ODYzMzMzYWFhNGZmMDFhMjdjNDhmYjdmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3MzljNzQwMWNmYjJkNDRkMjczOGI4OTUzYjUxZWNkMzEyY2MyMDgwYTQwYjI3Mjc5YjdjNTBiOTM1OTFmYTMzIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_8ed4a32bfaf44bb3a8540c40d2c1e1b7",
+      "statement": "getAK retrieves or creates an attestation key named after the hex fingerprint of the preferred TPM EK (getPreferredEK); if the AK lacks a valid certificate identity (hasValidIdentity checks the EK key-id URI among SANs) it enrolls with the Attestation CA via attestationClient.performAttestation and stores the resulting chain.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/tpm.go#L224-L290",
+          "version": "repo-lines-v1:sha256:5651e35e8c6a740dc6d39cba958c2167b8243120b16c6ccad2c924952ad4a750:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxMjY0MTk4NTkxZDEzMGE1NjY3YTU5MTExMmI4NjEwYTFkMmUwZGY0YjQwMDIyYTlkMThkNDc4NmZiYjhkNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczMWI1MGVmZTA2MzExMTYzODQ5Y2Y5ZDZmYWRjZGVkM2RhNDNhOGU1Y2U3NjQ4ZDI2NGNhMjAxMzRhMTkwMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNGI3NzIwNjdhMzQ5ZDUyYWViZmE2ZDhkNzNlZmNlZDkxMjhhMjE2ZTRmOGM3ZDc2ZjZkMmFjNDhmNjVjNzAifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/tpm.go#L397-L421",
+          "version": "repo-lines-v1:sha256:ef093656b79fc03987b83a2f252ffb199a1fe56e3dd405cb85eec09d66e2fc2b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MDllOWQxOWZmNGQ0NDU2MWVlMjA3YTY0YTU5Y2UwYzVhMjcwYTgzOWMxOTg4NGVjNzQ3YWNkODE3ZDg0NzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMDRiNmVjYjU2ZjA3N2IyMzQzMWIwY2EwOGE1ZDU4MzY3NmM3MGIwMDBmZTc2NWRjOThmYjdiNDNkYzg4ZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxYjUzMGRiZDVhYjAzMzQwYjRmNzFmZjk0MGI4MjkxMTAwOGQ1NWZlNjgwMWYyZmEyODA5YzdjMTBmNjFiMjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c851fe58d9a44b1b83bb15537159f803",
+      "statement": "The TPM attestation client supports --attestation-ca-root (withRootsFile) and --attestation-ca-insecure options; attestationStatement builds the CBOR attestation object for the 'tpm' format, and attest posts it to the Attestation CA and verifies the decrypted secret.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/tpm.go#L293-L336",
+          "version": "repo-lines-v1:sha256:baafd82bcd2efa689808a5ac7975bbee7a2802f7d64116aa4616ee1aad56712f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzYTVjMmQwMzY1Mzc3MjM2M2Y3NmY4YzliMTUyNDdlOGQxMmY3NTE0MDA3ZGQxODk5YmFlZTViNDI3NGRjMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzMTM1NGVlZTEzMDE4MDFhYTM2MDZkZjI5M2M1Y2IzZDFlNzUxYTliZjcxZjdiOGIxZmE4MzA5YmQ4NmZmMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlN2EzMTdmYjZkZGVlNTNmODdkZGY4ODQ5ZjZhNTdkZjBkZjc4ZTFkMTAwZTFlNzA3ZGE4YTAzYWIyNTQwOTcifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/tpm.go#L424-L481",
+          "version": "repo-lines-v1:sha256:d69222b65b4af927a6ed810f23e3b2ee85a62825d87d8b5062e6772e85a026b4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2YTFmMGU5MTg0ZjUxOTVmY2IzMDQ3YTU2MzNlNzk0MTkyMWViZGQ3NTdmYTcyMDQwNDVkM2I5YWNlZDgxZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1NjgyZmQzY2FlNmU3OGQ5NGJhYWI4YjAxNDRhN2M5MThhMGMxYTY2NjJhOGYwNzk0NWVhMzY1MGJiMjZkY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjMDRhYTFiZjkxMWExYjg0MDJiYzY1MTc3YzBjZmQ4M2RlMWZjZmRhNmI2ODUyMDYwNTNmNGU2ZjExZTYwMDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a237a72839fe4d3eaae6f218cb996379",
+      "statement": "step ca acme exposes only the eab subcommand group (list, add, remove) which manages ACME External Account Binding Keys on the CA through the admin client; notImplemented converts admin 'not implemented' errors into a message that the functionality is only available in Certificate Manager.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/acme/acme.go#L1-L19",
+          "version": "repo-lines-v1:sha256:443025e32f7b7d5f44e164b28fec38b1b61128e32640d61b6978409842eeb04b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyOTVkYWQ2NDdhZjMzOWI0MDQ2MWY5NmQ1NDQ2ZTBiYjlmNDNiMzExOTllOWIyYmEzZmFiNWY3OTJiOGQ2NzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://command/ca/acme/eab/eab.go#L45-L89",
+          "version": "repo-lines-v1:sha256:1d17b901719758ac5c9d12350e3727119194036b2a9da125fdaaa2fb01dcf113:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViMzQ2NTgwYjI3Y2QwN2E2OTE4MjRhMjcxZjRlOWY1YWJmOGI5ZTY1ZmEwYjc4YjgzMzkzMTY5ZDc1MjVjOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMjFmYjAyZDc4MTZhNTkwMDkwN2QzYjNiMDAyMDgyYjhiYjBkMzVkYTcxNjI3Njg4OWFjY2ZjOThhYTMwZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2a7b1536574a4884baa3118a1619cd21",
+      "statement": "ACME flags are defined in command/ca/ca.go (--acme directory URL, --contact, --http-listen default :80, --standalone, --webroot); --attestation-uri is a shared flag in flags/flags.go documented with tpmkms: URI parameters; step ca certificate additionally defines --attestation-ca-url, --attestation-ca-root, hidden --attestation-ca-insecure, and --tpm-storage-directory (default $(step path)/tpm).",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/ca.go#L93-L140",
+          "version": "repo-lines-v1:sha256:06525a58dcc8853d3cd7a20b1b7db1a1ceda98b35dc0bf6e45e59bb4e7360c4d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1ODRiNDk3YzU5NzNmZDM4ZDQ0NjE2NDg2MDZiMzEzM2E3NjlhZGQzMmYwYTAyNWYyNDA4ZDZhZTQ2OTE4MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3ZmZmZjg4YjdkNjJlNDMyYzJhZjEzMTkxMWMwMTA1MzgxYjU3MjY0ZDE2OGIxNzhkN2U0NDhhNDk2NjM1MmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmM2E3NDdkMGEyZTlkNmM2M2IwNzJkNmQ4ZjkzMTk5YmEzMDM3MzIxNzI2Mzc3N2U3YzE3ZGQ1NWNmYzA4NDAifQ"
+        },
+        {
+          "resource": "repo://command/ca/certificate.go#L166-L184",
+          "version": "repo-lines-v1:sha256:faa6409f6bca8a048f1a59c75752ae283608502722c7fe18f41b3bf85623ca6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwMjk2YTNjMDQ3OGYxMTMxZDFjMzQ1ODI0YjA5ZDhjMTMwZDg3NmFkM2Q5Nzc2NjY4ZDIyNjE1YzkzNWIwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwMjk2YTNjMDQ3OGYxMTMxZDFjMzQ1ODI0YjA5ZDhjMTMwZDg3NmFkM2Q5Nzc2NjY4ZDIyNjE1YzkzNWIwMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxYmYzYzYyMDZiMzk0NjUwMmQ3N2RjMDg2MzZkZDE3NWM2N2ZjZGViYzM5ZjA2YjBjODQ1NmMyNjkzNTc3NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2YjNmY2I3N2RjMTU3NTlhZmIyMzc5NTMyMjg5Y2Y3Zjc4MTA0YjQyNTczZWI0NTA1MzFhZmQyMzk5ZDA5MTUifQ"
+        },
+        {
+          "resource": "repo://flags/flags.go#L509-L512",
+          "version": "repo-lines-v1:sha256:c0d48e3d862f32720edae7bd9f8e4e0259cfbea5c304ed3ce389adbd0b169d25:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzU2MWRiZWFlYTNjZGE4NWE1ZGJkMjA1ZDRjMTI5NzEzYmExZmRlMzM1NDlhM2YzNjk5NDg1YjAyOTIyYzdkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjliZTNlYzc5ODY2NDM4MTIwYWYxMjQ5MmEzNDRjOGIzODgxODkzZDA0NTc2MjNlYjAwNmE0NzA2NTJlZWEyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmZiN2EzNDA4ZmE4MThkYTgxNTBiNWEzYmFiZDQzNGY3NGQ0YWY4Mjg2YzZiNDI4Mzk1MzE2NzkxMjA4MjQ1YSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-14T13:44:47.469Z"
+  }
+}

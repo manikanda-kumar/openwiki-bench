@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f625072f31c48b6a797cb20498507ac6e5f6dbef1d9e0a554f94d39c0519ae1c",
+  "claims": [
+    {
+      "id": "claim_a23640f79ab54ebfb5843cb73c1ac9ad",
+      "statement": "CaClient in utils/cautils/client.go is the single interface commands use for CA operations: X.509 Sign/Renew/RenewWithToken/Revoke/Rekey/Version/GetRootCAs/GetCaURL plus SSH Sign/Renew/Rekey/Revoke/Roots/Federation/Config/CheckHost/GetHosts/Bastion; the online implementation is the *ca.Client from smallstep/certificates and the offline implementation is *cautils.OfflineCA.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/client.go#L29-L48",
+          "version": "repo-lines-v1:sha256:a000d1d60c28618e22b0902c70b819e3b30b8ab48eaededb488012c2aad4d575:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NTg0MDEwODIyNGE2MWE5YmYyOGE4ODgwNzMyZWEzMzY1MzIyM2M0OTc3NmM4ODBjOTY2MDg0OGVmNGM1MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwZWU1YmU3MzM1Yzk1ZjYzYjRkMDc4Y2RiNzhlZTU5NWYwMzc5YjE2MThmZDFlMzQxOWMxM2VlOTFjMzY1MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZDU5ZGJjN2EyYTMwN2M3ZDhlNGZiZmVmM2E3NzIyMTgwNTk4YTJjZGY1ZTRmNWJiODYxYWZlYmMzOGJkZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb78ea150d774d34855d59f34cf60b0d",
+      "statement": "NewClient selects the CA mode from flags: --offline requires --ca-config and returns NewOfflineCA(ctx, caConfig); otherwise it resolves the CA URL via flags.ParseCaURL, defaults the root to pki.GetRootCAPath() (required-flag error when missing), prepends ca.WithRootFile, and returns ca.NewClient(caURL, opts...).",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/client.go#L52-L74",
+          "version": "repo-lines-v1:sha256:728e02c9fda0397f940ca7b0af3633c0e94b12b6a90ea0c7f7b0dbc4d00b5619:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4MmFmNWYyN2Q1NThkNTY0MzI3NTAyMWY1MWRhYjk4OWVmMjViMWYxZGVmZWE0NjIyNjNkNGIzNzczNzJjYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyZDU5ZGJjN2EyYTMwN2M3ZDhlNGZiZmVmM2E3NzIyMTgwNTk4YTJjZGY1ZTRmNWJiODYxYWZlYmMzOGJkZjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlNzFkMGVlY2ExNGRlODUyYmQyNDgzNWM5NGY0ZjQ3NjdkOTRmNmM3MTkwZGZkNWNkNmQ1NmZmMTJmOGZiMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4b345683cee74d7e821f52e3feb2e47c",
+      "statement": "NewUnauthenticatedAdminClient builds an unauthenticated *ca.AdminClient for the management API requiring --ca-url; NewAdminClient requires --admin-cert and --admin-key together when given, otherwise prints a 'No admin credentials found' notice, generates a default key, prompts for an admin name/subject unless --admin-subject is set, creates a SignType token via NewTokenFlow, signs a CSR with an online client, and constructs ca.NewAdminClient with ca.WithAdminX5C(adminCert, adminKey, password-file).",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/client.go#L77-L204",
+          "version": "repo-lines-v1:sha256:bc13efbe70d273b1058a4947faca107ce22ceb5f4c6a521b3856466e001aa40d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzYTkzMzUxZWZhNjI1NmQ5NzljNzQwZmRiZjNhNWE1Nzk2ZWRjNGM3YTM3NTk4NDlhN2Y4MjdiODI5NmE0NmRhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzNTg4NzExOWMyNzI4NTUyZTEyNDg3NGMzYTJhZTc3ZjM3NTBmMDkyNzBkNmZhNmFkZjBmYTJkZmUzNWVhM2QwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_9290978ce8854af094ca754461ff3ee7",
+      "statement": "CertificateFlow holds an optional *OfflineCA and offline flag; NewCertificateFlow applies the given Options to the package-level sharedContext flowContext and, in offline mode, requires --ca-config and constructs the OfflineCA.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L106-L131",
+          "version": "repo-lines-v1:sha256:7bbbe3003704ff3fb43e23e35314d04b5a3c0dc4624f7073d5d28bd870e56ca6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0OGI1MGU0ODc5ZTZlNWY0OGE5NDM4YTk0MWQwZmY0NmU0ZDZjZTc1ZjE2M2U0MWNkMTIzMGY4M2U3MTYxZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5YzIzYzE0MjJlNDkyMzFmMGVkZDAxZDZmYjZlYzg3MjAzMGI5OTI1Y2E2ODEyNmNiYTE2OGNiYmU0NzkzOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjNmRiODcyYmYxMzlhYWE5OGQxZWVmOWY0MDNiMTk0MTgzMjUzYzBmOGE4NWE3NzRiMTBlNWJmZDY2OTg2YzUifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L37-L51",
+          "version": "repo-lines-v1:sha256:70f7a9b4a70e056c7a457c2a6d6060daffdf1d0cd1ff84a3a1a1910328e1bd48:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5OWVjYzI0NzI2NDY1YmZhNzgxN2RmNzQ0YTUwMmI1ZWFlNDFiYjVkNjc4YzhiMGU3Njk0MWE2NGJhZmNmMjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmYmE3YjZkZmMxYWUwMGQ0NmQ5OTZkMDc4MDA0ZDIxYzQ5NGI2NzFjYzg4NTRlNDBkMzA5NjhmYjJjNzY5MmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5ZWZlODU0NjQ4NTliNDYzZjE3MTZhZDYwZDEyYWE4YjYyYmYzMDBkOTZiZWZhY2I5MmVlMmNmNmYwZjE4MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYjE3NWRkNjU1OGM0OTY2ODI4ZDcyMTBmNGZlZTBlNWRlMTM1ZDk0YTJjNmYwMzQyZTcwZDYwODlkOTU3M2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_47d04e7f849c43eb8e7865cf885c167f",
+      "statement": "flowContext carries DisableCustomSANs, SSHPublicKey, CertificateRequest, ConfirmationFingerprint and CustomAttributes; the Option interface only requires apply(fo *flowContext), and built-in options (WithSSHPublicKey, WithCertificateRequest, WithConfirmationFingerprint, WithCustomAttributes which merges into the 'user' claim map) are created with newFuncFlowOption; all options are applied to the process-global sharedContext so commands in the same invocation can pass data between flows.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L42-L103",
+          "version": "repo-lines-v1:sha256:e9014d04915579c084c9c4fbaae894e8fc438a7cb8ac9bc3c59b75da97309449:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlOWYwNjY3YjY4YTExZmFjMzNiOWY2ZDJkMTBhNzIyZjVhMmVhNjQxYmM2NTZkNzkyMmY0ZjRlNjE4ZmE5MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlNGNjYWRkNWEyYmI5MmUxNDdjMWM0NjVhYTk1MjdjOTkwNzhjYTE3OGZjYzk2OWQwODRmM2QxZTVjOTc4YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmNmMyZmRjNDkwMGNjMTRiMDRiNjEzMmM5MDQ1MTA2YmVkZDZmZWYzYzUzMGQ5N2MwYTJlNjJmOTM4MWI3ZmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fd375bbc14ab4a1caf2a65f74abd1abb",
+      "statement": "CertificateFlow.GetClient returns the OfflineCA in offline mode; online it parses the OTT and, for bootstrap/provisioning tokens (payload SHA claim plus http audience) uses the audience as the CA URL when --ca-url is unset and trusts the root via ca.WithRootSHA256, while for all other tokens --ca-url is required and the root defaults to pki.GetRootCAPath() with ca.WithRootFile.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L134-L171",
+          "version": "repo-lines-v1:sha256:eac06e54a30b1c44b73cef0ba05ec80a593dabe45011372e61bc7bd15ba6eeb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzYzYyZTg3OWUyNmViZjhmZmVhZWZlODlhZDcxYmU5NTkxOTFhNGMwOGJmMjljYTdjNGFlZGRiMWExZmNiNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkMGJkOGM0ODMzOWU5NjExZmRjMWNmMmU3MjJiNjQ2NjRmNzNkN2E4ODY4NWZmMTA0N2Y4YTNhZWNkOWJkOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZjNjNzNhMzNlZjliZWJmYmFlYjE3ZDE4MDE3MTg4MzIzMTM1NDNmMjYwMGM0OWNmOWViOTkwNThkYjZiYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_41574edd2b4e4202810658e95a00c517",
+      "statement": "GenerateToken (SignType) and GenerateSSHToken delegate to OfflineCA.GenerateToken when offline, otherwise require --ca-url (unless --token), resolve the root, and call NewTokenFlow; GenerateIdentityToken is always online and delegates to NewIdentityTokenFlow, which builds a token using only an OIDC provisioner.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L176-L247",
+          "version": "repo-lines-v1:sha256:772b8349d697e64f03a1967ffc1b13234daac5db4f052aad5e432bc96bc75d3d:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NTcwNGE1MTUzZGYyZDM5ZDNjOTc2MTMzNTcxM2ZmMGFjNjY4ODkzNmNiMTA1YzEzYzg1N2YzYjBjNzYwYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkM2RkODkwZDc0MDM2NDhkNmE0MThhNmM3ZTgxZDI3OWViNzc1MjhmZGIyNzVhZTYwZDVhNDlkODBjZTQ2ZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1MTg2NTQyNGE1YWM2ZDRkYWY1NTA5OWEwYzE2YzE2ZjJlMmNkNDMxNTA2YjEwZDlkMmVkYmVmMmI5OTdkNTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d15383b291c4b68bb0b4319bcc0a05c",
+      "statement": "CertificateFlow.Sign gets the client via GetClient, parses --not-before/--not-after and --template-data, builds api.SignRequest{CsrPEM, OTT, NotBefore, NotAfter, TemplateData}, calls client.Sign, falls back to ServerPEM+CaPEM when CertChainPEM is empty, serializes the chain to PEM, and writes the certificate file with mode 0o600.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L250-L293",
+          "version": "repo-lines-v1:sha256:8654de214fa86c88ffdb297c7897329957a58767f3abf236bb47bc861c3ece08:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4M2I5ZjRiMzNjZDQ2ZmYyMDg4NGY5NDFjYjYwNzRhMmM3Yjk2ZDcyMmI2OGI3MzY2MmM4NzUwNjQ4MzVkM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjZDNmZjQxZDAxNTlkYjU3MDQ4Nzk5NjYwNzZkOGUwNzY2OGI0OWNlOTA4MWE4MTM2NjIwN2NlODc1OTMwZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkMmQzODFlYmQ5OTMwZWVjZjkwODZiY2M4ZTVjMjk1ODUxZTc5ZGI0Nzc0MTFiZmY4YmRmMjgyYWY1ZTBlNjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a66662866fb344ecae85ac655890d93a",
+      "statement": "CreateSignRequest parses the OTT, derives key details from --kty/--curve/--size, generates the key, merges --san values with the token sans claim via splitSANs (dedupe + x509util.SplitSANs), applies per-token-type default SANs (AWS private IP + EC2 internal names, GCP project/zone internal names, Azure resource name, OIDC issuer#subject URI when subject equals the email, K8sSA uses the command-line subject, default uses the token subject), builds and signs a CSR with CommonName from the subject, verifies it with CheckSignature, and returns the SignRequest plus private key; DisableCustomSANs in the shared context suppresses appending the subject to cloud default SANs.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/certificate_flow.go#L297-L421",
+          "version": "repo-lines-v1:sha256:a4783c16ba0274f978d91942ff7a609fadb18a0af5548a873a505a9c22efad2f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5Yjg5MmUxNmFiMDMxNDViYjE2YmNlNDU4YmM0NDlhZGE4MmMyYzc3ZjQ4Y2I3OWIwOTdiMzI3OTYxNmE1OThjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1ZDJkMzgxZWJkOTkzMGVlY2Y5MDg2YmNjOGU1YzI5NTg1MWU3OWRiNDc3NDExYmZmOGJkZjI4MmFmNWUwZTYzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ec7cee599a0949a7b86af8d8eec8aa91",
+      "statement": "OfflineCA wraps an authority.Authority and its config.Config from smallstep/certificates; NewOfflineCA is guarded by the offlineInstance singleton (double initialization is avoided because the badgerDB-backed authority holds locks), reads and unmarshals the --ca-config JSON, rejects configs without provisioners, applies --password-file, and calls authority.New.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L28-L81",
+          "version": "repo-lines-v1:sha256:d8db7330b00a37421918e3fcf6100f50a934e51ffd5fe9955b795c590a276e1b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NzAwM2Y1OGY2NTc4NTJmODcyNzIwOTliODFkYTJlYzJmMzc4MzY4YTY2MDYwNmE1MmY2ZjM2NGI4MzZhNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3MTM1ZjE3Mjg5NjQ3NWM1NGUyOTkwYjIxNzFkZDkxNTAwN2E5YzQ4NjMzMzNhYWE0ZmYwMWEyN2M0OGZiN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2YzMyY2FlZTY3OWNjZWY5ODcyOWY0MDJhNzc2NWIyODlmNDg4ODZlNDE4YWJmNTI0MTY5NmY0ZWU5MWRmOWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_14ffa45a58bc46b1b47d4b498b6576cf",
+      "statement": "OfflineCA accessors: GetCaURL returns https://<first DNSName>, GetRootCAs always returns nil, CaURL/Root/Provisioners read the config, and Audience maps token types to https://<host>/<endpoint> audiences (/sign, /renew, /revoke, /ssh/sign, /ssh/renew, /ssh/revoke, /ssh/rekey).",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L84-L173",
+          "version": "repo-lines-v1:sha256:fa25b281e4479c22b8053ea1ccc8164b9c6ad4c44e43534a21fe6ffa0537fe4a:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4ZjhiN2UxYmZhNjI3NDBjYzVlZTBiM2UxY2E5ZjFkYzVmMWQ0ZWEyOTJhZmU5ZWNkN2ZiOTE0MDMxNjdhM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkYTNmM2E1MDY5ZmU0NjU1OTgzYjQ0ZmU0YjViNDYxYTUwYTFjOGMzMjUxZGM4MjM2ZTYzMzQwNThmOWYyNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjNDFkMjYzNmMxOTU5ZmM3ODMzYjUwMWY3OTdmNjg0MWY0YjAxNzAxNGFlY2I2MjMzZDQ2YjllZTZkMWY4N2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d592f79196c49b3bb83feb143f75526",
+      "statement": "OfflineCA.VerifyClientCert checks certificate/key match via tls.X509KeyPair and then verifies the certificate against the configured root and intermediate certificate pools.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L94-L138",
+          "version": "repo-lines-v1:sha256:02f8cd9247616891f3532ec602623e4be00a1db14cc5981007778a50c56fd02f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0MjkxMWI2MDkzZDRjYmU4YzZjMGE3NTQ4YTU5ODhlMzJkYmI5YWIxMjczM2M0ZWJmNzExY2JkZTdkNjA0MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiZTk4NGY0MmQyZDU2NTkxNDFhZTljYjIwZGVjZGY5MTNjMjFhMDE3YThmYjVjZmY1ZDZlYzVkNjg5OTc3NDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9cbda10b699a4c6383e065078cdcb016",
+      "statement": "OfflineCA.Sign authorizes the OTT with authority.Authorize under a provisioner.SignMethod context and signs with SignWithContext passing NotBefore/NotAfter/TemplateData; Renew extracts the leaf of the TLS client certificate from the passed http.Transport and renews it, while RenewWithToken authorizes a one-time token first; all return the chain (leaf plus intermediate) and the authority TLS options.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L196-L275",
+          "version": "repo-lines-v1:sha256:e16a4318af492bbecd1fcdf34d886d3f3ce4e5757d33503d2ee85ba7b37e5d68:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0YTEyZDE1ODgwYzRiODVjNGQyZTY0ZGU3N2Q5ZjYxOWEzNjI4ODViNDIxNWMzN2IyMWVmOTE5OGE5NGI1NjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwYzlhODRkNTg5ZTQ5MmJhNWQwYmQyODZhNGU4YTU4YTllNzJiZTFkODczZmY2MmFkODljZWMwNzE2NWI3YjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjNmEyODNiZGU3YjA0NmQ4MjM1NjVhYTQwNWJiNTBkYzgxYjc1NTYxZTZmNjJkZTcyODllYzYzZTNhNmQ1NjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_79b6ac28e735457ea383d174e705d0e1",
+      "statement": "OfflineCA also wraps Revoke, Rekey, SSHSign, SSHRevoke, SSHRenew, SSHRekey, SSHRoots and SSHFederation against the corresponding authority.Authority methods, and Version reports the authority version, so the embedded CA satisfies the full CaClient interface.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L277-L481",
+          "version": "repo-lines-v1:sha256:9b9fb31d729818790e940b9239158b931a468edbf41057181156396b66820301:eyJzZWxlY3RlZExpbmVDb3VudCI6MjA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiODE0NDgyZjA0YWZkOTc1YzE2OGZiMjlmNWMxODJiNjJiMjM1YWJhYzA5MDI3ZmJlYmFkZGIxNGI3YTgxYzk3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2ZDc5MWIzZDBhZDFhZDg1YTgxOGI0YTYyNjYxY2M5Yzc1MzhhZDkxYjdiYTMxM2NhYzEyOTdjZjZjNTNmZjY4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzZTRlNDJmNzA0MDE3YmZmMTFlYjg2MTg0NWQzMmEwNDI0YTY3ODhiYTFlNzQ0MjhhYjEyNjAyYzhhM2ZhMmYyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwMmM3ZmNhYWJmYzU0MGVmNmYwNGQyNGY5ZmUxYjRkMWYxYzY3NDhiMWU5ZjQxM2FjMDQxZWEzYTUxOTZlNzQ1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ca5672f92905417ba37cdb4d425a0271",
+      "statement": "bootstrap() validates the fingerprint by calling client.Root(fingerprint) on an insecure client; when UseContext is true it adds/sets the step context (authority and profile default to the context name), otherwise WarnContext prints a hint if a legacy config/ca.json exists; it writes the root PEM to pki.GetRootCAPath() with 0o600, writes bootstrapConfig (ca-url, fingerprint, root, optional redirect/provisioner/min-password-length) to step.DefaultsFile() with 0o644, sets ca-url/fingerprint/root on the CLI context, creates an empty profile defaults file when contexts are enabled, and with --install installs the root in the OS truststore.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L98-L222",
+          "version": "repo-lines-v1:sha256:4af90acee482d63569ff5504b83c6aec3b05f11d232f78e0f54da9e0daa9fcdf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkMDE0ODIwNTI0NjJkOTg2NmNiMGM0MDFlOWUyMzJjMTI0NDU5NTgzYjRiYzU2NWNhMDI4Mjc5MGVmYWI5MzA4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjODk3MGYwNTljNDExMGIzM2I5MjQ4YTIzODk1ZDhjYTU2MDBkNTY3MWRiN2IyYmJmM2U4NWI4MWZhMDY0MjZkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2NDQ1YTA3ZDIyYjIxZjUzNDliODYxZDIxMDQwMDAxNGI3NWZiMTJlMGY3ZWI1ZjVjZTQ3NzAwZGM4YzUyOTE2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_0ae837791d6647fe897783492ceaa62c",
+      "statement": "UseContext returns true when step contexts are enabled in config or --context/--authority/--profile is set; WarnContext advises users to adopt contexts when a legacy config/ca.json is present.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L37-L54",
+          "version": "repo-lines-v1:sha256:42cd3f64d1fe8a65fbf458a05058da215011d6a56461440e2130a74b5ff3ec93:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYWFiYWIwMmJiMmVhNjM3YjIyYWU5NTdjZGM2NDAzMWY4YzUzYjM5ZDBjZjYyOGFhZTkwMDgwMzEyMDU4NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyZGZmNDkxODAwNzI1OWI3ZjJmOTdiMTQzMDlkMmM3ZjFmYTRmZDg0ZjA5OTg0MTg3ZjEzZjQ2ZGE4NmUyZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxOTYyYWE2OGM5NTg0ZjFiMjk5NDRlMDRhZTcxZjI4YTI5ZTUzOTBmODdjMzhhODAzMzdhMzUwNTY2NDAyYzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8a74358197b489ea213c560d7c041a2",
+      "statement": "BootstrapTeamAuthority GETs https://api.smallstep.com/v1/teams/<team>/authorities/<teamAuthority> (or a custom --team-url endpoint with <> replaced by the team), parses bootstrapAPIResponse (url, fingerprint, redirect-url, provisioner, min-password-length), defaults the redirect URL to https://smallstep.com/app/teams/sso/success, and runs bootstrap with default context name <teamAuthority>.<team>.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L226-L294",
+          "version": "repo-lines-v1:sha256:98559df6bd24bf9ca0ebe9eed14cf67dff2ce8a73135b5065e7e72ef16560dc6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxOTE4ZDBkMmYwZDEyYjY0MDRkMzZmOWI1YWE0MzM2MDc1MjlhY2FlNTNkNDZmNGZiNmU5Zjc4MzRiZmFmNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0NDVhMDdkMjJiMjFmNTM0OWI4NjFkMjEwNDAwMDE0Yjc1ZmIxMmUwZjdlYjVmNWNlNDc3MDBkYzhjNTI5MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxM2E0ZmY0MDMzODcyMTAxZjM5NGIwNGNkN2VmYmMyMDM2MjAyZDg0ZmY5ODBjYmNiNWYzNWZlNmY4YWMxMzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cfe6436a1b1a40d982460d0c13f0f492",
+      "statement": "BootstrapAuthority is the plain step ca bootstrap flow: it derives the default context name from the --authority flag or the CA URL host (getHost strips the port), accepts an optional --redirect-url, and runs bootstrap with the given caURL and fingerprint.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L297-L331",
+          "version": "repo-lines-v1:sha256:52b79d1fc59db62395b9ac746728aa420550dfc00aca184ebf42462948c49b24:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwNmUwN2RlYTZiNGI1ZWVjODc4OWFlN2U4YjhiNGFhNTJiMzE4OGVhM2IxYzNmNTU3NTNhZTdhMzA5NjllZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxNGQ4NDQ2YjAzNTQ5YWFmZjBhZDM3ZDdjNmNjMjYxZTBiZTU5ZTZlZGY2NWJkMDU2OGU2NDM5NjhiZjUxNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ZWQwZDJlMDVmNzlmMGFlOGU3ZWFlNWU3MTA3MGVjM2Y0MzM4ODJkNGE1ZTkzMjliZTk5YjhkMjhkMGEzNzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ab97a3947cae451aace1c9ec32558a03",
+      "statement": "The step ca admin package uses linkedca types (linkedca.Admin, Admin_SUPER_ADMIN) together with the *ca.AdminClient for management-API admin objects, e.g. in cliAdmin conversion, listing, and admin prompting.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/admin/admin.go#L69-L82",
+          "version": "repo-lines-v1:sha256:51a51bd740c06cfb788b1b6e0ccab3d764d5f0f2720c4de3399012977e589a1e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlNWE0YTZkZjJhY2MwOGU4MjIwZTE3ZWZkMTY5OTk4NTEzZDBlY2QxMzQyZjgwZTc5ZDMyMTllNjhjMzgyMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiZDc3NzA4ZjAwNjlkOWJkZGJiZThlZGUxMGZjMjE0NDM5N2Y5ZGNmYWM1MzIwZWZlZTYxODZhZTQzOTIzYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyYTQ0NjIzYTc3MDIzOThiMzBmMzMwNWVhZmRlNGE2N2NjYzlkNzBkMjAwZTI3MTRiYWZkYjRjYjgyMDdhZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjNWEwNTZhOTg2M2UyMjBlMWNlYjQyODlhOTIyMDIyMDhhOTExODFlMjJlMDg3ODBlYTAwZTc0YTY5ODA5YjMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-14T13:44:47.469Z"
+  }
+}

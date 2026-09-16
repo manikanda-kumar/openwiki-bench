@@ -1,0 +1,369 @@
+{
+  "plan_page_count": 13,
+  "deletePages": [],
+  "statuses": {
+    "complete": 11,
+    "pending": 2
+  },
+  "pages": [
+    {
+      "id": "7b3be2b3-2433-4b94-add6-2448789341b6",
+      "path": "/openwiki/architecture/command-framework.md",
+      "title": "Command Framework and Application Lifecycle",
+      "purpose": "How the step binary boots and how commands register: main.go, internal/cmd/root.go, init()-based registration via cli-utils, blank-import enabling of commands and CAS backends, plugin lookup, error and panic handling, version injection.",
+      "seedPaths": [
+        "cmd/step/main.go",
+        "command/README.md",
+        "command/base64/base64.go",
+        "internal/cmd/root.go",
+        "internal/command/inject.go",
+        "internal/plugin/plugin.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/configuration/environment.md",
+        "/openwiki/development/build-test-and-change-guides.md"
+      ],
+      "instructions": [
+        "Document internal/command/inject.go InjectContext middleware and CLIContextFromContext; error handling incl. STEPDEBUG behavior and panic handler; version/release date ldflags in Makefile and step.Version from cli-utils.",
+        "Document internal/plugin/plugin.go: step-<name>-plugin executables looked up in $(step path)/plugins and PATH, and Run usage (e.g. step-kms-plugin via internal/cryptoutil).",
+        "Explain registration: each command package has init() calling command.Register(cmd) from github.com/smallstep/cli-utils/command; groups are enabled by the blank imports at the bottom of internal/cmd/root.go (list them: api, base64, beta, ca, certificate, completion, context, crl, crypto, fileserver, oauth, path, ssh) plus CAS interface blank imports (cloudcas, softcas, stepcas).",
+        "Include a short change guide: steps to add a new top-level command (new package under command/, init + Register, blank import in internal/cmd/root.go, test, CHANGELOG entry).",
+        "Trace run(): os.Exit(run()) in cmd/step/main.go; run() defers panicHandler, calls step.Init() (cli-utils environment init), builds app via newApp(os.Stdout, os.Stderr)."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "bc8e4563-091b-4284-a3e1-d607d12e1bbe",
+      "path": "/openwiki/architecture/overview.md",
+      "title": "Repository Architecture and Ownership",
+      "purpose": "High-level map of the module github.com/smallstep/cli: directory ownership, key external dependencies, the two operating modes (online CA client vs embedded offline CA), and where behavior lives.",
+      "seedPaths": [
+        "Makefile",
+        "cmd/step/main.go",
+        "command/README.md",
+        "go.mod",
+        "internal/cmd/root.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/configuration/environment.md",
+        "/openwiki/development/build-test-and-change-guides.md"
+      ],
+      "instructions": [
+        "Cite exact dependency versions from go.mod: urfave/cli v1.22.17, smallstep/certificates v0.30.2, smallstep/cli-utils v0.12.2, smallstep/linkedca v0.26.0, go.step.sm/crypto v0.89.0.",
+        "Describe module layout: cmd/ (entrypoint), command/ (urfave/cli v1.22.17 command groups), internal/ (private helpers: cmd, plugin, sshutil, cryptoutil, kdf, cast, crlutil, sliceutil, command), utils/ (shared client library incl. cautils), flags/, token/, pkg/bcrypt_pbkdf, integration/, packaging dirs (systemd, docker, debian, powershell), docs/.",
+        "Explain ownership boundaries per command/README.md: each command level in its own package, shared non-business logic at repo top level (flags, cli-utils).",
+        "Explain the two modes: talking to a remote step-ca over HTTPS (CaClient) vs --offline wrapping authority.Authority from smallstep/certificates."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "f5d55a9b-e5a1-4f45-9a37-f1a810032412",
+      "path": "/openwiki/ca-integration/acme-and-tpm.md",
+      "title": "ACME and TPM Attestation",
+      "purpose": "The ACME client flow used by step ca acme certificate: order creation, HTTP-01 challenge serving in standalone and webroot modes, finalize, plus device attestation over TPM and EAB support.",
+      "seedPaths": [
+        "command/ca/acme/acme.go",
+        "command/ca/acme/eab/eab.go",
+        "utils/cautils/acme_flow.go",
+        "utils/cautils/acmeutils.go",
+        "utils/cautils/tpm.go"
+      ],
+      "relatedPages": [
+        "/openwiki/ca-integration/ca-client-and-flows.md",
+        "/openwiki/commands/ca.md"
+      ],
+      "instructions": [
+        "Document ACMECreateCertFlow / ACMESignCSRFlow entry points and the acmeFlow options (withProvisionerName, withCSR, withSubjectSANs), client truststore handling in getClientTruststoreOption.",
+        "Document EAB (external account binding) subcommands in command/ca/acme/eab (add, list, remove, sigchild).",
+        "Document TPM device attestation in utils/cautils/tpm.go: doTPMAttestation, attestationClient, getAK, attestationStatement, EK selection, roots-file and insecure options, and how the attestation URI is parsed.",
+        "Document challenge serving: startHTTPServer, standaloneMode (default, listens :80, http-listen flag), webrootMode writing token files, serveAndValidateHTTPChallenge, authorizeOrder, finalizeOrder, getChallengeStatus.",
+        "Include a short change guide for extending ACME options or adding a challenge mode."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "eacd95a3-05ad-4eb7-924a-21f10ffc5330",
+      "path": "/openwiki/ca-integration/ca-client-and-flows.md",
+      "title": "CA Clients and Certificate Request Flows",
+      "purpose": "The core client library utils/cautils: CaClient interface and client construction, the option-based CertificateFlow for token-based signing, the embedded OfflineCA, the linkedca admin client, and the bootstrap flow that installs roots and default context.",
+      "seedPaths": [
+        "utils/cautils/admin.go",
+        "utils/cautils/bootstrap.go",
+        "utils/cautils/certificate_flow.go",
+        "utils/cautils/client.go",
+        "utils/cautils/offline.go"
+      ],
+      "relatedPages": [
+        "/openwiki/ca-integration/acme-and-tpm.md",
+        "/openwiki/ca-integration/provisioner-tokens.md",
+        "/openwiki/commands/ca.md",
+        "/openwiki/configuration/environment.md"
+      ],
+      "instructions": [
+        "Document CaClient methods: Sign, Renew, Revoke, Rekey, SSHSign, SSHRenew, SSHRekey, SSHRevoke, Version, GetRootCAs, GetCaURL and how NewClient/NewCaClient select online (API client) vs offline mode.",
+        "Document CertificateFlow: flowContext, functional Options (WithToken, WithProvisioner, WithSubject, WithSANs, WithTemplate, etc.), and the GetCertificate flow that builds a sign request; cite utils/cautils/certificate_flow.go.",
+        "Document OfflineCA: singleton wrapping authority.Authority from smallstep/certificates with a badgerDB-backed config, used for offline signing.",
+        "Document bootstrap: POST to bootstrap API, writing root to $STEPPATH/certs/root_ca.crt and config to $STEPPATH/configs/defaults.json, and context selection.",
+        "Document the linkedca AdminClient used by step ca admin for admin-provisioner authentication.",
+        "Include a focused change guide for adding a new flow option or a new CA API call to the client, with where each piece lives."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "b08f82f5-08db-4827-9dbf-23e41a79ea78",
+      "path": "/openwiki/ca-integration/provisioner-tokens.md",
+      "title": "Provisioner and One-Time Tokens",
+      "purpose": "How one-time JWT tokens and provisioner-issued tokens are built, parsed, and mapped to CA API audiences: the token package, TokenFlow interactive provisioner prompt, and per-provisioner token generators.",
+      "seedPaths": [
+        "token/options.go",
+        "token/parse.go",
+        "token/provision/provision.go",
+        "token/token.go",
+        "utils/cautils/token_flow.go",
+        "utils/cautils/token_generator.go"
+      ],
+      "relatedPages": [
+        "/openwiki/ca-integration/ca-client-and-flows.md",
+        "/openwiki/commands/ca.md"
+      ],
+      "instructions": [
+        "Document TokenFlow (utils/cautils/token_flow.go): interactive provisioner prompt, sign types (SignType, RevokeType, SSHUserSignType, SSHHostSignType, RekeyType, RenewType, SSHUserRenewType, SSHHostRenewType, SSHUserRekeyType, SSHHostRekeyType) and parseAudience mapping to /1.0/sign, /1.0/renew, /1.0/rekey, /1.0/revoke and /1.0/ssh/* endpoints.",
+        "Document TokenGenerator and generate* functions: JWK, OIDC, X5C, SSHPOP, Nebula, K8s service account, renewal tokens, and cloud identity provision tokens in token/provision/provision.go.",
+        "Document token.Parse / parse.go and how tokens attach to requests.",
+        "Document token.Token: DefaultIssuer step-cli, DefaultAudience https://ca/sign, validity constants, claim names (sha, sans, step, user, cnf) and options; cite token/token.go.",
+        "Note where audience/fingerprint derivation happens and flag uncertainty for behavior inside external packages."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "392d3b95-f0ec-4a65-ae4e-9d56cd4ec87d",
+      "path": "/openwiki/commands/ca.md",
+      "title": "CA Command Group",
+      "purpose": "step ca subcommands for interacting with and managing a step-ca instance: init, bootstrap, token, certificate, renew (incl. daemon mode), rekey, revoke, sign, root/roots, federation, health, provisioner management, admin management, policy management, and ACME.",
+      "seedPaths": [
+        "command/ca/admin/admin.go",
+        "command/ca/bootstrap.go",
+        "command/ca/ca.go",
+        "command/ca/certificate.go",
+        "command/ca/policy/policy.go",
+        "command/ca/provisioner/provisioner.go",
+        "command/ca/renew.go",
+        "command/ca/token.go"
+      ],
+      "relatedPages": [
+        "/openwiki/ca-integration/acme-and-tpm.md",
+        "/openwiki/ca-integration/ca-client-and-flows.md",
+        "/openwiki/ca-integration/provisioner-tokens.md",
+        "/openwiki/commands/certificate.md"
+      ],
+      "instructions": [
+        "Document policy subcommands (step ca policy authority/provisioner/acme) with x509/ssh allow+deny actions in command/ca/policy/actions.",
+        "Document provisioner CRUD incl. webhook subcommands, and admin subcommands authenticated via the linkedca admin client (admin-provisioner, admin-subject, admin-password-file, admin-cert/admin-key).",
+        "Document renew's daemon mode: RenewAndPrepareNext, nextRenewDuration, after-renew hook (kill pid / exec cmd), and the systemd timer interplay.",
+        "Document the beta command group (command/beta) exposing beta ca acme APIs.",
+        "Enumerate the subcommands registered in command/ca/ca.go: health, init, bootstrap, token, certificate, rekey-certificate, renew-certificate, revoke-certificate, provisioner, sign-certificate, root, roots, federation, acme, policy, admin, plus the shared flags (acme, contact, http-listen, standalone, webroot, fingerprint, kid, host).",
+        "Include a focused change guide for adding a new step ca subcommand or a new provisioner subcommand."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "ba73aa51-55e1-4436-bb8c-804b94949725",
+      "path": "/openwiki/commands/certificate.md",
+      "title": "Certificate Command Group",
+      "purpose": "step certificate subcommands: offline creation via profiles and step-certificates templates, local sign/verify/bundle/inspect/lint, truststore install/uninstall, p12 conversion, renewal checks, and remote certificate retrieval.",
+      "seedPaths": [
+        "command/certificate/bundle.go",
+        "command/certificate/certificate.go",
+        "command/certificate/create.go",
+        "command/certificate/install.go",
+        "command/certificate/needs_renewal.go",
+        "command/certificate/remote.go",
+        "command/certificate/sign.go",
+        "command/certificate/verify.go"
+      ],
+      "relatedPages": [
+        "/openwiki/ca-integration/ca-client-and-flows.md",
+        "/openwiki/commands/ca.md",
+        "/openwiki/commands/crypto.md",
+        "/openwiki/commands/ssh.md",
+        "/openwiki/configuration/environment.md"
+      ],
+      "instructions": [
+        "Document create profiles (leaf, self-signed, intermediate-ca, root-ca, csr) and default validity constants, and the template/step-certificates rendering path with template data flags; cite command/certificate/create.go.",
+        "Document install/uninstall into OS trust stores and the offline flag behavior.",
+        "Document remote.go: TLS dialing to fetch peer certificates with urlPrefixes defaults (tcp/tls/https 443, smtps 465, ldaps 636), --roots, --server-name, --insecure.",
+        "Document sign/verify, bundle, inspect, lint (including CA bundle linting), fingerprint, p12, key, and needsRenewal (used by systemd renewals).",
+        "Include a focused change guide for adding a new certificate subcommand and for changing a create profile."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "c5699731-711e-4ea7-a3f7-956c11020e83",
+      "path": "/openwiki/commands/crypto.md",
+      "title": "Crypto Primitives Command Group",
+      "purpose": "step crypto subcommands for standalone cryptographic operations (keypairs, keys, JWK/JWS/JWE/JWT/JOSE, hash, KDF, NaCl, OTP, rand, winpe, change-pass) and the internal helper packages they rely on.",
+      "seedPaths": [
+        "command/crypto/crypto.go",
+        "command/crypto/jwk/jwk.go",
+        "command/crypto/jwt/jwt.go",
+        "command/crypto/kdf.go",
+        "command/crypto/keypair.go",
+        "internal/cryptoutil/cryptoutil.go",
+        "internal/kdf/kdf.go",
+        "pkg/bcrypt_pbkdf/bcrypt_pbkdf.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/commands/certificate.md",
+        "/openwiki/development/build-test-and-change-guides.md"
+      ],
+      "instructions": [
+        "Document JWK create/inspect/show across RSA/EC/OKP/OCT, and how keys may be KMS URIs via internal/cryptoutil IsKMS/PublicKey and the step-kms-plugin Attestor interface.",
+        "Document KDF (internal/kdf: Scrypt, Bcrypt, Argon2i/Argon2id in PHC format) and the KDF subcommand; note safe defaults and the comment about future functional options.",
+        "Document otp (TOTP/HOTP), nacl (box/seal), rand, hash, winpe, and change-pass (bcrypt_pbkdf in pkg/bcrypt_pbkdf for Windows DPAPI-style passwords where evidenced).",
+        "Enumerate subcommands from command/crypto/crypto.go: change-pass, create-key-pair, jwk, jwt, jwe, jws, jose, hash, kdf, key, nacl, otp, rand, winpe.",
+        "Include a focused change guide for adding a new crypto subcommand, citing the package layout convention."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "8c1e306c-4897-496f-a480-2a6498e1577a",
+      "path": "/openwiki/commands/ssh.md",
+      "title": "SSH Certificate Subsystem",
+      "purpose": "step ssh subcommands and internal/sshutil: user and host SSH certificates, agent integration for login/logout, list/inspect, CA-driven ssh config generation, host checks, renewal/rekey/revoke, proxycommand, and SSH key parsing helpers.",
+      "seedPaths": [
+        "command/ssh/certificate.go",
+        "command/ssh/config.go",
+        "command/ssh/hosts.go",
+        "command/ssh/login.go",
+        "command/ssh/renew.go",
+        "command/ssh/ssh.go",
+        "internal/sshutil/agent.go",
+        "internal/sshutil/sshutil.go"
+      ],
+      "relatedPages": [
+        "/openwiki/commands/ca.md",
+        "/openwiki/commands/certificate.md",
+        "/openwiki/operations/distribution-and-renewal.md"
+      ],
+      "instructions": [
+        "Document config.go: rendering ~/.ssh/config from the step-certificates template fetched from the CA (template data, host list).",
+        "Document login flow: signing an SSH user certificate via the CA, adding the key to the SSH agent (sshutil agent helpers), and logout removing it.",
+        "Document renew/rekey with SSH token types and the needs-renewal check used by the ssh-cert-renewer systemd timer.",
+        "Document sshutil: NewCertSigner, ParseCertificate, PublicKey conversion, host/user certificate distinction, and key format helpers.",
+        "Document the step ssh subcommand set: certificate, check-host, config, fingerprint, hosts, inspect, list, login, logout, needs-renewal, proxycommand, rekey, renew, revoke.",
+        "Include a focused change guide for adding a new step ssh subcommand or extending sshutil."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "60d07ddd-2e3d-4393-bc6f-2dcfdec1ca46",
+      "path": "/openwiki/configuration/environment.md",
+      "title": "Configuration, Contexts, and Environment",
+      "purpose": "How the CLI locates its configuration: $STEPPATH layout, contexts (contexts.json, defaults.json, profile defaults), the global flags shared across commands, the --config file flag, and how contexts are injected into commands.",
+      "seedPaths": [
+        "command/context/context.go",
+        "command/context/current.go",
+        "command/context/select.go",
+        "flags/flags.go",
+        "internal/command/inject.go",
+        "utils/cautils/bootstrap.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/ca-integration/ca-client-and-flows.md",
+        "/openwiki/commands/certificate.md"
+      ],
+      "instructions": [
+        "Catalog the shared flags in flags/flags.go by purpose: CA connection (CaURL, Root, Fingerprint if present, Context, ContextProfile, ContextAuthority, Offline, CaConfig), provisioner/admin auth (Provisioner, AdminProvisioner, AdminSubject, AdminPasswordFile, AdminCert, AdminKey), X5C/X5T/SSHPOP cert flags, key material (KTY, Size, Curve, Subtle), time bounds (NotBefore/NotAfter, CertNotBefore/CertNotAfter), output/behavior (Force, DryRun, Insecure, NoPassword, PasswordFile, Token, NoPager).",
+        "Document $STEPPATH (default ~/.step): certs/root_ca.crt, configs/defaults.json with ca-url/fingerprint/root, contexts.json; cite utils/cautils/bootstrap.go bootstrapAPIResponse and UseContext/WarnContext, and the example defaults.json in command/ca/ca.go description.",
+        "Document context subcommands (step context list/current/select/remove) and that they manipulate step.Contexts() from cli-utils.",
+        "Explain how flag values resolve to a context (flag override vs named context vs default) where evidenced; note uncertainty where resolution logic lives in cli-utils outside this repo.",
+        "Include a short change guide for adding a shared flag in flags/flags.go and wiring it into commands."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "cd2bdaae-cca7-477f-87bb-eac2579d34f5",
+      "path": "/openwiki/development/build-test-and-change-guides.md",
+      "title": "Build, Test, and Change Guides",
+      "purpose": "How to build, test, lint, and release-prepare the project, plus focused change guides for representative maintenance tasks grounded in the Makefile and contributing docs.",
+      "seedPaths": [
+        "CHANGELOG.md",
+        "Makefile",
+        "command/README.md",
+        "docs/CONTRIBUTING.md",
+        "docs/local-development.md",
+        "integration/main_test.go"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/command-framework.md",
+        "/openwiki/architecture/overview.md",
+        "/openwiki/quickstart.md"
+      ],
+      "instructions": [
+        "Document Makefile targets: all (lint test build), ci (test build), build (bin/), test (gotestsum), lint, bootstrap; CGO_ENABLED=0 default, GOOS_OVERRIDE, version from GITHUB_REF or git describe, ldflags for version/build time.",
+        "Document docs/CONTRIBUTING.md requirements: fit the crypto toolkit scope, don't break existing functionality, issue tracking, and CHANGELOG.md update requirement for user-visible changes.",
+        "Document docs/local-development.md: make bootstrap for dev dependencies, make build, running tests, and the note about building for the host platform.",
+        "Document the command/README.md conventions: one package per command hierarchy level, registration via init()+Register, shared non-business code at top level, urfave/cli style guide.",
+        "Provide focused change guides: (1) add a new top-level command, (2) add a shared flag, (3) add a new crypto or certificate subcommand, (4) add an integration test, (5) update a provisioner token flow; each with the exact files to touch and how to validate (make test / make lint / targeted go test).",
+        "State uncertainty explicitly where a behavior is owned by external modules (cli-utils, certificates, go.step.sm/crypto)."
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "59cafcf6-bc52-41ca-b4e6-7a4e12db67ba",
+      "path": "/openwiki/operations/distribution-and-renewal.md",
+      "title": "Distribution, Renewal, and Operational Integration",
+      "purpose": "Operational surface: systemd units and timers for automatic certificate and SSH certificate renewal, packaging (docker, debian, powershell), the fileserver command, shell autocomplete, scripts, and the integration test harness.",
+      "seedPaths": [
+        "autocomplete/autocomplete.go",
+        "command/fileserver/fileserver.go",
+        "debian/control",
+        "docker/Dockerfile",
+        "integration/main_test.go",
+        "systemd/README.md"
+      ],
+      "relatedPages": [
+        "/openwiki/commands/certificate.md",
+        "/openwiki/commands/ssh.md",
+        "/openwiki/development/build-test-and-change-guides.md"
+      ],
+      "instructions": [
+        "Document docker/ build (multi-stage, CGO_ENABLED=0 consistent with Makefile), debian packaging, and powershell install script; cite each.",
+        "Document step fileserver (serving a directory over HTTP for ACME webroot-style use) and shell completion/autocomplete generation.",
+        "Document the integration test harness: integration/main_test.go TestMain building the binary via make, and what integration/certificate_test.go, crypto_test.go, help_test.go cover.",
+        "Document the systemd units/timers: cert-renewer and ssh-cert-renewer units and how they pair with step ca renew --daemon / step ssh needs-renewal; cite systemd/README.md noting files are redirect targets in the files.smallstep.com S3 bucket.",
+        "Flag uncertainty about external release pipelines (GoReleaser referenced in Makefile) since the release config itself is not in this repo."
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "704d6231-ea02-4f10-bbb7-c1950ea01d0e",
+      "path": "/openwiki/quickstart.md",
+      "title": "Quickstart",
+      "purpose": "Practical start: prerequisites, building the step binary, first CA bootstrap, first certificate, SSH login, and running tests, with citations to Makefile and local development docs.",
+      "seedPaths": [
+        "Makefile",
+        "README.md",
+        "cmd/step/main.go",
+        "docs/local-development.md"
+      ],
+      "relatedPages": [
+        "/openwiki/architecture/overview.md",
+        "/openwiki/commands/certificate.md",
+        "/openwiki/commands/ssh.md",
+        "/openwiki/development/build-test-and-change-guides.md"
+      ],
+      "instructions": [
+        "Cite Makefile targets and docs/local-development.md; mark anything not directly evidenced as uncertain.",
+        "Cover prerequisites (Go per go.mod), make bootstrap, make build producing bin/step, step version, step completion.",
+        "Show a first-run flow: step ca bootstrap --ca-url --fingerprint writing $STEPPATH/configs/defaults.json and root_ca.crt, then step ca token and step ca certificate, then step ssh login / step ssh config.",
+        "State clearly that this CLI is a client for the separate step-ca server (smallstep/certificates) and that offline mode embeds a CA via that library."
+      ],
+      "status": "pending"
+    }
+  ]
+}

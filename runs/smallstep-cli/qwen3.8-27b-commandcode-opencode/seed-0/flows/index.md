@@ -1,0 +1,6 @@
+# Files
+
+- [Bootstrap, Root Distribution, and Contexts](bootstrap-and-contexts.md) - How step ca bootstrap establishes trust (fingerprint-validated root, defaults.json, optional context and truststore install), team/authority bootstrap against api.smallstep.com, step ca root/roots/federation/health, and the context/profile/authority switching system.
+- [Certificate Issuance Flow (Token + Sign)](certificate-issuance.md) - End-to-end online issuance: step ca token (provisioner discovery, per-provisioner token generation, audiences), step ca certificate (CSR creation, per-token-type SAN handling, subject validation, sign, file writes), and the ACME and offline branch points.
+- [Offline CA: step ca init and OfflineCA](offline-ca.md) - step ca init (flag validation matrix, StepCAS/CloudCAS registration authorities, azurekms options, deployment types, generated PKI and ca.json) and the OfflineCA process singleton wrapping the step-ca authority in-process (Sign/Renew/Revoke/SSH semantics and the TLS-transport mTLS carrier trick).
+- [Renewal, Revocation, and Rekey](renewal-and-revocation.md) - step ca renew (mTLS vs token auth, expires-in jitter, daemon scheduling, pid/signal/exec hooks, offline mode), step ca revoke and rekey, the SSH equivalents (step ssh renew/rekey/revoke), and the needs-renewal checks.

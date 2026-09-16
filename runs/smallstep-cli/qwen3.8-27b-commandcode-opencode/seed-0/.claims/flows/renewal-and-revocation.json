@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a3e78fcd315519b6221d9ab23e1e342c07c75485f68f449ed6b219c0be50fb83",
+  "claims": [
+    {
+      "id": "claim_76512f19e35c456f9178f0137297e127",
+      "statement": "step ca renew validates flags: --expires-in and --renew-period are incompatible, --renew-period requires --daemon, --pid and --pid-file are mutually exclusive (pid-file is parsed to a positive integer), --renew-period and --expires-in must each be shorter than the certificate validity period, and the key pair is loaded KMS-aware via tlsLoadX509KeyPair.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/renew.go#L233-L321",
+          "version": "repo-lines-v1:sha256:00969ead325b6bea32e89cd4f00bd70a139ec7c799b790785d7dc29cf38ff32a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGFkOTYzYWJlNjI3MmU3MzU0ODQwNjZjZmRhODNmYzM0OWVlMjI0MmVkZGNkODY1MDdjNmMwY2UxNmExOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4OWM4YmM0ZTRjZmE1OTM0MDY2Y2ZkYjc4MjllYjg5NWQ3Zjg2ZjRhMTJiNDgwMDZjZmUxMDJhMmJlZjYzMzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_27b4788471374b009919606b9df0fe9e",
+      "statement": "In one-shot mode with --expires-in, the certificate is renewed only when its remaining lifetime is within expiresIn plus a non-cryptographic jitter of rand.Int63n(expiresIn/20), otherwise it prints 'certificate not renewed' and exits successfully.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/renew.go#L336-L351",
+          "version": "repo-lines-v1:sha256:2fbdbdcf524979596aeb09909ef4a4527eb9f66237f6f5b7b7acd349981a6ff9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4NTlkNjAxNjVkMzdmOWRlNDBiOGZkNWNmMzAyODJiMDBhYTEwYjcyMDRjNDE0YWIwM2QyZDBkYWY4MjgwYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkMzczNDAyNTI3YWNlNWZhMWQ1YzYxZGYwMGRjZmY2MDdhOGMyZjFmMTQzY2U0OGYyMjI2MjQyYWFiYjg5ODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiOTJmNjYxOGQyNGM5MGU0YmZlNGY4ZTMwODI2MTE5ZjdjMjQ2NjY1ZGRlMDYzZWI5OTYzOWVmNWFlMzY1NzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0OTg0NTc4OGY1NzYzNDY0NzIyYTBiOTY0ZGQ0MWZmNGM0NzQ0YmI3NWJjMjk5MGRjZDE1MGYwMWUxYzhiMWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_efb0427c9d00498393440e0bfe5b0180",
+      "statement": "Daemon scheduling in nextRenewDuration uses --renew-period when set (renew now if expiry is within the period, else wait the period), otherwise waits until time.Until(NotAfter) minus --expires-in with random jitter up to period/20; with neither flag expiresIn defaults to one third of the validity period, so the daemon renews before 2/3 of the validity has elapsed, as the help text states.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/renew.go#L213-L225",
+          "version": "repo-lines-v1:sha256:0163a0dbc1ecf0b0267ab7b32258180ad5be1fd7608debf178c3a6520ede31fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMTA3MmE4OTc2NTkxMDkwNmMwZGRjYzdiMWZkOWQ0NjFkZTNiZTM2NWFkNWUxOTc4YjUyYWI1ZmIxMzA4YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwMjk2YTNjMDQ3OGYxMTMxZDFjMzQ1ODI0YjA5ZDhjMTMwZDg3NmFkM2Q5Nzc2NjY4ZDIyNjE1YzkzNWIwMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjMGYwZDcwNjJmYmQ4OWYyOTI1OTRmZmExMWUzMTUxYmVlNDNhMjdmODBkOGQ1ZDg1OWJhNGZlN2IyYjhhZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1ZTM1NTIzZWE5YmIyZjU3OWUxYTc2M2IxNmYxODY3NGY4MzIzNzBiOWY3MjU1MGFlYmI1NzBmZDg4ZjhlNjEifQ"
+        },
+        {
+          "resource": "repo://command/ca/renew.go#L354-L380",
+          "version": "repo-lines-v1:sha256:01ffbad2ae3f1aae3edb8f558cef5e6ddc34ca88f58078614ce4581c2896bcf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyYWMwMDEzM2RjNWRiNzlmNTExNWYyNWYzMzkzNmIwMzhmNGY1ODFhZjBiZjBkOWIzMWY4ZjY2NGMyODFmNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlNTY2NWY2M2I0ZmZkMjEzMDQ2OGVmMDE2YjIwM2JjMzcyOTlmMWNmNjBmYzBjOWFiZTA1M2U4ZTk4M2EzN2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjN2E0N2ZhMmU2MjYxODNlNTIwOGIwNzljYjI0YmRjMTU3ODg4YWFkNjU3ZjgwMDRkMGI3OWViYmMyNzk4Y2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38e02f30b5e345edac487c3644c0dd47",
+      "statement": "The renew daemon selects on SIGINT/SIGTERM (exit) and SIGHUP (immediate renewal) plus a timer; after each renewal it runs --pid/--pid-file signaling with --signal (default SIGHUP) and an --exec command split on whitespace with inherited stdio, and RenewAndPrepareNext reloads the new chain into the transport and reschedules errors after 1 minute.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/renew.go#L382-L413",
+          "version": "repo-lines-v1:sha256:96e14aa62f14f466cf7166796955a3e1d3e828741e001dafa97445b0f428cdb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlOWRiNWVlZGUwZDIxN2JkYjg1MGEzMTc4MTFiYmZhODFjMDYzOGI5OTBkMTk2N2EwNzQwYWFmMzQ4YjA1NWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0MjE3ZmE5NWYwZjk1NGRlZDE5OTI3MTBlYWI1OWJmMTRmMjU4Mjc4N2Y5ZTg5ZDc2MTU2OTUwNjQwOTc0MDkifQ"
+        },
+        {
+          "resource": "repo://command/ca/renew.go#L549-L584",
+          "version": "repo-lines-v1:sha256:a0e71bdd184c47f8932c1867a0f00a3f9e4a5a41fdebebfd8fd25b58c90b0840:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNmMzYjI3ODAzZTI5MjlkNzgxNGVhOTU3MzQ1YzE0OWIxNTViMWYzNWViNTc2MjE1NjQ2YThhZWQzNDc2MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwODY0NTZlYzgyOTg0ZTFkMDIwOThhMjRlYjkwZThkMmI4MTBkYjE3OWM2YjFiZjY4ZWMxNzdjYWMyMzRiMDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMzRmNDdmMDQxZGEwZWEzNzE1OWZjODY4NjFkYzMzOWMyNWU3Y2U5OWFlMTRhYjg4YzhjZDQ2ZmM3NDM1NmYifQ"
+        },
+        {
+          "resource": "repo://command/ca/renew.go#L586-L619",
+          "version": "repo-lines-v1:sha256:7395063303b8948af0df0e6f18704405d3eecdc99e3e6a5ca9c278e07af0d001:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ZmFmNTM1NDkxMjRmNzZmYTdhNzc3MmI0ZjNkZDRjYjk5YjE3MzUwZDBmNzEyNDU2NzUyNmMxN2E1MjE5MWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxMzY1YjQ2YjkyZGE4MjUzMmIxMWUwYzQ3ZTE3ZjYzYmZlMjI5ZGY3OTY5NWJjYzVkMGQ5YjM3YjRiYTNlYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyOTgyOTc2YWYyZDU3NGY4YzNhZGM5MDkzNmFkY2RiNWNlMmQ2ZDZiMmI4NmZkOTNmMjAxNmI4MjI3NzU5NDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d0f2df5082684f5097513aef2a1b2280",
+      "statement": "Renewal defaults to mTLS: the client certificate is attached to the shared http.Transport only while not expired and passed to client.Renew (offline, OfflineCA.Renew reads it from tr.TLSClientConfig.Certificates[0]); --mtls=false or an expired certificate forces the token path, where RenewWithToken builds an x5c renewal token (audience <caURL>/renew, issuer step-ca-client/1.0, subject CN), clears the transport certificates, and closes idle connections before client.RenewWithToken.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/renew.go#L425-L479",
+          "version": "repo-lines-v1:sha256:f94795a55a4fb20a047ed5cb5308c531dadb577037762612ecca1986202331dd:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxZDliZjUwYTFhM2Y1NTMwMTJlMTIxY2JhNDgyNWI0MDE0YWIzMDcwMjIyMTdkOTk2NzQ2NzUyYjViNGFjOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljOWJiNmZmNmJjMGE2MDlkMmUzYzFmMDg2ZDMxYmFlZTNjYjAwNGVlZGZkNjA3NmFmOGI2MzY5NzBhY2Q2ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NmZhMzI5ZTkyMmU2NmI1YTVmYTkxYWQxYjIxOGI4MGY5ZmYyNGE5ZDdlNmFjNTJmYzRkNDQxZWE4ZTVjNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwODZmYzQwMmJjYjk2M2JjZDY0MTRiM2E2YzU5ODNlYjI3MTc0MDM0ZDMyNzQxODI1YThkYTczNjZhOGJlNzYifQ"
+        },
+        {
+          "resource": "repo://command/ca/renew.go#L482-L498",
+          "version": "repo-lines-v1:sha256:03dddcd39b174f7c56c143f1da164a70fb44fb5c9203f4bc5ecd143ab5ec812d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMjNhNTBhZGU4NDk1OTIzNWJiMGZlNjJjODdjNTI4NDM4ZjBjNzM4NDgyOGQxOGNmZmNjMGIyNTczM2RjMTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjMTU0Y2RhZWY4MmJhMzM4NjZhZjgzYTBmYjQ2Mjc3MDlmZGUwYWRmNmIzNWVjZTE2MzU1ZjQ1N2Y1NWVkNzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlNGU0MmY3MDQwMTdiZmYxMWViODYxODQ1ZDMyYTA0MjRhNjc4OGJhMWU3NDQyOGFiMTI2MDJjOGEzZmEyZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMTgxZTY3NzAxOWUxNWZkM2ZhNTE1OGQzOGU5NmRkYzM5YzEzMzFkNThlYmQ4YjI5YzM5YWQxZmQ1YmJlYzMifQ"
+        },
+        {
+          "resource": "repo://command/ca/renew.go#L621-L654",
+          "version": "repo-lines-v1:sha256:62a31cc75c705a9c3b93265f52067f36c92505dcc913a053c2e699acff83ed2f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3MmVlNDdiOTY4ZWE0MWRiZGEzMmFjYThhMDFlYjkwYTM2MmJhNWMwMDUxNmUxMzEwZDA1NzExZDliOWVjZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhY2JlNGY2YmFhNGU2MTQwMmRjOTEzNTliMmUyOTkwMmNmNmQ1YTNiMzk4YWM0ZGE3OWUzZGUxZGQyMDU2M2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd609fd66d884c66962ebcff42872126",
+      "statement": "step ca rekey rejects expired certificates, generates a new key from --kty/--curve/--size or loads an existing --private-key KMS-aware, reuses the renew jitter and daemon scheduling, writes the private key at 0600 only when no key was provided or --out-key is set, and its help states --kms rekeys within the same KMS and does not support generating new keys, --daemon, or cross-KMS rekeying.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/rekey.go#L242-L398",
+          "version": "repo-lines-v1:sha256:7de5b6d9ecafe9685e9cd4ede5a31491e31abc5d340ea3d742db55b6f0654114:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1M2VhYmY1NTdlODU0NzU0MzUwZWVmNDM4NDlmZjNmZTBlZGU2Yzk0OTkzZjg0ZWJiYjQxYWYxOGMwYTAxZGNkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyNzkyNjEyM2NjYmVjNWUyMTBlYjVjZjFjZjYwNmZhNDJkNTkxNzA4Zjg5MDYzNWYxN2Q0MWM2NDBmMTUxNzY2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://command/ca/rekey.go#L47-L57",
+          "version": "repo-lines-v1:sha256:531ca9378578daa8afe08f1dad75679f1bceeb78461e3f8f9c11ab812f633940:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMjQ2MjRmNWU3MzE5YTk1OTE3YTg1ZmVmYzU4YTExM2U4Y2YwM2ViNjNjNDUzMzE4YmM2YTdmMzI5MGIwNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhMzMxN2YyZDk4MTA5YTg0ODBhZjRhZDA3NmI1MWU0OGU2YTFjZmZmMTc4MTgwNGYzMTdmZTM5NzNmYzdhZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzhhMzQ0ZTJkYTYyYTEyMjhlYjVhYTg5YmYxNmJiNDFmZWFhNWJiMmQxMzQwY2RiNDUzNzRiZGJmNDQzYzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwOTJlZmNmMTFhMmFkMzFkOTU2MjNmZDg5YWY1ZmE2MWFlY2YxNmYxMjkwZmNiYWFjOWJkZDJmNGRlY2ZmYjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a824b106545149d8b2233ba9a5109d22",
+      "statement": "step ca revoke accepts a serial (parsed as big.Int in any base) or --cert/--key with no positional args, is incompatible with --offline and --token, infers the serial from the certificate bundle in the mTLS path (validated via OfflineCA.VerifyClientCert offline), requires a supplied --token's subject to match the serial case-insensitively, and pins the root by the token sha claim or requires --ca-url plus an existing root file.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/revoke.go#L209-L279",
+          "version": "repo-lines-v1:sha256:43485da91a527326d4bd55fede6c8eb3a6c5367cbe0c91e1ad780bd50cd0fbe8:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MTI5M2E3MzA3ZjdlZTI2YjhkNzJjZjgxMTA0ZDg5ZWU5MTE1NWEzZDI1MTUxNjkwODY0OGFjZDM3ZmJhZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlM2IwM2I0NTY2MjBkOWNiMzk1ZDBmMjI4OWE0MTdhNWU0YWJjZDdiNjkzOTJjNDFjMjliMmIyNGMzNmUyMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4NmM1OTlkYzI0MzFkY2UyNGY3MDZjYTVjYmExZjI4MWY1OTU5NTcxYWZhMDRjMjFiNmY1NWU5MmM1MjBkODIifQ"
+        },
+        {
+          "resource": "repo://command/ca/revoke.go#L322-L376",
+          "version": "repo-lines-v1:sha256:1e56ff56ce2472912bb3b61e2a031cc9f559feeb7ad856494834c8469fb095d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4OWZjOTg2YTAxZjE5OTIzYzhkM2FiZjk5M2RjZDkyYzgwOTdiZmM3NzM4ZjU1MmM3N2ZkZWVmMjljNzNjZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjYmI4YzllMThkZWEzM2FmZGM4Zjc2NTU5M2MwN2FjODU3ZmEzYjM2ZmI5OTYyNWE5ZDllNTgzYjRhYzhiOTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViZTAyZTI2ZDc5MmI4YWU1MDI2YzlkM2UyZGU0ZTBmNzE3ZWEyMTI5NzdjODY4MTFkNThjNzIyYWJjMmFkZmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eca5f48bb8c54d57ad6f639b6808e472",
+      "statement": "step ssh renew works only for host certificates: it parses the SSH certificate serial, sets --sshpop-cert/--sshpop-key in the context to select the SSHPOP provisioner, generates an SSHRenewType token, calls client.SSHRenew, and writes the new certificate in OpenSSH format at 0644 plus any returned identity certificate.",
+      "evidence": [
+        {
+          "resource": "repo://command/ssh/renew.go#L81-L145",
+          "version": "repo-lines-v1:sha256:ca32dec420b2686c9a011ee0a312877dd6dd7f1e9bc2d5db957d318fca5af812:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiMDUxMzA0MjVjOGM5NTQ0OTlkMWVmNmI4MWRiMmVhMWQxNjAyZjg4OWM2NDEyMmI4ZTA1ZDYyMTBmOTQ2ZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4NmM1OTlkYzI0MzFkY2UyNGY3MDZjYTVjYmExZjI4MWY1OTU5NTcxYWZhMDRjMjFiNmY1NWU5MmM1MjBkODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4793bf90f37349309bdd14c1d03f5e97",
+      "statement": "step ssh rekey generates a fresh default key pair, posts SSHRekey with the new public key, and writes the private key in OpenSSH format at 0600 (password-prompted unless --no-password with --insecure or --password-file), plus the public key and certificate at 0644; --out X produces X, X.pub, and X-cert.pub, otherwise files are overwritten in place.",
+      "evidence": [
+        {
+          "resource": "repo://command/ssh/rekey.go#L80-L198",
+          "version": "repo-lines-v1:sha256:4dc1fba95c243468d824791f7ca528eb49499522b5a61e7a7238cbdd663155f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhMjkzMDZlOGU5Njg2MDJhMzA0OTYwNTU5OGJlNDFlZDg1MDFmZTlkYmEzZDcyMzRjMGVlMTM4MTNlYWYyOWEyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmMjk2NDA3OWMzYzVjODE1MjBlZjMzYTJiOWQyZTE1YTFiODRkNzI4MGRiODU5MGRjZDY1NzQ3ZTNlMDEyYTQwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_08e6a53c4f7a4a24951484eb7d334d15",
+      "statement": "step ssh revoke takes zero args (requiring --sshpop-cert/--sshpop-key with the serial inferred from the certificate) or one serial argument, maps --reasonCode via OCSP ReasonCodeToNum, generates an SSHRevokeType token when --token is absent, and calls client.SSHRevoke with Passive: true using a client retry function from loginOnUnauthorized.",
+      "evidence": [
+        {
+          "resource": "repo://command/ssh/revoke.go#L119-L199",
+          "version": "repo-lines-v1:sha256:9c3397b50811cb5980749103800b02174f5be6c277089170793351e7f326236a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmNjU1OTg0OWUyNDI4YTljMjk4Y2MyZjVjM2U4M2Y5NGNhZTE1OWI0YTE5OTk3MmI1ODAxNjQ0ZWY0ZmYxNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5NGE1ZDk2OTFjYzU5MTQ3YmNiYzM4MDIzY2RhYzI4NWMzNmQ0MDRhYmI1MDczMzAwZTgyMzhjMWFkOTE4ZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf139b9981cb49ee8fd9f26fd4c4a0ba",
+      "statement": "step certificate needs-renewal returns exit 0 when the certificate needs renewal (past 66% of its lifetime by default, or within an --expires-in duration), exit 1 otherwise, exit 2 when the file is missing, and 255 for other errors; a URL argument fetches the peer chain (verifiable with --roots), and --bundle checks the whole chain instead of only the leaf.",
+      "evidence": [
+        {
+          "resource": "repo://command/certificate/needsRenewal.go#L148-L240",
+          "version": "repo-lines-v1:sha256:247a5a20dff56c18d579c8d6273bc22358160238f14cdb83901e709f85ad0eba:eyJzZWxlY3RlZExpbmVDb3VudCI6OTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTFkZDllZmI1NzEwMDJkNTViOTgwYzcwYzYyMzZmODFmMGNiMzAyODY4NjI4ZDg4ZDk5OTI2NzIzYjIwNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhZTYzY2FhYmJiY2Q3MmVhZDA2NWZjOWUzY2EzMjdmY2UxZTBhZjI3MDYxOGExZDQxYjhkMzZiN2YxYTkwYjAifQ"
+        },
+        {
+          "resource": "repo://command/certificate/needsRenewal.go#L30-L40",
+          "version": "repo-lines-v1:sha256:d87ffa96fe5f4a1a4342c15f3e91379fd9d72074a8e308662c82a5fee796c605:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzVlNjhiNmMxNWMzMWE3OGRmM2FhYmE3MDIwYjM5YzI5NDg0NDU2MjY4MTlmM2NlMWUwM2NlYzU3YTVkZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjNTRlNzYxZmIyNzQ3MGRiY2NkMDQ3ZWMxMjM4MDRlZTRhMDYwZTFiZWJlODM2Yzg1MGNlODY5N2E0OThkY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4ZmEyODY4ZThiYzNjZjk5M2YwNmYxZTc5NWY1NmEwNDBhZTQ2MmE4ZmE0ODY3ZTNlY2ZhNGI4MmI5NDYwZmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f2cccba1ece943a6b9e7630e18cbb052",
+      "statement": "step ssh needs-renewal applies the same 66% default threshold and 0/1/2/255 exit-code contract to SSH certificates and reads the certificate from STDIN when no argument is given.",
+      "evidence": [
+        {
+          "resource": "repo://command/ssh/needsRenewal.go#L76-L150",
+          "version": "repo-lines-v1:sha256:e5a056e0212f0fef6a310f1ef48bb061ff1856329b77ce961d1cf175bf01af93:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwMjk2YTNjMDQ3OGYxMTMxZDFjMzQ1ODI0YjA5ZDhjMTMwZDg3NmFkM2Q5Nzc2NjY4ZDIyNjE1YzkzNWIwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNzZjYTVmZmMzZmMxNDE5OTMwMmRmNDlkMTExOTU0OGI4NTM3YTZhMGZmYmNjMTQ0NGM3ZDgwMWY4NTExOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5NTAwYzI3YjQxYzMxOTVhZDE4M2JjMjUxNTQ2MzY5ZDRjYjY1MjExZGJiMWI0Zjc0OWQ1ZmYzMTQ1MzUzNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMjM3YmE1M2JkM2M0MDY3M2FjYWY5N2I2Zjk2OTliMDRkZDQwY2YwNjZlMjViOTYyYTQ4NWExM2M2N2I5MTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f40349963da44edae36a3b24a3b79bd",
+      "statement": "The offline Renew/Revoke/Rekey wrappers in utils/cautils/offline.go read the presenting client certificate from the http.RoundTripper's TLSClientConfig.Certificates[0] (commented as internal code that should not panic), letting the shared CaClient interface carry mTLS credentials in both online and offline modes; offline Revoke uses the OTT when present and the transport certificate otherwise.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/offline.go#L226-L341",
+          "version": "repo-lines-v1:sha256:af6b36c2917c0c426af76923813359dcce48af256a85658e1491294c375069b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4MWY5MDM2M2VlZTUwOWJlNzgzOTQ3NWQ2MzExOTQ0MDVlMTE0NWJlOTRkMzcxNDVmYmNmNjA3NWVlNjkxZGI2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1MDllMTBkODM4MTk2NjBjNmI2MGVkN2ZjOGVkY2RmMDFjNzY2MzBhNjczZjIzZDk5ZjNjY2M2MTc0OGU4MmZjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjODlkYzA0OGRkMGIyYWVmYWUxZDlhZDc3NjUyN2Y0YzIxMmM4ZmQ5NWZhMzg0OWRhNjY4MWQyNDc4ZjJkYzBkIn0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-14T18:31:05.987Z"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:492052d78557482dafa2d7412223973fa45853fd5270dd19896dd9c87d812533",
+  "claims": [
+    {
+      "id": "claim_6c6ab49c929e4671952480750095abf7",
+      "statement": "step ca bootstrap dispatches on flags: --team is incompatible with --ca-url or --fingerprint, --team defaults --team-authority to 'ssh', --team-authority requires --team, and otherwise --ca-url plus --fingerprint are required to call BootstrapAuthority.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/bootstrap.go#L85-L112",
+          "version": "repo-lines-v1:sha256:8adc237429069df65b99dc1f430e396c8153f8f10b44d0bba12c62ef998d8bed:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNjk1M2U5M2IyYjcyZWFiZjE4ODM4NmM0ZjY5Y2Q1ZjIxM2MxNmNjYTRjMDMxODUzYzg5YzEyMWY1YzQyZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e85bb3259a347a58c933b300997466d",
+      "statement": "BootstrapTeamAuthority defaults the endpoint to https://api.smallstep.com/v1/teams/<team>/authorities/<teamAuthority>, replaces the <> placeholder in --team-url with the team name, parses a JSON response with url/fingerprint/redirect-url/provisioner/min-password-length, defaults the redirect to https://smallstep.com/app/teams/sso/success when neither the flag nor the API provides one, and names the default context <teamAuthority>.<team>.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L224-L287",
+          "version": "repo-lines-v1:sha256:742d56610c368a0e0e93b1338d5e51d939f329522eb91ff20ad5c251231bdc97:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MGQxNjE4ZTMzMzhlOGExZDJiYTc4OGVjYzYzYzljYTI1ZTJhNTc0NWRjY2Y4ZmUwZjFhNzhjZGU3OWRlNTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwM2RlYzM4YTdjNzg4ZjNkZWRmNTcwMWIxMzI1NjA2NmRhNWQ2NzRlYzAzOTE2YmU0MWQ2ZTcyYzY3MTJmMTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZjBmZDNlOTk5NTRiYzNmYWZlODdhNGM5MDNhNjhlZjg0MjQ3MDNiOWI3ZGMyZjkwNzJlODhjZWYyMWMwZjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3851ca27f1264a3285ba21dd0c4ee61b",
+      "statement": "The core bootstrap creates an insecure client (ca.WithInsecure), downloads the root via client.Root(fingerprint) which validates the certificate against the fingerprint, then writes root_ca.crt at pki.GetRootCAPath() with 0600 and defaults.json (ca-url, fingerprint, root, optional redirect-url/provisioner/min-password-length) at step.DefaultsFile() with 0644, creating parent directories with 0700.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L165-L216",
+          "version": "repo-lines-v1:sha256:8708b64bf8eea82bdcd719cf03d5ba3409bb34122d597d3aa24cb47b0f4bf3d2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlMWI0OWRjNzJmNjMyNjNkYzRmODFkZDIxZGYzZWRiZmU2NWU5NjVlN2FmMjhjNDM4OGFmMjc0NThlZTYwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlNGU3OGQyZWI2ODNlODRmYTlkMTEzZDI2ZTM5MTNiMjI1NjgyYTQwZTRiNDE4MTc1OGNlMjQ3ZTUzZmJlODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1MWQ5OGEwMDc3NTRhYmI1MWY4ODBjNGVmMWI3YjdhN2FlZTllYmQ5ZjhjZThhMWE0MjgyOTI2ZGI5ODk4MDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMzMmI4OTZhNGE1YTZkNmJhNWM4ZjFiNDZiMjJjNDgyNWFlMGI1MTIwZDhhNTAxZDI0YWUwMjYxNjZmZTM1MzkifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L98-L165",
+          "version": "repo-lines-v1:sha256:36fc37d153d6d0c16a56ac992530750a51a5ce093ecd746f1e38970174eac9c5:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMTQ4MjA1MjQ2MmQ5ODY2Y2IwYzQwMWU5ZTIzMmMxMjQ0NTk1ODNiNGJjNTY1Y2EwMjgyNzkwZWZhYjkzMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlMWI0OWRjNzJmNjMyNjNkYzRmODFkZDIxZGYzZWRiZmU2NWU5NjVlN2FmMjhjNDM4OGFmMjc0NThlZTYwY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4OTcwZjA1OWM0MTEwYjMzYjkyNDhhMjM4OTVkOGNhNTYwMGQ1NjcxZGI3YjJiYmYzZTg1YjgxZmEwNjQyNmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4NmM1OTlkYzI0MzFkY2UyNGY3MDZjYTVjYmExZjI4MWY1OTU5NTcxYWZhMDRjMjFiNmY1NWU5MmM1MjBkODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7aa95493398e4e1cb4ec8077e7960351",
+      "statement": "When UseContext is true (contexts enabled or --context/--authority/--profile set), bootstrap adds a step.Context whose authority and profile default to the context name and makes it current via SaveCurrent and SetCurrent; otherwise it warns when a legacy config/ca.json exists.",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L114-L142",
+          "version": "repo-lines-v1:sha256:95f7d2cc5580dc4cedcc407c7c7f422d9498b2017dd120df7b64beb6786884e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmOGZhOGVjOWM3ZjE4OTQwZGZlYWZjMjYxNDA1YmQwOGFkOThkZjdiZjBjZjBjNGY3MDc1Yjc4MTc4ZmRjZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyZWJmM2JhOTlhMWZmY2ZlNTBjNTdkNWI5ODdkMjU4ZGQ3MTEwMjFmZWNjZTMxZmU2YjgwODVkYjI3NWRkNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyOGRlMTA1NDgzZDY0ZGM0ZGQyMGMwNmUzM2JiYjk0MDFjNTc5OGI4Yjc4MzlhNTZlNTZiMmM4ZDJkYmRiZjQifQ"
+        },
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L38-L54",
+          "version": "repo-lines-v1:sha256:789d287a327eff64682fbbfb4f15a193ca4147ffd598482155f326e1b50d09d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViMmE4MTk3NjUxNDY4ZDE0NDc2Mzc3Y2NjZjBkMGFlMWMwZDZkZWFiODBjYTkwZGQ1NjE0MTUyMjAwZWMxY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5MjliNDMwNThkYjA2MzRjNmYzMzg1YzQ5MWM2ZWE3MzQ4OWFkNzFmNGIwODI5OTg2MTBkMTNhYzU4Njk3MzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxOTYyYWE2OGM5NTg0ZjFiMjk5NDRlMDRhZTcxZjI4YTI5ZTUzOTBmODdjMzhhODAzMzdhMzUwNTY2NDAyYzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_930744b191194fc69c99857ca0d717c6",
+      "statement": "The --install flag installs the saved root certificate into the system trust store via truststore.InstallFile(rootFile).",
+      "evidence": [
+        {
+          "resource": "repo://utils/cautils/bootstrap.go#L210-L216",
+          "version": "repo-lines-v1:sha256:14943bc3c7fe45e2f56e8fa0750d57f143e89432662a09e2184c2b1f2991a5d7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU0ZTc4ZDJlYjY4M2U4NGZhOWQxMTNkMjZlMzkxM2IyMjU2ODJhNDBlNGI0MTgxNzU4Y2UyNDdlNTNmYmU4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWJjMzJjNzAwMmE5MzE2NTViMmI2M2RlYmExYWQyYmI0MjQ4YTU5ZDVhNzM5YzJlNWU5ZWUwZGFhMDYwMjFkNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzMyYjg5NmE0YTVhNmQ2YmE1YzhmMWI0NmIyMmM0ODI1YWUwYjUxMjBkOGE1MDFkMjRhZTAyNjE2NmZlMzUzOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_844e55cde31040f28d99c7fa81533804",
+      "statement": "step ca root requires --fingerprint, downloads the root through an insecure client whose client.Root(fingerprint) call validates the certificate, and writes the root PEM (or prints it to STDOUT).",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/root.go#L69-L108",
+          "version": "repo-lines-v1:sha256:3c6ca60a8ac4cefc8d0ee40be4d693eb592af473f7343073ad121ca5c1b0c978:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjODE0NTM2NGE3MmZmMjY3MGYxNmNlZDVlNTVkODAzYWFkN2EyZjVmNjk0Yjk3M2JjNGJkNGIzM2I5MGE2ZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_da534b1ef5c7452382c692eb200f52a8",
+      "statement": "step ca roots and step ca federation build a non-insecure client pinned with ca.WithRootFile (root defaults to pki.GetRootCAPath() and must exist), fetch server-provided bundles via client.Roots()/client.Federation(), PEM-serialize and concatenate the certificates, and write them 0600 to an optional file argument or print to STDOUT.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/federation.go#L114-L189",
+          "version": "repo-lines-v1:sha256:4e67ddfd4d3e8ac3bc6c37d2a82c439d7349f9c0bf9c4790495abb3264908ad0:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ODg0Y2VjZDgwZWZjYTRiY2M3YTRkOWUyNTNkZWMzZTc4MWQ1YmNmMzVkYTNmNjNlYTMzMmVmMmIxNWQ4OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c99215f5f3c44053b8f55943452c0581",
+      "statement": "step ca health resolves the CA URL and root (defaulting root to pki.GetRootCAPath() which must exist), calls the /health endpoint, and prints the response Status such as ok.",
+      "evidence": [
+        {
+          "resource": "repo://command/ca/health.go#L55-L89",
+          "version": "repo-lines-v1:sha256:b147e6f64e9b337a73ca870f6cd9460cc5fc0ed3569cdb66b5d637e9938ec440:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyNDVmOTgwMWYyNzJkODE0Mjc0ZmE4OWFiMWM3NWE0NDU3NDNjNWQ4NWI1ZmE1NjBmMDYwNmYxYjA1ZmEyNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c3305f8e34b54ec69f8231c0e80a9e35",
+      "statement": "The step context group provides current, list, remove, and select subcommands: select calls step.Contexts().SaveCurrent(name), list marks the current context with a leading '▶ ', and remove errors when context management is disabled.",
+      "evidence": [
+        {
+          "resource": "repo://command/context/context.go#L50-L58",
+          "version": "repo-lines-v1:sha256:d88348d995489e13dcea6e176fddc865fad4bf045e5fae196f418db973c85207:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjJjYWVkNGMzZWUzMDI1MjhhMGRhNTc3YmNlYmI5M2RkYzhlZTE0MmZmMGZmMDU3YTdkMjU4NTQ4NTY0NDA0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTIxZTI1NzRjYmNjMTEzYmVlMWIwNzhlYzhkMGM3M2IzZTU3YzViNmY0NTc2MDE1ZDdmNTA2ZmI0NzJmMmUwMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWVhYmUwOGI5MGU2Yzk1ZjBhNDNhNjU1NWJjM2NkMjA5ZjYwYjcxOThiZDgwMDY3MDBjOGNlYjIzODkzYzQzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        },
+        {
+          "resource": "repo://command/context/list.go#L38-L52",
+          "version": "repo-lines-v1:sha256:8d0aa0e67376cec09e2b692161f998dd901416891e6092fe94b5f7e72e130be6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwZjAyODIzMTY0ZjczM2FkOTQxZWVjZmEyYThkNTY2NThlMDdjMzFiOThmODBjMDY2MDgxNDFlMjNmYzg5MDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhZTA5ZTU2NjM3MGYyMjAzY2Y1ZTI5YTJhMDkxOWVlMjllZWE4ZDQ5NTM4ZjYzNjQyZmY2OWM1YmI4NzRmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://command/context/remove.go#L47-L59",
+          "version": "repo-lines-v1:sha256:92a983e8d3b7c7bb5e0a6b7fa85b33c681bcf832f1563dd2eaf5a9eb64ccfca7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwMzhhOGUzNzdhZjMxYjdjMzk4MTBkNjk3ODdmMGVlZTQwOTRlMTk5NmZkYTIyYWQzODY3NDg1MWI1ZDNmZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwODA0ODdhYmMxMmExMDg1NmE2NTA0MDE2M2MwNDE0M2M2OWEwNTg1M2E1ZjIxMGE3NjJiZGFhYzM5YjQ4YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0NDQ4MDY5ZjA1MjI1ZjEwNjNlYjIzMmI4MGY2NTAwZjljNDBjMTk1ODY5NGI5ZDM4MDZkN2RkODRkMmQ5OTYifQ"
+        },
+        {
+          "resource": "repo://command/context/select.go#L34-L42",
+          "version": "repo-lines-v1:sha256:d582f16f89572cf481377c7c8a6da41f154df2fb678ec30daa3b18cf17cc2e9a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmZjNzdhYTE5NDNkNjRiN2Y2ZTE4YjZlOTdkMjM0ZmEzMmM2MzI1ZGY2Y2JjNDUzMDRjYTk1YzM2NGI3ODZkNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjg0ZWJlNWM2NjUzMDM3YTNhYzQyYWY0NTAyN2Q3NTQ0M2NjZTYwNTM3Y2E5NmQ3ZWE5MmU3ZGQ0ZjhhMzhhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzI4ZmIyOTQzMDA5MWU0NmFkN2JjMzg4OTViY2ZkZWE2OWZjMjk2ZjllNzUyOWZmMmU5Y2ZhNGI1NGNiMWZkZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-14T18:31:05.987Z"
+  }
+}

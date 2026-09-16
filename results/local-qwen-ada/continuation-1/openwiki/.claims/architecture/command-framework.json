@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:482ac46377f764fb26596a8c3f5ee1770892feed5c2f17b748daf8b51549418f",
+  "claims": [
+    {
+      "id": "claim_d644158d1ddb43a9bbf3502256f3c3c5",
+      "statement": "cmd/step/main.go defines package variables Version, BuildTime, and AppName (set via LDFLAGS at build time); its init() calls step.Set(\"Smallstep CLI\", Version, BuildTime) from cli-utils, sets ca.UserAgent = step.Version() from smallstep/certificates, and calls cmd.SetName(AppName); main() calls cmd.Run().",
+      "evidence": [
+        {
+          "resource": "repo://cmd/step/main.go#L1-L29",
+          "version": "repo-lines-v1:sha256:8a2abddb4bc0449b467efdf51851a39eb15c82805dc16202e4757b70173be60f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMWQwMzZjYmJmM2RmNDZlMjA0NTA3MWUwODIyNDVlY2UyMDRjN2Y1M2VjZjBhNGUwMjJiZmY5YmIyMjhmNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51110a7a0475477a8f247e6fa2778bd0",
+      "statement": "Run() in internal/cmd/root.go executes os.Exit(run()); run() defers panicHandler(), calls step.Init() from cli-utils to initialize the step environment (exiting 1 with the error on stderr on failure), then builds the app via newApp(os.Stdout, os.Stderr) and runs app.Run(os.Args).",
+      "evidence": [
+        {
+          "resource": "repo://internal/cmd/root.go#L46-L86",
+          "version": "repo-lines-v1:sha256:ea4f7fc24e652b78df4f6b406f7b632433477a40fb30dc34438562d08f21852b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyYWUyZjRmMjAwYTY0ZjQ5NzA0ODNiYmFkNzc1YWExNjQ4ODBjYTEyNjk5OTMyNmMwOWU4MDFjMDNmMjYyNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5Yzk3NmVlOTBkNzZmMTg0NDVjNTVjYjRjZGY1YzkwNGU3Y2Y2OTc1NTk4NWY1ZWU2NTI2N2I2ZDU1ZmU3YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwMWJiZjlmZWY0MWMyOGIwMDFkYTNlNDJiNzFiYTViYTJkZWE3Njc2NWU5Mzc3ZjY0MmMzYjVhMGZmNDg3Y2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9fbff3b58f1f4bf380b79e914906de8c",
+      "statement": "run() prints a user-facing message when the returned error implements a Message() string messenger interface, otherwise the raw error; with STEPDEBUG=1 the full error (%+v) is printed instead, and without STEPDEBUG a messenger error is followed by 'Re-run with STEPDEBUG=1 for more info.'; any failure returns exit code 1.",
+      "evidence": [
+        {
+          "resource": "repo://internal/cmd/root.go#L60-L86",
+          "version": "repo-lines-v1:sha256:be6abd3a0c3409c20a4483ce0eff6436eacdf9e3e26be336a0efc709d33c8286:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzNGI2MWM0ZWY4MjVlOTQwYjFlZTExMWRhMWUwMTNmODUxMjNiMzg4YzE3MDRlZDQxNzRiYjllZDU5ZThmNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3NDhhNmMzNTE3ZmQ3NzQ5MDA3M2I4MDgxMGIzMWUyMDFkNWEyNDQxNjJkYjQ1ZjIyOGNmYjIxZGZjYjUxZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwMWJiZjlmZWY0MWMyOGIwMDFkYTNlNDJiNzFiYTViYTJkZWE3Njc2NWU5Mzc3ZjY0MmMzYjVhMGZmNDg3Y2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53db2bb970e64a47ab9b942e05021139",
+      "statement": "newApp replaces go.step.sm/crypto defaults (pemutil.WriteFile = fileutil.WriteFile; pemutil.PromptPassword and jose.PromptPassword call ui.PromptPassword) and overrides urfave/cli globals: cli.VersionPrinter (delegates to the version command), help templates from cli-utils/usage, and cli.FlagStringer = stringifyFlag, which extracts the <placeholder> token from a flag's Usage (falling back to <value> for non-bool flags).",
+      "evidence": [
+        {
+          "resource": "repo://internal/cmd/root.go#L95-L114",
+          "version": "repo-lines-v1:sha256:90fba467079e1dd9224de299829b9b916fdb3e888333ff431541fe3c88f0e33b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwODdmZjY5YmYxZTI5NDY2OWVlZTQ4OWYxMWExNzFhYzE2NzE5MGZlZGIzNjgyMWRlZGQ0NTU5OWEzZDMxYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwODc0YWU0YzlkNTkwMjYyM2IyNjA5OWQxYzg1ZDNjOTA1OWU3ZDdjZmNiY2E5NGE1NmIxMTFhNjU3ZWMzNTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2ODU4YzZiYWUyZTZmZTVjZTAxY2Y0NWViMWVjZDc0MWU4Y2Q4Njg3MWRkYmU3MzVjOWRhMDlmNGVlN2Q3NWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5acceb6c6bf840df8faf28ef4ad23bbf",
+      "statement": "The app's commands come from command.Retrieve() (cli-utils), a global --config flag ('path to the config file to use for CLI flags') is added, EnableBashCompletion is true, Name/HelpName default to 'step' (overridable via SetName), Usage is 'plumbing for distributed systems', and Version is step.Version().",
+      "evidence": [
+        {
+          "resource": "repo://internal/cmd/root.go#L117-L131",
+          "version": "repo-lines-v1:sha256:f6a477ed419db9a55fd37e7ecc7de16e998167b8eb74c8671baccbde5c4e5f9f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4ZjRmNmQ0Y2NlOGEwMjM0ZTAyZGUyOTJjMDJhZWYxMTk3ZWE3ZjI3NjdmOTY3NTFlMTI1ZTMzMDI3Njg0MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTliNWU5MDE5YzhkYjg3ODNlYzljM2ZlYmIwYTJjOTg2MmY2MWEwNWMzMDhmZTg5NWU0YTliZWQwM2VkYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzNmNiODhmY2JhNWVjMzU5ZjVjZGZkYjk5YzkzYTc3NGZhMDYzNGZmNjdmNzQ2MjM0YTM5YWVmMjQ3OGRkMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwMDkyNjdiZTljNGMyMmQ2YWQ2NmM3ZDg0Njk2MDJkMTBiZjcyOWU3MjczMTZhZWMxODgzM2VkNGZjNzQyMTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c1dba67b0fc34296a9d4ae4d5e38c223",
+      "statement": "The app Action handles bare step and unknown top-level commands: a non-empty first argument is first resolved via plugin.LookPath(name) and executed with plugin.Run; if that fails and plugin.GetURL(name) is non-empty it errors with a 'not found / download it from' message; otherwise it falls back to cli.ShowCommandHelp, or cli.ShowAppHelp with no arguments.",
+      "evidence": [
+        {
+          "resource": "repo://internal/cmd/root.go#L134-L152",
+          "version": "repo-lines-v1:sha256:42c308a44a81a5c752d75e81e2e9f373e3f91ea450f18a28b1d2cec0a39630f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZGMxOWFiNGUxNDM2ZjA0MDNlNjFhOWVhM2Y3MTliNjA0OTJmZGU4YmUxZmZkOTIxOTdhN2Q3ZTZiZTExYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhM2VlZDA5OGYxNDk3OGM4OGMxMTQ4ODEyOTlkNjZiMWI5NjY3NzU3MjkxMjA0YTZjNmIwZGVmYjMyZjk5MDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3MmJjZTQ4YTNkMjMxNmZiYjE0YzAzYjViOWMxYTcxNGUyYTFkMmU1MjkwYWUxMDc4NjhkYmU0ZTUzZDQyYzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d28c61ff6f7b4444a921b32a6b06c3e7",
+      "statement": "Each command package self-registers in init() by constructing a cli.Command and calling command.Register(cmd) from github.com/smallstep/cli-utils/command; the enabled command set is controlled by blank imports at the bottom of internal/cmd/root.go for the groups: api, base64, beta, ca, certificate, completion, context, crl, crypto, fileserver, oauth, path, ssh.",
+      "evidence": [
+        {
+          "resource": "repo://command/README.md#L1-L103",
+          "version": "repo-lines-v1:sha256:f1bb9d9edcd15a79ebe38f58ffc00f789d36f7eff93fe0e98e79c24636341b17:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMjU1ZGMxMzVkODgzMjFjNzlhZWQzNDljMmEyNjZhZGMwNTE1MmRlNzRkNjI5MmYzNzg2ODllZmZlNjVhMzE5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0YmY5NWEwNjU5NmRiZjRjYmMwZjU2MjZhZGYxMTkyYTY3Zjg1ZDVlODk1YmFhYTFhNTc0MjAwNjdjMzY1MTkzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://command/base64/base64.go#L18-L83",
+          "version": "repo-lines-v1:sha256:18cf0c3f492804af6cd7279480cbaa715911901104abfceb397b82e3822b80ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMzk5ZTMyM2IyYjc2NWU5ODk4YmEwNTM1MDU0NjdlZTEzMTE2YTM0Nzg3ODE5NWExMWM4ZGE4OTc4OTViOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3MTM1ZjE3Mjg5NjQ3NWM1NGUyOTkwYjIxNzFkZDkxNTAwN2E5YzQ4NjMzMzNhYWE0ZmYwMWEyN2M0OGZiN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkMWRmMTNkY2RiMTM4NzY1ZDM1MDExYmE5YWVlNTA5MDEwNjE3M2IxMzkxMTc3MmU1ZjhiZTM5OWMzOGYwODMifQ"
+        },
+        {
+          "resource": "repo://internal/cmd/root.go#L26-L43",
+          "version": "repo-lines-v1:sha256:79985ef1d8b6a7ac734048682bc12d8cdd0e6925c6289ecda482c6ada6e05d31:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MzljMWYxYzZmMmYzN2FiYWExNDZjMDJkNTQ0Y2JlZjEyNzgyNjUxMzRkYTM4M2M4ZTQyNGM4ZDNhODNhZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0YzAwMzVhOTAzYjY5MjM1MjU2Nzk3ZTJmMWRhODgzYzQ3NDFlY2ZiZjA1NTgxMjZiYjMyNzA3ZjllNDI0Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5MGRlODYzODg1NDg3N2I0Mzk2M2NhMGZhODQyOThmZjkxNzc5MmFiMzg5YWM3ODBmYTc0NWE4ZWMyODBmNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxNWI1NTZiMjFmOWRhMjRmZDgzZGI3ZjZhNzE4ODNhNmQ2ZDgxMGNlNmRhYWFmNWJkNjM4NmEzNjA3NzE3NzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9eafeb96536429b8327f9a590f0a0c0",
+      "statement": "Blank imports in internal/cmd/root.go also enable the smallstep/certificates CAS interfaces cloudcas, softcas, and stepcas, which the embedded offline CA requires.",
+      "evidence": [
+        {
+          "resource": "repo://internal/cmd/root.go#L26-L28",
+          "version": "repo-lines-v1:sha256:9f2a12485654cfcf6680e9c0485a70053e7c5a10eaeca6d9aef6233d85503814:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTgzOWMxZjFjNmYyZjM3YWJhYTE0NmMwMmQ1NDRjYmVmMTI3ODI2NTEzNGRhMzgzYzhlNDI0YzhkM2E4M2FlMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmI1YzU1NDkxZjVjZGMyYWVlYmE4M2YzNzcyYjc5YzQzNzdiZTI3ZWE2NmQzZDAzZTc3YjNjM2Q0MjQ3NTczNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTkwZGU4NjM4ODU0ODc3YjQzOTYzY2EwZmE4NDI5OGZmOTE3NzkyYWIzODlhYzc4MGZhNzQ1YThlYzI4MGY1YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWMyNjE5NzM4NjU1MDEwY2Y0YjFjNTA2OTNiMDIzNGQ3OTRlMWUwMWJmMGI3YWQxOWJhMmM3MzMzM2I0MTUxZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_82117e0b95f246da8a1457083da5620e",
+      "statement": "plugin.LookPath searches for an executable named step-<name>-plugin first in $(step path)/plugins (on Windows checking PATHEXT extensions, defaulting to .com .exe .bat .cmd .ps1) and then in PATH via exec.LookPath; plugin.Run executes the matched file with the command's arguments wiring stdin/stdout/stderr, invoking .ps1 files through 'powershell -noprofile -nologo' on Windows.",
+      "evidence": [
+        {
+          "resource": "repo://internal/plugin/plugin.go#L20-L73",
+          "version": "repo-lines-v1:sha256:66483e5583f18b3f12c7cbe7c8c4fc4fa793ac625eeccd4fb3b3612c5e309d43:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5N2Y3MjY4MjFmNjcxZmZlMDEwYjNkNWU0MTk0Mzk4MTc2NDIxOWFhYWE3N2IxMjQwNGMxODc0NWEwMjJhNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxNzJkYzk5MTZjM2Y0MmJkNjAwMjBlMjg3ZTlmMGQ5MjQyZDg5NDIzNjg3YTZhY2U3YjYzOGViZmNiNDM4MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlNjBkMTczMWRiODNiZjQwNDI4ZmM0MjgyMGMzMDUxZGE5NDQ4MTUxMzAyOGE1MDBhZTEyMDk1ZDc3MTAwZDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59b1967e329549fc9995c627ff07f650",
+      "statement": "plugin.GetURL maps only the name 'kms' to https://github.com/smallstep/step-kms-plugin; internal/cryptoutil/cryptoutil.go defines the Attestor interface (crypto.Signer plus Attest) and calls plugin.LookPath(\"kms\") for public-key, signing, and attestation operations against step-kms-plugin.",
+      "evidence": [
+        {
+          "resource": "repo://internal/cryptoutil/cryptoutil.go#L47-L50",
+          "version": "repo-lines-v1:sha256:b2904433c085c3fa53aebdd2e2632be8d882d0ea8e2fde1a317992b0ea49e80f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y4MmMzNDgzYWI4MDA4Y2I1MjcwMGIwNmNhNjA2MjA1ODJkMWZiZTQ0YmNhYjQ5NWZmNjgyODY2Zjg1NTM2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg2NjlhMGRmNTU0OTJiODA1ODkxNWJkYTg0NTZmMWY0MGUzZGZmMjRiNjJmMGY1YzNjN2NiNDAxZDVhYzk3NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTljMTljZGYxZTIzYzVmYjNhYWU0OGE3ZGQyNzViNzI3ZmRkZTdjYTkwMzA1M2VkZmNhMmNiMmExOGQzMmZlOSJ9"
+        },
+        {
+          "resource": "repo://internal/cryptoutil/cryptoutil.go#L99-L99",
+          "version": "repo-lines-v1:sha256:bd298044d1c73853258f1966753b2333a7ba89392b4ba187dbe748e5bbcf2697:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQyOTgwNDRkMWM3Mzg1MzI1OGYxOTY2NzUzYjIzMzNhN2JhODkzOTJiNGJhMTg3ZGJlNzQ4ZTViYmNmMjY5NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQyOTgwNDRkMWM3Mzg1MzI1OGYxOTY2NzUzYjIzMzNhN2JhODkzOTJiNGJhMTg3ZGJlNzQ4ZTViYmNmMjY5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjliOTkzYjNhMjM2ODUwYjNlODI1OWY4MjI2NWEwNzdjMzRiNGYzZGNlMzY5M2E0YzQ4ZDY3YWRlMzY5ODkwOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzc1MGUwYjA1OTZiMmJhNjJmMTIxMzM0MWU1M2VjYWQ2MjNkOTE0ZDNhODYyZTEyOTljMDcxZGJjMjhlNDI2MiJ9"
+        },
+        {
+          "resource": "repo://internal/plugin/plugin.go#L75-L82",
+          "version": "repo-lines-v1:sha256:4ab61526778516a4e6529737afbfa6e519696939ad6b8679573b948a789e28c0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTNjZmZkOWViNmNlYTY1NGRhOTMwMGMwZTk0M2EyM2MzYTFjZGYzN2RlZTI3MThiNzJmNGQyZWE5ZWQyODc1MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTdkNmJiZDAwNGNjODBmMWExMWYzNWY4OWJjZWVjZTU4MDI4OWE5MGQ1MzA4MTlkZDc5YzZjMWM0NDBiZmY2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_32d4f16f622b48e9a5ea4b978d5c05fb",
+      "statement": "InjectContext in internal/command/inject.go forces the injected context as the first middleware and adapts a func(context.Context) error into a cli.ActionFunc; wrap starts from context.Background(), applies middleware in order, stores the *cli.Context under an unexported cliCtxKey, and CLIContextFromContext panics if the cli.Context was never set.",
+      "evidence": [
+        {
+          "resource": "repo://internal/command/inject.go#L1-L56",
+          "version": "repo-lines-v1:sha256:a28db7738ab8b64408c38a7268df6899b3d062b9240de443148a88825fdb0802:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5MWZmNTNhMTQ3YTRjYjBmMmU4NmMxNjlmOWFkZTdkNzg0NDAyODU4ODc3MjUzZGQ3MjUxODFkZTMyNmI0M2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_92326a748a084824b781ec5d5317dee2",
+      "statement": "panicHandler() in internal/cmd/root.go recovers panics: with STEPDEBUG=1 it prints the CLI version and release date then re-panics; otherwise it prints 'Something unexpected happened.', the instruction to re-run with STEPDEBUG=1 and send output to info@smallstep.com, and exits with status 2.",
+      "evidence": [
+        {
+          "resource": "repo://internal/cmd/root.go#L156-L170",
+          "version": "repo-lines-v1:sha256:5d37a92a8688f96bf908d753c092322a909e0eace194f9f0b132dc126cd3b271:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwN2MxODQxZWM4NDQ3ZTE3ZTc4NGJkZjVjMGM1OGIyNGFhOGQyZDg4N2VlOTAyODk1OTJmMjQ3ZjJmYWJiY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MmJjZTQ4YTNkMjMxNmZiYjE0YzAzYjViOWMxYTcxNGUyYTFkMmU1MjkwYWUxMDc4NjhkYmU0ZTUzZDQyYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0MDczYTI2YjEzY2UyNWVlOThkMGU3ZmFhOWM1YTU2Yzk1NGZiZjY3MTBkYWMzMmNkNjA3YzlhNDkwZWVlZTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ab9b0484c7e147dc8717ed4e621324b6",
+      "statement": "Makefile defines LDFLAGS injecting -X main.Version=$(VERSION) and -X main.BuildTime=$(DATE) (with a -w variant for stripped builds) into cmd/step/main.go; step.Version() and step.ReleaseDate() from cli-utils surface them and the version command prints them.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile#L66-L69",
+          "version": "repo-lines-v1:sha256:df49934e2a64ff40d5fb116742c6b5f0fff97f549504e476a8f4ddde6fef847b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkwYWIzZmUwN2U3ZDczMzdlZDY2MGMyMDNlZjU1MWY2ZDlmYWI5NTIwMjliZGRkMmMyNjI4ZjVhYjBiYTliNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTIzNzJhY2VjYzNjOWZiZGE1ODMyZjYyOGUxODhhMThkM2RhYTU0NTBiM2Y1OTBmNmU1ZjJjOWQzZDJiNWNhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWI3NTA4M2NmMWM2NjdiOGY3MjBhNDI0MTk5MzdiZThkNGUxYmE2NmRhYTkyYTIxZmRhMzg3NDM5NjEyMDhkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGNlYzFlYTIzYjI5NjJhMmQ5ZTYyMDEwM2UyZTlmOTM0YzQ1MjAyNzI2OTU4YTRmNWI2NzY2YWUwM2QxNmE0NiJ9"
+        },
+        {
+          "resource": "repo://cmd/step/main.go#L1-L29",
+          "version": "repo-lines-v1:sha256:8a2abddb4bc0449b467efdf51851a39eb15c82805dc16202e4757b70173be60f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMWQwMzZjYmJmM2RmNDZlMjA0NTA3MWUwODIyNDVlY2UyMDRjN2Y1M2VjZjBhNGUwMjJiZmY5YmIyMjhmNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://command/version/version.go#L30-L33",
+          "version": "repo-lines-v1:sha256:27fd22facbe33bc25dba8c63a9f002cb37dc148b733a7475a428214076176fd8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkNDYwMDg3ZDFmOGJmOTFjZTEyZjFkNTJlZDc2YjE4OTQzZTRjMGY1ZDE3YjI5MWFiMzIyNmVlNTI1NmIwNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRhMWQ3OTE0ODA5ZTM0OTlkNDU3M2U4YmZlNTgyNmFlMDgyZWEyZTJhMTRkYjdjYzE0MTcyNTc3YzZhNzM1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTE4NzM0ZWM1MDJkNGFiN2NlMmY2YzUyNWQ2MjZmODhkMzdiMmQ4ODA2OTJkZGNiMGI1ZThmNTRjZTNlYjExYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-14T13:44:47.469Z"
+  }
+}

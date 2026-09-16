@@ -1,0 +1,106 @@
+[
+  {
+    "task_id": "page_503489f967ee604ffc20c736",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Owner is clearly utils/cautils (CaClient, CertificateFlow, OfflineCA, admin constructors, bootstrap). Scope is stable and spillover into tokens/contexts/admin commands is incidental, but the page never names out-of-scope outline boundaries, so taxonomy stays 3. Load-bearing claims are tied to line-ranged files (client.go, certificate_flow.go, offline.go, bootstrap.go) and the prose says what those spans do; a few causal asides (badgerDB locks, linkedca-backed admin API, K8sSA multi-use) are unlabeled inference, blocking 4. The body is a flow-and-constraint catalog: construction, GetClient branches, Sign/CreateSignRequest, OfflineCA wrappers, numbered bootstrap. sharedContext hand-off and SHA256 bootstrap-token trust are implications, not a derived invariant/failure/ordering model, so reasoning is 2. Change guides give concrete files and an ordered edit sequence but name no tests, validation steps, or rollback/debug signals (cap 2). Opening plus headings route questions; SAN/OIDC/admin/context edge cases sit in the main path rather than a separate layer (style 3). Internally consistent with several handled branches (CertChainPEM fallback, admin cert+key pairing, bootstrap vs ordinary tokens); no source available here to confirm subtle claims, so correctness is 3 not 4."
+  },
+  {
+    "task_id": "page_510a62b542734dec6311239d",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 0,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 4,
+      "correctness": 4
+    },
+    "rationale": "Taxonomy: Quickstart owns the first-run path; opening names that scope and delegates CA-server, context defaults, and --team behavior without re-explaining those systems. Grounding: load-bearing claims (ldflags/version, STEPPATH writes, required flags, OfflineCA, in-process tests) use paths/symbols only—no line ranges or excerpts—so they are locators, not evidence. Depth: common bootstrap/cert/SSH/test flows plus a few implications (in-process tests skip PATH; offline needs no server); flag incompatibilities are stated, not causally derived. Change: names cmd/step, internal/cmd.Run, integration/, and make test/lint, but no ordered edit sequence, invariants, or rollback signals. Style: opening gives ownership/flow, sections isolate steps, Uncertainties groups edge cases. Correctness: internally consistent; incompatibilities and external limits are labeled rather than overclaimed."
+  },
+  {
+    "task_id": "page_5f8fdb18e07d5352bf612d24",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 4,
+      "code_grounding": 3,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: the page is owned by the Certificate Command Group; the opening names offline/local-or-TLS tooling and explicitly excludes Smallstep CA ACME/REST, routing that to CA Clients and Certificate Request Flows. Code grounding: load-bearing mechanics (registration, create/sign/verify/p12/needs-renewal/install, shared remote.go) carry line-range citations that match the claims; not 4 because some non-obvious claims lack exact evidence or stretch it (no CA API traffic, root-command import, Sprig/.Subject/.SANs from the profile-mapping lines, unlabeled systemd-renewal use). Reasoning: dense flow and constraint catalog with a few implications (KeyUsages Any, script exit codes, OCSP try-next) but no derived causal model of why those constraints exist. Change usefulness: ordered recipes with exact files for a new subcommand and profile changes, plus failure modes (flag errs, issuer/pathLen, exit codes, truststore CmdError); no named tests, invariants-to-preserve framing, or rollback/debug signals for a 4. Style: opening scope plus per-command headings is a clean flat reference, not three-layer progressive disclosure. Correctness: internally consistent with many stated exceptions; minor overclaim that everything in the group works against a TLS endpoint (remote helpers are only listed for fingerprint/inspect/lint/needs-renewal/verify)."
+  },
+  {
+    "task_id": "page_689cd8eb03e127ae99444797",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 1,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Topic is the `step ca` group, but the page gives comparable weight to independently owned outline areas (tokens/provisioners, ACME/TPM attestation flags, bootstrap/config, renew/ops, certificate request flows) and never names exclusions or delegates those concerns. Most load-bearing behaviors have line-range citations (registration, bootstrap, renew mTLS/X5C/JWT, daemon scheduling, policy levels), but several catalog rows are path-only locators, flag lists are thin evidence, and inference is never labeled—so grounding caps at 2. Renew/policy describe flows and a few implications (jitter, expired→token, create-if-missing policy) without two causal explanations tying choices to invariants or failure modes. Concrete files/symbols appear, but there is no edit sequence, tests, or change-time failure/rollback checks. Opening plus headings/table make a usable flat reference. No internal contradiction found; some edges are noted (Certificate Manager-only policy, hidden attestation flag) without unverifiable extra certainty."
+  },
+  {
+    "task_id": "page_a083960f43b91ae78fc8e92c",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 2,
+      "reasoning_depth": 2,
+      "change_usefulness": 2,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: packaging and systemd renewal dominate the named outline topic, but the integration-test harness is a substantial adjacent “Build, Test, and Change Guides” section, and prose never names out-of-scope delegates (fileserver/completion similarly sit on the command-framework boundary). Grounding: load-bearing facts are tied to paths plus inline values (unit Exec* lines, OnCalendar=*:1/15, testscript.Main map, Dockerfile CMD/STOPSIGNAL), yet there are no line ranges; multi-file claims (Dockerfile vs Makefile CGO, goreleaser vs debian/, tlsRenewer/GetConfigForClient, blank import in root.go) are locators or paraphrase, so one unsupported load-bearing claim caps at 2. Reasoning: renewal timer→ExecCondition→renew→try-reload and a few asides (thundering-herd jitter, S3 redirects, armhf6 skip) are flows/mechanics, not two implementation-to-invariant causal explanations. Change usefulness: exact files/symbols, but no ordered edit sequence, named change-validation tests, invariants, or rollback signals. Style: opening lists scope; headings route Docker/packaging/renewal/fileserver/completion/tests/uncertainties with no major repetition—a flat reference, not progressive disclosure of one flow. Correctness: internally consistent with labeled external-infra/debian-control uncertainty and no visible central contradiction; remaining certainty (calendar semantics, unit failure paths) is at most minor."
+  },
+  {
+    "task_id": "page_bdf2d8115e19eaa849d25596",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: one owner (boot/registration/plugins/lifecycle) is stated in the opening; spillover (STEPPATH/contexts, Makefile, CAS, KMS attestor) is minor. No explicit out-of-scope/delegation prose, so not a 4 (related-page list does not count). Grounding: load-bearing claims (boot order, messenger/STEPDEBUG, LookPath/Run, InjectContext, panic exits, enabled import set) are file/symbol locators without line ranges or quoted evidence except Makefile 66/69 and a generic Register snippet—minority coverage, so 1. Reasoning: clear flows and a couple of ‘so that’ notes (blank-import linking; injected ctx first), but invariants such as builtin-vs-plugin name collision, --config behavior, and init order stay implicit; mostly mechanics, cap 2. Change: numbered add-command path with command/<name>/, root.go blank import, integration/main_test.go, make lint/test—locations, order, and tests present; no preserve-invariants or rollback/debug signals, so 3. Style: opening + question-shaped headings, no major repetition; flat reference, not layered progressive disclosure. Correctness: internally consistent (exit 1 vs panic 2, plugin fallback vs GetURL, STEPDEBUG in both paths); no contradiction on the page; edge cases described but inferences (e.g. CAS ‘needed by’ offline CA, regex) not labeled, so 3 not 4."
+  },
+  {
+    "task_id": "page_e4de5b8c2d33849acaf30bd0",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 2,
+      "code_grounding": 0,
+      "reasoning_depth": 1,
+      "change_usefulness": 1,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: repo layout/ownership dominates, but the page never states its own in/out scope, and “Two operating modes” is a substantial CA-client section (NewClient flags, CaClient API, NewOfflineCA, authority.Sign/Renew) that belongs to CA Clients and Certificate Request Flows. Grounding: paths and symbols (go.mod, command/README.md, utils/cautils/client.go, offline.go, internal/cmd/root.go) have no line ranges or quoted excerpts, so they are locators; load-bearing claims are therefore uncited. Reasoning: package roles, mode selection, and “keep logic out of command/” are local mechanics/constraints with no derived invariants, failure behavior, or causal consequences. Change usefulness: concrete files are named, but there is no edit sequence, named tests, or failure checks (the change-guide link does not transfer). Style: opening plus headings/table make the map easy to retrieve; a well-organized flat reference. Correctness: internally consistent; no source contradiction can be shown from the page, and it does not treat edge cases or uncertainty."
+  },
+  {
+    "task_id": "page_f3306f5189487d6ed285103a",
+    "judge_id": "grok-4.6",
+    "scores": {
+      "taxonomy_fit": 3,
+      "code_grounding": 1,
+      "reasoning_depth": 2,
+      "change_usefulness": 3,
+      "style": 3,
+      "correctness": 3
+    },
+    "rationale": "Taxonomy: opening owns client ACME in cautils, TPM attestation, and `step ca acme eab`; related links do not name exclusions or delegate token/CA-client/command-group concerns, so not a 4. Grounding: load-bearing claims (directory derivation, SAN/LetsEncrypt rules, challenge modes, TPM AK enrollment, finalize polling) are locators (paths/symbols) with no line ranges or excerpts; one unsupported load-bearing claim caps at 2, and none meet specific-evidence, so 1. Reasoning: full GetCertificate/HTTP-01/TPM walkthrough plus a few implications (webroot 0644, wildcard because DNS-01 unimplemented); mostly listed flows/constraints, so 2. Change: concrete files, ordered extension steps (acmeFlowOp / issueMode / authorizeOrder branch), and `make test` plus --webroot check; no invariants-to-preserve or rollback/debug signals, so 3 not 4. Style: purpose in the lead and headings that route; edge cases stay inline in the main path, so 3. Correctness: internally consistent; edge cases stated as fact without labeled uncertainty."
+  }
+]
